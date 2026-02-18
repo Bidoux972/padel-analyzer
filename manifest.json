@@ -1,0 +1,16 @@
+{
+  "name": "Padel Analyzer",
+  "short_name": "PadelApp",
+  "description": "Analyseur de raquettes padel avec scoring IA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080c14",
+  "theme_color": "#f97316",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23080c14'/><text x='50' y='65' font-size='55' text-anchor='middle'>🎾</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
