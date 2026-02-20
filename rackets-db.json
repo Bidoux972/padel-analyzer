@@ -125,7 +125,7 @@
       "Confort": 5.5,
       "Spin": 6,
       "Maniabilité": 6.5,
-      "Tolérance": 5
+      "Tolérance": 5.5
     },
     "verdict": "Diamant puissante inspirée d'Ale Galán. Frappe explosive mais demande de la technique. Pour intermédiaires confirmés à l'aise en attaque."
   },
@@ -147,11 +147,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 6,
-      "Confort": 5,
-      "Spin": 8,
-      "Maniabilité": 5.5,
-      "Tolérance": 5
+      "Contrôle": 5.5,
+      "Confort": 5.0,
+      "Spin": 8.0,
+      "Maniabilité": 5.0,
+      "Tolérance": 5.0
     },
     "verdict": "La plus puissante du marché. Carbone 18K + EVA dure + balance haute = frappe dévastatrice. Attention : confort très limité, bras sensibles s'abstenir."
   },
@@ -198,12 +198,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 7.5,
-      "Confort": 7,
-      "Spin": 7.5,
-      "Maniabilité": 7,
-      "Tolérance": 7
+      "Puissance": 8.5,
+      "Contrôle": 6.0,
+      "Confort": 6.5,
+      "Spin": 7.0,
+      "Maniabilité": 6.5,
+      "Tolérance": 5.5
     },
     "verdict": "Nouvelle gamme Adidas avec balance intelligente ajustable (IBS). Diamant polyvalent et adaptable. Pour joueurs avancés qui veulent personnaliser leur jeu."
   },
@@ -223,11 +223,11 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 6.5,
-      "Confort": 6,
-      "Spin": 8,
-      "Maniabilité": 5.5,
+      "Puissance": 8.5,
+      "Contrôle": 6.0,
+      "Confort": 6.0,
+      "Spin": 7.5,
+      "Maniabilité": 6.0,
       "Tolérance": 5.5
     },
     "verdict": "Nouvelle gamme Adidas 2026. IBS pour ajustement balance. Diamant 16K puissance.",
@@ -315,7 +315,7 @@
     "name": "Adidas Cross It Light 2026",
     "shortName": "Cross It Light 26",
     "brand": "Adidas",
-    "shape": "Diamant",
+    "shape": "Ronde",
     "weight": "355g",
     "balance": "Moyenne-haute (268mm)",
     "surface": "Carbon Aluminized 24K + DAF",
@@ -327,12 +327,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 7.5,
-      "Confort": 8,
-      "Spin": 6.5,
-      "Maniabilité": 8,
-      "Tolérance": 7.5
+      "Puissance": 6.0,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Raquette Martita Ortega. Dynamic Air Flow + 24K. Légère et maniable.",
     "id": "adidas-cross-it-light-2026"
@@ -353,12 +353,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6.5,
-      "Contrôle": 8,
-      "Confort": 8,
-      "Spin": 6.5,
-      "Maniabilité": 7,
-      "Tolérance": 8
+      "Puissance": 7.5,
+      "Contrôle": 6.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 6.0,
+      "Tolérance": 6.0
     },
     "verdict": "Cross It accessible. Diamant oversize + DAF. Bonne all-rounder intermédiaire.",
     "id": "adidas-cross-it-team-2026"
@@ -407,7 +407,7 @@
     "category": "debutant",
     "scores": {
       "Puissance": 5.5,
-      "Contrôle": 7,
+      "Contrôle": 8.0,
       "Confort": 9,
       "Spin": 5,
       "Maniabilité": 8.5,
@@ -433,7 +433,7 @@
     "category": "debutant",
     "scores": {
       "Puissance": 5,
-      "Contrôle": 7,
+      "Contrôle": 8.0,
       "Confort": 9.5,
       "Spin": 4.5,
       "Maniabilité": 9.5,
@@ -457,12 +457,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 7,
-      "Confort": 6,
-      "Spin": 8,
-      "Maniabilité": 6,
-      "Tolérance": 6
+      "Puissance": 8.5,
+      "Contrôle": 6.0,
+      "Confort": 5.5,
+      "Spin": 8.0,
+      "Maniabilité": 6.0,
+      "Tolérance": 5.5
     },
     "verdict": "Flagship Adidas Ale Galán. Weight & Balance System pour personnalisation totale.",
     "id": "adidas-metalbone-2026"
@@ -509,12 +509,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 7,
-      "Confort": 5.5,
-      "Spin": 8,
+      "Puissance": 9.0,
+      "Contrôle": 5.5,
+      "Confort": 5.0,
+      "Spin": 8.0,
       "Maniabilité": 5.5,
-      "Tolérance": 5.5
+      "Tolérance": 5.0
     },
     "verdict": "Metalbone 6K pour maniabilité accrue. Bon compromis puissance-vitesse.",
     "id": "adidas-metalbone-carbon-2026"
@@ -536,7 +536,7 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 7.5,
+      "Puissance": 7.0,
       "Contrôle": 9.5,
       "Confort": 7,
       "Spin": 8,
@@ -562,11 +562,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 6,
-      "Confort": 5,
+      "Contrôle": 5.5,
+      "Confort": 5.0,
       "Spin": 8.5,
-      "Maniabilité": 5,
-      "Tolérance": 5
+      "Maniabilité": 5.0,
+      "Tolérance": 5.0
     },
     "verdict": "Metalbone hardcore. EVA Hard pour sortie de balle max. Puissance brute.",
     "id": "adidas-metalbone-hrd-2026"
@@ -587,12 +587,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 7,
-      "Confort": 7,
+      "Puissance": 7.5,
+      "Contrôle": 7.5,
+      "Confort": 7.0,
       "Spin": 7.5,
-      "Maniabilité": 7,
-      "Tolérance": 7
+      "Maniabilité": 7.0,
+      "Tolérance": 6.5
     },
     "verdict": "Metalbone accessible. Fibre de verre pour tolérance, diamant pour puissance.",
     "id": "adidas-metalbone-team-2026"
@@ -614,11 +614,11 @@
     "category": "intermediaire",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 7,
-      "Confort": 8,
-      "Spin": 7,
+      "Contrôle": 7.5,
+      "Confort": 8.0,
+      "Spin": 7.0,
       "Maniabilité": 8.5,
-      "Tolérance": 7.5
+      "Tolérance": 6.5
     },
     "verdict": "Metalbone légère pour progression. Fibre de verre + EVA Soft pour confort.",
     "id": "adidas-metalbone-team-light-2026"
@@ -796,12 +796,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 9.5,
-      "Contrôle": 6,
-      "Confort": 5.5,
+      "Puissance": 9.0,
+      "Contrôle": 5.5,
+      "Confort": 5.0,
       "Spin": 7.5,
       "Maniabilité": 5.5,
-      "Tolérance": 5.5
+      "Tolérance": 5.0
     },
     "verdict": "Diamant extrême Babolat. Carbone 18K brut pour une puissance maximale absolue. Zéro concession sur le confort."
   },
@@ -899,11 +899,11 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 8,
-      "Confort": 8,
-      "Spin": 7,
-      "Maniabilité": 8.5,
+      "Puissance": 7.0,
+      "Contrôle": 7.5,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
       "Tolérance": 7.5
     },
     "verdict": "Polyvalente dynamique. CarbonFlex pour puissance facile. Excellente all-rounder.",
@@ -952,9 +952,9 @@
     "category": "intermediaire",
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 9,
-      "Confort": 8.5,
-      "Spin": 7,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
       "Maniabilité": 7.5,
       "Tolérance": 8.5
     },
@@ -977,12 +977,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9,
+      "Puissance": 7.0,
+      "Contrôle": 8.5,
       "Confort": 7.5,
       "Spin": 7.5,
-      "Maniabilité": 7,
-      "Tolérance": 8
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "Ronde offensive. 3K carbon pour précision + balance haute pour punch en contre.",
     "id": "babolat-counter-viper-2026"
@@ -1009,7 +1009,7 @@
       "Confort": 7,
       "Spin": 7.5,
       "Maniabilité": 6.5,
-      "Tolérance": 7
+      "Tolérance": 6.5
     },
     "verdict": "Diamant technique CarbonFlex. Plus tolérant que le Technical Viper avec bonne puissance offensive. Pour avancés qui veulent de l'attaque avec du contrôle."
   },
@@ -1055,12 +1055,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
+      "Puissance": 8.0,
       "Contrôle": 7.5,
-      "Confort": 7.5,
+      "Confort": 7.0,
       "Spin": 7.5,
-      "Maniabilité": 7,
-      "Tolérance": 7
+      "Maniabilité": 7.0,
+      "Tolérance": 6.5
     },
     "verdict": "Polyvalent offensif Lebrón. CarbonFlex pour tolérance + diamant pour punch.",
     "id": "babolat-veron-3-0-juan-lebr-n-2026"
@@ -1081,12 +1081,12 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 7,
-      "Confort": 9,
-      "Spin": 5,
-      "Maniabilité": 9,
-      "Tolérance": 9
+      "Puissance": 5.0,
+      "Contrôle": 7.5,
+      "Confort": 9.0,
+      "Spin": 5.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.0
     },
     "verdict": "Initiation Babolat. Ronde, légère, fibre de verre. Maximum tolérance, prix accessible.",
     "id": "babolat-vertuo-2026"
@@ -1107,11 +1107,11 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.5,
-      "Contrôle": 6.5,
+      "Puissance": 9.0,
+      "Contrôle": 6.0,
       "Confort": 5.5,
-      "Spin": 8.5,
-      "Maniabilité": 5.5,
+      "Spin": 8.0,
+      "Maniabilité": 6.0,
       "Tolérance": 5.5
     },
     "verdict": "Arme de Juan Lebrón. 3K + X-EVA pour smash dévastateur. Puissance brute experts.",
@@ -1160,12 +1160,12 @@
     "year": 2024,
     "category": "avance",
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 6.5,
-      "Confort": 6,
-      "Spin": 7.5,
-      "Maniabilité": 6,
-      "Tolérance": 6
+      "Puissance": 8.5,
+      "Contrôle": 6.0,
+      "Confort": 5.5,
+      "Spin": 7.0,
+      "Maniabilité": 6.0,
+      "Tolérance": 5.5
     },
     "verdict": "Vertex 2024 en déstockage. Même puissance dévastatrice que la 2025. Prix plus doux pour la même performance."
   },
@@ -1321,7 +1321,7 @@
       "Confort": 6,
       "Spin": 6,
       "Maniabilité": 6.5,
-      "Tolérance": 5
+      "Tolérance": 5.5
     },
     "verdict": "Diamant puissante avec balance haut. Le Vibradrive atténue un peu les vibrations mais le confort reste moyen. Pour intermédiaires offensifs."
   },
@@ -1342,12 +1342,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 6.5,
-      "Confort": 6,
+      "Puissance": 9.0,
+      "Contrôle": 6.0,
+      "Confort": 5.5,
       "Spin": 7.5,
-      "Maniabilité": 6,
-      "Tolérance": 6
+      "Maniabilité": 6.0,
+      "Tolérance": 5.0
     },
     "verdict": "La Vertex ultime. Carbone 12K + EVA dure pour une sortie de balle explosive. Confort minimal — réservée aux experts avec bras solide."
   },
@@ -1369,11 +1369,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 6,
-      "Confort": 5,
-      "Spin": 7,
+      "Contrôle": 5.5,
+      "Confort": 5.0,
+      "Spin": 7.0,
       "Maniabilité": 5.5,
-      "Tolérance": 5
+      "Tolérance": 5.0
     },
     "verdict": "Le top absolu de Bullpadel. Carbone 18K + EVA Hard pour une puissance dévastatrice. Vibradrive aide un peu mais confort minimal."
   },
@@ -1419,11 +1419,11 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 8,
+      "Puissance": 7.0,
+      "Contrôle": 8.0,
       "Confort": 7.5,
-      "Spin": 7,
-      "Maniabilité": 7,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
       "Tolérance": 7.5
     },
     "verdict": "Légère et punchy. Inspirée par Alejandra Salazar. Idéale joueuses avancées.",
@@ -1445,12 +1445,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.5,
-      "Contrôle": 6,
+      "Puissance": 9.0,
+      "Contrôle": 6.0,
       "Confort": 5.5,
-      "Spin": 8,
-      "Maniabilité": 5.5,
-      "Tolérance": 5.5
+      "Spin": 7.5,
+      "Maniabilité": 6.0,
+      "Tolérance": 5.0
     },
     "verdict": "Puissance max Bullpadel. TriCarbon 18K + Tricore. Raquette de Paquito Navarro.",
     "id": "bullpadel-hack-04-2026"
@@ -1472,12 +1472,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 7.5,
-      "Confort": 8,
-      "Spin": 7,
-      "Maniabilité": 7,
-      "Tolérance": 7.5
+      "Puissance": 8.0,
+      "Contrôle": 7.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 6.0
     },
     "verdict": "ADN offensif Hack avec confort accru. Goutte d'eau et MultiEVA Soft pour sessions longues. Équilibre attaque/confort pour intermédiaires progressant."
   },
@@ -1498,12 +1498,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.5,
-      "Contrôle": 7.5,
-      "Confort": 7,
-      "Spin": 7.5,
-      "Maniabilité": 6.5,
-      "Tolérance": 6.5
+      "Puissance": 7.5,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 8.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.0
     },
     "verdict": "Hack format hybride pour contre-attaque. Puissance dynamique avec meilleur contrôle défensif. Pour joueurs avancés offensifs polyvalents."
   },
@@ -1549,12 +1549,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9.5,
+      "Puissance": 7.0,
+      "Contrôle": 8.5,
       "Confort": 7.5,
-      "Spin": 8,
+      "Spin": 8.0,
       "Maniabilité": 7.5,
-      "Tolérance": 7
+      "Tolérance": 7.0
     },
     "verdict": "Contrôle structurel. PrismLock réduit torsions. Raquette de Chingotto.",
     "id": "bullpadel-neuron-02-2026"
@@ -1601,12 +1601,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.5,
+      "Puissance": 9.0,
       "Contrôle": 6.5,
-      "Confort": 6,
-      "Spin": 8.5,
-      "Maniabilité": 5.5,
-      "Tolérance": 5.5
+      "Confort": 5.5,
+      "Spin": 8.0,
+      "Maniabilité": 6.0,
+      "Tolérance": 5.0
     },
     "verdict": "Flagship Bullpadel 2026. 12K + MultiEva pour puissance ET toucher. Raquette de Juan Tello.",
     "id": "bullpadel-vertex-05-2026"
@@ -1629,8 +1629,8 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 6,
-      "Confort": 5.5,
+      "Contrôle": 6.0,
+      "Confort": 5.0,
       "Spin": 8.5,
       "Maniabilité": 5.5,
       "Tolérance": 5.5
@@ -1653,12 +1653,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 8,
-      "Maniabilité": 7,
-      "Tolérance": 7
+      "Puissance": 7.5,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 8.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.0
     },
     "verdict": "Vertex en goutte d'eau. Plus de contrôle et maniabilité. Joueurs complets côté droit.",
     "id": "bullpadel-vertex-05-hybrid-2026"
@@ -1681,10 +1681,10 @@
     "scores": {
       "Puissance": 9.5,
       "Contrôle": 5.5,
-      "Confort": 5,
-      "Spin": 8,
-      "Maniabilité": 5,
-      "Tolérance": 5
+      "Confort": 5.0,
+      "Spin": 8.0,
+      "Maniabilité": 5.0,
+      "Tolérance": 5.0
     },
     "verdict": "Plus puissante Bullpadel. Raquette de Di Nenno. Diamant extreme, technique requise.",
     "id": "bullpadel-xplo-2026"
@@ -1705,12 +1705,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9,
+      "Puissance": 8.5,
       "Contrôle": 6.5,
-      "Confort": 7,
+      "Confort": 7.0,
       "Spin": 7.5,
-      "Maniabilité": 6,
-      "Tolérance": 6.5
+      "Maniabilité": 6.5,
+      "Tolérance": 6.0
     },
     "verdict": "XPLO apprivoisée. Même ADN avec plus de confort. Attaquants sensibles du bras.",
     "id": "bullpadel-xplo-comfort-2026"
@@ -1878,7 +1878,7 @@
     "shortName": "FX Lite 26",
     "year": 2026,
     "category": "avance",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "350-360",
     "balance": "moyen",
     "surface": "12K Carbon",
@@ -1902,7 +1902,7 @@
     "shortName": "FX Pro 26",
     "year": 2026,
     "category": "expert",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "365-375",
     "balance": "haut",
     "surface": "12K Carbon",
@@ -1926,7 +1926,7 @@
     "shortName": "FX Team 26",
     "year": 2026,
     "category": "intermediaire",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "360-370",
     "balance": "moyen",
     "surface": "Premium Carbon",
@@ -1934,12 +1934,12 @@
     "priceRange": "130-180€",
     "description": "Diamant accessible. SpinBoost + Power Holes + Force Bridge. Puissance contrôlée pour progression.",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 7,
-      "Maniabilité": 7,
-      "Confort": 7,
-      "Spin": 7,
-      "Tolérance": 7
+      "Puissance": 7.5,
+      "Contrôle": 6.0,
+      "Maniabilité": 7.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Tolérance": 6.0
     },
     "imageUrl": null
   },
@@ -2104,7 +2104,7 @@
     "name": "Head Extreme Pro 2025",
     "shortName": "Extreme Pro 25",
     "brand": "Head",
-    "shape": "Goutte d'eau",
+    "shape": "Diamant",
     "weight": "355-370g",
     "balance": "Mi-haut",
     "surface": "Hybrid carbon/fiberglass",
@@ -2114,14 +2114,14 @@
     "player": "—",
     "imageUrl": null,
     "year": 2025,
-    "category": "intermediaire",
+    "category": "avance",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 7.5,
-      "Maniabilité": 7,
-      "Tolérance": 7
+      "Puissance": 9.0,
+      "Contrôle": 6.0,
+      "Confort": 5.5,
+      "Spin": 8.0,
+      "Maniabilité": 6.0,
+      "Tolérance": 5.0
     },
     "verdict": "Goutte d'eau polyvalente avec un bon compromis puissance/contrôle. La mousse Power Foam apporte de la réactivité compensée par les anti-vibrations Auxetic."
   },
@@ -2169,11 +2169,11 @@
     "category": "avance",
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 9,
-      "Confort": 8,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
       "Spin": 7.5,
       "Maniabilité": 7.5,
-      "Tolérance": 8
+      "Tolérance": 8.0
     },
     "verdict": "Référence contrôle Head en forme ronde. Grand sweet spot, stable sur les blocks et les lobs. Pour joueurs de droite qui construisent le point avec patience et placement."
   },
@@ -2299,10 +2299,10 @@
     "category": "avance",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 8,
-      "Confort": 8,
+      "Contrôle": 8.0,
+      "Confort": 8.0,
       "Spin": 7.5,
-      "Maniabilité": 8,
+      "Maniabilité": 8.0,
       "Tolérance": 7.5
     },
     "verdict": "Ultra-confortable grâce au DAMP+ dans le cœur. Polyvalente légère avec bon rendement. Pour joueurs confirmés qui cherchent sensations et protection du bras."
@@ -2453,12 +2453,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 6.5,
-      "Confort": 7.5,
-      "Spin": 7,
-      "Maniabilité": 6,
-      "Tolérance": 7
+      "Puissance": 7.5,
+      "Contrôle": 6.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 6.0
     },
     "verdict": "Version accessible de la gamme Coello. Diamant fibre de verre pour puissance facile et confort.",
     "id": "head-coello-team-2026"
@@ -2507,11 +2507,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 6,
-      "Confort": 5,
-      "Spin": 8,
-      "Maniabilité": 5.5,
-      "Tolérance": 5
+      "Contrôle": 5.5,
+      "Confort": 5.0,
+      "Spin": 7.5,
+      "Maniabilité": 5.0,
+      "Tolérance": 5.0
     },
     "verdict": "Diamant ultime de Head. La plus puissante de la gamme avec carbone premium et EVA dure. Pour les attaquants d'élite exclusivement."
   },
@@ -2532,12 +2532,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 6.5,
+      "Puissance": 9.0,
+      "Contrôle": 6.0,
       "Confort": 5.5,
       "Spin": 7.5,
-      "Maniabilité": 6,
-      "Tolérance": 5.5
+      "Maniabilité": 5.5,
+      "Tolérance": 5.0
     },
     "verdict": "Diamant ultra-offensive. Puissance maximale avec Power Foam et balance haute. Réservée aux attaquants confirmés avec bonne technique."
   },
@@ -2610,11 +2610,11 @@
     "category": "avance",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 5.5,
-      "Maniabilité": 5.0,
-      "Confort": 8.5,
-      "Spin": 6.5,
-      "Tolérance": 7.5
+      "Contrôle": 6.0,
+      "Maniabilité": 6.5,
+      "Confort": 6.5,
+      "Spin": 8.0,
+      "Tolérance": 6.0
     },
     "verdict": "Extreme allégée. Diamant offensif + Auxetic pour punch et maniabilité. Vitesse de bras.",
     "id": "head-extreme-motion-2026"
@@ -2635,10 +2635,10 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 7,
-      "Confort": 8,
-      "Spin": 6.5,
+      "Puissance": 7.0,
+      "Contrôle": 7.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
       "Maniabilité": 7.5,
       "Tolérance": 7.5
     },
@@ -2692,7 +2692,7 @@
       "Maniabilité": 5.0,
       "Confort": 9.0,
       "Spin": 6.5,
-      "Tolérance": 7.0
+      "Tolérance": 6.0
     },
     "verdict": "Diamant accessible avec fibre de verre pour tolérance. Puissance offensive pardonnante.",
     "id": "head-extreme-team-2026"
@@ -2713,12 +2713,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6,
+      "Puissance": 5.5,
       "Contrôle": 8.5,
-      "Confort": 8.5,
+      "Confort": 9.0,
       "Spin": 6.5,
       "Maniabilité": 8.5,
-      "Tolérance": 8.5
+      "Tolérance": 9.0
     },
     "verdict": "Gravity allégée. Ronde fibre de verre pour sweet spot large et toucher doux.",
     "id": "head-gravity-motion-2026"
@@ -2740,11 +2740,11 @@
     "category": "avance",
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 9,
-      "Confort": 8,
-      "Spin": 7,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
       "Maniabilité": 7.5,
-      "Tolérance": 8
+      "Tolérance": 8.5
     },
     "verdict": "Reine du contrôle Head. Ronde Hybrid Woven pour stabilité et toucher premium.",
     "id": "head-gravity-pro-2026"
@@ -2765,11 +2765,11 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6,
+      "Puissance": 6.0,
       "Contrôle": 8.5,
       "Confort": 8.5,
-      "Spin": 6,
-      "Maniabilité": 8,
+      "Spin": 6.5,
+      "Maniabilité": 8.0,
       "Tolérance": 8.5
     },
     "verdict": "Contrôle confortable. Fibre de verre + Auxetic 2.0 pour tolérance maximale.",
@@ -2791,12 +2791,12 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 5.5,
-      "Contrôle": 7.5,
-      "Confort": 9,
-      "Spin": 5.5,
+      "Puissance": 5.0,
+      "Contrôle": 8.0,
+      "Confort": 9.5,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
-      "Tolérance": 9
+      "Tolérance": 9.0
     },
     "verdict": "Ultra-légère 340g. Ronde pardonnante pour débuter sans fatigue.",
     "id": "head-gravity-team-light-2026"
@@ -2844,11 +2844,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 9,
-      "Confort": 7,
-      "Spin": 8,
-      "Maniabilité": 7,
-      "Tolérance": 7
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 8.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.0
     },
     "verdict": "Flagship contrôle Head 2026. 3K carbon + balance basse pour précision chirurgicale.",
     "id": "head-radical-pro-2026"
@@ -2869,12 +2869,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 8,
-      "Confort": 8.5,
-      "Spin": 7,
-      "Maniabilité": 8,
-      "Tolérance": 8
+      "Puissance": 6.5,
+      "Contrôle": 8.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "Contrôle accessible. Fibre de verre + balance très basse pour maniabilité max.",
     "id": "head-radical-team-2026"
@@ -2896,11 +2896,11 @@
     "category": "debutant",
     "scores": {
       "Puissance": 5.5,
-      "Contrôle": 8,
-      "Confort": 9.5,
-      "Spin": 6,
-      "Maniabilité": 9.5,
-      "Tolérance": 9
+      "Contrôle": 7.5,
+      "Confort": 9.0,
+      "Spin": 6.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.5
     },
     "verdict": "Plus légère Radical. Ronde + fibre de verre + balance basse = confort et contrôle pour débuter.",
     "id": "head-radical-team-light-2026"
@@ -2921,11 +2921,11 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 8,
+      "Puissance": 7.0,
+      "Contrôle": 8.0,
       "Confort": 7.5,
       "Spin": 7.5,
-      "Maniabilité": 8,
+      "Maniabilité": 7.5,
       "Tolérance": 7.5
     },
     "verdict": "Polyvalente rapide. Hybrid Woven pour toucher précis. Couteau suisse Head 2026.",
@@ -2947,11 +2947,11 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8,
-      "Confort": 8,
-      "Spin": 7.5,
-      "Maniabilité": 8,
+      "Puissance": 7.0,
+      "Contrôle": 8.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
       "Tolérance": 7.5
     },
     "verdict": "Confort maximal gamme Speed. DAMP+ pour absorption vibrations. Bras sensibles.",
@@ -3338,11 +3338,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 8,
-      "Confort": 7,
+      "Contrôle": 7.5,
+      "Confort": 6.5,
       "Spin": 8.5,
-      "Maniabilité": 7,
-      "Tolérance": 7
+      "Maniabilité": 7.0,
+      "Tolérance": 6.5
     },
     "verdict": "Raquette Agustín Tapia. 18K Aluminisé + Dual Spin. Référence polyvalente expert.",
     "id": "nox-at10-luxury-genius-18k-alum-2026"
@@ -3364,12 +3364,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 6.5,
-      "Confort": 6,
+      "Puissance": 9.0,
+      "Contrôle": 6.0,
+      "Confort": 5.5,
       "Spin": 8.5,
       "Maniabilité": 5.5,
-      "Tolérance": 5.5
+      "Tolérance": 5.0
     },
     "verdict": "Version diamant offensive maximale de la gamme AT10. Puissance explosive pour joueurs de gauche experts. Dual Spin pour spin dévastateur."
   },
@@ -3562,7 +3562,7 @@
     "shortName": "Diablo Elite 6 26",
     "year": 2026,
     "category": "intermediaire",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "355-375",
     "balance": "moyen",
     "surface": "3K Carbon",
@@ -3586,7 +3586,7 @@
     "shortName": "Diablo Pro 26",
     "year": 2026,
     "category": "avance",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "355-375",
     "balance": "moyen",
     "surface": "18K TeXtreme + 3K Carbon",
@@ -3610,7 +3610,7 @@
     "shortName": "Electra Pro 26",
     "year": 2026,
     "category": "expert",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "355-375",
     "balance": "moyen-haut",
     "surface": "18K TeXtreme Carbon",
@@ -3634,7 +3634,7 @@
     "shortName": "Fenix Pro 26",
     "year": 2026,
     "category": "expert",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "360-380",
     "balance": "haut",
     "surface": "18K TeXtreme Carbon",
@@ -3658,7 +3658,7 @@
     "shortName": "Pegasus Elite 4 26",
     "year": 2026,
     "category": "intermediaire",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "355-375",
     "balance": "moyen",
     "surface": "3K Carbon",
@@ -3682,7 +3682,7 @@
     "shortName": "Pegasus Pro 26",
     "year": 2026,
     "category": "avance",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "355-375",
     "balance": "moyen-haut",
     "surface": "18K TeXtreme Carbon",
@@ -3706,7 +3706,7 @@
     "shortName": "Valkiria Pro 26",
     "year": 2026,
     "category": "avance",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "345-365",
     "balance": "moyen",
     "surface": "18K TeXtreme Carbon",
@@ -3834,7 +3834,7 @@
     "shortName": "Black Titan 26",
     "year": 2026,
     "category": "expert",
-    "shape": "hybride",
+    "shape": "Hybride",
     "weight": "360-380",
     "balance": "moyen-haut",
     "surface": "24K Carbon Master",
@@ -3858,7 +3858,7 @@
     "shortName": "Raptor 26",
     "year": 2026,
     "category": "avance",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "355-375",
     "balance": "moyen",
     "surface": "3D Carbon",
@@ -3882,7 +3882,7 @@
     "shortName": "Triton Balance 26",
     "year": 2026,
     "category": "avance",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "360-375",
     "balance": "moyen",
     "surface": "18K Carbon Hybrid",
@@ -3906,7 +3906,7 @@
     "shortName": "Triton Power 26",
     "year": 2026,
     "category": "expert",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "360-380",
     "balance": "haut",
     "surface": "18K Carbon Hybrid",
@@ -4034,7 +4034,7 @@
     "shortName": "Bourne C.Ti 26",
     "year": 2026,
     "category": "avance",
-    "shape": "hybride",
+    "shape": "Hybride",
     "weight": "355-375",
     "balance": "moyen-haut",
     "surface": "Carbon + Titanium",
@@ -4058,7 +4058,7 @@
     "shortName": "LW Orquidea 26",
     "year": 2026,
     "category": "debutant",
-    "shape": "ronde",
+    "shape": "Ronde",
     "weight": "340-360",
     "balance": "bas",
     "surface": "Fiberglass",
@@ -4067,7 +4067,7 @@
     "description": "Ronde débutante confort. Ergoholes sweet spot élargi + Handlesafety. Légère et tolérante.",
     "scores": {
       "Puissance": 4,
-      "Contrôle": 7,
+      "Contrôle": 8.0,
       "Maniabilité": 9,
       "Confort": 9.5,
       "Spin": 5,
@@ -4082,7 +4082,7 @@
     "shortName": "LW Carbon Ti 26",
     "year": 2026,
     "category": "avance",
-    "shape": "ronde",
+    "shape": "Ronde",
     "weight": "355-375",
     "balance": "bas",
     "surface": "Carbon + Titanium",
@@ -4288,7 +4288,7 @@
     "shortName": "Accent 26",
     "year": 2026,
     "category": "debutant",
-    "shape": "ronde",
+    "shape": "Ronde",
     "weight": "340-355",
     "balance": "bas",
     "surface": "Fiberglass",
@@ -4297,7 +4297,7 @@
     "description": "Ronde confort-first pour débutants. Fibre de verre + EVA souple. Timing facile, légère, gateway Wilson.",
     "scores": {
       "Puissance": 4.5,
-      "Contrôle": 7,
+      "Contrôle": 8.0,
       "Maniabilité": 9,
       "Confort": 9.5,
       "Spin": 5,
@@ -4312,7 +4312,7 @@
     "shortName": "Bela LT V3 26",
     "year": 2026,
     "category": "intermediaire",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "340-350",
     "balance": "moyen",
     "surface": "3K Carbon",
@@ -4336,7 +4336,7 @@
     "shortName": "Bela Pro V3 26",
     "year": 2026,
     "category": "expert",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "365-375",
     "balance": "haut",
     "surface": "24K Carbon",
@@ -4360,7 +4360,7 @@
     "shortName": "Bela V3 26",
     "year": 2026,
     "category": "avance",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "360-370",
     "balance": "moyen",
     "surface": "3K Carbon",
@@ -4384,7 +4384,7 @@
     "shortName": "Blade Pro V2 26",
     "year": 2026,
     "category": "avance",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "360-370",
     "balance": "moyen",
     "surface": "Carbon",
@@ -4408,7 +4408,7 @@
     "shortName": "Blade Team 26",
     "year": 2026,
     "category": "intermediaire",
-    "shape": "goutte",
+    "shape": "Goutte d'eau",
     "weight": "350-360",
     "balance": "moyen",
     "surface": "Fiberglass",
@@ -4432,7 +4432,7 @@
     "shortName": "Pro Staff V2 26",
     "year": 2026,
     "category": "avance",
-    "shape": "ronde",
+    "shape": "Ronde",
     "weight": "360-370",
     "balance": "bas",
     "surface": "Carbon",
@@ -4456,7 +4456,7 @@
     "shortName": "Ultra Pro V2 26",
     "year": 2026,
     "category": "expert",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "365-375",
     "balance": "haut",
     "surface": "Double Carbon Wall 2.0",
@@ -4480,7 +4480,7 @@
     "shortName": "Ultra Team 26",
     "year": 2026,
     "category": "intermediaire",
-    "shape": "diamant",
+    "shape": "Diamant",
     "weight": "355-365",
     "balance": "moyen-haut",
     "surface": "Fiberglass/Carbon",
@@ -4493,7 +4493,7 @@
       "Maniabilité": 7,
       "Confort": 7.5,
       "Spin": 6.5,
-      "Tolérance": 7
+      "Tolérance": 6.5
     },
     "imageUrl": null
   }
