@@ -12,7 +12,7 @@
     "antivib": "—",
     "price": "200-270€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-ctrl-34-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -38,7 +38,7 @@
     "antivib": "—",
     "price": "62-85€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-junior-34-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -64,7 +64,7 @@
     "antivib": "—",
     "price": "70-100€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-light-34-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -90,7 +90,7 @@
     "antivib": "—",
     "price": "150-200€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-multiweight-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -116,7 +116,7 @@
     "antivib": "—",
     "price": "180-250€",
     "player": "Ale Galán",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-34-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -142,16 +142,16 @@
     "antivib": "—",
     "price": "280-380€",
     "player": "Ale Galán",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-hrd-34-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
       "Contrôle": 5.5,
-      "Confort": 5.0,
-      "Spin": 8.0,
-      "Maniabilité": 5.0,
-      "Tolérance": 5.0
+      "Confort": 5,
+      "Spin": 8,
+      "Maniabilité": 5,
+      "Tolérance": 5
     },
     "verdict": "La plus puissante du marché. Carbone 18K + EVA dure + balance haute = frappe dévastatrice. Attention : confort très limité, bras sensibles s'abstenir."
   },
@@ -168,7 +168,7 @@
     "antivib": "—",
     "price": "89-115€",
     "player": "Ale Galán",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-youth-34-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -194,14 +194,14 @@
     "antivib": "IBS (Intelligent Balance System)",
     "price": "250-310€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-arrow-hit-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 6.0,
+      "Contrôle": 6,
       "Confort": 6.5,
-      "Spin": 7.0,
+      "Spin": 7,
       "Maniabilité": 6.5,
       "Tolérance": 5.5
     },
@@ -219,15 +219,15 @@
     "antivib": true,
     "price": "250-310€",
     "player": "Avancé offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-arrow-hit-attack-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 6.0,
-      "Confort": 6.0,
+      "Contrôle": 6,
+      "Confort": 6,
       "Spin": 7.5,
-      "Maniabilité": 6.0,
+      "Maniabilité": 6,
       "Tolérance": 5.5
     },
     "verdict": "Nouvelle gamme Adidas 2026. IBS pour ajustement balance. Diamant 16K puissance.",
@@ -246,7 +246,7 @@
     "antivib": "IBS + MPS ribs",
     "price": "250-310€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-arrow-hit-ctrl-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -272,7 +272,7 @@
     "antivib": "IBS + MPS ribs",
     "price": "280-350€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-arrow-hit-carbon-ctrl-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -298,7 +298,7 @@
     "antivib": "—",
     "price": "100-115€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-arrow-hit-junior-pink-2026.png",
     "year": 2026,
     "category": "junior",
     "scores": {
@@ -323,16 +323,16 @@
     "antivib": true,
     "price": "260-320€",
     "player": "Avancé offensif rapide",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-cross-it-light-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 6.0,
+      "Puissance": 6,
       "Contrôle": 8.5,
       "Confort": 7.5,
       "Spin": 7.5,
-      "Maniabilité": 8.0,
-      "Tolérance": 8.0
+      "Maniabilité": 8,
+      "Tolérance": 8
     },
     "verdict": "Raquette Martita Ortega. Dynamic Air Flow + 24K. Légère et maniable.",
     "id": "adidas-cross-it-light-2026"
@@ -349,16 +349,16 @@
     "antivib": true,
     "price": "140-180€",
     "player": "Intermédiaire",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-cross-it-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 7.5,
       "Contrôle": 6.5,
       "Confort": 7.5,
-      "Spin": 7.0,
-      "Maniabilité": 6.0,
-      "Tolérance": 6.0
+      "Spin": 7,
+      "Maniabilité": 6,
+      "Tolérance": 6
     },
     "verdict": "Cross It accessible. Diamant oversize + DAF. Bonne all-rounder intermédiaire.",
     "id": "adidas-cross-it-team-2026"
@@ -376,7 +376,7 @@
     "antivib": "Dynamic Air Flow",
     "price": "150-200€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-cross-it-team-light-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
@@ -402,12 +402,12 @@
     "antivib": "Standard",
     "price": "50-80€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-drive-black-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
       "Puissance": 5.5,
-      "Contrôle": 8.0,
+      "Contrôle": 8,
       "Confort": 9,
       "Spin": 5,
       "Maniabilité": 8.5,
@@ -428,12 +428,12 @@
     "antivib": "Standard",
     "price": "40-70€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-match-light-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
       "Puissance": 5,
-      "Contrôle": 8.0,
+      "Contrôle": 8,
       "Confort": 9.5,
       "Spin": 4.5,
       "Maniabilité": 9.5,
@@ -453,15 +453,15 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert offensif customisable",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 6.0,
+      "Contrôle": 6,
       "Confort": 5.5,
-      "Spin": 8.0,
-      "Maniabilité": 6.0,
+      "Spin": 8,
+      "Maniabilité": 6,
       "Tolérance": 5.5
     },
     "verdict": "Flagship Adidas Ale Galán. Weight & Balance System pour personnalisation totale.",
@@ -480,7 +480,7 @@
     "antivib": "Weight & Balance System",
     "price": "300-370€",
     "player": "Lorena Rufo",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-ctrl-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -505,16 +505,16 @@
     "antivib": true,
     "price": "250-310€",
     "player": "Avancé offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-carbon-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.0,
+      "Puissance": 9,
       "Contrôle": 5.5,
-      "Confort": 5.0,
-      "Spin": 8.0,
+      "Confort": 5,
+      "Spin": 8,
       "Maniabilité": 5.5,
-      "Tolérance": 5.0
+      "Tolérance": 5
     },
     "verdict": "Metalbone 6K pour maniabilité accrue. Bon compromis puissance-vitesse.",
     "id": "adidas-metalbone-carbon-2026"
@@ -532,11 +532,11 @@
     "antivib": "Weight & Balance System",
     "price": "320-390€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-carbon-ctrl-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 7.0,
+      "Puissance": 7,
       "Contrôle": 9.5,
       "Confort": 7,
       "Spin": 8,
@@ -557,16 +557,16 @@
     "antivib": false,
     "price": "320-400€",
     "player": "Expert puissance dure",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-hrd-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
       "Contrôle": 5.5,
-      "Confort": 5.0,
+      "Confort": 5,
       "Spin": 8.5,
-      "Maniabilité": 5.0,
-      "Tolérance": 5.0
+      "Maniabilité": 5,
+      "Tolérance": 5
     },
     "verdict": "Metalbone hardcore. EVA Hard pour sortie de balle max. Puissance brute.",
     "id": "adidas-metalbone-hrd-2026"
@@ -583,15 +583,15 @@
     "antivib": true,
     "price": "150-200€",
     "player": "Intermédiaire offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 7.5,
       "Contrôle": 7.5,
-      "Confort": 7.0,
+      "Confort": 7,
       "Spin": 7.5,
-      "Maniabilité": 7.0,
+      "Maniabilité": 7,
       "Tolérance": 6.5
     },
     "verdict": "Metalbone accessible. Fibre de verre pour tolérance, diamant pour puissance.",
@@ -609,14 +609,14 @@
     "antivib": true,
     "price": "130-170€",
     "player": "Intermédiaire léger",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-team-light-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 7.5,
       "Contrôle": 7.5,
-      "Confort": 8.0,
-      "Spin": 7.0,
+      "Confort": 8,
+      "Spin": 7,
       "Maniabilité": 8.5,
       "Tolérance": 6.5
     },
@@ -636,7 +636,7 @@
     "antivib": "Vibrasorb",
     "price": "200-270€",
     "player": "Juan Lebrón",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-viper-2024.png",
     "year": 2024,
     "category": "avance",
     "scores": {
@@ -662,7 +662,7 @@
     "antivib": "—",
     "price": "170-220€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-viper-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -688,7 +688,7 @@
     "antivib": "—",
     "price": "90-100€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-alioth-mini-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -714,7 +714,7 @@
     "antivib": "—",
     "price": "140-150€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-alioth-pro-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -740,7 +740,7 @@
     "antivib": "—",
     "price": "60-80€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-contact-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -766,7 +766,7 @@
     "antivib": "Vibrasorb",
     "price": "150-200€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-counter-viper-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -792,16 +792,16 @@
     "antivib": "—",
     "price": "300-400€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-rebel-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 9.0,
+      "Puissance": 9,
       "Contrôle": 5.5,
-      "Confort": 5.0,
+      "Confort": 5,
       "Spin": 7.5,
       "Maniabilité": 5.5,
-      "Tolérance": 5.0
+      "Tolérance": 5
     },
     "verdict": "Diamant extrême Babolat. Carbone 18K brut pour une puissance maximale absolue. Zéro concession sur le confort."
   },
@@ -818,7 +818,7 @@
     "antivib": "—",
     "price": "70-90€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-revenge-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -844,7 +844,7 @@
     "antivib": "Vibrasorb",
     "price": "250-320€",
     "player": "Juan Lebrón",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-viper-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -870,7 +870,7 @@
     "antivib": "—",
     "price": "220-280€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-viper-air-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -895,15 +895,15 @@
     "antivib": true,
     "price": "220-280€",
     "player": "Intermédiaire-Avancé polyvalent",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-veron-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.0,
+      "Puissance": 7,
       "Contrôle": 7.5,
-      "Confort": 8.0,
-      "Spin": 7.0,
-      "Maniabilité": 8.0,
+      "Confort": 8,
+      "Spin": 7,
+      "Maniabilité": 8,
       "Tolérance": 7.5
     },
     "verdict": "Polyvalente dynamique. CarbonFlex pour puissance facile. Excellente all-rounder.",
@@ -921,14 +921,14 @@
     "antivib": true,
     "price": "250-310€",
     "player": "Avancé offensif rapide",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-viper-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.0,
-      "Contrôle": 7.0,
-      "Maniabilité": 7.0,
-      "Confort": 7.0,
+      "Puissance": 8,
+      "Contrôle": 7,
+      "Maniabilité": 7,
+      "Confort": 7,
       "Spin": 7.5,
       "Tolérance": 7.5
     },
@@ -947,14 +947,14 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Intermédiaire-Avancé contrôle",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-counter-veron-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 9.0,
-      "Confort": 8.0,
-      "Spin": 7.0,
+      "Contrôle": 9,
+      "Confort": 8,
+      "Spin": 7,
       "Maniabilité": 7.5,
       "Tolérance": 8.5
     },
@@ -973,16 +973,16 @@
     "antivib": true,
     "price": "230-290€",
     "player": "Avancé défensif-contre",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-counter-viper-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.0,
+      "Puissance": 7,
       "Contrôle": 8.5,
       "Confort": 7.5,
       "Spin": 7.5,
       "Maniabilité": 7.5,
-      "Tolérance": 8.0
+      "Tolérance": 8
     },
     "verdict": "Ronde offensive. 3K carbon pour précision + balance haute pour punch en contre.",
     "id": "babolat-counter-viper-2026"
@@ -1000,7 +1000,7 @@
     "antivib": "Vibrabsorb",
     "price": "250-310€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-veron-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -1026,7 +1026,7 @@
     "antivib": "Vibrabsorb",
     "price": "300-370€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-viper-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1051,15 +1051,15 @@
     "antivib": true,
     "price": "280-340€",
     "player": "Avancé offensif polyvalent",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-veron-30-juan-lebrn-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.0,
+      "Puissance": 8,
       "Contrôle": 7.5,
-      "Confort": 7.0,
+      "Confort": 7,
       "Spin": 7.5,
-      "Maniabilité": 7.0,
+      "Maniabilité": 7,
       "Tolérance": 6.5
     },
     "verdict": "Polyvalent offensif Lebrón. CarbonFlex pour tolérance + diamant pour punch.",
@@ -1077,16 +1077,16 @@
     "antivib": true,
     "price": "100-150€",
     "player": "Débutant",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-vertuo-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 5.0,
+      "Puissance": 5,
       "Contrôle": 7.5,
-      "Confort": 9.0,
+      "Confort": 9,
       "Spin": 5.5,
-      "Maniabilité": 9.0,
-      "Tolérance": 9.0
+      "Maniabilité": 9,
+      "Tolérance": 9
     },
     "verdict": "Initiation Babolat. Ronde, légère, fibre de verre. Maximum tolérance, prix accessible.",
     "id": "babolat-vertuo-2026"
@@ -1103,15 +1103,15 @@
     "antivib": true,
     "price": "350-400€",
     "player": "Expert puissance max",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-viper-30-juan-lebrn-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.0,
-      "Contrôle": 6.0,
+      "Puissance": 9,
+      "Contrôle": 6,
       "Confort": 5.5,
-      "Spin": 8.0,
-      "Maniabilité": 6.0,
+      "Spin": 8,
+      "Maniabilité": 6,
       "Tolérance": 5.5
     },
     "verdict": "Arme de Juan Lebrón. 3K + X-EVA pour smash dévastateur. Puissance brute experts.",
@@ -1130,7 +1130,7 @@
     "antivib": "Vibrabsorb",
     "price": "320-390€",
     "player": "Juan Lebrón",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-viper-soft-30-juan-lebrn-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1156,15 +1156,15 @@
     "antivib": "Vibradrive",
     "price": "200-280€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-04-2024.png",
     "year": 2024,
     "category": "avance",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 6.0,
+      "Contrôle": 6,
       "Confort": 5.5,
-      "Spin": 7.0,
-      "Maniabilité": 6.0,
+      "Spin": 7,
+      "Maniabilité": 6,
       "Tolérance": 5.5
     },
     "verdict": "Vertex 2024 en déstockage. Même puissance dévastatrice que la 2025. Prix plus doux pour la même performance."
@@ -1182,7 +1182,7 @@
     "antivib": "—",
     "price": "50-70€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-flow-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -1208,7 +1208,7 @@
     "antivib": "Vibradrive",
     "price": "160-210€",
     "player": "Paquito Navarro",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-03-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -1234,7 +1234,7 @@
     "antivib": "Vibradrive",
     "price": "220-300€",
     "player": "Paquito Navarro",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-elite-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -1260,7 +1260,7 @@
     "antivib": "—",
     "price": "58-95€",
     "player": "Paquito Navarro",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -1286,7 +1286,7 @@
     "antivib": "—",
     "price": "55-65€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-indiga-boy-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -1312,7 +1312,7 @@
     "antivib": "Vibradrive",
     "price": "180-240€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-03-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -1338,16 +1338,16 @@
     "antivib": "Vibradrive",
     "price": "250-350€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-04-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 9.0,
-      "Contrôle": 6.0,
+      "Puissance": 9,
+      "Contrôle": 6,
       "Confort": 5.5,
       "Spin": 7.5,
-      "Maniabilité": 6.0,
-      "Tolérance": 5.0
+      "Maniabilité": 6,
+      "Tolérance": 5
     },
     "verdict": "La Vertex ultime. Carbone 12K + EVA dure pour une sortie de balle explosive. Confort minimal — réservée aux experts avec bras solide."
   },
@@ -1364,16 +1364,16 @@
     "antivib": "Vibradrive",
     "price": "350-420€",
     "player": "Ale Galán",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-elite-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
       "Contrôle": 5.5,
-      "Confort": 5.0,
-      "Spin": 7.0,
+      "Confort": 5,
+      "Spin": 7,
       "Maniabilité": 5.5,
-      "Tolérance": 5.0
+      "Tolérance": 5
     },
     "verdict": "Le top absolu de Bullpadel. Carbone 18K + EVA Hard pour une puissance dévastatrice. Vibradrive aide un peu mais confort minimal."
   },
@@ -1390,7 +1390,7 @@
     "antivib": "—",
     "price": "75-109€",
     "player": "Juan Tello",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -1415,12 +1415,12 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Avancé léger / femmes",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-flow-legend-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.0,
-      "Contrôle": 8.0,
+      "Puissance": 7,
+      "Contrôle": 8,
       "Confort": 7.5,
       "Spin": 7.5,
       "Maniabilité": 7.5,
@@ -1441,16 +1441,16 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert puissance pure",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-04-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.0,
-      "Contrôle": 6.0,
+      "Puissance": 9,
+      "Contrôle": 6,
       "Confort": 5.5,
       "Spin": 7.5,
-      "Maniabilité": 6.0,
-      "Tolérance": 5.0
+      "Maniabilité": 6,
+      "Tolérance": 5
     },
     "verdict": "Puissance max Bullpadel. TriCarbon 18K + Tricore. Raquette de Paquito Navarro.",
     "id": "bullpadel-hack-04-2026"
@@ -1468,16 +1468,16 @@
     "antivib": "Ease Vibe",
     "price": "200-260€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-04-comfort-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.0,
-      "Contrôle": 7.0,
-      "Confort": 7.0,
+      "Puissance": 8,
+      "Contrôle": 7,
+      "Confort": 7,
       "Spin": 7.5,
       "Maniabilité": 6.5,
-      "Tolérance": 6.0
+      "Tolérance": 6
     },
     "verdict": "ADN offensif Hack avec confort accru. Goutte d'eau et MultiEVA Soft pour sessions longues. Équilibre attaque/confort pour intermédiaires progressant."
   },
@@ -1494,16 +1494,16 @@
     "antivib": "Ease Vibe + Total Channel",
     "price": "260-330€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-04-hybrid-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 8.0,
-      "Confort": 7.0,
-      "Spin": 8.0,
+      "Contrôle": 8,
+      "Confort": 7,
+      "Spin": 8,
       "Maniabilité": 7.5,
-      "Tolérance": 7.0
+      "Tolérance": 7
     },
     "verdict": "Hack format hybride pour contre-attaque. Puissance dynamique avec meilleur contrôle défensif. Pour joueurs avancés offensifs polyvalents."
   },
@@ -1520,7 +1520,7 @@
     "antivib": "Ease Vibe",
     "price": "300-380€",
     "player": "Juan Martín Díaz",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-icon-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1545,16 +1545,16 @@
     "antivib": true,
     "price": "280-350€",
     "player": "Avancé-Expert contrôle",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-neuron-02-2026-fede-chingotto.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.0,
+      "Puissance": 7,
       "Contrôle": 8.5,
       "Confort": 7.5,
-      "Spin": 8.0,
+      "Spin": 8,
       "Maniabilité": 7.5,
-      "Tolérance": 7.0
+      "Tolérance": 7
     },
     "verdict": "Contrôle structurel. PrismLock réduit torsions. Raquette de Chingotto.",
     "id": "bullpadel-neuron-02-2026"
@@ -1572,7 +1572,7 @@
     "antivib": "PrismLock + Ease Vibe",
     "price": "300-380€",
     "player": "Federico Chingotto",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-neuron-02-edge-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1597,16 +1597,16 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert polyvalent offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-05-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.0,
+      "Puissance": 9,
       "Contrôle": 6.5,
       "Confort": 5.5,
-      "Spin": 8.0,
-      "Maniabilité": 6.0,
-      "Tolérance": 5.0
+      "Spin": 8,
+      "Maniabilité": 6,
+      "Tolérance": 5
     },
     "verdict": "Flagship Bullpadel 2026. 12K + MultiEva pour puissance ET toucher. Raquette de Juan Tello.",
     "id": "bullpadel-vertex-05-2026"
@@ -1624,13 +1624,13 @@
     "antivib": "Ease Vibe",
     "price": "300-380€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-05-geo-2026-pablo-cardona.png",
     "year": 2026,
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 6.0,
-      "Confort": 5.0,
+      "Contrôle": 6,
+      "Confort": 5,
       "Spin": 8.5,
       "Maniabilité": 5.5,
       "Tolérance": 5.5
@@ -1649,16 +1649,16 @@
     "antivib": true,
     "price": "260-320€",
     "player": "Avancé polyvalent",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-05-hybrid-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 8.0,
-      "Confort": 7.0,
-      "Spin": 8.0,
+      "Contrôle": 8,
+      "Confort": 7,
+      "Spin": 8,
       "Maniabilité": 7.5,
-      "Tolérance": 7.0
+      "Tolérance": 7
     },
     "verdict": "Vertex en goutte d'eau. Plus de contrôle et maniabilité. Joueurs complets côté droit.",
     "id": "bullpadel-vertex-05-hybrid-2026"
@@ -1675,16 +1675,16 @@
     "antivib": false,
     "price": "320-400€",
     "player": "Expert puissance explosive",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-xplo-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
       "Contrôle": 5.5,
-      "Confort": 5.0,
-      "Spin": 8.0,
-      "Maniabilité": 5.0,
-      "Tolérance": 5.0
+      "Confort": 5,
+      "Spin": 8,
+      "Maniabilité": 5,
+      "Tolérance": 5
     },
     "verdict": "Plus puissante Bullpadel. Raquette de Di Nenno. Diamant extreme, technique requise.",
     "id": "bullpadel-xplo-2026"
@@ -1701,16 +1701,16 @@
     "antivib": true,
     "price": "280-340€",
     "player": "Avancé puissance confort",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-xplo-comfort-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
       "Puissance": 8.5,
       "Contrôle": 6.5,
-      "Confort": 7.0,
+      "Confort": 7,
       "Spin": 7.5,
       "Maniabilité": 6.5,
-      "Tolérance": 6.0
+      "Tolérance": 6
     },
     "verdict": "XPLO apprivoisée. Même ADN avec plus de confort. Attaquants sensibles du bras.",
     "id": "bullpadel-xplo-comfort-2026"
@@ -1728,7 +1728,7 @@
     "antivib": "—",
     "price": "200-280€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/drop-shot-conqueror-100-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -1754,7 +1754,7 @@
     "antivib": "—",
     "price": "40-55€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/drop-shot-explorer-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -1780,7 +1780,7 @@
     "antivib": "—",
     "price": "120-160€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/drop-shot-legend-40-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -1806,7 +1806,7 @@
     "antivib": "—",
     "price": "45-65€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-galactica-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -1832,7 +1832,7 @@
     "antivib": "—",
     "price": "130-170€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-galactica-pro-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -1858,7 +1858,7 @@
     "antivib": "—",
     "price": "55-75€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-rocket-ultra-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -1893,7 +1893,7 @@
       "Spin": 7.5,
       "Tolérance": 6.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-lite-2026.png"
   },
   {
     "id": "dunlop-fx-pro-26",
@@ -1917,7 +1917,7 @@
       "Spin": 7.5,
       "Tolérance": 5.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-pro-2026.png"
   },
   {
     "id": "dunlop-fx-team-26",
@@ -1935,13 +1935,13 @@
     "description": "Diamant accessible. SpinBoost + Power Holes + Force Bridge. Puissance contrôlée pour progression.",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 6.0,
-      "Maniabilité": 7.0,
+      "Contrôle": 6,
+      "Maniabilité": 7,
       "Confort": 7.5,
-      "Spin": 7.0,
-      "Tolérance": 6.0
+      "Spin": 7,
+      "Tolérance": 6
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-team-2026.png"
   },
   {
     "id": "head-extreme-pro-2024",
@@ -1956,7 +1956,7 @@
     "antivib": "Auxetic + Innegra",
     "price": "180-250€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-pro-2024.png",
     "year": 2024,
     "category": "avance",
     "scores": {
@@ -1982,7 +1982,7 @@
     "antivib": "Innegra",
     "price": "60-70€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-monster-kids-2024.png",
     "year": 2024,
     "category": "junior",
     "scores": {
@@ -2008,7 +2008,7 @@
     "antivib": "Innegra",
     "price": "80-120€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-motion-2024.png",
     "year": 2024,
     "category": "debutant",
     "scores": {
@@ -2034,7 +2034,7 @@
     "antivib": "Innegra",
     "price": "120-140€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -2060,7 +2060,7 @@
     "antivib": "Auxetic 2.0",
     "price": "130-170€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-motion-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -2086,7 +2086,7 @@
     "antivib": "Auxetic 2.0",
     "price": "100-140€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-one-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -2112,16 +2112,16 @@
     "antivib": "Auxetic 2.0 + Innegra",
     "price": "200-260€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 9.0,
-      "Contrôle": 6.0,
+      "Puissance": 9,
+      "Contrôle": 6,
       "Confort": 5.5,
-      "Spin": 8.0,
-      "Maniabilité": 6.0,
-      "Tolérance": 5.0
+      "Spin": 8,
+      "Maniabilité": 6,
+      "Tolérance": 5
     },
     "verdict": "Goutte d'eau polyvalente avec un bon compromis puissance/contrôle. La mousse Power Foam apporte de la réactivité compensée par les anti-vibrations Auxetic."
   },
@@ -2138,7 +2138,7 @@
     "antivib": "Auxetic 2.0",
     "price": "150-200€",
     "player": "Marina Guinart",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-gravity-motion-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -2164,16 +2164,16 @@
     "antivib": "Auxetic 2.0",
     "price": "200-260€",
     "player": "Daniel Windahl",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-gravity-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 9.0,
-      "Confort": 8.0,
+      "Contrôle": 9,
+      "Confort": 8,
       "Spin": 7.5,
       "Maniabilité": 7.5,
-      "Tolérance": 8.0
+      "Tolérance": 8
     },
     "verdict": "Référence contrôle Head en forme ronde. Grand sweet spot, stable sur les blocks et les lobs. Pour joueurs de droite qui construisent le point avec patience et placement."
   },
@@ -2190,7 +2190,7 @@
     "antivib": "Graphene 360+",
     "price": "100-140€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-gravity-team-light-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -2216,7 +2216,7 @@
     "antivib": "Innegra",
     "price": "107-165€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-one-ultralight-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -2242,7 +2242,7 @@
     "antivib": "Innegra",
     "price": "65-105€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -2268,7 +2268,7 @@
     "antivib": "Innegra",
     "price": "100-130€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-motion-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -2294,15 +2294,15 @@
     "antivib": "DAMP+ + Auxetic 2.0",
     "price": "280-340€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-one-x-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 8.0,
-      "Confort": 8.0,
+      "Contrôle": 8,
+      "Confort": 8,
       "Spin": 7.5,
-      "Maniabilité": 8.0,
+      "Maniabilité": 8,
       "Tolérance": 7.5
     },
     "verdict": "Ultra-confortable grâce au DAMP+ dans le cœur. Polyvalente légère avec bon rendement. Pour joueurs confirmés qui cherchent sensations et protection du bras."
@@ -2320,7 +2320,7 @@
     "antivib": "Innegra",
     "price": "180-230€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-pro-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -2346,7 +2346,7 @@
     "antivib": "Auxetic 2.0",
     "price": "140-180€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-team-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -2372,7 +2372,7 @@
     "antivib": "Innegra + Auxetic 2.0",
     "price": "200-250€",
     "player": "Arturo Coello",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-junior-2026.png",
     "year": 2026,
     "category": "junior",
     "scores": {
@@ -2398,7 +2398,7 @@
     "antivib": "Auxetic 2.0",
     "price": "280-350€",
     "player": "Arturo Coello",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-motion-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2424,7 +2424,7 @@
     "antivib": "Auxetic 2.0",
     "price": "350-400€",
     "player": "Arturo Coello",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-pro-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -2449,16 +2449,16 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Intermédiaire-Avancé offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 6.0,
-      "Confort": 7.0,
-      "Spin": 7.0,
-      "Maniabilité": 7.0,
-      "Tolérance": 6.0
+      "Contrôle": 6,
+      "Confort": 7,
+      "Spin": 7,
+      "Maniabilité": 7,
+      "Tolérance": 6
     },
     "verdict": "Version accessible de la gamme Coello. Diamant fibre de verre pour puissance facile et confort.",
     "id": "head-coello-team-2026"
@@ -2475,16 +2475,16 @@
     "antivib": true,
     "price": "120-160€",
     "player": "Débutant-Intermédiaire",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-vibe-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.0,
+      "Puissance": 6,
       "Contrôle": 8.5,
-      "Maniabilité": 7.0,
+      "Maniabilité": 7,
       "Confort": 8.5,
-      "Spin": 7.0,
-      "Tolérance": 7.0
+      "Spin": 7,
+      "Tolérance": 7
     },
     "verdict": "Entrée de gamme Coello premium. Oversized teardrop, large sweet spot, tolérante et confortable.",
     "id": "head-coello-vibe-2026"
@@ -2502,16 +2502,16 @@
     "antivib": "Auxetic 2.0",
     "price": "350-420€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-delta-elite-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
       "Contrôle": 5.5,
-      "Confort": 5.0,
+      "Confort": 5,
       "Spin": 7.5,
-      "Maniabilité": 5.0,
-      "Tolérance": 5.0
+      "Maniabilité": 5,
+      "Tolérance": 5
     },
     "verdict": "Diamant ultime de Head. La plus puissante de la gamme avec carbone premium et EVA dure. Pour les attaquants d'élite exclusivement."
   },
@@ -2528,16 +2528,16 @@
     "antivib": "Auxetic 2.0",
     "price": "300-380€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-delta-pro-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.0,
-      "Contrôle": 6.0,
+      "Puissance": 9,
+      "Contrôle": 6,
       "Confort": 5.5,
       "Spin": 7.5,
       "Maniabilité": 5.5,
-      "Tolérance": 5.0
+      "Tolérance": 5
     },
     "verdict": "Diamant ultra-offensive. Puissance maximale avec Power Foam et balance haute. Réservée aux attaquants confirmés avec bonne technique."
   },
@@ -2554,7 +2554,7 @@
     "antivib": "Auxetic 2.0",
     "price": "250-300€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-elite-ltd-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2580,7 +2580,7 @@
     "antivib": "Graphene 360+",
     "price": "70-100€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-evo-extreme-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
@@ -2605,16 +2605,16 @@
     "antivib": true,
     "price": "220-280€",
     "player": "Avancé offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-motion-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 6.0,
+      "Contrôle": 6,
       "Maniabilité": 6.5,
       "Confort": 6.5,
-      "Spin": 8.0,
-      "Tolérance": 6.0
+      "Spin": 8,
+      "Tolérance": 6
     },
     "verdict": "Extreme allégée. Diamant offensif + Auxetic pour punch et maniabilité. Vitesse de bras.",
     "id": "head-extreme-motion-2026"
@@ -2631,14 +2631,14 @@
     "antivib": true,
     "price": "130-180€",
     "player": "Intermédiaire polyvalent",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-one-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.0,
+      "Puissance": 7,
       "Contrôle": 7.5,
       "Confort": 7.5,
-      "Spin": 7.0,
+      "Spin": 7,
       "Maniabilité": 7.5,
       "Tolérance": 7.5
     },
@@ -2658,7 +2658,7 @@
     "antivib": "Auxetic 2.0 + Innegra",
     "price": "280-350€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-pro-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2683,16 +2683,16 @@
     "antivib": true,
     "price": "150-200€",
     "player": "Intermédiaire offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 7.5,
       "Contrôle": 6.5,
-      "Maniabilité": 5.0,
-      "Confort": 9.0,
+      "Maniabilité": 5,
+      "Confort": 9,
       "Spin": 6.5,
-      "Tolérance": 6.0
+      "Tolérance": 6
     },
     "verdict": "Diamant accessible avec fibre de verre pour tolérance. Puissance offensive pardonnante.",
     "id": "head-extreme-team-2026"
@@ -2709,16 +2709,16 @@
     "antivib": true,
     "price": "170-220€",
     "player": "Intermédiaire contrôle",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-gravity-motion-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 5.5,
       "Contrôle": 8.5,
-      "Confort": 9.0,
+      "Confort": 9,
       "Spin": 6.5,
       "Maniabilité": 8.5,
-      "Tolérance": 9.0
+      "Tolérance": 9
     },
     "verdict": "Gravity allégée. Ronde fibre de verre pour sweet spot large et toucher doux.",
     "id": "head-gravity-motion-2026"
@@ -2735,14 +2735,14 @@
     "antivib": true,
     "price": "230-290€",
     "player": "Avancé défensif-contrôle",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-gravity-pro-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 9.0,
-      "Confort": 8.0,
-      "Spin": 7.0,
+      "Contrôle": 9,
+      "Confort": 8,
+      "Spin": 7,
       "Maniabilité": 7.5,
       "Tolérance": 8.5
     },
@@ -2761,15 +2761,15 @@
     "antivib": true,
     "price": "140-180€",
     "player": "Intermédiaire",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-gravity-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6.0,
+      "Puissance": 6,
       "Contrôle": 8.5,
       "Confort": 8.5,
       "Spin": 6.5,
-      "Maniabilité": 8.0,
+      "Maniabilité": 8,
       "Tolérance": 8.5
     },
     "verdict": "Contrôle confortable. Fibre de verre + Auxetic 2.0 pour tolérance maximale.",
@@ -2787,16 +2787,16 @@
     "antivib": true,
     "price": "100-140€",
     "player": "Débutant",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-gravity-team-light-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 5.0,
-      "Contrôle": 8.0,
+      "Puissance": 5,
+      "Contrôle": 8,
       "Confort": 9.5,
-      "Spin": 6.0,
+      "Spin": 6,
       "Maniabilité": 9.5,
-      "Tolérance": 9.0
+      "Tolérance": 9
     },
     "verdict": "Ultra-légère 340g. Ronde pardonnante pour débuter sans fatigue.",
     "id": "head-gravity-team-light-2026"
@@ -2813,14 +2813,14 @@
     "antivib": true,
     "price": "230-290€",
     "player": "Avancé contrôle rapide",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-radical-motion-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.0,
+      "Puissance": 7,
       "Contrôle": 7.5,
-      "Maniabilité": 7.0,
-      "Confort": 8.0,
+      "Maniabilité": 7,
+      "Confort": 8,
       "Spin": 7.5,
       "Tolérance": 7.5
     },
@@ -2839,16 +2839,16 @@
     "antivib": true,
     "price": "280-350€",
     "player": "Expert contrôle-puissance",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-radical-pro-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 8.0,
-      "Confort": 7.0,
-      "Spin": 8.0,
-      "Maniabilité": 7.0,
-      "Tolérance": 7.0
+      "Contrôle": 8,
+      "Confort": 7,
+      "Spin": 8,
+      "Maniabilité": 7,
+      "Tolérance": 7
     },
     "verdict": "Flagship contrôle Head 2026. 3K carbon + balance basse pour précision chirurgicale.",
     "id": "head-radical-pro-2026"
@@ -2865,16 +2865,16 @@
     "antivib": true,
     "price": "180-230€",
     "player": "Intermédiaire-Avancé contrôle",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-radical-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 8.0,
-      "Confort": 8.0,
-      "Spin": 7.0,
+      "Contrôle": 8,
+      "Confort": 8,
+      "Spin": 7,
       "Maniabilité": 7.5,
-      "Tolérance": 8.0
+      "Tolérance": 8
     },
     "verdict": "Contrôle accessible. Fibre de verre + balance très basse pour maniabilité max.",
     "id": "head-radical-team-2026"
@@ -2891,15 +2891,15 @@
     "antivib": true,
     "price": "130-170€",
     "player": "Débutant-Intermédiaire",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-radical-team-light-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
       "Puissance": 5.5,
       "Contrôle": 7.5,
-      "Confort": 9.0,
+      "Confort": 9,
       "Spin": 6.5,
-      "Maniabilité": 9.0,
+      "Maniabilité": 9,
       "Tolérance": 8.5
     },
     "verdict": "Plus légère Radical. Ronde + fibre de verre + balance basse = confort et contrôle pour débuter.",
@@ -2917,12 +2917,12 @@
     "antivib": true,
     "price": "230-290€",
     "player": "Avancé polyvalent",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-motion-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.0,
-      "Contrôle": 8.0,
+      "Puissance": 7,
+      "Contrôle": 8,
       "Confort": 7.5,
       "Spin": 7.5,
       "Maniabilité": 7.5,
@@ -2943,15 +2943,15 @@
     "antivib": true,
     "price": "160-210€",
     "player": "Intermédiaire confort",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-one-x-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.0,
-      "Contrôle": 8.0,
-      "Confort": 8.0,
-      "Spin": 7.0,
-      "Maniabilité": 8.0,
+      "Puissance": 7,
+      "Contrôle": 8,
+      "Confort": 8,
+      "Spin": 7,
+      "Maniabilité": 8,
       "Tolérance": 7.5
     },
     "verdict": "Confort maximal gamme Speed. DAMP+ pour absorption vibrations. Bras sensibles.",
@@ -2970,7 +2970,7 @@
     "antivib": "Innegra",
     "price": "250-310€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-pro-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2995,16 +2995,16 @@
     "antivib": true,
     "price": "150-200€",
     "player": "Intermédiaire polyvalent",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-speed-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6.0,
+      "Puissance": 6,
       "Contrôle": 8.5,
-      "Maniabilité": 7.0,
+      "Maniabilité": 7,
       "Confort": 8.5,
       "Spin": 7.5,
-      "Tolérance": 7.0
+      "Tolérance": 7
     },
     "verdict": "Polyvalente confortable. Fibre de verre + Power Foam pour tolérance. Bonne all-rounder.",
     "id": "head-speed-team-2026"
@@ -3022,7 +3022,7 @@
     "antivib": "Graphene 360+",
     "price": "70-100€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/head-vibe-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
@@ -3048,7 +3048,7 @@
     "antivib": "—",
     "price": "90-130€",
     "player": "Miguel Lamperti",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ml10-pro-cup-2024.png",
     "year": 2024,
     "category": "intermediaire",
     "scores": {
@@ -3074,7 +3074,7 @@
     "antivib": "—",
     "price": "280-370€",
     "player": "Agustín Tapia",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-18k-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -3100,7 +3100,7 @@
     "antivib": "—",
     "price": "170-230€",
     "player": "Agustín Tapia",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -3126,7 +3126,7 @@
     "antivib": "—",
     "price": "60-70€",
     "player": "Agustín Tapia",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3152,7 +3152,7 @@
     "antivib": "—",
     "price": "330-420€",
     "player": "Agustín Tapia",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-luxury-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -3178,7 +3178,7 @@
     "antivib": "—",
     "price": "120-160€",
     "player": "Miguel Lamperti",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ml10-pro-cup-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -3204,7 +3204,7 @@
     "antivib": "—",
     "price": "50-75€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ml10-pro-cup-beginner-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -3230,7 +3230,7 @@
     "antivib": "—",
     "price": "50-70€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ml10-pro-cup-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3256,7 +3256,7 @@
     "antivib": "—",
     "price": "250-330€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-nerbo-wpt-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -3282,7 +3282,7 @@
     "antivib": "Pulse System + EOS Tunnel",
     "price": "280-350€",
     "player": "Agustín Tapia",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-12k-alum-xtrem-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3308,7 +3308,7 @@
     "antivib": "Pulse System + EOS Tunnel",
     "price": "250-310€",
     "player": "Agustín Tapia",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-12k-xtrem-lite-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -3333,7 +3333,7 @@
     "antivib": true,
     "price": "350-420€",
     "player": "Expert polyvalent",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-18k-alum-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3341,7 +3341,7 @@
       "Contrôle": 7.5,
       "Confort": 6.5,
       "Spin": 8.5,
-      "Maniabilité": 7.0,
+      "Maniabilité": 7,
       "Tolérance": 6.5
     },
     "verdict": "Raquette Agustín Tapia. 18K Aluminisé + Dual Spin. Référence polyvalente expert.",
@@ -3360,16 +3360,16 @@
     "antivib": "Pulse System + EOS Tunnel",
     "price": "300-370€",
     "player": "Agustín Tapia",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-attack-12k-xtrem-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.0,
-      "Contrôle": 6.0,
+      "Puissance": 9,
+      "Contrôle": 6,
       "Confort": 5.5,
       "Spin": 8.5,
       "Maniabilité": 5.5,
-      "Tolérance": 5.0
+      "Tolérance": 5
     },
     "verdict": "Version diamant offensive maximale de la gamme AT10. Puissance explosive pour joueurs de gauche experts. Dual Spin pour spin dévastateur."
   },
@@ -3386,7 +3386,7 @@
     "antivib": "Pulse System",
     "price": "220-280€",
     "player": null,
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ventus-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -3412,7 +3412,7 @@
     "antivib": "—",
     "price": "60-70€",
     "player": "Franco Stupaczuk",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-electra-st3-junior-2024.png",
     "year": 2024,
     "category": "junior",
     "scores": {
@@ -3438,7 +3438,7 @@
     "antivib": "—",
     "price": "53-75€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-beat-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3464,7 +3464,7 @@
     "antivib": "—",
     "price": "280-360€",
     "player": "Franco Stupaczuk",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-black-carbon-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -3490,7 +3490,7 @@
     "antivib": "—",
     "price": "150-200€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-revolution-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -3516,7 +3516,7 @@
     "antivib": "—",
     "price": "220-300€",
     "player": "Franco Stupaczuk",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-xtrem-carbon-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -3542,7 +3542,7 @@
     "antivib": "—",
     "price": "50-65€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-optimus-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -3577,7 +3577,7 @@
       "Spin": 7,
       "Tolérance": 7.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-elite-6-2026.png"
   },
   {
     "id": "siux-diablo-pro-26",
@@ -3601,7 +3601,7 @@
       "Spin": 8,
       "Tolérance": 7
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-pro-2026.png"
   },
   {
     "id": "siux-electra-pro-26",
@@ -3625,7 +3625,7 @@
       "Spin": 8,
       "Tolérance": 6.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-electra-pro-2026.png"
   },
   {
     "id": "siux-fenix-pro-26",
@@ -3649,7 +3649,7 @@
       "Spin": 7.5,
       "Tolérance": 5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-fenix-pro-2026.png"
   },
   {
     "id": "siux-pegasus-elite-26",
@@ -3673,7 +3673,7 @@
       "Spin": 7,
       "Tolérance": 7.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-elite-4-2026.png"
   },
   {
     "id": "siux-pegasus-pro-26",
@@ -3697,7 +3697,7 @@
       "Spin": 8,
       "Tolérance": 6.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-pro-2026.png"
   },
   {
     "id": "siux-valkiria-pro-26",
@@ -3721,7 +3721,7 @@
       "Spin": 7.5,
       "Tolérance": 7
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-valkiria-pro-2026.png"
   },
   {
     "id": "starvie-junior-2025",
@@ -3736,7 +3736,7 @@
     "antivib": "—",
     "price": "80-90€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3762,7 +3762,7 @@
     "antivib": "—",
     "price": "250-320€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-metheora-galaxy-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -3788,7 +3788,7 @@
     "antivib": "—",
     "price": "140-180€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-metheora-warrior-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -3814,7 +3814,7 @@
     "antivib": "—",
     "price": "60-80€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-raptor-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -3849,7 +3849,7 @@
       "Spin": 8,
       "Tolérance": 6
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-black-titan-2026.png"
   },
   {
     "id": "starvie-raptor-26",
@@ -3873,7 +3873,7 @@
       "Spin": 8,
       "Tolérance": 7.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-raptor-2026.png"
   },
   {
     "id": "starvie-triton-balance-26",
@@ -3897,7 +3897,7 @@
       "Spin": 7.5,
       "Tolérance": 6.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-triton-balance-2026.png"
   },
   {
     "id": "starvie-triton-power-26",
@@ -3921,7 +3921,7 @@
       "Spin": 7.5,
       "Tolérance": 5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-triton-power-2026.png"
   },
   {
     "id": "varlion-bourne-2025",
@@ -3936,7 +3936,7 @@
     "antivib": "—",
     "price": "140-180€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-bourne-carbon-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -3962,7 +3962,7 @@
     "antivib": "—",
     "price": "55-75€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-caas-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3988,7 +3988,7 @@
     "antivib": "—",
     "price": "60-80€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-caas-w-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -4014,7 +4014,7 @@
     "antivib": "—",
     "price": "220-290€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lethal-weapon-carbon-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -4049,7 +4049,7 @@
       "Spin": 7.5,
       "Tolérance": 6.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-bourne-carbon-ti-2026.png"
   },
   {
     "id": "varlion-lw-orquidea-26",
@@ -4067,13 +4067,13 @@
     "description": "Ronde débutante confort. Ergoholes sweet spot élargi + Handlesafety. Légère et tolérante.",
     "scores": {
       "Puissance": 4,
-      "Contrôle": 8.0,
+      "Contrôle": 8,
       "Maniabilité": 9,
       "Confort": 9.5,
       "Spin": 5,
       "Tolérance": 9
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-88-orquidea-2026.png"
   },
   {
     "id": "varlion-lw-carbon-ti-26",
@@ -4097,7 +4097,7 @@
       "Spin": 7.5,
       "Tolérance": 8.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-carbon-ti-2026.png"
   },
   {
     "id": "vermont-origin-jr-2025",
@@ -4112,7 +4112,7 @@
     "antivib": "—",
     "price": "50-70€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/vermont-origin-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -4138,7 +4138,7 @@
     "antivib": "—",
     "price": "30-40€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-minions-junior-face-2024.png",
     "year": 2024,
     "category": "junior",
     "scores": {
@@ -4164,7 +4164,7 @@
     "antivib": "—",
     "price": "300-380€",
     "player": "Fernando Belasteguín",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-elite-pro-v2-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -4190,7 +4190,7 @@
     "antivib": "—",
     "price": "250-330€",
     "player": "Fernando Belasteguín",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-elite-v2-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -4216,7 +4216,7 @@
     "antivib": "—",
     "price": "180-240€",
     "player": "Fernando Belasteguín",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-pro-v2-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -4242,7 +4242,7 @@
     "antivib": "—",
     "price": "79-102€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-junior-v2-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -4268,7 +4268,7 @@
     "antivib": "—",
     "price": "60-85€",
     "player": "—",
-    "imageUrl": null,
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-v2-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -4297,13 +4297,13 @@
     "description": "Ronde confort-first pour débutants. Fibre de verre + EVA souple. Timing facile, légère, gateway Wilson.",
     "scores": {
       "Puissance": 4.5,
-      "Contrôle": 8.0,
+      "Contrôle": 8,
       "Maniabilité": 9,
       "Confort": 9.5,
       "Spin": 5,
       "Tolérance": 9
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-accent-2026.png"
   },
   {
     "id": "wilson-bela-lt-v3-26",
@@ -4327,7 +4327,7 @@
       "Spin": 7.5,
       "Tolérance": 7.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-lt-v3-2026.png"
   },
   {
     "id": "wilson-bela-pro-v3-26",
@@ -4351,7 +4351,7 @@
       "Spin": 8,
       "Tolérance": 5.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-pro-v3-2026.png"
   },
   {
     "id": "wilson-bela-v3-26",
@@ -4375,7 +4375,7 @@
       "Spin": 8,
       "Tolérance": 7
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-v3-2026.png"
   },
   {
     "id": "wilson-blade-pro-v2-26",
@@ -4399,7 +4399,7 @@
       "Spin": 7.5,
       "Tolérance": 7.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-pro-v2-2026.png"
   },
   {
     "id": "wilson-blade-team-26",
@@ -4423,7 +4423,7 @@
       "Spin": 6.5,
       "Tolérance": 8
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-team-2026.png"
   },
   {
     "id": "wilson-prostaff-v2-26",
@@ -4447,7 +4447,7 @@
       "Spin": 7,
       "Tolérance": 8
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-pro-staff-v2-2026.png"
   },
   {
     "id": "wilson-ultra-pro-v2-26",
@@ -4471,7 +4471,7 @@
       "Spin": 7.5,
       "Tolérance": 6
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-pro-v2-2026.png"
   },
   {
     "id": "wilson-ultra-team-26",
@@ -4495,6 +4495,6 @@
       "Spin": 6.5,
       "Tolérance": 6.5
     },
-    "imageUrl": null
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-team-2026.png"
   }
 ]
