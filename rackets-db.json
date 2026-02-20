@@ -2372,7 +2372,7 @@
     "antivib": "Innegra + Auxetic 2.0",
     "price": "200-250€",
     "player": "Arturo Coello",
-    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-junior-2026.png",
+    "imageUrl": "",
     "year": 2026,
     "category": "junior",
     "scores": {
@@ -2398,7 +2398,7 @@
     "antivib": "Auxetic 2.0",
     "price": "280-350€",
     "player": "Arturo Coello",
-    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-motion-2026.png",
+    "imageUrl": "",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2424,7 +2424,7 @@
     "antivib": "Auxetic 2.0",
     "price": "350-400€",
     "player": "Arturo Coello",
-    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-pro-2025.png",
+    "imageUrl": "",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -2449,7 +2449,7 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Intermédiaire-Avancé offensif",
-    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-team-2026.png",
+    "imageUrl": "",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
@@ -2475,7 +2475,7 @@
     "antivib": true,
     "price": "120-160€",
     "player": "Débutant-Intermédiaire",
-    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-vibe-2026.png",
+    "imageUrl": "",
     "year": 2026,
     "category": "debutant",
     "scores": {
@@ -3308,7 +3308,7 @@
     "antivib": "Pulse System + EOS Tunnel",
     "price": "250-310€",
     "player": "Agustín Tapia",
-    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-12k-xtrem-lite-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-12k-alum-xtrem-lite-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -3386,7 +3386,7 @@
     "antivib": "Pulse System",
     "price": "220-280€",
     "player": null,
-    "imageUrl": "https://www.padelful.com/images/rackets/nox-ventus-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ventus-hybrid-12k-lite-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
