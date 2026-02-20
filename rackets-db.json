@@ -1883,7 +1883,6 @@
     "balance": "moyen",
     "surface": "12K Carbon",
     "core": "Soft EVA",
-    "priceRange": "170-230€",
     "description": "Diamant légère offensive. 12K Carbon + Soft EVA + Sonic Core Infinergy. Maniabilité sans sacrifier puissance.",
     "scores": {
       "Puissance": 7.5,
@@ -1893,7 +1892,9 @@
       "Spin": 7.5,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-lite-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-lite-2026.png",
+    "verdict": "Diamant légère qui privilégie la maniabilité sans sacrifier la frappe. Bon compromis pour attaquants qui veulent rester mobiles.",
+    "price": "170-230€"
   },
   {
     "id": "dunlop-fx-pro-26",
@@ -1907,7 +1908,6 @@
     "balance": "haut",
     "surface": "12K Carbon",
     "core": "Pro EVA",
-    "priceRange": "200-260€",
     "description": "Diamant puissance premium. 12K Carbon + Pro EVA + Force Bridge. Head heavy pour smashes dévastateurs.",
     "scores": {
       "Puissance": 9,
@@ -1917,7 +1917,9 @@
       "Spin": 7.5,
       "Tolérance": 5.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-pro-2026.png",
+    "verdict": "Arme offensive pure, balance haute et carbone 12K pour des smashes dévastateurs. Réservée aux bras solides et aux frappes engagées.",
+    "price": "200-260€"
   },
   {
     "id": "dunlop-fx-team-26",
@@ -1931,7 +1933,6 @@
     "balance": "moyen",
     "surface": "Premium Carbon",
     "core": "Pro EVA",
-    "priceRange": "130-180€",
     "description": "Diamant accessible. SpinBoost + Power Holes + Force Bridge. Puissance contrôlée pour progression.",
     "scores": {
       "Puissance": 7.5,
@@ -1941,7 +1942,9 @@
       "Spin": 7,
       "Tolérance": 6
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-team-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-team-2026.png",
+    "verdict": "Entrée de gamme diamant accessible avec puissance contrôlée. Bonne option pour progresser vers un jeu plus offensif sans se ruiner.",
+    "price": "130-180€"
   },
   {
     "id": "head-extreme-pro-2024",
@@ -3567,7 +3570,6 @@
     "balance": "moyen",
     "surface": "3K Carbon",
     "core": "EVA",
-    "priceRange": "180-230€",
     "description": "Goutte intermédiaire-avancé. Plus souple que le Pro, contrôle et confort accrus. Progression Siux.",
     "scores": {
       "Puissance": 6.5,
@@ -3577,7 +3579,9 @@
       "Spin": 7,
       "Tolérance": 7.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-elite-6-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-elite-6-2026.png",
+    "verdict": "Goutte confortable et maniable, idéale pour monter en niveau en douceur. Polyvalente sans être exceptionnelle dans un domaine.",
+    "price": "180-230€"
   },
   {
     "id": "siux-diablo-pro-26",
@@ -3591,7 +3595,6 @@
     "balance": "moyen",
     "surface": "18K TeXtreme + 3K Carbon",
     "core": "Ultra Soft EVA",
-    "priceRange": "300-350€",
     "description": "Goutte hybride polyvalente signature Libaak. Texture 3D + Ultra Soft EVA. Contrôle-puissance équilibré.",
     "scores": {
       "Puissance": 7.5,
@@ -3601,7 +3604,10 @@
       "Spin": 8,
       "Tolérance": 7
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-pro-night-blue-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-pro-night-blue-2026.png",
+    "verdict": "Polyvalente haut de gamme avec un équilibre rare entre puissance et contrôle. Son confort et son spin en font une valeur sûre pour joueurs complets.",
+    "price": "300-350€",
+    "player": "Martin Di Nenno / Federico Libaak"
   },
   {
     "id": "siux-electra-pro-26",
@@ -3615,7 +3621,6 @@
     "balance": "moyen-haut",
     "surface": "18K TeXtreme Carbon",
     "core": "EVA",
-    "priceRange": "300-350€",
     "description": "Goutte signature Stupaczuk. Anti-vibration + TeXtreme 18K. Puissance explosive avec polyvalence.",
     "scores": {
       "Puissance": 8.5,
@@ -3625,7 +3630,10 @@
       "Spin": 8,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-electra-pro-fire-red-2026-franco-stupackzuk.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-electra-pro-fire-red-2026-franco-stupackzuk.png",
+    "verdict": "Puissance explosive en goutte d'eau — un profil rare. Le TeXtreme 18K frappe fort tout en gardant du contrôle. Pour attaquants techniques.",
+    "price": "300-350€",
+    "player": "Franco Stupaczuk"
   },
   {
     "id": "siux-fenix-pro-26",
@@ -3639,7 +3647,6 @@
     "balance": "haut",
     "surface": "18K TeXtreme Carbon",
     "core": "Hard EVA",
-    "priceRange": "300-350€",
     "description": "Diamant puissance max signature Augsburger. Balance haute + carbone TeXtreme. Offensif pur.",
     "scores": {
       "Puissance": 9.5,
@@ -3649,7 +3656,10 @@
       "Spin": 7.5,
       "Tolérance": 5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-fenix-pro-black-2026-leo-ausburger.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-fenix-pro-black-2026-leo-ausburger.png",
+    "verdict": "Canon offensif sans concession : 9.5 en puissance mais confort et tolérance sacrifiés. Pour experts qui finissent les points au filet.",
+    "price": "300-350€",
+    "player": "Benjamin Augsburger"
   },
   {
     "id": "siux-pegasus-elite-26",
@@ -3663,7 +3673,6 @@
     "balance": "moyen",
     "surface": "3K Carbon",
     "core": "EVA",
-    "priceRange": "180-230€",
     "description": "Goutte polyvalente abordable. Contrôle hybride et confort. Pour joueurs intermédiaires ambitieux.",
     "scores": {
       "Puissance": 6.5,
@@ -3673,7 +3682,9 @@
       "Spin": 7,
       "Tolérance": 7.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-elite-4-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-elite-4-2026.png",
+    "verdict": "Goutte polyvalente et confortable à prix contenu. Profil équilibré sans pic — rassurante pour intermédiaires qui cherchent de la régularité.",
+    "price": "180-230€"
   },
   {
     "id": "siux-pegasus-pro-26",
@@ -3687,7 +3698,6 @@
     "balance": "moyen-haut",
     "surface": "18K TeXtreme Carbon",
     "core": "EVA",
-    "priceRange": "300-350€",
     "description": "Goutte premium offensive. TeXtreme 18K + texture satin 3D. Puissance avec précision pour avancés.",
     "scores": {
       "Puissance": 8,
@@ -3697,7 +3707,9 @@
       "Spin": 8,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-pro-storm-grey-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-pro-storm-grey-2026.png",
+    "verdict": "Montée en gamme avec TeXtreme 18K : plus de puissance et de spin que l'Elite. Pour avancés qui veulent du mordant sans perdre en précision.",
+    "price": "300-350€"
   },
   {
     "id": "siux-valkiria-pro-26",
@@ -3711,7 +3723,6 @@
     "balance": "moyen",
     "surface": "18K TeXtreme Carbon",
     "core": "EVA",
-    "priceRange": "280-350€",
     "description": "Goutte signature Araujo, orientation féminine. Polyvalence puissance/contrôle, poids modéré pour maniabilité.",
     "scores": {
       "Puissance": 7.5,
@@ -3721,7 +3732,10 @@
       "Spin": 7.5,
       "Tolérance": 7
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-valkiria-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-valkiria-pro-2026.png",
+    "verdict": "Polyvalente signature Araujo, poids contenu pour une maniabilité supérieure. Excellent ratio puissance/contrôle, accessible aux gabarits légers.",
+    "price": "280-350€",
+    "player": "Delfina Araujo"
   },
   {
     "id": "starvie-junior-2025",
@@ -3839,7 +3853,6 @@
     "balance": "moyen-haut",
     "surface": "24K Carbon Master",
     "core": "H-EVA Power",
-    "priceRange": "240-300€",
     "description": "Hybride flagship puissance. 24K Carbon Master + Dynamic Star ajustable. Anti-Vibe. Pour experts offensifs.",
     "scores": {
       "Puissance": 9,
@@ -3849,7 +3862,9 @@
       "Spin": 8,
       "Tolérance": 6
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/starvie-black-titan-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-black-titan-2026.png",
+    "verdict": "Flagship hybride avec carbone 24K et système Dynamic Star. Puissance expert avec un contrôle surprenant pour ce niveau de frappe.",
+    "price": "240-300€"
   },
   {
     "id": "starvie-raptor-26",
@@ -3863,7 +3878,6 @@
     "balance": "moyen",
     "surface": "3D Carbon",
     "core": "M-EVA Balance",
-    "priceRange": "200-260€",
     "description": "Goutte polyvalente iconique renouvelée. Dynamic Star + Spin Boost Tech Pro + Anti-Vibe. All-court avancé.",
     "scores": {
       "Puissance": 7,
@@ -3873,7 +3887,9 @@
       "Spin": 8,
       "Tolérance": 7.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/starvie-raptor-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-raptor-2026.png",
+    "verdict": "Goutte all-court renouvelée : spin et contrôle en vedette avec un confort correct. Polyvalente fiable pour joueurs avancés complets.",
+    "price": "200-260€"
   },
   {
     "id": "starvie-triton-balance-26",
@@ -3887,7 +3903,6 @@
     "balance": "moyen",
     "surface": "18K Carbon Hybrid",
     "core": "M-EVA Balance",
-    "priceRange": "200-260€",
     "description": "Diamant équilibrée. Plus souple que Power, bon compromis puissance/contrôle. TriTech Core + Z-Shock.",
     "scores": {
       "Puissance": 8,
@@ -3897,7 +3912,9 @@
       "Spin": 7.5,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/starvie-triton-balance-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-triton-balance-2026.png",
+    "verdict": "Diamant tempérée — plus souple que la Power avec un meilleur équilibre puissance/contrôle. Bon compromis pour attaquants qui veulent de la marge.",
+    "price": "200-260€"
   },
   {
     "id": "starvie-triton-power-26",
@@ -3911,7 +3928,6 @@
     "balance": "haut",
     "surface": "18K Carbon Hybrid",
     "core": "H-EVA Power",
-    "priceRange": "220-280€",
     "description": "Diamant puissance explosive. 18K Carbon Hybrid + H-EVA Power haute densité + TriTech Core. Attaquant pur.",
     "scores": {
       "Puissance": 9.5,
@@ -3921,7 +3937,9 @@
       "Spin": 7.5,
       "Tolérance": 5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/starvie-triton-power-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/starvie-triton-power-2026.png",
+    "verdict": "Diamant brutale : 9.5 en puissance, carbone 18K hybride. Réservée aux experts physiques qui assument un jeu 100% offensif.",
+    "price": "220-280€"
   },
   {
     "id": "varlion-bourne-2025",
@@ -4039,7 +4057,6 @@
     "balance": "moyen-haut",
     "surface": "Carbon + Titanium",
     "core": "Pro-Touch EVA",
-    "priceRange": "180-250€",
     "description": "Hybride Bourne puissance/contrôle. Prisma Frame + Summum grip long 14.5cm. Polyvalence offensive.",
     "scores": {
       "Puissance": 8,
@@ -4049,7 +4066,9 @@
       "Spin": 7.5,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-bourne-carbon-ti-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-bourne-carbon-ti-2026.png",
+    "verdict": "Hybride offensive avec grip long 14.5cm. Bonne puissance avec suffisamment de contrôle pour construire avant de conclure.",
+    "price": "180-250€"
   },
   {
     "id": "varlion-lw-orquidea-26",
@@ -4063,7 +4082,6 @@
     "balance": "bas",
     "surface": "Fiberglass",
     "core": "Soft EVA",
-    "priceRange": "60-100€",
     "description": "Ronde débutante confort. Ergoholes sweet spot élargi + Handlesafety. Légère et tolérante.",
     "scores": {
       "Puissance": 4,
@@ -4073,7 +4091,9 @@
       "Spin": 5,
       "Tolérance": 9
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-8-8-orquidea-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-8-8-orquidea-2026.png",
+    "verdict": "Ronde ultra-confortable et tolérante, parfaite pour débuter. Sweet spot généreux, poids plume — zéro stress sur le bras.",
+    "price": "60-100€"
   },
   {
     "id": "varlion-lw-carbon-ti-26",
@@ -4087,7 +4107,6 @@
     "balance": "bas",
     "surface": "Carbon + Titanium",
     "core": "Pro-Touch EVA",
-    "priceRange": "180-250€",
     "description": "Ronde contrôle Lethal Weapon. Summum grip + Slice Texture. Précision défensive pour tacticiens.",
     "scores": {
       "Puissance": 6,
@@ -4097,7 +4116,9 @@
       "Spin": 7.5,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-carbon-ti-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-carbon-ti-2026.png",
+    "verdict": "Ronde de précision chirurgicale : contrôle à 9 et tolérance à 8.5. Le choix des tacticiens et constructeurs de points patients.",
+    "price": "180-250€"
   },
   {
     "id": "vermont-origin-jr-2025",
@@ -4293,7 +4314,6 @@
     "balance": "bas",
     "surface": "Fiberglass",
     "core": "Soft EVA",
-    "priceRange": "60-100€",
     "description": "Ronde confort-first pour débutants. Fibre de verre + EVA souple. Timing facile, légère, gateway Wilson.",
     "scores": {
       "Puissance": 4.5,
@@ -4303,7 +4323,9 @@
       "Spin": 5,
       "Tolérance": 9
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-accent-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-accent-2026.png",
+    "verdict": "Porte d'entrée Wilson : légère, confortable, très tolérante. Idéale pour découvrir le padel sans se soucier de la technique.",
+    "price": "60-100€"
   },
   {
     "id": "wilson-bela-lt-v3-26",
@@ -4317,7 +4339,6 @@
     "balance": "moyen",
     "surface": "3K Carbon",
     "core": "Power Foam EVA",
-    "priceRange": "180-250€",
     "description": "Version allégée de la Bela V3. Maniabilité accrue sans perdre le spin et la puissance. Idéale progression.",
     "scores": {
       "Puissance": 6.5,
@@ -4327,7 +4348,10 @@
       "Spin": 7.5,
       "Tolérance": 7.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-ls-v3-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-ls-v3-2025.png",
+    "verdict": "Version allégée de la Bela : maniabilité boostée à 8.5 tout en gardant le spin. Parfaite pour progresser avec le confort en plus.",
+    "price": "180-250€",
+    "player": "Fernando Belasteguín"
   },
   {
     "id": "wilson-bela-pro-v3-26",
@@ -4341,7 +4365,6 @@
     "balance": "haut",
     "surface": "24K Carbon",
     "core": "Power Foam EVA",
-    "priceRange": "220-300€",
     "description": "Diamant offensive signature Bela. C2 Tubular Construction + 24K Carbon + DuoGrid. Puissance max pour joueurs confirmés.",
     "scores": {
       "Puissance": 9,
@@ -4351,7 +4374,10 @@
       "Spin": 8,
       "Tolérance": 5.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-pro-v3-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-pro-v3-2025.png",
+    "verdict": "Diamant signature Bela, carbone 24K et construction tubulaire. Puissance maximale pour experts — exige un bon niveau technique.",
+    "price": "220-300€",
+    "player": "Fernando Belasteguín"
   },
   {
     "id": "wilson-bela-v3-26",
@@ -4365,7 +4391,6 @@
     "balance": "moyen",
     "surface": "3K Carbon",
     "core": "Power Foam EVA",
-    "priceRange": "200-280€",
     "description": "Goutte versatile co-design Bela. V-Bridge + Spin2 Texture + DuoGrid Holes. Polyvalence attaque/défense.",
     "scores": {
       "Puissance": 7.5,
@@ -4375,7 +4400,10 @@
       "Spin": 8,
       "Tolérance": 7
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-v3-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-v3-2025.png",
+    "verdict": "Co-design Bela en goutte versatile : spin à 8 et bon équilibre global. Polyvalente fiable qui s'adapte à tous les styles de jeu.",
+    "price": "200-280€",
+    "player": "Fernando Belasteguín"
   },
   {
     "id": "wilson-blade-pro-v2-26",
@@ -4389,7 +4417,6 @@
     "balance": "moyen",
     "surface": "Carbon",
     "core": "Soft EVA",
-    "priceRange": "200-280€",
     "description": "Goutte toucher doux et précision. Dwell time long pour touches et défenses. Polyvalence attaque/défense.",
     "scores": {
       "Puissance": 7,
@@ -4399,7 +4426,9 @@
       "Spin": 7.5,
       "Tolérance": 7.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-pro-v3.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-pro-v3.png",
+    "verdict": "Toucher doux et dwell time long pour un contrôle précis. Excellente en défense et en construction — la patte du tacticien.",
+    "price": "200-280€"
   },
   {
     "id": "wilson-blade-team-26",
@@ -4413,7 +4442,6 @@
     "balance": "moyen",
     "surface": "Fiberglass",
     "core": "Soft EVA",
-    "priceRange": "100-150€",
     "description": "Goutte polyvalente intermédiaire. Feel doux et sweet spot tolérant. Transition vers jeu technique.",
     "scores": {
       "Puissance": 6,
@@ -4423,7 +4451,9 @@
       "Spin": 6.5,
       "Tolérance": 8
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-team-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-team-2026.png",
+    "verdict": "Goutte douce et tolérante pour intermédiaires. Sweet spot généreux, bon confort — transition idéale vers un jeu plus technique.",
+    "price": "100-150€"
   },
   {
     "id": "wilson-prostaff-v2-26",
@@ -4437,7 +4467,6 @@
     "balance": "bas",
     "surface": "Carbon",
     "core": "Dense EVA",
-    "priceRange": "200-280€",
     "description": "Ronde précision chirurgicale. Sweet spot central, réponse crisp. Pour constructeurs de points tactiques.",
     "scores": {
       "Puissance": 6,
@@ -4447,7 +4476,9 @@
       "Spin": 7,
       "Tolérance": 8
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-pro-staff-v2-azul.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-pro-staff-v2-azul.png",
+    "verdict": "Ronde contrôle pur : réponse nette et précision chirurgicale. Pour constructeurs patients qui placent chaque balle avec intention.",
+    "price": "200-280€"
   },
   {
     "id": "wilson-ultra-pro-v2-26",
@@ -4461,7 +4492,6 @@
     "balance": "haut",
     "surface": "Double Carbon Wall 2.0",
     "core": "Pro EVA",
-    "priceRange": "220-300€",
     "description": "Diamant puissance explosive. Infinity Edge sweet spot élargi + Power Pillar stabilité. Finisseur agressif.",
     "scores": {
       "Puissance": 9.5,
@@ -4471,7 +4501,9 @@
       "Spin": 7.5,
       "Tolérance": 6
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-pro-v2.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-pro-v2.png",
+    "verdict": "Diamant explosive à 9.5 en puissance avec sweet spot élargi. Finisseur agressif — demande du physique et de la précision.",
+    "price": "220-300€"
   },
   {
     "id": "wilson-ultra-team-26",
@@ -4485,7 +4517,6 @@
     "balance": "moyen-haut",
     "surface": "Fiberglass/Carbon",
     "core": "EVA",
-    "priceRange": "120-170€",
     "description": "Diamant puissance accessible. Infinity Edge pour sweet spot large. Progression vers jeu offensif.",
     "scores": {
       "Puissance": 7.5,
@@ -4495,6 +4526,8 @@
       "Spin": 6.5,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-team-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-team-2026.png",
+    "verdict": "Diamant accessible avec sweet spot large Infinity Edge. Bonne porte d'entrée vers le jeu offensif sans trop de risque.",
+    "price": "120-170€"
   }
 ]
