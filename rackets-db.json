@@ -12,7 +12,7 @@
     "antivib": "—",
     "price": "200-270€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-ctrl-34-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-multiweight-ctrl-3-4-2025-alex-ruiz.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -38,7 +38,7 @@
     "antivib": "—",
     "price": "62-85€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-junior-34-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-junior-3-4-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -64,7 +64,7 @@
     "antivib": "—",
     "price": "70-100€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-light-34-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-adipower-light-3-4-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -116,7 +116,7 @@
     "antivib": "—",
     "price": "180-250€",
     "player": "Ale Galán",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-34-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-3-4-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -142,7 +142,7 @@
     "antivib": "—",
     "price": "280-380€",
     "player": "Ale Galán",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-hrd-34-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-3-4-hrd-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -168,7 +168,7 @@
     "antivib": "—",
     "price": "89-115€",
     "player": "Ale Galán",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-youth-34-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-youth-3-4-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -323,7 +323,7 @@
     "antivib": true,
     "price": "260-320€",
     "player": "Avancé offensif rapide",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-cross-it-light-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-cross-it-light-2026-martita-ortega.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -453,7 +453,7 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert offensif customisable",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-2026-ale-galan.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -557,7 +557,7 @@
     "antivib": false,
     "price": "320-400€",
     "player": "Expert puissance dure",
-    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-hrd-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/adidas-metalbone-hrd-2026-ale-galan.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1026,7 +1026,7 @@
     "antivib": "Vibrabsorb",
     "price": "300-370€",
     "player": null,
-    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-viper-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-viper-2025.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1051,7 +1051,7 @@
     "antivib": true,
     "price": "280-340€",
     "player": "Avancé offensif polyvalent",
-    "imageUrl": "https://www.padelful.com/images/rackets/babolat-veron-30-juan-lebrn-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-veron-3-0-2026-juan-lebron.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -1103,7 +1103,7 @@
     "antivib": true,
     "price": "350-400€",
     "player": "Expert puissance max",
-    "imageUrl": "https://www.padelful.com/images/rackets/babolat-viper-30-juan-lebrn-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-viper-3-0-2026-juan-lebron.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1130,7 +1130,7 @@
     "antivib": "Vibrabsorb",
     "price": "320-390€",
     "player": "Juan Lebrón",
-    "imageUrl": "https://www.padelful.com/images/rackets/babolat-viper-soft-30-juan-lebrn-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-viper-soft-3-0-2026-juan-lebron.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1338,7 +1338,7 @@
     "antivib": "Vibradrive",
     "price": "250-350€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-04-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-04-2025-juan-tello.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -1415,7 +1415,7 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Avancé léger / femmes",
-    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-flow-legend-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-flow-legend-2026-alejandra-salazar.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -1441,7 +1441,7 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert puissance pure",
-    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-04-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-hack-04-2026-paquito-navarro.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1520,7 +1520,7 @@
     "antivib": "Ease Vibe",
     "price": "300-380€",
     "player": "Juan Martín Díaz",
-    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-icon-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-icon-2026-juan-martin-diaz.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1597,7 +1597,7 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert polyvalent offensif",
-    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-05-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-05-2026-juan-tello.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1675,7 +1675,7 @@
     "antivib": false,
     "price": "320-400€",
     "player": "Expert puissance explosive",
-    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-xplo-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-xplo-2026-martin-di-nenno.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1728,7 +1728,7 @@
     "antivib": "—",
     "price": "200-280€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/drop-shot-conqueror-100-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/drop-shot-conqueror-10-0-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -1780,7 +1780,7 @@
     "antivib": "—",
     "price": "120-160€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/drop-shot-legend-40-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/drop-shot-legend-4-0-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -2112,7 +2112,7 @@
     "antivib": "Auxetic 2.0 + Innegra",
     "price": "200-260€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-pro-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-extreme-pro-2024.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -2424,7 +2424,7 @@
     "antivib": "Auxetic 2.0",
     "price": "350-400€",
     "player": "Arturo Coello",
-    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-pro-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-pro-2025.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3282,7 +3282,7 @@
     "antivib": "Pulse System + EOS Tunnel",
     "price": "280-350€",
     "player": "Agustín Tapia",
-    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-12k-alum-xtrem-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-12k-alum-xtrem-2026-agustin-tapia.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3333,7 +3333,7 @@
     "antivib": true,
     "price": "350-420€",
     "player": "Expert polyvalent",
-    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-18k-alum-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-18k-alum-2026-agustin-tapia.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3360,7 +3360,7 @@
     "antivib": "Pulse System + EOS Tunnel",
     "price": "300-370€",
     "player": "Agustín Tapia",
-    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-luxury-genius-attack-12k-xtrem-2026.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-attack-12k-alum-xtrem-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3601,7 +3601,7 @@
       "Spin": 8,
       "Tolérance": 7
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-pro-night-blue-2026.png"
   },
   {
     "id": "siux-electra-pro-26",
@@ -3625,7 +3625,7 @@
       "Spin": 8,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-electra-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-electra-pro-fire-red-2026-franco-stupackzuk.png"
   },
   {
     "id": "siux-fenix-pro-26",
@@ -3649,7 +3649,7 @@
       "Spin": 7.5,
       "Tolérance": 5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-fenix-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-fenix-pro-black-2026-leo-ausburger.png"
   },
   {
     "id": "siux-pegasus-elite-26",
@@ -3697,7 +3697,7 @@
       "Spin": 8,
       "Tolérance": 6.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/siux-pegasus-pro-storm-grey-2026.png"
   },
   {
     "id": "siux-valkiria-pro-26",
@@ -3962,7 +3962,7 @@
     "antivib": "—",
     "price": "55-75€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-caas-junior-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-canas-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3988,7 +3988,7 @@
     "antivib": "—",
     "price": "60-80€",
     "player": "—",
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-caas-w-2025.png",
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-canas-w-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -4073,7 +4073,7 @@
       "Spin": 5,
       "Tolérance": 9
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-88-orquidea-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-8-8-orquidea-2026.png"
   },
   {
     "id": "varlion-lw-carbon-ti-26",
@@ -4327,7 +4327,7 @@
       "Spin": 7.5,
       "Tolérance": 7.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-lt-v3-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-ls-v3-2025.png"
   },
   {
     "id": "wilson-bela-pro-v3-26",
@@ -4351,7 +4351,7 @@
       "Spin": 8,
       "Tolérance": 5.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-pro-v3-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-pro-v3-2025.png"
   },
   {
     "id": "wilson-bela-v3-26",
@@ -4375,7 +4375,7 @@
       "Spin": 8,
       "Tolérance": 7
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-v3-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-v3-2025.png"
   },
   {
     "id": "wilson-blade-pro-v2-26",
@@ -4399,7 +4399,7 @@
       "Spin": 7.5,
       "Tolérance": 7.5
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-pro-v2-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-blade-pro-v3.png"
   },
   {
     "id": "wilson-blade-team-26",
@@ -4447,7 +4447,7 @@
       "Spin": 7,
       "Tolérance": 8
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-pro-staff-v2-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-pro-staff-v2-azul.png"
   },
   {
     "id": "wilson-ultra-pro-v2-26",
@@ -4471,7 +4471,7 @@
       "Spin": 7.5,
       "Tolérance": 6
     },
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-pro-v2-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-ultra-pro-v2.png"
   },
   {
     "id": "wilson-ultra-team-26",
