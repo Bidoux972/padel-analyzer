@@ -44907,11 +44907,6 @@ function saveNamedProfile(name, profile) {
   saveProfilesList(list);
   return list;
 }
-function deleteNamedProfile(name) {
-  const list = loadProfilesList().filter((p) => p.name !== name);
-  saveProfilesList(list);
-  return list;
-}
 var ATTRS = ["Puissance", "Contr\xF4le", "Confort", "Spin", "Maniabilit\xE9", "Tol\xE9rance"];
 var COLORS_POOL = ["#E53935", "#FF9800", "#E91E63", "#4CAF50", "#009688", "#2196F3", "#1565C0", "#9C27B0", "#00BCD4", "#FF5722", "#8BC34A", "#795548", "#607D8B", "#D4E157", "#F06292", "#4DD0E1", "#FFB74D", "#AED581", "#BA68C8", "#4FC3F7"];
 var explanations = {
@@ -45096,26 +45091,6 @@ function computeForYou(scores, profile) {
   if (hasArmInjury && scores.Confort < 7 && gs < 6) return "no";
   return "partial";
 }
-function TagGroup({ tags, selected, onToggle, color: color2 = "#f97316" }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6, paddingLeft: 13 }, children: tags.map((t) => {
-    const active = selected.includes(t.id);
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: "pa-tag", onClick: () => onToggle(t.id), title: t.tip || "", style: {
-      padding: "5px 12px",
-      borderRadius: 20,
-      fontSize: 10,
-      fontWeight: 600,
-      cursor: "pointer",
-      background: active ? `${color2}18` : "rgba(255,255,255,0.03)",
-      border: `1px solid ${active ? color2 + "88" : "rgba(255,255,255,0.08)"}`,
-      color: active ? color2 : "#64748b",
-      fontFamily: "'Inter',sans-serif",
-      boxShadow: active ? `0 2px 8px ${color2}22` : "none"
-    }, children: [
-      active ? "\u2713 " : "",
-      t.label
-    ] }, t.id);
-  }) });
-}
 function PadelAnalyzer() {
   const [rackets, setRackets] = (0, import_react59.useState)(() => {
     const saved = loadSavedRackets();
@@ -45155,6 +45130,7 @@ function PadelAnalyzer() {
     const p = loadSavedProfile();
     return p._name ? "app" : "home";
   });
+  const [wizardStep, setWizardStep] = (0, import_react59.useState)(0);
   (0, import_react59.useEffect)(() => {
     saveRackets(rackets);
   }, [rackets]);
@@ -45191,6 +45167,7 @@ function PadelAnalyzer() {
   const createNewProfile = () => {
     setProfile({ ...INITIAL_PROFILE });
     setProfileName("");
+    setWizardStep(0);
     setPanel("profile");
     setScreen("app");
   };
@@ -45948,7 +45925,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }, children: [["suggest", "\u{1F3AF} Sugg\xE8re-moi"], ["add", "+ Ajouter"], ["profile", "\u{1F464} Profil"], ["manage", "\u{1F5D1} G\xE9rer"]].map(([k2, l]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setPanel((p) => p === k2 ? null : k2), style: { ...S.btn(panel === k2), borderRadius: 20 }, children: l }, k2)) }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }, children: [["suggest", "\u{1F3AF} Sugg\xE8re-moi"], ["add", "+ Ajouter"], ["profile", "\u{1F464} Profil"], ["manage", "\u{1F5D1} G\xE9rer"]].map(([k2, l]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+        if (k2 === "profile") setWizardStep(0);
+        setPanel((p) => p === k2 ? null : k2);
+      }, style: { ...S.btn(panel === k2), borderRadius: 20 }, children: l }, k2)) }),
       panel === "suggest" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: S.card, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: S.title, children: "\u{1F3AF} RAQUETTES SUGG\xC9R\xC9ES POUR TON PROFIL" }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(249,115,22,0.06)", border: "1px solid rgba(249,115,22,0.15)", borderRadius: 10, padding: 10, marginBottom: 10 }, children: [
@@ -46069,100 +46049,246 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ] })
       ] }),
       panel === "profile" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: S.card, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: S.title, children: "\u{1F464} MON PROFIL JOUEUR" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: 10, padding: 10, marginBottom: 12 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profileName, onChange: (e) => setProfileName(e.target.value), placeholder: "Nom du profil (ex: Bidou Comp\xE9tition)", style: { ...S.input, flex: 1, fontSize: 11, margin: 0 } }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
-              if (!profileName.trim()) {
-                alert("Donne un nom au profil d'abord");
-                return;
-              }
-              const list = saveNamedProfile(profileName.trim(), profile);
-              setSavedProfiles(list);
-            }, style: { padding: "6px 12px", background: "rgba(99,102,241,0.2)", border: "1px solid rgba(99,102,241,0.4)", borderRadius: 8, color: "#818cf8", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }, children: "\u{1F4BE} Sauvegarder" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
-              setProfile({ ...INITIAL_PROFILE });
-              setProfileName("");
-            }, style: { padding: "6px 10px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }, children: "+ Nouveau" })
+        (() => {
+          const STEPS = [
+            { icon: "\u{1F464}", label: "Identit\xE9" },
+            { icon: "\u{1F3BE}", label: "Jeu" },
+            { icon: "\u{1FA79}", label: "Corps" },
+            { icon: "\u{1F3AF}", label: "Priorit\xE9s" }
+          ];
+          return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginBottom: 18 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative", padding: "0 4px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "absolute", top: 16, left: 24, right: 24, height: 2, background: "rgba(255,255,255,0.06)", borderRadius: 1, zIndex: 0 } }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "absolute", top: 16, left: 24, height: 2, background: "linear-gradient(90deg,#f97316,#ef4444)", borderRadius: 1, zIndex: 1, transition: "width 0.4s cubic-bezier(.4,0,.2,1)", width: `${wizardStep / (STEPS.length - 1) * Math.max(0, 100 - 16)}%` } }),
+            STEPS.map((s2, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => setWizardStep(i), style: {
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 4,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              zIndex: 2,
+              fontFamily: "inherit"
+            }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: {
+                width: 32,
+                height: 32,
+                borderRadius: 10,
+                background: i <= wizardStep ? "linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))" : "rgba(255,255,255,0.04)",
+                border: `2px solid ${i <= wizardStep ? "#f97316" : "rgba(255,255,255,0.1)"}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 15,
+                transition: "all 0.3s ease",
+                boxShadow: i === wizardStep ? "0 0 12px rgba(249,115,22,0.3)" : "none",
+                transform: i === wizardStep ? "scale(1.1)" : "scale(1)"
+              }, children: s2.icon }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, fontWeight: i === wizardStep ? 700 : 500, color: i <= wizardStep ? "#f97316" : "#475569", transition: "color 0.3s ease" }, children: s2.label })
+            ] }, i))
+          ] }) });
+        })(),
+        savedProfiles.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 12, justifyContent: "center" }, children: savedProfiles.map((sp) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+          setProfile({ ...INITIAL_PROFILE, ...sp.profile });
+          setProfileName(sp.name);
+          setWizardStep(0);
+        }, style: { padding: "4px 10px", background: profileName === sp.name ? "rgba(99,102,241,0.25)" : "rgba(255,255,255,0.04)", border: `1px solid ${profileName === sp.name ? "rgba(99,102,241,0.5)" : "rgba(255,255,255,0.08)"}`, borderRadius: 8, color: profileName === sp.name ? "#a5b4fc" : "#94a3b8", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }, children: sp.name }, sp.name)) }),
+        wizardStep === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { animation: "fadeIn 0.3s ease" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, fontWeight: 800, color: "#e2e8f0", marginBottom: 4, fontFamily: "'Outfit'" }, children: "\u{1F464} Qui es-tu ?" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 11, color: "#64748b", margin: "0 0 14px", lineHeight: 1.5 }, children: "Ces infos permettent d'adapter les recommandations \xE0 ton gabarit et ton niveau." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 12 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Nom du profil" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profileName, onChange: (e) => setProfileName(e.target.value), placeholder: "Ex: Bidou, Noah, Maman...", style: { ...S.input, fontSize: 13, padding: "11px 14px" } })
           ] }),
-          savedProfiles.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 4 }, children: savedProfiles.map((sp) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 2 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
-              setProfile({ ...INITIAL_PROFILE, ...sp.profile });
-              setProfileName(sp.name);
-            }, style: { padding: "4px 8px", background: profileName === sp.name ? "rgba(99,102,241,0.25)" : "rgba(255,255,255,0.04)", border: `1px solid ${profileName === sp.name ? "rgba(99,102,241,0.5)" : "rgba(255,255,255,0.08)"}`, borderRadius: 6, color: profileName === sp.name ? "#a5b4fc" : "#94a3b8", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }, children: sp.name }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
-              if (!confirm(`Supprimer le profil "${sp.name}" ?`)) return;
-              const list = deleteNamedProfile(sp.name);
-              setSavedProfiles(list);
-            }, style: { background: "none", border: "none", color: "#64748b", fontSize: 10, cursor: "pointer", padding: "2px", fontFamily: "inherit" }, children: "\u2715" })
-          ] }, sp.name)) }),
-          savedProfiles.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#475569", margin: 0 }, children: "Aucun profil sauvegard\xE9. Remplis les champs puis clique \u{1F4BE} Sauvegarder." })
-        ] }),
-        (Number(profile.age) > 0 && Number(profile.age) < 15 || Number(profile.height) > 0 && Number(profile.height) < 150) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 8, padding: "8px 10px", marginBottom: 10, fontSize: 10, color: "#60a5fa", fontWeight: 600 }, children: "\u{1F9D2} Profil junior d\xE9tect\xE9 \u2014 les suggestions proposeront des raquettes adapt\xE9es (poids l\xE9ger, grip r\xE9duit, prix ajust\xE9s)" }),
-        Number(profile.age) >= 50 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)", borderRadius: 8, padding: "8px 10px", marginBottom: 10, fontSize: 10, color: "#fbbf24", fontWeight: 600 }, children: "\u{1F464} Profil 50+ \u2014 le scoring renforce automatiquement Confort, Tol\xE9rance et Maniabilit\xE9" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px", lineHeight: 1.4 }, children: 'Configure ton profil puis clique "R\xE9-analyser" pour recalculer les verdicts.' }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "\xC2ge" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.age, onChange: (e) => setProfile((p) => ({ ...p, age: Number(e.target.value) })), style: S.input })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Taille (cm)" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.height, onChange: (e) => setProfile((p) => ({ ...p, height: Number(e.target.value) })), placeholder: "175", style: S.input })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Poids (kg)" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.weight, onChange: (e) => setProfile((p) => ({ ...p, weight: Number(e.target.value) })), style: S.input })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Niveau" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.level, onChange: (e) => setProfile((p) => ({ ...p, level: e.target.value })), style: S.select, children: LEVEL_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, children: [
-              o.label,
-              " \u2014 ",
-              o.desc
-            ] }, o.value)) })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Main" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.hand, onChange: (e) => setProfile((p) => ({ ...p, hand: e.target.value })), style: S.select, children: HAND_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: o, children: o }, o)) })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "C\xF4t\xE9 de jeu" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.side, onChange: (e) => setProfile((p) => ({ ...p, side: e.target.value })), style: S.select, children: SIDE_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: o, children: o }, o)) })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Fr\xE9quence" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.frequency, onChange: (e) => setProfile((p) => ({ ...p, frequency: e.target.value })), style: S.select, children: FREQ_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, children: [
-              o.label,
-              " \u2014 ",
-              o.desc
-            ] }, o.value)) })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Comp\xE9tition" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: profile.competition ? "oui" : "non", onChange: (e) => setProfile((p) => ({ ...p, competition: e.target.value === "oui" })), style: S.select, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "non", children: "Non" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "oui", children: "Oui" })
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 12 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "\xC2ge" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.age, onChange: (e) => setProfile((p) => ({ ...p, age: Number(e.target.value) })), placeholder: "49", style: S.input })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Taille (cm)" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.height, onChange: (e) => setProfile((p) => ({ ...p, height: Number(e.target.value) })), placeholder: "175", style: S.input })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Poids (kg)" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.weight, onChange: (e) => setProfile((p) => ({ ...p, weight: Number(e.target.value) })), placeholder: "80", style: S.input })
             ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Niveau" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.level, onChange: (e) => setProfile((p) => ({ ...p, level: e.target.value })), style: S.select, children: LEVEL_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, children: [
+                o.label,
+                " \u2014 ",
+                o.desc
+              ] }, o.value)) })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Fr\xE9quence" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.frequency, onChange: (e) => setProfile((p) => ({ ...p, frequency: e.target.value })), style: S.select, children: FREQ_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, children: [
+                o.label,
+                " \u2014 ",
+                o.desc
+              ] }, o.value)) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Main" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.hand, onChange: (e) => setProfile((p) => ({ ...p, hand: e.target.value })), style: S.select, children: HAND_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: o, children: o }, o)) })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "C\xF4t\xE9 de jeu" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.side, onChange: (e) => setProfile((p) => ({ ...p, side: e.target.value })), style: S.select, children: SIDE_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: o, children: o }, o)) })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Comp\xE9tition" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: profile.competition ? "oui" : "non", onChange: (e) => setProfile((p) => ({ ...p, competition: e.target.value === "oui" })), style: S.select, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "non", children: "Non" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "oui", children: "Oui" })
+              ] })
+            ] })
+          ] }),
+          (Number(profile.age) > 0 && Number(profile.age) < 15 || Number(profile.height) > 0 && Number(profile.height) < 150) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 8, padding: "8px 10px", marginTop: 12, fontSize: 10, color: "#60a5fa", fontWeight: 600 }, children: "\u{1F9D2} Profil junior d\xE9tect\xE9 \u2014 recommandations adapt\xE9es (poids l\xE9ger, grip r\xE9duit)" }),
+          Number(profile.age) >= 50 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)", borderRadius: 8, padding: "8px 10px", marginTop: 12, fontSize: 10, color: "#fbbf24", fontWeight: 600 }, children: "\u{1F464} Profil 50+ \u2014 Confort, Tol\xE9rance et Maniabilit\xE9 renforc\xE9s automatiquement" })
+        ] }),
+        wizardStep === 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { animation: "fadeIn 0.3s ease" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, fontWeight: 800, color: "#e2e8f0", marginBottom: 4, fontFamily: "'Outfit'" }, children: "\u{1F3BE} Comment tu joues ?" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 11, color: "#64748b", margin: "0 0 14px", lineHeight: 1.5 }, children: "Ton style de jeu influence directement quels crit\xE8res sont prioritaires dans le scoring. S\xE9lectionne tout ce qui te correspond." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }, children: STYLE_TAGS.map((t) => {
+            const sel = profile.styleTags.includes(t.id);
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => toggleTag("styleTags", t.id), className: "pa-tag", style: {
+              padding: "10px 14px",
+              borderRadius: 12,
+              background: sel ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? "#f97316" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? "#f97316" : "#94a3b8",
+              fontSize: 12,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease",
+              textAlign: "left"
+            }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: t.label }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: sel ? "#fb923c" : "#475569", marginTop: 2, fontWeight: 400 }, children: t.tip })
+            ] }, t.id);
+          }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { ...S.label, marginBottom: 6 }, children: "Pr\xE9cisions (optionnel)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profile.styleExtra, onChange: (e) => setProfile((p) => ({ ...p, styleExtra: e.target.value })), placeholder: "Ex: Je monte beaucoup au filet, je joue avec du lift...", style: { ...S.input, fontSize: 11 } })
+        ] }),
+        wizardStep === 2 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { animation: "fadeIn 0.3s ease" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, fontWeight: 800, color: "#e2e8f0", marginBottom: 4, fontFamily: "'Outfit'" }, children: "\u{1FA79} Ton corps" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 11, color: "#64748b", margin: "0 0 14px", lineHeight: 1.5 }, children: [
+            "Les blessures et contraintes physiques impactent directement le crit\xE8re ",
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { style: { color: "#ef4444" }, children: "Confort" }),
+            " dans les verdicts. Une raquette inadapt\xE9e peut aggraver les douleurs."
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }, children: INJURY_TAGS.map((t) => {
+            const sel = profile.injuryTags.includes(t.id);
+            const isNone = t.id === "aucune";
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => toggleTag("injuryTags", t.id), className: "pa-tag", style: {
+              padding: "10px 14px",
+              borderRadius: 12,
+              background: sel ? isNone ? "rgba(76,175,80,0.15)" : "rgba(239,68,68,0.12)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? isNone ? "#4CAF50" : "#ef4444" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? isNone ? "#4CAF50" : "#ef4444" : "#94a3b8",
+              fontSize: 12,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease"
+            }, children: [
+              isNone ? "\u2713 " : "",
+              t.label
+            ] }, t.id);
+          }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { ...S.label, marginBottom: 6 }, children: "Pr\xE9cisions (optionnel)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profile.injuryExtra, onChange: (e) => setProfile((p) => ({ ...p, injuryExtra: e.target.value })), placeholder: "Ex: Tendinite chronique, post-op\xE9ration \xE9paule...", style: { ...S.input, fontSize: 11 } })
+        ] }),
+        wizardStep === 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { animation: "fadeIn 0.3s ease" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, fontWeight: 800, color: "#e2e8f0", marginBottom: 4, fontFamily: "'Outfit'" }, children: "\u{1F3AF} Qu'est-ce que tu cherches ?" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 11, color: "#64748b", margin: "0 0 14px", lineHeight: 1.5 }, children: "Ces crit\xE8res pond\xE8rent le score global. Les suggestions seront tri\xE9es en fonction de tes priorit\xE9s." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, fontWeight: 700, color: "#4CAF50", marginBottom: 6 }, children: "Priorit\xE9s dans ta raquette" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }, children: PRIORITY_TAGS.map((t) => {
+            const sel = profile.priorityTags.includes(t.id);
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => toggleTag("priorityTags", t.id), className: "pa-tag", style: {
+              padding: "10px 14px",
+              borderRadius: 12,
+              background: sel ? "rgba(76,175,80,0.12)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? "#4CAF50" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? "#4CAF50" : "#94a3b8",
+              fontSize: 12,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease"
+            }, children: t.label }, t.id);
+          }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profile.priorityExtra, onChange: (e) => setProfile((p) => ({ ...p, priorityExtra: e.target.value })), placeholder: "Ex: Budget max 200\u20AC, raquette pas trop lourde...", style: { ...S.input, fontSize: 11, marginBottom: 16 } }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 11, fontWeight: 700, color: "#9C27B0", marginBottom: 6 }, children: [
+            "\u{1F3F7} Marques pr\xE9f\xE9r\xE9es ",
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontWeight: 400, color: "#64748b" }, children: "(optionnel \u2014 vide = toutes)" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 8 }, children: BRAND_TAGS.map((t) => {
+            const sel = profile.brandTags.includes(t.id);
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => toggleTag("brandTags", t.id), className: "pa-tag", style: {
+              padding: "8px 12px",
+              borderRadius: 10,
+              background: sel ? "rgba(156,39,176,0.12)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? "#9C27B0" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? "#CE93D8" : "#94a3b8",
+              fontSize: 11,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease"
+            }, children: t.label }, t.id);
+          }) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginTop: 20, alignItems: "center" }, children: [
+          wizardStep > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setWizardStep((s2) => s2 - 1), style: { ...S.btn(false), flex: 1, padding: "12px 0", borderRadius: 12, fontSize: 12 }, children: "\u2190 Pr\xE9c\xE9dent" }),
+          wizardStep < 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+            if (wizardStep === 0 && !profileName.trim()) {
+              alert("Donne un nom \xE0 ton profil pour continuer");
+              return;
+            }
+            setWizardStep((s2) => s2 + 1);
+          }, style: {
+            flex: 2,
+            padding: "12px 0",
+            borderRadius: 12,
+            fontSize: 13,
+            fontWeight: 700,
+            cursor: "pointer",
+            fontFamily: "inherit",
+            background: "linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",
+            border: "1px solid rgba(249,115,22,0.35)",
+            color: "#f97316",
+            transition: "all 0.2s ease"
+          }, children: "Suivant \u2192" }),
+          wizardStep === 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
+            if (!profileName.trim()) {
+              alert("Retourne \xE0 l'\xE9tape 1 pour nommer ton profil");
+              return;
+            }
+            const list = saveNamedProfile(profileName.trim(), profile);
+            setSavedProfiles(list);
+            setPanel(null);
+            if (rackets.length > 0) reanalyzeAll();
+          }, style: {
+            ...S.btnGreen,
+            flex: 2,
+            padding: "14px 0",
+            borderRadius: 12,
+            fontSize: 14,
+            background: "linear-gradient(135deg,rgba(76,175,80,0.25),rgba(76,175,80,0.15))"
+          }, children: [
+            "\u2705 Sauvegarder",
+            rackets.length > 0 ? " & R\xE9-analyser" : ""
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "pa-section", style: { borderColor: "#9C27B0" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: S.sectionLabel, children: "\u{1F3F7} Marques pr\xE9f\xE9r\xE9es" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#475569", margin: "0 0 4px", paddingLeft: 13 }, children: "Les suggestions prioriseront ces marques (vide = toutes)" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TagGroup, { tags: BRAND_TAGS, selected: profile.brandTags, onToggle: (id) => toggleTag("brandTags", id), color: "#9C27B0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "pa-section", style: { borderColor: "#f97316" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: S.sectionLabel, children: "\u{1F3BE} Style de jeu" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#475569", margin: "0 0 4px", paddingLeft: 13 }, children: "Clique sur les tags qui te correspondent" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TagGroup, { tags: STYLE_TAGS, selected: profile.styleTags, onToggle: (id) => toggleTag("styleTags", id), color: "#f97316" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profile.styleExtra, onChange: (e) => setProfile((p) => ({ ...p, styleExtra: e.target.value })), placeholder: "Pr\xE9cisions libres (optionnel)...", style: { ...S.input, marginTop: 8, fontSize: 10 } }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "pa-section", style: { borderColor: "#ef4444" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: S.sectionLabel, children: "\u{1FA79} Blessures / Contraintes" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#475569", margin: "0 0 4px", paddingLeft: 13 }, children: "Impacte directement le crit\xE8re Confort dans les verdicts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TagGroup, { tags: INJURY_TAGS, selected: profile.injuryTags, onToggle: (id) => toggleTag("injuryTags", id), color: "#ef4444" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profile.injuryExtra, onChange: (e) => setProfile((p) => ({ ...p, injuryExtra: e.target.value })), placeholder: "Pr\xE9cisions libres (optionnel)...", style: { ...S.input, marginTop: 8, fontSize: 10 } }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "pa-section", style: { borderColor: "#4CAF50" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: S.sectionLabel, children: "\u{1F3AF} Priorit\xE9" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#475569", margin: "0 0 4px", paddingLeft: 13 }, children: "Ce que tu recherches en priorit\xE9 dans ta raquette" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TagGroup, { tags: PRIORITY_TAGS, selected: profile.priorityTags, onToggle: (id) => toggleTag("priorityTags", id), color: "#4CAF50" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profile.priorityExtra, onChange: (e) => setProfile((p) => ({ ...p, priorityExtra: e.target.value })), placeholder: "Pr\xE9cisions libres (optionnel)...", style: { ...S.input, marginTop: 8, fontSize: 10 } }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: reanalyzeAll, disabled: loading, style: { ...S.btnGreen, marginTop: 14 }, children: loading ? loadMsg || "..." : "\u{1F504} R\xE9-analyser toutes les raquettes" }),
         error && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#ef4444", marginTop: 8 }, children: error })
       ] }),
       panel === "manage" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: S.card, children: [
