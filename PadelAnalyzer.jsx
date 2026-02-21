@@ -365,6 +365,11 @@ export default function PadelAnalyzer() {
   const [localDBCount, setLocalDBCount] = useState(()=>{
     try { return JSON.parse(localStorage.getItem('padel_db_extra')||'[]').length; } catch{ return 0; }
   });
+  const [screen, setScreen] = useState(()=>{
+    // If a profile name already exists, go straight to app
+    const p = loadSavedProfile();
+    return (p._name) ? "app" : "home";
+  });
 
   // Auto-save rackets and profile to localStorage
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
@@ -384,6 +389,26 @@ export default function PadelAnalyzer() {
       if (field==="injuryTags" && cur.includes("aucune")) return {...p,[field]:[id]};
       return {...p,[field]:cur.includes(id)?cur.filter(x=>x!==id):[...cur,id]};
     });
+  };
+
+  // Home screen: select existing profile
+  const selectHomeProfile = (sp) => {
+    setProfile({...INITIAL_PROFILE,...sp.profile});
+    setProfileName(sp.name);
+    setPanel(null);
+    setScreen("app");
+  };
+  // Home screen: create new profile
+  const createNewProfile = () => {
+    setProfile({...INITIAL_PROFILE});
+    setProfileName("");
+    setPanel("profile");
+    setScreen("app");
+  };
+  // Disconnect: back to home
+  const disconnect = () => {
+    setPanel(null);
+    setScreen("home");
   };
 
   const selRackets = rackets.filter(r=>selected.includes(r.id));
@@ -996,6 +1021,80 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         tr.pa-row { transition: background 0.15s ease; }
         tr.pa-row:hover { background: rgba(255,255,255,0.04) !important; }
       `}</style>
+
+      {/* ============================================================ */}
+      {/* HOME SCREEN */}
+      {/* ============================================================ */}
+      {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"80vh",animation:"fadeIn 0.5s ease",padding:"0 16px"}}>
+        {/* Big logo */}
+        <div style={{marginBottom:24,animation:"fadeIn 0.6s ease"}}>
+          <svg width="80" height="80" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.35))"}}>
+            <defs><linearGradient id="logoGradHome" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+            <rect width="44" height="44" rx="10" fill="url(#logoGradHome)"/>
+            <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
+            <line x1="22" y1="10" x2="22" y2="26" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
+            <line x1="14" y1="18" x2="30" y2="18" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
+            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
+          </svg>
+        </div>
+        <h1 style={{fontFamily:"'Outfit'",fontSize:32,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 6px",letterSpacing:"-0.03em",textAlign:"center"}}>PADEL ANALYZER</h1>
+        <p style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>
+        <p style={{color:"#475569",fontSize:11,margin:"0 0 36px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {RACKETS_DB.length}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
+
+        {/* Saved profiles */}
+        {savedProfiles.length>0&&<div style={{width:"100%",maxWidth:400,marginBottom:24}}>
+          <p style={{fontSize:10,color:"#94a3b8",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:10,textAlign:"center"}}>👤 Mes profils</p>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {savedProfiles.map(sp=>{
+              const p = sp.profile||{};
+              const styles = (p.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+              const injuries = (p.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+              const desc = [p.level, p.side&&`Côté ${p.side}`, p.hand, styles.length?styles.slice(0,2).join(", "):null].filter(Boolean).join(" · ");
+              return (
+                <button key={sp.name} onClick={()=>selectHomeProfile(sp)} className="pa-card" style={{
+                  background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"16px 18px",
+                  cursor:"pointer",textAlign:"left",fontFamily:"'Inter',sans-serif",width:"100%",
+                  display:"flex",alignItems:"center",gap:14,transition:"all 0.25s ease",
+                }}>
+                  <div style={{width:44,height:44,borderRadius:12,background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>
+                    {sp.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:2}}>{sp.name}</div>
+                    <div style={{fontSize:11,color:"#64748b",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{desc}</div>
+                    {injuries.length>0&&<div style={{fontSize:10,color:"#ef4444",marginTop:2,opacity:0.8}}>🩹 {injuries.join(", ")}</div>}
+                  </div>
+                  <div style={{color:"#475569",fontSize:18,flexShrink:0}}>→</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>}
+
+        {/* New profile button */}
+        <button onClick={createNewProfile} style={{
+          padding:"14px 28px",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",
+          border:"1px solid rgba(249,115,22,0.35)",borderRadius:14,color:"#f97316",fontSize:14,fontWeight:700,
+          cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s ease",letterSpacing:"-0.01em",
+          width:"100%",maxWidth:400,
+        }}>
+          + Nouveau profil
+        </button>
+
+        {savedProfiles.length===0&&<p style={{fontSize:11,color:"#475569",marginTop:12,textAlign:"center",lineHeight:1.5}}>
+          Crée ton premier profil pour commencer l'analyse
+        </p>}
+
+        <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V7.0 · {RACKETS_DB.length} raquettes · Scoring hybride IA
+        </div>
+      </div>}
+
+      {/* ============================================================ */}
+      {/* APP SCREEN */}
+      {/* ============================================================ */}
+      {screen==="app"&&<>
       <div style={{textAlign:"center",marginBottom:28,paddingBottom:20,borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:10,marginBottom:6}}>
           <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
@@ -1011,6 +1110,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
         <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V7.0</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        {/* Profile bar */}
+        {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
+          <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
+            <div style={{width:22,height:22,borderRadius:7,background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,color:"#f97316",flexShrink:0}}>{profileName.charAt(0).toUpperCase()}</div>
+            <span style={{fontSize:11,fontWeight:600,color:"#a5b4fc"}}>{profileName}</span>
+          </div>
+          <button onClick={disconnect} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:20,padding:"4px 10px",color:"#64748b",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
+            <span style={{fontSize:12}}>⏻</span> Déconnexion
+          </button>
+        </div>}
       </div>
 
       {/* Actions */}
@@ -1925,6 +2034,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
         <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V7.0 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
+      </>}
     </div>
   );
 
