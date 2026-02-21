@@ -11,23 +11,30 @@ export default async function handler(req, res) {
     "usaplayspadel.com",
     "www.usaplayspadel.com",
   ];
-  
+
   try {
     const parsed = new URL(url);
     if (!allowed.some(d => parsed.hostname === d || parsed.hostname.endsWith("." + d))) {
       return res.status(403).json({ error: "Domain not allowed" });
     }
 
-    const response = await fetch(url, {
+    // Padelful uses Next.js image optimization — direct /images/ paths return 403
+    // Transform to /_next/image?url=...&w=384&q=75 which serves the actual image
+    let fetchUrl = url;
+    if (parsed.hostname.includes("padelful.com") && parsed.pathname.startsWith("/images/")) {
+      fetchUrl = `https://www.padelful.com/_next/image?url=${encodeURIComponent(parsed.pathname)}&w=384&q=75`;
+    }
+
+    const response = await fetch(fetchUrl, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
         "Accept": "image/webp,image/apng,image/*,*/*;q=0.8",
-        "Referer": parsed.origin + "/",
+        "Referer": "https://www.padelful.com/",
       },
     });
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: "Upstream error" });
+      return res.status(response.status).json({ error: `Upstream ${response.status}` });
     }
 
     const contentType = response.headers.get("content-type") || "image/png";
