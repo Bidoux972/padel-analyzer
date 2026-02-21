@@ -44908,6 +44908,17 @@ function saveNamedProfile(name, profile) {
   return list;
 }
 var ATTRS = ["Puissance", "Contr\xF4le", "Confort", "Spin", "Maniabilit\xE9", "Tol\xE9rance"];
+function proxyImg(url) {
+  if (!url) return null;
+  try {
+    const h = new URL(url).hostname;
+    if (h.includes("padelful.com") || h.includes("usaplayspadel.com")) {
+      return `/api/image?url=${encodeURIComponent(url)}`;
+    }
+  } catch {
+  }
+  return url;
+}
 var COLORS_POOL = ["#E53935", "#FF9800", "#E91E63", "#4CAF50", "#009688", "#2196F3", "#1565C0", "#9C27B0", "#00BCD4", "#FF5722", "#8BC34A", "#795548", "#607D8B", "#D4E157", "#F06292", "#4DD0E1", "#FFB74D", "#AED581", "#BA68C8", "#4FC3F7"];
 var explanations = {
   Puissance: "Vitesse de sortie de balle pour un effort donn\xE9. Diamant > goutte > ronde. \xC9quilibre haut = plus d'inertie. Mousse r\xE9active = catapulte.",
@@ -46375,7 +46386,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               },
               children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "pa-badge", style: { position: "absolute", top: -8, right: 8, background: fy.bg + "dd", border: `1px solid ${fy.border}`, borderRadius: 20, padding: "2px 8px", fontSize: 7, fontWeight: 700, color: "#fff", letterSpacing: "0.03em", boxShadow: `0 2px 8px ${fy.bg}44` }, children: fy.text }),
-                r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: r2.imageUrl, alt: "", style: { width: 38, height: 38, objectFit: "contain", borderRadius: 6, marginBottom: 4, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
+                r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", style: { width: 38, height: 38, objectFit: "contain", borderRadius: 6, marginBottom: 4, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
                   e.target.style.display = "none";
                 } }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 8, height: 8, borderRadius: "50%", background: r2.color, marginBottom: 6, boxShadow: isSel ? `0 0 8px ${r2.color}` : "none", transition: "box-shadow 0.2s ease" } }),
@@ -46427,7 +46438,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 padding: 20,
                 boxShadow: `0 0 40px ${hr.color}15, inset 0 0 20px ${hr.color}08`,
                 transition: "border-color 0.3s ease"
-              }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: hr.imageUrl, alt: hr.name, style: {
+              }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(hr.imageUrl), alt: hr.name, style: {
                 width: 240,
                 height: 280,
                 objectFit: "contain",
@@ -46821,7 +46832,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: i === 0 ? 28 : 24, lineHeight: 1 }, children: medal }),
                       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "print-medal-label", style: { fontSize: 7, fontWeight: 800, letterSpacing: "0.02em", color: i === 0 ? "#b8860b" : i === 1 ? "#6b7280" : "#92400e", marginTop: 2, whiteSpace: "nowrap" }, children: i === 0 ? "MEILLEUR" : i === 1 ? "2\u1D49 choix" : "3\u1D49 choix" })
                     ] }),
-                    r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: r2.imageUrl, alt: "", style: { width: i < 3 ? 36 : 28, height: i < 3 ? 36 : 28, objectFit: "contain", borderRadius: 4, flexShrink: 0, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
+                    r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", style: { width: i < 3 ? 36 : 28, height: i < 3 ? 36 : 28, objectFit: "contain", borderRadius: 4, flexShrink: 0, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
                       e.target.style.display = "none";
                     } }),
                     !medal && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 10, height: 10, borderRadius: "50%", background: r2.color, border: "1px solid #999", flexShrink: 0, printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" } }),
@@ -46945,7 +46956,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }, children: [
                     /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }, children: [
                       /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, minWidth: 28 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 16, lineHeight: 1 }, children: "\u{1F3AF}" }) }),
-                      r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: r2.imageUrl, alt: "", style: { width: 28, height: 28, objectFit: "contain", borderRadius: 4, flexShrink: 0, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
+                      r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", style: { width: 28, height: 28, objectFit: "contain", borderRadius: 4, flexShrink: 0, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
                         e.target.style.display = "none";
                       } }),
                       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
