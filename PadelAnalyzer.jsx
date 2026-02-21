@@ -123,13 +123,15 @@ function deleteNamedProfile(name) {
 
 const ATTRS = ["Puissance","Contrôle","Confort","Spin","Maniabilité","Tolérance"];
 
-// Proxy padelful/usaplayspadel images through Vercel serverless function to bypass hotlink blocking
+// Proxy images through weserv.nl to bypass hotlink blocking (padelful etc.)
+// Also add referrerpolicy="no-referrer" on img tags as first line of defense
 function proxyImg(url) {
   if (!url) return null;
   try {
     const h = new URL(url).hostname;
-    if (h.includes("padelful.com") || h.includes("usaplayspadel.com")) {
-      return `/api/image?url=${encodeURIComponent(url)}`;
+    if (h.includes("padelful.com")) {
+      // Use weserv.nl as reliable image proxy with cache
+      return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=200&q=80`;
     }
   } catch {}
   return url;
@@ -1542,7 +1544,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             transition:"all 0.2s ease",
           }}>
             <div className="pa-badge" style={{position:"absolute",top:-8,right:8,background:fy.bg+"dd",border:`1px solid ${fy.border}`,borderRadius:20,padding:"2px 8px",fontSize:7,fontWeight:700,color:"#fff",letterSpacing:"0.03em",boxShadow:`0 2px 8px ${fy.bg}44`}}>{fy.text}</div>
-            {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:38,height:38,objectFit:"contain",borderRadius:6,marginBottom:4,background:"rgba(255,255,255,0.06)"}} onError={e=>{e.target.style.display='none'}}/>}
+            {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:38,height:38,objectFit:"contain",borderRadius:6,marginBottom:4,background:"rgba(255,255,255,0.06)"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>}
             <div style={{width:8,height:8,borderRadius:"50%",background:r.color,marginBottom:6,boxShadow:isSel?`0 0 8px ${r.color}`:"none",transition:"box-shadow 0.2s ease"}}/>
             <div style={{fontSize:11,fontWeight:700,color:isSel?"#fff":"#94a3b8",lineHeight:1.3,transition:"color 0.2s ease"}}>{r.shortName}</div>
             <div style={{fontSize:9,color:"#475569",marginTop:3}}>{r.shape} · {r.weight}</div>
@@ -1589,7 +1591,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <img src={proxyImg(hr.imageUrl)} alt={hr.name} style={{
                     width:240, height:280, objectFit:"contain", display:"block", margin:"0 auto",
                     filter:"drop-shadow(0 8px 24px rgba(0,0,0,0.5))",
-                  }} onError={e=>{e.target.style.display='none'}}/>
+                  }} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>
                 </div>
                 <div style={{marginTop:12}}>
                   <div style={{fontSize:13,fontWeight:700,color:hr.color,lineHeight:1.2}}>{hr.name}</div>
@@ -1976,7 +1978,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       <span style={{fontSize:i===0?28:24,lineHeight:1}}>{medal}</span>
                       <span className="print-medal-label" style={{fontSize:7,fontWeight:800,letterSpacing:"0.02em",color:i===0?"#b8860b":i===1?"#6b7280":"#92400e",marginTop:2,whiteSpace:"nowrap"}}>{i===0?"MEILLEUR":i===1?"2ᵉ choix":"3ᵉ choix"}</span>
                     </div>}
-                    {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:i<3?36:28,height:i<3?36:28,objectFit:"contain",borderRadius:4,flexShrink:0,background:"rgba(255,255,255,0.06)"}} onError={e=>{e.target.style.display='none'}}/>}
+                    {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:i<3?36:28,height:i<3?36:28,objectFit:"contain",borderRadius:4,flexShrink:0,background:"rgba(255,255,255,0.06)"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>}
                     {!medal&&<div style={{width:10,height:10,borderRadius:"50%",background:r.color,border:"1px solid #999",flexShrink:0,printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>}
                     <div style={{minWidth:0,flex:1}}>
                       <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
@@ -2095,7 +2097,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:28}}>
                         <span style={{fontSize:16,lineHeight:1}}>🎯</span>
                       </div>
-                      {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:28,height:28,objectFit:"contain",borderRadius:4,flexShrink:0,background:"rgba(255,255,255,0.06)"}} onError={e=>{e.target.style.display='none'}}/>}
+                      {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:28,height:28,objectFit:"contain",borderRadius:4,flexShrink:0,background:"rgba(255,255,255,0.06)"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>}
                       <div style={{minWidth:0,flex:1}}>
                         <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
                           <span style={{fontSize:11,fontWeight:700,color:"#e2e8f0"}}>{r.name}</span>
