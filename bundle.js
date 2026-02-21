@@ -45843,13 +45843,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const scrollToIdx = (idx) => {
           const el = carouselRef.current;
           if (!el) return;
-          const target = idx * (CARD_W + GAP);
-          el.scrollTo({ left: target, behavior: "smooth" });
+          const containerW = el.clientWidth;
+          const target = idx * (CARD_W + GAP) - (containerW - CARD_W) / 2;
+          el.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+          setActiveProfileIdx(idx);
         };
         const handleScroll = () => {
           const el = carouselRef.current;
           if (!el) return;
-          const idx = Math.round(el.scrollLeft / (CARD_W + GAP));
+          const containerW = el.clientWidth;
+          const center = el.scrollLeft + containerW / 2;
+          const idx = Math.round((center - CARD_W / 2) / (CARD_W + GAP));
           setActiveProfileIdx(Math.max(0, Math.min(idx, filtered.length - 1)));
         };
         const scrollDir = (dir) => {
