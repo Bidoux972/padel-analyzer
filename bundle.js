@@ -45843,17 +45843,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const scrollToIdx = (idx) => {
           const el = carouselRef.current;
           if (!el) return;
-          const containerW = el.clientWidth;
-          const target = idx * (CARD_W + GAP) - (containerW - CARD_W) / 2;
-          el.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+          const target = idx * (CARD_W + GAP);
+          el.scrollTo({ left: target, behavior: "smooth" });
           setActiveProfileIdx(idx);
         };
         const handleScroll = () => {
           const el = carouselRef.current;
           if (!el) return;
-          const containerW = el.clientWidth;
-          const center = el.scrollLeft + containerW / 2;
-          const idx = Math.round((center - CARD_W / 2) / (CARD_W + GAP));
+          const idx = Math.round(el.scrollLeft / (CARD_W + GAP));
           setActiveProfileIdx(Math.max(0, Math.min(idx, filtered.length - 1)));
         };
         const scrollDir = (dir) => {
@@ -45925,14 +45922,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 children: "\u2039"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: carouselRef, className: "pa-carousel", onScroll: handleScroll, style: {
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { ref: carouselRef, className: "pa-carousel", onScroll: handleScroll, style: {
               display: "flex",
               gap: GAP,
               overflowX: "auto",
               scrollSnapType: "x mandatory",
               scrollBehavior: "smooth",
               flex: 1,
-              padding: "6px 4px 10px",
+              padding: "6px 0 10px",
               msOverflowStyle: "none",
               scrollbarWidth: "none",
               WebkitOverflowScrolling: "touch"
@@ -45945,65 +45942,69 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 e.preventDefault();
                 scrollDir("right");
               }
-            }, tabIndex: 0, children: filtered.map((sp, i) => {
-              const p = sp.profile || {};
-              const styles = (p.styleTags || []).map((id) => STYLE_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
-              const injuries = (p.injuryTags || []).filter((t) => t !== "aucune").map((id) => INJURY_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
-              const isJunior = p.age && parseInt(p.age) < 16;
-              const levelColors = { D\u00E9butant: "#4CAF50", Interm\u00E9diaire: "#FF9800", Avanc\u00E9: "#ef4444", Comp\u00E9tition: "#9C27B0" };
-              const desc = [p.side && `C\xF4t\xE9 ${p.side}`, p.hand].filter(Boolean).join(" \xB7 ");
-              const stylesStr = styles.length ? styles.slice(0, 2).join(", ") : "";
-              const isActive = i === activeProfileIdx;
-              return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => selectHomeProfile(sp), style: {
-                background: isActive ? "rgba(249,115,22,0.08)" : "rgba(255,255,255,0.03)",
-                border: isActive ? "1px solid rgba(249,115,22,0.35)" : "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 18,
-                padding: "22px 16px 16px",
-                cursor: "pointer",
-                textAlign: "center",
-                fontFamily: "'Inter',sans-serif",
-                minWidth: CARD_W,
-                maxWidth: CARD_W,
-                flexShrink: 0,
-                scrollSnapAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 8,
-                transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
-                transform: isActive ? "scale(1.03)" : "scale(0.97)",
-                opacity: isActive ? 1 : 0.7,
-                boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none"
-              }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: {
-                  width: 56,
-                  height: 56,
-                  borderRadius: 16,
-                  background: isActive ? "linear-gradient(135deg,rgba(249,115,22,0.35),rgba(239,68,68,0.25))" : "linear-gradient(135deg,rgba(249,115,22,0.18),rgba(239,68,68,0.12))",
-                  border: isActive ? "2px solid rgba(249,115,22,0.5)" : "1px solid rgba(249,115,22,0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 24,
-                  fontWeight: 700,
-                  color: isActive ? "#f97316" : "#94a3b8",
+            }, tabIndex: 0, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { minWidth: `calc(50% - ${CARD_W / 2}px)`, flexShrink: 0 }, "aria-hidden": "true" }),
+              filtered.map((sp, i) => {
+                const p = sp.profile || {};
+                const styles = (p.styleTags || []).map((id) => STYLE_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
+                const injuries = (p.injuryTags || []).filter((t) => t !== "aucune").map((id) => INJURY_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
+                const isJunior = p.age && parseInt(p.age) < 16;
+                const levelColors = { D\u00E9butant: "#4CAF50", Interm\u00E9diaire: "#FF9800", Avanc\u00E9: "#ef4444", Comp\u00E9tition: "#9C27B0" };
+                const desc = [p.side && `C\xF4t\xE9 ${p.side}`, p.hand].filter(Boolean).join(" \xB7 ");
+                const stylesStr = styles.length ? styles.slice(0, 2).join(", ") : "";
+                const isActive = i === activeProfileIdx;
+                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => selectHomeProfile(sp), style: {
+                  background: isActive ? "rgba(249,115,22,0.08)" : "rgba(255,255,255,0.03)",
+                  border: isActive ? "1px solid rgba(249,115,22,0.35)" : "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 18,
+                  padding: "22px 16px 16px",
+                  cursor: "pointer",
+                  textAlign: "center",
+                  fontFamily: "'Inter',sans-serif",
+                  minWidth: CARD_W,
+                  maxWidth: CARD_W,
                   flexShrink: 0,
-                  transition: "all 0.3s"
-                }, children: sp.name.charAt(0).toUpperCase() }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: isActive ? "#f1f5f9" : "#cbd5e1", lineHeight: 1.2, transition: "color 0.3s" }, children: sp.name }),
-                p.level && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, fontWeight: 600, color: levelColors[p.level] || "#64748b", background: `${levelColors[p.level] || "#64748b"}18`, padding: "2px 10px", borderRadius: 10, letterSpacing: "0.03em", textTransform: "uppercase" }, children: [
-                  p.level,
-                  isJunior ? " \xB7 Junior" : ""
-                ] }),
-                desc && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "#64748b", lineHeight: 1.3 }, children: desc }),
-                stylesStr && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#94a3b8", fontStyle: "italic" }, children: stylesStr }),
-                injuries.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "#ef4444", opacity: 0.8 }, children: [
-                  "\u{1FA79} ",
-                  injuries.join(", ")
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 6, fontSize: 10, color: isActive ? "#f97316" : "#64748b", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase", transition: "color 0.3s" }, children: isActive ? "\u25B6 Ouvrir" : "Ouvrir \u2192" })
-              ] }, sp.name);
-            }) }),
+                  scrollSnapAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 8,
+                  transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                  transform: isActive ? "scale(1.03)" : "scale(0.97)",
+                  opacity: isActive ? 1 : 0.7,
+                  boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none"
+                }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: {
+                    width: 56,
+                    height: 56,
+                    borderRadius: 16,
+                    background: isActive ? "linear-gradient(135deg,rgba(249,115,22,0.35),rgba(239,68,68,0.25))" : "linear-gradient(135deg,rgba(249,115,22,0.18),rgba(239,68,68,0.12))",
+                    border: isActive ? "2px solid rgba(249,115,22,0.5)" : "1px solid rgba(249,115,22,0.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 24,
+                    fontWeight: 700,
+                    color: isActive ? "#f97316" : "#94a3b8",
+                    flexShrink: 0,
+                    transition: "all 0.3s"
+                  }, children: sp.name.charAt(0).toUpperCase() }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: isActive ? "#f1f5f9" : "#cbd5e1", lineHeight: 1.2, transition: "color 0.3s" }, children: sp.name }),
+                  p.level && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, fontWeight: 600, color: levelColors[p.level] || "#64748b", background: `${levelColors[p.level] || "#64748b"}18`, padding: "2px 10px", borderRadius: 10, letterSpacing: "0.03em", textTransform: "uppercase" }, children: [
+                    p.level,
+                    isJunior ? " \xB7 Junior" : ""
+                  ] }),
+                  desc && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "#64748b", lineHeight: 1.3 }, children: desc }),
+                  stylesStr && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#94a3b8", fontStyle: "italic" }, children: stylesStr }),
+                  injuries.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "#ef4444", opacity: 0.8 }, children: [
+                    "\u{1FA79} ",
+                    injuries.join(", ")
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 6, fontSize: 10, color: isActive ? "#f97316" : "#64748b", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase", transition: "color 0.3s" }, children: isActive ? "\u25B6 Ouvrir" : "Ouvrir \u2192" })
+                ] }, sp.name);
+              }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { minWidth: `calc(50% - ${CARD_W / 2}px)`, flexShrink: 0 }, "aria-hidden": "true" })
+            ] }),
             filtered.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
               "button",
               {
