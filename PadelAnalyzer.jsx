@@ -1089,7 +1089,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </p>}
 
         <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V7.0 · {RACKETS_DB.length} raquettes · Scoring hybride IA
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · {RACKETS_DB.length} raquettes · Scoring hybride IA
         </div>
       </div>}
 
@@ -1111,7 +1111,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V7.0</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.0</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -2130,7 +2130,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V7.0 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.0 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -2152,7 +2152,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V7.0 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
     </div>
