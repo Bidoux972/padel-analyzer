@@ -45104,6 +45104,7 @@ function PadelAnalyzer() {
     return saved.length ? saved.slice(0, Math.min(saved.length, 4)).map((r2) => r2.id) : [];
   });
   const [tab, setTab] = (0, import_react59.useState)("radar");
+  const [showArena, setShowArena] = (0, import_react59.useState)(false);
   const [openAttr, setOpenAttr] = (0, import_react59.useState)(null);
   const [profile, setProfile] = (0, import_react59.useState)(() => loadSavedProfile());
   const [panel, setPanel] = (0, import_react59.useState)(null);
@@ -47077,7 +47078,47 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           );
         })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 2, marginBottom: 18, background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: 4, border: "1px solid rgba(255,255,255,0.04)" }, children: [["radar", "\u{1F578} Radar"], ["bars", "\u{1F4CA} Barres"], ["compare", "\u2694\uFE0F Comparer"], ["table", "\u{1F4CB} D\xE9tails"], ["fit", "\u{1F3AF} Pertinence"]].map(([k2, l]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: `pa-tab ${tab === k2 ? "pa-tab-active" : ""}`, onClick: () => setTab(k2), style: { flex: 1, padding: "9px 0", background: tab === k2 ? "rgba(255,255,255,0.06)" : "transparent", border: "none", borderRadius: 9, color: tab === k2 ? "#fff" : "#64748b", fontSize: 11, fontWeight: tab === k2 ? 700 : 500, cursor: "pointer", fontFamily: "'Inter',sans-serif", letterSpacing: "-0.01em", transition: "all 0.2s ease" }, children: l }, k2)) }),
+      selRackets.length >= 2 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+        "button",
+        {
+          onClick: () => setShowArena(true),
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            width: "100%",
+            padding: "14px 20px",
+            marginBottom: 18,
+            borderRadius: 14,
+            cursor: "pointer",
+            fontFamily: "'Outfit',sans-serif",
+            background: "linear-gradient(135deg,rgba(124,58,237,0.15),rgba(79,70,229,0.1),rgba(236,72,153,0.08))",
+            border: "1.5px solid rgba(124,58,237,0.35)",
+            transition: "all 0.3s ease",
+            boxShadow: "0 4px 24px rgba(124,58,237,0.15)"
+          },
+          onMouseEnter: (e) => {
+            e.currentTarget.style.background = "linear-gradient(135deg,rgba(124,58,237,0.25),rgba(79,70,229,0.18),rgba(236,72,153,0.12))";
+            e.currentTarget.style.boxShadow = "0 6px 32px rgba(124,58,237,0.25)";
+            e.currentTarget.style.transform = "translateY(-1px)";
+          },
+          onMouseLeave: (e) => {
+            e.currentTarget.style.background = "linear-gradient(135deg,rgba(124,58,237,0.15),rgba(79,70,229,0.1),rgba(236,72,153,0.08))";
+            e.currentTarget.style.boxShadow = "0 4px 24px rgba(124,58,237,0.15)";
+            e.currentTarget.style.transform = "none";
+          },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 18 }, children: "\u2694\uFE0F" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 13, fontWeight: 700, color: "#c4b5fd", letterSpacing: "-0.01em" }, children: "Entrer dans l'Ar\xE8ne" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 10, color: "#7c3aed", fontWeight: 600, background: "rgba(124,58,237,0.15)", padding: "2px 8px", borderRadius: 8 }, children: [
+              selRackets.length,
+              " raquettes"
+            ] })
+          ]
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 2, marginBottom: 18, background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: 4, border: "1px solid rgba(255,255,255,0.04)" }, children: [["radar", "\u{1F578} Radar"], ["bars", "\u{1F4CA} Barres"], ["table", "\u{1F4CB} D\xE9tails"], ["fit", "\u{1F3AF} Pertinence"]].map(([k2, l]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: `pa-tab ${tab === k2 ? "pa-tab-active" : ""}`, onClick: () => setTab(k2), style: { flex: 1, padding: "9px 0", background: tab === k2 ? "rgba(255,255,255,0.06)" : "transparent", border: "none", borderRadius: 9, color: tab === k2 ? "#fff" : "#64748b", fontSize: 11, fontWeight: tab === k2 ? 700 : 500, cursor: "pointer", fontFamily: "'Inter',sans-serif", letterSpacing: "-0.01em", transition: "all 0.2s ease" }, children: l }, k2)) }),
       tab === "radar" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: 20, position: "relative", overflow: "hidden" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
           @keyframes racketFadeIn {
@@ -47690,177 +47731,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ] }) })
         ] })
       ] }),
-      tab === "compare" && (() => {
-        if (selRackets.length < 2) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: 24, textAlign: "center" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 36, marginBottom: 10 }, children: "\u2694\uFE0F" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 14, fontWeight: 700, color: "#e2e8f0", marginBottom: 6 }, children: "S\xE9lectionne au moins 2 raquettes" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#64748b" }, children: "Clique sur les raquettes dans la grille ci-dessus pour les comparer c\xF4te \xE0 c\xF4te." })
-        ] });
-        const compareRadar = ATTRS.map((a2) => {
-          const pt = { attribute: a2 };
-          selRackets.forEach((r2) => {
-            pt[r2.shortName] = Number(r2.scores[a2]) || 0;
-          });
-          return pt;
-        });
-        const winners = {};
-        ATTRS.forEach((a2) => {
-          let maxVal = 0;
-          selRackets.forEach((r2) => {
-            const v = Number(r2.scores[a2]) || 0;
-            if (v > maxVal) maxVal = v;
-          });
-          winners[a2] = selRackets.filter((r2) => (Number(r2.scores[a2]) || 0) === maxVal).map((r2) => r2.id);
-        });
-        const overallScores = selRackets.map((r2) => ({
-          ...r2,
-          _gs: computeGlobalScore(r2.scores, profile),
-          _fy: computeForYou(r2.scores, profile),
-          _wins: ATTRS.filter((a2) => winners[a2].includes(r2.id)).length
-        }));
-        overallScores.sort((a2, b) => b._gs - a2._gs);
-        const best = overallScores[0];
-        const specLabels = [
-          { key: "brand", label: "Marque" },
-          { key: "shape", label: "Forme" },
-          { key: "weight", label: "Poids" },
-          { key: "balance", label: "Balance" },
-          { key: "surface", label: "Surface" },
-          { key: "core", label: "Noyau" },
-          { key: "price", label: "Prix" },
-          { key: "player", label: "Joueur pro" }
-        ];
-        const fyConfig3 = { recommended: { text: "RECOMMAND\xC9", color: "#4CAF50" }, partial: { text: "JOUABLE", color: "#FF9800" }, no: { text: "D\xC9CONSEILL\xC9", color: "#ef4444" } };
-        const colW = Math.min(180, Math.floor(600 / selRackets.length));
-        return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { animation: "fadeIn 0.3s ease" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: 16, marginBottom: 14 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, fontWeight: 700, color: "#94a3b8", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }, children: "\u2694\uFE0F Radar comparatif" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 320, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: compareRadar, cx: "50%", cy: "50%", outerRadius: "72%", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarGrid, { stroke: "rgba(255,255,255,0.1)", gridType: "polygon" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fill: "#94a3b8", fontSize: 10, fontWeight: 600 } }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarRadiusAxis, { angle: 90, domain: [0, 10], tick: { fill: "#475569", fontSize: 8 }, tickCount: 6, axisLine: false }),
-              selRackets.map((r2, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: r2.shortName, dataKey: r2.shortName, stroke: r2.color, fill: r2.color, fillOpacity: 0.12, strokeWidth: 2.5 }, r2.id)),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Legend, { wrapperStyle: { fontSize: 10, color: "#94a3b8", paddingTop: 8 } })
-            ] }) })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: 16, marginBottom: 14 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, fontWeight: 700, color: "#94a3b8", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 }, children: "\u{1F4CA} Scores par crit\xE8re" }),
-            ATTRS.map((attr) => {
-              const vals = selRackets.map((r2) => ({ r: r2, v: Number(r2.scores[attr]) || 0 }));
-              const maxV = Math.max(...vals.map((x2) => x2.v));
-              return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 12 }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, fontWeight: 700, color: "#cbd5e1", marginBottom: 5 }, children: attr }),
-                vals.map(({ r: r2, v }) => {
-                  const isWinner = v === maxV && vals.filter((x2) => x2.v === maxV).length < vals.length;
-                  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 8, height: 8, borderRadius: "50%", background: r2.color, flexShrink: 0 } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 70, fontSize: 9, color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 0 }, children: r2.shortName }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: 1, height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", width: `${v * 10}%`, background: isWinner ? "linear-gradient(90deg,#f97316,#ef4444)" : r2.color, borderRadius: 3, transition: "width 0.5s ease", opacity: isWinner ? 1 : 0.6 } }) }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 30, textAlign: "right", fontSize: 11, fontWeight: 700, color: isWinner ? "#f97316" : "#94a3b8" }, children: v.toFixed(1) }),
-                    isWinner && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, color: "#f97316" }, children: "\u{1F451}" })
-                  ] }, r2.id);
-                })
-              ] }, attr);
-            })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: 16, marginBottom: 14, overflowX: "auto" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, fontWeight: 700, color: "#94a3b8", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 }, children: "\u{1F4CB} Caract\xE9ristiques" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 10 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { style: { textAlign: "left", padding: "6px 8px", color: "#475569", fontWeight: 600, borderBottom: "1px solid rgba(255,255,255,0.08)" } }),
-                selRackets.map((r2) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { style: { padding: "6px 8px", borderBottom: "1px solid rgba(255,255,255,0.08)", textAlign: "center", minWidth: colW }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 10, height: 10, borderRadius: "50%", background: r2.color } }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: r2.color, fontWeight: 700, fontSize: 11 }, children: r2.shortName })
-                ] }) }, r2.id))
-              ] }) }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tbody", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "8px", color: "#64748b", fontWeight: 500 }, children: "Photo" }),
-                  selRackets.map((r2) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "8px", textAlign: "center" }, children: r2.imageUrl ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", style: { width: 48, height: 48, objectFit: "contain", borderRadius: 8, background: "rgba(255,255,255,0.04)" }, onError: (e) => {
-                    e.target.style.display = "none";
-                  } }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 20, opacity: 0.3 }, children: "\u{1F3BE}" }) }, r2.id))
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { style: { background: "rgba(249,115,22,0.04)" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "8px", color: "#f97316", fontWeight: 700 }, children: "Score global" }),
-                  selRackets.map((r2) => {
-                    const gs = computeGlobalScore(r2.scores, profile);
-                    const isBest = r2.id === best.id;
-                    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", { style: { padding: "8px", textAlign: "center", fontSize: 16, fontWeight: 800, color: isBest ? "#f97316" : "#cbd5e1", fontFamily: "'Outfit'" }, children: [
-                      gs.toFixed(1),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "#64748b" }, children: "/10" }),
-                      isBest && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, marginLeft: 4 }, children: "\u{1F451}" })
-                    ] }, r2.id);
-                  })
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "8px", color: "#64748b", fontWeight: 500 }, children: "Verdict" }),
-                  selRackets.map((r2) => {
-                    const fy = fyConfig3[computeForYou(r2.scores, profile)] || fyConfig3.partial;
-                    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "8px", textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, fontWeight: 700, color: fy.color, background: `${fy.color}18`, border: `1px solid ${fy.color}40`, borderRadius: 6, padding: "2px 8px", textTransform: "uppercase" }, children: fy.text }) }, r2.id);
-                  })
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { style: { background: "rgba(255,255,255,0.02)" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "8px", color: "#64748b", fontWeight: 500 }, children: "Crit\xE8res gagn\xE9s" }),
-                  selRackets.map((r2) => {
-                    const wins = ATTRS.filter((a2) => winners[a2].includes(r2.id)).length;
-                    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", { style: { padding: "8px", textAlign: "center", fontSize: 13, fontWeight: 700, color: wins >= 4 ? "#4CAF50" : wins >= 2 ? "#FF9800" : "#ef4444" }, children: [
-                      wins,
-                      "/",
-                      ATTRS.length
-                    ] }, r2.id);
-                  })
-                ] }),
-                specLabels.map(({ key, label }, si) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { style: { background: si % 2 === 0 ? "rgba(255,255,255,0.015)" : "transparent" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "6px 8px", color: "#64748b", fontWeight: 500, borderBottom: "1px solid rgba(255,255,255,0.04)" }, children: label }),
-                  selRackets.map((r2) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "6px 8px", textAlign: "center", color: "#cbd5e1", fontSize: 10, borderBottom: "1px solid rgba(255,255,255,0.04)" }, children: r2[key] || "\u2014" }, r2.id))
-                ] }, key)),
-                ATTRS.map((attr) => {
-                  const vals = selRackets.map((r2) => Number(r2.scores[attr]) || 0);
-                  const maxV = Math.max(...vals);
-                  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "6px 8px", color: "#a5b4fc", fontWeight: 600, borderBottom: "1px solid rgba(255,255,255,0.04)" }, children: attr }),
-                    selRackets.map((r2, i) => {
-                      const v = vals[i];
-                      const isBest = v === maxV && vals.filter((x2) => x2 === maxV).length < vals.length;
-                      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", { style: { padding: "6px 8px", textAlign: "center", fontWeight: isBest ? 800 : 500, color: isBest ? "#f97316" : "#94a3b8", fontSize: 11, borderBottom: "1px solid rgba(255,255,255,0.04)" }, children: [
-                        v.toFixed(1),
-                        isBest ? " \u{1F451}" : ""
-                      ] }, r2.id);
-                    })
-                  ] }, attr);
-                })
-              ] })
-            ] })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: 16, background: "rgba(249,115,22,0.04)", border: "1px solid rgba(249,115,22,0.15)" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, fontWeight: 700, color: "#94a3b8", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }, children: "\u{1F3C6} Verdict comparatif" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", marginBottom: 10 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "inline-flex", alignItems: "center", gap: 8 }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 14, height: 14, borderRadius: "50%", background: best.color } }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 16, fontWeight: 800, color: "#f1f5f9", fontFamily: "'Outfit'" }, children: best.shortName }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 12, color: "#f97316", fontWeight: 700 }, children: [
-                  best._gs.toFixed(1),
-                  "/10"
-                ] })
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "#94a3b8", marginTop: 4 }, children: [
-                "Meilleure correspondance pour ",
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { style: { color: "#a5b4fc" }, children: profileName })
-              ] })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center" }, children: overallScores.map((r2, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: i === 0 ? "rgba(249,115,22,0.1)" : "rgba(255,255,255,0.03)", border: `1px solid ${i === 0 ? "rgba(249,115,22,0.3)" : "rgba(255,255,255,0.06)"}`, borderRadius: 10 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 14 }, children: ["\u{1F947}", "\u{1F948}", "\u{1F949}", "4\uFE0F\u20E3"][i] || "" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 8, height: 8, borderRadius: "50%", background: r2.color } }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, fontWeight: 600, color: i === 0 ? "#f97316" : "#94a3b8" }, children: r2.shortName }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, fontWeight: 800, color: i === 0 ? "#f97316" : "#cbd5e1" }, children: r2._gs.toFixed(1) }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 8, color: "#64748b" }, children: [
-                r2._wins,
-                " \u{1F451}"
-              ] })
-            ] }, r2.id)) })
-          ] })
-        ] });
-      })(),
       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, marginTop: 4 }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: S.title, children: "\u{1F4D6} Lexique des crit\xE8res" }),
         ATTRS.map((a2) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { onClick: () => setOpenAttr((o) => o === a2 ? null : a2), style: { padding: "8px 10px", marginBottom: 3, borderRadius: 10, background: openAttr === a2 ? "rgba(249,115,22,0.06)" : "transparent", cursor: "pointer", transition: "background 0.15s ease" }, children: [
@@ -47878,7 +47748,253 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 7, opacity: 0.7 }, children: "Prix indicatifs \u2014 v\xE9rifier en boutique" })
       ] })
-    ] })
+    ] }),
+    showArena && (() => {
+      const r2 = selRackets;
+      if (r2.length < 2) {
+        setShowArena(false);
+        return null;
+      }
+      const scored = r2.map((r3) => ({
+        ...r3,
+        _gs: computeGlobalScore(r3.scores, profile),
+        _fy: computeForYou(r3.scores, profile)
+      }));
+      scored.sort((a2, b) => b._gs - a2._gs);
+      const champion = scored[0];
+      const attrWinners = {};
+      ATTRS.forEach((a2) => {
+        let mx = 0;
+        r2.forEach((r3) => {
+          const v = Number(r3.scores[a2]) || 0;
+          if (v > mx) mx = v;
+        });
+        attrWinners[a2] = r2.filter((r3) => (Number(r3.scores[a2]) || 0) === mx && r2.some((x2) => (Number(x2.scores[a2]) || 0) < mx)).map((r3) => r3.id);
+      });
+      scored.forEach((r3) => {
+        r3._wins = ATTRS.filter((a2) => attrWinners[a2].includes(r3.id)).length;
+      });
+      const compareRadar = ATTRS.map((a2) => {
+        const pt = { attribute: a2 };
+        r2.forEach((r3) => {
+          pt[r3.shortName] = Number(r3.scores[a2]) || 0;
+        });
+        return pt;
+      });
+      const fyConfig4 = { recommended: { text: "RECOMMAND\xC9", color: "#4CAF50" }, partial: { text: "JOUABLE", color: "#FF9800" }, no: { text: "D\xC9CONSEILL\xC9", color: "#ef4444" } };
+      const specRows = [
+        { label: "Forme", key: "shape" },
+        { label: "Poids", key: "weight" },
+        { label: "Balance", key: "balance" },
+        { label: "Surface", key: "surface" },
+        { label: "Noyau", key: "core" },
+        { label: "Prix", key: "price" }
+      ];
+      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 9999,
+        background: "radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.15), transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(236,72,153,0.1), transparent 50%), linear-gradient(180deg, #0a0a1a 0%, #0f0a24 30%, #120a2e 60%, #0a0a1a 100%)",
+        overflowY: "auto",
+        overflowX: "hidden"
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
+            @keyframes arenaSlideIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+            @keyframes arenaFadeIn { from{opacity:0} to{opacity:1} }
+            @keyframes arenaPulse { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+            @keyframes vsGlow { 0%,100%{text-shadow:0 0 20px rgba(124,58,237,0.5),0 0 40px rgba(236,72,153,0.3)} 50%{text-shadow:0 0 40px rgba(124,58,237,0.8),0 0 80px rgba(236,72,153,0.5)} }
+            @keyframes barGrow { from{width:0} }
+            @keyframes crownDrop { from{opacity:0;transform:translateY(-20px) scale(0.5)} to{opacity:1;transform:translateY(0) scale(1)} }
+            @keyframes starPop { 0%{transform:scale(0) rotate(-180deg);opacity:0} 60%{transform:scale(1.3) rotate(10deg);opacity:1} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+          ` }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }, children: [...Array(12)].map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: {
+          position: "absolute",
+          width: Math.random() * 3 + 1,
+          height: Math.random() * 3 + 1,
+          borderRadius: "50%",
+          background: i % 3 === 0 ? "rgba(124,58,237,0.4)" : i % 3 === 1 ? "rgba(236,72,153,0.3)" : "rgba(99,102,241,0.3)",
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          animation: `arenaPulse ${3 + Math.random() * 4}s ease-in-out infinite`,
+          animationDelay: `${Math.random() * 3}s`
+        } }, i)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative", zIndex: 1, maxWidth: 700, margin: "0 auto", padding: "20px 16px 40px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, animation: "arenaFadeIn 0.4s ease" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 24 }, children: "\u2694\uFE0F" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { style: { fontFamily: "'Outfit'", fontSize: 22, fontWeight: 800, background: "linear-gradient(135deg,#c4b5fd,#a78bfa,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0, letterSpacing: "-0.02em" }, children: "L'AR\xC8NE" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#7c3aed", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" }, children: "Comparateur immersif" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              "button",
+              {
+                onClick: () => setShowArena(false),
+                style: { width: 40, height: 40, borderRadius: 12, border: "1px solid rgba(124,58,237,0.3)", background: "rgba(124,58,237,0.1)", color: "#c4b5fd", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "inherit", transition: "all 0.2s" },
+                onMouseEnter: (e) => {
+                  e.currentTarget.style.background = "rgba(124,58,237,0.25)";
+                },
+                onMouseLeave: (e) => {
+                  e.currentTarget.style.background = "rgba(124,58,237,0.1)";
+                },
+                children: "\u2715"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", alignItems: "stretch", gap: 0, marginBottom: 28, animation: "arenaSlideIn 0.6s ease" }, children: scored.map((r3, i) => {
+            const isChamp = r3.id === champion.id;
+            const fy = fyConfig4[r3._fy] || fyConfig4.partial;
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_react59.default.Fragment, { children: [
+              i > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, width: 50, zIndex: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: "'Outfit'", fontSize: 20, fontWeight: 900, color: "#7c3aed", animation: "vsGlow 2s ease-in-out infinite", textAlign: "center", lineHeight: 1 }, children: "VS" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: {
+                flex: 1,
+                minWidth: 0,
+                background: isChamp ? "linear-gradient(165deg,rgba(124,58,237,0.12),rgba(236,72,153,0.06),rgba(0,0,0,0.2))" : "rgba(255,255,255,0.02)",
+                border: `1.5px solid ${isChamp ? "rgba(124,58,237,0.4)" : "rgba(255,255,255,0.06)"}`,
+                borderRadius: 18,
+                padding: "20px 14px",
+                textAlign: "center",
+                position: "relative",
+                boxShadow: isChamp ? "0 0 40px rgba(124,58,237,0.1)" : "none",
+                transition: "all 0.3s"
+              }, children: [
+                isChamp && scored.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)", animation: "crownDrop 0.6s ease 0.8s both" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 22 }, children: "\u{1F451}" }) }),
+                r3.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r3.imageUrl), alt: "", style: { width: 64, height: 80, objectFit: "contain", margin: "0 auto 8px", display: "block", filter: isChamp ? "drop-shadow(0 4px 16px rgba(124,58,237,0.3))" : "none", borderRadius: 8 }, onError: (e) => {
+                  e.target.style.display = "none";
+                } }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 10, height: 10, borderRadius: "50%", background: r3.color, margin: "0 auto 6px", boxShadow: `0 0 12px ${r3.color}60` } }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, fontWeight: 700, color: isChamp ? "#e2e8f0" : "#94a3b8", lineHeight: 1.2 }, children: r3.shortName }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#64748b", marginTop: 3 }, children: r3.brand }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 24, fontWeight: 800, color: isChamp ? "#c4b5fd" : "#475569", fontFamily: "'Outfit'", marginTop: 8 }, children: [
+                  r3._gs.toFixed(1),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, color: "#64748b" }, children: "/10" })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, fontWeight: 700, color: fy.color, background: `${fy.color}15`, border: `1px solid ${fy.color}30`, borderRadius: 6, padding: "2px 8px" }, children: fy.text }) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "#7c3aed", fontWeight: 600, marginTop: 6 }, children: [
+                  r3._wins,
+                  " crit\xE8re",
+                  r3._wins > 1 ? "s" : "",
+                  " gagn\xE9",
+                  r3._wins > 1 ? "s" : ""
+                ] })
+              ] })
+            ] }, r3.id);
+          }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(124,58,237,0.04)", border: "1px solid rgba(124,58,237,0.15)", borderRadius: 20, padding: 16, marginBottom: 20, animation: "arenaSlideIn 0.6s ease 0.2s both" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, fontWeight: 700, color: "#7c3aed", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }, children: "Radar comparatif" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 280, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: compareRadar, cx: "50%", cy: "50%", outerRadius: "70%", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarGrid, { stroke: "rgba(124,58,237,0.12)", gridType: "polygon" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fill: "#a78bfa", fontSize: 10, fontWeight: 600 } }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarRadiusAxis, { angle: 90, domain: [0, 10], tick: { fill: "#4c1d95", fontSize: 8 }, tickCount: 6, axisLine: false }),
+              r2.map((r3, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: r3.shortName, dataKey: r3.shortName, stroke: r3.color, fill: r3.color, fillOpacity: 0.1, strokeWidth: 2.5 }, r3.id)),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Legend, { wrapperStyle: { fontSize: 10, color: "#a78bfa", paddingTop: 6 } })
+            ] }) })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(124,58,237,0.04)", border: "1px solid rgba(124,58,237,0.15)", borderRadius: 20, padding: 16, marginBottom: 20, animation: "arenaSlideIn 0.6s ease 0.3s both" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, fontWeight: 700, color: "#7c3aed", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 14 }, children: "Duel par crit\xE8re" }),
+            ATTRS.map((attr, ai) => {
+              const vals = r2.map((r3) => ({ r: r3, v: Number(r3.scores[attr]) || 0 }));
+              const maxV = Math.max(...vals.map((x2) => x2.v));
+              return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 14 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, fontWeight: 700, color: "#c4b5fd", marginBottom: 6, display: "flex", alignItems: "center", justifyContent: "space-between" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: attr }),
+                  attrWinners[attr].length === 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 8, color: "#7c3aed", background: "rgba(124,58,237,0.15)", padding: "1px 6px", borderRadius: 4 }, children: [
+                    "\u{1F451} ",
+                    r2.find((r3) => r3.id === attrWinners[attr][0])?.shortName
+                  ] }),
+                  attrWinners[attr].length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, color: "#475569" }, children: "\xC9galit\xE9" })
+                ] }),
+                vals.map(({ r: r3, v }) => {
+                  const isW = attrWinners[attr].includes(r3.id);
+                  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 8, height: 8, borderRadius: "50%", background: r3.color, flexShrink: 0, boxShadow: isW ? `0 0 8px ${r3.color}` : "" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 55, fontSize: 9, color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 0 }, children: r3.shortName }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: 1, height: 8, background: "rgba(124,58,237,0.08)", borderRadius: 4, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", width: `${v * 10}%`, background: isW ? "linear-gradient(90deg,#7c3aed,#ec4899)" : r3.color, borderRadius: 4, animation: `barGrow 0.8s ease ${0.3 + ai * 0.05}s both`, opacity: isW ? 1 : 0.5 } }) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 32, textAlign: "right", fontSize: 11, fontWeight: isW ? 800 : 500, color: isW ? "#c4b5fd" : "#64748b", fontFamily: "'Outfit'" }, children: v.toFixed(1) })
+                  ] }, r3.id);
+                })
+              ] }, attr);
+            })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(124,58,237,0.04)", border: "1px solid rgba(124,58,237,0.15)", borderRadius: 20, padding: 16, marginBottom: 20, animation: "arenaSlideIn 0.6s ease 0.4s both", overflowX: "auto" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, fontWeight: 700, color: "#7c3aed", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 14 }, children: "Fiche technique" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", { style: { width: "100%", borderCollapse: "collapse" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", { style: { padding: "6px 8px", textAlign: "left", color: "#4c1d95", fontSize: 9, fontWeight: 600 } }),
+                scored.map((r3) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("th", { style: { padding: "6px 8px", textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 10, height: 10, borderRadius: "50%", background: r3.color, margin: "0 auto 3px" } }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, fontWeight: 700, color: r3.id === champion.id ? "#c4b5fd" : "#64748b" }, children: r3.shortName })
+                ] }, r3.id))
+              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: specRows.map(({ label, key }, si) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { style: { background: si % 2 === 0 ? "rgba(124,58,237,0.03)" : "transparent" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "5px 8px", fontSize: 9, color: "#a78bfa", fontWeight: 600 }, children: label }),
+                scored.map((r3) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", { style: { padding: "5px 8px", textAlign: "center", fontSize: 10, color: "#cbd5e1" }, children: r3[key] || "\u2014" }, r3.id))
+              ] }, key)) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "linear-gradient(135deg,rgba(124,58,237,0.1),rgba(236,72,153,0.06))", border: "1.5px solid rgba(124,58,237,0.3)", borderRadius: 20, padding: 20, textAlign: "center", animation: "arenaSlideIn 0.6s ease 0.5s both", boxShadow: "0 8px 40px rgba(124,58,237,0.1)" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }, children: "\u{1F3C6} Verdict de l'Ar\xE8ne" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { animation: "starPop 0.5s ease 1.2s both" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 36 }, children: "\u{1F451}" }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "inline-flex", alignItems: "center", gap: 8, marginTop: 4 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 14, height: 14, borderRadius: "50%", background: champion.color, boxShadow: `0 0 16px ${champion.color}60` } }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 20, fontWeight: 800, color: "#e2e8f0", fontFamily: "'Outfit'" }, children: champion.shortName })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 26, fontWeight: 900, color: "#c4b5fd", fontFamily: "'Outfit'", marginTop: 2 }, children: [
+              champion._gs.toFixed(1),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 12, color: "#7c3aed" }, children: "/10" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 11, color: "#a78bfa", marginTop: 4 }, children: [
+              "Meilleure correspondance pour ",
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { style: { color: "#c4b5fd" }, children: profileName })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "#7c3aed", marginTop: 2 }, children: [
+              champion._wins,
+              " crit\xE8re",
+              champion._wins > 1 ? "s" : "",
+              " remport\xE9",
+              champion._wins > 1 ? "s" : "",
+              " sur ",
+              ATTRS.length
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", justifyContent: "center", gap: 8, marginTop: 16, flexWrap: "wrap" }, children: scored.map((r3, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: {
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "6px 14px",
+              background: i === 0 ? "rgba(124,58,237,0.15)" : "rgba(255,255,255,0.02)",
+              border: `1px solid ${i === 0 ? "rgba(124,58,237,0.4)" : "rgba(255,255,255,0.06)"}`,
+              borderRadius: 10
+            }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 14 }, children: ["\u{1F947}", "\u{1F948}", "\u{1F949}", "4\uFE0F\u20E3"][i] || "" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 8, height: 8, borderRadius: "50%", background: r3.color } }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, fontWeight: i === 0 ? 700 : 500, color: i === 0 ? "#c4b5fd" : "#94a3b8" }, children: r3.shortName }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 11, fontWeight: 800, color: i === 0 ? "#c4b5fd" : "#64748b", fontFamily: "'Outfit'" }, children: r3._gs.toFixed(1) })
+            ] }, r3.id)) }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setShowArena(false), style: {
+              marginTop: 20,
+              padding: "12px 32px",
+              borderRadius: 12,
+              cursor: "pointer",
+              fontFamily: "'Outfit',sans-serif",
+              background: "rgba(124,58,237,0.15)",
+              border: "1px solid rgba(124,58,237,0.35)",
+              color: "#c4b5fd",
+              fontSize: 12,
+              fontWeight: 700,
+              transition: "all 0.2s"
+            }, onMouseEnter: (e) => {
+              e.currentTarget.style.background = "rgba(124,58,237,0.25)";
+            }, onMouseLeave: (e) => {
+              e.currentTarget.style.background = "rgba(124,58,237,0.15)";
+            }, children: "\u2190 Retour \xE0 l'analyse" })
+          ] })
+        ] })
+      ] });
+    })()
   ] });
   function renderSuggestCard(s2, realIdx, checked, isTopPick) {
     const isPrio = s2.category === "priority";
