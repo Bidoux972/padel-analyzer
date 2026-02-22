@@ -122,13 +122,13 @@ function saveProfilesList(list) {
 function saveNamedProfile(name, profile) {
   const list = loadProfilesList();
   const existing = list.findIndex(p => p.name === name);
-  const entry = { name, profile: {...profile}, savedAt: Date.now(), locked: existing >= 0 ? (list[existing].locked||false) : false };
+  const entry = { name, profile: {...profile}, savedAt: Date.now() };
   if (existing >= 0) list[existing] = entry; else list.push(entry);
   saveProfilesList(list);
   return list;
 }
 function deleteNamedProfile(name) {
-  const list = loadProfilesList().filter(p => p.name !== name || p.locked);
+  const list = loadProfilesList().filter(p => p.name !== name);
   saveProfilesList(list);
   return list;
 }
@@ -139,6 +139,8 @@ function toggleProfileLock(name) {
   saveProfilesList(list);
   return list;
 }
+function getAdminPin() { return localStorage.getItem('padel_admin_pin') || ''; }
+function setAdminPin(pin) { localStorage.setItem('padel_admin_pin', pin); }
 
 const ATTRS = ["Puissance","Contrôle","Confort","Spin","Maniabilité","Tolérance"];
 
@@ -564,6 +566,9 @@ export default function PadelAnalyzer() {
   const [wizardStep, setWizardStep] = useState(0);
   const [revealIdx, setRevealIdx] = useState(0);
   const [confirmModal, setConfirmModal] = useState(null); // { message, onConfirm }
+  const [passwordModal, setPasswordModal] = useState(null); // { mode:'unlock'|'setpin'|'lock', profileName, onSuccess }
+  const [pinInput, setPinInput] = useState("");
+  const [pinError, setPinError] = useState("");
 
   // Auto-save rackets and profile to localStorage
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
@@ -1350,7 +1355,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const stylesStr = styles.length?styles.slice(0,2).join(", "):"";
                   const isActive = i === activeProfileIdx;
                   return (
-                    <button key={sp.name} onClick={()=>selectHomeProfile(sp)} style={{
+                    <button key={sp.name} onClick={()=>{
+                      if(sp.locked){
+                        setPasswordModal({mode:'unlock',profileName:sp.name,onSuccess:()=>{selectHomeProfile(sp);setPasswordModal(null);}});
+                      } else { selectHomeProfile(sp); }
+                    }} style={{
                       background: isActive ? "rgba(249,115,22,0.08)" : "rgba(255,255,255,0.03)",
                       border: isActive ? "1px solid rgba(249,115,22,0.35)" : "1px solid rgba(255,255,255,0.08)",
                       borderRadius:18,padding:"22px 16px 16px",cursor:"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
@@ -1361,8 +1370,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       opacity: isActive ? 1 : 0.7,
                       boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none",
                     }}>
-                      {/* Lock toggle button */}
-                      <div onClick={e=>{e.stopPropagation();const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);}} style={{
+                      {/* Lock toggle (top-left) */}
+                      <div onClick={e=>{e.stopPropagation();
+                        if(sp.locked){
+                          setPasswordModal({mode:'unlock-toggle',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});
+                        } else {
+                          const pin=getAdminPin();
+                          if(!pin){setPasswordModal({mode:'setpin',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});}
+                          else{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);}
+                        }
+                      }} style={{
                         position:"absolute",top:6,left:6,width:22,height:22,borderRadius:"50%",
                         background:sp.locked?"rgba(99,102,241,0.15)":"rgba(255,255,255,0.05)",
                         border:`1px solid ${sp.locked?"rgba(99,102,241,0.3)":"rgba(255,255,255,0.1)"}`,
@@ -1372,7 +1389,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";}}
                          onMouseLeave={e=>{e.currentTarget.style.opacity=sp.locked?"0.9":"0.4";}}
                          title={sp.locked?"Déverrouiller":"Verrouiller"}>{sp.locked?"🔒":"🔓"}</div>
-                      {/* Delete button — hidden when locked */}
+                      {/* Delete button */}
                       {!sp.locked&&<div onClick={e=>{e.stopPropagation();setConfirmModal({message:`Supprimer le profil "${sp.name}" ?`,onConfirm:()=>{const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{
                         position:"absolute",top:6,right:6,width:22,height:22,borderRadius:"50%",
                         background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",
@@ -1401,8 +1418,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       {/* Injuries */}
                       {injuries.length>0&&<div style={{fontSize:9,color:"#ef4444",opacity:0.8}}>🩹 {injuries.join(", ")}</div>}
                       {/* CTA */}
-                      <div style={{marginTop:6,fontSize:10,color: isActive ? "#f97316" : "#64748b",fontWeight:600,letterSpacing:"0.04em",textTransform:"uppercase",transition:"color 0.3s"}}>
-                        {isActive ? "▶ Ouvrir" : "Ouvrir →"}
+                      <div style={{marginTop:6,fontSize:10,color: sp.locked ? "#a5b4fc" : isActive ? "#f97316" : "#64748b",fontWeight:600,letterSpacing:"0.04em",textTransform:"uppercase",transition:"color 0.3s"}}>
+                        {sp.locked ? "🔒 Protégé" : isActive ? "▶ Ouvrir" : "Ouvrir →"}
                       </div>
                     </button>
                   );
@@ -2370,7 +2387,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>;
         })()}
 
-        {/* Profile name display (read-only in app mode) */}
 
         {/* STEP 0: Identité */}
         {wizardStep===0&&<div style={{animation:"fadeIn 0.3s ease"}}>
@@ -3612,6 +3628,63 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
               background:"rgba(239,68,68,0.15)",border:"1px solid rgba(239,68,68,0.4)",color:"#ef4444",
             }}>Supprimer</button>
+          </div>
+        </div>
+      </div>}
+
+      {/* PASSWORD MODAL */}
+      {passwordModal&&<div onClick={()=>{setPasswordModal(null);setPinInput("");setPinError("");}} style={{
+        position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(4px)",
+        display:"flex",alignItems:"center",justifyContent:"center",zIndex:2100,animation:"fadeIn 0.2s ease",
+      }}>
+        <div onClick={e=>e.stopPropagation()} style={{
+          background:"#1a1f2e",border:"1px solid rgba(255,255,255,0.12)",borderRadius:20,
+          padding:"28px 24px 22px",maxWidth:340,width:"90%",textAlign:"center",
+          boxShadow:"0 20px 60px rgba(0,0,0,0.5)",animation:"fadeIn 0.25s ease",
+        }}>
+          <div style={{fontSize:32,marginBottom:12}}>{passwordModal.mode==="setpin"?"🔑":"🔒"}</div>
+          <div style={{fontSize:15,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif",marginBottom:6}}>
+            {passwordModal.mode==="setpin"?"Créer un code administrateur":"Code administrateur requis"}
+          </div>
+          <p style={{fontSize:11,color:"#64748b",margin:"0 0 16px"}}>
+            {passwordModal.mode==="setpin"
+              ?"Ce code unique protégera tous les profils verrouillés."
+              :`Entrez le code pour accéder au profil "${passwordModal.profileName}".`}
+          </p>
+          <input type="password" value={pinInput} onChange={e=>{setPinInput(e.target.value);setPinError("");}}
+            onKeyDown={e=>{if(e.key==="Enter"){
+              if(passwordModal.mode==="setpin"){
+                if(pinInput.length<4){setPinError("4 caractères minimum");return;}
+                setAdminPin(pinInput);passwordModal.onSuccess();setPinInput("");setPinError("");
+              } else {
+                if(pinInput===getAdminPin()){passwordModal.onSuccess();setPinInput("");setPinError("");}
+                else{setPinError("Code incorrect");}
+              }
+            }}}
+            placeholder={passwordModal.mode==="setpin"?"Choisir un code (4+ car.)":"Entrer le code"}
+            autoFocus
+            style={{width:"100%",padding:"12px 14px",borderRadius:12,fontSize:18,fontWeight:700,textAlign:"center",letterSpacing:"0.3em",
+              background:"rgba(255,255,255,0.06)",border:`1px solid ${pinError?"rgba(239,68,68,0.5)":"rgba(255,255,255,0.12)"}`,
+              color:"#f1f5f9",fontFamily:"'Outfit',sans-serif",outline:"none",boxSizing:"border-box",
+            }}/>
+          {pinError&&<div style={{fontSize:11,color:"#ef4444",marginTop:8,fontWeight:600}}>{pinError}</div>}
+          <div style={{display:"flex",gap:10,marginTop:16}}>
+            <button onClick={()=>{setPasswordModal(null);setPinInput("");setPinError("");}} style={{
+              flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+              background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#94a3b8",
+            }}>Annuler</button>
+            <button onClick={()=>{
+              if(passwordModal.mode==="setpin"){
+                if(pinInput.length<4){setPinError("4 caractères minimum");return;}
+                setAdminPin(pinInput);passwordModal.onSuccess();setPinInput("");setPinError("");
+              } else {
+                if(pinInput===getAdminPin()){passwordModal.onSuccess();setPinInput("");setPinError("");}
+                else{setPinError("Code incorrect");}
+              }
+            }} style={{
+              flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+              background:"rgba(99,102,241,0.15)",border:"1px solid rgba(99,102,241,0.4)",color:"#a5b4fc",
+            }}>{passwordModal.mode==="setpin"?"Créer":"Valider"}</button>
           </div>
         </div>
       </div>}
