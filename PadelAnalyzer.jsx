@@ -122,13 +122,20 @@ function saveProfilesList(list) {
 function saveNamedProfile(name, profile) {
   const list = loadProfilesList();
   const existing = list.findIndex(p => p.name === name);
-  const entry = { name, profile: {...profile}, savedAt: Date.now() };
+  const entry = { name, profile: {...profile}, savedAt: Date.now(), locked: existing >= 0 ? (list[existing].locked||false) : false };
   if (existing >= 0) list[existing] = entry; else list.push(entry);
   saveProfilesList(list);
   return list;
 }
 function deleteNamedProfile(name) {
-  const list = loadProfilesList().filter(p => p.name !== name);
+  const list = loadProfilesList().filter(p => p.name !== name || p.locked);
+  saveProfilesList(list);
+  return list;
+}
+function toggleProfileLock(name) {
+  const list = loadProfilesList();
+  const idx = list.findIndex(p => p.name === name);
+  if (idx >= 0) list[idx].locked = !list[idx].locked;
   saveProfilesList(list);
   return list;
 }
@@ -829,8 +836,11 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
   }
 
   function clearLocalDB() {
-    if (!confirm(`Supprimer les ${localDBCount} raquette(s) apprise(s) localement ?\n\nLa base embarquée (${RACKETS_DB.length}) n'est pas affectée.`)) return;
-    try { localStorage.removeItem('padel_db_extra'); setLocalDBCount(0); } catch{}
+    if (!localDBCount) return;
+    setConfirmModal({message:`Supprimer les ${localDBCount} raquette(s) apprise(s) localement ?`,onConfirm:()=>{
+      try { localStorage.removeItem('padel_db_extra'); setLocalDBCount(0); } catch{}
+      setConfirmModal(null);
+    },onCancel:()=>setConfirmModal(null)});
   }
 
   // Load a racket directly from DB (no API needed)
@@ -1351,14 +1361,25 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       opacity: isActive ? 1 : 0.7,
                       boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none",
                     }}>
-                      {/* Delete button */}
-                      <div onClick={e=>{e.stopPropagation();setConfirmModal({message:`Supprimer le profil "${sp.name}" ?`,onConfirm:()=>{const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{
+                      {/* Lock toggle button */}
+                      <div onClick={e=>{e.stopPropagation();const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);}} style={{
+                        position:"absolute",top:6,left:6,width:22,height:22,borderRadius:"50%",
+                        background:sp.locked?"rgba(99,102,241,0.15)":"rgba(255,255,255,0.05)",
+                        border:`1px solid ${sp.locked?"rgba(99,102,241,0.3)":"rgba(255,255,255,0.1)"}`,
+                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,
+                        color:sp.locked?"#a5b4fc":"#475569",
+                        cursor:"pointer",opacity:sp.locked?0.9:0.4,transition:"all 0.2s",zIndex:2,
+                      }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";}}
+                         onMouseLeave={e=>{e.currentTarget.style.opacity=sp.locked?"0.9":"0.4";}}
+                         title={sp.locked?"Déverrouiller":"Verrouiller"}>{sp.locked?"🔒":"🔓"}</div>
+                      {/* Delete button — hidden when locked */}
+                      {!sp.locked&&<div onClick={e=>{e.stopPropagation();setConfirmModal({message:`Supprimer le profil "${sp.name}" ?`,onConfirm:()=>{const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{
                         position:"absolute",top:6,right:6,width:22,height:22,borderRadius:"50%",
                         background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",
                         display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#ef4444",
                         cursor:"pointer",opacity:0.5,transition:"all 0.2s",zIndex:2,
                       }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";e.currentTarget.style.background="rgba(239,68,68,0.25)";}}
-                         onMouseLeave={e=>{e.currentTarget.style.opacity="0.5";e.currentTarget.style.background="rgba(239,68,68,0.1)";}}>🗑</div>
+                         onMouseLeave={e=>{e.currentTarget.style.opacity="0.5";e.currentTarget.style.background="rgba(239,68,68,0.1)";}}>🗑</div>}
                       {/* Avatar */}
                       <div style={{width:56,height:56,borderRadius:16,
                         background: isActive 
@@ -2349,16 +2370,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>;
         })()}
 
-        {/* Multi-profile selector (compact) */}
-        {savedProfiles.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:12,justifyContent:"center"}}>
-          {savedProfiles.map(sp=>(
-            <button key={sp.name} onClick={()=>{
-              setProfile({...INITIAL_PROFILE,...sp.profile});
-              setProfileName(sp.name);
-              setWizardStep(0);
-            }} style={{padding:"4px 10px",background:profileName===sp.name?"rgba(99,102,241,0.25)":"rgba(255,255,255,0.04)",border:`1px solid ${profileName===sp.name?"rgba(99,102,241,0.5)":"rgba(255,255,255,0.08)"}`,borderRadius:8,color:profileName===sp.name?"#a5b4fc":"#94a3b8",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{sp.name}</button>
-          ))}
-        </div>}
+        {/* Profile name display (read-only in app mode) */}
 
         {/* STEP 0: Identité */}
         {wizardStep===0&&<div style={{animation:"fadeIn 0.3s ease"}}>
@@ -2553,7 +2565,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <button onClick={()=>removeRacket(r.id)} style={{background:"rgba(239,68,68,0.15)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:6,padding:"3px 8px",color:"#ef4444",fontSize:10,cursor:"pointer",fontWeight:600,fontFamily:"inherit"}}>Supprimer</button>
           </div>
         ))}
-        {rackets.length>1&&<button onClick={()=>{if(confirm("Supprimer toutes les raquettes ?")){setRackets([]);setSelected([]);}}} style={{...S.btn(false),width:"100%",marginTop:12,padding:"8px 0",fontSize:11,color:"#ef4444",borderColor:"rgba(239,68,68,0.3)"}}>🗑 Tout effacer</button>}
+        {rackets.length>1&&<button onClick={()=>{setConfirmModal({message:"Supprimer toutes les raquettes ?",onConfirm:()=>{setRackets([]);setSelected([]);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{...S.btn(false),width:"100%",marginTop:12,padding:"8px 0",fontSize:11,color:"#ef4444",borderColor:"rgba(239,68,68,0.3)"}}>🗑 Tout effacer</button>}
         
         {/* Local DB management */}
         <div style={{marginTop:16,paddingTop:12,borderTop:"1px solid rgba(255,255,255,0.06)"}}>
