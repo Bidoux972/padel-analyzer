@@ -464,14 +464,30 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   }
   // §4 Brand analysis
   if(brands.length>0){
-    const bInTop3=ranked.slice(0,3).some(r=>brands.some(b=>(r.brand||"").toLowerCase().replace(/\s/g,"").includes(b)));
-    const bestBR=ranked.find(r=>brands.some(b=>(r.brand||"").toLowerCase().replace(/\s/g,"").includes(b)));
-    const bL=brands.map(b=>b.charAt(0).toUpperCase()+b.slice(1));
-    if(!bInTop3&&bestBR){
+    // Check which brands are actually in Top 3
+    const brandsInTop3 = brands.filter(b=>ranked.slice(0,3).some(r=>(r.brand||"").toLowerCase().replace(/\s/g,"").includes(b)));
+    const brandsNotInTop3 = brands.filter(b=>!brandsInTop3.includes(b));
+    const bInLabels = brandsInTop3.map(b=>b.charAt(0).toUpperCase()+b.slice(1));
+    const bOutLabels = brandsNotInTop3.map(b=>b.charAt(0).toUpperCase()+b.slice(1));
+    const bestBR=brandsNotInTop3.length>0?ranked.find(r=>brandsNotInTop3.some(b=>(r.brand||"").toLowerCase().replace(/\s/g,"").includes(b))):null;
+    
+    if(brandsInTop3.length===brands.length){
+      // All preferred brands are in Top 3
+      const verb=bInLabels.length>1?"sont représentées":"est représentée";
+      lines.push(`${bInLabels.join(", ")} ${verb} dans le Top 3 — ${bInLabels.length>1?"les marques préférées proposent":"la marque préférée propose"} des modèles techniquement adaptés au profil.`);
+    } else if(brandsInTop3.length>0 && brandsNotInTop3.length>0){
+      // Mixed: some brands in, some out
+      const inStr=bInLabels.join(", ");
+      const outStr=bOutLabels.join(", ");
+      let line=`${inStr} ${bInLabels.length>1?"sont dans":"est dans"} le Top 3.`;
+      if(bestBR){
+        line+=` ${outStr} absente — la meilleure est la ${bestBR.name} à ${(bestBR.globalScore*10).toFixed(1)}%.`;
+      }
+      lines.push(line);
+    } else if(bestBR){
+      // No brand in Top 3
       const gap=(bestScore-bestBR.globalScore)*10;
-      lines.push(`Marque préférée ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} à ${(bestBR.globalScore*10).toFixed(1)}% (${gap.toFixed(1)} pts sous la n°1). L'écart technique ne peut pas être comblé par un simple bonus marque — le classement reste objectif. La section "À Découvrir" met en avant les ${bL.join("/")} les plus pertinentes.`);
-    } else if(bInTop3){
-      lines.push(`${bL.join("/")} est représentée dans le Top 3 — la marque préférée propose des modèles techniquement adaptés au profil.`);
+      lines.push(`Marque préférée ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} à ${(bestBR.globalScore*10).toFixed(1)}% (${gap.toFixed(1)} pts sous la n°1). L'écart technique ne peut pas être comblé par un simple bonus marque — le classement reste objectif.`);
     }
   }
   // §5 Top 3 shapes
