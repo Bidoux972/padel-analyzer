@@ -46391,12 +46391,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         return rackets_db_default.filter((r2) => (catMap[lvl] || ["debutant", "intermediaire"]).includes(r2.category));
       })();
       const brandPref = (profile.brandTags || []).map((id) => BRAND_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
-      if (brandPref.length) {
-        const prefLower = brandPref.map((b) => b.toLowerCase());
-        const brandMatches = pool.filter((r2) => prefLower.includes(r2.brand.toLowerCase()));
-        const otherTop = pool.filter((r2) => !prefLower.includes(r2.brand.toLowerCase())).sort((a2, b) => computeGlobalScore(b.scores, profile) - computeGlobalScore(a2.scores, profile)).slice(0, 2);
-        pool = [...brandMatches, ...otherTop];
-      }
       const scored = pool.map((r2) => ({ ...r2, _gs: computeGlobalScore(r2.scores, profile), _fy: computeForYou(r2.scores, profile) }));
       scored.sort((a2, b) => b._gs - a2._gs);
       const top3 = scored.slice(0, 3);
@@ -46476,7 +46470,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "14px 10px", flex: "1 1 200px", minWidth: 200, animation: "fadeIn 0.4s ease" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", marginBottom: 4, marginTop: 0 }, children: "\u{1F4CA} Ton profil id\xE9al" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", marginBottom: 4, marginTop: 0 }, children: [
+              "\u{1F4CA} Raquette id\xE9ale pour ",
+              profileName
+            ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 180, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: idealRadar, margin: { top: 10, right: 30, bottom: 10, left: 30 }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarGrid, { stroke: "rgba(255,255,255,0.08)" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fill: "#94a3b8", fontSize: 9 } }),
@@ -46503,9 +46500,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ] })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "18px 16px", marginBottom: 16, animation: "fadeIn 0.5s ease" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", marginTop: 0, marginBottom: 14 }, children: [
-            "\u2B50 Top 3 pour ",
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", textAlign: "center", marginTop: 0, marginBottom: 4 }, children: [
+            "\u{1F3C6} Top 3 absolu pour ",
             profileName
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 9, color: "#475569", textAlign: "center", margin: "0 0 14px", lineHeight: 1.5 }, children: [
+            "Sur ",
+            scored.length,
+            " raquettes compatibles",
+            brandPref.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: " \xB7 Toutes marques confondues" }) : ""
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 10 }, children: top3.map((r2, i) => {
             const fy = fyConfig2[r2._fy] || fyConfig2.partial;
@@ -46535,21 +46538,38 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               ] })
             ] }, r2.id);
           }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => launchAnalysis(top3), style: { marginTop: 14, width: "100%", padding: "12px", background: "linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 12, color: "#f97316", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", letterSpacing: "-0.01em" }, children: "\u{1F4CA} Analyser ce Top 3 en d\xE9tail" })
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 14, padding: "12px", background: "rgba(99,102,241,0.04)", border: "1px solid rgba(99,102,241,0.1)", borderRadius: 12 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#a5b4fc", margin: "0 0 4px", fontWeight: 600 }, children: "\u{1F4A1} Comment lire ce classement ?" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 9, color: "#64748b", margin: 0, lineHeight: 1.6 }, children: [
+              "Ce Top 3 est calcul\xE9 sur toute notre base de ",
+              rackets_db_default.length,
+              " raquettes, en croisant ton profil, ton style de jeu et tes priorit\xE9s. C'est un excellent point de d\xE9part \u2014 mais pour aller plus loin, lance une analyse d\xE9taill\xE9e : scores par crit\xE8re, radars comparatifs, et bien plus."
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => launchAnalysis(top3), style: { marginTop: 12, width: "100%", padding: "12px", background: "linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 12, color: "#f97316", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", letterSpacing: "-0.01em" }, children: "\u{1F4CA} Analyser ce Top 3 en d\xE9tail" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap", animation: "fadeIn 0.6s ease" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
             setPanel("suggest");
             goToApp();
-          }, style: { flex: "1 1 140px", padding: "14px 16px", background: "rgba(76,175,80,0.08)", border: "1px solid rgba(76,175,80,0.25)", borderRadius: 14, color: "#4CAF50", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: "\u{1F3AF} Sugg\xE8re-moi d'autres" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+          }, style: { flex: "1 1 140px", padding: "14px 16px", background: "rgba(76,175,80,0.08)", border: "1px solid rgba(76,175,80,0.25)", borderRadius: 14, color: "#4CAF50", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: "\u{1F3AF} Sugg\xE8re-moi d'autres" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 8, color: "#64748b", fontWeight: 400, marginTop: 3 }, children: brandPref.length > 0 ? `Priorit\xE9 ${brandPref.join(", ")}` : "Recommandations IA" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
             goToApp();
-          }, style: { flex: "1 1 140px", padding: "14px 16px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 14, color: "#a5b4fc", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: hasSession ? "\u{1F4CA} Reprendre l'analyse" : "\u{1F4CA} Explorer la base" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+          }, style: { flex: "1 1 140px", padding: "14px 16px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 14, color: "#a5b4fc", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: hasSession ? "\u{1F4CA} Reprendre l'analyse" : "\u{1F4CA} Explorer la base" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 8, color: "#64748b", fontWeight: 400, marginTop: 3 }, children: hasSession ? "Session en cours" : "Comparer, radars, PDF" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
             setWizardStep(0);
             setPanel("profile");
             goToApp();
-          }, style: { flex: "1 1 140px", padding: "14px 16px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, color: "#94a3b8", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: "\u270F\uFE0F Modifier profil" })
+          }, style: { flex: "1 1 140px", padding: "14px 16px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, color: "#94a3b8", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: "\u270F\uFE0F Modifier profil" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 8, color: "#64748b", fontWeight: 400, marginTop: 3 }, children: "Affiner les r\xE9sultats" })
+          ] })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#334155", letterSpacing: "0.05em", textAlign: "center", marginTop: 24 }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
@@ -47428,7 +47448,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               if (b) for (const [k2, v] of Object.entries(b)) w2[k2] = (w2[k2] || 1) + v;
             }
             const maxW2 = Math.max(...Object.values(w2));
-            const idealRadar2 = ATTRS.map((a2) => ({ attribute: a2, "Profil id\xE9al": Math.round(w2[a2] / maxW2 * 10 * 10) / 10 }));
+            const idealRadar2 = ATTRS.map((a2) => ({ attribute: a2, "Raquette id\xE9ale": Math.round(w2[a2] / maxW2 * 10 * 10) / 10 }));
             const ranked = rackets.map((r2) => ({ ...r2, globalScore: computeGlobalScore(r2.scores, profile) })).sort((a2, b) => b.globalScore - a2.globalScore);
             if (ranked.length > 0) {
               idealRadar2.forEach((pt) => {
@@ -47438,14 +47458,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 12, marginBottom: 12, alignItems: "stretch" }, className: "print-radar-section", children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: "1 1 50%", background: "rgba(99,102,241,0.04)", border: "1px solid rgba(99,102,241,0.12)", borderRadius: 10, padding: "8px 4px 4px", minHeight: 200 }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, fontWeight: 700, color: "#a5b4fc", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }, children: [
-                  "\u{1F4CA} Profil id\xE9al",
+                  "\u{1F4CA} Raquette id\xE9ale",
                   ranked.length > 0 ? ` vs ${ranked[0].shortName}` : ""
                 ] }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 190, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: idealRadar2, margin: { top: 8, right: 30, bottom: 4, left: 30 }, children: [
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarGrid, { stroke: "rgba(255,255,255,0.08)" }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fill: "#94a3b8", fontSize: 8 } }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarRadiusAxis, { angle: 90, domain: [0, 10], tick: false, axisLine: false }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: "Profil id\xE9al", dataKey: "Profil id\xE9al", stroke: "#6366f1", fill: "#6366f1", fillOpacity: 0.12, strokeWidth: 2, strokeDasharray: "6 3" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: "Raquette id\xE9ale", dataKey: "Raquette id\xE9ale", stroke: "#6366f1", fill: "#6366f1", fillOpacity: 0.12, strokeWidth: 2, strokeDasharray: "6 3" }),
                   ranked.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: "\u{1F947} " + ranked[0].shortName, dataKey: "\u{1F947} " + ranked[0].shortName, stroke: "#f97316", fill: "#f97316", fillOpacity: 0.15, strokeWidth: 2 }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Legend, { wrapperStyle: { fontSize: 8, color: "#94a3b8", paddingTop: 2 } })
                 ] }) })
