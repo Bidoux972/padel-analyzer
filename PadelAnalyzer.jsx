@@ -2447,6 +2447,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <style>{`
           @media print {
             * { box-sizing: border-box !important; }
+            html, body { background: white !important; margin: 0 !important; padding: 0 !important; }
             body * { visibility: hidden !important; }
             #print-pertinence, #print-pertinence * { visibility: visible !important; }
             #print-pertinence {
@@ -2461,7 +2462,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-section-title { display: block !important; }
             #print-pertinence .no-print { display: none !important; }
             #print-pertinence .print-radar-section { display: flex !important; gap: 12px !important; align-items: stretch !important; }
-            #print-pertinence .print-radar-section > div:first-child { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 10px !important; padding: 8px 4px 4px !important; }
+            #print-pertinence .print-radar-section > div:first-child { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 10px !important; padding: 8px 8px 4px !important; }
+            #print-pertinence .print-radar-section > div:first-child .recharts-responsive-container { display: flex !important; align-items: center !important; justify-content: center !important; }
+            #print-pertinence .print-radar-section svg { display: block !important; margin: 0 auto !important; }
             #print-pertinence .print-card {
               border: 1px solid #e2e8f0 !important; background: #fafafa !important;
               color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
@@ -2598,8 +2601,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             return <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"stretch"}} className="print-radar-section">
               <div style={{flex:"1 1 50%",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:10,padding:"8px 4px 4px",minHeight:200,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                 <div style={{fontSize:9,fontWeight:700,color:"#a5b4fc",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2,width:"100%"}}>📊 Raquette idéale{ranked.length>0?` vs ${ranked[0].shortName}`:""}</div>
-                <div style={{width:"100%"}}><ResponsiveContainer width="100%" height={190}>
-                  <RadarChart data={idealRadar2} margin={{top:8,right:30,bottom:4,left:30}}>
+                <div style={{width:"100%",flex:1}}><ResponsiveContainer width="100%" height={200}>
+                  <RadarChart data={idealRadar2} margin={{top:10,right:25,bottom:10,left:25}} cx="50%" cy="50%">
                     <PolarGrid stroke="rgba(255,255,255,0.08)"/>
                     <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:8}}/>
                     <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
