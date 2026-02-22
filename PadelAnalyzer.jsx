@@ -583,13 +583,13 @@ export default function PadelAnalyzer() {
     setPanel(null);
     setScreen("dashboard");
   };
-  // Home screen: create new profile → onboarding flow
+  // Home screen: create new profile → wizard flow
   const createNewProfile = () => {
     setProfile({...INITIAL_PROFILE});
     setProfileName("");
     setWizardStep(0);
     setPanel(null);
-    setScreen("onboarding");
+    setScreen("wizard");
   };
   // Disconnect: clear session and back to home
   const disconnect = () => {
@@ -1433,247 +1433,451 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>}
 
       {/* ============================================================ */}
-      {/* ONBOARDING SCREEN — Progressive profile creation */}
+      {/* WIZARD SCREEN — Step-by-step profile creation */}
       {/* ============================================================ */}
-      {screen==="onboarding"&&(()=>{
-        // Determine which sections are "unlocked"
-        const hasName = profileName.trim().length > 0;
-        const hasGabarit = Number(profile.age)>0 || Number(profile.height)>0;
-        const hasLevel = !!profile.level;
-        const hasHandSide = !!profile.hand && !!profile.side;
-        const hasStyle = (profile.styleTags||[]).length > 0;
-        const hasInjury = (profile.injuryTags||[]).length > 0;
-        const hasPriority = (profile.priorityTags||[]).length > 0;
-        
-        // Progressive unlock logic
-        const showGabarit = hasName;
-        const showLevel = hasName && hasGabarit;
-        const showHandSide = showLevel && hasLevel;
-        const showStyle = showHandSide && hasHandSide;
-        const showInjury = showStyle && hasStyle;
-        const showPriority = showInjury && hasInjury;
-        const showBrands = showPriority && hasPriority;
-        const showSave = showPriority && hasPriority && hasName;
+      {screen==="wizard"&&(()=>{
+        const TOTAL_STEPS = 9;
+        const progress = (wizardStep+1) / TOTAL_STEPS;
+        const isJuniorW = (Number(profile.age)>0&&Number(profile.age)<15)||(Number(profile.height)>0&&Number(profile.height)<150);
 
-        // Count filled sections for progress
-        const filledCount = [hasName, hasGabarit, hasLevel&&hasHandSide, hasStyle, hasInjury, hasPriority].filter(Boolean).length;
-        const totalSteps = 6;
-        const progress = filledCount / totalSteps;
+        // Can advance?
+        const canNext = [
+          ()=>profileName.trim().length>0, // 0: name
+          ()=>Number(profile.age)>0, // 1: gabarit (age required)
+          ()=>!!profile.level, // 2: level
+          ()=>!!profile.hand && !!profile.side, // 3: hand+side
+          ()=>!!profile.frequency, // 4: frequency
+          ()=>(profile.styleTags||[]).length>0, // 5: style
+          ()=>(profile.injuryTags||[]).length>0, // 6: injuries
+          ()=>(profile.priorityTags||[]).length>0, // 7: priorities
+          ()=>true, // 8: brands (optional)
+        ][wizardStep]();
 
-        // Section animation style
-        const sectionAnim = (delay) => ({
-          animation: `fadeSlideIn 0.5s ease ${delay}ms both`,
-        });
-        const sectionStyle = {
-          background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)",
-          borderRadius:16, padding:"18px 16px", marginBottom:14,
-        };
-        const isJuniorOnboard = (Number(profile.age)>0&&Number(profile.age)<15)||(Number(profile.height)>0&&Number(profile.height)<150);
+        const nextStep = () => { if(canNext && wizardStep<TOTAL_STEPS-1) setWizardStep(s=>s+1); };
+        const prevStep = () => { if(wizardStep>0) setWizardStep(s=>s-1); };
+        const goRecap = () => { if(canNext) setScreen("recap"); };
+
+        // Card select helper
+        const CardSelect = ({options, value, onChange, multi, columns=2}) => (
+          <div style={{display:"grid",gridTemplateColumns:`repeat(${columns},1fr)`,gap:10,maxWidth:460,margin:"0 auto",width:"100%"}}>
+            {options.map(o=>{
+              const sel = multi ? (value||[]).includes(o.value) : value===o.value;
+              return <button key={o.value} onClick={()=>{
+                if(multi){
+                  if(o.value==="aucune") onChange(sel?[]:[o.value]);
+                  else onChange(sel?(value||[]).filter(v=>v!==o.value):[...(value||[]).filter(v=>v!=="aucune"),o.value]);
+                } else onChange(o.value);
+              }} style={{
+                padding:"16px 12px",borderRadius:14,cursor:"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
+                background:sel?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                border:`2px solid ${sel?"#f97316":"rgba(255,255,255,0.08)"}`,
+                transition:"all 0.25s ease",transform:sel?"scale(1.02)":"scale(1)",
+                boxShadow:sel?"0 4px 16px rgba(249,115,22,0.15)":"none",
+              }}>
+                {o.icon&&<div style={{fontSize:24,marginBottom:6}}>{o.icon}</div>}
+                <div style={{fontSize:14,fontWeight:700,color:sel?"#f97316":"#e2e8f0"}}>{o.label}</div>
+                {o.desc&&<div style={{fontSize:10,color:sel?"#fb923c":"#64748b",marginTop:3}}>{o.desc}</div>}
+              </button>;
+            })}
+          </div>
+        );
+
+        // Tag multi-select helper
+        const TagSelect = ({tags, field, colors={on:"#f97316",bg:"rgba(249,115,22,0.12)",border:"#f97316"}}) => (
+          <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",maxWidth:500,margin:"0 auto"}}>
+            {tags.map(t=>{
+              const sel = (profile[field]||[]).includes(t.id);
+              const isNone = t.id==="aucune";
+              const c = isNone ? {on:"#4CAF50",bg:"rgba(76,175,80,0.15)",border:"#4CAF50"} : colors;
+              return <button key={t.id} onClick={()=>toggleTag(field,t.id)} style={{
+                padding:"10px 16px",borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",
+                background:sel?c.bg:"rgba(255,255,255,0.03)",
+                border:`2px solid ${sel?c.border:"rgba(255,255,255,0.08)"}`,
+                color:sel?c.on:"#94a3b8",fontSize:12,fontWeight:sel?700:500,
+                transition:"all 0.2s ease",transform:sel?"scale(1.04)":"scale(1)",
+              }}>
+                <div>{isNone?"✓ ":""}{t.label}</div>
+                {t.tip&&<div style={{fontSize:9,color:sel?"#fb923c":"#475569",marginTop:2,fontWeight:400}}>{t.tip}</div>}
+              </button>;
+            })}
+          </div>
+        );
+
+        const stepContent = [
+          // Step 0: Name
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>👤</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Comment tu t'appelles ?</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Le nom de ton profil joueur.</p>
+            <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Noah, Maman..."
+              onKeyDown={e=>{if(e.key==="Enter"&&canNext)nextStep();}}
+              autoFocus style={{
+              width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,
+              background:"rgba(255,255,255,0.05)",border:"2px solid rgba(249,115,22,0.3)",color:"#f1f5f9",
+              fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center",
+            }}/>
+          </div>,
+
+          // Step 1: Gabarit
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>📏</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton gabarit</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Pour adapter le poids et la taille de raquette idéale.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto"}}>
+              {[{key:"age",label:"Âge",ph:"49",unit:"ans"},{key:"height",label:"Taille",ph:"175",unit:"cm"},{key:"weight",label:"Poids",ph:"80",unit:"kg"}].map(f=>
+                <div key={f.key} style={{textAlign:"center"}}>
+                  <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:6}}>{f.label}</label>
+                  <input type="number" value={profile[f.key]} onChange={e=>setProfile(p=>({...p,[f.key]:Number(e.target.value)}))}
+                    placeholder={f.ph} style={{
+                    width:"100%",padding:"14px 8px",borderRadius:12,fontSize:22,fontWeight:700,
+                    background:"rgba(255,255,255,0.05)",border:"2px solid rgba(255,255,255,0.1)",color:"#f1f5f9",
+                    fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center",
+                  }}/>
+                  <div style={{fontSize:9,color:"#475569",marginTop:4}}>{f.unit}</div>
+                </div>
+              )}
+            </div>
+            {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
+            {Number(profile.age)>=50&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>👤 Profil 50+ — Confort et Maniabilité renforcés</div>}
+          </div>,
+
+          // Step 2: Level
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>🏆</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Quel est ton niveau ?</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ça détermine la gamme de raquettes qu'on va te proposer.</p>
+            <CardSelect options={LEVEL_OPTIONS.map(o=>({value:o.value,label:o.label,desc:o.desc,icon:{Débutant:"🌱",Intermédiaire:"🎾",Avancé:"🔥",Expert:"💎"}[o.value]}))} value={profile.level} onChange={v=>{setProfile(p=>({...p,level:v}));setTimeout(nextStep,300);}}/>
+          </div>,
+
+          // Step 3: Hand + Side
+          ()=>{
+            const h=profile.hand||"Droitier",s=profile.side||"Droite";
+            const atk=(h==="Droitier"&&s==="Gauche")||(h==="Gaucher"&&s==="Droite");
+            const cst=(h==="Droitier"&&s==="Droite")||(h==="Gaucher"&&s==="Gauche");
+            const role=s==="Les deux"?"Polyvalent":atk?"Attaquant (coup droit au centre)":"Constructeur (revers au centre)";
+            const roleColor=atk?"#f97316":cst?"#6366f1":"#94a3b8";
+            return <div style={{textAlign:"center"}}>
+              <div style={{fontSize:40,marginBottom:16}}>🤚</div>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ta prise de jeu</h2>
+              <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Main + côté = on détecte ton rôle sur le terrain.</p>
+              <div style={{maxWidth:400,margin:"0 auto"}}>
+                <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Main dominante</label>
+                <CardSelect columns={2} options={HAND_OPTIONS.map(o=>({value:o,label:o,icon:o==="Droitier"?"🫲":"🫱"}))} value={profile.hand} onChange={v=>setProfile(p=>({...p,hand:v}))}/>
+                <div style={{height:20}}/>
+                <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Côté de jeu</label>
+                <CardSelect columns={3} options={SIDE_OPTIONS.map(o=>({value:o,label:o,icon:{Gauche:"⬅️",Droite:"➡️","Les deux":"↔️"}[o]}))} value={profile.side} onChange={v=>setProfile(p=>({...p,side:v}))}/>
+              </div>
+              {profile.hand&&profile.side&&<div style={{background:`${roleColor}15`,border:`1.5px solid ${roleColor}40`,borderRadius:12,padding:"12px 16px",marginTop:20,fontSize:13,color:roleColor,fontWeight:700,maxWidth:400,margin:"20px auto 0"}}>
+                🎯 Rôle détecté : {role}
+              </div>}
+            </div>;
+          },
+
+          // Step 4: Frequency + Competition
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>📅</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton rythme de jeu</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Fréquence et compétition influencent la durabilité requise.</p>
+            <CardSelect options={FREQ_OPTIONS.map(o=>({value:o.value,label:o.label,desc:o.desc,icon:{Occasionnel:"🌙",Régulier:"☀️",Assidu:"🔥",Intensif:"⚡"}[o.label]}))} value={profile.frequency} onChange={v=>setProfile(p=>({...p,frequency:v}))}/>
+            <div style={{marginTop:24,maxWidth:460,margin:"24px auto 0"}}>
+              <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:10}}>Tu fais de la compétition ?</label>
+              <CardSelect columns={2} options={[{value:true,label:"Oui",icon:"🏅",desc:"Tournois, classement"},{value:false,label:"Non",icon:"🎾",desc:"Loisir, entre amis"}]} value={profile.competition} onChange={v=>setProfile(p=>({...p,competition:v}))}/>
+            </div>
+          </div>,
+
+          // Step 5: Style
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>🎾</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Comment tu joues ?</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Sélectionne tout ce qui te correspond. Ça influence le scoring.</p>
+            <TagSelect tags={STYLE_TAGS} field="styleTags"/>
+          </div>,
+
+          // Step 6: Injuries
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>🩹</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton corps</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Les blessures boostent le critère Confort dans les recommandations.</p>
+            <TagSelect tags={INJURY_TAGS} field="injuryTags" colors={{on:"#ef4444",bg:"rgba(239,68,68,0.12)",border:"#ef4444"}}/>
+          </div>,
+
+          // Step 7: Priorities
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>🎯</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Qu'est-ce que tu cherches ?</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ces critères pondèrent le score de chaque raquette.</p>
+            <TagSelect tags={PRIORITY_TAGS} field="priorityTags" colors={{on:"#4CAF50",bg:"rgba(76,175,80,0.12)",border:"#4CAF50"}}/>
+          </div>,
+
+          // Step 8: Brands
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>🏷</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Marques préférées</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Optionnel — laisse vide pour voir toutes les marques.</p>
+            <TagSelect tags={BRAND_TAGS} field="brandTags" colors={{on:"#CE93D8",bg:"rgba(156,39,176,0.12)",border:"#9C27B0"}}/>
+          </div>,
+        ];
 
         return (
-        <div style={{maxWidth:520,margin:"0 auto",animation:"fadeIn 0.4s ease"}}>
+        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px",animation:"fadeIn 0.3s ease"}}>
           <style>{`
-            @keyframes fadeSlideIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes wizardSlideIn { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
+            @keyframes wizardSlideOut { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-40px); } }
           `}</style>
 
-          {/* Header */}
-          <div style={{textAlign:"center",marginBottom:20}}>
-            <svg width="40" height="40" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 6px 16px rgba(249,115,22,0.3))",marginBottom:8}}>
-              <defs><linearGradient id="logoGradOnb" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-              <rect width="44" height="44" rx="10" fill="url(#logoGradOnb)"/>
-              <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-              <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-              <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
-            </svg>
-            <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 4px"}}>Créer ton profil</h1>
-            <p style={{fontSize:11,color:"#64748b",margin:0}}>Réponds aux questions — on s'occupe du reste.</p>
-          </div>
-
           {/* Progress bar */}
-          <div style={{marginBottom:20,padding:"0 4px"}}>
-            <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:2,overflow:"hidden"}}>
-              <div style={{height:"100%",background:"linear-gradient(90deg,#f97316,#ef4444)",borderRadius:2,transition:"width 0.6s cubic-bezier(.4,0,.2,1)",width:`${progress*100}%`}}/>
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-              <span style={{fontSize:9,color:"#64748b"}}>{filledCount}/{totalSteps} sections</span>
-              <span style={{fontSize:9,color:progress===1?"#4CAF50":"#64748b",fontWeight:progress===1?700:400}}>{progress===1?"✅ Profil complet !":""}</span>
-            </div>
+          <div style={{position:"fixed",top:0,left:0,right:0,height:4,background:"rgba(255,255,255,0.06)",zIndex:10}}>
+            <div style={{height:"100%",background:"linear-gradient(90deg,#f97316,#ef4444)",borderRadius:"0 2px 2px 0",transition:"width 0.5s cubic-bezier(.4,0,.2,1)",width:`${progress*100}%`}}/>
           </div>
 
-          {/* SECTION 1: Nom */}
-          <div style={{...sectionStyle,...sectionAnim(0)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>👤 Comment tu t'appelles ?</div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Le nom de ton profil joueur.</p>
-            <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Noah, Maman..." style={{...S.input,fontSize:13,padding:"12px 14px"}} autoFocus/>
+          {/* Step counter */}
+          <div style={{position:"fixed",top:16,right:20,fontSize:11,color:"#475569",fontWeight:600,zIndex:10}}>
+            {wizardStep+1}/{TOTAL_STEPS}
           </div>
 
-          {/* SECTION 2: Gabarit */}
-          {showGabarit&&<div style={{...sectionStyle,...sectionAnim(100)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>📏 Ton gabarit</div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Pour adapter le poids et la taille de la raquette.</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-              <div><label style={S.label}>Âge</label>
-              <input type="number" value={profile.age} onChange={e=>setProfile(p=>({...p,age:Number(e.target.value)}))} placeholder="49" style={S.input}/></div>
-              <div><label style={S.label}>Taille (cm)</label>
-              <input type="number" value={profile.height} onChange={e=>setProfile(p=>({...p,height:Number(e.target.value)}))} placeholder="175" style={S.input}/></div>
-              <div><label style={S.label}>Poids (kg)</label>
-              <input type="number" value={profile.weight} onChange={e=>setProfile(p=>({...p,weight:Number(e.target.value)}))} placeholder="80" style={S.input}/></div>
-            </div>
-            {isJuniorOnboard&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:8,padding:"8px 10px",marginTop:10,fontSize:10,color:"#60a5fa",fontWeight:600}}>🧒 Profil junior détecté — recommandations adaptées</div>}
-            {Number(profile.age)>=50&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:8,padding:"8px 10px",marginTop:10,fontSize:10,color:"#fbbf24",fontWeight:600}}>👤 Profil 50+ — Confort et Maniabilité renforcés</div>}
-          </div>}
+          {/* Back button */}
+          {wizardStep>0&&<button onClick={prevStep} style={{position:"fixed",top:14,left:16,background:"none",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,padding:"6px 14px",color:"#94a3b8",fontSize:11,cursor:"pointer",fontFamily:"inherit",zIndex:10}}>
+            ← Retour
+          </button>}
 
-          {/* SECTION 3: Niveau + Fréquence */}
-          {showLevel&&<div style={{...sectionStyle,...sectionAnim(100)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🏆 Ton niveau</div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Le niveau détermine la gamme de raquettes proposées.</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-              <div><label style={S.label}>Niveau</label>
-              <select value={profile.level} onChange={e=>setProfile(p=>({...p,level:e.target.value}))} style={S.select}>
-                {LEVEL_OPTIONS.map(o=>(<option key={o.value} value={o.value}>{o.label} — {o.desc}</option>))}
-              </select></div>
-              <div><label style={S.label}>Fréquence</label>
-              <select value={profile.frequency} onChange={e=>setProfile(p=>({...p,frequency:e.target.value}))} style={S.select}>
-                {FREQ_OPTIONS.map(o=>(<option key={o.value} value={o.value}>{o.label} — {o.desc}</option>))}
-              </select></div>
-            </div>
-          </div>}
-
-          {/* SECTION 4: Main, Côté, Compétition */}
-          {showHandSide&&<div style={{...sectionStyle,...sectionAnim(100)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🤚 Ta prise de jeu</div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Main + côté = on détecte ton rôle (attaquant ou constructeur).</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-              <div><label style={S.label}>Main</label>
-              <select value={profile.hand} onChange={e=>setProfile(p=>({...p,hand:e.target.value}))} style={S.select}>
-                {HAND_OPTIONS.map(o=>(<option key={o} value={o}>{o}</option>))}
-              </select></div>
-              <div><label style={S.label}>Côté de jeu</label>
-              <select value={profile.side} onChange={e=>setProfile(p=>({...p,side:e.target.value}))} style={S.select}>
-                {SIDE_OPTIONS.map(o=>(<option key={o} value={o}>{o}</option>))}
-              </select></div>
-              <div><label style={S.label}>Compétition</label>
-              <select value={profile.competition?"oui":"non"} onChange={e=>setProfile(p=>({...p,competition:e.target.value==="oui"}))} style={S.select}>
-                <option value="non">Non</option><option value="oui">Oui</option>
-              </select></div>
-            </div>
-            {(()=>{
-              const h=profile.hand||"Droitier",s=profile.side||"Droite";
-              const atk=(h==="Droitier"&&s==="Gauche")||(h==="Gaucher"&&s==="Droite");
-              const cst=(h==="Droitier"&&s==="Droite")||(h==="Gaucher"&&s==="Gauche");
-              const role=s==="Les deux"?"Polyvalent":atk?"Attaquant (coup droit au centre)":"Constructeur (revers au centre)";
-              const roleColor=atk?"#f97316":cst?"#6366f1":"#94a3b8";
-              return <div style={{background:`${roleColor}12`,border:`1px solid ${roleColor}30`,borderRadius:8,padding:"8px 10px",marginTop:10,fontSize:10,color:roleColor,fontWeight:600}}>
-                🎯 Rôle détecté : {role}
-              </div>;
-            })()}
-          </div>}
-
-          {/* SECTION 5: Style de jeu */}
-          {showStyle&&<div style={{...sectionStyle,...sectionAnim(100)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🎾 Comment tu joues ?</div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Ton style influence le scoring. Sélectionne tout ce qui te correspond.</p>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-              {STYLE_TAGS.map(t=>{
-                const sel = profile.styleTags.includes(t.id);
-                return <button key={t.id} onClick={()=>toggleTag("styleTags",t.id)} style={{
-                  padding:"8px 12px",borderRadius:10,
-                  background:sel?"rgba(249,115,22,0.15)":"rgba(255,255,255,0.03)",
-                  border:`1.5px solid ${sel?"#f97316":"rgba(255,255,255,0.08)"}`,
-                  color:sel?"#f97316":"#94a3b8",fontSize:11,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
-                  transition:"all 0.2s ease",textAlign:"left",
-                }}>
-                  <div>{t.label}</div>
-                  <div style={{fontSize:8,color:sel?"#fb923c":"#475569",marginTop:1,fontWeight:400}}>{t.tip}</div>
-                </button>;
-              })}
-            </div>
-          </div>}
-
-          {/* SECTION 6: Blessures */}
-          {showInjury&&<div style={{...sectionStyle,...sectionAnim(100)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🩹 Ton corps</div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Les blessures boostent le critère <strong style={{color:"#ef4444"}}>Confort</strong> dans les verdicts.</p>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-              {INJURY_TAGS.map(t=>{
-                const sel = profile.injuryTags.includes(t.id);
-                const isNone = t.id==="aucune";
-                return <button key={t.id} onClick={()=>toggleTag("injuryTags",t.id)} style={{
-                  padding:"8px 12px",borderRadius:10,
-                  background:sel?(isNone?"rgba(76,175,80,0.15)":"rgba(239,68,68,0.12)"):"rgba(255,255,255,0.03)",
-                  border:`1.5px solid ${sel?(isNone?"#4CAF50":"#ef4444"):"rgba(255,255,255,0.08)"}`,
-                  color:sel?(isNone?"#4CAF50":"#ef4444"):"#94a3b8",fontSize:11,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
-                  transition:"all 0.2s ease",
-                }}>
-                  {isNone?"✓ ":""}{t.label}
-                </button>;
-              })}
-            </div>
-          </div>}
-
-          {/* SECTION 7: Priorités */}
-          {showPriority&&<div style={{...sectionStyle,...sectionAnim(100)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🎯 Qu'est-ce que tu cherches ?</div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Ces critères pondèrent le score global de chaque raquette.</p>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
-              {PRIORITY_TAGS.map(t=>{
-                const sel = profile.priorityTags.includes(t.id);
-                return <button key={t.id} onClick={()=>toggleTag("priorityTags",t.id)} style={{
-                  padding:"8px 12px",borderRadius:10,
-                  background:sel?"rgba(76,175,80,0.12)":"rgba(255,255,255,0.03)",
-                  border:`1.5px solid ${sel?"#4CAF50":"rgba(255,255,255,0.08)"}`,
-                  color:sel?"#4CAF50":"#94a3b8",fontSize:11,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
-                  transition:"all 0.2s ease",
-                }}>
-                  {t.label}
-                </button>;
-              })}
-            </div>
-          </div>}
-
-          {/* SECTION 8: Marques (bonus) */}
-          {showBrands&&<div style={{...sectionStyle,...sectionAnim(100)}}>
-            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🏷 Marques préférées <span style={{fontWeight:400,fontSize:11,color:"#64748b"}}>(optionnel)</span></div>
-            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Laisse vide pour voir toutes les marques.</p>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-              {BRAND_TAGS.map(t=>{
-                const sel = profile.brandTags.includes(t.id);
-                return <button key={t.id} onClick={()=>toggleTag("brandTags",t.id)} style={{
-                  padding:"7px 10px",borderRadius:8,
-                  background:sel?"rgba(156,39,176,0.12)":"rgba(255,255,255,0.03)",
-                  border:`1.5px solid ${sel?"#9C27B0":"rgba(255,255,255,0.08)"}`,
-                  color:sel?"#CE93D8":"#94a3b8",fontSize:10,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
-                  transition:"all 0.2s ease",
-                }}>
-                  {t.label}
-                </button>;
-              })}
-            </div>
-          </div>}
-
-          {/* SAVE BUTTON */}
-          {showSave&&<div style={{...sectionAnim(200),marginBottom:20}}>
-            <button onClick={()=>{
-              if(!profileName.trim()){alert("Donne un nom à ton profil");return;}
-              const list = saveNamedProfile(profileName.trim(), profile);
-              setSavedProfiles(list);
-              setScreen("dashboard");
-            }} style={{
-              width:"100%",padding:"16px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-              background:"linear-gradient(135deg,rgba(76,175,80,0.25),rgba(76,175,80,0.12))",
-              border:"1.5px solid rgba(76,175,80,0.4)",color:"#4CAF50",transition:"all 0.3s ease",
-              boxShadow:"0 4px 20px rgba(76,175,80,0.15)",
-            }}>
-              ✅ C'est parti — Voir mon dashboard
-            </button>
-          </div>}
-
-          {/* Back to home */}
-          <div style={{textAlign:"center",marginBottom:30}}>
-            <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:"#475569",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
-              ← Retour à l'accueil
-            </button>
+          {/* Content */}
+          <div key={wizardStep} style={{width:"100%",maxWidth:540,animation:"wizardSlideIn 0.4s ease"}}>
+            {stepContent[wizardStep]()}
           </div>
+
+          {/* Navigation */}
+          <div style={{marginTop:36,display:"flex",gap:12,alignItems:"center"}}>
+            {wizardStep===TOTAL_STEPS-1 ? (
+              <button onClick={goRecap} style={{
+                padding:"14px 40px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+                background:"linear-gradient(135deg,rgba(76,175,80,0.25),rgba(76,175,80,0.12))",
+                border:"1.5px solid rgba(76,175,80,0.4)",color:"#4CAF50",transition:"all 0.3s ease",
+              }}>
+                Voir le récap →
+              </button>
+            ) : (
+              <button onClick={nextStep} disabled={!canNext} style={{
+                padding:"14px 40px",borderRadius:14,fontSize:15,fontWeight:800,cursor:canNext?"pointer":"not-allowed",fontFamily:"'Outfit',sans-serif",
+                background:canNext?"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))":"rgba(255,255,255,0.03)",
+                border:`1.5px solid ${canNext?"rgba(249,115,22,0.4)":"rgba(255,255,255,0.06)"}`,
+                color:canNext?"#f97316":"#334155",transition:"all 0.3s ease",
+                opacity:canNext?1:0.5,
+              }}>
+                Suivant →
+              </button>
+            )}
+          </div>
+
+          {/* Home link */}
+          <button onClick={()=>setScreen("home")} style={{position:"fixed",bottom:20,left:"50%",transform:"translateX(-50%)",background:"none",border:"none",color:"#334155",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
+            ← Retour à l'accueil
+          </button>
+        </div>
+        );
+      })()}
+
+      {/* ============================================================ */}
+      {/* RECAP SCREEN — Profile confirmation before analysis */}
+      {/* ============================================================ */}
+      {screen==="recap"&&(()=>{
+        const styles = (profile.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const injuries = (profile.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const priorities = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const brands = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const hand = profile.hand||"Droitier", side = profile.side||"Droite";
+        const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
+        const role = side==="Les deux"?"Polyvalent":isAttacker?"Attaquant":"Constructeur";
+        const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Expert:"#9C27B0"};
+
+        return (
+        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px",animation:"fadeIn 0.5s ease"}}>
+          <div style={{width:"100%",maxWidth:480}}>
+            <div style={{textAlign:"center",marginBottom:24}}>
+              <div style={{fontSize:48,marginBottom:12}}>🎾</div>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>C'est bien toi ?</h2>
+              <p style={{fontSize:13,color:"#64748b",margin:0}}>Vérifie ton profil avant de lancer l'analyse.</p>
+            </div>
+
+            <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:"24px 22px",marginBottom:24}}>
+              {/* Name + Avatar */}
+              <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:18}}>
+                <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,rgba(249,115,22,0.35),rgba(239,68,68,0.25))",border:"2px solid rgba(249,115,22,0.5)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,fontWeight:700,color:"#f97316",flexShrink:0}}>
+                  {profileName.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div style={{fontSize:22,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit'"}}>{profileName}</div>
+                  <div style={{display:"flex",gap:8,alignItems:"center",marginTop:4}}>
+                    {profile.level&&<span style={{fontSize:10,fontWeight:600,color:levelColors[profile.level],background:`${levelColors[profile.level]}18`,padding:"3px 10px",borderRadius:8,textTransform:"uppercase"}}>{profile.level}</span>}
+                    <span style={{fontSize:11,color:"#94a3b8"}}>{hand} · Côté {side}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Details grid */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+                {profile.age&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Gabarit</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{profile.age} ans{profile.height?`, ${profile.height}cm`:""}{profile.weight?`, ${profile.weight}kg`:""}</div></div>}
+                <div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Rôle</div><div style={{fontSize:12,color:isAttacker?"#f97316":"#a5b4fc",fontWeight:600}}>🎯 {role}</div></div>
+                {profile.frequency&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Fréquence</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{FREQ_OPTIONS.find(f=>f.value===profile.frequency)?.label||profile.frequency}{profile.competition?" · 🏅 Compétition":""}</div></div>}
+                {styles.length>0&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Style</div><div style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>{styles.join(", ")}</div></div>}
+              </div>
+
+              {/* Tags */}
+              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:14,justifyContent:"center"}}>
+                {priorities.map(p=><span key={p} style={{fontSize:10,background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:8,padding:"4px 10px",color:"#4CAF50",fontWeight:600}}>🎯 {p}</span>)}
+                {injuries.map(i=><span key={i} style={{fontSize:10,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:8,padding:"4px 10px",color:"#ef4444",fontWeight:600}}>🩹 {i}</span>)}
+                {brands.map(b=><span key={b} style={{fontSize:10,background:"rgba(156,39,176,0.1)",border:"1px solid rgba(156,39,176,0.25)",borderRadius:8,padding:"4px 10px",color:"#CE93D8",fontWeight:600}}>🏷 {b}</span>)}
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div style={{display:"flex",gap:12}}>
+              <button onClick={()=>{setWizardStep(0);setScreen("wizard");}} style={{
+                flex:1,padding:"14px",borderRadius:14,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+                background:"rgba(255,255,255,0.03)",border:"1.5px solid rgba(255,255,255,0.1)",color:"#94a3b8",
+              }}>
+                ✏️ Modifier
+              </button>
+              <button onClick={()=>{
+                if(!profileName.trim()){alert("Donne un nom à ton profil");return;}
+                const list = saveNamedProfile(profileName.trim(), profile);
+                setSavedProfiles(list);
+                setScreen("reveal");
+              }} style={{
+                flex:2,padding:"14px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+                background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))",
+                border:"1.5px solid rgba(249,115,22,0.4)",color:"#f97316",
+                boxShadow:"0 4px 20px rgba(249,115,22,0.2)",transition:"all 0.3s ease",
+              }}>
+                🚀 Lancer l'analyse
+              </button>
+            </div>
+          </div>
+        </div>
+        );
+      })()}
+
+      {/* ============================================================ */}
+      {/* REVEAL SCREEN — Top 3 carousel after profile creation */}
+      {/* ============================================================ */}
+      {screen==="reveal"&&(()=>{
+        // Compute Top 3 same as dashboard
+        const age = Number(profile.age)||0;
+        const ht = Number(profile.height)||0;
+        const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
+        let pool = isJunior 
+          ? RACKETS_DB.filter(r=>r.category==='junior')
+          : (()=>{
+              const lvl = profile.level||'Débutant';
+              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance']};
+              return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
+            })();
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile)}));
+        scored.sort((a,b)=>b._gs-a._gs);
+        const top3 = scored.slice(0, 3);
+        const prioLabels = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+
+        // Dynamic verdict per racket
+        const makeVerdict = (r, rank) => {
+          const sc = r.scores||{};
+          const best2 = ATTRS.filter(a=>sc[a]).sort((a,b)=>(sc[b]||0)-(sc[a]||0)).slice(0,2);
+          const pct = (r._gs*10).toFixed(1);
+          if(rank===0) return `Ta meilleure option à ${pct}%. ${best2.length>=2?`Elle excelle en ${best2[0]} (${sc[best2[0]]}) et ${best2[1]} (${sc[best2[1]]}).`:""}${prioLabels.length?` Pile sur tes priorités ${prioLabels.join(" et ")}.`:""}`;
+          if(rank===1) return `Alternative solide à ${pct}%. ${best2.length>=2?`Point fort : ${best2[0]} à ${sc[best2[0]]}.`:""} Un profil complémentaire au n°1.`;
+          return `3ᵉ option à ${pct}%. ${best2.length>=2?`Intéressante pour son ${best2[0]} (${sc[best2[0]]}).`:""} À tester si les deux premières ne conviennent pas.`;
+        };
+
+        const medals = ["🥇","🥈","🥉"];
+        const rankLabels = ["MEILLEUR CHOIX","2ᵉ CHOIX","3ᵉ CHOIX"];
+
+        return (
+        <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.6s ease"}}>
+          <style>{`
+            @keyframes revealPulse { 0%,100% { box-shadow: 0 0 20px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 40px rgba(249,115,22,0.3); } }
+            @keyframes revealSlideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+          `}</style>
+
+          {/* Close button */}
+          <button onClick={()=>setScreen("dashboard")} style={{
+            position:"absolute",top:16,right:16,width:40,height:40,borderRadius:"50%",
+            background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
+            color:"#94a3b8",fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10,
+          }}>✕</button>
+
+          {/* Title */}
+          <div style={{textAlign:"center",marginBottom:28,animation:"revealSlideUp 0.6s ease"}}>
+            <div style={{fontSize:18,marginBottom:8,color:"#f97316",fontWeight:800,fontFamily:"'Outfit'",letterSpacing:"0.06em",textTransform:"uppercase"}}>🏆 {profileName}, voici tes résultats</div>
+            <p style={{fontSize:12,color:"#64748b",margin:0}}>Swipe pour découvrir ton Top 3 · Ferme pour voir le détail complet</p>
+          </div>
+
+          {/* Carousel */}
+          <div style={{display:"flex",gap:20,overflowX:"auto",scrollSnapType:"x mandatory",padding:"0 40px 20px",maxWidth:"100vw",WebkitOverflowScrolling:"touch",scrollbarWidth:"none",msOverflowStyle:"none"}}>
+            {top3.map((r,i)=>{
+              const sc = r.scores||{};
+              const fyConfig = computeForYou(sc, profile);
+              const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:{text:"—",color:"#64748b"};
+              return (
+              <div key={r.id} style={{
+                minWidth:320,maxWidth:320,scrollSnapAlign:"center",
+                background:"rgba(255,255,255,0.04)",border:"2px solid rgba(249,115,22,0.2)",borderRadius:24,
+                padding:"28px 24px",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
+                animation:`revealSlideUp 0.6s ease ${i*150}ms both`,
+                ...(i===0?{borderColor:"rgba(249,115,22,0.5)",animation:"revealSlideUp 0.6s ease, revealPulse 3s ease infinite"}:{}),
+              }}>
+                {/* Medal + Rank */}
+                <div style={{fontSize:36}}>{medals[i]}</div>
+                <div style={{fontSize:10,fontWeight:700,color:i===0?"#f97316":"#94a3b8",textTransform:"uppercase",letterSpacing:"0.08em"}}>{rankLabels[i]}</div>
+
+                {/* Image */}
+                {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:100,height:100,objectFit:"contain",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.3))"}} onError={e=>{e.target.style.display="none";}}/>}
+
+                {/* Name + Brand */}
+                <div style={{textAlign:"center"}}>
+                  <div style={{fontSize:17,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit'",lineHeight:1.3}}>{r.name}</div>
+                  <div style={{fontSize:11,color:"#64748b",marginTop:3}}>{r.brand} · {r.shape}{r.weight?` · ${r.weight}`:""}</div>
+                </div>
+
+                {/* Score */}
+                <div style={{fontSize:42,fontWeight:900,fontFamily:"'Outfit'",color:i===0?"#f97316":"#e2e8f0",lineHeight:1}}>
+                  {(r._gs*10).toFixed(1)}%
+                </div>
+
+                {/* Badge */}
+                <span style={{fontSize:10,fontWeight:700,color:badge.color,background:`${badge.color}18`,border:`1px solid ${badge.color}40`,borderRadius:8,padding:"3px 12px",textTransform:"uppercase"}}>{badge.text}</span>
+
+                {/* Key stats */}
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,width:"100%"}}>
+                  {ATTRS.map(a=>{
+                    const val = sc[a]||0;
+                    const isPrio = (profile.priorityTags||[]).some(pid=>{const m={puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort'};return m[pid]===a;});
+                    return <div key={a} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 8px",borderRadius:6,background:isPrio?"rgba(249,115,22,0.08)":"transparent"}}>
+                      <span style={{fontSize:10,color:isPrio?"#f97316":"#94a3b8",fontWeight:isPrio?700:500}}>{isPrio?"★ ":""}{a}</span>
+                      <span style={{fontSize:12,fontWeight:700,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316"}}>{val}</span>
+                    </div>;
+                  })}
+                </div>
+
+                {/* Dynamic verdict */}
+                <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,textAlign:"center",margin:0}}>{makeVerdict(r,i)}</p>
+
+                {/* Price */}
+                {r.price&&<div style={{fontSize:10,color:"#475569"}}>💰 {r.price}</div>}
+              </div>
+              );
+            })}
+          </div>
+
+          {/* Dot indicators */}
+          <div style={{display:"flex",gap:8,marginTop:12}}>
+            {top3.map((_,i)=><div key={i} style={{width:i===0?18:8,height:8,borderRadius:4,background:i===0?"#f97316":"rgba(255,255,255,0.15)",transition:"all 0.3s"}}/>)}
+          </div>
+
+          {/* CTA */}
+          <button onClick={()=>setScreen("dashboard")} style={{
+            marginTop:24,padding:"12px 32px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+            background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",color:"#94a3b8",transition:"all 0.3s",
+          }}>
+            Voir l'analyse complète →
+          </button>
         </div>
         );
       })()}
