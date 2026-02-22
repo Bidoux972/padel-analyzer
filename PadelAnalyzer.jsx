@@ -1331,12 +1331,20 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       border: isActive ? "1px solid rgba(249,115,22,0.35)" : "1px solid rgba(255,255,255,0.08)",
                       borderRadius:18,padding:"22px 16px 16px",cursor:"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
                       minWidth:CARD_W,maxWidth:CARD_W,flexShrink:0,scrollSnapAlign:"center",
-                      display:"flex",flexDirection:"column",alignItems:"center",gap:8,
+                      display:"flex",flexDirection:"column",alignItems:"center",gap:8,position:"relative",
                       transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
                       transform: isActive ? "scale(1.03)" : "scale(0.97)",
                       opacity: isActive ? 1 : 0.7,
                       boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none",
                     }}>
+                      {/* Delete button */}
+                      <div onClick={e=>{e.stopPropagation();if(confirm(`Supprimer le profil "${sp.name}" ?`)){const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);}}} style={{
+                        position:"absolute",top:6,right:6,width:22,height:22,borderRadius:"50%",
+                        background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",
+                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#ef4444",
+                        cursor:"pointer",opacity:0.5,transition:"all 0.2s",zIndex:2,
+                      }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";e.currentTarget.style.background="rgba(239,68,68,0.25)";}}
+                         onMouseLeave={e=>{e.currentTarget.style.opacity="0.5";e.currentTarget.style.background="rgba(239,68,68,0.1)";}}>🗑</div>
                       {/* Avatar */}
                       <div style={{width:56,height:56,borderRadius:16,
                         background: isActive 
