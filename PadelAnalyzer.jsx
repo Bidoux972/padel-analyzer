@@ -556,6 +556,7 @@ export default function PadelAnalyzer() {
   });
   const [wizardStep, setWizardStep] = useState(0);
   const [revealIdx, setRevealIdx] = useState(0);
+  const [confirmModal, setConfirmModal] = useState(null); // { message, onConfirm }
 
   // Auto-save rackets and profile to localStorage
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
@@ -1351,7 +1352,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none",
                     }}>
                       {/* Delete button */}
-                      <div onClick={e=>{e.stopPropagation();if(confirm(`Supprimer le profil "${sp.name}" ?`)){const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);}}} style={{
+                      <div onClick={e=>{e.stopPropagation();setConfirmModal({message:`Supprimer le profil "${sp.name}" ?`,onConfirm:()=>{const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{
                         position:"absolute",top:6,right:6,width:22,height:22,borderRadius:"50%",
                         background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",
                         display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#ef4444",
@@ -3574,6 +3575,35 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
         );
       })()}
+
+      {/* ============================================================ */}
+      {/* CUSTOM CONFIRM MODAL */}
+      {/* ============================================================ */}
+      {confirmModal&&<div onClick={()=>confirmModal.onCancel()} style={{
+        position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(4px)",
+        display:"flex",alignItems:"center",justifyContent:"center",zIndex:2000,animation:"fadeIn 0.2s ease",
+      }}>
+        <div onClick={e=>e.stopPropagation()} style={{
+          background:"#1a1f2e",border:"1px solid rgba(255,255,255,0.12)",borderRadius:20,
+          padding:"28px 24px 22px",maxWidth:340,width:"90%",textAlign:"center",
+          boxShadow:"0 20px 60px rgba(0,0,0,0.5)",animation:"fadeIn 0.25s ease",
+        }}>
+          <div style={{fontSize:32,marginBottom:12}}>🗑</div>
+          <div style={{fontSize:15,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif",marginBottom:6}}>{confirmModal.message}</div>
+          <p style={{fontSize:11,color:"#64748b",margin:"0 0 20px"}}>Cette action est irréversible.</p>
+          <div style={{display:"flex",gap:10}}>
+            <button onClick={()=>confirmModal.onCancel()} style={{
+              flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+              background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#94a3b8",
+            }}>Annuler</button>
+            <button onClick={()=>confirmModal.onConfirm()} style={{
+              flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+              background:"rgba(239,68,68,0.15)",border:"1px solid rgba(239,68,68,0.4)",color:"#ef4444",
+            }}>Supprimer</button>
+          </div>
+        </div>
+      </div>}
+
     </div>
   );
 
