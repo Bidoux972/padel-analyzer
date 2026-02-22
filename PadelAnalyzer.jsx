@@ -401,20 +401,26 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   } else {
     lines.push(`Profil équilibré. Le classement reflétera un compromis entre les styles déclarés.`);
   }
-  // §2 Weight explanation + paradox
-  const wStr=wS.map(x=>`${x.attr} ×${x.weight.toFixed(1)}`).join(", ");
+  // §2 Weight explanation — prose, not data dump
+  // Helper: score is 0-10 scale, display as percentage
+  const pct = v => (v*10).toFixed(1);
+  const pctRound = v => Math.round(v*10);
   if(paradox){
-    lines.push(`Pondération : ${wStr}. ${top2[0].attr} et ${top2[1].attr} ont le poids le plus fort (${top2pct}% à eux deux), mais les 4 autres critères pèsent collectivement ${rest4pct}%. Conséquence : une raquette qui score 8-9 en Contrôle, Confort, Tolérance et Maniabilité compense un 7 en Puissance — c'est pourquoi des raquettes plutôt contrôle dominent malgré des priorités offensives.`);
+    // Key insight: offensive priorities but control rackets win — explain WHY in plain language
+    lines.push(`Résultat contre-intuitif mais logique : malgré des priorités ${top2[0].attr} et ${top2[1].attr}, ce sont des raquettes orientées contrôle qui dominent le classement. Pourquoi ? Parce que les ${defC} styles défensifs et le profil ${techC>0?"technique ":""}gonflent le poids de 4 autres critères (Contrôle, Tolérance, Confort, Maniabilité) qui, ensemble, pèsent plus lourd (${rest4pct}%) que les 2 priorités (${top2pct}%). Une raquette qui score 8-9 sur ces 4 axes compense largement un 7 en Puissance.`);
+  } else if(top2[0].pct>=25){
+    // Strong dominance of one criterion
+    lines.push(`Le profil tire clairement vers ${top2[0].attr} et ${top2[1].attr}, qui concentrent ${top2pct}% du poids total. Le classement favorise logiquement les raquettes fortes sur ces deux axes.`);
   } else {
-    lines.push(`Pondération : ${wStr}. Les critères dominants ${top2[0].attr} et ${top2[1].attr} (${top2pct}% du total) orientent le classement.`);
+    lines.push(`Aucun critère ne domine massivement — le classement récompense les raquettes les plus équilibrées sur l'ensemble des 6 axes.`);
   }
   // §3 Score ceiling
-  if(bestScore<78){
-    lines.push(`Score plafond à ${bestScore.toFixed(1)}% : normal pour un profil ${isComplex?"à "+styles.length+" styles":"avec ces paramètres"}. ${isComplex?"Quand les styles tirent dans des directions différentes, a":"A"}ucune raquette du marché ne peut satisfaire tous les critères à la fois — ${bestScore.toFixed(0)}% signifie meilleur compromis réaliste, pas un choix médiocre.`);
-  } else if(bestScore>=85){
-    lines.push(`Score élevé à ${bestScore.toFixed(1)}% : profil cohérent, la n°1 répond bien à l'ensemble des critères.${second&&(bestScore-second.globalScore)>=1?" L'avance est nette.":""}`);
+  if(bestScore<7.8){
+    lines.push(`Score plafond à ${pct(bestScore)}% — normal pour un profil ${isComplex?"à "+styles.length+" styles qui tirent dans des directions différentes":"avec ces paramètres"}. Aucune raquette du marché ne peut satisfaire tous les critères à la fois. Un score de ${pctRound(bestScore)}% signifie meilleur compromis réaliste, pas un choix médiocre.`);
+  } else if(bestScore>=8.5){
+    lines.push(`Score élevé à ${pct(bestScore)}% — profil cohérent, la n°1 répond bien à l'ensemble des critères.${second&&(bestScore-second.globalScore)>=0.1?" L'avance est nette.":""}`);
   } else {
-    lines.push(`Score à ${bestScore.toFixed(1)}% : bon compromis.${second&&(bestScore-second.globalScore)<0.5?" Le peloton de tête est très serré — le ressenti en main fera la différence.":""}`);
+    lines.push(`Score à ${pct(bestScore)}% — bon compromis.${second&&(bestScore-second.globalScore)<0.05?" Le peloton de tête est très serré, le ressenti en main fera la différence.":""}`);
   }
   // §4 Brand analysis
   if(brands.length>0){
@@ -422,8 +428,8 @@ function generateDeepAnalysis(profile, ranked, attrs) {
     const bestBR=ranked.find(r=>brands.some(b=>(r.brand||"").toLowerCase().replace(/\s/g,"").includes(b)));
     const bL=brands.map(b=>b.charAt(0).toUpperCase()+b.slice(1));
     if(!bInTop3&&bestBR){
-      const gap=bestScore-bestBR.globalScore;
-      lines.push(`Marque préférée ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} à ${bestBR.globalScore.toFixed(1)}% (${gap.toFixed(1)} pts sous la n°1). L'écart technique ne peut pas être comblé par un simple bonus marque — le classement reste objectif. La section "À Découvrir" met en avant les ${bL.join("/")} les plus pertinentes.`);
+      const gap=(bestScore-bestBR.globalScore)*10;
+      lines.push(`Marque préférée ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} à ${(bestBR.globalScore*10).toFixed(1)}% (${gap.toFixed(1)} pts sous la n°1). L'écart technique ne peut pas être comblé par un simple bonus marque — le classement reste objectif. La section "À Découvrir" met en avant les ${bL.join("/")} les plus pertinentes.`);
     } else if(bInTop3){
       lines.push(`${bL.join("/")} est représentée dans le Top 3 — la marque préférée propose des modèles techniquement adaptés au profil.`);
     }

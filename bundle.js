@@ -45135,26 +45135,29 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     } else {
       lines.push(`Profil \xE9quilibr\xE9. Le classement refl\xE9tera un compromis entre les styles d\xE9clar\xE9s.`);
     }
-    const wStr = wS.map((x2) => `${x2.attr} \xD7${x2.weight.toFixed(1)}`).join(", ");
+    const pct = (v) => (v * 10).toFixed(1);
+    const pctRound = (v) => Math.round(v * 10);
     if (paradox) {
-      lines.push(`Pond\xE9ration : ${wStr}. ${top2[0].attr} et ${top2[1].attr} ont le poids le plus fort (${top2pct}% \xE0 eux deux), mais les 4 autres crit\xE8res p\xE8sent collectivement ${rest4pct}%. Cons\xE9quence : une raquette qui score 8-9 en Contr\xF4le, Confort, Tol\xE9rance et Maniabilit\xE9 compense un 7 en Puissance \u2014 c'est pourquoi des raquettes plut\xF4t contr\xF4le dominent malgr\xE9 des priorit\xE9s offensives.`);
+      lines.push(`R\xE9sultat contre-intuitif mais logique : malgr\xE9 des priorit\xE9s ${top2[0].attr} et ${top2[1].attr}, ce sont des raquettes orient\xE9es contr\xF4le qui dominent le classement. Pourquoi ? Parce que les ${defC} styles d\xE9fensifs et le profil ${techC > 0 ? "technique " : ""}gonflent le poids de 4 autres crit\xE8res (Contr\xF4le, Tol\xE9rance, Confort, Maniabilit\xE9) qui, ensemble, p\xE8sent plus lourd (${rest4pct}%) que les 2 priorit\xE9s (${top2pct}%). Une raquette qui score 8-9 sur ces 4 axes compense largement un 7 en Puissance.`);
+    } else if (top2[0].pct >= 25) {
+      lines.push(`Le profil tire clairement vers ${top2[0].attr} et ${top2[1].attr}, qui concentrent ${top2pct}% du poids total. Le classement favorise logiquement les raquettes fortes sur ces deux axes.`);
     } else {
-      lines.push(`Pond\xE9ration : ${wStr}. Les crit\xE8res dominants ${top2[0].attr} et ${top2[1].attr} (${top2pct}% du total) orientent le classement.`);
+      lines.push(`Aucun crit\xE8re ne domine massivement \u2014 le classement r\xE9compense les raquettes les plus \xE9quilibr\xE9es sur l'ensemble des 6 axes.`);
     }
-    if (bestScore < 78) {
-      lines.push(`Score plafond \xE0 ${bestScore.toFixed(1)}% : normal pour un profil ${isComplex ? "\xE0 " + styles.length + " styles" : "avec ces param\xE8tres"}. ${isComplex ? "Quand les styles tirent dans des directions diff\xE9rentes, a" : "A"}ucune raquette du march\xE9 ne peut satisfaire tous les crit\xE8res \xE0 la fois \u2014 ${bestScore.toFixed(0)}% signifie meilleur compromis r\xE9aliste, pas un choix m\xE9diocre.`);
-    } else if (bestScore >= 85) {
-      lines.push(`Score \xE9lev\xE9 \xE0 ${bestScore.toFixed(1)}% : profil coh\xE9rent, la n\xB01 r\xE9pond bien \xE0 l'ensemble des crit\xE8res.${second2 && bestScore - second2.globalScore >= 1 ? " L'avance est nette." : ""}`);
+    if (bestScore < 7.8) {
+      lines.push(`Score plafond \xE0 ${pct(bestScore)}% \u2014 normal pour un profil ${isComplex ? "\xE0 " + styles.length + " styles qui tirent dans des directions diff\xE9rentes" : "avec ces param\xE8tres"}. Aucune raquette du march\xE9 ne peut satisfaire tous les crit\xE8res \xE0 la fois. Un score de ${pctRound(bestScore)}% signifie meilleur compromis r\xE9aliste, pas un choix m\xE9diocre.`);
+    } else if (bestScore >= 8.5) {
+      lines.push(`Score \xE9lev\xE9 \xE0 ${pct(bestScore)}% \u2014 profil coh\xE9rent, la n\xB01 r\xE9pond bien \xE0 l'ensemble des crit\xE8res.${second2 && bestScore - second2.globalScore >= 0.1 ? " L'avance est nette." : ""}`);
     } else {
-      lines.push(`Score \xE0 ${bestScore.toFixed(1)}% : bon compromis.${second2 && bestScore - second2.globalScore < 0.5 ? " Le peloton de t\xEAte est tr\xE8s serr\xE9 \u2014 le ressenti en main fera la diff\xE9rence." : ""}`);
+      lines.push(`Score \xE0 ${pct(bestScore)}% \u2014 bon compromis.${second2 && bestScore - second2.globalScore < 0.05 ? " Le peloton de t\xEAte est tr\xE8s serr\xE9, le ressenti en main fera la diff\xE9rence." : ""}`);
     }
     if (brands.length > 0) {
       const bInTop3 = ranked.slice(0, 3).some((r2) => brands.some((b) => (r2.brand || "").toLowerCase().replace(/\s/g, "").includes(b)));
       const bestBR = ranked.find((r2) => brands.some((b) => (r2.brand || "").toLowerCase().replace(/\s/g, "").includes(b)));
       const bL = brands.map((b) => b.charAt(0).toUpperCase() + b.slice(1));
       if (!bInTop3 && bestBR) {
-        const gap = bestScore - bestBR.globalScore;
-        lines.push(`Marque pr\xE9f\xE9r\xE9e ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} \xE0 ${bestBR.globalScore.toFixed(1)}% (${gap.toFixed(1)} pts sous la n\xB01). L'\xE9cart technique ne peut pas \xEAtre combl\xE9 par un simple bonus marque \u2014 le classement reste objectif. La section "\xC0 D\xE9couvrir" met en avant les ${bL.join("/")} les plus pertinentes.`);
+        const gap = (bestScore - bestBR.globalScore) * 10;
+        lines.push(`Marque pr\xE9f\xE9r\xE9e ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} \xE0 ${(bestBR.globalScore * 10).toFixed(1)}% (${gap.toFixed(1)} pts sous la n\xB01). L'\xE9cart technique ne peut pas \xEAtre combl\xE9 par un simple bonus marque \u2014 le classement reste objectif. La section "\xC0 D\xE9couvrir" met en avant les ${bL.join("/")} les plus pertinentes.`);
       } else if (bInTop3) {
         lines.push(`${bL.join("/")} est repr\xE9sent\xE9e dans le Top 3 \u2014 la marque pr\xE9f\xE9r\xE9e propose des mod\xE8les techniquement adapt\xE9s au profil.`);
       }
