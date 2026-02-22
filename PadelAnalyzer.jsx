@@ -388,30 +388,44 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   // §1 Profile reading
   const prioLabelStr = priorities.map(p=>PL[p]||p).filter(Boolean);
   const isYoung = age>0 && age<16;
-  const isSmall = h>0 && h<165;
   const noStyles = styles.length===0;
+  const hasInjuries = injuries.length > 0;
+  const injLabels = injuries.map(t=>{const m={dos:"Dos",poignet:"Poignet",coude:"Tennis elbow",epaule:"Épaule",genou:"Genou",cheville:"Cheville",mollet:"Mollet",hanche:"Hanche",achille:"Tendon d'Achille"};return m[t]||t;});
+  const tensionOffPrioDefStyle = offP>0 && defC>=2;
+  const tensionDefPrioOffStyle = defP>0 && offC>=2;
   
   if(noStyles){
-    // No styles declared — analysis based purely on priorities + physical profile
     if(isYoung){
       lines.push(`Profil junior (${age} ans, ${h}cm). Pas de style de jeu déclaré — l'algorithme se base sur les priorités (${prioLabelStr.join(", ")}) et les caractéristiques physiques. Pour un jeune joueur, la maniabilité et le confort sont naturellement surpondérés.`);
+    } else if(hasInjuries && priorities.length>0){
+      lines.push(`Pas de style déclaré, mais les blessures (${injLabels.join(", ")}) pèsent lourd sur le scoring. Combinées aux priorités ${prioLabelStr.join(" et ")}, elles orientent le classement vers le confort et la protection.`);
     } else if(priorities.length>0){
       lines.push(`Pas de style de jeu déclaré — le classement repose sur les priorités (${prioLabelStr.join(", ")}) et le profil physique. Avec moins de contraintes à croiser, le score plafond sera plus élevé.`);
     } else {
       lines.push(`Profil minimaliste : ni style ni priorité déclarés. Le classement est basé sur les raquettes les plus équilibrées globalement.`);
     }
-  } else if(isComplex&&hasTension){
+  } else if(isComplex && tensionOffPrioDefStyle){
     const ds=styles.filter(s=>DEF_S.includes(s)).map(s=>SL[s]||s).join(", ");
     const op=priorities.filter(p=>POW_P.includes(p)).map(p=>PL[p]||p).join(" et ");
     const ts=styles.filter(s=>TECH_S.includes(s)).map(s=>SL[s]||s);
     let extra=ts.length?`, plus ${ts.join(" et ")} qui renforce${ts.length>1?"nt":""} le Contrôle`:"";
     lines.push(`Profil exigeant : ${styles.length} styles dont ${defC} défensifs (${ds})${extra}, face à des priorités offensives (${op}). Le système doit arbitrer entre ces deux tendances.`);
+  } else if(isComplex && tensionDefPrioOffStyle){
+    const os=styles.filter(s=>OFF_S.includes(s)).map(s=>SL[s]||s).join(", ");
+    const dp=priorities.filter(p=>CTL_P.includes(p)).map(p=>PL[p]||p).join(" et ");
+    lines.push(`Profil paradoxal : styles offensifs (${os}) mais priorités orientées protection (${dp})${hasInjuries?" — probablement lié aux blessures ("+injLabels.join(", ")+")":""}. Le système cherche des raquettes qui tapent fort tout en préservant le corps.`);
   } else if(isComplex){
     lines.push(`Profil riche avec ${styles.length} styles. L'algorithme croise tous ces paramètres pour pondérer les 6 critères. Plus le profil est diversifié, plus le score plafond baisse — aucune raquette ne peut exceller partout.`);
-  } else if(offC>0&&defC===0){
+  } else if(offC>0&&defC===0&&!hasInjuries){
     lines.push(`Profil offensif ciblé. L'algorithme surpondère Puissance et Spin — les diamants lourdes devraient dominer.`);
+  } else if(offC>0&&defC===0&&hasInjuries){
+    lines.push(`Profil offensif tempéré par les blessures (${injLabels.join(", ")}). Le Confort est boosté pour préserver le corps malgré le style agressif.`);
   } else if(defC>0&&offC===0){
-    lines.push(`Profil orienté défense et contrôle. Les rondes et hybrides vont naturellement dominer le classement.`);
+    if(hasInjuries){
+      lines.push(`Profil défensif renforcé par les blessures (${injLabels.join(", ")}). Le Confort devient prioritaire — les rondes légères et tolérantes domineront.`);
+    } else {
+      lines.push(`Profil orienté défense et contrôle. Les rondes et hybrides vont naturellement dominer le classement.`);
+    }
   } else if(styles.length<=2){
     const styleStr = styles.map(s=>SL[s]||s).join(" + ");
     lines.push(`Profil ciblé (${styleStr}${prioLabelStr.length?", priorité "+prioLabelStr.join("/"):""}). Peu de critères en conflit — le classement sera tranché.`);
@@ -1376,7 +1390,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </p>}
 
         <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · {RACKETS_DB.length} raquettes · Scoring hybride IA
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.5 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
         </div>
       </div>}
 
@@ -1800,7 +1814,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · {RACKETS_DB.length} raquettes · Scoring hybride IA
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.5 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -1824,7 +1838,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.0</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.5</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -2425,6 +2439,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               padding: 8mm 8mm !important;
               background: white !important; color: #1a1a1a !important;
               overflow: visible !important; font-size: 10px !important;
+              -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
             }
             #print-pertinence .print-header { display: block !important; }
             #print-pertinence .print-section-title { display: block !important; }
@@ -2941,7 +2956,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.0 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.5 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -2964,7 +2979,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.5 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
 

@@ -2375,7 +2375,7 @@
     "antivib": "Innegra + Auxetic 2.0",
     "price": "200-250€",
     "player": "Arturo Coello",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-junior-2026.png",
     "year": 2026,
     "category": "junior",
     "scores": {
@@ -2401,7 +2401,7 @@
     "antivib": "Auxetic 2.0",
     "price": "280-350€",
     "player": "Arturo Coello",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-motion-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2452,7 +2452,7 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Intermédiaire-Avancé offensif",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/head-coello-team-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
