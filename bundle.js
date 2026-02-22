@@ -45174,8 +45174,8 @@ function PadelAnalyzer() {
     setProfile({ ...INITIAL_PROFILE });
     setProfileName("");
     setWizardStep(0);
-    setPanel("profile");
-    setScreen("app");
+    setPanel(null);
+    setScreen("onboarding");
   };
   const disconnect = () => {
     setPanel(null);
@@ -46125,6 +46125,261 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         " raquettes \xB7 Scoring hybride IA"
       ] })
     ] }),
+    screen === "onboarding" && (() => {
+      const hasName = profileName.trim().length > 0;
+      const hasGabarit = Number(profile.age) > 0 || Number(profile.height) > 0;
+      const hasLevel = !!profile.level;
+      const hasHandSide = !!profile.hand && !!profile.side;
+      const hasStyle = (profile.styleTags || []).length > 0;
+      const hasInjury = (profile.injuryTags || []).length > 0;
+      const hasPriority = (profile.priorityTags || []).length > 0;
+      const showGabarit = hasName;
+      const showLevel = hasName && hasGabarit;
+      const showHandSide = showLevel && hasLevel;
+      const showStyle = showHandSide && hasHandSide;
+      const showInjury = showStyle && hasStyle;
+      const showPriority = showInjury && hasInjury;
+      const showBrands = showPriority && hasPriority;
+      const showSave = showPriority && hasPriority && hasName;
+      const filledCount = [hasName, hasGabarit, hasLevel && hasHandSide, hasStyle, hasInjury, hasPriority].filter(Boolean).length;
+      const totalSteps = 6;
+      const progress = filledCount / totalSteps;
+      const sectionAnim = (delay) => ({
+        animation: `fadeSlideIn 0.5s ease ${delay}ms both`
+      });
+      const sectionStyle = {
+        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 16,
+        padding: "18px 16px",
+        marginBottom: 14
+      };
+      const isJuniorOnboard = Number(profile.age) > 0 && Number(profile.age) < 15 || Number(profile.height) > 0 && Number(profile.height) < 150;
+      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { maxWidth: 520, margin: "0 auto", animation: "fadeIn 0.4s ease" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
+            @keyframes fadeSlideIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+          ` }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", marginBottom: 20 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { width: "40", height: "40", viewBox: "0 0 44 44", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { filter: "drop-shadow(0 6px 16px rgba(249,115,22,0.3))", marginBottom: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", { id: "logoGradOnb", x1: "0", y1: "0", x2: "44", y2: "44", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", { offset: "0%", stopColor: "#f97316" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", { offset: "100%", stopColor: "#ef4444" })
+            ] }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { width: "44", height: "44", rx: "10", fill: "url(#logoGradOnb)" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ellipse", { cx: "22", cy: "18", rx: "10", ry: "12", stroke: "#fff", strokeWidth: "2.2", fill: "none" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "22", y1: "30", x2: "22", y2: "38", stroke: "#fff", strokeWidth: "2.5", strokeLinecap: "round" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", { cx: "33", cy: "32", r: "3.5", fill: "#fff", opacity: "0.85" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { style: { fontFamily: "'Outfit'", fontSize: 22, fontWeight: 800, background: "linear-gradient(135deg,#f97316,#ef4444,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "0 0 4px" }, children: "Cr\xE9er ton profil" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 11, color: "#64748b", margin: 0 }, children: "R\xE9ponds aux questions \u2014 on s'occupe du reste." })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 20, padding: "0 4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: 4, background: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: "100%", background: "linear-gradient(90deg,#f97316,#ef4444)", borderRadius: 2, transition: "width 0.6s cubic-bezier(.4,0,.2,1)", width: `${progress * 100}%` } }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", marginTop: 4 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 9, color: "#64748b" }, children: [
+              filledCount,
+              "/",
+              totalSteps,
+              " sections"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: progress === 1 ? "#4CAF50" : "#64748b", fontWeight: progress === 1 ? 700 : 400 }, children: progress === 1 ? "\u2705 Profil complet !" : "" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(0) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: "\u{1F464} Comment tu t'appelles ?" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: "Le nom de ton profil joueur." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: profileName, onChange: (e) => setProfileName(e.target.value), placeholder: "Ex: Bidou, Noah, Maman...", style: { ...S.input, fontSize: 13, padding: "12px 14px" }, autoFocus: true })
+        ] }),
+        showGabarit && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(100) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: "\u{1F4CF} Ton gabarit" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: "Pour adapter le poids et la taille de la raquette." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "\xC2ge" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.age, onChange: (e) => setProfile((p) => ({ ...p, age: Number(e.target.value) })), placeholder: "49", style: S.input })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Taille (cm)" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.height, onChange: (e) => setProfile((p) => ({ ...p, height: Number(e.target.value) })), placeholder: "175", style: S.input })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Poids (kg)" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: profile.weight, onChange: (e) => setProfile((p) => ({ ...p, weight: Number(e.target.value) })), placeholder: "80", style: S.input })
+            ] })
+          ] }),
+          isJuniorOnboard && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 8, padding: "8px 10px", marginTop: 10, fontSize: 10, color: "#60a5fa", fontWeight: 600 }, children: "\u{1F9D2} Profil junior d\xE9tect\xE9 \u2014 recommandations adapt\xE9es" }),
+          Number(profile.age) >= 50 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)", borderRadius: 8, padding: "8px 10px", marginTop: 10, fontSize: 10, color: "#fbbf24", fontWeight: 600 }, children: "\u{1F464} Profil 50+ \u2014 Confort et Maniabilit\xE9 renforc\xE9s" })
+        ] }),
+        showLevel && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(100) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: "\u{1F3C6} Ton niveau" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: "Le niveau d\xE9termine la gamme de raquettes propos\xE9es." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Niveau" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.level, onChange: (e) => setProfile((p) => ({ ...p, level: e.target.value })), style: S.select, children: LEVEL_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, children: [
+                o.label,
+                " \u2014 ",
+                o.desc
+              ] }, o.value)) })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Fr\xE9quence" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.frequency, onChange: (e) => setProfile((p) => ({ ...p, frequency: e.target.value })), style: S.select, children: FREQ_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, children: [
+                o.label,
+                " \u2014 ",
+                o.desc
+              ] }, o.value)) })
+            ] })
+          ] })
+        ] }),
+        showHandSide && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(100) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: "\u{1F91A} Ta prise de jeu" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: "Main + c\xF4t\xE9 = on d\xE9tecte ton r\xF4le (attaquant ou constructeur)." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Main" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.hand, onChange: (e) => setProfile((p) => ({ ...p, hand: e.target.value })), style: S.select, children: HAND_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: o, children: o }, o)) })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "C\xF4t\xE9 de jeu" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.side, onChange: (e) => setProfile((p) => ({ ...p, side: e.target.value })), style: S.select, children: SIDE_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: o, children: o }, o)) })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Comp\xE9tition" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: profile.competition ? "oui" : "non", onChange: (e) => setProfile((p) => ({ ...p, competition: e.target.value === "oui" })), style: S.select, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "non", children: "Non" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "oui", children: "Oui" })
+              ] })
+            ] })
+          ] }),
+          (() => {
+            const h = profile.hand || "Droitier", s2 = profile.side || "Droite";
+            const atk = h === "Droitier" && s2 === "Gauche" || h === "Gaucher" && s2 === "Droite";
+            const cst = h === "Droitier" && s2 === "Droite" || h === "Gaucher" && s2 === "Gauche";
+            const role = s2 === "Les deux" ? "Polyvalent" : atk ? "Attaquant (coup droit au centre)" : "Constructeur (revers au centre)";
+            const roleColor = atk ? "#f97316" : cst ? "#6366f1" : "#94a3b8";
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: `${roleColor}12`, border: `1px solid ${roleColor}30`, borderRadius: 8, padding: "8px 10px", marginTop: 10, fontSize: 10, color: roleColor, fontWeight: 600 }, children: [
+              "\u{1F3AF} R\xF4le d\xE9tect\xE9 : ",
+              role
+            ] });
+          })()
+        ] }),
+        showStyle && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(100) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: "\u{1F3BE} Comment tu joues ?" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: "Ton style influence le scoring. S\xE9lectionne tout ce qui te correspond." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: STYLE_TAGS.map((t) => {
+            const sel = profile.styleTags.includes(t.id);
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => toggleTag("styleTags", t.id), style: {
+              padding: "8px 12px",
+              borderRadius: 10,
+              background: sel ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? "#f97316" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? "#f97316" : "#94a3b8",
+              fontSize: 11,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease",
+              textAlign: "left"
+            }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: t.label }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 8, color: sel ? "#fb923c" : "#475569", marginTop: 1, fontWeight: 400 }, children: t.tip })
+            ] }, t.id);
+          }) })
+        ] }),
+        showInjury && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(100) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: "\u{1FA79} Ton corps" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: [
+            "Les blessures boostent le crit\xE8re ",
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { style: { color: "#ef4444" }, children: "Confort" }),
+            " dans les verdicts."
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: INJURY_TAGS.map((t) => {
+            const sel = profile.injuryTags.includes(t.id);
+            const isNone = t.id === "aucune";
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => toggleTag("injuryTags", t.id), style: {
+              padding: "8px 12px",
+              borderRadius: 10,
+              background: sel ? isNone ? "rgba(76,175,80,0.15)" : "rgba(239,68,68,0.12)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? isNone ? "#4CAF50" : "#ef4444" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? isNone ? "#4CAF50" : "#ef4444" : "#94a3b8",
+              fontSize: 11,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease"
+            }, children: [
+              isNone ? "\u2713 " : "",
+              t.label
+            ] }, t.id);
+          }) })
+        ] }),
+        showPriority && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(100) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: "\u{1F3AF} Qu'est-ce que tu cherches ?" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: "Ces crit\xE8res pond\xE8rent le score global de chaque raquette." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }, children: PRIORITY_TAGS.map((t) => {
+            const sel = profile.priorityTags.includes(t.id);
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => toggleTag("priorityTags", t.id), style: {
+              padding: "8px 12px",
+              borderRadius: 10,
+              background: sel ? "rgba(76,175,80,0.12)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? "#4CAF50" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? "#4CAF50" : "#94a3b8",
+              fontSize: 11,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease"
+            }, children: t.label }, t.id);
+          }) })
+        ] }),
+        showBrands && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...sectionStyle, ...sectionAnim(100) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 15, fontWeight: 700, color: "#e2e8f0", marginBottom: 3, fontFamily: "'Outfit'" }, children: [
+            "\u{1F3F7} Marques pr\xE9f\xE9r\xE9es ",
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontWeight: 400, fontSize: 11, color: "#64748b" }, children: "(optionnel)" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#64748b", margin: "0 0 10px" }, children: "Laisse vide pour voir toutes les marques." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 }, children: BRAND_TAGS.map((t) => {
+            const sel = profile.brandTags.includes(t.id);
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => toggleTag("brandTags", t.id), style: {
+              padding: "7px 10px",
+              borderRadius: 8,
+              background: sel ? "rgba(156,39,176,0.12)" : "rgba(255,255,255,0.03)",
+              border: `1.5px solid ${sel ? "#9C27B0" : "rgba(255,255,255,0.08)"}`,
+              color: sel ? "#CE93D8" : "#94a3b8",
+              fontSize: 10,
+              fontWeight: sel ? 700 : 500,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s ease"
+            }, children: t.label }, t.id);
+          }) })
+        ] }),
+        showSave && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { ...sectionAnim(200), marginBottom: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+          if (!profileName.trim()) {
+            alert("Donne un nom \xE0 ton profil");
+            return;
+          }
+          const list = saveNamedProfile(profileName.trim(), profile);
+          setSavedProfiles(list);
+          setScreen("dashboard");
+        }, style: {
+          width: "100%",
+          padding: "16px",
+          borderRadius: 14,
+          fontSize: 15,
+          fontWeight: 800,
+          cursor: "pointer",
+          fontFamily: "'Outfit',sans-serif",
+          background: "linear-gradient(135deg,rgba(76,175,80,0.25),rgba(76,175,80,0.12))",
+          border: "1.5px solid rgba(76,175,80,0.4)",
+          color: "#4CAF50",
+          transition: "all 0.3s ease",
+          boxShadow: "0 4px 20px rgba(76,175,80,0.15)"
+        }, children: "\u2705 C'est parti \u2014 Voir mon dashboard" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", marginBottom: 30 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setScreen("home"), style: { background: "none", border: "none", color: "#475569", fontSize: 10, cursor: "pointer", fontFamily: "inherit", padding: "6px 12px" }, children: "\u2190 Retour \xE0 l'accueil" }) })
+      ] });
+    })(),
     screen === "dashboard" && (() => {
       const age = Number(profile.age) || 0;
       const ht = Number(profile.height) || 0;
