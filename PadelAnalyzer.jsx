@@ -386,7 +386,21 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   const SL={defensif:"Défensif/Mur",veloce:"Véloce",endurant:"Endurant",contre:"Contre-attaquant",technique:"Technique",puissant:"Puissant/Frappeur",offensif:"Offensif",tactique:"Tactique",polyvalent:"Polyvalent"};
   const PL={puissance:"Puissance",spin:"Spin",controle:"Contrôle",confort:"Confort",legerete:"Légèreté",protection:"Protection bras",reprise:"Reprise en douceur",polyvalence:"Polyvalence"};
   // §1 Profile reading
-  if(isComplex&&hasTension){
+  const prioLabelStr = priorities.map(p=>PL[p]||p).filter(Boolean);
+  const isYoung = age>0 && age<16;
+  const isSmall = h>0 && h<165;
+  const noStyles = styles.length===0;
+  
+  if(noStyles){
+    // No styles declared — analysis based purely on priorities + physical profile
+    if(isYoung){
+      lines.push(`Profil junior (${age} ans, ${h}cm). Pas de style de jeu déclaré — l'algorithme se base sur les priorités (${prioLabelStr.join(", ")}) et les caractéristiques physiques. Pour un jeune joueur, la maniabilité et le confort sont naturellement surpondérés.`);
+    } else if(priorities.length>0){
+      lines.push(`Pas de style de jeu déclaré — le classement repose sur les priorités (${prioLabelStr.join(", ")}) et le profil physique. Avec moins de contraintes à croiser, le score plafond sera plus élevé.`);
+    } else {
+      lines.push(`Profil minimaliste : ni style ni priorité déclarés. Le classement est basé sur les raquettes les plus équilibrées globalement.`);
+    }
+  } else if(isComplex&&hasTension){
     const ds=styles.filter(s=>DEF_S.includes(s)).map(s=>SL[s]||s).join(", ");
     const op=priorities.filter(p=>POW_P.includes(p)).map(p=>PL[p]||p).join(" et ");
     const ts=styles.filter(s=>TECH_S.includes(s)).map(s=>SL[s]||s);
@@ -398,29 +412,41 @@ function generateDeepAnalysis(profile, ranked, attrs) {
     lines.push(`Profil offensif ciblé. L'algorithme surpondère Puissance et Spin — les diamants lourdes devraient dominer.`);
   } else if(defC>0&&offC===0){
     lines.push(`Profil orienté défense et contrôle. Les rondes et hybrides vont naturellement dominer le classement.`);
+  } else if(styles.length<=2){
+    const styleStr = styles.map(s=>SL[s]||s).join(" + ");
+    lines.push(`Profil ciblé (${styleStr}${prioLabelStr.length?", priorité "+prioLabelStr.join("/"):""}). Peu de critères en conflit — le classement sera tranché.`);
   } else {
-    lines.push(`Profil équilibré. Le classement reflétera un compromis entre les styles déclarés.`);
+    lines.push(`Profil équilibré entre ${styles.length} styles. Le classement récompense les raquettes les plus polyvalentes.`);
   }
   // §2 Weight explanation — prose, not data dump
-  // Helper: score is 0-10 scale, display as percentage
   const pct = v => (v*10).toFixed(1);
   const pctRound = v => Math.round(v*10);
-  if(paradox){
-    // Key insight: offensive priorities but control rackets win — explain WHY in plain language
-    lines.push(`Résultat contre-intuitif mais logique : malgré des priorités ${top2[0].attr} et ${top2[1].attr}, ce sont des raquettes orientées contrôle qui dominent le classement. Pourquoi ? Parce que les ${defC} styles défensifs et le profil ${techC>0?"technique ":""}gonflent le poids de 4 autres critères (Contrôle, Tolérance, Confort, Maniabilité) qui, ensemble, pèsent plus lourd (${rest4pct}%) que les 2 priorités (${top2pct}%). Une raquette qui score 8-9 sur ces 4 axes compense largement un 7 en Puissance.`);
+  // Paradox only makes sense when defensive styles actually exist AND outweigh priorities
+  const realParadox = paradox && defC>=2 && rest4pct > top2pct;
+  
+  if(realParadox){
+    lines.push(`Résultat contre-intuitif mais logique : malgré des priorités ${top2[0].attr} et ${top2[1].attr}, ce sont des raquettes orientées contrôle qui dominent le classement. Pourquoi ? Parce que les ${defC} styles défensifs${techC>0?" et le style technique":""} gonflent le poids de 4 autres critères (Contrôle, Tolérance, Confort, Maniabilité) qui, ensemble, pèsent plus lourd (${rest4pct}%) que les 2 priorités (${top2pct}%). Une raquette qui score 8-9 sur ces 4 axes compense largement un 7 en Puissance.`);
+  } else if(noStyles && priorities.length>0){
+    // Simple profile driven by priorities
+    lines.push(`Le classement est piloté par les priorités ${prioLabelStr.join(" et ")} qui concentrent ${top2pct}% du poids. Les raquettes les mieux notées sur ${top2[0].attr}${top2[1]?" et "+top2[1].attr:""} arrivent naturellement en tête.`);
   } else if(top2[0].pct>=25){
-    // Strong dominance of one criterion
     lines.push(`Le profil tire clairement vers ${top2[0].attr} et ${top2[1].attr}, qui concentrent ${top2pct}% du poids total. Le classement favorise logiquement les raquettes fortes sur ces deux axes.`);
   } else {
     lines.push(`Aucun critère ne domine massivement — le classement récompense les raquettes les plus équilibrées sur l'ensemble des 6 axes.`);
   }
   // §3 Score ceiling
   if(bestScore<7.8){
-    lines.push(`Score plafond à ${pct(bestScore)}% — normal pour un profil ${isComplex?"à "+styles.length+" styles qui tirent dans des directions différentes":"avec ces paramètres"}. Aucune raquette du marché ne peut satisfaire tous les critères à la fois. Un score de ${pctRound(bestScore)}% signifie meilleur compromis réaliste, pas un choix médiocre.`);
+    lines.push(`Score plafond à ${pct(bestScore)}% — ${isComplex?"normal pour un profil à "+styles.length+" styles qui tirent dans des directions différentes. ":""}Aucune raquette du marché ne peut satisfaire tous les critères à la fois. Un score de ${pctRound(bestScore)}% signifie meilleur compromis réaliste, pas un choix médiocre.`);
   } else if(bestScore>=8.5){
-    lines.push(`Score élevé à ${pct(bestScore)}% — profil cohérent, la n°1 répond bien à l'ensemble des critères.${second&&(bestScore-second.globalScore)>=0.1?" L'avance est nette.":""}`);
+    lines.push(`Score élevé à ${pct(bestScore)}%${noStyles||styles.length<=2?" — logique pour un profil avec peu de contraintes à satisfaire":" — profil cohérent, la n°1 répond bien à l'ensemble des critères"}.${second&&(bestScore-second.globalScore)>=0.1?" L'avance est nette.":""}`);
   } else {
-    lines.push(`Score à ${pct(bestScore)}% — bon compromis.${second&&(bestScore-second.globalScore)<0.05?" Le peloton de tête est très serré, le ressenti en main fera la différence.":""}`);
+    // 7.8 - 8.5
+    const tight = second && (bestScore-second.globalScore)<0.05;
+    if(noStyles){
+      lines.push(`Score à ${pct(bestScore)}% — correct pour un profil sans style déclaré, guidé par ${prioLabelStr.length?prioLabelStr.join(" et "):"les paramètres physiques"}.${tight?" Le peloton de tête est très serré, le ressenti en main fera la différence.":""}`);
+    } else {
+      lines.push(`Score à ${pct(bestScore)}% — bon compromis.${tight?" Le peloton de tête est très serré, le ressenti en main fera la différence.":""}`);
+    }
   }
   // §4 Brand analysis
   if(brands.length>0){

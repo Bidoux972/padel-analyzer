@@ -45120,7 +45120,19 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     const paradox = wSaysPow && t3CtrlOriented;
     const SL = { defensif: "D\xE9fensif/Mur", veloce: "V\xE9loce", endurant: "Endurant", contre: "Contre-attaquant", technique: "Technique", puissant: "Puissant/Frappeur", offensif: "Offensif", tactique: "Tactique", polyvalent: "Polyvalent" };
     const PL = { puissance: "Puissance", spin: "Spin", controle: "Contr\xF4le", confort: "Confort", legerete: "L\xE9g\xE8ret\xE9", protection: "Protection bras", reprise: "Reprise en douceur", polyvalence: "Polyvalence" };
-    if (isComplex && hasTension) {
+    const prioLabelStr = priorities.map((p) => PL[p] || p).filter(Boolean);
+    const isYoung = age > 0 && age < 16;
+    const isSmall = h > 0 && h < 165;
+    const noStyles = styles.length === 0;
+    if (noStyles) {
+      if (isYoung) {
+        lines.push(`Profil junior (${age} ans, ${h}cm). Pas de style de jeu d\xE9clar\xE9 \u2014 l'algorithme se base sur les priorit\xE9s (${prioLabelStr.join(", ")}) et les caract\xE9ristiques physiques. Pour un jeune joueur, la maniabilit\xE9 et le confort sont naturellement surpond\xE9r\xE9s.`);
+      } else if (priorities.length > 0) {
+        lines.push(`Pas de style de jeu d\xE9clar\xE9 \u2014 le classement repose sur les priorit\xE9s (${prioLabelStr.join(", ")}) et le profil physique. Avec moins de contraintes \xE0 croiser, le score plafond sera plus \xE9lev\xE9.`);
+      } else {
+        lines.push(`Profil minimaliste : ni style ni priorit\xE9 d\xE9clar\xE9s. Le classement est bas\xE9 sur les raquettes les plus \xE9quilibr\xE9es globalement.`);
+      }
+    } else if (isComplex && hasTension) {
       const ds = styles.filter((s2) => DEF_S.includes(s2)).map((s2) => SL[s2] || s2).join(", ");
       const op = priorities.filter((p) => POW_P.includes(p)).map((p) => PL[p] || p).join(" et ");
       const ts = styles.filter((s2) => TECH_S.includes(s2)).map((s2) => SL[s2] || s2);
@@ -45132,24 +45144,35 @@ Return ONLY valid JSON, no markdown, no backticks.`;
       lines.push(`Profil offensif cibl\xE9. L'algorithme surpond\xE8re Puissance et Spin \u2014 les diamants lourdes devraient dominer.`);
     } else if (defC > 0 && offC === 0) {
       lines.push(`Profil orient\xE9 d\xE9fense et contr\xF4le. Les rondes et hybrides vont naturellement dominer le classement.`);
+    } else if (styles.length <= 2) {
+      const styleStr = styles.map((s2) => SL[s2] || s2).join(" + ");
+      lines.push(`Profil cibl\xE9 (${styleStr}${prioLabelStr.length ? ", priorit\xE9 " + prioLabelStr.join("/") : ""}). Peu de crit\xE8res en conflit \u2014 le classement sera tranch\xE9.`);
     } else {
-      lines.push(`Profil \xE9quilibr\xE9. Le classement refl\xE9tera un compromis entre les styles d\xE9clar\xE9s.`);
+      lines.push(`Profil \xE9quilibr\xE9 entre ${styles.length} styles. Le classement r\xE9compense les raquettes les plus polyvalentes.`);
     }
     const pct = (v) => (v * 10).toFixed(1);
     const pctRound = (v) => Math.round(v * 10);
-    if (paradox) {
-      lines.push(`R\xE9sultat contre-intuitif mais logique : malgr\xE9 des priorit\xE9s ${top2[0].attr} et ${top2[1].attr}, ce sont des raquettes orient\xE9es contr\xF4le qui dominent le classement. Pourquoi ? Parce que les ${defC} styles d\xE9fensifs et le profil ${techC > 0 ? "technique " : ""}gonflent le poids de 4 autres crit\xE8res (Contr\xF4le, Tol\xE9rance, Confort, Maniabilit\xE9) qui, ensemble, p\xE8sent plus lourd (${rest4pct}%) que les 2 priorit\xE9s (${top2pct}%). Une raquette qui score 8-9 sur ces 4 axes compense largement un 7 en Puissance.`);
+    const realParadox = paradox && defC >= 2 && rest4pct > top2pct;
+    if (realParadox) {
+      lines.push(`R\xE9sultat contre-intuitif mais logique : malgr\xE9 des priorit\xE9s ${top2[0].attr} et ${top2[1].attr}, ce sont des raquettes orient\xE9es contr\xF4le qui dominent le classement. Pourquoi ? Parce que les ${defC} styles d\xE9fensifs${techC > 0 ? " et le style technique" : ""} gonflent le poids de 4 autres crit\xE8res (Contr\xF4le, Tol\xE9rance, Confort, Maniabilit\xE9) qui, ensemble, p\xE8sent plus lourd (${rest4pct}%) que les 2 priorit\xE9s (${top2pct}%). Une raquette qui score 8-9 sur ces 4 axes compense largement un 7 en Puissance.`);
+    } else if (noStyles && priorities.length > 0) {
+      lines.push(`Le classement est pilot\xE9 par les priorit\xE9s ${prioLabelStr.join(" et ")} qui concentrent ${top2pct}% du poids. Les raquettes les mieux not\xE9es sur ${top2[0].attr}${top2[1] ? " et " + top2[1].attr : ""} arrivent naturellement en t\xEAte.`);
     } else if (top2[0].pct >= 25) {
       lines.push(`Le profil tire clairement vers ${top2[0].attr} et ${top2[1].attr}, qui concentrent ${top2pct}% du poids total. Le classement favorise logiquement les raquettes fortes sur ces deux axes.`);
     } else {
       lines.push(`Aucun crit\xE8re ne domine massivement \u2014 le classement r\xE9compense les raquettes les plus \xE9quilibr\xE9es sur l'ensemble des 6 axes.`);
     }
     if (bestScore < 7.8) {
-      lines.push(`Score plafond \xE0 ${pct(bestScore)}% \u2014 normal pour un profil ${isComplex ? "\xE0 " + styles.length + " styles qui tirent dans des directions diff\xE9rentes" : "avec ces param\xE8tres"}. Aucune raquette du march\xE9 ne peut satisfaire tous les crit\xE8res \xE0 la fois. Un score de ${pctRound(bestScore)}% signifie meilleur compromis r\xE9aliste, pas un choix m\xE9diocre.`);
+      lines.push(`Score plafond \xE0 ${pct(bestScore)}% \u2014 ${isComplex ? "normal pour un profil \xE0 " + styles.length + " styles qui tirent dans des directions diff\xE9rentes. " : ""}Aucune raquette du march\xE9 ne peut satisfaire tous les crit\xE8res \xE0 la fois. Un score de ${pctRound(bestScore)}% signifie meilleur compromis r\xE9aliste, pas un choix m\xE9diocre.`);
     } else if (bestScore >= 8.5) {
-      lines.push(`Score \xE9lev\xE9 \xE0 ${pct(bestScore)}% \u2014 profil coh\xE9rent, la n\xB01 r\xE9pond bien \xE0 l'ensemble des crit\xE8res.${second2 && bestScore - second2.globalScore >= 0.1 ? " L'avance est nette." : ""}`);
+      lines.push(`Score \xE9lev\xE9 \xE0 ${pct(bestScore)}%${noStyles || styles.length <= 2 ? " \u2014 logique pour un profil avec peu de contraintes \xE0 satisfaire" : " \u2014 profil coh\xE9rent, la n\xB01 r\xE9pond bien \xE0 l'ensemble des crit\xE8res"}.${second2 && bestScore - second2.globalScore >= 0.1 ? " L'avance est nette." : ""}`);
     } else {
-      lines.push(`Score \xE0 ${pct(bestScore)}% \u2014 bon compromis.${second2 && bestScore - second2.globalScore < 0.05 ? " Le peloton de t\xEAte est tr\xE8s serr\xE9, le ressenti en main fera la diff\xE9rence." : ""}`);
+      const tight = second2 && bestScore - second2.globalScore < 0.05;
+      if (noStyles) {
+        lines.push(`Score \xE0 ${pct(bestScore)}% \u2014 correct pour un profil sans style d\xE9clar\xE9, guid\xE9 par ${prioLabelStr.length ? prioLabelStr.join(" et ") : "les param\xE8tres physiques"}.${tight ? " Le peloton de t\xEAte est tr\xE8s serr\xE9, le ressenti en main fera la diff\xE9rence." : ""}`);
+      } else {
+        lines.push(`Score \xE0 ${pct(bestScore)}% \u2014 bon compromis.${tight ? " Le peloton de t\xEAte est tr\xE8s serr\xE9, le ressenti en main fera la diff\xE9rence." : ""}`);
+      }
     }
     if (brands.length > 0) {
       const bInTop3 = ranked.slice(0, 3).some((r2) => brands.some((b) => (r2.brand || "").toLowerCase().replace(/\s/g, "").includes(b)));
