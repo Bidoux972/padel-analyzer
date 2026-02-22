@@ -232,6 +232,7 @@ function buildProfileText(p) {
 
 // Weighted global score /10 based on player profile
 function computeGlobalScore(scores, profile) {
+  if (!scores || typeof scores !== 'object') return 0;
   // Base weights (equal)
   const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
   
@@ -313,10 +314,11 @@ function computeGlobalScore(scores, profile) {
 function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
 
 function computeForYou(scores, profile) {
+  if (!scores || typeof scores !== 'object') return "no";
   const gs = computeGlobalScore(scores, profile);
   const ARM_INJURIES = ["dos","poignet","coude","epaule"];
   const hasArmInjury = (profile.injuryTags||[]).some(t=>ARM_INJURIES.includes(t));
-  const comfortOk = !hasArmInjury || scores.Confort >= 7;
+  const comfortOk = !hasArmInjury || (scores.Confort||0) >= 7;
   
   if (gs >= 7.0 && comfortOk) return "recommended";
   if (hasArmInjury && scores.Confort < 7 && gs < 6.0) return "no";
@@ -2583,6 +2585,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* ===== IDEAL PROFILE RADAR + BEST RACKET OVERLAY ===== */}
           {(()=>{
+            try {
             const w2 = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
             const prioMap2 = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
             const styleMap2 = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
@@ -2593,20 +2596,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             
             // Best racket overlay
             const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const bestShort = ranked.length>0 ? (ranked[0].shortName || ranked[0].name?.slice(0,28) || "N°1") : "";
             if(ranked.length>0) {
-              idealRadar2.forEach(pt => { pt["🥇 "+ranked[0].shortName] = Number(ranked[0].scores[pt.attribute])||0; });
+              idealRadar2.forEach(pt => { pt["🥇 "+bestShort] = Number(ranked[0].scores?.[pt.attribute])||0; });
             }
             
             return <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"stretch"}} className="print-radar-section">
               <div style={{flex:"1 1 50%",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:10,padding:"8px 4px 4px",minHeight:200}}>
-                <div style={{fontSize:9,fontWeight:700,color:"#a5b4fc",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2}}>📊 Raquette idéale{ranked.length>0?` vs ${ranked[0].shortName}`:""}</div>
+                <div style={{fontSize:9,fontWeight:700,color:"#a5b4fc",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2}}>📊 Raquette idéale{ranked.length>0?` vs ${bestShort}`:""}</div>
                 <ResponsiveContainer width="100%" height={190}>
                   <RadarChart data={idealRadar2} margin={{top:8,right:30,bottom:4,left:30}}>
                     <PolarGrid stroke="rgba(255,255,255,0.08)"/>
                     <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:8}}/>
                     <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
                     <Radar name="Raquette idéale" dataKey="Raquette idéale" stroke="#6366f1" fill="#6366f1" fillOpacity={0.12} strokeWidth={2} strokeDasharray="6 3"/>
-                    {ranked.length>0&&<Radar name={"🥇 "+ranked[0].shortName} dataKey={"🥇 "+ranked[0].shortName} stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>}
+                    {ranked.length>0&&<Radar name={"🥇 "+bestShort} dataKey={"🥇 "+bestShort} stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>}
                     <Legend wrapperStyle={{fontSize:8,color:"#94a3b8",paddingTop:2}}/>
                   </RadarChart>
                 </ResponsiveContainer>
@@ -2633,10 +2637,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 })}
               </div>
             </div>;
+            } catch(e) { console.error("[Pertinence:radar]", e); return null; }
           })()}
 
           {/* ===== SMART COACH VERDICT — "En bref" ===== */}
           {(()=>{
+            try {
             const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(!ranked.length) return null;
             const best = ranked[0];
@@ -2740,10 +2746,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{fontWeight:700,color:"#4ade80",marginBottom:4,fontSize:11}}>🎯 Notre verdict</div>
               <p style={{margin:0}}>{plainText}</p>
             </div>;
+            } catch(e) { console.error("[Pertinence:verdict]", e); return null; }
           })()}
 
           {/* ===== DEEP ANALYSIS — Profile Intelligence ===== */}
           {(()=>{
+            try {
             const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(ranked.length<2) return null;
             const deepLines = generateDeepAnalysis(profile, ranked, ATTRS);
@@ -2758,6 +2766,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div className="deep-title" style={{fontWeight:700,color:"#a5b4fc",marginBottom:6,fontSize:11}}>🔬 Analyse du profil</div>
               {deepLines.map((l,i) => renderBold(l,i))}
             </div>;
+            } catch(e) { console.error("[Pertinence:deep]", e); return null; }
           })()}
 
           {/* ===== PODIUM SECTION TITLE ===== */}
@@ -2767,6 +2776,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* ===== PERTINENCE RANKING ===== */}
           {(()=>{
+            try {
             const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
             const cards = [];
             ranked.forEach((r,i)=>{
@@ -2854,10 +2864,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>);
             });
             return cards;
+            } catch(e) { console.error("[Pertinence:ranking]", e); return null; }
           })()}
 
           {/* ===== 🎯 DISCOVERY: Priority-based picks from DB ===== */}
           {(()=>{
+            try {
             const prioTagIds = profile.priorityTags||[];
             if (!prioTagIds.length || !rackets.length) return null;
             
@@ -2887,7 +2899,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             pool = pool.filter(r=>!existingIds.has(r.id));
             
             // Filter by brand preferences if any
-            const brandPref = profile.brandTags.map(id=>BRAND_TAGS.find(t=>t.id===id)?.label?.toLowerCase()).filter(Boolean);
+            const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label?.toLowerCase()).filter(Boolean);
             if (brandPref.length) {
               const brandPool = pool.filter(r=>brandPref.includes(r.brand.toLowerCase()));
               const otherTop = pool.filter(r=>!brandPref.includes(r.brand.toLowerCase()))
@@ -2962,6 +2974,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>;
               })}
             </>;
+            } catch(e) { console.error("[Pertinence:discovery]", e); return null; }
           })()}
 
           {/* ===== PRINT FOOTER ===== */}
