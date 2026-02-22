@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend,
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -72,7 +72,7 @@ const INITIAL_PROFILE = {
   priorityTags: [],
   priorityExtra: "",
   brandTags: [],
-  frequency: "Occasionnel (<1x/semaine)", competition: false,
+  frequency: "Occasionnel (1-2x/mois)", competition: false,
 };
 
 const INITIAL_RACKETS = [];
@@ -123,18 +123,9 @@ function deleteNamedProfile(name) {
 
 const ATTRS = ["Puissance","Contrôle","Confort","Spin","Maniabilité","Tolérance"];
 
-// Proxy images through weserv.nl to bypass hotlink blocking (padelful etc.)
-// Also add referrerpolicy="no-referrer" on img tags as first line of defense
+// Image URL helper — passthrough, no proxy needed (browser loads directly)
 function proxyImg(url) {
-  if (!url) return null;
-  try {
-    const h = new URL(url).hostname;
-    if (h.includes("padelful.com")) {
-      // Use weserv.nl as reliable image proxy with cache
-      return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=200&q=80`;
-    }
-  } catch {}
-  return url;
+  return url || null;
 }
 const COLORS_POOL = ["#E53935","#FF9800","#E91E63","#4CAF50","#009688","#2196F3","#1565C0","#9C27B0","#00BCD4","#FF5722","#8BC34A","#795548","#607D8B","#D4E157","#F06292","#4DD0E1","#FFB74D","#AED581","#BA68C8","#4FC3F7"];
 const explanations = {
@@ -314,10 +305,13 @@ function computeGlobalScore(scores, profile) {
     total += (scores[attr]||0) * weight;
     wSum += weight;
   }
-  return Math.round((total / wSum) * 10) / 10;
+  return total / wSum;
 }
 
 // Dynamic verdict based on pertinence score + injury constraints
+// Format score as percentage with 2 decimals (7.724 → "77.24%")
+function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
+
 function computeForYou(scores, profile) {
   const gs = computeGlobalScore(scores, profile);
   const ARM_INJURIES = ["dos","poignet","coude","epaule"];
@@ -348,6 +342,103 @@ function TagGroup({tags, selected, onToggle, color="#f97316"}) {
   );
 }
 
+// === DEEP ANALYSIS — 100% deterministic, zero AI ===
+function generateDeepAnalysis(profile, ranked, attrs) {
+  if (!ranked.length) return [];
+  const best = ranked[0], second = ranked[1], bestScore = best.globalScore;
+  const lines = [];
+  const styles = profile.styleTags||[], priorities = profile.priorityTags||[];
+  const brands = profile.brandTags||[], injuries = (profile.injuryTags||[]).filter(t=>t!=="aucune");
+  const OFF_S=["offensif","puissant"], DEF_S=["defensif","contre","endurant"], TECH_S=["tactique","technique"];
+  const offC=styles.filter(s=>OFF_S.includes(s)).length, defC=styles.filter(s=>DEF_S.includes(s)).length;
+  const techC=styles.filter(s=>TECH_S.includes(s)).length;
+  const POW_P=["puissance","spin"], CTL_P=["controle","confort","protection","reprise"];
+  const offP=priorities.filter(p=>POW_P.includes(p)).length, defP=priorities.filter(p=>CTL_P.includes(p)).length;
+  const hasTension=(offP>0&&defC>=2)||(defP>0&&offC>=2);
+  const isComplex=styles.length>=4||(styles.length>=3&&hasTension);
+  // Compute weights (mirror computeGlobalScore)
+  const w={}; attrs.forEach(a=>w[a]=1);
+  const PM={confort:{Confort:1.5},polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5},puissance:{Puissance:1.5},controle:{Contrôle:1.5},spin:{Spin:1.5},legerete:{Maniabilité:1.5},protection:{Confort:1.5},reprise:{Confort:1.5,Tolérance:1,Maniabilité:0.5}};
+  priorities.forEach(t=>{const b=PM[t];if(b)Object.entries(b).forEach(([k,v])=>w[k]=(w[k]||1)+v);});
+  const SM={offensif:{Puissance:0.5},defensif:{Contrôle:0.5,Tolérance:0.5},tactique:{Contrôle:0.5,Maniabilité:0.3},puissant:{Puissance:0.5,Spin:0.3},veloce:{Maniabilité:0.8},endurant:{Confort:0.5,Tolérance:0.3},contre:{Tolérance:0.5,Contrôle:0.3},polyvalent:{Contrôle:0.3,Tolérance:0.3},technique:{Contrôle:0.5,Spin:0.3}};
+  styles.forEach(t=>{const b=SM[t];if(b)Object.entries(b).forEach(([k,v])=>w[k]=(w[k]||1)+v);});
+  const ARM_I=["dos","poignet","coude","epaule"],LEG_I=["genou","cheville","mollet","hanche","achille"];
+  if(injuries.some(t=>ARM_I.includes(t)))w.Confort+=2;
+  if(injuries.some(t=>LEG_I.includes(t)))w.Maniabilité+=1.5;
+  const h=Number(profile.height)||0,age=Number(profile.age)||0;
+  if(h>0&&h<170)w.Maniabilité+=0.5;if(h>=185)w.Puissance+=0.3;
+  if(age>=40){w.Confort+=0.5;w.Tolérance+=0.3;}
+  if(age>=50){w.Confort+=0.5;w.Maniabilité+=0.5;w.Tolérance+=0.3;}
+  if(age>=60){w.Confort+=0.5;w.Tolérance+=0.5;}
+  const hand=profile.hand||"Droitier",side=profile.side||"Droite";
+  const isAtt=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
+  const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
+  if(isAtt){w.Puissance+=0.5;w.Spin+=0.3;}if(isCon){w.Contrôle+=0.5;w.Tolérance+=0.3;}
+  const wT=Object.values(w).reduce((s,v)=>s+v,0);
+  const wS=attrs.map(a=>({attr:a,weight:w[a],pct:Math.round(w[a]/wT*100)})).sort((a,b)=>b.weight-a.weight);
+  const top2=wS.slice(0,2),top2pct=top2.reduce((s,x)=>s+x.pct,0),rest4pct=100-top2pct;
+  // Top 3 orientation
+  const t3C=ranked.slice(0,Math.min(3,ranked.length)).reduce((s,r)=>s+(r.scores["Contrôle"]||0),0)/Math.min(3,ranked.length);
+  const t3P=ranked.slice(0,Math.min(3,ranked.length)).reduce((s,r)=>s+(r.scores.Puissance||0),0)/Math.min(3,ranked.length);
+  const t3CtrlOriented=t3C>t3P+0.5;
+  const wSaysPow=top2[0].attr==="Puissance"||top2[1].attr==="Puissance";
+  const paradox=wSaysPow&&t3CtrlOriented;
+  const SL={defensif:"Défensif/Mur",veloce:"Véloce",endurant:"Endurant",contre:"Contre-attaquant",technique:"Technique",puissant:"Puissant/Frappeur",offensif:"Offensif",tactique:"Tactique",polyvalent:"Polyvalent"};
+  const PL={puissance:"Puissance",spin:"Spin",controle:"Contrôle",confort:"Confort",legerete:"Légèreté",protection:"Protection bras",reprise:"Reprise en douceur",polyvalence:"Polyvalence"};
+  // §1 Profile reading
+  if(isComplex&&hasTension){
+    const ds=styles.filter(s=>DEF_S.includes(s)).map(s=>SL[s]||s).join(", ");
+    const op=priorities.filter(p=>POW_P.includes(p)).map(p=>PL[p]||p).join(" et ");
+    const ts=styles.filter(s=>TECH_S.includes(s)).map(s=>SL[s]||s);
+    let extra=ts.length?`, plus ${ts.join(" et ")} qui renforce${ts.length>1?"nt":""} le Contrôle`:"";
+    lines.push(`Profil exigeant : ${styles.length} styles dont ${defC} défensifs (${ds})${extra}, face à des priorités offensives (${op}). Le système doit arbitrer entre ces deux tendances.`);
+  } else if(isComplex){
+    lines.push(`Profil riche avec ${styles.length} styles. L'algorithme croise tous ces paramètres pour pondérer les 6 critères. Plus le profil est diversifié, plus le score plafond baisse — aucune raquette ne peut exceller partout.`);
+  } else if(offC>0&&defC===0){
+    lines.push(`Profil offensif ciblé. L'algorithme surpondère Puissance et Spin — les diamants lourdes devraient dominer.`);
+  } else if(defC>0&&offC===0){
+    lines.push(`Profil orienté défense et contrôle. Les rondes et hybrides vont naturellement dominer le classement.`);
+  } else {
+    lines.push(`Profil équilibré. Le classement reflétera un compromis entre les styles déclarés.`);
+  }
+  // §2 Weight explanation + paradox
+  const wStr=wS.map(x=>`${x.attr} ×${x.weight.toFixed(1)}`).join(", ");
+  if(paradox){
+    lines.push(`Pondération : ${wStr}. ${top2[0].attr} et ${top2[1].attr} ont le poids le plus fort (${top2pct}% à eux deux), mais les 4 autres critères pèsent collectivement ${rest4pct}%. Conséquence : une raquette qui score 8-9 en Contrôle, Confort, Tolérance et Maniabilité compense un 7 en Puissance — c'est pourquoi des raquettes plutôt contrôle dominent malgré des priorités offensives.`);
+  } else {
+    lines.push(`Pondération : ${wStr}. Les critères dominants ${top2[0].attr} et ${top2[1].attr} (${top2pct}% du total) orientent le classement.`);
+  }
+  // §3 Score ceiling
+  if(bestScore<78){
+    lines.push(`Score plafond à ${bestScore.toFixed(1)}% : normal pour un profil ${isComplex?"à "+styles.length+" styles":"avec ces paramètres"}. ${isComplex?"Quand les styles tirent dans des directions différentes, a":"A"}ucune raquette du marché ne peut satisfaire tous les critères à la fois — ${bestScore.toFixed(0)}% signifie meilleur compromis réaliste, pas un choix médiocre.`);
+  } else if(bestScore>=85){
+    lines.push(`Score élevé à ${bestScore.toFixed(1)}% : profil cohérent, la n°1 répond bien à l'ensemble des critères.${second&&(bestScore-second.globalScore)>=1?" L'avance est nette.":""}`);
+  } else {
+    lines.push(`Score à ${bestScore.toFixed(1)}% : bon compromis.${second&&(bestScore-second.globalScore)<0.5?" Le peloton de tête est très serré — le ressenti en main fera la différence.":""}`);
+  }
+  // §4 Brand analysis
+  if(brands.length>0){
+    const bInTop3=ranked.slice(0,3).some(r=>brands.some(b=>(r.brand||"").toLowerCase().replace(/\s/g,"").includes(b)));
+    const bestBR=ranked.find(r=>brands.some(b=>(r.brand||"").toLowerCase().replace(/\s/g,"").includes(b)));
+    const bL=brands.map(b=>b.charAt(0).toUpperCase()+b.slice(1));
+    if(!bInTop3&&bestBR){
+      const gap=bestScore-bestBR.globalScore;
+      lines.push(`Marque préférée ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} à ${bestBR.globalScore.toFixed(1)}% (${gap.toFixed(1)} pts sous la n°1). L'écart technique ne peut pas être comblé par un simple bonus marque — le classement reste objectif. La section "À Découvrir" met en avant les ${bL.join("/")} les plus pertinentes.`);
+    } else if(bInTop3){
+      lines.push(`${bL.join("/")} est représentée dans le Top 3 — la marque préférée propose des modèles techniquement adaptés au profil.`);
+    }
+  }
+  // §5 Top 3 shapes
+  if(ranked.length>=3){
+    const shapes=ranked.slice(0,3).map(r=>r.shape).filter(Boolean);
+    const uniq=[...new Set(shapes)];
+    if(uniq.length===1&&uniq[0]==="Ronde") lines.push(`Les 3 finalistes sont des rondes : forme offrant le meilleur compromis contrôle/tolérance, cohérent quand ces critères pèsent lourd.`);
+    else if(uniq.length===1&&uniq[0]==="Diamant") lines.push(`Les 3 finalistes sont des diamants : logique pour un profil puissance pure.`);
+    else if(uniq.length>=2) lines.push(`Le podium mélange ${uniq.join(" et ")} — le profil est assez polyvalent pour que différentes géométries scorent bien.`);
+  }
+  return lines;
+}
+
 export default function PadelAnalyzer() {
   const [rackets, setRackets] = useState(()=>{
     const saved = loadSavedRackets();
@@ -358,6 +449,7 @@ export default function PadelAnalyzer() {
     return saved.length ? saved.slice(0,Math.min(saved.length,4)).map(r=>r.id) : [];
   });
   const [tab, setTab] = useState("radar");
+  const [showArena, setShowArena] = useState(false);
   const [openAttr, setOpenAttr] = useState(null);
   const [profile, setProfile] = useState(()=>loadSavedProfile());
   const [panel, setPanel] = useState(null);
@@ -375,14 +467,16 @@ export default function PadelAnalyzer() {
     return p._name || "";
   });
   const [savedProfiles, setSavedProfiles] = useState(()=>loadProfilesList());
+  const [profileSearchTerm, setProfileSearchTerm] = useState("");
+  const [activeProfileIdx, setActiveProfileIdx] = useState(0);
+  const carouselRef = useRef(null);
   const [hoveredRacket, setHoveredRacket] = useState(null);
   const [localDBCount, setLocalDBCount] = useState(()=>{
     try { return JSON.parse(localStorage.getItem('padel_db_extra')||'[]').length; } catch{ return 0; }
   });
   const [screen, setScreen] = useState(()=>{
-    // If a profile name already exists, go straight to app
     const p = loadSavedProfile();
-    return (p._name) ? "app" : "home";
+    return (p._name) ? "dashboard" : "home";
   });
   const [wizardStep, setWizardStep] = useState(0);
 
@@ -411,20 +505,60 @@ export default function PadelAnalyzer() {
     setProfile({...INITIAL_PROFILE,...sp.profile});
     setProfileName(sp.name);
     setPanel(null);
-    setScreen("app");
+    setScreen("dashboard");
   };
-  // Home screen: create new profile
+  // Home screen: create new profile → onboarding flow
   const createNewProfile = () => {
     setProfile({...INITIAL_PROFILE});
     setProfileName("");
     setWizardStep(0);
-    setPanel("profile");
-    setScreen("app");
+    setPanel(null);
+    setScreen("onboarding");
   };
-  // Disconnect: back to home
+  // Disconnect: clear session and back to home
   const disconnect = () => {
     setPanel(null);
+    setRackets([]);
+    setSelected([]);
+    setSuggestResults(null);
+    setSuggestChecked(new Set());
+    setError("");
     setScreen("home");
+  };
+  // Dashboard → App with Top 3 loaded
+  const launchAnalysis = (top3Rackets) => {
+    if (top3Rackets && top3Rackets.length) {
+      const loaded = top3Rackets.map((r, i) => {
+        const color = COLORS_POOL[i % COLORS_POOL.length];
+        return {
+          id: r.id + '-' + Date.now() + '-' + i,
+          name: r.name, shortName: r.shortName || r.name.slice(0,28),
+          brand: r.brand, shape: r.shape, weight: r.weight,
+          balance: r.balance||"—", surface: r.surface||"—", core: r.core||"—",
+          price: r.price||"—", player: r.player||"—", color,
+          imageUrl: r.imageUrl||null,
+          scores: r.scores,
+          verdict: r.verdict||"Analyse non disponible",
+          forYou: "partial",
+          refSource: "Base Padel Analyzer",
+          _fromDB: true, _incomplete: false,
+        };
+      });
+      setRackets(loaded);
+      setSelected(loaded.slice(0,4).map(r=>r.id));
+    }
+    setPanel(null);
+    setScreen("app");
+  };
+  // Dashboard → App without loading (keep existing session)
+  const goToApp = () => {
+    setPanel(null);
+    setScreen("app");
+  };
+  // Go back to dashboard from app
+  const goToDashboard = () => {
+    setPanel(null);
+    setScreen("dashboard");
   };
 
   const selRackets = rackets.filter(r=>selected.includes(r.id));
@@ -1025,6 +1159,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .pa-card { transition: all 0.25s cubic-bezier(.4,0,.2,1); }
         .pa-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .pa-carousel::-webkit-scrollbar { display: none; }
         .pa-tag { transition: all 0.15s cubic-bezier(.4,0,.2,1); }
         .pa-tag:active { transform: scale(0.94); }
         .pa-tab { position: relative; transition: all 0.2s ease; }
@@ -1058,35 +1193,141 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <p style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>
         <p style={{color:"#475569",fontSize:11,margin:"0 0 36px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {RACKETS_DB.length}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
 
-        {/* Saved profiles */}
-        {savedProfiles.length>0&&<div style={{width:"100%",maxWidth:400,marginBottom:24}}>
-          <p style={{fontSize:10,color:"#94a3b8",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:10,textAlign:"center"}}>👤 Mes profils</p>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}>
-            {savedProfiles.map(sp=>{
-              const p = sp.profile||{};
-              const styles = (p.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-              const injuries = (p.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-              const desc = [p.level, p.side&&`Côté ${p.side}`, p.hand, styles.length?styles.slice(0,2).join(", "):null].filter(Boolean).join(" · ");
-              return (
-                <button key={sp.name} onClick={()=>selectHomeProfile(sp)} className="pa-card" style={{
-                  background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"16px 18px",
-                  cursor:"pointer",textAlign:"left",fontFamily:"'Inter',sans-serif",width:"100%",
-                  display:"flex",alignItems:"center",gap:14,transition:"all 0.25s ease",
-                }}>
-                  <div style={{width:44,height:44,borderRadius:12,background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>
-                    {sp.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:2}}>{sp.name}</div>
-                    <div style={{fontSize:11,color:"#64748b",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{desc}</div>
-                    {injuries.length>0&&<div style={{fontSize:10,color:"#ef4444",marginTop:2,opacity:0.8}}>🩹 {injuries.join(", ")}</div>}
-                  </div>
-                  <div style={{color:"#475569",fontSize:18,flexShrink:0}}>→</div>
-                </button>
-              );
-            })}
-          </div>
-        </div>}
+        {/* Saved profiles — Carousel */}
+        {savedProfiles.length>0&&(()=>{
+          const profileSearch = profileSearchTerm;
+          const filtered = savedProfiles.filter(sp=>!profileSearch||sp.name.toLowerCase().includes(profileSearch.toLowerCase()));
+          const CARD_W = 210;
+          const GAP = 14;
+          const scrollToIdx = (idx)=>{
+            const el = carouselRef.current;
+            if(!el) return;
+            const target = idx * (CARD_W + GAP);
+            el.scrollTo({left:target,behavior:"smooth"});
+            setActiveProfileIdx(idx);
+          };
+          const handleScroll = ()=>{
+            const el = carouselRef.current;
+            if(!el) return;
+            const idx = Math.round(el.scrollLeft / (CARD_W + GAP));
+            setActiveProfileIdx(Math.max(0, Math.min(idx, filtered.length-1)));
+          };
+          const scrollDir = (dir)=>{
+            const next = dir==="left" ? activeProfileIdx-1 : activeProfileIdx+1;
+            if(next>=0 && next<filtered.length) scrollToIdx(next);
+            else if(next<0) scrollToIdx(filtered.length-1); // loop
+            else scrollToIdx(0); // loop
+          };
+          return (
+          <div style={{width:"100%",maxWidth:560,marginBottom:24}}>
+            <p style={{fontSize:10,color:"#94a3b8",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:12,textAlign:"center"}}>👤 Mes profils <span style={{color:"#64748b",fontWeight:400}}>({savedProfiles.length})</span></p>
+
+            {/* Search bar — shows when 4+ profiles */}
+            {savedProfiles.length>=4&&<div style={{display:"flex",justifyContent:"center",marginBottom:12}}>
+              <div style={{position:"relative",width:"100%",maxWidth:280}}>
+                <input
+                  type="text" placeholder="Rechercher un profil…" value={profileSearch}
+                  onChange={e=>{setProfileSearchTerm(e.target.value);setActiveProfileIdx(0);}}
+                  style={{width:"100%",padding:"8px 12px 8px 32px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,color:"#e2e8f0",fontSize:12,fontFamily:"'Inter',sans-serif",outline:"none",boxSizing:"border-box"}}
+                />
+                <span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:13,color:"#64748b",pointerEvents:"none"}}>🔍</span>
+                {profileSearch&&<button onClick={()=>{setProfileSearchTerm("");setActiveProfileIdx(0);}} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#64748b",fontSize:14,cursor:"pointer",padding:2}}>✕</button>}
+              </div>
+            </div>}
+
+            {/* Carousel container */}
+            <div style={{position:"relative",display:"flex",alignItems:"center",gap:4}}>
+              {/* Left arrow */}
+              {filtered.length>1&&<button onClick={()=>scrollDir("left")} aria-label="Précédent" style={{
+                width:36,height:36,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.06)",
+                color:"#e2e8f0",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+                fontFamily:"'Inter',sans-serif",transition:"all 0.2s",backdropFilter:"blur(8px)",
+              }} onMouseEnter={e=>{e.currentTarget.style.background="rgba(249,115,22,0.15)";e.currentTarget.style.borderColor="rgba(249,115,22,0.4)";}}
+                 onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.06)";e.currentTarget.style.borderColor="rgba(255,255,255,0.12)";}}>‹</button>}
+
+              {/* Scrollable track */}
+              <div ref={carouselRef} className="pa-carousel" onScroll={handleScroll} style={{
+                display:"flex",gap:GAP,overflowX:"auto",scrollSnapType:"x mandatory",scrollBehavior:"smooth",
+                flex:1,padding:"6px 0 10px",msOverflowStyle:"none",scrollbarWidth:"none",WebkitOverflowScrolling:"touch",
+              }} onKeyDown={e=>{if(e.key==="ArrowLeft"){e.preventDefault();scrollDir("left");}if(e.key==="ArrowRight"){e.preventDefault();scrollDir("right");}}} tabIndex={0}>
+                {/* Spacer so first card can center */}
+                <div style={{minWidth:`calc(50% - ${CARD_W/2}px)`,flexShrink:0}} aria-hidden="true"/>
+                {filtered.map((sp,i)=>{
+                  const p = sp.profile||{};
+                  const styles = (p.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+                  const injuries = (p.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+                  const isJunior = p.age && parseInt(p.age)<16;
+                  const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0"};
+                  const desc = [p.side&&`Côté ${p.side}`, p.hand].filter(Boolean).join(" · ");
+                  const stylesStr = styles.length?styles.slice(0,2).join(", "):"";
+                  const isActive = i === activeProfileIdx;
+                  return (
+                    <button key={sp.name} onClick={()=>selectHomeProfile(sp)} style={{
+                      background: isActive ? "rgba(249,115,22,0.08)" : "rgba(255,255,255,0.03)",
+                      border: isActive ? "1px solid rgba(249,115,22,0.35)" : "1px solid rgba(255,255,255,0.08)",
+                      borderRadius:18,padding:"22px 16px 16px",cursor:"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
+                      minWidth:CARD_W,maxWidth:CARD_W,flexShrink:0,scrollSnapAlign:"center",
+                      display:"flex",flexDirection:"column",alignItems:"center",gap:8,
+                      transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                      transform: isActive ? "scale(1.03)" : "scale(0.97)",
+                      opacity: isActive ? 1 : 0.7,
+                      boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none",
+                    }}>
+                      {/* Avatar */}
+                      <div style={{width:56,height:56,borderRadius:16,
+                        background: isActive 
+                          ? "linear-gradient(135deg,rgba(249,115,22,0.35),rgba(239,68,68,0.25))" 
+                          : "linear-gradient(135deg,rgba(249,115,22,0.18),rgba(239,68,68,0.12))",
+                        border: isActive ? "2px solid rgba(249,115,22,0.5)" : "1px solid rgba(249,115,22,0.2)",
+                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,fontWeight:700,
+                        color: isActive ? "#f97316" : "#94a3b8",flexShrink:0,transition:"all 0.3s"}}>
+                        {sp.name.charAt(0).toUpperCase()}
+                      </div>
+                      {/* Name */}
+                      <div style={{fontSize:15,fontWeight:700,color: isActive ? "#f1f5f9" : "#cbd5e1",lineHeight:1.2,transition:"color 0.3s"}}>{sp.name}</div>
+                      {/* Level badge */}
+                      {p.level&&<div style={{fontSize:9,fontWeight:600,color:levelColors[p.level]||"#64748b",background:`${levelColors[p.level]||"#64748b"}18`,padding:"2px 10px",borderRadius:10,letterSpacing:"0.03em",textTransform:"uppercase"}}>{p.level}{isJunior?" · Junior":""}</div>}
+                      {/* Desc */}
+                      {desc&&<div style={{fontSize:10,color:"#64748b",lineHeight:1.3}}>{desc}</div>}
+                      {/* Styles */}
+                      {stylesStr&&<div style={{fontSize:9,color:"#94a3b8",fontStyle:"italic"}}>{stylesStr}</div>}
+                      {/* Injuries */}
+                      {injuries.length>0&&<div style={{fontSize:9,color:"#ef4444",opacity:0.8}}>🩹 {injuries.join(", ")}</div>}
+                      {/* CTA */}
+                      <div style={{marginTop:6,fontSize:10,color: isActive ? "#f97316" : "#64748b",fontWeight:600,letterSpacing:"0.04em",textTransform:"uppercase",transition:"color 0.3s"}}>
+                        {isActive ? "▶ Ouvrir" : "Ouvrir →"}
+                      </div>
+                    </button>
+                  );
+                })}
+                {/* Spacer so last card can center */}
+                <div style={{minWidth:`calc(50% - ${CARD_W/2}px)`,flexShrink:0}} aria-hidden="true"/>
+              </div>
+
+              {/* Right arrow */}
+              {filtered.length>1&&<button onClick={()=>scrollDir("right")} aria-label="Suivant" style={{
+                width:36,height:36,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.06)",
+                color:"#e2e8f0",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+                fontFamily:"'Inter',sans-serif",transition:"all 0.2s",backdropFilter:"blur(8px)",
+              }} onMouseEnter={e=>{e.currentTarget.style.background="rgba(249,115,22,0.15)";e.currentTarget.style.borderColor="rgba(249,115,22,0.4)";}}
+                 onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.06)";e.currentTarget.style.borderColor="rgba(255,255,255,0.12)";}}>›</button>}
+            </div>
+
+            {/* Dot indicators — clickable */}
+            {filtered.length>1&&<div style={{display:"flex",justifyContent:"center",gap:7,marginTop:10}}>
+              {filtered.map((_,i)=><button key={i} onClick={()=>scrollToIdx(i)} aria-label={`Profil ${i+1}`} style={{
+                width: i===activeProfileIdx ? 18 : 7,height:7,borderRadius:4,border:"none",cursor:"pointer",padding:0,
+                background: i===activeProfileIdx ? "#f97316" : "rgba(255,255,255,0.15)",
+                transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
+              }}/>)}
+            </div>}
+
+            {/* Keyboard hint */}
+            {filtered.length>1&&<p style={{fontSize:8,color:"#334155",textAlign:"center",marginTop:6,letterSpacing:"0.04em"}}>← → Flèches ou swipe pour naviguer</p>}
+
+            {profileSearch&&filtered.length===0&&<p style={{fontSize:11,color:"#64748b",textAlign:"center",marginTop:8}}>Aucun profil trouvé pour "{profileSearch}"</p>}
+          </div>);
+        })()}
 
         {/* New profile button */}
         <button onClick={createNewProfile} style={{
@@ -1106,6 +1347,432 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · {RACKETS_DB.length} raquettes · Scoring hybride IA
         </div>
       </div>}
+
+      {/* ============================================================ */}
+      {/* ONBOARDING SCREEN — Progressive profile creation */}
+      {/* ============================================================ */}
+      {screen==="onboarding"&&(()=>{
+        // Determine which sections are "unlocked"
+        const hasName = profileName.trim().length > 0;
+        const hasGabarit = Number(profile.age)>0 || Number(profile.height)>0;
+        const hasLevel = !!profile.level;
+        const hasHandSide = !!profile.hand && !!profile.side;
+        const hasStyle = (profile.styleTags||[]).length > 0;
+        const hasInjury = (profile.injuryTags||[]).length > 0;
+        const hasPriority = (profile.priorityTags||[]).length > 0;
+        
+        // Progressive unlock logic
+        const showGabarit = hasName;
+        const showLevel = hasName && hasGabarit;
+        const showHandSide = showLevel && hasLevel;
+        const showStyle = showHandSide && hasHandSide;
+        const showInjury = showStyle && hasStyle;
+        const showPriority = showInjury && hasInjury;
+        const showBrands = showPriority && hasPriority;
+        const showSave = showPriority && hasPriority && hasName;
+
+        // Count filled sections for progress
+        const filledCount = [hasName, hasGabarit, hasLevel&&hasHandSide, hasStyle, hasInjury, hasPriority].filter(Boolean).length;
+        const totalSteps = 6;
+        const progress = filledCount / totalSteps;
+
+        // Section animation style
+        const sectionAnim = (delay) => ({
+          animation: `fadeSlideIn 0.5s ease ${delay}ms both`,
+        });
+        const sectionStyle = {
+          background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)",
+          borderRadius:16, padding:"18px 16px", marginBottom:14,
+        };
+        const isJuniorOnboard = (Number(profile.age)>0&&Number(profile.age)<15)||(Number(profile.height)>0&&Number(profile.height)<150);
+
+        return (
+        <div style={{maxWidth:520,margin:"0 auto",animation:"fadeIn 0.4s ease"}}>
+          <style>{`
+            @keyframes fadeSlideIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+          `}</style>
+
+          {/* Header */}
+          <div style={{textAlign:"center",marginBottom:20}}>
+            <svg width="40" height="40" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 6px 16px rgba(249,115,22,0.3))",marginBottom:8}}>
+              <defs><linearGradient id="logoGradOnb" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+              <rect width="44" height="44" rx="10" fill="url(#logoGradOnb)"/>
+              <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
+              <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+              <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
+            </svg>
+            <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 4px"}}>Créer ton profil</h1>
+            <p style={{fontSize:11,color:"#64748b",margin:0}}>Réponds aux questions — on s'occupe du reste.</p>
+          </div>
+
+          {/* Progress bar */}
+          <div style={{marginBottom:20,padding:"0 4px"}}>
+            <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:2,overflow:"hidden"}}>
+              <div style={{height:"100%",background:"linear-gradient(90deg,#f97316,#ef4444)",borderRadius:2,transition:"width 0.6s cubic-bezier(.4,0,.2,1)",width:`${progress*100}%`}}/>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+              <span style={{fontSize:9,color:"#64748b"}}>{filledCount}/{totalSteps} sections</span>
+              <span style={{fontSize:9,color:progress===1?"#4CAF50":"#64748b",fontWeight:progress===1?700:400}}>{progress===1?"✅ Profil complet !":""}</span>
+            </div>
+          </div>
+
+          {/* SECTION 1: Nom */}
+          <div style={{...sectionStyle,...sectionAnim(0)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>👤 Comment tu t'appelles ?</div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Le nom de ton profil joueur.</p>
+            <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Noah, Maman..." style={{...S.input,fontSize:13,padding:"12px 14px"}} autoFocus/>
+          </div>
+
+          {/* SECTION 2: Gabarit */}
+          {showGabarit&&<div style={{...sectionStyle,...sectionAnim(100)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>📏 Ton gabarit</div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Pour adapter le poids et la taille de la raquette.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+              <div><label style={S.label}>Âge</label>
+              <input type="number" value={profile.age} onChange={e=>setProfile(p=>({...p,age:Number(e.target.value)}))} placeholder="49" style={S.input}/></div>
+              <div><label style={S.label}>Taille (cm)</label>
+              <input type="number" value={profile.height} onChange={e=>setProfile(p=>({...p,height:Number(e.target.value)}))} placeholder="175" style={S.input}/></div>
+              <div><label style={S.label}>Poids (kg)</label>
+              <input type="number" value={profile.weight} onChange={e=>setProfile(p=>({...p,weight:Number(e.target.value)}))} placeholder="80" style={S.input}/></div>
+            </div>
+            {isJuniorOnboard&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:8,padding:"8px 10px",marginTop:10,fontSize:10,color:"#60a5fa",fontWeight:600}}>🧒 Profil junior détecté — recommandations adaptées</div>}
+            {Number(profile.age)>=50&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:8,padding:"8px 10px",marginTop:10,fontSize:10,color:"#fbbf24",fontWeight:600}}>👤 Profil 50+ — Confort et Maniabilité renforcés</div>}
+          </div>}
+
+          {/* SECTION 3: Niveau + Fréquence */}
+          {showLevel&&<div style={{...sectionStyle,...sectionAnim(100)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🏆 Ton niveau</div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Le niveau détermine la gamme de raquettes proposées.</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+              <div><label style={S.label}>Niveau</label>
+              <select value={profile.level} onChange={e=>setProfile(p=>({...p,level:e.target.value}))} style={S.select}>
+                {LEVEL_OPTIONS.map(o=>(<option key={o.value} value={o.value}>{o.label} — {o.desc}</option>))}
+              </select></div>
+              <div><label style={S.label}>Fréquence</label>
+              <select value={profile.frequency} onChange={e=>setProfile(p=>({...p,frequency:e.target.value}))} style={S.select}>
+                {FREQ_OPTIONS.map(o=>(<option key={o.value} value={o.value}>{o.label} — {o.desc}</option>))}
+              </select></div>
+            </div>
+          </div>}
+
+          {/* SECTION 4: Main, Côté, Compétition */}
+          {showHandSide&&<div style={{...sectionStyle,...sectionAnim(100)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🤚 Ta prise de jeu</div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Main + côté = on détecte ton rôle (attaquant ou constructeur).</p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+              <div><label style={S.label}>Main</label>
+              <select value={profile.hand} onChange={e=>setProfile(p=>({...p,hand:e.target.value}))} style={S.select}>
+                {HAND_OPTIONS.map(o=>(<option key={o} value={o}>{o}</option>))}
+              </select></div>
+              <div><label style={S.label}>Côté de jeu</label>
+              <select value={profile.side} onChange={e=>setProfile(p=>({...p,side:e.target.value}))} style={S.select}>
+                {SIDE_OPTIONS.map(o=>(<option key={o} value={o}>{o}</option>))}
+              </select></div>
+              <div><label style={S.label}>Compétition</label>
+              <select value={profile.competition?"oui":"non"} onChange={e=>setProfile(p=>({...p,competition:e.target.value==="oui"}))} style={S.select}>
+                <option value="non">Non</option><option value="oui">Oui</option>
+              </select></div>
+            </div>
+            {(()=>{
+              const h=profile.hand||"Droitier",s=profile.side||"Droite";
+              const atk=(h==="Droitier"&&s==="Gauche")||(h==="Gaucher"&&s==="Droite");
+              const cst=(h==="Droitier"&&s==="Droite")||(h==="Gaucher"&&s==="Gauche");
+              const role=s==="Les deux"?"Polyvalent":atk?"Attaquant (coup droit au centre)":"Constructeur (revers au centre)";
+              const roleColor=atk?"#f97316":cst?"#6366f1":"#94a3b8";
+              return <div style={{background:`${roleColor}12`,border:`1px solid ${roleColor}30`,borderRadius:8,padding:"8px 10px",marginTop:10,fontSize:10,color:roleColor,fontWeight:600}}>
+                🎯 Rôle détecté : {role}
+              </div>;
+            })()}
+          </div>}
+
+          {/* SECTION 5: Style de jeu */}
+          {showStyle&&<div style={{...sectionStyle,...sectionAnim(100)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🎾 Comment tu joues ?</div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Ton style influence le scoring. Sélectionne tout ce qui te correspond.</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+              {STYLE_TAGS.map(t=>{
+                const sel = profile.styleTags.includes(t.id);
+                return <button key={t.id} onClick={()=>toggleTag("styleTags",t.id)} style={{
+                  padding:"8px 12px",borderRadius:10,
+                  background:sel?"rgba(249,115,22,0.15)":"rgba(255,255,255,0.03)",
+                  border:`1.5px solid ${sel?"#f97316":"rgba(255,255,255,0.08)"}`,
+                  color:sel?"#f97316":"#94a3b8",fontSize:11,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
+                  transition:"all 0.2s ease",textAlign:"left",
+                }}>
+                  <div>{t.label}</div>
+                  <div style={{fontSize:8,color:sel?"#fb923c":"#475569",marginTop:1,fontWeight:400}}>{t.tip}</div>
+                </button>;
+              })}
+            </div>
+          </div>}
+
+          {/* SECTION 6: Blessures */}
+          {showInjury&&<div style={{...sectionStyle,...sectionAnim(100)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🩹 Ton corps</div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Les blessures boostent le critère <strong style={{color:"#ef4444"}}>Confort</strong> dans les verdicts.</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+              {INJURY_TAGS.map(t=>{
+                const sel = profile.injuryTags.includes(t.id);
+                const isNone = t.id==="aucune";
+                return <button key={t.id} onClick={()=>toggleTag("injuryTags",t.id)} style={{
+                  padding:"8px 12px",borderRadius:10,
+                  background:sel?(isNone?"rgba(76,175,80,0.15)":"rgba(239,68,68,0.12)"):"rgba(255,255,255,0.03)",
+                  border:`1.5px solid ${sel?(isNone?"#4CAF50":"#ef4444"):"rgba(255,255,255,0.08)"}`,
+                  color:sel?(isNone?"#4CAF50":"#ef4444"):"#94a3b8",fontSize:11,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
+                  transition:"all 0.2s ease",
+                }}>
+                  {isNone?"✓ ":""}{t.label}
+                </button>;
+              })}
+            </div>
+          </div>}
+
+          {/* SECTION 7: Priorités */}
+          {showPriority&&<div style={{...sectionStyle,...sectionAnim(100)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🎯 Qu'est-ce que tu cherches ?</div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Ces critères pondèrent le score global de chaque raquette.</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
+              {PRIORITY_TAGS.map(t=>{
+                const sel = profile.priorityTags.includes(t.id);
+                return <button key={t.id} onClick={()=>toggleTag("priorityTags",t.id)} style={{
+                  padding:"8px 12px",borderRadius:10,
+                  background:sel?"rgba(76,175,80,0.12)":"rgba(255,255,255,0.03)",
+                  border:`1.5px solid ${sel?"#4CAF50":"rgba(255,255,255,0.08)"}`,
+                  color:sel?"#4CAF50":"#94a3b8",fontSize:11,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
+                  transition:"all 0.2s ease",
+                }}>
+                  {t.label}
+                </button>;
+              })}
+            </div>
+          </div>}
+
+          {/* SECTION 8: Marques (bonus) */}
+          {showBrands&&<div style={{...sectionStyle,...sectionAnim(100)}}>
+            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3,fontFamily:"'Outfit'"}}>🏷 Marques préférées <span style={{fontWeight:400,fontSize:11,color:"#64748b"}}>(optionnel)</span></div>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px"}}>Laisse vide pour voir toutes les marques.</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+              {BRAND_TAGS.map(t=>{
+                const sel = profile.brandTags.includes(t.id);
+                return <button key={t.id} onClick={()=>toggleTag("brandTags",t.id)} style={{
+                  padding:"7px 10px",borderRadius:8,
+                  background:sel?"rgba(156,39,176,0.12)":"rgba(255,255,255,0.03)",
+                  border:`1.5px solid ${sel?"#9C27B0":"rgba(255,255,255,0.08)"}`,
+                  color:sel?"#CE93D8":"#94a3b8",fontSize:10,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
+                  transition:"all 0.2s ease",
+                }}>
+                  {t.label}
+                </button>;
+              })}
+            </div>
+          </div>}
+
+          {/* SAVE BUTTON */}
+          {showSave&&<div style={{...sectionAnim(200),marginBottom:20}}>
+            <button onClick={()=>{
+              if(!profileName.trim()){alert("Donne un nom à ton profil");return;}
+              const list = saveNamedProfile(profileName.trim(), profile);
+              setSavedProfiles(list);
+              setScreen("dashboard");
+            }} style={{
+              width:"100%",padding:"16px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+              background:"linear-gradient(135deg,rgba(76,175,80,0.25),rgba(76,175,80,0.12))",
+              border:"1.5px solid rgba(76,175,80,0.4)",color:"#4CAF50",transition:"all 0.3s ease",
+              boxShadow:"0 4px 20px rgba(76,175,80,0.15)",
+            }}>
+              ✅ C'est parti — Voir mon dashboard
+            </button>
+          </div>}
+
+          {/* Back to home */}
+          <div style={{textAlign:"center",marginBottom:30}}>
+            <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:"#475569",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
+              ← Retour à l'accueil
+            </button>
+          </div>
+        </div>
+        );
+      })()}
+
+      {/* ============================================================ */}
+      {/* DASHBOARD SCREEN */}
+      {/* ============================================================ */}
+      {screen==="dashboard"&&(()=>{
+        // Compute Top 3 for this profile
+        const age = Number(profile.age)||0;
+        const ht = Number(profile.height)||0;
+        const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
+        let pool = isJunior 
+          ? RACKETS_DB.filter(r=>r.category==='junior')
+          : (()=>{
+              const lvl = profile.level||'Débutant';
+              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance']};
+              return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
+            })();
+        // Brand preferences — used for display info only, NOT for filtering Top 3
+        const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        // Score ALL compatible rackets — unbiased Top 3
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile), _fy: computeForYou(r.scores, profile)}));
+        scored.sort((a,b)=>b._gs-a._gs);
+        const top3 = scored.slice(0, 3);
+
+        // Compute player's ideal weights for radar
+        const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
+        const prioMap = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
+        for (const tag of (profile.priorityTags||[])) { const boosts=prioMap[tag]; if(boosts) for(const[k,v] of Object.entries(boosts)) w[k]=(w[k]||1)+v; }
+        const styleMap = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
+        for (const tag of (profile.styleTags||[])) { const boosts=styleMap[tag]; if(boosts) for(const[k,v] of Object.entries(boosts)) w[k]=(w[k]||1)+v; }
+        const maxW = Math.max(...Object.values(w));
+        const idealRadar = ATTRS.map(a=>({ attribute: a, Idéal: Math.round((w[a]/maxW)*10*10)/10 }));
+
+        // Profile summary pieces
+        const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0",Expert:"#9C27B0"};
+        const styles = (profile.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const injuries = (profile.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const priorities = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const hand = profile.hand||"Droitier";
+        const side = profile.side||"Droite";
+        const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
+        const role = side==="Les deux" ? "Polyvalent" : isAttacker ? "Attaquant" : "Constructeur";
+        const hasSession = rackets.length > 0;
+        const fyConfig2 = {recommended:{text:"RECOMMANDÉ",bg:"#1B5E20",border:"#4CAF50",color:"#4CAF50"},partial:{text:"JOUABLE",bg:"#E65100",border:"#FF9800",color:"#FF9800"},no:{text:"DÉCONSEILLÉ",bg:"#B71C1C",border:"#E53935",color:"#E53935"}};
+
+        return (
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",animation:"fadeIn 0.5s ease"}}>
+          {/* Header — compact inline */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:18}}>
+            <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
+              <defs><linearGradient id="logoGradDash" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+              <rect width="44" height="44" rx="10" fill="url(#logoGradDash)"/>
+              <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
+              <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+              <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
+            </svg>
+            <h1 style={{fontFamily:"'Outfit'",fontSize:24,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0}}>PADEL ANALYZER</h1>
+          </div>
+
+          {/* Profile card — full width, compact */}
+          <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"16px 22px",marginBottom:20,animation:"fadeIn 0.3s ease"}}>
+            <div style={{display:"flex",alignItems:"center",gap:14}}>
+              <div style={{width:48,height:48,borderRadius:14,background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"2px solid rgba(249,115,22,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:700,color:"#f97316",flexShrink:0}}>
+                {profileName.charAt(0).toUpperCase()}
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+                  <span style={{fontSize:18,fontWeight:700,color:"#f1f5f9"}}>{profileName}</span>
+                  {profile.level&&<span style={{fontSize:10,fontWeight:600,color:levelColors[profile.level]||"#64748b",background:`${levelColors[profile.level]||"#64748b"}18`,padding:"3px 10px",borderRadius:8,textTransform:"uppercase"}}>{profile.level}{isJunior?" · Junior":""}</span>}
+                  <span style={{fontSize:11,color:"#94a3b8"}}>{hand} · Côté {side}</span>
+                  <span style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>🎯 {role}</span>
+                </div>
+                <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:6}}>
+                  {styles.map(s=><span key={s} style={{fontSize:10,background:"rgba(99,102,241,0.1)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:8,padding:"2px 8px",color:"#a5b4fc"}}>{s}</span>)}
+                  {priorities.map(p=><span key={p} style={{fontSize:10,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:8,padding:"2px 8px",color:"#f97316"}}>{p}</span>)}
+                  {injuries.map(inj=><span key={inj} style={{fontSize:10,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:8,padding:"2px 8px",color:"#ef4444"}}>🩹 {inj}</span>)}
+                </div>
+              </div>
+              <div style={{display:"flex",gap:6,flexShrink:0}}>
+                <button onClick={()=>{setScreen("home");}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title="Changer de profil">👥</button>
+                <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title="Déconnexion">⏻</button>
+              </div>
+            </div>
+          </div>
+
+          {/* ===== MAIN 2-COLUMN LAYOUT ===== */}
+          <div style={{display:"flex",gap:20,marginBottom:20,alignItems:"stretch"}}>
+
+            {/* LEFT COLUMN — Radar + Stats */}
+            <div style={{flex:"0 0 400px",display:"flex",flexDirection:"column",gap:12}}>
+              {/* Radar */}
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"14px 12px",flex:1,animation:"fadeIn 0.4s ease"}}>
+                <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginBottom:4,marginTop:0}}>📊 Raquette idéale pour {profileName}</p>
+                <ResponsiveContainer width="100%" height={195}>
+                  <RadarChart data={idealRadar} margin={{top:10,right:34,bottom:8,left:34}}>
+                    <PolarGrid stroke="rgba(255,255,255,0.08)"/>
+                    <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:10}}/>
+                    <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
+                    <Radar name="Idéal" dataKey="Idéal" stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+              {/* Stats row */}
+              <div style={{display:"flex",gap:10}}>
+                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
+                  <div style={{fontSize:28,fontWeight:800,color:"#f97316",fontFamily:"'Outfit'"}}>{pool.length}</div>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Compatibles</div>
+                </div>
+                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
+                  <div style={{fontSize:28,fontWeight:800,color:"#4CAF50",fontFamily:"'Outfit'"}}>{scored.filter(r=>r._fy==="recommended").length}</div>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Recommandées</div>
+                </div>
+                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
+                  <div style={{fontSize:20,fontWeight:800,color:"#a5b4fc",fontFamily:"'Outfit'"}}>{top3.length>0?top3[0]._gs.toFixed(1):"—"}<span style={{fontSize:11,color:"#64748b"}}>/10</span></div>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Meilleur score</div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN — Top 3 + Explanation */}
+            <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"18px 20px",animation:"fadeIn 0.5s ease",display:"flex",flexDirection:"column"}}>
+              <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginTop:0,marginBottom:4}}>🏆 Top 3 absolu pour {profileName}</p>
+              <p style={{fontSize:10,color:"#475569",textAlign:"center",margin:"0 0 14px",lineHeight:1.4}}>Sur {scored.length} raquettes compatibles{brandPref.length>0?<span> · Toutes marques confondues</span>:""}</p>
+              <div style={{display:"flex",flexDirection:"column",gap:10,flex:1}}>
+                {top3.map((r, i)=>{
+                  const fy = fyConfig2[r._fy]||fyConfig2.partial;
+                  const medals = ["🥇","🥈","🥉"];
+                  return (
+                    <div key={r.id} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background: i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.06)"}`,borderRadius:14,transition:"all 0.2s"}}>
+                      <div style={{fontSize:22,flexShrink:0,width:28,textAlign:"center"}}>{medals[i]}</div>
+                      {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:48,height:48,objectFit:"contain",borderRadius:8,background:"rgba(255,255,255,0.06)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:14,fontWeight:700,color:"#f1f5f9",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
+                        <div style={{fontSize:11,color:"#94a3b8",marginTop:2}}>{r.brand} · {r.shape} · {r.weight}</div>
+                        <div style={{display:"flex",alignItems:"center",gap:6,marginTop:3}}>
+                          <span style={{fontSize:9,fontWeight:600,color:fy.color,background:`${fy.bg}30`,border:`1px solid ${fy.border}40`,borderRadius:6,padding:"2px 7px",textTransform:"uppercase"}}>{fy.text}</span>
+                          {r.price&&r.price!=="—"&&<span style={{fontSize:10,color:"#64748b"}}>{r.price}</span>}
+                        </div>
+                      </div>
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0}}>
+                        <div style={{fontSize:22,fontWeight:800,color: i===0?"#f97316":"#cbd5e1",fontFamily:"'Outfit'"}}>{r._gs.toFixed(1)}</div>
+                        <div style={{fontSize:8,color:"#64748b",textTransform:"uppercase"}}>Score</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Explanation — compact */}
+              <div style={{marginTop:12,padding:"10px 14px",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.1)",borderRadius:12}}>
+                <p style={{fontSize:10,color:"#a5b4fc",margin:"0 0 3px",fontWeight:600}}>💡 Comment lire ce classement ?</p>
+                <p style={{fontSize:10,color:"#64748b",margin:0,lineHeight:1.6}}>Calculé sur {RACKETS_DB.length} raquettes en croisant profil, style et priorités. Lance l'analyse détaillée pour les scores par critère, radars comparatifs et l'Arène.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* BOTTOM ROW — Analyze button + Action buttons */}
+          <div style={{display:"flex",gap:12,marginBottom:14,animation:"fadeIn 0.6s ease"}}>
+            <button onClick={()=>launchAnalysis(top3)} style={{flex:"1 1 220px",padding:"14px",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.35)",borderRadius:14,color:"#f97316",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",letterSpacing:"-0.01em",textAlign:"center"}}>
+              📊 Analyser ce Top 3 en détail
+            </button>
+            <button onClick={()=>{setPanel("suggest");goToApp();}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(76,175,80,0.08)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:14,color:"#4CAF50",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+              <div>🎯 Suggère-moi d'autres</div>
+              <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{brandPref.length>0?`Priorité ${brandPref.join(", ")}`:"Recommandations IA"}</div>
+            </button>
+            <button onClick={()=>{goToApp();}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.25)",borderRadius:14,color:"#a5b4fc",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+              <div>{hasSession ? "📊 Reprendre l'analyse" : "📊 Explorer la base"}</div>
+              <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{hasSession?"Session en cours":"Comparer, radars, PDF"}</div>
+            </button>
+            <button onClick={()=>{setWizardStep(0);setPanel("profile");goToApp();}} style={{flex:"0 1 150px",padding:"14px 16px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,color:"#94a3b8",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+              <div>✏️ Modifier profil</div>
+              <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>Affiner les résultats</div>
+            </button>
+          </div>
+
+          {/* Footer */}
+          <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · {RACKETS_DB.length} raquettes · Scoring hybride IA
+          </div>
+        </div>
+        );
+      })()}
 
       {/* ============================================================ */}
       {/* APP SCREEN */}
@@ -1132,6 +1799,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{width:22,height:22,borderRadius:7,background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,color:"#f97316",flexShrink:0}}>{profileName.charAt(0).toUpperCase()}</div>
             <span style={{fontSize:11,fontWeight:600,color:"#a5b4fc"}}>{profileName}</span>
           </div>
+          <button onClick={goToDashboard} style={{background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:20,padding:"4px 10px",color:"#f97316",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
+            <span style={{fontSize:11}}>🏠</span> Dashboard
+          </button>
           <button onClick={disconnect} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:20,padding:"4px 10px",color:"#64748b",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
             <span style={{fontSize:12}}>⏻</span> Déconnexion
           </button>
@@ -1544,7 +2214,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             transition:"all 0.2s ease",
           }}>
             <div className="pa-badge" style={{position:"absolute",top:-8,right:8,background:fy.bg+"dd",border:`1px solid ${fy.border}`,borderRadius:20,padding:"2px 8px",fontSize:7,fontWeight:700,color:"#fff",letterSpacing:"0.03em",boxShadow:`0 2px 8px ${fy.bg}44`}}>{fy.text}</div>
-            {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:38,height:38,objectFit:"contain",borderRadius:6,marginBottom:4,background:"rgba(255,255,255,0.06)"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>}
+            {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:38,height:38,objectFit:"contain",borderRadius:6,marginBottom:4,background:"rgba(255,255,255,0.06)"}} onError={e=>{e.target.style.display='none'}}/>}
             <div style={{width:8,height:8,borderRadius:"50%",background:r.color,marginBottom:6,boxShadow:isSel?`0 0 8px ${r.color}`:"none",transition:"box-shadow 0.2s ease"}}/>
             <div style={{fontSize:11,fontWeight:700,color:isSel?"#fff":"#94a3b8",lineHeight:1.3,transition:"color 0.2s ease"}}>{r.shortName}</div>
             <div style={{fontSize:9,color:"#475569",marginTop:3}}>{r.shape} · {r.weight}</div>
@@ -1553,6 +2223,22 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </button>);
         })}
       </div>
+
+      {/* Arena button — only when 2+ rackets selected */}
+      {selRackets.length>=2&&<button onClick={()=>setShowArena(true)} style={{
+        display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",
+        padding:"14px 20px",marginBottom:18,borderRadius:14,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+        background:"linear-gradient(135deg,rgba(124,58,237,0.15),rgba(79,70,229,0.1),rgba(236,72,153,0.08))",
+        border:"1.5px solid rgba(124,58,237,0.35)",
+        transition:"all 0.3s ease",
+        boxShadow:"0 4px 24px rgba(124,58,237,0.15)",
+      }}
+      onMouseEnter={e=>{e.currentTarget.style.background="linear-gradient(135deg,rgba(124,58,237,0.25),rgba(79,70,229,0.18),rgba(236,72,153,0.12))";e.currentTarget.style.boxShadow="0 6px 32px rgba(124,58,237,0.25)";e.currentTarget.style.transform="translateY(-1px)";}}
+      onMouseLeave={e=>{e.currentTarget.style.background="linear-gradient(135deg,rgba(124,58,237,0.15),rgba(79,70,229,0.1),rgba(236,72,153,0.08))";e.currentTarget.style.boxShadow="0 4px 24px rgba(124,58,237,0.15)";e.currentTarget.style.transform="none";}}>
+        <span style={{fontSize:18}}>⚔️</span>
+        <span style={{fontSize:13,fontWeight:700,color:"#c4b5fd",letterSpacing:"-0.01em"}}>Entrer dans l'Arène</span>
+        <span style={{fontSize:10,color:"#7c3aed",fontWeight:600,background:"rgba(124,58,237,0.15)",padding:"2px 8px",borderRadius:8}}>{selRackets.length} raquettes</span>
+      </button>}
 
       {/* ============================================================ */}
       {/* CHART TABS */}
@@ -1591,7 +2277,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <img src={proxyImg(hr.imageUrl)} alt={hr.name} style={{
                     width:240, height:280, objectFit:"contain", display:"block", margin:"0 auto",
                     filter:"drop-shadow(0 8px 24px rgba(0,0,0,0.5))",
-                  }} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>
+                  }} onError={e=>{e.target.style.display='none'}}/>
                 </div>
                 <div style={{marginTop:12}}>
                   <div style={{fontSize:13,fontWeight:700,color:hr.color,lineHeight:1.2}}>{hr.name}</div>
@@ -1704,41 +2390,41 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence {
               position: absolute !important; left: 0 !important; top: 0 !important;
               width: 100% !important; max-width: 100% !important;
-              padding: 10mm 8mm !important;
+              padding: 8mm 8mm !important;
               background: white !important; color: #1a1a1a !important;
               overflow: visible !important; font-size: 10px !important;
             }
             #print-pertinence .print-header { display: block !important; }
             #print-pertinence .print-section-title { display: block !important; }
             #print-pertinence .no-print { display: none !important; }
+            #print-pertinence .print-radar-section { display: flex !important; }
             #print-pertinence .print-card {
               border: 1px solid #e2e8f0 !important; background: #fafafa !important;
               color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
               overflow: hidden !important; max-width: 100% !important;
-              margin-bottom: 8px !important; border-radius: 8px !important;
+              margin-bottom: 8px !important; border-radius: 10px !important;
             }
             #print-pertinence .print-card-gold {
-              background: linear-gradient(135deg, #fefce8, #fef9c3) !important;
-              background: #fef9e7 !important;
-              border: 2px solid #b8860b !important; border-left: 8px solid #b8860b !important;
-              box-shadow: 0 2px 12px rgba(184,134,11,0.15) !important;
-              margin-bottom: 10px !important;
+              background: linear-gradient(135deg, #fffbeb, #fef3c7) !important;
+              border: 2px solid #d4a017 !important;
+              box-shadow: 0 2px 12px rgba(184,134,11,0.12) !important;
+              margin-bottom: 12px !important;
             }
             #print-pertinence .print-card-silver {
-              background: #f1f5f9 !important;
-              border: 1.5px solid #94a3b8 !important; border-left: 6px solid #94a3b8 !important;
+              background: #f8fafc !important;
+              border: 1.5px solid #94a3b8 !important;
               margin-bottom: 10px !important;
             }
             #print-pertinence .print-card-bronze {
-              background: #fef3e2 !important;
-              border: 1.5px solid #cd7f32 !important; border-left: 6px solid #cd7f32 !important;
+              background: #fefaf5 !important;
+              border: 1.5px solid #cd7f32 !important;
               margin-bottom: 10px !important;
             }
             #print-pertinence .print-card * { color: #1a1a1a !important; }
             #print-pertinence .print-card-gold .print-medal-label { color: #8b6914 !important; }
             #print-pertinence .print-card-silver .print-medal-label { color: #64748b !important; }
             #print-pertinence .print-card-bronze .print-medal-label { color: #92400e !important; }
-            #print-pertinence .print-bar-bg { background: #e5e7eb !important; height: 4px !important; }
+            #print-pertinence .print-bar-bg { background: #e5e7eb !important; height: 6px !important; border-radius: 3px !important; }
             #print-pertinence .print-bar-fill-green { background: #22c55e !important; }
             #print-pertinence .print-bar-fill-gray { background: #9ca3af !important; }
             #print-pertinence .print-bar-fill-red { background: #ef4444 !important; }
@@ -1746,15 +2432,20 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-score-green { color: #16a34a !important; }
             #print-pertinence .print-score-yellow { color: #d97706 !important; }
             #print-pertinence .print-score-red { color: #dc2626 !important; }
-            #print-pertinence .print-badge { border: 1px solid #666 !important; padding: 2px 7px !important; border-radius: 4px !important; font-size: 8px !important; font-weight: 700 !important; }
+            #print-pertinence .print-badge { border: 1px solid #666 !important; padding: 3px 8px !important; border-radius: 6px !important; font-size: 8px !important; font-weight: 700 !important; }
             #print-pertinence .print-badge-green { background: #dcfce7 !important; color: #166534 !important; border-color: #22c55e !important; }
             #print-pertinence .print-badge-orange { background: #fff7ed !important; color: #9a3412 !important; border-color: #f97316 !important; }
             #print-pertinence .print-badge-red { background: #fef2f2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
-            #print-pertinence .print-profile-box { border: 1px solid #f97316 !important; background: #fff7ed !important; padding: 10px !important; }
+            #print-pertinence .print-profile-box { border: 1.5px solid #f97316 !important; background: #fff7ed !important; padding: 12px !important; border-radius: 10px !important; }
             #print-pertinence .print-warn { color: #dc2626 !important; }
             #print-pertinence .print-verdict { color: #374151 !important; font-style: normal !important; }
-            #print-pertinence .print-section-divider { border-top: 2px solid #e5e7eb !important; margin: 14px 0 10px !important; padding-top: 8px !important; }
+            #print-pertinence .print-deep-analysis { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; page-break-inside: avoid; break-inside: avoid; }
+            #print-pertinence .print-deep-analysis * { color: #374151 !important; }
+            #print-pertinence .print-deep-analysis .deep-title { color: #4338ca !important; font-weight: 700 !important; font-size: 11px !important; margin-bottom: 6px !important; }
+            #print-pertinence .print-section-divider { border-top: 2px solid #e5e7eb !important; margin: 16px 0 10px !important; padding-top: 8px !important; }
             #print-pertinence .print-footer-wrap { page-break-before: avoid; break-before: avoid; page-break-inside: avoid; break-inside: avoid; }
+            #print-pertinence .print-racket-img { width: 60px !important; height: 72px !important; object-fit: contain !important; border-radius: 8px !important; background: #f1f5f9 !important; padding: 4px !important; }
+            #print-pertinence .print-racket-img-sm { width: 40px !important; height: 48px !important; }
             @page { margin: 8mm 6mm; size: A4; }
           }
         `}</style>
@@ -1790,7 +2481,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           {/* ===== PROFILE BOX ===== */}
-          <div className="print-profile-box" style={{background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:10,padding:10,marginBottom:10,boxSizing:"border-box"}}>
+          <div className="print-profile-box" style={{background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:10,padding:12,marginBottom:12,boxSizing:"border-box"}}>
             <p style={{fontSize:10,color:"#f97316",fontWeight:700,margin:"0 0 3px"}}>👤 Profil actif :</p>
             <p style={{fontSize:9,color:"#94a3b8",margin:0,lineHeight:1.5}}>{profileText}</p>
             <p style={{fontSize:8,color:"#475569",margin:"4px 0 0"}}>{(()=>{
@@ -1820,6 +2511,60 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             })()}</p>
           </div>
 
+          {/* ===== IDEAL PROFILE RADAR + BEST RACKET OVERLAY ===== */}
+          {(()=>{
+            const w2 = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
+            const prioMap2 = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
+            const styleMap2 = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
+            for (const tag of (profile.priorityTags||[])) { const b=prioMap2[tag]; if(b) for(const[k,v] of Object.entries(b)) w2[k]=(w2[k]||1)+v; }
+            for (const tag of (profile.styleTags||[])) { const b=styleMap2[tag]; if(b) for(const[k,v] of Object.entries(b)) w2[k]=(w2[k]||1)+v; }
+            const maxW2 = Math.max(...Object.values(w2));
+            const idealRadar2 = ATTRS.map(a=>({ attribute: a, "Raquette idéale": Math.round((w2[a]/maxW2)*10*10)/10 }));
+            
+            // Best racket overlay
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            if(ranked.length>0) {
+              idealRadar2.forEach(pt => { pt["🥇 "+ranked[0].shortName] = Number(ranked[0].scores[pt.attribute])||0; });
+            }
+            
+            return <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"stretch"}} className="print-radar-section">
+              <div style={{flex:"1 1 50%",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:10,padding:"8px 4px 4px",minHeight:200}}>
+                <div style={{fontSize:9,fontWeight:700,color:"#a5b4fc",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2}}>📊 Raquette idéale{ranked.length>0?` vs ${ranked[0].shortName}`:""}</div>
+                <ResponsiveContainer width="100%" height={190}>
+                  <RadarChart data={idealRadar2} margin={{top:8,right:30,bottom:4,left:30}}>
+                    <PolarGrid stroke="rgba(255,255,255,0.08)"/>
+                    <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:8}}/>
+                    <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
+                    <Radar name="Raquette idéale" dataKey="Raquette idéale" stroke="#6366f1" fill="#6366f1" fillOpacity={0.12} strokeWidth={2} strokeDasharray="6 3"/>
+                    {ranked.length>0&&<Radar name={"🥇 "+ranked[0].shortName} dataKey={"🥇 "+ranked[0].shortName} stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>}
+                    <Legend wrapperStyle={{fontSize:8,color:"#94a3b8",paddingTop:2}}/>
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+              {/* Quick stats panel */}
+              <div style={{flex:"1 1 50%",display:"flex",flexDirection:"column",gap:8}}>
+                {ranked.slice(0,3).map((r,i)=>{
+                  const medals=["🥇","🥈","🥉"];
+                  const gs = r.globalScore;
+                  const fy2 = computeForYou(r.scores, profile);
+                  const fyC = fy2==="recommended"?"#22c55e":fy2==="no"?"#ef4444":"#FF9800";
+                  return <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.06)"}`,borderRadius:10,flex:1}}>
+                    <span style={{fontSize:18}}>{medals[i]}</span>
+                    {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className="print-racket-img-sm" style={{width:32,height:40,objectFit:"contain",borderRadius:6,background:"rgba(255,255,255,0.06)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.shortName}</div>
+                      <div style={{fontSize:8,color:"#64748b"}}>{r.brand} · {r.shape}</div>
+                    </div>
+                    <div style={{textAlign:"right",flexShrink:0}}>
+                      <div style={{fontSize:14,fontWeight:800,color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171",fontFamily:"'Outfit'",lineHeight:1}}>{fmtPct(gs)}</div>
+                      <div style={{fontSize:7,color:fyC,fontWeight:700,marginTop:2}}>{fy2==="recommended"?"RECO":fy2==="no"?"NON":"JOUABLE"}</div>
+                    </div>
+                  </div>;
+                })}
+              </div>
+            </div>;
+          })()}
+
           {/* ===== SMART COACH VERDICT — "En bref" ===== */}
           {(()=>{
             const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
@@ -1848,7 +2593,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const bestWeakest = ATTRS.map(a=>({attr:a, val:best.scores[a]||0})).sort((a,b)=>a.val-b.val)[0];
             
             // Gap with #2
-            const gap = second ? Math.round((best.globalScore - second.globalScore)*10)/10 : 0;
+            const gap = second ? (best.globalScore - second.globalScore) : 0;
             
             // Build the verdict lines
             const lines = [];
@@ -1857,14 +2602,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             if (prioLabels.length > 0) {
               const prioStr = prioLabels.length === 1 ? prioLabels[0] : prioLabels.slice(0,-1).join(", ") + " et " + prioLabels[prioLabels.length-1];
               if (bestPrioScores.length > 0 && bestPrioScores[0].val >= 7.5) {
-                lines.push(`Avec tes priorités ${prioStr}, la **${best.name}** (${best.globalScore}/10) s'impose : elle affiche ${bestPrioScores.map(s=>`${s.attr} à ${s.val}`).join(", ")}.`);
+                lines.push(`Avec tes priorités ${prioStr}, la **${best.name}** (${fmtPct(best.globalScore)}) s'impose : elle affiche ${bestPrioScores.map(s=>`${s.attr} à ${s.val}`).join(", ")}.`);
               } else if (bestPrioScores.length > 0) {
-                lines.push(`Pour tes priorités ${prioStr}, la **${best.name}** (${best.globalScore}/10) offre le meilleur compromis du lot avec ${bestPrioScores.map(s=>`${s.attr} à ${s.val}`).join(", ")}.`);
+                lines.push(`Pour tes priorités ${prioStr}, la **${best.name}** (${fmtPct(best.globalScore)}) offre le meilleur compromis du lot avec ${bestPrioScores.map(s=>`${s.attr} à ${s.val}`).join(", ")}.`);
               } else {
-                lines.push(`La **${best.name}** (${best.globalScore}/10) est la plus adaptée à ton profil.`);
+                lines.push(`La **${best.name}** (${fmtPct(best.globalScore)}) est la plus adaptée à ton profil.`);
               }
             } else {
-              lines.push(`La **${best.name}** (${best.globalScore}/10) est la plus adaptée à ton profil.`);
+              lines.push(`La **${best.name}** (${fmtPct(best.globalScore)}) est la plus adaptée à ton profil.`);
             }
             
             // Line 2: Injury warning or comfort note
@@ -1894,26 +2639,26 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   ? prioAttrs.map(a=>({attr:a, diff: (best.scores[a]||0)-(second.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0]
                   : ATTRS.map(a=>({attr:a, diff: (best.scores[a]||0)-(second.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
                 if (secondWorse) {
-                  lines.push(`La **${second.name}** (${second.globalScore}/10) suit mais perd du terrain en ${secondWorse.attr} (${second.scores[secondWorse.attr]} vs ${best.scores[secondWorse.attr]}).`);
+                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) suit mais perd du terrain en ${secondWorse.attr} (${second.scores[secondWorse.attr]} vs ${best.scores[secondWorse.attr]}).`);
                 } else {
-                  lines.push(`La **${second.name}** (${second.globalScore}/10) est une alternative solide.`);
+                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) est une alternative solide.`);
                 }
               } else if (gap >= 0.2) {
                 // Close call — find what #2 does better
                 const secondBetter = ATTRS.map(a=>({attr:a, diff: (second.scores[a]||0)-(best.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
                 if (secondBetter) {
-                  lines.push(`La **${second.name}** (${second.globalScore}/10) talonne de près et pousse même plus fort en ${secondBetter.attr} (${second.scores[secondBetter.attr]} vs ${best.scores[secondBetter.attr]}) — à essayer aussi.`);
+                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) talonne de près et pousse même plus fort en ${secondBetter.attr} (${second.scores[secondBetter.attr]} vs ${best.scores[secondBetter.attr]}) — à essayer aussi.`);
                 } else {
-                  lines.push(`La **${second.name}** (${second.globalScore}/10) est au coude-à-coude — les deux méritent un essai.`);
+                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) est au coude-à-coude — les deux méritent un essai.`);
                 }
               } else {
                 // Virtually tied — find what differentiates them
                 const secondBetter2 = ATTRS.map(a=>({attr:a, diff: (second.scores[a]||0)-(best.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
                 const bestBetter2 = ATTRS.map(a=>({attr:a, diff: (best.scores[a]||0)-(second.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
                 if (secondBetter2 && bestBetter2) {
-                  lines.push(`Quasi ex-æquo avec la **${second.name}** (${second.globalScore}/10) — elle pousse en ${secondBetter2.attr} (${second.scores[secondBetter2.attr]}), la n°1 domine en ${bestBetter2.attr} (${best.scores[bestBetter2.attr]}). Deux profils complémentaires à tester.`);
+                  lines.push(`Quasi ex-æquo avec la **${second.name}** (${fmtPct(second.globalScore)}) — elle pousse en ${secondBetter2.attr} (${second.scores[secondBetter2.attr]}), la n°1 domine en ${bestBetter2.attr} (${best.scores[bestBetter2.attr]}). Deux profils complémentaires à tester.`);
                 } else {
-                  lines.push(`Quasi ex-æquo avec la **${second.name}** (${second.globalScore}/10) — profils très proches, la différence se jouera au toucher et à l'équilibre en main.`);
+                  lines.push(`Quasi ex-æquo avec la **${second.name}** (${fmtPct(second.globalScore)}) — profils très proches, la différence se jouera au toucher et à l'équilibre en main.`);
                 }
               }
             }
@@ -1932,6 +2677,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>;
           })()}
 
+          {/* ===== DEEP ANALYSIS — Profile Intelligence ===== */}
+          {(()=>{
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            if(ranked.length<2) return null;
+            const deepLines = generateDeepAnalysis(profile, ranked, ATTRS);
+            if(!deepLines.length) return null;
+            const renderBold = (text, idx) => {
+              const parts = text.split(/(\*\*[^*]+\*\*)/g);
+              return <p key={idx} style={{margin:"0 0 6px",fontSize:9,color:"#94a3b8",lineHeight:1.6}}>
+                {parts.map((p,j) => p.startsWith("**") ? <strong key={j} style={{color:"#e2e8f0"}}>{p.replace(/\*\*/g,"")}</strong> : p)}
+              </p>;
+            };
+            return <div className="print-deep-analysis" style={{background:"rgba(99,102,241,0.05)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:8,padding:"10px 12px",marginBottom:12}}>
+              <div className="deep-title" style={{fontWeight:700,color:"#a5b4fc",marginBottom:6,fontSize:11}}>🔬 Analyse du profil</div>
+              {deepLines.map((l,i) => renderBold(l,i))}
+            </div>;
+          })()}
+
           {/* ===== PODIUM SECTION TITLE ===== */}
           {rackets.length>=3&&<div className="print-section-title" style={{display:"none",fontSize:12,fontWeight:800,color:"#1a1a1a",marginBottom:8,paddingBottom:4}}>
             🏆 PODIUM — Top 3
@@ -1944,7 +2707,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             ranked.forEach((r,i)=>{
               // Insert section divider after top 3
               if(i===3 && ranked.length>3) {
-                cards.push(<div key="divider" className="print-section-divider" style={{borderTop:"2px solid rgba(255,255,255,0.06)",margin:"12px 0 8px",paddingTop:6}}>
+                cards.push(<div key="divider" className="print-section-divider" style={{borderTop:"2px solid rgba(255,255,255,0.06)",margin:"16px 0 10px",paddingTop:8}}>
                   <div className="print-section-title" style={{display:"none",fontSize:11,fontWeight:700,color:"#64748b",marginBottom:4}}>📋 AUTRES RAQUETTES ANALYSÉES</div>
                 </div>);
               }
@@ -1964,53 +2727,57 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const hasLegInj = ptags.some(t=>LEG_INJ.includes(t));
               const criticalLow = hasArmInj && r.scores.Confort < 7;
               
+              const isPodium = i<3;
+              
               cards.push(<div key={r.id} className={cardClass} style={{
                 background: i===0 ? "rgba(250,204,21,0.08)" : i===1 ? "rgba(148,163,184,0.06)" : i===2 ? "rgba(217,119,6,0.06)" : "rgba(255,255,255,0.02)",
                 border: i===0 ? "2px solid rgba(250,204,21,0.5)" : i===1 ? "2px solid rgba(148,163,184,0.4)" : i===2 ? "2px solid rgba(217,119,6,0.35)" : "1px solid rgba(255,255,255,0.06)",
-                borderRadius:10, padding: i<3 ? "12px 14px" : "10px 12px", marginBottom: i<3 ? 10 : 6, boxSizing:"border-box", overflow:"hidden",
+                borderRadius:12, padding: isPodium ? "14px 16px" : "10px 12px", marginBottom: isPodium ? 12 : 6, boxSizing:"border-box", overflow:"hidden",
                 pageBreakInside:"avoid", breakInside:"avoid",
-                borderLeft: i===0 ? "8px solid rgba(250,204,21,0.7)" : i===1 ? "6px solid rgba(148,163,184,0.5)" : i===2 ? "6px solid rgba(217,119,6,0.5)" : undefined,
               }}>
-                {/* Card header: medal + name + badge + score */}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,flex:1,minWidth:0}}>
-                    {medal&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:36}}>
-                      <span style={{fontSize:i===0?28:24,lineHeight:1}}>{medal}</span>
-                      <span className="print-medal-label" style={{fontSize:7,fontWeight:800,letterSpacing:"0.02em",color:i===0?"#b8860b":i===1?"#6b7280":"#92400e",marginTop:2,whiteSpace:"nowrap"}}>{i===0?"MEILLEUR":i===1?"2ᵉ choix":"3ᵉ choix"}</span>
-                    </div>}
-                    {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:i<3?36:28,height:i<3?36:28,objectFit:"contain",borderRadius:4,flexShrink:0,background:"rgba(255,255,255,0.06)"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>}
-                    {!medal&&<div style={{width:10,height:10,borderRadius:"50%",background:r.color,border:"1px solid #999",flexShrink:0,printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>}
-                    <div style={{minWidth:0,flex:1}}>
-                      <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-                        <span style={{fontSize: i===0 ? 14 : i<3 ? 13 : 11,fontWeight:700,color:"#e2e8f0"}}>{r.name}</span>
-                        <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:4,padding:"2px 6px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
-                      </div>
-                      <div style={{fontSize:8,color:"#64748b",marginTop:2}}>
-                        {r.shape} · {r.weight} · {r.brand}{r.player && r.player !== "—" ? ` · 🎾 ${r.player}` : ""}{r.price && r.price !== "—" ? ` · ${r.price}` : ""}
-                      </div>
+                {/* Card header: medal + image + name + badge + score */}
+                <div style={{display:"flex",alignItems:"center",gap:isPodium?12:8,marginBottom:isPodium?10:6}}>
+                  {medal&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:40}}>
+                    <span style={{fontSize:i===0?32:26,lineHeight:1}}>{medal}</span>
+                    <span className="print-medal-label" style={{fontSize:7,fontWeight:800,letterSpacing:"0.02em",color:i===0?"#b8860b":i===1?"#6b7280":"#92400e",marginTop:2,whiteSpace:"nowrap"}}>{i===0?"MEILLEUR":i===1?"2ᵉ choix":"3ᵉ choix"}</span>
+                  </div>}
+                  {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className={isPodium?"print-racket-img":"print-racket-img-sm"} style={{
+                    width:isPodium?60:36, height:isPodium?72:44, objectFit:"contain", borderRadius:isPodium?10:6, flexShrink:0,
+                    background:isPodium?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.04)", padding:isPodium?4:2,
+                    border:isPodium?`1px solid ${i===0?"rgba(250,204,21,0.3)":i===1?"rgba(148,163,184,0.2)":"rgba(217,119,6,0.2)"}`:"none",
+                  }} onError={e=>{e.target.style.display='none'}}/>}
+                  {!medal&&!r.imageUrl&&<div style={{width:10,height:10,borderRadius:"50%",background:r.color,border:"1px solid #999",flexShrink:0,printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>}
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+                      <span style={{fontSize: i===0 ? 15 : isPodium ? 13 : 11,fontWeight:800,color:"#e2e8f0"}}>{r.name}</span>
+                      <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
+                    </div>
+                    <div style={{fontSize:isPodium?9:8,color:"#64748b",marginTop:3}}>
+                      {r.shape} · {r.weight} · {r.brand}{r.player && r.player !== "—" ? ` · 🎾 ${r.player}` : ""}{r.price && r.price !== "—" ? ` · ${r.price}` : ""}
                     </div>
                   </div>
-                  <div className={scoreClass} style={{fontSize: i===0 ? 28 : i<3 ? 24 : 18,fontWeight:800,color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171",fontFamily:"'Outfit'",lineHeight:1,flexShrink:0,marginLeft:10}}>
-                    {gs}<span style={{fontSize:10,color:"#64748b"}}>/10</span>
+                  <div className={scoreClass} style={{fontSize: i===0 ? 28 : isPodium ? 22 : 16, fontWeight:800, color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171", fontFamily:"'Outfit'", lineHeight:1, flexShrink:0, marginLeft:8}}>
+                    {fmtPct(gs)}
                   </div>
                 </div>
                 
-                {/* Score bars — 2 rows of 3 */}
-                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"4px 10px",marginBottom:6}}>
+                {/* Score bars — 2 rows of 3, thicker for podium */}
+                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:isPodium?"6px 14px":"4px 10px",marginBottom:isPodium?8:5}}>
                   {ATTRS.map(attr=>{
                     const v = r.scores[attr];
                     const isKey = (attr==="Confort"&&hasArmInj) || 
                       (attr==="Maniabilité"&&(hasLegInj||(profile.styleTags||[]).includes("veloce"))) ||
                       (profile.priorityTags||[]).some(t=>(t==="confort"&&attr==="Confort")||(t==="polyvalence"&&["Contrôle","Tolérance","Maniabilité"].includes(attr))||(t==="puissance"&&attr==="Puissance")||(t==="controle"&&attr==="Contrôle")||(t==="spin"&&attr==="Spin")||(t==="legerete"&&attr==="Maniabilité")||(t==="protection"&&attr==="Confort")||(t==="reprise"&&["Confort","Tolérance","Maniabilité"].includes(attr)));
                     const low = hasArmInj && attr==="Confort" && v<7;
+                    const barH = isPodium ? 7 : 4;
                     const barClass = low?"print-bar-fill-red":v>=7.5?"print-bar-fill-green":v>=6?"print-bar-fill-gray":"print-bar-fill-yellow";
                     return(<div key={attr} style={{minWidth:0}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <span style={{fontSize:8,color:isKey?"#f97316":"#64748b",fontWeight:isKey?700:400}}>{isKey?"★ ":""}{attr}</span>
-                        <span style={{fontSize:9,color:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#cbd5e1":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
+                        <span style={{fontSize:isPodium?9:8,color:isKey?"#f97316":"#64748b",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
+                        <span style={{fontSize:isPodium?10:9,color:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#cbd5e1":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
                       </div>
-                      <div className="print-bar-bg" style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:2,marginTop:2}}>
-                        <div className={barClass} style={{height:4,borderRadius:2,width:`${v*10}%`,background:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#64748b":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
+                      <div className="print-bar-bg" style={{height:barH,background:"rgba(255,255,255,0.06)",borderRadius:barH/2,marginTop:2}}>
+                        <div className={barClass} style={{height:barH,borderRadius:barH/2,width:`${v*10}%`,background:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#64748b":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
                       </div>
                     </div>);
                   })}
@@ -2018,7 +2785,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 
                 {/* Warnings and verdict */}
                 {criticalLow&&<div className="print-warn" style={{fontSize:9,color:"#f87171",fontWeight:600,marginBottom:3}}>⚠ Confort insuffisant ({r.scores.Confort}/10) pour blessures {ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/")} — risque de douleurs</div>}
-                <div className="print-verdict" style={{fontSize:9,color:"#94a3b8",lineHeight:1.5}}>{r.verdict}</div>
+                <div className="print-verdict" style={{fontSize:isPodium?10:9,color:"#94a3b8",lineHeight:1.6}}>{r.verdict}</div>
               </div>);
             });
             return cards;
@@ -2070,7 +2837,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const gs = computeGlobalScore(r.scores, profile);
               return {...r, _prioAvg: Math.round(prioAvg*10)/10, _prioScore: prioAvg*0.7 + gs*0.3, globalScore: gs};
             });
-            scored.sort((a,b)=>b._prioScore-a._prioScore);
+            scored.sort((a,b)=>b.globalScore-a.globalScore);
             const picks = scored.slice(0, 4);
             if (!picks.length) return null;
             
@@ -2089,46 +2856,44 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 const badgeClass = forYouVal==="recommended"?"print-badge-green":forYouVal==="no"?"print-badge-red":"print-badge-orange";
                 return <div key={"disco-"+r.id} className="print-card" style={{
                   background:"rgba(249,115,22,0.04)", border:"1px solid rgba(249,115,22,0.2)",
-                  borderRadius:10, padding:"10px 12px", marginBottom:6, boxSizing:"border-box", overflow:"hidden",
-                  borderLeft:"4px solid rgba(249,115,22,0.4)", pageBreakInside:"avoid", breakInside:"avoid",
+                  borderRadius:12, padding:"12px 14px", marginBottom:8, boxSizing:"border-box", overflow:"hidden",
+                  borderLeft:"5px solid rgba(249,115,22,0.5)", pageBreakInside:"avoid", breakInside:"avoid",
                 }}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8,flex:1,minWidth:0}}>
-                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:28}}>
-                        <span style={{fontSize:16,lineHeight:1}}>🎯</span>
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:28}}>
+                      <span style={{fontSize:18,lineHeight:1}}>🎯</span>
+                    </div>
+                    {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className="print-racket-img-sm" style={{width:40,height:48,objectFit:"contain",borderRadius:8,flexShrink:0,background:"rgba(255,255,255,0.06)",padding:2}} onError={e=>{e.target.style.display='none'}}/>}
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+                        <span style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{r.name}</span>
+                        <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
+                        <span style={{background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#f97316",flexShrink:0,whiteSpace:"nowrap"}}>★ {r._prioAvg}/10</span>
                       </div>
-                      {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:28,height:28,objectFit:"contain",borderRadius:4,flexShrink:0,background:"rgba(255,255,255,0.06)"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display='none'}}/>}
-                      <div style={{minWidth:0,flex:1}}>
-                        <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-                          <span style={{fontSize:11,fontWeight:700,color:"#e2e8f0"}}>{r.name}</span>
-                          <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:4,padding:"2px 6px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
-                          <span style={{background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",borderRadius:4,padding:"2px 6px",fontSize:7,fontWeight:700,color:"#f97316",flexShrink:0,whiteSpace:"nowrap"}}>★ {r._prioAvg}/10</span>
-                        </div>
-                        <div style={{fontSize:8,color:"#64748b",marginTop:2}}>
-                          {r.shape} · {r.weight} · {r.brand}{r.player && r.player !== "—" ? ` · 🎾 ${r.player}` : ""}{r.price && r.price !== "—" ? ` · ${r.price}` : ""}
-                        </div>
+                      <div style={{fontSize:9,color:"#64748b",marginTop:3}}>
+                        {r.shape} · {r.weight} · {r.brand}{r.player && r.player !== "—" ? ` · 🎾 ${r.player}` : ""}{r.price && r.price !== "—" ? ` · ${r.price}` : ""}
                       </div>
                     </div>
-                    <div style={{fontSize:18,fontWeight:800,color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171",fontFamily:"'Outfit'",lineHeight:1,flexShrink:0,marginLeft:10}}>
-                      {gs}<span style={{fontSize:10,color:"#64748b"}}>/10</span>
+                    <div style={{fontSize:18,fontWeight:800,color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171",fontFamily:"'Outfit'",lineHeight:1,flexShrink:0,marginLeft:8}}>
+                      {fmtPct(gs)}
                     </div>
                   </div>
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"4px 10px",marginBottom:6}}>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"5px 12px",marginBottom:6}}>
                     {ATTRS.map(attr=>{
                       const v = r.scores[attr];
                       const isKey = prioAttrs.includes(attr);
                       return <div key={attr} style={{minWidth:0}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                          <span style={{fontSize:8,color:isKey?"#f97316":"#64748b",fontWeight:isKey?700:400}}>{isKey?"★ ":""}{attr}</span>
-                          <span style={{fontSize:9,color:v>=7.5?"#4ade80":v>=6?"#cbd5e1":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
+                          <span style={{fontSize:9,color:isKey?"#f97316":"#64748b",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
+                          <span style={{fontSize:10,color:v>=7.5?"#4ade80":v>=6?"#cbd5e1":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
                         </div>
-                        <div className="print-bar-bg" style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:2,marginTop:2}}>
-                          <div className={v>=7.5?"print-bar-fill-green":v>=6?"print-bar-fill-gray":"print-bar-fill-yellow"} style={{height:4,borderRadius:2,width:`${v*10}%`,background:v>=7.5?"#4ade80":v>=6?"#64748b":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
+                        <div className="print-bar-bg" style={{height:6,background:"rgba(255,255,255,0.06)",borderRadius:3,marginTop:2}}>
+                          <div className={v>=7.5?"print-bar-fill-green":v>=6?"print-bar-fill-gray":"print-bar-fill-yellow"} style={{height:6,borderRadius:3,width:`${v*10}%`,background:v>=7.5?"#4ade80":v>=6?"#64748b":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
                         </div>
                       </div>;
                     })}
                   </div>
-                  <div className="print-verdict" style={{fontSize:9,color:"#94a3b8",lineHeight:1.5}}>{r.verdict}</div>
+                  <div className="print-verdict" style={{fontSize:10,color:"#94a3b8",lineHeight:1.6}}>{r.verdict}</div>
                 </div>;
               })}
             </>;
@@ -2154,6 +2919,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
       </>}
 
+
       {/* ============================================================ */}
       {/* LEXIQUE */}
       {/* ============================================================ */}
@@ -2169,6 +2935,241 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.0 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
+
+      {/* ============================================================ */}
+      {/* ARENA OVERLAY — Full-screen immersive comparator */}
+      {/* ============================================================ */}
+      {showArena&&(()=>{
+        const r2 = selRackets;
+        if(r2.length<2){setShowArena(false);return null;}
+
+        // Compute all data
+        const scored = r2.map(r=>({
+          ...r,
+          _gs: computeGlobalScore(r.scores, profile),
+          _fy: computeForYou(r.scores, profile),
+        }));
+        scored.sort((a,b)=>b._gs-a._gs);
+        const champion = scored[0];
+
+        // Per-attribute winners
+        const attrWinners = {};
+        ATTRS.forEach(a=>{
+          let mx=0;
+          r2.forEach(r=>{const v=Number(r.scores[a])||0;if(v>mx)mx=v;});
+          attrWinners[a]=r2.filter(r=>(Number(r.scores[a])||0)===mx&&r2.some(x=>(Number(x.scores[a])||0)<mx)).map(r=>r.id);
+        });
+        scored.forEach(r=>{r._wins=ATTRS.filter(a=>attrWinners[a].includes(r.id)).length;});
+
+        const compareRadar = ATTRS.map(a=>{const pt={attribute:a};r2.forEach(r=>{pt[r.shortName]=Number(r.scores[a])||0;});return pt;});
+        const fyConfig4={recommended:{text:"RECOMMANDÉ",color:"#4CAF50"},partial:{text:"JOUABLE",color:"#FF9800"},no:{text:"DÉCONSEILLÉ",color:"#ef4444"}};
+
+        const specRows = [
+          {label:"Forme",key:"shape"},{label:"Poids",key:"weight"},{label:"Balance",key:"balance"},
+          {label:"Surface",key:"surface"},{label:"Noyau",key:"core"},{label:"Prix",key:"price"},
+        ];
+
+        return (
+        <div style={{
+          position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:9999,
+          background:"radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.15), transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(236,72,153,0.1), transparent 50%), linear-gradient(180deg, #0a0a1a 0%, #0f0a24 30%, #120a2e 60%, #0a0a1a 100%)",
+          overflowY:"auto", overflowX:"hidden",
+        }}>
+          <style>{`
+            @keyframes arenaSlideIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+            @keyframes arenaFadeIn { from{opacity:0} to{opacity:1} }
+            @keyframes arenaPulse { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+            @keyframes vsGlow { 0%,100%{text-shadow:0 0 20px rgba(124,58,237,0.5),0 0 40px rgba(236,72,153,0.3)} 50%{text-shadow:0 0 40px rgba(124,58,237,0.8),0 0 80px rgba(236,72,153,0.5)} }
+            @keyframes barGrow { from{width:0} }
+            @keyframes crownDrop { from{opacity:0;transform:translateY(-20px) scale(0.5)} to{opacity:1;transform:translateY(0) scale(1)} }
+            @keyframes starPop { 0%{transform:scale(0) rotate(-180deg);opacity:0} 60%{transform:scale(1.3) rotate(10deg);opacity:1} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+          `}</style>
+
+          {/* Ambient particles */}
+          <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,pointerEvents:"none",overflow:"hidden",zIndex:0}}>
+            {[...Array(12)].map((_,i)=>(
+              <div key={i} style={{
+                position:"absolute",
+                width:Math.random()*3+1,height:Math.random()*3+1,
+                borderRadius:"50%",
+                background:i%3===0?"rgba(124,58,237,0.4)":i%3===1?"rgba(236,72,153,0.3)":"rgba(99,102,241,0.3)",
+                left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,
+                animation:`arenaPulse ${3+Math.random()*4}s ease-in-out infinite`,
+                animationDelay:`${Math.random()*3}s`,
+              }}/>
+            ))}
+          </div>
+
+          <div style={{position:"relative",zIndex:1,maxWidth:700,margin:"0 auto",padding:"20px 16px 40px"}}>
+
+            {/* Header */}
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24,animation:"arenaFadeIn 0.4s ease"}}>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontSize:24}}>⚔️</span>
+                <div>
+                  <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#c4b5fd,#a78bfa,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>L'ARÈNE</h1>
+                  <div style={{fontSize:9,color:"#7c3aed",fontWeight:600,letterSpacing:"0.08em",textTransform:"uppercase"}}>Comparateur immersif</div>
+                </div>
+              </div>
+              <button onClick={()=>setShowArena(false)} style={{width:40,height:40,borderRadius:12,border:"1px solid rgba(124,58,237,0.3)",background:"rgba(124,58,237,0.1)",color:"#c4b5fd",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"inherit",transition:"all 0.2s"}}
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(124,58,237,0.25)";}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(124,58,237,0.1)";}}>✕</button>
+            </div>
+
+            {/* VS CARDS — fighting game style */}
+            <div style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:28,animation:"arenaSlideIn 0.6s ease"}}>
+              {scored.map((r,i)=>{
+                const isChamp = r.id===champion.id;
+                const fy = fyConfig4[r._fy]||fyConfig4.partial;
+                return (
+                  <React.Fragment key={r.id}>
+                    {i>0&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,width:50,zIndex:2}}>
+                      <div style={{fontFamily:"'Outfit'",fontSize:20,fontWeight:900,color:"#7c3aed",animation:"vsGlow 2s ease-in-out infinite",textAlign:"center",lineHeight:1}}>VS</div>
+                    </div>}
+                    <div style={{
+                      flex:1,minWidth:0,
+                      background: isChamp
+                        ? "linear-gradient(165deg,rgba(124,58,237,0.12),rgba(236,72,153,0.06),rgba(0,0,0,0.2))"
+                        : "rgba(255,255,255,0.02)",
+                      border:`1.5px solid ${isChamp?"rgba(124,58,237,0.4)":"rgba(255,255,255,0.06)"}`,
+                      borderRadius:18,padding:"20px 14px",textAlign:"center",position:"relative",
+                      boxShadow:isChamp?"0 0 40px rgba(124,58,237,0.1)":"none",
+                      transition:"all 0.3s",
+                    }}>
+                      {isChamp&&scored.length>1&&<div style={{position:"absolute",top:-14,left:"50%",transform:"translateX(-50%)",animation:"crownDrop 0.6s ease 0.8s both"}}>
+                        <span style={{fontSize:22}}>👑</span>
+                      </div>}
+                      {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:64,height:80,objectFit:"contain",margin:"0 auto 8px",display:"block",filter:isChamp?"drop-shadow(0 4px 16px rgba(124,58,237,0.3))":"none",borderRadius:8}} onError={e=>{e.target.style.display='none'}}/>}
+                      <div style={{width:10,height:10,borderRadius:"50%",background:r.color,margin:"0 auto 6px",boxShadow:`0 0 12px ${r.color}60`}}/>
+                      <div style={{fontSize:13,fontWeight:700,color:isChamp?"#e2e8f0":"#94a3b8",lineHeight:1.2}}>{r.shortName}</div>
+                      <div style={{fontSize:9,color:"#64748b",marginTop:3}}>{r.brand}</div>
+                      <div style={{fontSize:24,fontWeight:800,color:isChamp?"#c4b5fd":"#475569",fontFamily:"'Outfit'",marginTop:8}}>{r._gs.toFixed(1)}<span style={{fontSize:10,color:"#64748b"}}>/10</span></div>
+                      <div style={{marginTop:4}}>
+                        <span style={{fontSize:8,fontWeight:700,color:fy.color,background:`${fy.color}15`,border:`1px solid ${fy.color}30`,borderRadius:6,padding:"2px 8px"}}>{fy.text}</span>
+                      </div>
+                      <div style={{fontSize:10,color:"#7c3aed",fontWeight:600,marginTop:6}}>{r._wins} critère{r._wins>1?"s":""} gagné{r._wins>1?"s":""}</div>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+
+            {/* RADAR DUEL */}
+            <div style={{background:"rgba(124,58,237,0.04)",border:"1px solid rgba(124,58,237,0.15)",borderRadius:20,padding:16,marginBottom:20,animation:"arenaSlideIn 0.6s ease 0.2s both"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"#7c3aed",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>Radar comparatif</div>
+              <ResponsiveContainer width="100%" height={280}>
+                <RadarChart data={compareRadar} cx="50%" cy="50%" outerRadius="70%">
+                  <PolarGrid stroke="rgba(124,58,237,0.12)" gridType="polygon"/>
+                  <PolarAngleAxis dataKey="attribute" tick={{fill:"#a78bfa",fontSize:10,fontWeight:600}}/>
+                  <PolarRadiusAxis angle={90} domain={[0,10]} tick={{fill:"#4c1d95",fontSize:8}} tickCount={6} axisLine={false}/>
+                  {r2.map((r,i)=>(
+                    <Radar key={r.id} name={r.shortName} dataKey={r.shortName} stroke={r.color} fill={r.color} fillOpacity={0.1} strokeWidth={2.5}/>
+                  ))}
+                  <Legend wrapperStyle={{fontSize:10,color:"#a78bfa",paddingTop:6}}/>
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* ATTRIBUTE DUEL BARS */}
+            <div style={{background:"rgba(124,58,237,0.04)",border:"1px solid rgba(124,58,237,0.15)",borderRadius:20,padding:16,marginBottom:20,animation:"arenaSlideIn 0.6s ease 0.3s both"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"#7c3aed",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:14}}>Duel par critère</div>
+              {ATTRS.map((attr,ai)=>{
+                const vals = r2.map(r=>({r,v:Number(r.scores[attr])||0}));
+                const maxV = Math.max(...vals.map(x=>x.v));
+                return <div key={attr} style={{marginBottom:14}}>
+                  <div style={{fontSize:10,fontWeight:700,color:"#c4b5fd",marginBottom:6,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                    <span>{attr}</span>
+                    {attrWinners[attr].length===1&&<span style={{fontSize:8,color:"#7c3aed",background:"rgba(124,58,237,0.15)",padding:"1px 6px",borderRadius:4}}>👑 {r2.find(r=>r.id===attrWinners[attr][0])?.shortName}</span>}
+                    {attrWinners[attr].length===0&&<span style={{fontSize:8,color:"#475569"}}>Égalité</span>}
+                  </div>
+                  {vals.map(({r,v})=>{
+                    const isW = attrWinners[attr].includes(r.id);
+                    return <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}>
+                      <div style={{width:8,height:8,borderRadius:"50%",background:r.color,flexShrink:0,boxShadow:isW?`0 0 8px ${r.color}`:""}}/>
+                      <div style={{width:55,fontSize:9,color:"#94a3b8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flexShrink:0}}>{r.shortName}</div>
+                      <div style={{flex:1,height:8,background:"rgba(124,58,237,0.08)",borderRadius:4,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:`${v*10}%`,background:isW?"linear-gradient(90deg,#7c3aed,#ec4899)":r.color,borderRadius:4,animation:`barGrow 0.8s ease ${0.3+ai*0.05}s both`,opacity:isW?1:0.5}}/>
+                      </div>
+                      <div style={{width:32,textAlign:"right",fontSize:11,fontWeight:isW?800:500,color:isW?"#c4b5fd":"#64748b",fontFamily:"'Outfit'"}}>{v.toFixed(1)}</div>
+                    </div>;
+                  })}
+                </div>;
+              })}
+            </div>
+
+            {/* SPECS COMPARISON */}
+            <div style={{background:"rgba(124,58,237,0.04)",border:"1px solid rgba(124,58,237,0.15)",borderRadius:20,padding:16,marginBottom:20,animation:"arenaSlideIn 0.6s ease 0.4s both",overflowX:"auto"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"#7c3aed",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:14}}>Fiche technique</div>
+              <table style={{width:"100%",borderCollapse:"collapse"}}>
+                <thead><tr>
+                  <th style={{padding:"6px 8px",textAlign:"left",color:"#4c1d95",fontSize:9,fontWeight:600}}></th>
+                  {scored.map(r=>(
+                    <th key={r.id} style={{padding:"6px 8px",textAlign:"center"}}>
+                      <div style={{width:10,height:10,borderRadius:"50%",background:r.color,margin:"0 auto 3px"}}/>
+                      <span style={{fontSize:10,fontWeight:700,color:r.id===champion.id?"#c4b5fd":"#64748b"}}>{r.shortName}</span>
+                    </th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {specRows.map(({label,key},si)=>(
+                    <tr key={key} style={{background:si%2===0?"rgba(124,58,237,0.03)":"transparent"}}>
+                      <td style={{padding:"5px 8px",fontSize:9,color:"#a78bfa",fontWeight:600}}>{label}</td>
+                      {scored.map(r=>(
+                        <td key={r.id} style={{padding:"5px 8px",textAlign:"center",fontSize:10,color:"#cbd5e1"}}>{r[key]||"—"}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* VERDICT FINAL */}
+            <div style={{background:"linear-gradient(135deg,rgba(124,58,237,0.1),rgba(236,72,153,0.06))",border:"1.5px solid rgba(124,58,237,0.3)",borderRadius:20,padding:20,textAlign:"center",animation:"arenaSlideIn 0.6s ease 0.5s both",boxShadow:"0 8px 40px rgba(124,58,237,0.1)"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"#7c3aed",textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>🏆 Verdict de l'Arène</div>
+              <div style={{animation:"starPop 0.5s ease 1.2s both"}}>
+                <span style={{fontSize:36}}>👑</span>
+              </div>
+              <div style={{display:"inline-flex",alignItems:"center",gap:8,marginTop:4}}>
+                <div style={{width:14,height:14,borderRadius:"50%",background:champion.color,boxShadow:`0 0 16px ${champion.color}60`}}/>
+                <span style={{fontSize:20,fontWeight:800,color:"#e2e8f0",fontFamily:"'Outfit'"}}>{champion.shortName}</span>
+              </div>
+              <div style={{fontSize:26,fontWeight:900,color:"#c4b5fd",fontFamily:"'Outfit'",marginTop:2}}>{champion._gs.toFixed(1)}<span style={{fontSize:12,color:"#7c3aed"}}>/10</span></div>
+              <div style={{fontSize:11,color:"#a78bfa",marginTop:4}}>
+                Meilleure correspondance pour <strong style={{color:"#c4b5fd"}}>{profileName}</strong>
+              </div>
+              <div style={{fontSize:10,color:"#7c3aed",marginTop:2}}>{champion._wins} critère{champion._wins>1?"s":""} remporté{champion._wins>1?"s":""} sur {ATTRS.length}</div>
+
+              {/* Podium */}
+              <div style={{display:"flex",justifyContent:"center",gap:8,marginTop:16,flexWrap:"wrap"}}>
+                {scored.map((r,i)=>(
+                  <div key={r.id} style={{
+                    display:"flex",alignItems:"center",gap:6,
+                    padding:"6px 14px",
+                    background:i===0?"rgba(124,58,237,0.15)":"rgba(255,255,255,0.02)",
+                    border:`1px solid ${i===0?"rgba(124,58,237,0.4)":"rgba(255,255,255,0.06)"}`,
+                    borderRadius:10,
+                  }}>
+                    <span style={{fontSize:14}}>{["🥇","🥈","🥉","4️⃣"][i]||""}</span>
+                    <div style={{width:8,height:8,borderRadius:"50%",background:r.color}}/>
+                    <span style={{fontSize:10,fontWeight:i===0?700:500,color:i===0?"#c4b5fd":"#94a3b8"}}>{r.shortName}</span>
+                    <span style={{fontSize:11,fontWeight:800,color:i===0?"#c4b5fd":"#64748b",fontFamily:"'Outfit'"}}>{r._gs.toFixed(1)}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Exit */}
+              <button onClick={()=>setShowArena(false)} style={{
+                marginTop:20,padding:"12px 32px",borderRadius:12,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+                background:"rgba(124,58,237,0.15)",border:"1px solid rgba(124,58,237,0.35)",
+                color:"#c4b5fd",fontSize:12,fontWeight:700,transition:"all 0.2s",
+              }} onMouseEnter={e=>{e.currentTarget.style.background="rgba(124,58,237,0.25)";}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(124,58,237,0.15)";}}>
+                ← Retour à l'analyse
+              </button>
+            </div>
+
+          </div>
+        </div>
+        );
+      })()}
     </div>
   );
 
