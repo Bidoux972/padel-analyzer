@@ -555,6 +555,7 @@ export default function PadelAnalyzer() {
     return (p._name) ? "dashboard" : "home";
   });
   const [wizardStep, setWizardStep] = useState(0);
+  const [revealIdx, setRevealIdx] = useState(0);
 
   // Auto-save rackets and profile to localStorage
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
@@ -1741,7 +1742,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 if(!profileName.trim()){alert("Donne un nom à ton profil");return;}
                 const list = saveNamedProfile(profileName.trim(), profile);
                 setSavedProfiles(list);
-                setScreen("reveal");
+                setScreen("analyzing");
+                setRevealIdx(0);
               }} style={{
                 flex:2,padding:"14px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
                 background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))",
@@ -1757,10 +1759,97 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       })()}
 
       {/* ============================================================ */}
-      {/* REVEAL SCREEN — Top 3 carousel after profile creation */}
+      {/* ANALYZING SCREEN — Suspense interstitial */}
+      {/* ============================================================ */}
+      {screen==="analyzing"&&(()=>{
+        const styles = (profile.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const injuries = (profile.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const priorities = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const hand = profile.hand||"Droitier", side = profile.side||"Droite";
+        const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
+        const role = side==="Les deux"?"Polyvalent":isAttacker?"Attaquant":"Constructeur";
+        const age = Number(profile.age)||0;
+        const isJuniorA = (age>0&&age<15)||(Number(profile.height)>0&&Number(profile.height)<150);
+
+        // Build analysis lines (different from pertinence!)
+        const lines = [];
+        lines.push(`Analyse du profil de ${profileName}...`);
+        if(age) lines.push(`${age} ans, ${role.toLowerCase()} côté ${side.toLowerCase()}${profile.competition?" en compétition":""}.`);
+        if(styles.length>0) {
+          const defStyles = styles.filter(s=>["Défensif / Mur","Endurant","Contre-attaquant"].includes(s));
+          const atkStyles = styles.filter(s=>["Offensif","Puissant / Frappeur"].includes(s));
+          if(defStyles.length>0&&atkStyles.length>0) lines.push(`Profil mixte : ${atkStyles.join(", ")} mais aussi ${defStyles.join(", ")}. Le système doit trouver le bon équilibre.`);
+          else if(atkStyles.length>0) lines.push(`Orientation offensive claire : ${atkStyles.join(", ")}. On cherche de la puissance et du rendement.`);
+          else if(defStyles.length>0) lines.push(`Jeu patient et solide : ${defStyles.join(", ")}. Le contrôle et la tolérance seront clés.`);
+          else lines.push(`Style ${styles.slice(0,3).join(", ")} — profil technique qui demande un bon équilibre des attributs.`);
+        } else {
+          lines.push(`Pas de style déclaré — on se base sur les priorités et le profil physique.`);
+        }
+        if(priorities.length>0) lines.push(`Priorités : ${priorities.join(", ")}. Ces critères pèsent le plus lourd dans le scoring.`);
+        if(injuries.length>0) lines.push(`⚠ Attention ${injuries.join(", ")} — le confort sera un critère non négociable.`);
+        if(isJuniorA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
+        lines.push(`Calcul en cours sur ${RACKETS_DB.length} raquettes...`);
+        lines.push(`Résultats prêts.`);
+
+        return (
+        <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",animation:"fadeIn 0.4s ease"}}>
+          <style>{`
+            @keyframes analyzeLineIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes analyzePulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+            @keyframes analyzeSpinner { to { transform:rotate(360deg); } }
+          `}</style>
+
+          {/* Logo */}
+          <svg width="48" height="48" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginBottom:24,filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.4))"}}>
+            <defs><linearGradient id="logoAnalyze" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+            <rect width="44" height="44" rx="10" fill="url(#logoAnalyze)"/>
+            <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
+            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
+          </svg>
+
+          <div style={{maxWidth:480,width:"100%"}}>
+            {lines.map((line,i)=>{
+              const isLast = i===lines.length-1;
+              const delay = i * 800;
+              const totalDuration = lines.length * 800 + 600;
+              return <div key={i} style={{
+                fontSize: i===0 ? 18 : isLast ? 15 : 13,
+                fontWeight: i===0 ? 800 : isLast ? 700 : 500,
+                color: i===0 ? "#f1f5f9" : isLast ? "#f97316" : "#94a3b8",
+                fontFamily: i===0||isLast ? "'Outfit',sans-serif" : "'Inter',sans-serif",
+                marginBottom: i===0 ? 20 : 10,
+                textAlign: "center",
+                animation: `analyzeLineIn 0.5s ease ${delay}ms both`,
+                lineHeight: 1.6,
+              }}>{line}</div>;
+            })}
+
+            {/* Spinner while lines appear */}
+            <div style={{display:"flex",justifyContent:"center",marginTop:20,animation:`analyzeLineIn 0.4s ease ${(lines.length-2)*800}ms both`}}>
+              <div style={{width:28,height:28,border:"3px solid rgba(249,115,22,0.2)",borderTopColor:"#f97316",borderRadius:"50%",animation:"analyzeSpinner 0.8s linear infinite"}}/>
+            </div>
+
+            {/* Auto-transition to reveal */}
+            <div style={{animation:`analyzeLineIn 0.5s ease ${lines.length*800+200}ms both`,textAlign:"center",marginTop:24}}>
+              <button onClick={()=>setScreen("reveal")} style={{
+                padding:"14px 36px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+                background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",
+                border:"1.5px solid rgba(249,115,22,0.5)",color:"#f97316",transition:"all 0.3s",
+                boxShadow:"0 4px 20px rgba(249,115,22,0.25)",
+              }}>
+                🏆 Découvrir mes résultats
+              </button>
+            </div>
+          </div>
+        </div>
+        );
+      })()}
+
+      {/* ============================================================ */}
+      {/* REVEAL SCREEN — Top 3 carousel (one at a time) */}
       {/* ============================================================ */}
       {screen==="reveal"&&(()=>{
-        // Compute Top 3 same as dashboard
         const age = Number(profile.age)||0;
         const ht = Number(profile.height)||0;
         const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
@@ -1776,7 +1865,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const top3 = scored.slice(0, 3);
         const prioLabels = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
 
-        // Dynamic verdict per racket
         const makeVerdict = (r, rank) => {
           const sc = r.scores||{};
           const best2 = ATTRS.filter(a=>sc[a]).sort((a,b)=>(sc[b]||0)-(sc[a]||0)).slice(0,2);
@@ -1788,12 +1876,19 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         const medals = ["🥇","🥈","🥉"];
         const rankLabels = ["MEILLEUR CHOIX","2ᵉ CHOIX","3ᵉ CHOIX"];
+        const rankColors = ["#f97316","#94a3b8","#cd7f32"];
+
+        const r = top3[revealIdx];
+        if(!r) return null;
+        const sc = r.scores||{};
+        const fyConfig = computeForYou(sc, profile);
+        const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:{text:"—",color:"#64748b"};
 
         return (
-        <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.6s ease"}}>
+        <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",overflow:"hidden"}}>
           <style>{`
-            @keyframes revealPulse { 0%,100% { box-shadow: 0 0 20px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 40px rgba(249,115,22,0.3); } }
-            @keyframes revealSlideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes revealCardIn { from { opacity:0; transform:scale(0.9) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+            @keyframes revealPulse { 0%,100% { box-shadow: 0 0 30px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 50px rgba(249,115,22,0.35); } }
           `}</style>
 
           {/* Close button */}
@@ -1804,76 +1899,81 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           }}>✕</button>
 
           {/* Title */}
-          <div style={{textAlign:"center",marginBottom:28,animation:"revealSlideUp 0.6s ease"}}>
-            <div style={{fontSize:18,marginBottom:8,color:"#f97316",fontWeight:800,fontFamily:"'Outfit'",letterSpacing:"0.06em",textTransform:"uppercase"}}>🏆 {profileName}, voici tes résultats</div>
-            <p style={{fontSize:12,color:"#64748b",margin:0}}>Swipe pour découvrir ton Top 3 · Ferme pour voir le détail complet</p>
+          <div style={{textAlign:"center",marginBottom:20}}>
+            <div style={{fontSize:16,color:"#f97316",fontWeight:800,fontFamily:"'Outfit'",letterSpacing:"0.04em",textTransform:"uppercase"}}>🏆 Top 3 de {profileName}</div>
           </div>
 
-          {/* Carousel */}
-          <div style={{display:"flex",gap:20,overflowX:"auto",scrollSnapType:"x mandatory",padding:"0 40px 20px",maxWidth:"100vw",WebkitOverflowScrolling:"touch",scrollbarWidth:"none",msOverflowStyle:"none"}}>
-            {top3.map((r,i)=>{
-              const sc = r.scores||{};
-              const fyConfig = computeForYou(sc, profile);
-              const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:{text:"—",color:"#64748b"};
-              return (
-              <div key={r.id} style={{
-                minWidth:320,maxWidth:320,scrollSnapAlign:"center",
-                background:"rgba(255,255,255,0.04)",border:"2px solid rgba(249,115,22,0.2)",borderRadius:24,
-                padding:"28px 24px",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
-                animation:`revealSlideUp 0.6s ease ${i*150}ms both`,
-                ...(i===0?{borderColor:"rgba(249,115,22,0.5)",animation:"revealSlideUp 0.6s ease, revealPulse 3s ease infinite"}:{}),
-              }}>
-                {/* Medal + Rank */}
-                <div style={{fontSize:36}}>{medals[i]}</div>
-                <div style={{fontSize:10,fontWeight:700,color:i===0?"#f97316":"#94a3b8",textTransform:"uppercase",letterSpacing:"0.08em"}}>{rankLabels[i]}</div>
+          {/* Card container with arrows */}
+          <div style={{display:"flex",alignItems:"center",gap:16,maxWidth:"100vw"}}>
+            {/* Left arrow */}
+            <button onClick={()=>setRevealIdx(i=>Math.max(0,i-1))} disabled={revealIdx===0} style={{
+              width:44,height:44,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",
+              background:revealIdx>0?"rgba(249,115,22,0.1)":"rgba(255,255,255,0.03)",
+              color:revealIdx>0?"#f97316":"#334155",fontSize:22,cursor:revealIdx>0?"pointer":"default",
+              display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.2s",
+            }}>‹</button>
 
-                {/* Image */}
-                {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:100,height:100,objectFit:"contain",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.3))"}} onError={e=>{e.target.style.display="none";}}/>}
+            {/* Single card */}
+            <div key={revealIdx} style={{
+              width:340,maxWidth:"75vw",
+              background:"rgba(255,255,255,0.04)",
+              border:`2px solid ${revealIdx===0?"rgba(249,115,22,0.5)":"rgba(255,255,255,0.1)"}`,
+              borderRadius:24,padding:"28px 24px",
+              display:"flex",flexDirection:"column",alignItems:"center",gap:14,
+              animation:`revealCardIn 0.5s ease both${revealIdx===0?", revealPulse 3s ease infinite":""}`,
+            }}>
+              <div style={{fontSize:44}}>{medals[revealIdx]}</div>
+              <div style={{fontSize:11,fontWeight:700,color:rankColors[revealIdx],textTransform:"uppercase",letterSpacing:"0.08em"}}>{rankLabels[revealIdx]}</div>
 
-                {/* Name + Brand */}
-                <div style={{textAlign:"center"}}>
-                  <div style={{fontSize:17,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit'",lineHeight:1.3}}>{r.name}</div>
-                  <div style={{fontSize:11,color:"#64748b",marginTop:3}}>{r.brand} · {r.shape}{r.weight?` · ${r.weight}`:""}</div>
-                </div>
+              {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:110,height:110,objectFit:"contain",filter:"drop-shadow(0 4px 16px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none";}}/>}
 
-                {/* Score */}
-                <div style={{fontSize:42,fontWeight:900,fontFamily:"'Outfit'",color:i===0?"#f97316":"#e2e8f0",lineHeight:1}}>
-                  {(r._gs*10).toFixed(1)}%
-                </div>
-
-                {/* Badge */}
-                <span style={{fontSize:10,fontWeight:700,color:badge.color,background:`${badge.color}18`,border:`1px solid ${badge.color}40`,borderRadius:8,padding:"3px 12px",textTransform:"uppercase"}}>{badge.text}</span>
-
-                {/* Key stats */}
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,width:"100%"}}>
-                  {ATTRS.map(a=>{
-                    const val = sc[a]||0;
-                    const isPrio = (profile.priorityTags||[]).some(pid=>{const m={puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort'};return m[pid]===a;});
-                    return <div key={a} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 8px",borderRadius:6,background:isPrio?"rgba(249,115,22,0.08)":"transparent"}}>
-                      <span style={{fontSize:10,color:isPrio?"#f97316":"#94a3b8",fontWeight:isPrio?700:500}}>{isPrio?"★ ":""}{a}</span>
-                      <span style={{fontSize:12,fontWeight:700,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316"}}>{val}</span>
-                    </div>;
-                  })}
-                </div>
-
-                {/* Dynamic verdict */}
-                <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,textAlign:"center",margin:0}}>{makeVerdict(r,i)}</p>
-
-                {/* Price */}
-                {r.price&&<div style={{fontSize:10,color:"#475569"}}>💰 {r.price}</div>}
+              <div style={{textAlign:"center"}}>
+                <div style={{fontSize:19,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit'",lineHeight:1.3}}>{r.name}</div>
+                <div style={{fontSize:11,color:"#64748b",marginTop:4}}>{r.brand} · {r.shape}{r.weight?` · ${r.weight}`:""}</div>
               </div>
-              );
-            })}
+
+              <div style={{fontSize:48,fontWeight:900,fontFamily:"'Outfit'",color:revealIdx===0?"#f97316":"#e2e8f0",lineHeight:1}}>
+                {(r._gs*10).toFixed(1)}<span style={{fontSize:20}}>%</span>
+              </div>
+
+              <span style={{fontSize:10,fontWeight:700,color:badge.color,background:`${badge.color}18`,border:`1px solid ${badge.color}40`,borderRadius:8,padding:"4px 14px",textTransform:"uppercase"}}>{badge.text}</span>
+
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,width:"100%"}}>
+                {ATTRS.map(a=>{
+                  const val = sc[a]||0;
+                  const isPrio = (profile.priorityTags||[]).some(pid=>{const m={puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort'};return m[pid]===a;});
+                  return <div key={a} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 10px",borderRadius:8,background:isPrio?"rgba(249,115,22,0.08)":"rgba(255,255,255,0.02)"}}>
+                    <span style={{fontSize:10,color:isPrio?"#f97316":"#94a3b8",fontWeight:isPrio?700:500}}>{isPrio?"★ ":""}{a}</span>
+                    <span style={{fontSize:13,fontWeight:700,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316"}}>{val}</span>
+                  </div>;
+                })}
+              </div>
+
+              <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,textAlign:"center",margin:0}}>{makeVerdict(r,revealIdx)}</p>
+
+              {r.price&&<div style={{fontSize:10,color:"#475569"}}>💰 {r.price}</div>}
+            </div>
+
+            {/* Right arrow */}
+            <button onClick={()=>setRevealIdx(i=>Math.min(top3.length-1,i+1))} disabled={revealIdx>=top3.length-1} style={{
+              width:44,height:44,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",
+              background:revealIdx<top3.length-1?"rgba(249,115,22,0.1)":"rgba(255,255,255,0.03)",
+              color:revealIdx<top3.length-1?"#f97316":"#334155",fontSize:22,cursor:revealIdx<top3.length-1?"pointer":"default",
+              display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.2s",
+            }}>›</button>
           </div>
 
           {/* Dot indicators */}
-          <div style={{display:"flex",gap:8,marginTop:12}}>
-            {top3.map((_,i)=><div key={i} style={{width:i===0?18:8,height:8,borderRadius:4,background:i===0?"#f97316":"rgba(255,255,255,0.15)",transition:"all 0.3s"}}/>)}
+          <div style={{display:"flex",gap:8,marginTop:16}}>
+            {top3.map((_,i)=><button key={i} onClick={()=>setRevealIdx(i)} style={{
+              width:i===revealIdx?20:8,height:8,borderRadius:4,border:"none",cursor:"pointer",padding:0,
+              background:i===revealIdx?"#f97316":"rgba(255,255,255,0.15)",transition:"all 0.3s",
+            }}/>)}
           </div>
 
           {/* CTA */}
           <button onClick={()=>setScreen("dashboard")} style={{
-            marginTop:24,padding:"12px 32px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+            marginTop:20,padding:"12px 32px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
             background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",color:"#94a3b8",transition:"all 0.3s",
           }}>
             Voir l'analyse complète →
