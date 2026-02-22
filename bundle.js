@@ -47281,41 +47281,41 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence {
               position: absolute !important; left: 0 !important; top: 0 !important;
               width: 100% !important; max-width: 100% !important;
-              padding: 10mm 8mm !important;
+              padding: 8mm 8mm !important;
               background: white !important; color: #1a1a1a !important;
               overflow: visible !important; font-size: 10px !important;
             }
             #print-pertinence .print-header { display: block !important; }
             #print-pertinence .print-section-title { display: block !important; }
             #print-pertinence .no-print { display: none !important; }
+            #print-pertinence .print-radar-section { display: flex !important; }
             #print-pertinence .print-card {
               border: 1px solid #e2e8f0 !important; background: #fafafa !important;
               color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
               overflow: hidden !important; max-width: 100% !important;
-              margin-bottom: 8px !important; border-radius: 8px !important;
+              margin-bottom: 8px !important; border-radius: 10px !important;
             }
             #print-pertinence .print-card-gold {
-              background: linear-gradient(135deg, #fefce8, #fef9c3) !important;
-              background: #fef9e7 !important;
-              border: 2px solid #b8860b !important; border-left: 8px solid #b8860b !important;
-              box-shadow: 0 2px 12px rgba(184,134,11,0.15) !important;
-              margin-bottom: 10px !important;
+              background: linear-gradient(135deg, #fffbeb, #fef3c7) !important;
+              border: 2px solid #d4a017 !important;
+              box-shadow: 0 2px 12px rgba(184,134,11,0.12) !important;
+              margin-bottom: 12px !important;
             }
             #print-pertinence .print-card-silver {
-              background: #f1f5f9 !important;
-              border: 1.5px solid #94a3b8 !important; border-left: 6px solid #94a3b8 !important;
+              background: #f8fafc !important;
+              border: 1.5px solid #94a3b8 !important;
               margin-bottom: 10px !important;
             }
             #print-pertinence .print-card-bronze {
-              background: #fef3e2 !important;
-              border: 1.5px solid #cd7f32 !important; border-left: 6px solid #cd7f32 !important;
+              background: #fefaf5 !important;
+              border: 1.5px solid #cd7f32 !important;
               margin-bottom: 10px !important;
             }
             #print-pertinence .print-card * { color: #1a1a1a !important; }
             #print-pertinence .print-card-gold .print-medal-label { color: #8b6914 !important; }
             #print-pertinence .print-card-silver .print-medal-label { color: #64748b !important; }
             #print-pertinence .print-card-bronze .print-medal-label { color: #92400e !important; }
-            #print-pertinence .print-bar-bg { background: #e5e7eb !important; height: 4px !important; }
+            #print-pertinence .print-bar-bg { background: #e5e7eb !important; height: 6px !important; border-radius: 3px !important; }
             #print-pertinence .print-bar-fill-green { background: #22c55e !important; }
             #print-pertinence .print-bar-fill-gray { background: #9ca3af !important; }
             #print-pertinence .print-bar-fill-red { background: #ef4444 !important; }
@@ -47323,15 +47323,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-score-green { color: #16a34a !important; }
             #print-pertinence .print-score-yellow { color: #d97706 !important; }
             #print-pertinence .print-score-red { color: #dc2626 !important; }
-            #print-pertinence .print-badge { border: 1px solid #666 !important; padding: 2px 7px !important; border-radius: 4px !important; font-size: 8px !important; font-weight: 700 !important; }
+            #print-pertinence .print-badge { border: 1px solid #666 !important; padding: 3px 8px !important; border-radius: 6px !important; font-size: 8px !important; font-weight: 700 !important; }
             #print-pertinence .print-badge-green { background: #dcfce7 !important; color: #166534 !important; border-color: #22c55e !important; }
             #print-pertinence .print-badge-orange { background: #fff7ed !important; color: #9a3412 !important; border-color: #f97316 !important; }
             #print-pertinence .print-badge-red { background: #fef2f2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
-            #print-pertinence .print-profile-box { border: 1px solid #f97316 !important; background: #fff7ed !important; padding: 10px !important; }
+            #print-pertinence .print-profile-box { border: 1.5px solid #f97316 !important; background: #fff7ed !important; padding: 12px !important; border-radius: 10px !important; }
             #print-pertinence .print-warn { color: #dc2626 !important; }
             #print-pertinence .print-verdict { color: #374151 !important; font-style: normal !important; }
-            #print-pertinence .print-section-divider { border-top: 2px solid #e5e7eb !important; margin: 14px 0 10px !important; padding-top: 8px !important; }
+            #print-pertinence .print-section-divider { border-top: 2px solid #e5e7eb !important; margin: 16px 0 10px !important; padding-top: 8px !important; }
             #print-pertinence .print-footer-wrap { page-break-before: avoid; break-before: avoid; page-break-inside: avoid; break-inside: avoid; }
+            #print-pertinence .print-racket-img { width: 60px !important; height: 72px !important; object-fit: contain !important; border-radius: 8px !important; background: #f1f5f9 !important; padding: 4px !important; }
+            #print-pertinence .print-racket-img-sm { width: 40px !important; height: 48px !important; }
             @page { margin: 8mm 6mm; size: A4; }
           }
         ` }),
@@ -47360,7 +47362,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: 1, fontSize: 12, fontWeight: 700, color: "#e2e8f0" }, children: profileName ? `\u{1F464} ${profileName}` : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "#475569", fontWeight: 400, fontSize: 11 }, children: "D\xE9finis un nom dans \u{1F464} Profil \u2192 \u{1F4BE} Sauvegarder" }) }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => window.print(), style: { padding: "8px 16px", background: "rgba(249,115,22,0.2)", border: "1px solid #f97316", borderRadius: 8, color: "#f97316", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }, children: "\u{1F5A8} Imprimer" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "print-profile-box", style: { background: "rgba(249,115,22,0.06)", border: "1px solid rgba(249,115,22,0.15)", borderRadius: 10, padding: 10, marginBottom: 10, boxSizing: "border-box" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "print-profile-box", style: { background: "rgba(249,115,22,0.06)", border: "1px solid rgba(249,115,22,0.15)", borderRadius: 10, padding: 12, marginBottom: 12, boxSizing: "border-box" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#f97316", fontWeight: 700, margin: "0 0 3px" }, children: "\u{1F464} Profil actif :" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#94a3b8", margin: 0, lineHeight: 1.5 }, children: profileText }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 8, color: "#475569", margin: "4px 0 0" }, children: (() => {
@@ -47413,6 +47415,67 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               return top.length ? `Crit\xE8res renforc\xE9s : ${top.join(", ")}.` : "";
             })() })
           ] }),
+          (() => {
+            const w2 = { Puissance: 1, Contr\u00F4le: 1, Confort: 1, Spin: 1, Maniabilit\u00E9: 1, Tol\u00E9rance: 1 };
+            const prioMap2 = { confort: { Confort: 1.5 }, polyvalence: { Contr\u00F4le: 0.5, Maniabilit\u00E9: 0.5, Tol\u00E9rance: 0.5 }, puissance: { Puissance: 1.5 }, controle: { Contr\u00F4le: 1.5 }, spin: { Spin: 1.5 }, legerete: { Maniabilit\u00E9: 1.5 }, protection: { Confort: 1.5 }, reprise: { Confort: 1.5, Tol\u00E9rance: 1, Maniabilit\u00E9: 0.5 } };
+            const styleMap2 = { offensif: { Puissance: 0.5 }, defensif: { Contr\u00F4le: 0.5, Tol\u00E9rance: 0.5 }, tactique: { Contr\u00F4le: 0.5, Maniabilit\u00E9: 0.3 }, puissant: { Puissance: 0.5, Spin: 0.3 }, veloce: { Maniabilit\u00E9: 0.8 }, endurant: { Confort: 0.5, Tol\u00E9rance: 0.3 }, contre: { Tol\u00E9rance: 0.5, Contr\u00F4le: 0.3 }, polyvalent: { Contr\u00F4le: 0.3, Tol\u00E9rance: 0.3 }, technique: { Contr\u00F4le: 0.5, Spin: 0.3 } };
+            for (const tag of profile.priorityTags || []) {
+              const b = prioMap2[tag];
+              if (b) for (const [k2, v] of Object.entries(b)) w2[k2] = (w2[k2] || 1) + v;
+            }
+            for (const tag of profile.styleTags || []) {
+              const b = styleMap2[tag];
+              if (b) for (const [k2, v] of Object.entries(b)) w2[k2] = (w2[k2] || 1) + v;
+            }
+            const maxW2 = Math.max(...Object.values(w2));
+            const idealRadar2 = ATTRS.map((a2) => ({ attribute: a2, "Profil id\xE9al": Math.round(w2[a2] / maxW2 * 10 * 10) / 10 }));
+            const ranked = rackets.map((r2) => ({ ...r2, globalScore: computeGlobalScore(r2.scores, profile) })).sort((a2, b) => b.globalScore - a2.globalScore);
+            if (ranked.length > 0) {
+              idealRadar2.forEach((pt) => {
+                pt["\u{1F947} " + ranked[0].shortName] = Number(ranked[0].scores[pt.attribute]) || 0;
+              });
+            }
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 12, marginBottom: 12, alignItems: "stretch" }, className: "print-radar-section", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: "1 1 50%", background: "rgba(99,102,241,0.04)", border: "1px solid rgba(99,102,241,0.12)", borderRadius: 10, padding: "8px 4px 4px", minHeight: 200 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, fontWeight: 700, color: "#a5b4fc", textAlign: "center", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }, children: [
+                  "\u{1F4CA} Profil id\xE9al",
+                  ranked.length > 0 ? ` vs ${ranked[0].shortName}` : ""
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 190, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: idealRadar2, margin: { top: 8, right: 30, bottom: 4, left: 30 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarGrid, { stroke: "rgba(255,255,255,0.08)" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fill: "#94a3b8", fontSize: 8 } }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarRadiusAxis, { angle: 90, domain: [0, 10], tick: false, axisLine: false }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: "Profil id\xE9al", dataKey: "Profil id\xE9al", stroke: "#6366f1", fill: "#6366f1", fillOpacity: 0.12, strokeWidth: 2, strokeDasharray: "6 3" }),
+                  ranked.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: "\u{1F947} " + ranked[0].shortName, dataKey: "\u{1F947} " + ranked[0].shortName, stroke: "#f97316", fill: "#f97316", fillOpacity: 0.15, strokeWidth: 2 }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Legend, { wrapperStyle: { fontSize: 8, color: "#94a3b8", paddingTop: 2 } })
+                ] }) })
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: "1 1 50%", display: "flex", flexDirection: "column", gap: 8 }, children: ranked.slice(0, 3).map((r2, i) => {
+                const medals = ["\u{1F947}", "\u{1F948}", "\u{1F949}"];
+                const gs = r2.globalScore;
+                const fy2 = computeForYou(r2.scores, profile);
+                const fyC = fy2 === "recommended" ? "#22c55e" : fy2 === "no" ? "#ef4444" : "#FF9800";
+                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "8px 10px", background: i === 0 ? "rgba(249,115,22,0.06)" : "rgba(255,255,255,0.02)", border: `1px solid ${i === 0 ? "rgba(249,115,22,0.2)" : "rgba(255,255,255,0.06)"}`, borderRadius: 10, flex: 1 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 18 }, children: medals[i] }),
+                  r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", className: "print-racket-img-sm", style: { width: 32, height: 40, objectFit: "contain", borderRadius: 6, background: "rgba(255,255,255,0.06)", flexShrink: 0 }, onError: (e) => {
+                    e.target.style.display = "none";
+                  } }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, minWidth: 0 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, fontWeight: 700, color: "#e2e8f0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: r2.shortName }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#64748b" }, children: [
+                      r2.brand,
+                      " \xB7 ",
+                      r2.shape
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "right", flexShrink: 0 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1 }, children: gs.toFixed(1) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 7, color: fyC, fontWeight: 700, marginTop: 2 }, children: fy2 === "recommended" ? "RECO" : fy2 === "no" ? "NON" : "JOUABLE" })
+                  ] })
+                ] }, r2.id);
+              }) })
+            ] });
+          })(),
           (() => {
             const ranked = rackets.map((r2) => ({ ...r2, globalScore: computeGlobalScore(r2.scores, profile) })).sort((a2, b) => b.globalScore - a2.globalScore);
             if (!ranked.length) return null;
@@ -47506,7 +47569,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const cards = [];
             ranked.forEach((r2, i) => {
               if (i === 3 && ranked.length > 3) {
-                cards.push(/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-section-divider", style: { borderTop: "2px solid rgba(255,255,255,0.06)", margin: "12px 0 8px", paddingTop: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-section-title", style: { display: "none", fontSize: 11, fontWeight: 700, color: "#64748b", marginBottom: 4 }, children: "\u{1F4CB} AUTRES RAQUETTES ANALYS\xC9ES" }) }, "divider"));
+                cards.push(/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-section-divider", style: { borderTop: "2px solid rgba(255,255,255,0.06)", margin: "16px 0 10px", paddingTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-section-title", style: { display: "none", fontSize: 11, fontWeight: 700, color: "#64748b", marginBottom: 4 }, children: "\u{1F4CB} AUTRES RAQUETTES ANALYS\xC9ES" }) }, "divider"));
               }
               const forYouVal = computeForYou(r2.scores, profile);
               const fy = fyConfig[forYouVal] || fyConfig.partial;
@@ -47521,63 +47584,71 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const hasArmInj = ptags.some((t) => ARM_INJ.includes(t));
               const hasLegInj = ptags.some((t) => LEG_INJ.includes(t));
               const criticalLow = hasArmInj && r2.scores.Confort < 7;
+              const isPodium = i < 3;
               cards.push(/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: cardClass, style: {
                 background: i === 0 ? "rgba(250,204,21,0.08)" : i === 1 ? "rgba(148,163,184,0.06)" : i === 2 ? "rgba(217,119,6,0.06)" : "rgba(255,255,255,0.02)",
                 border: i === 0 ? "2px solid rgba(250,204,21,0.5)" : i === 1 ? "2px solid rgba(148,163,184,0.4)" : i === 2 ? "2px solid rgba(217,119,6,0.35)" : "1px solid rgba(255,255,255,0.06)",
-                borderRadius: 10,
-                padding: i < 3 ? "12px 14px" : "10px 12px",
-                marginBottom: i < 3 ? 10 : 6,
+                borderRadius: 12,
+                padding: isPodium ? "14px 16px" : "10px 12px",
+                marginBottom: isPodium ? 12 : 6,
                 boxSizing: "border-box",
                 overflow: "hidden",
                 pageBreakInside: "avoid",
-                breakInside: "avoid",
-                borderLeft: i === 0 ? "8px solid rgba(250,204,21,0.7)" : i === 1 ? "6px solid rgba(148,163,184,0.5)" : i === 2 ? "6px solid rgba(217,119,6,0.5)" : void 0
+                breakInside: "avoid"
               }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }, children: [
-                    medal && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, minWidth: 36 }, children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: i === 0 ? 28 : 24, lineHeight: 1 }, children: medal }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "print-medal-label", style: { fontSize: 7, fontWeight: 800, letterSpacing: "0.02em", color: i === 0 ? "#b8860b" : i === 1 ? "#6b7280" : "#92400e", marginTop: 2, whiteSpace: "nowrap" }, children: i === 0 ? "MEILLEUR" : i === 1 ? "2\u1D49 choix" : "3\u1D49 choix" })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: isPodium ? 12 : 8, marginBottom: isPodium ? 10 : 6 }, children: [
+                  medal && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, minWidth: 40 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: i === 0 ? 32 : 26, lineHeight: 1 }, children: medal }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "print-medal-label", style: { fontSize: 7, fontWeight: 800, letterSpacing: "0.02em", color: i === 0 ? "#b8860b" : i === 1 ? "#6b7280" : "#92400e", marginTop: 2, whiteSpace: "nowrap" }, children: i === 0 ? "MEILLEUR" : i === 1 ? "2\u1D49 choix" : "3\u1D49 choix" })
+                  ] }),
+                  r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", className: isPodium ? "print-racket-img" : "print-racket-img-sm", style: {
+                    width: isPodium ? 60 : 36,
+                    height: isPodium ? 72 : 44,
+                    objectFit: "contain",
+                    borderRadius: isPodium ? 10 : 6,
+                    flexShrink: 0,
+                    background: isPodium ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.04)",
+                    padding: isPodium ? 4 : 2,
+                    border: isPodium ? `1px solid ${i === 0 ? "rgba(250,204,21,0.3)" : i === 1 ? "rgba(148,163,184,0.2)" : "rgba(217,119,6,0.2)"}` : "none"
+                  }, onError: (e) => {
+                    e.target.style.display = "none";
+                  } }),
+                  !medal && !r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 10, height: 10, borderRadius: "50%", background: r2.color, border: "1px solid #999", flexShrink: 0, printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" } }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, minWidth: 0 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: i === 0 ? 15 : isPodium ? 13 : 11, fontWeight: 800, color: "#e2e8f0" }, children: r2.name }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `print-badge ${badgeClass}`, style: { background: fy.bg, border: `1px solid ${fy.border}`, borderRadius: 6, padding: "3px 8px", fontSize: 7, fontWeight: 700, color: "#fff", flexShrink: 0, whiteSpace: "nowrap" }, children: fy.text })
                     ] }),
-                    r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", style: { width: i < 3 ? 36 : 28, height: i < 3 ? 36 : 28, objectFit: "contain", borderRadius: 4, flexShrink: 0, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
-                      e.target.style.display = "none";
-                    } }),
-                    !medal && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 10, height: 10, borderRadius: "50%", background: r2.color, border: "1px solid #999", flexShrink: 0, printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 5, flexWrap: "wrap" }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: i === 0 ? 14 : i < 3 ? 13 : 11, fontWeight: 700, color: "#e2e8f0" }, children: r2.name }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `print-badge ${badgeClass}`, style: { background: fy.bg, border: `1px solid ${fy.border}`, borderRadius: 4, padding: "2px 6px", fontSize: 7, fontWeight: 700, color: "#fff", flexShrink: 0, whiteSpace: "nowrap" }, children: fy.text })
-                      ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#64748b", marginTop: 2 }, children: [
-                        r2.shape,
-                        " \xB7 ",
-                        r2.weight,
-                        " \xB7 ",
-                        r2.brand,
-                        r2.player && r2.player !== "\u2014" ? ` \xB7 \u{1F3BE} ${r2.player}` : "",
-                        r2.price && r2.price !== "\u2014" ? ` \xB7 ${r2.price}` : ""
-                      ] })
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: isPodium ? 9 : 8, color: "#64748b", marginTop: 3 }, children: [
+                      r2.shape,
+                      " \xB7 ",
+                      r2.weight,
+                      " \xB7 ",
+                      r2.brand,
+                      r2.player && r2.player !== "\u2014" ? ` \xB7 \u{1F3BE} ${r2.player}` : "",
+                      r2.price && r2.price !== "\u2014" ? ` \xB7 ${r2.price}` : ""
                     ] })
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: scoreClass, style: { fontSize: i === 0 ? 28 : i < 3 ? 24 : 18, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 10 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: scoreClass, style: { fontSize: i === 0 ? 32 : isPodium ? 26 : 18, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 8 }, children: [
                     gs,
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, color: "#64748b" }, children: "/10" })
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: isPodium ? 11 : 9, color: "#64748b", fontWeight: 600 }, children: "/10" })
                   ] })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "4px 10px", marginBottom: 6 }, children: ATTRS.map((attr) => {
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: isPodium ? "6px 14px" : "4px 10px", marginBottom: isPodium ? 8 : 5 }, children: ATTRS.map((attr) => {
                   const v = r2.scores[attr];
                   const isKey = attr === "Confort" && hasArmInj || attr === "Maniabilit\xE9" && (hasLegInj || (profile.styleTags || []).includes("veloce")) || (profile.priorityTags || []).some((t) => t === "confort" && attr === "Confort" || t === "polyvalence" && ["Contr\xF4le", "Tol\xE9rance", "Maniabilit\xE9"].includes(attr) || t === "puissance" && attr === "Puissance" || t === "controle" && attr === "Contr\xF4le" || t === "spin" && attr === "Spin" || t === "legerete" && attr === "Maniabilit\xE9" || t === "protection" && attr === "Confort" || t === "reprise" && ["Confort", "Tol\xE9rance", "Maniabilit\xE9"].includes(attr));
                   const low = hasArmInj && attr === "Confort" && v < 7;
+                  const barH = isPodium ? 7 : 4;
                   const barClass = low ? "print-bar-fill-red" : v >= 7.5 ? "print-bar-fill-green" : v >= 6 ? "print-bar-fill-gray" : "print-bar-fill-yellow";
                   return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minWidth: 0 }, children: [
                     /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 8, color: isKey ? "#f97316" : "#64748b", fontWeight: isKey ? 700 : 400 }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: isPodium ? 9 : 8, color: isKey ? "#f97316" : "#64748b", fontWeight: isKey ? 700 : 500 }, children: [
                         isKey ? "\u2605 " : "",
                         attr
                       ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: low ? "#f87171" : v >= 7.5 ? "#4ade80" : v >= 6 ? "#cbd5e1" : "#fbbf24", fontWeight: 700, flexShrink: 0, marginLeft: 4 }, children: v })
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: isPodium ? 10 : 9, color: low ? "#f87171" : v >= 7.5 ? "#4ade80" : v >= 6 ? "#cbd5e1" : "#fbbf24", fontWeight: 700, flexShrink: 0, marginLeft: 4 }, children: v })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-bar-bg", style: { height: 4, background: "rgba(255,255,255,0.06)", borderRadius: 2, marginTop: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: barClass, style: { height: 4, borderRadius: 2, width: `${v * 10}%`, background: low ? "#f87171" : v >= 7.5 ? "#4ade80" : v >= 6 ? "#64748b" : "#fbbf24", printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" } }) })
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-bar-bg", style: { height: barH, background: "rgba(255,255,255,0.06)", borderRadius: barH / 2, marginTop: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: barClass, style: { height: barH, borderRadius: barH / 2, width: `${v * 10}%`, background: low ? "#f87171" : v >= 7.5 ? "#4ade80" : v >= 6 ? "#64748b" : "#fbbf24", printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" } }) })
                   ] }, attr);
                 }) }),
                 criticalLow && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "print-warn", style: { fontSize: 9, color: "#f87171", fontWeight: 600, marginBottom: 3 }, children: [
@@ -47587,7 +47658,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   ptags.filter((t) => ARM_INJ.includes(t)).map((t) => ({ dos: "Dos", poignet: "Poignet", coude: "Coude", epaule: "\xC9paule" })[t]).join("/"),
                   " \u2014 risque de douleurs"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-verdict", style: { fontSize: 9, color: "#94a3b8", lineHeight: 1.5 }, children: r2.verdict })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-verdict", style: { fontSize: isPodium ? 10 : 9, color: "#94a3b8", lineHeight: 1.6 }, children: r2.verdict })
               ] }, r2.id));
             });
             return cards;
@@ -47651,62 +47722,60 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "print-card", style: {
                   background: "rgba(249,115,22,0.04)",
                   border: "1px solid rgba(249,115,22,0.2)",
-                  borderRadius: 10,
-                  padding: "10px 12px",
-                  marginBottom: 6,
+                  borderRadius: 12,
+                  padding: "12px 14px",
+                  marginBottom: 8,
                   boxSizing: "border-box",
                   overflow: "hidden",
-                  borderLeft: "4px solid rgba(249,115,22,0.4)",
+                  borderLeft: "5px solid rgba(249,115,22,0.5)",
                   pageBreakInside: "avoid",
                   breakInside: "avoid"
                 }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }, children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, minWidth: 28 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 16, lineHeight: 1 }, children: "\u{1F3AF}" }) }),
-                      r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", style: { width: 28, height: 28, objectFit: "contain", borderRadius: 4, flexShrink: 0, background: "rgba(255,255,255,0.06)" }, onError: (e) => {
-                        e.target.style.display = "none";
-                      } }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 5, flexWrap: "wrap" }, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 11, fontWeight: 700, color: "#e2e8f0" }, children: r2.name }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `print-badge ${badgeClass}`, style: { background: fy.bg, border: `1px solid ${fy.border}`, borderRadius: 4, padding: "2px 6px", fontSize: 7, fontWeight: 700, color: "#fff", flexShrink: 0, whiteSpace: "nowrap" }, children: fy.text }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 4, padding: "2px 6px", fontSize: 7, fontWeight: 700, color: "#f97316", flexShrink: 0, whiteSpace: "nowrap" }, children: [
-                            "\u2605 ",
-                            r2._prioAvg,
-                            "/10"
-                          ] })
-                        ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#64748b", marginTop: 2 }, children: [
-                          r2.shape,
-                          " \xB7 ",
-                          r2.weight,
-                          " \xB7 ",
-                          r2.brand,
-                          r2.player && r2.player !== "\u2014" ? ` \xB7 \u{1F3BE} ${r2.player}` : "",
-                          r2.price && r2.price !== "\u2014" ? ` \xB7 ${r2.price}` : ""
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, minWidth: 28 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 18, lineHeight: 1 }, children: "\u{1F3AF}" }) }),
+                    r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", className: "print-racket-img-sm", style: { width: 40, height: 48, objectFit: "contain", borderRadius: 8, flexShrink: 0, background: "rgba(255,255,255,0.06)", padding: 2 }, onError: (e) => {
+                      e.target.style.display = "none";
+                    } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, minWidth: 0 }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 12, fontWeight: 700, color: "#e2e8f0" }, children: r2.name }),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `print-badge ${badgeClass}`, style: { background: fy.bg, border: `1px solid ${fy.border}`, borderRadius: 6, padding: "3px 8px", fontSize: 7, fontWeight: 700, color: "#fff", flexShrink: 0, whiteSpace: "nowrap" }, children: fy.text }),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 6, padding: "3px 8px", fontSize: 7, fontWeight: 700, color: "#f97316", flexShrink: 0, whiteSpace: "nowrap" }, children: [
+                          "\u2605 ",
+                          r2._prioAvg,
+                          "/10"
                         ] })
+                      ] }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "#64748b", marginTop: 3 }, children: [
+                        r2.shape,
+                        " \xB7 ",
+                        r2.weight,
+                        " \xB7 ",
+                        r2.brand,
+                        r2.player && r2.player !== "\u2014" ? ` \xB7 \u{1F3BE} ${r2.player}` : "",
+                        r2.price && r2.price !== "\u2014" ? ` \xB7 ${r2.price}` : ""
                       ] })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 18, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 10 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 20, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 8 }, children: [
                       gs,
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, color: "#64748b" }, children: "/10" })
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "#64748b", fontWeight: 600 }, children: "/10" })
                     ] })
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "4px 10px", marginBottom: 6 }, children: ATTRS.map((attr) => {
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "5px 12px", marginBottom: 6 }, children: ATTRS.map((attr) => {
                     const v = r2.scores[attr];
                     const isKey = prioAttrs.includes(attr);
                     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minWidth: 0 }, children: [
                       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 8, color: isKey ? "#f97316" : "#64748b", fontWeight: isKey ? 700 : 400 }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 9, color: isKey ? "#f97316" : "#64748b", fontWeight: isKey ? 700 : 500 }, children: [
                           isKey ? "\u2605 " : "",
                           attr
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: v >= 7.5 ? "#4ade80" : v >= 6 ? "#cbd5e1" : "#fbbf24", fontWeight: 700, flexShrink: 0, marginLeft: 4 }, children: v })
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, color: v >= 7.5 ? "#4ade80" : v >= 6 ? "#cbd5e1" : "#fbbf24", fontWeight: 700, flexShrink: 0, marginLeft: 4 }, children: v })
                       ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-bar-bg", style: { height: 4, background: "rgba(255,255,255,0.06)", borderRadius: 2, marginTop: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: v >= 7.5 ? "print-bar-fill-green" : v >= 6 ? "print-bar-fill-gray" : "print-bar-fill-yellow", style: { height: 4, borderRadius: 2, width: `${v * 10}%`, background: v >= 7.5 ? "#4ade80" : v >= 6 ? "#64748b" : "#fbbf24", printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" } }) })
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-bar-bg", style: { height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 3, marginTop: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: v >= 7.5 ? "print-bar-fill-green" : v >= 6 ? "print-bar-fill-gray" : "print-bar-fill-yellow", style: { height: 6, borderRadius: 3, width: `${v * 10}%`, background: v >= 7.5 ? "#4ade80" : v >= 6 ? "#64748b" : "#fbbf24", printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" } }) })
                     ] }, attr);
                   }) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-verdict", style: { fontSize: 9, color: "#94a3b8", lineHeight: 1.5 }, children: r2.verdict })
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "print-verdict", style: { fontSize: 10, color: "#94a3b8", lineHeight: 1.6 }, children: r2.verdict })
                 ] }, "disco-" + r2.id);
               })
             ] });
