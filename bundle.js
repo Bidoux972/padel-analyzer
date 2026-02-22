@@ -44849,7 +44849,7 @@ var INITIAL_PROFILE = {
   priorityTags: [],
   priorityExtra: "",
   brandTags: [],
-  frequency: "Occasionnel (<1x/semaine)",
+  frequency: "Occasionnel (1-2x/mois)",
   competition: false
 };
 var INITIAL_RACKETS = [];
