@@ -45085,10 +45085,10 @@ function computeGlobalScore(scores, profile) {
   }
   return total / wSum;
 }
+function fmtPct(score) {
+  return (score * 10).toFixed(2) + "%";
+}
 function computeForYou(scores, profile) {
-  function fmtPct2(score) {
-    return (score * 10).toFixed(2) + "%";
-  }
   const gs = computeGlobalScore(scores, profile);
   const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
   const hasArmInjury = (profile.injuryTags || []).some((t) => ARM_INJURIES.includes(t));
