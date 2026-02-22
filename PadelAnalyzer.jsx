@@ -2460,7 +2460,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-header { display: block !important; }
             #print-pertinence .print-section-title { display: block !important; }
             #print-pertinence .no-print { display: none !important; }
-            #print-pertinence .print-radar-section { display: flex !important; }
+            #print-pertinence .print-radar-section { display: flex !important; gap: 12px !important; align-items: stretch !important; }
+            #print-pertinence .print-radar-section > div:first-child { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 10px !important; padding: 8px 4px 4px !important; }
             #print-pertinence .print-card {
               border: 1px solid #e2e8f0 !important; background: #fafafa !important;
               color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
@@ -2504,6 +2505,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-verdict { color: #374151 !important; font-style: normal !important; }
             #print-pertinence .print-deep-analysis { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; page-break-inside: avoid; break-inside: avoid; }
             #print-pertinence .print-deep-analysis * { color: #374151 !important; }
+            #print-pertinence .print-smart-verdict { background: #f0fdf4 !important; border: 1.5px solid #22c55e !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; font-size: 10px !important; line-height: 1.7 !important; }
+            #print-pertinence .print-smart-verdict, #print-pertinence .print-smart-verdict * { color: #374151 !important; }
+            #print-pertinence .print-smart-verdict strong { color: #111827 !important; font-weight: 700 !important; }
+            #print-pertinence .print-smart-verdict p { margin: 0 !important; }
             #print-pertinence .print-deep-analysis .deep-title { color: #4338ca !important; font-weight: 700 !important; font-size: 11px !important; margin-bottom: 6px !important; }
             #print-pertinence .print-section-divider { border-top: 2px solid #e5e7eb !important; margin: 16px 0 10px !important; padding-top: 8px !important; }
             #print-pertinence .print-footer-wrap { page-break-before: avoid; break-before: avoid; page-break-inside: avoid; break-inside: avoid; }
@@ -2591,9 +2596,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             }
             
             return <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"stretch"}} className="print-radar-section">
-              <div style={{flex:"1 1 50%",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:10,padding:"8px 4px 4px",minHeight:200}}>
-                <div style={{fontSize:9,fontWeight:700,color:"#a5b4fc",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2}}>📊 Raquette idéale{ranked.length>0?` vs ${ranked[0].shortName}`:""}</div>
-                <ResponsiveContainer width="100%" height={190}>
+              <div style={{flex:"1 1 50%",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:10,padding:"8px 4px 4px",minHeight:200,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                <div style={{fontSize:9,fontWeight:700,color:"#a5b4fc",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2,width:"100%"}}>📊 Raquette idéale{ranked.length>0?` vs ${ranked[0].shortName}`:""}</div>
+                <div style={{width:"100%"}}><ResponsiveContainer width="100%" height={190}>
                   <RadarChart data={idealRadar2} margin={{top:8,right:30,bottom:4,left:30}}>
                     <PolarGrid stroke="rgba(255,255,255,0.08)"/>
                     <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:8}}/>
@@ -2602,7 +2607,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     {ranked.length>0&&<Radar name={"🥇 "+ranked[0].shortName} dataKey={"🥇 "+ranked[0].shortName} stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>}
                     <Legend wrapperStyle={{fontSize:8,color:"#94a3b8",paddingTop:2}}/>
                   </RadarChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer></div>
               </div>
               {/* Quick stats panel */}
               <div style={{flex:"1 1 50%",display:"flex",flexDirection:"column",gap:8}}>
@@ -2726,17 +2731,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               }
             }
             
-            // Render with inline bold
-            const renderLine = (text, idx) => {
-              const parts = text.split(/(\*\*[^*]+\*\*)/g);
-              return <span key={idx}>{parts.map((p,j) => 
-                p.startsWith("**") ? <strong key={j} style={{color:"#e2e8f0"}}>{p.replace(/\*\*/g,"")}</strong> : p
-              )}{idx < lines.length-1 ? " " : ""}</span>;
-            };
+            // Render as plain text — no inline <strong> tags that Chrome PDF fragments
+            const plainText = lines.map(l => l.replace(/\*\*/g, "")).join(" ");
             
-            return <div style={{background:"rgba(34,197,94,0.06)",border:"1px solid rgba(34,197,94,0.15)",borderRadius:8,padding:"10px 12px",marginBottom:12,fontSize:10,color:"#94a3b8",lineHeight:1.6}}>
+            return <div className="print-smart-verdict" style={{background:"rgba(34,197,94,0.06)",border:"1px solid rgba(34,197,94,0.15)",borderRadius:8,padding:"10px 12px",marginBottom:12,fontSize:10,color:"#94a3b8",lineHeight:1.6}}>
               <div style={{fontWeight:700,color:"#4ade80",marginBottom:4,fontSize:11}}>🎯 Notre verdict</div>
-              {lines.map((l,i) => renderLine(l,i))}
+              <p style={{margin:0}}>{plainText}</p>
             </div>;
           })()}
 
