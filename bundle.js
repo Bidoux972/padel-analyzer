@@ -45083,7 +45083,7 @@ function computeGlobalScore(scores, profile) {
     total += (scores[attr] || 0) * weight;
     wSum += weight;
   }
-  return Math.round(total / wSum * 10) / 10;
+  return total / wSum;
 }
 function computeForYou(scores, profile) {
   const gs = computeGlobalScore(scores, profile);
