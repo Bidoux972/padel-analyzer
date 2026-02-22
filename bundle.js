@@ -231,7 +231,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .no-print { display: none !important; }
             #print-pertinence .print-radar-section { display: flex !important; gap: 12px !important; align-items: stretch !important; }
             #print-pertinence .print-radar-section > div:first-child { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 10px !important; padding: 8px 8px 4px !important; overflow: hidden !important; }
-            #print-pertinence .print-radar-section > div:first-child svg { max-width: 100% !important; }
+            #print-pertinence .print-radar-section > div:first-child svg { max-width: 100% !important; transform: translateX(12%) !important; }
             #print-pertinence .print-card {
               border: 1px solid #e2e8f0 !important; background: #fafafa !important;
               color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
