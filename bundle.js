@@ -230,13 +230,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-section-title { display: block !important; }
             #print-pertinence .no-print { display: none !important; }
             #print-pertinence .print-radar-section { display: flex !important; gap: 12px !important; align-items: stretch !important; }
-            #print-pertinence .print-radar-section > div:first-child { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 10px !important; padding: 8px 8px 4px !important; overflow: visible !important; }
-            #print-pertinence .print-radar-section > div:first-child svg { max-width: 100% !important; }
+            #print-pertinence .print-radar-section > div:first-child { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 10px !important; padding: 8px 4px 0 4px !important; overflow: hidden !important; }
+            #print-pertinence .print-radar-section > div:first-child .recharts-responsive-container { overflow: visible !important; }
+            #print-pertinence .print-radar-section > div:first-child svg { transform: scale(0.78) !important; transform-origin: top center !important; }
             #print-pertinence .print-radar-section .recharts-polar-grid line,
             #print-pertinence .print-radar-section .recharts-polar-grid polygon,
             #print-pertinence .print-radar-section .recharts-polar-grid-concentric-polygon { stroke: #c7d2fe !important; stroke-opacity: 1 !important; }
             #print-pertinence .print-radar-section .recharts-polygon { stroke-width: 2.5px !important; fill-opacity: 0.25 !important; print-color-adjust: exact !important; -webkit-print-color-adjust: exact !important; }
             #print-pertinence .print-radar-section .recharts-polar-angle-axis-tick text { fill: #374151 !important; }
+            #print-pertinence .print-radar-section .recharts-legend-wrapper { transform: scale(1.28) !important; transform-origin: top center !important; }
             #print-pertinence .print-card {
               border: 1px solid #e2e8f0 !important; background: #fafafa !important;
               color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
