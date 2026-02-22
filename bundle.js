@@ -45086,6 +45086,9 @@ function computeGlobalScore(scores, profile) {
   return total / wSum;
 }
 function computeForYou(scores, profile) {
+  function fmtPct2(score) {
+    return (score * 10).toFixed(2) + "%";
+  }
   const gs = computeGlobalScore(scores, profile);
   const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
   const hasArmInjury = (profile.injuryTags || []).some((t) => ARM_INJURIES.includes(t));
@@ -47489,7 +47492,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     ] })
                   ] }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "right", flexShrink: 0 }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1 }, children: gs.toFixed(1) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 14, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1 }, children: fmtPct(gs) }),
                     /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 7, color: fyC, fontWeight: 700, marginTop: 2 }, children: fy2 === "recommended" ? "RECO" : fy2 === "no" ? "NON" : "JOUABLE" })
                   ] })
                 ] }, r2.id);
@@ -47513,19 +47516,19 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const injLabels = injTags.filter((t) => t !== "aucune").map((id) => INJURY_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
             const bestPrioScores = prioAttrs.map((a2) => ({ attr: a2, val: best.scores[a2] || 0 })).sort((a2, b) => b.val - a2.val);
             const bestWeakest = ATTRS.map((a2) => ({ attr: a2, val: best.scores[a2] || 0 })).sort((a2, b) => a2.val - b.val)[0];
-            const gap = second2 ? Math.round((best.globalScore - second2.globalScore) * 10) / 10 : 0;
+            const gap = second2 ? best.globalScore - second2.globalScore : 0;
             const lines = [];
             if (prioLabels.length > 0) {
               const prioStr = prioLabels.length === 1 ? prioLabels[0] : prioLabels.slice(0, -1).join(", ") + " et " + prioLabels[prioLabels.length - 1];
               if (bestPrioScores.length > 0 && bestPrioScores[0].val >= 7.5) {
-                lines.push(`Avec tes priorit\xE9s ${prioStr}, la **${best.name}** (${best.globalScore}/10) s'impose : elle affiche ${bestPrioScores.map((s2) => `${s2.attr} \xE0 ${s2.val}`).join(", ")}.`);
+                lines.push(`Avec tes priorit\xE9s ${prioStr}, la **${best.name}** (${fmtPct(best.globalScore)}) s'impose : elle affiche ${bestPrioScores.map((s2) => `${s2.attr} \xE0 ${s2.val}`).join(", ")}.`);
               } else if (bestPrioScores.length > 0) {
-                lines.push(`Pour tes priorit\xE9s ${prioStr}, la **${best.name}** (${best.globalScore}/10) offre le meilleur compromis du lot avec ${bestPrioScores.map((s2) => `${s2.attr} \xE0 ${s2.val}`).join(", ")}.`);
+                lines.push(`Pour tes priorit\xE9s ${prioStr}, la **${best.name}** (${fmtPct(best.globalScore)}) offre le meilleur compromis du lot avec ${bestPrioScores.map((s2) => `${s2.attr} \xE0 ${s2.val}`).join(", ")}.`);
               } else {
-                lines.push(`La **${best.name}** (${best.globalScore}/10) est la plus adapt\xE9e \xE0 ton profil.`);
+                lines.push(`La **${best.name}** (${fmtPct(best.globalScore)}) est la plus adapt\xE9e \xE0 ton profil.`);
               }
             } else {
-              lines.push(`La **${best.name}** (${best.globalScore}/10) est la plus adapt\xE9e \xE0 ton profil.`);
+              lines.push(`La **${best.name}** (${fmtPct(best.globalScore)}) est la plus adapt\xE9e \xE0 ton profil.`);
             }
             if (hasArmInj) {
               const comfortBest = best.scores.Confort || 0;
@@ -47548,24 +47551,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               if (gap >= 0.5) {
                 const secondWorse = prioAttrs.length > 0 ? prioAttrs.map((a2) => ({ attr: a2, diff: (best.scores[a2] || 0) - (second2.scores[a2] || 0) })).filter((d) => d.diff > 0).sort((a2, b) => b.diff - a2.diff)[0] : ATTRS.map((a2) => ({ attr: a2, diff: (best.scores[a2] || 0) - (second2.scores[a2] || 0) })).filter((d) => d.diff > 0).sort((a2, b) => b.diff - a2.diff)[0];
                 if (secondWorse) {
-                  lines.push(`La **${second2.name}** (${second2.globalScore}/10) suit mais perd du terrain en ${secondWorse.attr} (${second2.scores[secondWorse.attr]} vs ${best.scores[secondWorse.attr]}).`);
+                  lines.push(`La **${second2.name}** (${fmtPct(second2.globalScore)}) suit mais perd du terrain en ${secondWorse.attr} (${second2.scores[secondWorse.attr]} vs ${best.scores[secondWorse.attr]}).`);
                 } else {
-                  lines.push(`La **${second2.name}** (${second2.globalScore}/10) est une alternative solide.`);
+                  lines.push(`La **${second2.name}** (${fmtPct(second2.globalScore)}) est une alternative solide.`);
                 }
               } else if (gap >= 0.2) {
                 const secondBetter = ATTRS.map((a2) => ({ attr: a2, diff: (second2.scores[a2] || 0) - (best.scores[a2] || 0) })).filter((d) => d.diff > 0).sort((a2, b) => b.diff - a2.diff)[0];
                 if (secondBetter) {
-                  lines.push(`La **${second2.name}** (${second2.globalScore}/10) talonne de pr\xE8s et pousse m\xEAme plus fort en ${secondBetter.attr} (${second2.scores[secondBetter.attr]} vs ${best.scores[secondBetter.attr]}) \u2014 \xE0 essayer aussi.`);
+                  lines.push(`La **${second2.name}** (${fmtPct(second2.globalScore)}) talonne de pr\xE8s et pousse m\xEAme plus fort en ${secondBetter.attr} (${second2.scores[secondBetter.attr]} vs ${best.scores[secondBetter.attr]}) \u2014 \xE0 essayer aussi.`);
                 } else {
-                  lines.push(`La **${second2.name}** (${second2.globalScore}/10) est au coude-\xE0-coude \u2014 les deux m\xE9ritent un essai.`);
+                  lines.push(`La **${second2.name}** (${fmtPct(second2.globalScore)}) est au coude-\xE0-coude \u2014 les deux m\xE9ritent un essai.`);
                 }
               } else {
                 const secondBetter2 = ATTRS.map((a2) => ({ attr: a2, diff: (second2.scores[a2] || 0) - (best.scores[a2] || 0) })).filter((d) => d.diff > 0).sort((a2, b) => b.diff - a2.diff)[0];
                 const bestBetter2 = ATTRS.map((a2) => ({ attr: a2, diff: (best.scores[a2] || 0) - (second2.scores[a2] || 0) })).filter((d) => d.diff > 0).sort((a2, b) => b.diff - a2.diff)[0];
                 if (secondBetter2 && bestBetter2) {
-                  lines.push(`Quasi ex-\xE6quo avec la **${second2.name}** (${second2.globalScore}/10) \u2014 elle pousse en ${secondBetter2.attr} (${second2.scores[secondBetter2.attr]}), la n\xB01 domine en ${bestBetter2.attr} (${best.scores[bestBetter2.attr]}). Deux profils compl\xE9mentaires \xE0 tester.`);
+                  lines.push(`Quasi ex-\xE6quo avec la **${second2.name}** (${fmtPct(second2.globalScore)}) \u2014 elle pousse en ${secondBetter2.attr} (${second2.scores[secondBetter2.attr]}), la n\xB01 domine en ${bestBetter2.attr} (${best.scores[bestBetter2.attr]}). Deux profils compl\xE9mentaires \xE0 tester.`);
                 } else {
-                  lines.push(`Quasi ex-\xE6quo avec la **${second2.name}** (${second2.globalScore}/10) \u2014 profils tr\xE8s proches, la diff\xE9rence se jouera au toucher et \xE0 l'\xE9quilibre en main.`);
+                  lines.push(`Quasi ex-\xE6quo avec la **${second2.name}** (${fmtPct(second2.globalScore)}) \u2014 profils tr\xE8s proches, la diff\xE9rence se jouera au toucher et \xE0 l'\xE9quilibre en main.`);
                 }
               }
             }
@@ -47649,10 +47652,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       r2.price && r2.price !== "\u2014" ? ` \xB7 ${r2.price}` : ""
                     ] })
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: scoreClass, style: { fontSize: i === 0 ? 32 : isPodium ? 26 : 18, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 8 }, children: [
-                    gs,
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: isPodium ? 11 : 9, color: "#64748b", fontWeight: 600 }, children: "/10" })
-                  ] })
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: scoreClass, style: { fontSize: i === 0 ? 28 : isPodium ? 22 : 16, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 8 }, children: fmtPct(gs) })
                 ] }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: isPodium ? "6px 14px" : "4px 10px", marginBottom: isPodium ? 8 : 5 }, children: ATTRS.map((attr) => {
                   const v = r2.scores[attr];
@@ -47715,7 +47715,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const gs = computeGlobalScore(r2.scores, profile);
               return { ...r2, _prioAvg: Math.round(prioAvg * 10) / 10, _prioScore: prioAvg * 0.7 + gs * 0.3, globalScore: gs };
             });
-            scored.sort((a2, b) => b._prioScore - a2._prioScore);
+            scored.sort((a2, b) => b.globalScore - a2.globalScore);
             const picks = scored.slice(0, 4);
             if (!picks.length) return null;
             const prioTitle = prioLabels.join(" & ");
@@ -47776,10 +47776,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                         r2.price && r2.price !== "\u2014" ? ` \xB7 ${r2.price}` : ""
                       ] })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 20, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 8 }, children: [
-                      gs,
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "#64748b", fontWeight: 600 }, children: "/10" })
-                    ] })
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, fontWeight: 800, color: gs >= 7.5 ? "#4ade80" : gs >= 6.5 ? "#fbbf24" : "#f87171", fontFamily: "'Outfit'", lineHeight: 1, flexShrink: 0, marginLeft: 8 }, children: fmtPct(gs) })
                   ] }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "5px 12px", marginBottom: 6 }, children: ATTRS.map((attr) => {
                     const v = r2.scores[attr];
