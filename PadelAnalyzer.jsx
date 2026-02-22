@@ -81,7 +81,19 @@ const INITIAL_RACKETS = [];
 function loadSavedRackets() {
   try {
     const raw = localStorage.getItem('padel_rackets');
-    if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr) && arr.length) return arr; }
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length) {
+        // Refresh imageUrl from current DB (localStorage may have stale/missing URLs)
+        return arr.map(r => {
+          const dbMatch = RACKETS_DB.find(db => db.name.toLowerCase() === (r.name||"").toLowerCase());
+          if (dbMatch && dbMatch.imageUrl && (!r.imageUrl || r.imageUrl !== dbMatch.imageUrl)) {
+            return { ...r, imageUrl: dbMatch.imageUrl };
+          }
+          return r;
+        });
+      }
+    }
   } catch {}
   return [];
 }
@@ -2616,7 +2628,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             return <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"stretch"}} className="print-radar-section">
               <div style={{flex:"1 1 50%",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:10,padding:"8px 0 0",minHeight:200,display:"flex",flexDirection:"column",alignItems:"center"}}>
                 <div style={{fontSize:9,fontWeight:700,color:"#a5b4fc",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2}}>📊 Raquette idéale{ranked.length>0?` vs ${bestShort}`:""}</div>
-                <RadarChart width={300} height={210} data={idealRadar2} margin={{top:10,right:40,bottom:10,left:40}}>
+                <RadarChart width={340} height={220} data={idealRadar2} margin={{top:10,right:50,bottom:10,left:50}}>
                     <PolarGrid stroke="rgba(255,255,255,0.08)"/>
                     <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:8}}/>
                     <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
@@ -2888,8 +2900,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const prioLabels = prioTagIds.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
             if (!prioAttrs.length) return null;
             
-            // Get existing racket IDs to exclude
-            const existingIds = new Set(rackets.map(r=>r.id));
+            // Get existing racket names to exclude (normalized) — IDs don't match because user rackets have timestamp suffixes
+            const existingNames = new Set(rackets.map(r=>(r.name||"").toLowerCase().trim()));
             
             // Filter DB pool by level category (same logic as matchFromDB)
             const age = Number(profile.age)||0;
@@ -2906,7 +2918,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             }
             
             // Exclude already analyzed rackets
-            pool = pool.filter(r=>!existingIds.has(r.id));
+            pool = pool.filter(r=>!existingNames.has((r.name||"").toLowerCase().trim()));
             
             // Filter by brand preferences if any
             const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label?.toLowerCase()).filter(Boolean);
