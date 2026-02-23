@@ -360,9 +360,10 @@ function computeInjuryRisks(racket, profile) {
     else if(nums) rWeight = parseInt(nums[0]);
   }
   
-  // Parse core hardness
+  // Parse core hardness (3 tiers: hard / medium / soft)
   const core = (racket.core||"").toLowerCase();
-  const isHardCore = core.includes("hard")||core.includes("dense")||core.includes("power foam")||core.includes("hr3 black")||core.includes("tricore hard")||core.includes("x-eva hard")||core.includes("h-eva power");
+  const isHardCore = core.includes("hard")||core.includes("dense")||core.includes("hr3 black")||core.includes("tricore hard")||core.includes("x-eva hard")||core.includes("h-eva power");
+  const isMediumCore = !isHardCore && (core.includes("power foam")||core.includes("standard")||core.includes("eva")&&!core.includes("soft")&&!core.includes("comfort")&&!core.includes("control"));
   const isSoftCore = core.includes("soft")||core.includes("comfort")||core.includes("control foam");
   
   // Parse balance
@@ -379,21 +380,25 @@ function computeInjuryRisks(racket, profile) {
   const hasAntivib = racket.antivib && racket.antivib!=="—" && racket.antivib!=="Non" && racket.antivib.length>2;
   
   // === COUDE (Tennis/Padel elbow) ===
-  // Heavy + hard core + no antivib + high frequency = elbow risk
+  // Heavy + hard/medium core + no antivib + high frequency = elbow risk
   let elbowRisk = 0;
-  if(rWeight>=360) elbowRisk += 1;
-  if(rWeight>=375) elbowRisk += 1;
+  if(rWeight>=355) elbowRisk += 0.5;
+  if(rWeight>=365) elbowRisk += 0.5;
+  if(rWeight>=375) elbowRisk += 0.5;
   if(isHardCore) elbowRisk += 1.5;
+  else if(isMediumCore) elbowRisk += 0.5;
   if(!hasAntivib && !isSoftCore) elbowRisk += 0.5;
-  if(isDiamond && isHighBalance) elbowRisk += 0.5;
+  if(isDiamond && isHighBalance) elbowRisk += 0.8;
+  if(isDiamond && !isHighBalance) elbowRisk += 0.3;
   if(freq>=2) elbowRisk += 0.5;
   if(freq>=3) elbowRisk += 0.5;
-  if(gIdx<0.35) elbowRisk += 1; // light build = more vulnerable
+  if(gIdx<0.45) elbowRisk += 0.5; // medium build
+  if(gIdx<0.3) elbowRisk += 0.5; // light build extra
   if(age>=50) elbowRisk += 0.5;
   if(hasElbowHistory) elbowRisk += 2;
   if(hasArmHistory && !hasElbowHistory) elbowRisk += 0.5;
-  if(isSoftCore) elbowRisk -= 1;
-  if(hasAntivib) elbowRisk -= 0.5;
+  if(isSoftCore) elbowRisk -= 1.5;
+  if(hasAntivib) elbowRisk -= 0.8;
   
   if(elbowRisk>=3) risks.push({
     zone:"coude", icon:"💪", severity: elbowRisk>=5?3:elbowRisk>=4?2:1,
@@ -404,16 +409,20 @@ function computeInjuryRisks(racket, profile) {
   
   // === POIGNET ===
   let wristRisk = 0;
-  if(rWeight>=365) wristRisk += 1;
-  if(rWeight>=380) wristRisk += 1;
+  if(rWeight>=355) wristRisk += 0.5;
+  if(rWeight>=370) wristRisk += 0.5;
+  if(rWeight>=380) wristRisk += 0.5;
   if(isHighBalance) wristRisk += 1;
   if(isDiamond) wristRisk += 0.5;
   if(isHardCore) wristRisk += 0.5;
-  if(gIdx<0.3) wristRisk += 1;
+  else if(isMediumCore) wristRisk += 0.2;
+  if(gIdx<0.45) wristRisk += 0.5;
+  if(gIdx<0.3) wristRisk += 0.5;
   if(freq>=3) wristRisk += 0.5;
   if(hasWristHistory) wristRisk += 2;
   if(isLowBalance) wristRisk -= 0.5;
   if(isRound) wristRisk -= 0.5;
+  if(hasAntivib) wristRisk -= 0.5;
   
   if(wristRisk>=3) risks.push({
     zone:"poignet", icon:"🖐️", severity: wristRisk>=5?3:wristRisk>=4?2:1,
@@ -424,15 +433,18 @@ function computeInjuryRisks(racket, profile) {
   
   // === ÉPAULE ===
   let shoulderRisk = 0;
-  if(rWeight>=370) shoulderRisk += 1;
+  if(rWeight>=360) shoulderRisk += 0.5;
+  if(rWeight>=375) shoulderRisk += 0.5;
   if(isHighBalance) shoulderRisk += 1;
   if(isDiamond) shoulderRisk += 0.5;
   if(freq>=2) shoulderRisk += 0.5;
   if(freq>=3) shoulderRisk += 0.5;
   if(age>=50) shoulderRisk += 0.5;
-  if(gIdx<0.35) shoulderRisk += 0.5;
+  if(gIdx<0.45) shoulderRisk += 0.5;
+  if(gIdx<0.3) shoulderRisk += 0.5;
   if(hasShoulderHistory) shoulderRisk += 2;
   if(isRound && isLowBalance) shoulderRisk -= 0.5;
+  if(hasAntivib) shoulderRisk -= 0.3;
   
   if(shoulderRisk>=3) risks.push({
     zone:"épaule", icon:"🦴", severity: shoulderRisk>=5?3:shoulderRisk>=4?2:1,
@@ -443,13 +455,17 @@ function computeInjuryRisks(racket, profile) {
   
   // === DOS ===
   let backRisk = 0;
-  if(rWeight>=370) backRisk += 1;
+  if(rWeight>=365) backRisk += 0.5;
+  if(rWeight>=375) backRisk += 0.5;
   if(isHardCore) backRisk += 1;
+  else if(isMediumCore && rWeight>=365) backRisk += 0.3;
   if(isDiamond && isHighBalance) backRisk += 0.5;
   if(freq>=3) backRisk += 1;
   if(age>=50) backRisk += 0.5;
+  if(gIdx<0.4) backRisk += 0.3;
   if(hasBackHistory) backRisk += 2.5;
   if(isSoftCore) backRisk -= 0.5;
+  if(hasAntivib) backRisk -= 0.3;
   
   if(backRisk>=3) risks.push({
     zone:"dos", icon:"🔙", severity: backRisk>=5?3:backRisk>=4?2:1,
@@ -459,13 +475,14 @@ function computeInjuryRisks(racket, profile) {
   });
 
   // === FATIGUE MUSCULAIRE GÉNÉRALE ===
-  // Heavy + high balance + light build + not athletic
+  // Heavy + high balance + light/medium build + not athletic
   let fatigueRisk = 0;
-  if(rWeight>=360) fatigueRisk += 1;
-  if(rWeight>=375) fatigueRisk += 0.5;
+  if(rWeight>=355) fatigueRisk += 0.5;
+  if(rWeight>=370) fatigueRisk += 0.5;
   if(isHighBalance) fatigueRisk += 1;
+  if(isDiamond) fatigueRisk += 0.3;
   if(gIdx<0.3) fatigueRisk += 1.5;
-  else if(gIdx<0.4) fatigueRisk += 0.5;
+  else if(gIdx<0.45) fatigueRisk += 0.8;
   if((profile.fitness||"actif")==="occasionnel") fatigueRisk += 1;
   if(freq>=2) fatigueRisk += 0.3;
   if(age>=55) fatigueRisk += 0.5;
