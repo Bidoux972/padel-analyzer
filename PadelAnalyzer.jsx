@@ -324,6 +324,167 @@ function computeGabaritIndex(profile) {
   return Math.max(0, Math.min(1, raw));
 }
 
+// === FREQUENCY INDEX ===
+// Returns 0-3 scale: 0=occasionnel, 1=régulier, 2=assidu, 3=intensif
+function freqIndex(frequency) {
+  if(!frequency) return 1;
+  const f = frequency.toLowerCase();
+  if(f.includes("intensif")||f.includes("5+")) return 3;
+  if(f.includes("assidu")||f.includes("3-4")) return 2;
+  if(f.includes("régulier")||f.includes("1-2x/sem")) return 1;
+  return 0; // occasionnel
+}
+
+// === INJURY RISK ENGINE ===
+// Analyses racket characteristics vs player profile to generate specific risk alerts
+// Returns array of { zone, icon, severity (1-3), message }
+function computeInjuryRisks(racket, profile) {
+  if(!racket || !profile) return [];
+  const risks = [];
+  const gIdx = computeGabaritIndex(profile);
+  const freq = freqIndex(profile.frequency);
+  const age = Number(profile.age)||30;
+  const existingInjuries = profile.injuryTags||[];
+  const hasArmHistory = existingInjuries.some(t=>["dos","poignet","coude","epaule"].includes(t));
+  const hasBackHistory = existingInjuries.includes("dos");
+  const hasElbowHistory = existingInjuries.includes("coude");
+  const hasWristHistory = existingInjuries.includes("poignet");
+  const hasShoulderHistory = existingInjuries.includes("epaule");
+  const hasKneeHistory = existingInjuries.includes("genou");
+  
+  // Parse racket weight (extract mid value from "355-375g" or "360g")
+  let rWeight = 0;
+  if(racket.weight) {
+    const nums = racket.weight.match(/\d+/g);
+    if(nums && nums.length>=2) rWeight = (parseInt(nums[0])+parseInt(nums[1]))/2;
+    else if(nums) rWeight = parseInt(nums[0]);
+  }
+  
+  // Parse core hardness
+  const core = (racket.core||"").toLowerCase();
+  const isHardCore = core.includes("hard")||core.includes("dense")||core.includes("power foam")||core.includes("hr3 black")||core.includes("tricore hard")||core.includes("x-eva hard")||core.includes("h-eva power");
+  const isSoftCore = core.includes("soft")||core.includes("comfort")||core.includes("control foam");
+  
+  // Parse balance
+  const bal = (racket.balance||"").toLowerCase();
+  const isHighBalance = bal.includes("haut")||bal.includes("haute");
+  const isLowBalance = bal.includes("bas")||bal.includes("basse");
+  
+  // Parse shape
+  const shape = (racket.shape||"").toLowerCase();
+  const isDiamond = shape.includes("diamant")||shape.includes("diamond");
+  const isRound = shape.includes("rond");
+  
+  // Has antivibration
+  const hasAntivib = racket.antivib && racket.antivib!=="—" && racket.antivib!=="Non" && racket.antivib.length>2;
+  
+  // === COUDE (Tennis/Padel elbow) ===
+  // Heavy + hard core + no antivib + high frequency = elbow risk
+  let elbowRisk = 0;
+  if(rWeight>=360) elbowRisk += 1;
+  if(rWeight>=375) elbowRisk += 1;
+  if(isHardCore) elbowRisk += 1.5;
+  if(!hasAntivib && !isSoftCore) elbowRisk += 0.5;
+  if(isDiamond && isHighBalance) elbowRisk += 0.5;
+  if(freq>=2) elbowRisk += 0.5;
+  if(freq>=3) elbowRisk += 0.5;
+  if(gIdx<0.35) elbowRisk += 1; // light build = more vulnerable
+  if(age>=50) elbowRisk += 0.5;
+  if(hasElbowHistory) elbowRisk += 2;
+  if(hasArmHistory && !hasElbowHistory) elbowRisk += 0.5;
+  if(isSoftCore) elbowRisk -= 1;
+  if(hasAntivib) elbowRisk -= 0.5;
+  
+  if(elbowRisk>=3) risks.push({
+    zone:"coude", icon:"💪", severity: elbowRisk>=5?3:elbowRisk>=4?2:1,
+    message: hasElbowHistory 
+      ? `Risque élevé pour ton coude fragilisé : ${rWeight>0?rWeight+"g, ":""}${isHardCore?"mousse dure":""}${!hasAntivib?", sans antivibration":""}`
+      : `Raquette exigeante pour le coude : ${rWeight>0?rWeight+"g":"poids élevé"}${isHardCore?", mousse dure":""}${freq>=2?", à haute fréquence de jeu":""}`,
+  });
+  
+  // === POIGNET ===
+  let wristRisk = 0;
+  if(rWeight>=365) wristRisk += 1;
+  if(rWeight>=380) wristRisk += 1;
+  if(isHighBalance) wristRisk += 1;
+  if(isDiamond) wristRisk += 0.5;
+  if(isHardCore) wristRisk += 0.5;
+  if(gIdx<0.3) wristRisk += 1;
+  if(freq>=3) wristRisk += 0.5;
+  if(hasWristHistory) wristRisk += 2;
+  if(isLowBalance) wristRisk -= 0.5;
+  if(isRound) wristRisk -= 0.5;
+  
+  if(wristRisk>=3) risks.push({
+    zone:"poignet", icon:"🖐️", severity: wristRisk>=5?3:wristRisk>=4?2:1,
+    message: hasWristHistory
+      ? `Poignet à risque : équilibre ${isHighBalance?"haut en tête":"chargé"}, ${rWeight>0?rWeight+"g":"poids important"}`
+      : `Sollicitation poignet importante : ${isHighBalance?"tête lourde":""}${rWeight>=370?", "+rWeight+"g":""}`,
+  });
+  
+  // === ÉPAULE ===
+  let shoulderRisk = 0;
+  if(rWeight>=370) shoulderRisk += 1;
+  if(isHighBalance) shoulderRisk += 1;
+  if(isDiamond) shoulderRisk += 0.5;
+  if(freq>=2) shoulderRisk += 0.5;
+  if(freq>=3) shoulderRisk += 0.5;
+  if(age>=50) shoulderRisk += 0.5;
+  if(gIdx<0.35) shoulderRisk += 0.5;
+  if(hasShoulderHistory) shoulderRisk += 2;
+  if(isRound && isLowBalance) shoulderRisk -= 0.5;
+  
+  if(shoulderRisk>=3) risks.push({
+    zone:"épaule", icon:"🦴", severity: shoulderRisk>=5?3:shoulderRisk>=4?2:1,
+    message: hasShoulderHistory
+      ? `Attention épaule fragile : poids et équilibre trop sollicitants en jeu répété`
+      : `Fatigue épaule probable : ${rWeight>0?rWeight+"g":"lourde"}, ${freq>=2?"usage fréquent":"équilibre haut"}`,
+  });
+  
+  // === DOS ===
+  let backRisk = 0;
+  if(rWeight>=370) backRisk += 1;
+  if(isHardCore) backRisk += 1;
+  if(isDiamond && isHighBalance) backRisk += 0.5;
+  if(freq>=3) backRisk += 1;
+  if(age>=50) backRisk += 0.5;
+  if(hasBackHistory) backRisk += 2.5;
+  if(isSoftCore) backRisk -= 0.5;
+  
+  if(backRisk>=3) risks.push({
+    zone:"dos", icon:"🔙", severity: backRisk>=5?3:backRisk>=4?2:1,
+    message: hasBackHistory
+      ? `Dos fragile : les vibrations de cette raquette ${isHardCore?"à mousse dure ":""} risquent d'aggraver les douleurs`
+      : `Sollicitation lombaire : combinaison poids/rigidité + fréquence élevée`,
+  });
+
+  // === FATIGUE MUSCULAIRE GÉNÉRALE ===
+  // Heavy + high balance + light build + not athletic
+  let fatigueRisk = 0;
+  if(rWeight>=360) fatigueRisk += 1;
+  if(rWeight>=375) fatigueRisk += 0.5;
+  if(isHighBalance) fatigueRisk += 1;
+  if(gIdx<0.3) fatigueRisk += 1.5;
+  else if(gIdx<0.4) fatigueRisk += 0.5;
+  if((profile.fitness||"actif")==="occasionnel") fatigueRisk += 1;
+  if(freq>=2) fatigueRisk += 0.3;
+  if(age>=55) fatigueRisk += 0.5;
+  
+  if(fatigueRisk>=3 && !risks.some(r=>r.zone==="épaule")) risks.push({
+    zone:"fatigue", icon:"⚡", severity: fatigueRisk>=5?3:fatigueRisk>=4?2:1,
+    message: `Risque de fatigue musculaire rapide : raquette trop exigeante pour ton gabarit${(profile.fitness||"")==="occasionnel"?" et ta condition physique":""}`,
+  });
+  
+  // Sort by severity desc
+  risks.sort((a,b)=>b.severity-a.severity);
+  return risks;
+}
+
+// Severity color helper
+function riskColor(severity) {
+  return severity>=3?"#ef4444":severity>=2?"#f97316":"#fbbf24";
+}
+
 // Weighted global score /10 based on player profile
 function computeGlobalScore(scores, profile, racket) {
   if (!scores || typeof scores !== 'object') return 0;
@@ -391,6 +552,21 @@ function computeGlobalScore(scores, profile, racket) {
     w.Puissance = (w.Puissance||1) + 0.3;
   }
   
+  // === FREQUENCY IMPACT ===
+  const freq = freqIndex(profile.frequency);
+  // Assidu/Intensif: accumulated impacts → more comfort needed, but also more skill → tolerate exigence
+  if(freq>=3) { w.Confort = (w.Confort||1) + 0.8; w.Tolérance = (w.Tolérance||1) + 0.3; }
+  else if(freq>=2) { w.Confort = (w.Confort||1) + 0.4; }
+  // Occasionnel: less technique → needs forgiveness + maneuverability
+  if(freq===0) { w.Tolérance = (w.Tolérance||1) + 0.5; w.Maniabilité = (w.Maniabilité||1) + 0.3; }
+  
+  // === INJURY RISK PENALTY ===
+  // If racket has injury risks for this player, penalize score proportionally
+  const injRisks = racket ? computeInjuryRisks(racket, profile) : [];
+  const totalRiskSeverity = injRisks.reduce((s,r) => s + r.severity, 0);
+  // Each severity point = -0.12 on final score (max ~0.5 penalty for severe multi-zone)
+  const riskPenalty = Math.min(totalRiskSeverity * 0.12, 0.6);
+  
   // Side + Hand → attacker vs constructor role
   const hand = profile.hand || "Droitier";
   const side = profile.side || "Droite";
@@ -413,7 +589,7 @@ function computeGlobalScore(scores, profile, racket) {
     total += (scores[attr]||0) * weight;
     wSum += weight;
   }
-  return (total / wSum) + womanLineBonus;
+  return (total / wSum) + womanLineBonus - riskPenalty;
 }
 
 // Dynamic verdict based on pertinence score + injury constraints
@@ -554,6 +730,11 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   else if(gIdx<0.35){w.Maniabilité+=1.2;w.Confort+=0.8;w.Tolérance+=0.5;}
   else if(gIdx<0.45){w.Maniabilité+=0.5;w.Confort+=0.3;}
   else if(gIdx>0.65){w.Puissance+=0.3;}
+  // Frequency (mirrors computeGlobalScore)
+  const freq = freqIndex(profile.frequency);
+  if(freq>=3){w.Confort+=0.8;w.Tolérance+=0.3;}
+  else if(freq>=2){w.Confort+=0.4;}
+  if(freq===0){w.Tolérance+=0.5;w.Maniabilité+=0.3;}
   const hand=profile.hand||"Droitier",side=profile.side||"Droite";
   const isAtt=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
   const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
@@ -2524,6 +2705,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,textAlign:"center",margin:0}}>{makeVerdict(r,revealIdx)}</p>
 
+              {/* Injury risk alerts */}
+              {(()=>{const risks=computeInjuryRisks(r,profile);if(!risks.length)return null;return<div style={{width:"100%",display:"flex",flexDirection:"column",gap:3}}>{risks.slice(0,2).map((ir,iri)=><div key={iri} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 10px",borderRadius:8,background:ir.severity>=3?"rgba(239,68,68,0.1)":ir.severity>=2?"rgba(249,115,22,0.08)":"rgba(251,191,36,0.06)",border:`1px solid ${riskColor(ir.severity)}30`}}><span style={{fontSize:14,flexShrink:0}}>{ir.icon}</span><span style={{fontSize:9,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span></div>)}</div>;})()}
+
               {r.price&&<div style={{fontSize:10,color:"#475569"}}>💰 {r.price}</div>}
             </div>
 
@@ -2925,6 +3109,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <span style={{fontSize:10,color:"#64748b"}}>pour {profileName}</span>
                 </div>}
 
+                {/* Injury risk alerts in suggestion detail */}
+                {dbMatch&&(()=>{const risks=computeInjuryRisks(dbMatch,profile);if(!risks.length)return null;return<div style={{marginBottom:8}}>{risks.slice(0,2).map((ir,iri)=><div key={iri} style={{display:"flex",alignItems:"center",gap:5,padding:"4px 8px",marginBottom:2,borderRadius:6,background:ir.severity>=3?"rgba(239,68,68,0.08)":ir.severity>=2?"rgba(249,115,22,0.06)":"rgba(251,191,36,0.05)",border:`1px solid ${riskColor(ir.severity)}30`}}><span style={{fontSize:11,flexShrink:0}}>{ir.icon}</span><span style={{fontSize:8,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span></div>)}</div>;})()}
+
                 {hasScores ? <>
                   {/* Scores grid */}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:10}}>
@@ -2972,6 +3159,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </p>}
                 </> : <p style={{fontSize:10,color:"#64748b",margin:"10px 0 8px",lineHeight:1.4}}>{s.description||"Raquette non référencée dans la base locale. Les scores ne sont pas disponibles."}</p>}
 
+                {/* Injury risk alerts */}
+                {dbMatch&&(()=>{const risks=computeInjuryRisks(dbMatch,profile);if(!risks.length)return null;return<div style={{marginTop:4,marginBottom:4}}>{risks.slice(0,2).map((ir,iri)=><div key={iri} style={{display:"flex",alignItems:"center",gap:5,padding:"3px 8px",marginBottom:2,borderRadius:6,background:ir.severity>=3?"rgba(239,68,68,0.08)":ir.severity>=2?"rgba(249,115,22,0.06)":"rgba(251,191,36,0.05)",border:`1px solid ${riskColor(ir.severity)}30`}}><span style={{fontSize:11,flexShrink:0}}>{ir.icon}</span><span style={{fontSize:8,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span></div>)}</div>;})()}
                 {/* Add button */}
                 {!s._selected&&!s._disabled&&<button onClick={(e)=>{e.stopPropagation();selectSuggestion(i);setAddDetail(null);}} style={{
                   width:"100%",padding:"10px",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
@@ -3283,6 +3472,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{fontSize:11,fontWeight:700,color:isSel?"#fff":"#94a3b8",lineHeight:1.3,transition:"color 0.2s ease"}}>{r.shortName}</div>
             <div style={{fontSize:9,color:"#475569",marginTop:3}}>{r.shape} · {r.weight}</div>
             <div style={{fontSize:9,color:"#475569"}}>{r.brand} · {r.price}</div>
+            {(()=>{const risks=computeInjuryRisks(r,profile);if(!risks.length)return null;return<div style={{marginTop:4,display:"flex",gap:3,flexWrap:"wrap"}}>{risks.slice(0,2).map((ir,iri)=><span key={iri} title={ir.message} style={{fontSize:9,background:ir.severity>=3?"rgba(239,68,68,0.15)":ir.severity>=2?"rgba(249,115,22,0.1)":"rgba(251,191,36,0.08)",borderRadius:4,padding:"1px 5px",color:riskColor(ir.severity),fontWeight:600}}>{ir.icon} {ir.zone}</span>)}</div>;})()}
             {r._incomplete&&<div onClick={e=>{e.stopPropagation();rescoreRacket(r.id)}} style={{position:"absolute",bottom:4,right:4,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.4)",borderRadius:6,padding:"2px 6px",fontSize:8,color:"#f97316",fontWeight:700,cursor:"pointer"}}>🔄 Re-scorer</div>}
           </button>);
         })}
@@ -3574,6 +3764,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               else if(gIdx<0.35){w.Maniabilité+=1.2;w.Confort+=0.8;w.Tolérance+=0.5;}
               else if(gIdx<0.45){w.Maniabilité+=0.5;w.Confort+=0.3;}
               else if(gIdx>0.65){w.Puissance+=0.3;}
+              const freq2 = freqIndex(profile.frequency);
+              if(freq2>=3){w.Confort+=0.8;w.Tolérance+=0.3;}
+              else if(freq2>=2){w.Confort+=0.4;}
+              if(freq2===0){w.Tolérance+=0.5;w.Maniabilité+=0.3;}
               const hand=profile.hand||"Droitier"; const side=profile.side||"Droite";
               const isAtk=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
               const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
@@ -3858,8 +4052,20 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   })}
                 </div>
                 
-                {/* Warnings and verdict */}
-                {criticalLow&&<div className="print-warn" style={{fontSize:9,color:"#f87171",fontWeight:600,marginBottom:3}}>⚠ Confort insuffisant ({r.scores.Confort}/10) pour blessures {ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/")} — risque de douleurs</div>}
+                {/* Injury risk alerts */}
+                {(()=>{
+                  const injRisks = computeInjuryRisks(r, profile);
+                  if(!injRisks.length && !criticalLow) return null;
+                  return <div className="print-risks" style={{marginBottom:4}}>
+                    {criticalLow&&!injRisks.some(ir=>ir.zone==="coude")&&<div className="print-warn" style={{fontSize:9,color:"#f87171",fontWeight:600,marginBottom:2}}>⚠ Confort insuffisant ({r.scores.Confort}/10) pour blessures déclarées</div>}
+                    {injRisks.map((ir,iri)=>(
+                      <div key={iri} style={{display:"flex",alignItems:"flex-start",gap:5,padding:"3px 8px",marginBottom:2,borderRadius:6,background:ir.severity>=3?"rgba(239,68,68,0.08)":ir.severity>=2?"rgba(249,115,22,0.06)":"rgba(251,191,36,0.05)",border:`1px solid ${riskColor(ir.severity)}30`}}>
+                        <span style={{fontSize:12,flexShrink:0,lineHeight:1.3}}>{ir.icon}</span>
+                        <span style={{fontSize:8,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span>
+                      </div>
+                    ))}
+                  </div>;
+                })()}
                 <div className="print-verdict" style={{fontSize:isPodium?10:9,color:"#94a3b8",lineHeight:1.6}}>{r.verdict}</div>
               </div>);
             });
