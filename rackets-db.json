@@ -8335,5 +8335,1013 @@
       }
     ],
     "targetProfile": "Joueurs intermédiaires offensifs. L'entrée dans la gamme Ultra Wilson."
+  },
+  {
+    "id": "bullpadel-vertex-04-woman-2025",
+    "name": "Bullpadel Vertex 04 Woman 2025",
+    "shortName": "Vertex 04 W",
+    "brand": "Bullpadel",
+    "shape": "Diamant",
+    "weight": "350-370g",
+    "balance": "Haut",
+    "surface": "Fibrix",
+    "core": "MultiEVA",
+    "antivib": "Ease Vibe",
+    "price": "280-350€",
+    "player": "Delfi Brea",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-04-woman-2025-delfi-brea.png",
+    "year": 2025,
+    "category": "avance",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 8,
+      "Contrôle": 7,
+      "Confort": 6.5,
+      "Spin": 8,
+      "Maniabilité": 7,
+      "Tolérance": 6.5
+    },
+    "verdict": "La Vertex de Delfi Brea. Diamant plus légère (350-370g) adaptée aux joueuses avancées. Puissance et spin grâce au Fibrix et au Top Spin. Custom Weight pour ajuster l'équilibre.",
+    "editorial": "La Vertex 04 Woman reprend l'ADN de la Vertex classique — diamant, balance haute, carbone — mais calibrée 15-20g plus léger pour les joueuses. Le Fibrix (hybride fibre de verre + carbone) offre plus de flexibilité qu'un full carbone, ce qui apporte du confort sans sacrifier la réactivité. Le noyau MultiEVA double densité réagit fort sur les frappes rapides et absorbe sur les touches lentes. L'Ease Vibe dans le manche réduit les vibrations. Le Custom Weight permet d'ajouter jusqu'à 12g en tête pour personnaliser. C'est la raquette de la joueuse complète qui veut attaquer sans se fatiguer le bras.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibrix",
+        "detail": "Hybride fibre de verre + carbone — flexibilité et réactivité combinées"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEVA",
+        "detail": "Double densité — couche externe dure pour la puissance, interne souple pour le contrôle"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Ease Vibe",
+        "detail": "Amortisseurs hélicoïdaux dans le manche — réduit la fatigue articulaire"
+      },
+      {
+        "label": "Personnalisation",
+        "value": "Custom Weight",
+        "detail": "Plaquettes gel de 3g — jusqu'à 12g ajustables en tête de raquette"
+      }
+    ],
+    "targetProfile": "Joueuses avancées polyvalentes. Celles qui veulent la puissance du diamant dans un poids adapté au jeu féminin."
+  },
+  {
+    "id": "bullpadel-elite-woman-2025",
+    "name": "Bullpadel Elite Woman 2025",
+    "shortName": "Elite W 25",
+    "brand": "Bullpadel",
+    "shape": "Hybride",
+    "weight": "350-360g",
+    "balance": "Moyen",
+    "surface": "Fibrix",
+    "core": "MultiEVA",
+    "antivib": "Vibradrive",
+    "price": "250-320€",
+    "player": "Gemma Triay",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-elite-woman-2025-gemma-triay.png",
+    "year": 2025,
+    "category": "avance",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 7.5,
+      "Contrôle": 8,
+      "Confort": 7.5,
+      "Spin": 7,
+      "Maniabilité": 8,
+      "Tolérance": 7.5
+    },
+    "verdict": "La raquette de Gemma Triay. Hybride légère avec Vibradrive — l'équilibre parfait contrôle/puissance pour les joueuses avancées qui veulent tout.",
+    "editorial": "L'Elite Woman est la raquette la plus équilibrée de la gamme pro féminine Bullpadel. Forme hybride (entre goutte d'eau et ronde) avec balance moyenne — maniable partout, du fond de court au filet. Le Vibradrive est le vrai plus : un élastomère intégré dans le manche qui absorbe les vibrations des frappes décentrées. Le Fibrix en surface donne un toucher souple mais réactif. Le noyau MultiEVA double densité fait le job en puissance comme en contrôle. L'Air React Channel dans le cœur améliore l'aérodynamisme. C'est la pala de la joueuse technique qui construit le point.",
+    "techHighlights": [
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibradrive",
+        "detail": "Élastomère haute élasticité dans le manche — absorbe les vibrations des frappes décentrées"
+      },
+      {
+        "label": "Surface",
+        "value": "Fibrix",
+        "detail": "Hybride fibre de verre + carbone — toucher souple et réactif"
+      },
+      {
+        "label": "Aérodynamisme",
+        "value": "Air React Channel",
+        "detail": "Canal aérodynamique dans le cœur — réduit la résistance à l'air"
+      },
+      {
+        "label": "Structure",
+        "value": "Elite Core",
+        "detail": "Géométrie triangulaire inversée — stabilité et rigidité accrues"
+      }
+    ],
+    "targetProfile": "Joueuses avancées polyvalentes et techniques. Gemma Triay l'utilise pour son jeu complet. Idéale pour qui veut confort + contrôle sans sacrifier la puissance."
+  },
+  {
+    "id": "bullpadel-neuron-2025",
+    "name": "Bullpadel Neuron 25",
+    "shortName": "Neuron 25",
+    "brand": "Bullpadel",
+    "shape": "Hybride",
+    "weight": "365-375g",
+    "balance": "Moyen",
+    "surface": "X-Tend Carbon 3K",
+    "core": "MultiEVA",
+    "antivib": "Vibradrive + Hesacore",
+    "price": "280-340€",
+    "player": "Fede Chingotto",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-neuron-2025-fede-chingotto.png",
+    "year": 2025,
+    "category": "avance",
+    "scores": {
+      "Puissance": 7,
+      "Contrôle": 9,
+      "Confort": 7,
+      "Spin": 8,
+      "Maniabilité": 8,
+      "Tolérance": 7
+    },
+    "verdict": "La pala de Chingotto. Hybride contrôle avec Wave System et Vibradrive. Pour les constructeurs de point qui veulent de la précision et de la vitesse de bras.",
+    "editorial": "Le Neuron est la raquette du tacticien. Conçue avec Fede Chingotto, elle est pensée pour les joueurs qui construisent le point avec précision plutôt qu'avec la force brute. Le Wave System (structure ondulée dans le cadre) augmente la rigidité ciblée tout en absorbant les vibrations — un toucher 'sec' et précis. Le X-Tend Carbon 3K en surface donne de la réactivité et du spin. La balance moyenne et la forme hybride permettent des transitions rapides défense-attaque. Le Vibradrive + Hesacore dans le manche forment un double système anti-vibrations. Le 3D Grain en surface améliore l'accroche pour les effets. C'est la pala du joueur intelligent qui place plutôt qu'il ne frappe.",
+    "techHighlights": [
+      {
+        "label": "Cadre",
+        "value": "Wave System",
+        "detail": "Structure ondulée dans le cadre — rigidité ciblée + absorption des vibrations"
+      },
+      {
+        "label": "Surface",
+        "value": "X-Tend Carbon 3K",
+        "detail": "Carbone en bandes tissées — 20-30% plus léger que le carbone classique"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibradrive + Hesacore",
+        "detail": "Double système : élastomère dans le manche + grip hexagonal ergonomique"
+      },
+      {
+        "label": "Texture",
+        "value": "3D Grain",
+        "detail": "Surface texturée haute densité — friction maximale pour les effets liftés"
+      }
+    ],
+    "targetProfile": "Joueurs avancés défensifs et polyvalents. Constructeurs de point type Chingotto. Excellente pour les viboras et les coups liftés."
+  },
+  {
+    "id": "bullpadel-vertex-05-woman-2026",
+    "name": "Bullpadel Vertex 05 Woman 2026",
+    "shortName": "Vertex 05 W",
+    "brand": "Bullpadel",
+    "shape": "Diamant",
+    "weight": "350-360g",
+    "balance": "Haut",
+    "surface": "Fibrix",
+    "core": "MultiEVA",
+    "antivib": "Curv:Aktiv",
+    "price": "300-380€",
+    "player": "Delfi Brea",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-05-woman-2026-delfi-brea.png",
+    "year": 2026,
+    "category": "avance",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 8.5,
+      "Contrôle": 7,
+      "Confort": 7,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 6.5
+    },
+    "verdict": "Évolution 2026 de la Vertex Woman. Plus légère, plus aérodynamique grâce à l'Air Power. Diamant taillée pour l'attaque féminine de haut niveau.",
+    "editorial": "La Vertex 05 Woman 2026 pousse le curseur plus loin que la 04 : l'Air Power (canal aérodynamique agrandi de 50%) rend la raquette plus rapide en mouvement, le Curv:Aktiv (structure latérale à section variable) améliore la stabilité en torsion. Le Vertex Core redessiné avec pont diagonal double offre plus de rigidité au cœur. Toujours en Fibrix + MultiEVA pour le confort, mais l'ensemble est plus réactif et explosif. Le Custom Weight permet jusqu'à 12g d'ajustement. Pour les joueuses qui veulent la puissance maximale dans un poids contrôlé.",
+    "techHighlights": [
+      {
+        "label": "Aérodynamisme",
+        "value": "Air Power",
+        "detail": "Canal aérodynamique élargi de 50% — plus de vitesse de bras et d'accélération"
+      },
+      {
+        "label": "Stabilité",
+        "value": "Curv:Aktiv",
+        "detail": "Structure latérale à section variable — meilleure efficacité en torsion"
+      },
+      {
+        "label": "Surface",
+        "value": "Fibrix + Top Spin",
+        "detail": "Texture augmentée pour des effets plus prononcés et durables"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEVA",
+        "detail": "Double densité optimisée — puissance sur les frappes rapides, contrôle sur les touches"
+      }
+    ],
+    "targetProfile": "Joueuses avancées offensives. Celles qui veulent le maximum de puissance dans un format léger et maniable."
+  },
+  {
+    "id": "bullpadel-elite-woman-2026",
+    "name": "Bullpadel Elite Woman 2026",
+    "shortName": "Elite W 26",
+    "brand": "Bullpadel",
+    "shape": "Hybride",
+    "weight": "350-360g",
+    "balance": "Moyen",
+    "surface": "Carbon + Fibrix",
+    "core": "MultiEVA",
+    "antivib": "Vibradrive",
+    "price": "260-340€",
+    "player": "Gemma Triay",
+    "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-elite-woman-2026-gemma-triay.png",
+    "year": 2026,
+    "category": "avance",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 7.5
+    },
+    "verdict": "Mise à jour 2026 de l'Elite Triay. Hybride légère avec Vibradrive amélioré. Contrôle et élégance pour les joueuses techniques.",
+    "editorial": "L'Elite W 2026 poursuit la philosophie de Gemma Triay : un jeu complet qui allie grâce et efficacité. Forme hybride et balance moyenne pour une polyvalence totale. Le Vibradrive reste le pilier anti-vibrations. La construction Carbon + Fibrix en surface offre un compromis idéal entre rigidité et souplesse. Le MultiEVA double densité maintient un toucher réactif. L'Elite Core renforcé augmente la stabilité sur les frappes décentrées. C'est la raquette de la joueuse technique qui maîtrise tous les coups.",
+    "techHighlights": [
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibradrive",
+        "detail": "Élastomère dans le manche — absorption des vibrations optimisée"
+      },
+      {
+        "label": "Surface",
+        "value": "Carbon + Fibrix",
+        "detail": "Mélange carbone et fibres flexibles — rigidité contrôlée avec toucher agréable"
+      },
+      {
+        "label": "Structure",
+        "value": "Elite Core",
+        "detail": "Géométrie triangulaire — inertie et stabilité accrues"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEVA",
+        "detail": "Double densité — polyvalence confort/puissance"
+      }
+    ],
+    "targetProfile": "Joueuses avancées polyvalentes. L'hybride par excellence pour le jeu féminin technique et complet."
+  },
+  {
+    "id": "nox-vk10-quantum-3k-2025",
+    "name": "Nox VK10 Quantum 3K 2025",
+    "shortName": "VK10 Quantum",
+    "brand": "Nox",
+    "shape": "Ronde",
+    "weight": "350-365g",
+    "balance": "Bas",
+    "surface": "Carbon 3K",
+    "core": "HR3 Color EVA",
+    "antivib": "Pulse System + Custom Grip",
+    "price": "200-280€",
+    "player": "Aranzazu Osoro",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-vk10-quantum-3k-2025-aranzazu-osoro.png",
+    "year": 2025,
+    "category": "avance",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 6.5,
+      "Contrôle": 9,
+      "Confort": 8,
+      "Spin": 7,
+      "Maniabilité": 9,
+      "Tolérance": 9
+    },
+    "verdict": "La raquette d'Aranzazu Osoro. Ronde, légère (350-365g), contrôle maximal. Basée sur la ML10 avec poids adapté. Idéale pour le jeu défensif et la prévention des blessures.",
+    "editorial": "La VK10 Quantum est la ML10 de Lamperti allégée pour les joueuses. Forme ronde = sweet spot XXL, balance basse = maniabilité maximale, poids de 350-365g = pas de fatigue. Le carbone 3K en surface donne de la réactivité sans excès de rigidité. Le noyau HR3 (haute densité, effet mémoire) assure une bonne sortie de balle. Le Pulse System et le Custom Grip réduisent les vibrations. L'EOS Flap (perforations latérales) redistribue le poids efficacement. C'est la raquette idéale pour les joueuses qui privilégient le contrôle et qui veulent protéger leurs articulations.",
+    "techHighlights": [
+      {
+        "label": "Noyau",
+        "value": "HR3 Color EVA",
+        "detail": "Mousse haute densité à mémoire de forme — récupération rapide, bonne sortie de balle"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Pulse System",
+        "detail": "Caoutchoucs latéraux du cadre au bas de la raquette — absorption des vibrations"
+      },
+      {
+        "label": "Maniabilité",
+        "value": "EOS Flap",
+        "detail": "Perforations latérales dans le cœur — redistribution du poids pour plus d'agilité"
+      },
+      {
+        "label": "Surface",
+        "value": "Carbon 3K + Spin 3D",
+        "detail": "Texture rugueuse exclusive — accroche de balle et effets améliorés"
+      }
+    ],
+    "targetProfile": "Joueuses avancées défensives. Très demandée en test center. Parfaite pour la prévention des douleurs coude/épaule grâce à la forme ronde et au poids léger."
+  },
+  {
+    "id": "nox-la10-quantum-12k-2025",
+    "name": "Nox LA10 Quantum 12K 2025",
+    "shortName": "LA10 Quantum",
+    "brand": "Nox",
+    "shape": "Diamant",
+    "weight": "360-375g",
+    "balance": "Haut",
+    "surface": "Carbon 12K",
+    "core": "HR3 Color EVA",
+    "antivib": "Pulse System + Custom Grip",
+    "price": "250-330€",
+    "player": "Leo Augsburger",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-la10-quantum-12k-2025-leo-augsburger.png",
+    "year": 2025,
+    "category": "expert",
+    "scores": {
+      "Puissance": 9.5,
+      "Contrôle": 7,
+      "Confort": 5.5,
+      "Spin": 8,
+      "Maniabilité": 6,
+      "Tolérance": 5.5
+    },
+    "verdict": "Le diamant de Leo Augsburger. Puissance maximale avec le 12K carbone et le HR3. Pour les attaquants agressifs qui veulent dominer au filet.",
+    "editorial": "La LA10 est l'arme offensive de la gamme Nox Quantum. Diamant + balance haute + carbone 12K = puissance brute maximale. Le 12K offre plus de rigidité que le 3K tout en restant plus léger que le carbone traditionnel. Le noyau HR3 à mémoire de forme assure une sortie de balle explosive. Le Spin 3D exclusif (hexagones 3D au centre + sable rugueux autour) permet de mettre beaucoup d'effet. Le Pulse System et le Custom Grip atténuent les vibrations — indispensable vu la rigidité du cadre. C'est la raquette du frappeur pur qui veut tout casser en smash et en bandeja.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon 12K",
+        "detail": "Fibres de carbone 12K — rigidité maximale et poids réduit pour plus de puissance"
+      },
+      {
+        "label": "Noyau",
+        "value": "HR3 Color EVA",
+        "detail": "Mousse haute densité — sortie de balle explosive et toucher intermédiaire"
+      },
+      {
+        "label": "Texture",
+        "value": "Exclusive SPIN 3D",
+        "detail": "Double finition rugueuse : hexagones 3D + texture sable — spin maximal"
+      },
+      {
+        "label": "Aérodynamisme",
+        "value": "EOS Flap",
+        "detail": "Perforations latérales pour redistribution du poids et maniabilité accrue"
+      }
+    ],
+    "targetProfile": "Joueurs avancés et experts attaquants. Smasheurs agressifs à la Leo Augsburger. Pas pour les débutants — demande de la technique."
+  },
+  {
+    "id": "nox-tl10-quantum-12k-2025",
+    "name": "Nox TL10 Quantum 12K 2025",
+    "shortName": "TL10 Quantum",
+    "brand": "Nox",
+    "shape": "Goutte d'eau",
+    "weight": "360-375g",
+    "balance": "Moyen",
+    "surface": "Carbon 12K",
+    "core": "HR3 Color EVA",
+    "antivib": "Pulse System + Custom Grip",
+    "price": "230-310€",
+    "player": "Tino Libaak",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-tl10-quantum-12k-2025-tino-libaak.png",
+    "year": 2025,
+    "category": "avance",
+    "scores": {
+      "Puissance": 8,
+      "Contrôle": 8,
+      "Confort": 6.5,
+      "Spin": 8,
+      "Maniabilité": 7.5,
+      "Tolérance": 7
+    },
+    "verdict": "La polyvalente de Tino Libaak. Goutte d'eau en 12K — le meilleur compromis puissance/contrôle de la gamme Quantum. Pour les all-rounders.",
+    "editorial": "La TL10 est le point d'équilibre parfait de la gamme Quantum Nox. Forme goutte d'eau = compromis idéal entre le contrôle de la ronde et la puissance du diamant. Le carbone 12K en surface apporte rigidité et réactivité, tandis que le noyau HR3 donne un toucher intermédiaire confortable. Balance moyenne pour une maniabilité en toutes situations. Le Spin 3D exclusif améliore l'accroche. Le Pulse System réduit les vibrations. Conçue avec Tino Libaak, jeune prodige du circuit. C'est la raquette du joueur complet qui veut être efficace partout.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon 12K",
+        "detail": "Fibres 12K — rigidité et puissance avec poids réduit"
+      },
+      {
+        "label": "Noyau",
+        "value": "HR3 Color EVA",
+        "detail": "Toucher intermédiaire — bon compromis puissance/confort"
+      },
+      {
+        "label": "Texture",
+        "value": "Exclusive SPIN 3D",
+        "detail": "Double finition rugueuse pour effets maximaux"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Pulse System",
+        "detail": "Caoutchoucs latéraux — réduction de la fatigue articulaire"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents. La raquette all-round par excellence chez Nox. Aussi adaptée aux femmes qui veulent un 12K sans aller au diamant."
+  },
+  {
+    "id": "babolat-stima-spirit-2025",
+    "name": "Babolat Stima Spirit 2025",
+    "shortName": "Stima Spirit",
+    "brand": "Babolat",
+    "shape": "Ronde",
+    "weight": "330-340g",
+    "balance": "Bas",
+    "surface": "Fiberglass",
+    "core": "Black EVA Soft",
+    "antivib": "Vibrasorb System",
+    "price": "120-180€",
+    "player": "—",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-stima-spirit.png",
+    "year": 2025,
+    "category": "intermediaire",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 5,
+      "Contrôle": 8.5,
+      "Confort": 9.5,
+      "Spin": 6,
+      "Maniabilité": 9.5,
+      "Tolérance": 9
+    },
+    "verdict": "La plus légère et maniable de chez Babolat. 330g, ronde, fibre de verre — confort maximal pour les joueuses et les joueurs sensibles du bras. Le pôle santé en priorité.",
+    "editorial": "La Stima Spirit est la raquette la plus douce de la gamme Babolat. Conçue exclusivement pour les joueuses, elle pèse à peine 330g avec un profil de 36mm seulement. La fibre de verre en surface offre un maximum de flexibilité et de tolérance — les frappes décentrées sont pardonnées. Le noyau Black EVA Soft absorbe les chocs avec douceur. Le Vibrasorb System (élastomère SMAC intégré dans le noyau) filtre les vibrations restantes. Le MicroPerf (micro-perforations dans les zones rigides) allège et agrandit le sweet spot. C'est LA raquette à recommander en premier pour l'épicondylite, le mal d'épaule ou simplement pour les débutantes.",
+    "techHighlights": [
+      {
+        "label": "Poids",
+        "value": "330-340g / 36mm",
+        "detail": "Parmi les plus légères du marché — maniabilité et confort extrêmes"
+      },
+      {
+        "label": "Surface",
+        "value": "Fiberglass",
+        "detail": "Fibre de verre 100% — flexibilité maximale, toucher doux et tolérant"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibrasorb System",
+        "detail": "Élastomère SMAC intégré au noyau — absorption des vibrations à la source"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "MicroPerf",
+        "detail": "Micro-perforations brevetées — allègent la raquette et agrandissent le sweet spot"
+      }
+    ],
+    "targetProfile": "Joueuses débutantes à intermédiaires. Priorité santé : épicondylite, douleurs épaule/poignet. La première raquette à recommander au pôle physio."
+  },
+  {
+    "id": "babolat-dyna-spirit-2025",
+    "name": "Babolat Dyna Spirit 2025",
+    "shortName": "Dyna Spirit",
+    "brand": "Babolat",
+    "shape": "Hybride",
+    "weight": "330-340g",
+    "balance": "Moyen",
+    "surface": "Fiberglass",
+    "core": "Black EVA Soft",
+    "antivib": "Vibrasorb System",
+    "price": "120-180€",
+    "player": "—",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-dyna-spirit.png",
+    "year": 2025,
+    "category": "intermediaire",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 6,
+      "Contrôle": 7.5,
+      "Confort": 9,
+      "Spin": 6.5,
+      "Maniabilité": 9,
+      "Tolérance": 8.5
+    },
+    "verdict": "La Stima Spirit en mode dynamique. Hybride légère pour les joueuses qui veulent attaquer au filet sans se fatiguer. 330g de pur confort offensif.",
+    "editorial": "La Dyna Spirit est la sœur offensive de la Stima Spirit. Même poids plume (330g) et même profil 36mm, mais forme hybride (entre goutte d'eau et diamant) qui apporte plus de puissance en attaque. La fibre de verre en surface maintient le confort et la tolérance. Le noyau Black EVA Soft garde un toucher doux. Le Vibrasorb System protège le bras. C'est la raquette de la joueuse dynamique qui monte au filet mais qui veut un maximum de confort. Parfaite pour la transition vers un jeu plus agressif.",
+    "techHighlights": [
+      {
+        "label": "Forme",
+        "value": "Hybride",
+        "detail": "Entre goutte d'eau et diamant — plus de puissance que la Stima tout en restant maniable"
+      },
+      {
+        "label": "Poids",
+        "value": "330-340g / 36mm",
+        "detail": "Ultra-légère — idéale pour les joueuses qui cherchent de la vitesse de bras"
+      },
+      {
+        "label": "Surface",
+        "value": "Fiberglass",
+        "detail": "Fibre de verre — flexibilité et tolérance sur les frappes décentrées"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibrasorb System",
+        "detail": "SMAC intégré — confort et protection articulaire"
+      }
+    ],
+    "targetProfile": "Joueuses intermédiaires dynamiques. Celles qui veulent progresser vers l'attaque sans risquer la blessure. Excellente en transition de jeu."
+  },
+  {
+    "id": "babolat-technical-vertuo-2025",
+    "name": "Babolat Technical Vertuo 2025",
+    "shortName": "Technical Vertuo",
+    "brand": "Babolat",
+    "shape": "Diamant",
+    "weight": "350-360g",
+    "balance": "Haut",
+    "surface": "Fiberglass",
+    "core": "EVA Soft",
+    "antivib": "Vibrasorb System",
+    "price": "150-200€",
+    "player": "—",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-vertuo.png",
+    "year": 2025,
+    "category": "intermediaire",
+    "scores": {
+      "Puissance": 7.5,
+      "Contrôle": 6.5,
+      "Confort": 8,
+      "Spin": 7,
+      "Maniabilité": 6.5,
+      "Tolérance": 7.5
+    },
+    "verdict": "La version souple du diamant Babolat. Fibre de verre + EVA Soft pour les intermédiaires qui veulent de la puissance sans la rigidité du carbone.",
+    "editorial": "Le Technical Vertuo est la porte d'entrée vers le jeu offensif chez Babolat. Forme diamant et balance haute pour la puissance, mais surface fibre de verre au lieu du carbone — beaucoup plus tolérante et confortable. Le noyau EVA Soft absorbe bien les chocs. Le Vibrasorb System filtre les vibrations. Le 3D Spin en surface ajoute de l'accroche. C'est l'alternative idéale pour les joueurs intermédiaires qui veulent tester le diamant sans se faire mal au bras. La version fibre de verre de ce qui serait normalement un Technical Viper.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fiberglass",
+        "detail": "Fibre de verre — puissance accessible avec confort et tolérance"
+      },
+      {
+        "label": "Noyau",
+        "value": "EVA Soft",
+        "detail": "Mousse élastique — bonne sortie de balle avec absorption des chocs"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant + Balance Haute",
+        "detail": "Puissance naturelle en smash et bandeja — sweet spot haut placé"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibrasorb System",
+        "detail": "Protection articulaire intégrée"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires offensifs. La transition vers le diamant pour ceux qui ne sont pas prêts pour le full carbone. Bon choix pour le pôle test center."
+  },
+  {
+    "id": "babolat-air-vertuo-2025",
+    "name": "Babolat Air Vertuo 2025",
+    "shortName": "Air Vertuo 25",
+    "brand": "Babolat",
+    "shape": "Hybride",
+    "weight": "340-350g",
+    "balance": "Moyen",
+    "surface": "Fiberglass",
+    "core": "Black EVA Soft",
+    "antivib": "Vibrasorb System",
+    "price": "140-190€",
+    "player": "—",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-vertuo.png",
+    "year": 2025,
+    "category": "intermediaire",
+    "scores": {
+      "Puissance": 6,
+      "Contrôle": 7.5,
+      "Confort": 9,
+      "Spin": 6.5,
+      "Maniabilité": 9,
+      "Tolérance": 8.5
+    },
+    "verdict": "345g de pur maniabilité. Hybride fibre de verre pour les joueurs qui veulent de la vitesse de bras et du confort. L'Air Striker par excellence.",
+    "editorial": "L'Air Vertuo est le modèle le plus léger de la gamme Vertuo. À 345g environ, c'est une plume en main. Forme hybride et balance équilibrée pour être à l'aise partout. La fibre de verre offre un toucher souple et élastique — la puissance vient de la flexibilité de la surface, pas de la rigidité. Le Black EVA Soft dans le noyau accentue le confort. Le Vibrasorb System réduit les vibrations. Le HPS (Holes Pattern System) optimise la distribution des trous pour la puissance et la tolérance. C'est la raquette 'easy power' — idéale pour les joueurs qui veulent progresser vite sans se faire mal.",
+    "techHighlights": [
+      {
+        "label": "Poids",
+        "value": "345g",
+        "detail": "Ultra-légère — vitesse de bras maximale et réactivité au filet"
+      },
+      {
+        "label": "Surface",
+        "value": "Fiberglass",
+        "detail": "Fibre de verre souple — 'easy power' par élasticité"
+      },
+      {
+        "label": "Noyau",
+        "value": "Black EVA Soft",
+        "detail": "Mousse élastique — confort maximal et bonne sortie de balle"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibrasorb System",
+        "detail": "Élastomère SMAC — protection du bras"
+      }
+    ],
+    "targetProfile": "Joueurs débutants à intermédiaires. Ceux qui veulent une raquette légère et maniable pour progresser. Excellente option santé."
+  },
+  {
+    "id": "babolat-air-vertuo-2026",
+    "name": "Babolat Air Vertuo 2026",
+    "shortName": "Air Vertuo 26",
+    "brand": "Babolat",
+    "shape": "Hybride",
+    "weight": "340-350g",
+    "balance": "Moyen",
+    "surface": "Soft Fiber",
+    "core": "Black EVA Soft",
+    "antivib": "Vibrasorb System",
+    "price": "150-200€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2026,
+    "category": "intermediaire",
+    "scores": {
+      "Puissance": 6.5,
+      "Contrôle": 7.5,
+      "Confort": 9,
+      "Spin": 7,
+      "Maniabilité": 9,
+      "Tolérance": 8.5
+    },
+    "verdict": "Mise à jour 2026 de l'Air Vertuo. Même philosophie ultra-légère et confortable. HPS amélioré et Soft Fiber pour plus de tolérance.",
+    "editorial": "L'Air Vertuo 2026 évolue en douceur par rapport à la 2025. Le Soft Fiber remplace la fibre de verre classique pour encore plus de flexibilité et de pardon sur les frappes décentrées. Le HPS (Holes Pattern System) est optimisé pour chaque forme de raquette. Le Black EVA apporte plus d'élasticité. Le Vibrasorb System reste le pilier confort. Toujours à ~345g, c'est la continuité de la philosophie 'légèreté et easy power' de Babolat. Parfaite pour l'intermédiaire qui veut monter en régime progressivement.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Soft Fiber",
+        "detail": "Fibres souples et flexibles — puissance facile avec confort et pardon"
+      },
+      {
+        "label": "Distribution trous",
+        "value": "HPS optimisé",
+        "detail": "Distribution et taille des trous spécifiques à la forme — puissance et précision"
+      },
+      {
+        "label": "Noyau",
+        "value": "Black EVA",
+        "detail": "Mousse plus élastique — maximum de puissance et confort à l'impact"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibrasorb System",
+        "detail": "Matériau élastomère SMAC dans le noyau — confort et protection"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires cherchant maniabilité et confort. Progression douce vers un jeu plus complet."
+  },
+  {
+    "id": "babolat-technical-vertuo-2026",
+    "name": "Babolat Technical Vertuo 2026",
+    "shortName": "Technical Vertuo 26",
+    "brand": "Babolat",
+    "shape": "Diamant",
+    "weight": "350-360g",
+    "balance": "Haut",
+    "surface": "Soft Fiber",
+    "core": "Black EVA",
+    "antivib": "Vibrasorb System",
+    "price": "160-210€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2026,
+    "category": "intermediaire",
+    "scores": {
+      "Puissance": 8,
+      "Contrôle": 6.5,
+      "Confort": 7.5,
+      "Spin": 7.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 7
+    },
+    "verdict": "Le diamant souple 2026. Soft Fiber + Black EVA pour un diamant qui reste confortable. L'offensif accessible des Vertuo.",
+    "editorial": "Le Technical Vertuo 2026 est le diamant de la gamme Vertuo — la famille confort et accessibilité de Babolat. Là où le Technical Viper est en full carbone et dur, le Technical Vertuo utilise le Soft Fiber pour un toucher beaucoup plus souple. Le Black EVA dans le noyau ajoute de l'élasticité. Le Vibrasorb System filtre les vibrations. Forme diamant + balance haute = puissance naturelle, mais le package est beaucoup plus tolérant qu'un Technical Viper. C'est l'entrée en matière offensive parfaite pour les intermédiaires.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Soft Fiber",
+        "detail": "Fibres souples — puissance facile sans rigidité excessive"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Puissance naturelle en attaque — sweet spot haut placé"
+      },
+      {
+        "label": "Noyau",
+        "value": "Black EVA",
+        "detail": "Mousse élastique — confort et sortie de balle dynamique"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Vibrasorb System",
+        "detail": "SMAC intégré — protection articulaire"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires qui veulent passer à l'attaque. Alternative souple au Technical Viper. Bon pour le test center."
+  },
+  {
+    "id": "prokennex-kinetic-legend-pro",
+    "name": "Pro Kennex Kinetic Legend Pro 2025",
+    "shortName": "Kinetic Legend Pro",
+    "brand": "Pro Kennex",
+    "shape": "Ronde",
+    "weight": "360-375g",
+    "balance": "Bas",
+    "surface": "Spiral Tech Graphite",
+    "core": "EVA Soft",
+    "antivib": "Kinetic System + Kinetic Damping Chamber",
+    "price": "200-280€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2025,
+    "category": "avance",
+    "scores": {
+      "Puissance": 6,
+      "Contrôle": 9,
+      "Confort": 10,
+      "Spin": 7,
+      "Maniabilité": 8,
+      "Tolérance": 9
+    },
+    "verdict": "LA référence anti-épicondylite. Les billes Kinetic dans le cadre réduisent les vibrations de 43% et le choc de 20%. Ronde, confortable, 10/10 confort. À prescrire.",
+    "editorial": "Pro Kennex est LE spécialiste du confort articulaire dans le monde de la raquette. La technologie Kinetic utilise des micro-billes dans des capsules intégrées au cadre : à l'impact, elles se déplacent vers la zone de frappe et absorbent l'énergie du choc au lieu de la transmettre au bras. Résultat validé par le MIT : -20% choc, -43% vibrations, +50% stabilité en torsion. Le Kinetic Damping Chamber dans le manche absorbe les vibrations résiduelles. Le Spiral Tech Graphite en surface donne un toucher propre. Le noyau EVA Soft assure le confort. Forme ronde + balance basse = contrôle et sweet spot généreux. C'est la prescription n°1 pour l'épicondylite, l'épaule fragile ou le mal de dos.",
+    "techHighlights": [
+      {
+        "label": "Anti-vibrations",
+        "value": "Kinetic System",
+        "detail": "Micro-billes dans le cadre — absorbent le choc à l'impact. Validé MIT : -43% vibrations"
+      },
+      {
+        "label": "Manche",
+        "value": "Kinetic Damping Chamber",
+        "detail": "Chambre d'amortissement dans le manche — élimine les vibrations résiduelles"
+      },
+      {
+        "label": "Surface",
+        "value": "Spiral Tech Graphite",
+        "detail": "3 couches de graphite spiralé — toucher propre et précis"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Geo-Dynamic Design",
+        "detail": "Distribution des trous optimisée — sweet spot agrandi"
+      }
+    ],
+    "targetProfile": "PRIORITÉ SANTÉ. Joueurs souffrant d'épicondylite, tendinite épaule/poignet, mal de dos. À recommander dès qu'un client mentionne une douleur au bras."
+  },
+  {
+    "id": "prokennex-kinetic-focus-pro",
+    "name": "Pro Kennex Kinetic Focus Pro 2025",
+    "shortName": "Kinetic Focus Pro",
+    "brand": "Pro Kennex",
+    "shape": "Diamant",
+    "weight": "360-375g",
+    "balance": "Haut",
+    "surface": "Spiral Tech Graphite",
+    "core": "EVA Soft",
+    "antivib": "Kinetic System + Kinetic Damping Chamber",
+    "price": "220-300€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2025,
+    "category": "avance",
+    "scores": {
+      "Puissance": 8,
+      "Contrôle": 7,
+      "Confort": 9.5,
+      "Spin": 7.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 7
+    },
+    "verdict": "Le Kinetic en mode puissance. Diamant avec billes Kinetic — l'offensif qui protège le bras. Pour les attaquants avec douleur au coude.",
+    "editorial": "La Focus Pro est la version offensive du système Kinetic. Même technologie anti-vibrations révolutionnaire (micro-billes + Damping Chamber), mais dans une forme diamant avec balance haute pour la puissance. Le Spiral Tech Graphite en surface assure rigidité et réactivité. Le noyau EVA Soft maintient le confort. La texture 3D Grain améliore le spin. C'est la réponse parfaite au joueur qui dit 'je veux un diamant mais j'ai mal au coude' — la puissance sans la douleur. Un compromis unique sur le marché.",
+    "techHighlights": [
+      {
+        "label": "Anti-vibrations",
+        "value": "Kinetic System",
+        "detail": "Micro-billes dans le cadre — -20% choc, -43% vibrations, +50% stabilité torsion"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant + Balance Haute",
+        "detail": "Puissance offensive avec protection articulaire — combo unique"
+      },
+      {
+        "label": "Surface",
+        "value": "Spiral Tech Graphite + 3D Grain",
+        "detail": "Graphite spiralé avec texture pour le spin"
+      },
+      {
+        "label": "Manche",
+        "value": "Kinetic Damping Chamber",
+        "detail": "Absorption des vibrations résiduelles dans le manche"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs AVEC problèmes articulaires. L'alternative santé aux diamants classiques. Unique sur le marché."
+  },
+  {
+    "id": "prokennex-kinetic-black-ace",
+    "name": "Pro Kennex Kinetic Black Ace 2025",
+    "shortName": "Kinetic Black Ace",
+    "brand": "Pro Kennex",
+    "shape": "Goutte d'eau",
+    "weight": "355-370g",
+    "balance": "Moyen",
+    "surface": "Spiral Tech Carbon",
+    "core": "EVA Soft",
+    "antivib": "Kinetic System + Kinetic Damping Chamber",
+    "price": "230-310€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2025,
+    "category": "avance",
+    "scores": {
+      "Puissance": 7,
+      "Contrôle": 8,
+      "Confort": 9.5,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 8
+    },
+    "verdict": "Le polyvalent Kinetic. Goutte d'eau avec billes anti-vibrations — l'all-rounder qui protège le bras. Pour les joueurs complets sensibles des articulations.",
+    "editorial": "La Black Ace est le polyvalent de la gamme Kinetic padel. Forme goutte d'eau avec balance moyenne — le compromis idéal entre puissance et contrôle. Même technologie Kinetic (micro-billes + Damping Chamber) que les Legend et Focus, mais en version plus équilibrée. Le Spiral Tech Carbon en surface apporte plus de réactivité que le Graphite tout en maintenant le confort. Protection PVC Bumper pour le cadre. C'est le choix naturel pour les joueurs complets qui veulent les bénéfices anti-vibrations sans se spécialiser en contrôle ou en attaque.",
+    "techHighlights": [
+      {
+        "label": "Anti-vibrations",
+        "value": "Kinetic System",
+        "detail": "Micro-billes dans le cadre — absorption de choc validée scientifiquement"
+      },
+      {
+        "label": "Surface",
+        "value": "Spiral Tech Carbon",
+        "detail": "Carbone spiralé — plus réactif que le graphite, toucher propre"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau + Balance Moyenne",
+        "detail": "Polyvalence totale avec protection articulaire"
+      },
+      {
+        "label": "Manche",
+        "value": "Kinetic Damping Chamber",
+        "detail": "Chambre d'amortissement — grip ferme et confortable"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents avec sensibilité articulaire. Le choix santé pour les all-rounders."
+  },
+  {
+    "id": "royal-padel-m27-poly-2025",
+    "name": "Royal Padel M27 Polyethylene 2025",
+    "shortName": "RP M27 Poly",
+    "brand": "Royal Padel",
+    "shape": "Ronde",
+    "weight": "360-380g",
+    "balance": "Moyen",
+    "surface": "Carbon 3K",
+    "core": "Polyethylene Soft",
+    "antivib": "Shock Absorption System",
+    "price": "250-350€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2025,
+    "category": "avance",
+    "scores": {
+      "Puissance": 7,
+      "Contrôle": 9,
+      "Confort": 9.5,
+      "Spin": 7,
+      "Maniabilité": 7,
+      "Tolérance": 9
+    },
+    "verdict": "Noyau polyéthylène = absorption maximale des vibrations. Le M27 est LE classique du confort depuis 1991. Fabriquée à la main en Espagne. Référence pour l'épicondylite.",
+    "editorial": "Royal Padel est le pionnier espagnol du confort depuis 1991. Le M27 est leur best-seller absolu, et pour cause : le noyau en polyéthylène soft haute densité absorbe les vibrations comme aucune mousse EVA ne le peut. Le polyéthylène offre un toucher unique — doux, amortissant, avec une bonne restitution d'énergie. Le cadre et les faces en carbone 3K apportent la puissance nécessaire. Le Shock Absorption System dans le cœur ouvert réduit encore les vibrations. Forme ronde + balance moyenne = contrôle et tolérance. Chaque raquette est pesée individuellement — vous choisissez votre poids exact. C'est l'arme anti-épicondylite n°1 avec Pro Kennex.",
+    "techHighlights": [
+      {
+        "label": "Noyau",
+        "value": "Polyethylene Soft",
+        "detail": "Polyéthylène haute densité souple — absorption de choc supérieure à l'EVA"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Shock Absorption System",
+        "detail": "Système dans le cœur ouvert — réduit les vibrations transmises au coude/épaule"
+      },
+      {
+        "label": "Surface",
+        "value": "Carbon 3K + Core Tech",
+        "detail": "Carbone 100% avec surface texturée — grip et spin améliorés"
+      },
+      {
+        "label": "Fabrication",
+        "value": "Artisanale Espagne",
+        "detail": "Chaque raquette pesée individuellement — choix du poids exact"
+      }
+    ],
+    "targetProfile": "PRIORITÉ SANTÉ. Joueurs avec épicondylite ou douleurs articulaires. Le polyéthylène est le matériau le plus confortable du marché. Référence depuis 1991."
+  },
+  {
+    "id": "royal-padel-m27-light-2025",
+    "name": "Royal Padel M27 Light 2025",
+    "shortName": "RP M27 Light",
+    "brand": "Royal Padel",
+    "shape": "Ronde",
+    "weight": "350-365g",
+    "balance": "Moyen",
+    "surface": "Carbon 3K",
+    "core": "Polyethylene Soft",
+    "antivib": "Shock Absorption System",
+    "price": "230-320€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2025,
+    "category": "avance",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 6.5,
+      "Contrôle": 9,
+      "Confort": 10,
+      "Spin": 7,
+      "Maniabilité": 8,
+      "Tolérance": 9
+    },
+    "verdict": "Le M27 en version légère (350-365g). Même polyéthylène anti-vibrations, mais plus maniable. Idéal pour les joueuses et les seniors sensibles du bras.",
+    "editorial": "Le M27 Light est la déclinaison allégée du best-seller Royal Padel. Mêmes technologies — polyéthylène soft, Shock Absorption System, carbone 3K — mais dans une fourchette de 350 à 365g. Plus facile à manier pour les gabarits légers, les joueuses et les seniors. L'absorption des vibrations reste identique au M27 standard. La texture 5D Hex Twill en surface améliore l'accroche pour les effets. C'est le M27 adapté au public qui a le plus besoin de confort : petits gabarits, bras sensibles, retour de blessure.",
+    "techHighlights": [
+      {
+        "label": "Poids",
+        "value": "350-365g",
+        "detail": "Version allégée du M27 — même confort, plus de maniabilité"
+      },
+      {
+        "label": "Noyau",
+        "value": "Polyethylene Soft",
+        "detail": "Polyéthylène haute densité — absorption maximale des vibrations"
+      },
+      {
+        "label": "Surface",
+        "value": "5D Hex Twill Carbon",
+        "detail": "Texture hexagonale aéronautique — grip total et effets"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Shock Absorption",
+        "detail": "Système d'absorption dans le cœur ouvert"
+      }
+    ],
+    "targetProfile": "PRIORITÉ SANTÉ. Joueuses, seniors, petits gabarits avec problèmes articulaires. Le confort du polyéthylène dans un format maniable."
+  },
+  {
+    "id": "royal-padel-whip-extreme-2025",
+    "name": "Royal Padel Whip Extreme 2025",
+    "shortName": "RP Whip Extreme",
+    "brand": "Royal Padel",
+    "shape": "Ronde",
+    "weight": "355-375g",
+    "balance": "Moyen",
+    "surface": "Carbon",
+    "core": "Polyethylene Soft",
+    "antivib": "Shock Absorption System",
+    "price": "180-260€",
+    "player": "—",
+    "imageUrl": "",
+    "year": 2025,
+    "category": "intermediaire",
+    "scores": {
+      "Puissance": 6.5,
+      "Contrôle": 8.5,
+      "Confort": 9.5,
+      "Spin": 6.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 9
+    },
+    "verdict": "Le Whip polyéthylène classique. Confort extrême à prix plus accessible que le M27. Ronde, adaptable, anti-blessures. Le confort Royal Padel pour tous.",
+    "editorial": "Le Whip Extreme est la version accessible du confort Royal Padel. Même noyau polyéthylène que le M27 pour l'absorption maximale des vibrations. Forme ronde et balance moyenne pour la polyvalence. Le Shock Absorption System réduit les vibrations transmises au bras. Plus abordable que le M27, c'est l'entrée en matière idéale dans le monde du polyéthylène pour les joueurs qui veulent protéger leurs articulations sans se ruiner.",
+    "techHighlights": [
+      {
+        "label": "Noyau",
+        "value": "Polyethylene Soft",
+        "detail": "Polyéthylène — absorption supérieure à l'EVA"
+      },
+      {
+        "label": "Anti-vibrations",
+        "value": "Shock Absorption",
+        "detail": "Système intégré au cœur — prévention épicondylite"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde + Balance Moyenne",
+        "detail": "Contrôle et tolérance maximale"
+      },
+      {
+        "label": "Prix",
+        "value": "Plus accessible",
+        "detail": "Le confort polyéthylène Royal Padel à prix contenu"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires à avancés sensibles du bras. Entrée en gamme Royal Padel polyéthylène. Budget modéré."
   }
 ]
