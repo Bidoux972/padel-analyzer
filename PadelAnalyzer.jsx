@@ -64,7 +64,7 @@ const PRIORITY_TAGS = [
 ];
 
 const INITIAL_PROFILE = {
-  age: "", weight: "", height: "", level: "Intermédiaire", side: "Droite", hand: "Droitier",
+  age: "", weight: "", height: "", gender: "", fitness: "", level: "Intermédiaire", side: "Droite", hand: "Droitier",
   styleTags: [],
   styleExtra: "",
   injuryTags: [],
@@ -247,12 +247,85 @@ function buildProfileText(p) {
   const injuryStr = [...injuries, p.injuryExtra].filter(Boolean).join(", ") || "Aucune";
   const prioStr = [...priorities, p.priorityExtra].filter(Boolean).join(", ") || "Non précisé";
   const brandStr = brands.length ? brands.join(", ") : "Toutes marques";
-  const physique = [p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null].filter(Boolean).join(", ");
+  const physique = [p.gender||null, p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null, p.fitness||null].filter(Boolean).join(", ");
   return `Joueur: ${physique || "Non renseigné"}. Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
 }
 
+// === GABARIT INDEX ===
+// Combines gender + weight + height + age + fitness into a single 0-1 scale
+// 0 = very light/fragile build → needs light, comfortable, maneuverable rackets
+// 1 = powerful/heavy build → can handle heavy, stiff, powerful rackets
+function computeGabaritIndex(profile) {
+  const age = Number(profile.age)||30;
+  const weight = Number(profile.weight)||0;
+  const height = Number(profile.height)||0;
+  const gender = profile.gender||"";
+  const fitness = profile.fitness||"actif";
+  
+  // BMI-based strength estimation (contextualized by gender)
+  let bmiScore = 0.5; // default middle
+  if(weight>0 && height>0) {
+    const bmi = weight / ((height/100)**2);
+    if(gender==="Femme") {
+      // Women: BMI 18-23 = normal range, strength peaks around 22-25
+      if(bmi<17) bmiScore=0.15;
+      else if(bmi<19) bmiScore=0.3;
+      else if(bmi<22) bmiScore=0.45;
+      else if(bmi<25) bmiScore=0.55;
+      else if(bmi<28) bmiScore=0.5;
+      else bmiScore=0.4;
+    } else {
+      // Men: BMI 20-25 = normal range, strength peaks around 24-27
+      if(bmi<17) bmiScore=0.1;
+      else if(bmi<19) bmiScore=0.2;
+      else if(bmi<21) bmiScore=0.35;
+      else if(bmi<24) bmiScore=0.5;
+      else if(bmi<27) bmiScore=0.65;
+      else if(bmi<30) bmiScore=0.6;
+      else bmiScore=0.45;
+    }
+  } else if(weight>0) {
+    // Weight only — rough estimate
+    if(gender==="Femme") {
+      bmiScore = weight<50?0.2:weight<60?0.4:weight<70?0.55:weight<80?0.5:0.4;
+    } else {
+      bmiScore = weight<60?0.2:weight<70?0.35:weight<80?0.5:weight<90?0.6:0.55;
+    }
+  }
+  
+  // Gender baseline adjustment (average female has ~60% upper body strength vs male)
+  const genderFactor = gender==="Femme" ? -0.12 : 0;
+  
+  // Age factor — progressive, not a cliff
+  let ageFactor = 0;
+  if(age<20) ageFactor=0.02;
+  else if(age<30) ageFactor=0;
+  else if(age<40) ageFactor=-0.02;
+  else if(age<50) ageFactor=-0.06;
+  else if(age<60) ageFactor=-0.12;
+  else if(age<70) ageFactor=-0.2;
+  else ageFactor=-0.28;
+  
+  // Fitness modifier — can compensate significantly
+  const fitnessMod = fitness==="athletique" ? 0.15 : fitness==="actif" ? 0 : -0.12;
+  
+  // Height contributes to leverage/reach
+  let heightFactor = 0;
+  if(height>0) {
+    if(height<160) heightFactor=-0.06;
+    else if(height<170) heightFactor=-0.03;
+    else if(height<180) heightFactor=0;
+    else if(height<190) heightFactor=0.04;
+    else heightFactor=0.07;
+  }
+  
+  // Combine: clamp to [0, 1]
+  const raw = bmiScore + genderFactor + ageFactor + fitnessMod + heightFactor;
+  return Math.max(0, Math.min(1, raw));
+}
+
 // Weighted global score /10 based on player profile
-function computeGlobalScore(scores, profile) {
+function computeGlobalScore(scores, profile, racket) {
   if (!scores || typeof scores !== 'object') return 0;
   // Base weights (equal)
   const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
@@ -299,26 +372,39 @@ function computeGlobalScore(scores, profile) {
   if (hasArmInjury) w.Confort = (w.Confort||1) + 2;
   if (hasLegInjury) w.Maniabilité = (w.Maniabilité||1) + 1.5;
   
-  // Height influence — shorter players need more maniabilité, taller tolerate more power
-  const h = Number(profile.height)||0;
-  if (h > 0 && h < 170) w.Maniabilité = (w.Maniabilité||1) + 0.5;
-  if (h >= 185) w.Puissance = (w.Puissance||1) + 0.3;
-  
-  // Age influence — older players need more comfort, tolerance, maniability
-  const age = Number(profile.age)||0;
-  if (age >= 40) { w.Confort = (w.Confort||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
-  if (age >= 50) { w.Confort = (w.Confort||1) + 0.5; w.Maniabilité = (w.Maniabilité||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
-  if (age >= 60) { w.Confort = (w.Confort||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.5; }
+  // === GABARIT INDEX (replaces hard age/height thresholds) ===
+  const gIdx = computeGabaritIndex(profile);
+  // Light builds (gIdx < 0.35) → boost Maniabilité + Confort + Tolérance
+  // Heavy builds (gIdx > 0.6) → slight boost Puissance tolerance
+  if(gIdx < 0.2) {
+    w.Maniabilité = (w.Maniabilité||1) + 2.0;
+    w.Confort = (w.Confort||1) + 1.5;
+    w.Tolérance = (w.Tolérance||1) + 1.0;
+  } else if(gIdx < 0.35) {
+    w.Maniabilité = (w.Maniabilité||1) + 1.2;
+    w.Confort = (w.Confort||1) + 0.8;
+    w.Tolérance = (w.Tolérance||1) + 0.5;
+  } else if(gIdx < 0.45) {
+    w.Maniabilité = (w.Maniabilité||1) + 0.5;
+    w.Confort = (w.Confort||1) + 0.3;
+  } else if(gIdx > 0.65) {
+    w.Puissance = (w.Puissance||1) + 0.3;
+  }
   
   // Side + Hand → attacker vs constructor role
-  // Forehand at center = attacker: Droitier+Gauche OR Gaucher+Droite
-  // Backhand at center = constructor: Droitier+Droite OR Gaucher+Gauche
   const hand = profile.hand || "Droitier";
   const side = profile.side || "Droite";
   const isAttacker = (hand==="Droitier" && side==="Gauche") || (hand==="Gaucher" && side==="Droite");
   const isConstructor = (hand==="Droitier" && side==="Droite") || (hand==="Gaucher" && side==="Gauche");
   if (isAttacker) { w.Puissance = (w.Puissance||1) + 0.5; w.Spin = (w.Spin||1) + 0.3; }
   if (isConstructor) { w.Contrôle = (w.Contrôle||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
+  
+  // === WOMAN LINE BOOST for lighter gabarits ===
+  // If racket is from a woman line and player has light gabarit, small affinity bonus
+  let womanLineBonus = 0;
+  if(racket?.womanLine && gIdx < 0.45) {
+    womanLineBonus = gIdx < 0.3 ? 0.15 : 0.08; // up to +0.15 points on final score
+  }
   
   // Weighted average
   let total = 0, wSum = 0;
@@ -327,7 +413,7 @@ function computeGlobalScore(scores, profile) {
     total += (scores[attr]||0) * weight;
     wSum += weight;
   }
-  return total / wSum;
+  return (total / wSum) + womanLineBonus;
 }
 
 // Dynamic verdict based on pertinence score + injury constraints
@@ -462,11 +548,12 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   const ARM_I=["dos","poignet","coude","epaule"],LEG_I=["genou","cheville","mollet","hanche","achille"];
   if(injuries.some(t=>ARM_I.includes(t)))w.Confort+=2;
   if(injuries.some(t=>LEG_I.includes(t)))w.Maniabilité+=1.5;
-  const h=Number(profile.height)||0,age=Number(profile.age)||0;
-  if(h>0&&h<170)w.Maniabilité+=0.5;if(h>=185)w.Puissance+=0.3;
-  if(age>=40){w.Confort+=0.5;w.Tolérance+=0.3;}
-  if(age>=50){w.Confort+=0.5;w.Maniabilité+=0.5;w.Tolérance+=0.3;}
-  if(age>=60){w.Confort+=0.5;w.Tolérance+=0.5;}
+  // Gabarit index (mirrors computeGlobalScore)
+  const gIdx = computeGabaritIndex(profile);
+  if(gIdx<0.2){w.Maniabilité+=2.0;w.Confort+=1.5;w.Tolérance+=1.0;}
+  else if(gIdx<0.35){w.Maniabilité+=1.2;w.Confort+=0.8;w.Tolérance+=0.5;}
+  else if(gIdx<0.45){w.Maniabilité+=0.5;w.Confort+=0.3;}
+  else if(gIdx>0.65){w.Puissance+=0.3;}
   const hand=profile.hand||"Droitier",side=profile.side||"Droite";
   const isAtt=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
   const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
@@ -1140,12 +1227,12 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       brandPool = pool.filter(r=>prefLower.includes(r.brand.toLowerCase()));
       // Always include a few from other brands
       const otherPool = pool.filter(r=>!prefLower.includes(r.brand.toLowerCase()));
-      const otherTop = otherPool.sort((a,b)=>computeGlobalScore(a.scores,profile)-computeGlobalScore(b.scores,profile)).reverse().slice(0,2);
+      const otherTop = otherPool.sort((a,b)=>computeGlobalScore(a.scores,profile,a)-computeGlobalScore(b.scores,profile,b)).reverse().slice(0,2);
       brandPool = [...brandPool, ...otherTop];
     }
     
     // Score all and sort
-    const scored = brandPool.map(r=>({...r, _globalScore: computeGlobalScore(r.scores, profile)}));
+    const scored = brandPool.map(r=>({...r, _globalScore: computeGlobalScore(r.scores, profile, r)}));
     scored.sort((a,b)=>b._globalScore-a._globalScore);
     
     // Split into heart (top matches) and priority (match priority tags)
@@ -1963,8 +2050,25 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>📏</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton gabarit</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Pour adapter le poids et la taille de raquette idéale.</p>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto"}}>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 20px"}}>Pour calibrer le poids et le type de raquette idéale.</p>
+            
+            {/* Gender */}
+            <div style={{marginBottom:16}}>
+              <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Genre</label>
+              <div style={{display:"flex",gap:10,justifyContent:"center"}}>
+                {["Homme","Femme"].map(g=>(
+                  <button key={g} onClick={()=>setProfile(p=>({...p,gender:g}))} style={{
+                    padding:"12px 28px",borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",fontSize:14,fontWeight:700,
+                    background:profile.gender===g?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                    border:`2px solid ${profile.gender===g?"#f97316":"rgba(255,255,255,0.08)"}`,
+                    color:profile.gender===g?"#f97316":"#94a3b8",transition:"all 0.2s",
+                  }}>{g==="Homme"?"👨":"👩"} {g}</button>
+                ))}
+              </div>
+            </div>
+
+            {/* Age/Height/Weight */}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto",marginBottom:16}}>
               {[{key:"age",label:"Âge",ph:"49",unit:"ans"},{key:"height",label:"Taille",ph:"175",unit:"cm"},{key:"weight",label:"Poids",ph:"80",unit:"kg"}].map(f=>
                 <div key={f.key} style={{textAlign:"center"}}>
                   <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:6}}>{f.label}</label>
@@ -1978,8 +2082,37 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               )}
             </div>
-            {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
-            {Number(profile.age)>=50&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>👤 Profil 50+ — Confort et Maniabilité renforcés</div>}
+
+            {/* Fitness level */}
+            <div style={{marginBottom:12}}>
+              <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Condition physique</label>
+              <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
+                {[{id:"athletique",label:"Athlétique",icon:"💪",desc:"Sport intensif, compétition"},{id:"actif",label:"Actif",icon:"🏃",desc:"Sport régulier, bonne forme"},{id:"occasionnel",label:"Occasionnel",icon:"🚶",desc:"Sport loisir, sédentaire"}].map(f=>(
+                  <button key={f.id} onClick={()=>setProfile(p=>({...p,fitness:f.id}))} style={{
+                    padding:"10px 16px",borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"center",minWidth:120,
+                    background:profile.fitness===f.id?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                    border:`2px solid ${profile.fitness===f.id?"#f97316":"rgba(255,255,255,0.08)"}`,
+                    transition:"all 0.2s",
+                  }}>
+                    <div style={{fontSize:20,marginBottom:4}}>{f.icon}</div>
+                    <div style={{fontSize:12,fontWeight:700,color:profile.fitness===f.id?"#f97316":"#e2e8f0"}}>{f.label}</div>
+                    <div style={{fontSize:9,color:profile.fitness===f.id?"#fb923c":"#475569",marginTop:2}}>{f.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Dynamic gabarit indicator */}
+            {(()=>{
+              const gIdx = (Number(profile.age)>0||Number(profile.weight)>0) ? computeGabaritIndex(profile) : null;
+              if(gIdx===null) return null;
+              const label = gIdx<0.2?"Gabarit très léger":gIdx<0.35?"Gabarit léger":gIdx<0.5?"Gabarit moyen":gIdx<0.65?"Gabarit costaud":"Gabarit puissant";
+              const color = gIdx<0.35?"#60a5fa":gIdx<0.5?"#4CAF50":gIdx<0.65?"#f97316":"#ef4444";
+              return <div style={{background:`${color}12`,border:`1px solid ${color}40`,borderRadius:10,padding:"8px 14px",marginTop:12,fontSize:11,color,fontWeight:600,maxWidth:400,margin:"12px auto 0"}}>
+                📊 {label} — l'algo adaptera les recommandations en conséquence
+              </div>;
+            })()}
+            {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:12,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"12px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
           </div>,
 
           // Step 2: Level
@@ -2156,7 +2289,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               {/* Details grid */}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-                {profile.age&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Gabarit</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{profile.age} ans{profile.height?`, ${profile.height}cm`:""}{profile.weight?`, ${profile.weight}kg`:""}</div></div>}
+                {profile.age&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Gabarit</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{profile.gender?profile.gender+", ":""}{profile.age} ans{profile.height?`, ${profile.height}cm`:""}{profile.weight?`, ${profile.weight}kg`:""}{profile.fitness?` · ${profile.fitness==="athletique"?"Athlétique":profile.fitness==="actif"?"Actif":"Occasionnel"}`:""}</div></div>}
                 <div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Rôle</div><div style={{fontSize:12,color:isAttacker?"#f97316":"#a5b4fc",fontWeight:600}}>🎯 {role}</div></div>
                 {profile.frequency&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Fréquence</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{FREQ_OPTIONS.find(f=>f.value===profile.frequency)?.label||profile.frequency}{profile.competition?" · 🏅 Compétition":""}</div></div>}
                 {styles.length>0&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Style</div><div style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>{styles.join(", ")}</div></div>}
@@ -2300,7 +2433,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r)}));
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
         const prioLabels = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
@@ -2440,7 +2573,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Brand preferences — used for display info only, NOT for filtering Top 3
         const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
         // Score ALL compatible rackets — unbiased Top 3
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile), _fy: computeForYou(r.scores, profile)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r), _fy: computeForYou(r.scores, profile)}));
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
 
@@ -2759,7 +2892,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               });
             const sc = dbMatch?.scores||{};
             const hasScores = dbMatch && Object.keys(sc).length>0;
-            const gs = hasScores ? computeGlobalScore(sc, profile) : null;
+            const gs = hasScores ? computeGlobalScore(sc, profile, dbMatch) : null;
             const fyConfig = hasScores ? computeForYou(sc, profile) : null;
             const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:fyConfig==="no"?{text:"PEU ADAPTÉ",color:"#64748b"}:null;
             return (
@@ -2901,6 +3034,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Noah, Maman..." style={{...S.input,fontSize:13,padding:"11px 14px"}}/>
           </div>
 
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
+            <div><label style={S.label}>Genre</label>
+            <select value={profile.gender||""} onChange={e=>setProfile(p=>({...p,gender:e.target.value}))} style={S.select}>
+              <option value="">—</option><option value="Homme">Homme</option><option value="Femme">Femme</option>
+            </select></div>
+            <div><label style={S.label}>Condition physique</label>
+            <select value={profile.fitness||""} onChange={e=>setProfile(p=>({...p,fitness:e.target.value}))} style={S.select}>
+              <option value="">—</option><option value="athletique">Athlétique</option><option value="actif">Actif</option><option value="occasionnel">Occasionnel</option>
+            </select></div>
+          </div>
+
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
             <div><label style={S.label}>Âge</label>
             <input type="number" value={profile.age} onChange={e=>setProfile(p=>({...p,age:Number(e.target.value)}))} placeholder="49" style={S.input}/></div>
@@ -2944,7 +3088,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           }
           {Number(profile.age)>=50&&
             <div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#fbbf24",fontWeight:600}}>
-              👤 Profil 50+ — Confort, Tolérance et Maniabilité renforcés automatiquement
+              📊 L'algo calibre automatiquement selon ton gabarit{profile.fitness?` (${profile.fitness})`:""}
             </div>
           }
         </div>}
@@ -3425,13 +3569,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const ARM=["dos","poignet","coude","epaule"]; const LEG=["genou","cheville","mollet","hanche","achille"];
               if((profile.injuryTags||[]).some(t=>ARM.includes(t))) w.Confort+=2;
               if((profile.injuryTags||[]).some(t=>LEG.includes(t))) w.Maniabilité+=1.5;
-              const h=Number(profile.height)||0;
-              if(h>0&&h<170) w.Maniabilité+=0.5;
-              if(h>=185) w.Puissance+=0.3;
-              const age=Number(profile.age)||0;
-              if(age>=40){w.Confort+=0.5;w.Tolérance+=0.3;}
-              if(age>=50){w.Confort+=0.5;w.Maniabilité+=0.5;w.Tolérance+=0.3;}
-              if(age>=60){w.Confort+=0.5;w.Tolérance+=0.5;}
+              const gIdx = computeGabaritIndex(profile);
+              if(gIdx<0.2){w.Maniabilité+=2.0;w.Confort+=1.5;w.Tolérance+=1.0;}
+              else if(gIdx<0.35){w.Maniabilité+=1.2;w.Confort+=0.8;w.Tolérance+=0.5;}
+              else if(gIdx<0.45){w.Maniabilité+=0.5;w.Confort+=0.3;}
+              else if(gIdx>0.65){w.Puissance+=0.3;}
               const hand=profile.hand||"Droitier"; const side=profile.side||"Droite";
               const isAtk=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
               const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
@@ -3455,7 +3597,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const idealRadar2 = ATTRS.map(a=>({ attribute: a, "Raquette idéale": Math.round((w2[a]/maxW2)*10*10)/10 }));
             
             // Best racket overlay
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             const bestShort = ranked.length>0 ? (ranked[0].shortName || ranked[0].name?.slice(0,28) || "N°1") : "";
             if(ranked.length>0) {
               idealRadar2.forEach(pt => { pt["🥇 "+bestShort] = Number(ranked[0].scores?.[pt.attribute])||0; });
@@ -3501,7 +3643,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== SMART COACH VERDICT — "En bref" ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(!ranked.length) return null;
             const best = ranked[0];
             const second = ranked[1];
@@ -3610,7 +3752,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== DEEP ANALYSIS — Profile Intelligence ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(ranked.length<2) return null;
             const deepLines = generateDeepAnalysis(profile, ranked, ATTRS);
             if(!deepLines.length) return null;
@@ -3635,7 +3777,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== PERTINENCE RANKING ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             const cards = [];
             ranked.forEach((r,i)=>{
               // Insert section divider after top 3
@@ -3769,7 +3911,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             // Score by priority attributes average (70%) + global score (30%)
             const scored = pool.map(r=>{
               const prioAvg = prioAttrs.reduce((s,k)=>(s+(r.scores[k]||0)),0)/prioAttrs.length;
-              const gs = computeGlobalScore(r.scores, profile);
+              const gs = computeGlobalScore(r.scores, profile, r);
               return {...r, _prioAvg: Math.round(prioAvg*10)/10, _prioScore: prioAvg*0.7 + gs*0.3, globalScore: gs};
             });
             scored.sort((a,b)=>b.globalScore-a.globalScore);
@@ -3882,7 +4024,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Compute all data
         const scored = r2.map(r=>({
           ...r,
-          _gs: computeGlobalScore(r.scores, profile),
+          _gs: computeGlobalScore(r.scores, profile, r),
           _fy: computeForYou(r.scores, profile),
         }));
         scored.sort((a,b)=>b._gs-a._gs);
