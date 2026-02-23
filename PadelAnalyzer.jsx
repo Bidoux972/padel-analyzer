@@ -13,6 +13,10 @@ const LEVEL_OPTIONS = [
 ];
 const SIDE_OPTIONS = ["Gauche", "Droite", "Les deux"];
 const HAND_OPTIONS = ["Droitier", "Gaucher"];
+const GENDER_OPTIONS = [
+  { value: "homme", label: "Homme", icon: "♂️" },
+  { value: "femme", label: "Femme", icon: "♀️" },
+];
 const FREQ_OPTIONS = [
   { value: "Occasionnel (1-2x/mois)", label: "Occasionnel", desc: "1-2x/mois" },
   { value: "Régulier (1-2x/semaine)", label: "Régulier", desc: "1-2x/semaine" },
@@ -28,6 +32,14 @@ const BRAND_TAGS = [
   { id:"siux", label:"Siux" },
   { id:"starvie", label:"StarVie" },
   { id:"wilson", label:"Wilson" },
+  { id:"varlion", label:"Varlion" },
+  { id:"dunlop", label:"Dunlop" },
+  { id:"dropshot", label:"Drop Shot" },
+  { id:"oxdog", label:"Oxdog" },
+  { id:"prokennex", label:"Pro Kennex", tip:"Kinetic anti-vibrations MIT" },
+  { id:"royalpadel", label:"Royal Padel", tip:"Polyéthylène confort" },
+  { id:"kuikma", label:"Kuikma", tip:"Decathlon — rapport qualité/prix" },
+  { id:"vermont", label:"Vermont" },
 ];
 const STYLE_TAGS = [
   { id:"offensif", label:"Offensif", tip:"Filet, volées, conclure vite" },
@@ -64,7 +76,7 @@ const PRIORITY_TAGS = [
 ];
 
 const INITIAL_PROFILE = {
-  age: "", weight: "", height: "", gender: "", fitness: "", level: "Intermédiaire", side: "Droite", hand: "Droitier",
+  age: "", weight: "", height: "", gender: "", level: "Intermédiaire", side: "Droite", hand: "Droitier",
   styleTags: [],
   styleExtra: "",
   injuryTags: [],
@@ -247,263 +259,13 @@ function buildProfileText(p) {
   const injuryStr = [...injuries, p.injuryExtra].filter(Boolean).join(", ") || "Aucune";
   const prioStr = [...priorities, p.priorityExtra].filter(Boolean).join(", ") || "Non précisé";
   const brandStr = brands.length ? brands.join(", ") : "Toutes marques";
-  const physique = [p.gender||null, p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null, p.fitness||null].filter(Boolean).join(", ");
-  return `Joueur: ${physique || "Non renseigné"}. Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
-}
-
-// === GABARIT INDEX ===
-// Combines gender + weight + height + age + fitness into a single 0-1 scale
-// 0 = very light/fragile build → needs light, comfortable, maneuverable rackets
-// 1 = powerful/heavy build → can handle heavy, stiff, powerful rackets
-function computeGabaritIndex(profile) {
-  const age = Number(profile.age)||30;
-  const weight = Number(profile.weight)||0;
-  const height = Number(profile.height)||0;
-  const gender = profile.gender||"";
-  const fitness = profile.fitness||"actif";
-  
-  // BMI-based strength estimation (contextualized by gender)
-  let bmiScore = 0.5; // default middle
-  if(weight>0 && height>0) {
-    const bmi = weight / ((height/100)**2);
-    if(gender==="Femme") {
-      // Women: BMI 18-23 = normal range, strength peaks around 22-25
-      if(bmi<17) bmiScore=0.15;
-      else if(bmi<19) bmiScore=0.3;
-      else if(bmi<22) bmiScore=0.45;
-      else if(bmi<25) bmiScore=0.55;
-      else if(bmi<28) bmiScore=0.5;
-      else bmiScore=0.4;
-    } else {
-      // Men: BMI 20-25 = normal range, strength peaks around 24-27
-      if(bmi<17) bmiScore=0.1;
-      else if(bmi<19) bmiScore=0.2;
-      else if(bmi<21) bmiScore=0.35;
-      else if(bmi<24) bmiScore=0.5;
-      else if(bmi<27) bmiScore=0.65;
-      else if(bmi<30) bmiScore=0.6;
-      else bmiScore=0.45;
-    }
-  } else if(weight>0) {
-    // Weight only — rough estimate
-    if(gender==="Femme") {
-      bmiScore = weight<50?0.2:weight<60?0.4:weight<70?0.55:weight<80?0.5:0.4;
-    } else {
-      bmiScore = weight<60?0.2:weight<70?0.35:weight<80?0.5:weight<90?0.6:0.55;
-    }
-  }
-  
-  // Gender baseline adjustment (average female has ~60% upper body strength vs male)
-  const genderFactor = gender==="Femme" ? -0.12 : 0;
-  
-  // Age factor — progressive, not a cliff
-  let ageFactor = 0;
-  if(age<20) ageFactor=0.02;
-  else if(age<30) ageFactor=0;
-  else if(age<40) ageFactor=-0.02;
-  else if(age<50) ageFactor=-0.06;
-  else if(age<60) ageFactor=-0.12;
-  else if(age<70) ageFactor=-0.2;
-  else ageFactor=-0.28;
-  
-  // Fitness modifier — can compensate significantly
-  const fitnessMod = fitness==="athletique" ? 0.15 : fitness==="actif" ? 0 : -0.12;
-  
-  // Height contributes to leverage/reach
-  let heightFactor = 0;
-  if(height>0) {
-    if(height<160) heightFactor=-0.06;
-    else if(height<170) heightFactor=-0.03;
-    else if(height<180) heightFactor=0;
-    else if(height<190) heightFactor=0.04;
-    else heightFactor=0.07;
-  }
-  
-  // Combine: clamp to [0, 1]
-  const raw = bmiScore + genderFactor + ageFactor + fitnessMod + heightFactor;
-  return Math.max(0, Math.min(1, raw));
-}
-
-// === FREQUENCY INDEX ===
-// Returns 0-3 scale: 0=occasionnel, 1=régulier, 2=assidu, 3=intensif
-function freqIndex(frequency) {
-  if(!frequency) return 1;
-  const f = frequency.toLowerCase();
-  if(f.includes("intensif")||f.includes("5+")) return 3;
-  if(f.includes("assidu")||f.includes("3-4")) return 2;
-  if(f.includes("régulier")||f.includes("1-2x/sem")) return 1;
-  return 0; // occasionnel
-}
-
-// === INJURY RISK ENGINE ===
-// Analyses racket characteristics vs player profile to generate specific risk alerts
-// Returns array of { zone, icon, severity (1-3), message }
-function computeInjuryRisks(racket, profile) {
-  if(!racket || !profile) return [];
-  const risks = [];
-  const gIdx = computeGabaritIndex(profile);
-  const freq = freqIndex(profile.frequency);
-  const age = Number(profile.age)||30;
-  const existingInjuries = profile.injuryTags||[];
-  const hasArmHistory = existingInjuries.some(t=>["dos","poignet","coude","epaule"].includes(t));
-  const hasBackHistory = existingInjuries.includes("dos");
-  const hasElbowHistory = existingInjuries.includes("coude");
-  const hasWristHistory = existingInjuries.includes("poignet");
-  const hasShoulderHistory = existingInjuries.includes("epaule");
-  const hasKneeHistory = existingInjuries.includes("genou");
-  
-  // Parse racket weight (extract mid value from "355-375g" or "360g")
-  let rWeight = 0;
-  if(racket.weight) {
-    const nums = racket.weight.match(/\d+/g);
-    if(nums && nums.length>=2) rWeight = (parseInt(nums[0])+parseInt(nums[1]))/2;
-    else if(nums) rWeight = parseInt(nums[0]);
-  }
-  
-  // Parse core hardness (3 tiers: hard / medium / soft)
-  const core = (racket.core||"").toLowerCase();
-  const isHardCore = core.includes("hard")||core.includes("dense")||core.includes("hr3 black")||core.includes("tricore hard")||core.includes("x-eva hard")||core.includes("h-eva power");
-  const isMediumCore = !isHardCore && (core.includes("power foam")||core.includes("standard")||core.includes("eva")&&!core.includes("soft")&&!core.includes("comfort")&&!core.includes("control"));
-  const isSoftCore = core.includes("soft")||core.includes("comfort")||core.includes("control foam");
-  
-  // Parse balance
-  const bal = (racket.balance||"").toLowerCase();
-  const isHighBalance = bal.includes("haut")||bal.includes("haute");
-  const isLowBalance = bal.includes("bas")||bal.includes("basse");
-  
-  // Parse shape
-  const shape = (racket.shape||"").toLowerCase();
-  const isDiamond = shape.includes("diamant")||shape.includes("diamond");
-  const isRound = shape.includes("rond");
-  
-  // Has antivibration
-  const hasAntivib = racket.antivib && racket.antivib!=="—" && racket.antivib!=="Non" && racket.antivib.length>2;
-  
-  // === COUDE (Tennis/Padel elbow) ===
-  // Heavy + hard/medium core + no antivib + high frequency = elbow risk
-  let elbowRisk = 0;
-  if(rWeight>=355) elbowRisk += 0.5;
-  if(rWeight>=365) elbowRisk += 0.5;
-  if(rWeight>=375) elbowRisk += 0.5;
-  if(isHardCore) elbowRisk += 1.5;
-  else if(isMediumCore) elbowRisk += 0.5;
-  if(!hasAntivib && !isSoftCore) elbowRisk += 0.5;
-  if(isDiamond && isHighBalance) elbowRisk += 0.8;
-  if(isDiamond && !isHighBalance) elbowRisk += 0.3;
-  if(freq>=2) elbowRisk += 0.5;
-  if(freq>=3) elbowRisk += 0.5;
-  if(gIdx<0.45) elbowRisk += 0.5; // medium build
-  if(gIdx<0.3) elbowRisk += 0.5; // light build extra
-  if(age>=50) elbowRisk += 0.5;
-  if(hasElbowHistory) elbowRisk += 2;
-  if(hasArmHistory && !hasElbowHistory) elbowRisk += 0.5;
-  if(isSoftCore) elbowRisk -= 1.5;
-  if(hasAntivib) elbowRisk -= 0.8;
-  
-  if(elbowRisk>=3) risks.push({
-    zone:"coude", icon:"💪", severity: elbowRisk>=5?3:elbowRisk>=4?2:1,
-    message: hasElbowHistory 
-      ? `Risque élevé pour ton coude fragilisé : ${rWeight>0?rWeight+"g, ":""}${isHardCore?"mousse dure":""}${!hasAntivib?", sans antivibration":""}`
-      : `Raquette exigeante pour le coude : ${rWeight>0?rWeight+"g":"poids élevé"}${isHardCore?", mousse dure":""}${freq>=2?", à haute fréquence de jeu":""}`,
-  });
-  
-  // === POIGNET ===
-  let wristRisk = 0;
-  if(rWeight>=355) wristRisk += 0.5;
-  if(rWeight>=370) wristRisk += 0.5;
-  if(rWeight>=380) wristRisk += 0.5;
-  if(isHighBalance) wristRisk += 1;
-  if(isDiamond) wristRisk += 0.5;
-  if(isHardCore) wristRisk += 0.5;
-  else if(isMediumCore) wristRisk += 0.2;
-  if(gIdx<0.45) wristRisk += 0.5;
-  if(gIdx<0.3) wristRisk += 0.5;
-  if(freq>=3) wristRisk += 0.5;
-  if(hasWristHistory) wristRisk += 2;
-  if(isLowBalance) wristRisk -= 0.5;
-  if(isRound) wristRisk -= 0.5;
-  if(hasAntivib) wristRisk -= 0.5;
-  
-  if(wristRisk>=3) risks.push({
-    zone:"poignet", icon:"🖐️", severity: wristRisk>=5?3:wristRisk>=4?2:1,
-    message: hasWristHistory
-      ? `Poignet à risque : équilibre ${isHighBalance?"haut en tête":"chargé"}, ${rWeight>0?rWeight+"g":"poids important"}`
-      : `Sollicitation poignet importante : ${isHighBalance?"tête lourde":""}${rWeight>=370?", "+rWeight+"g":""}`,
-  });
-  
-  // === ÉPAULE ===
-  let shoulderRisk = 0;
-  if(rWeight>=360) shoulderRisk += 0.5;
-  if(rWeight>=375) shoulderRisk += 0.5;
-  if(isHighBalance) shoulderRisk += 1;
-  if(isDiamond) shoulderRisk += 0.5;
-  if(freq>=2) shoulderRisk += 0.5;
-  if(freq>=3) shoulderRisk += 0.5;
-  if(age>=50) shoulderRisk += 0.5;
-  if(gIdx<0.45) shoulderRisk += 0.5;
-  if(gIdx<0.3) shoulderRisk += 0.5;
-  if(hasShoulderHistory) shoulderRisk += 2;
-  if(isRound && isLowBalance) shoulderRisk -= 0.5;
-  if(hasAntivib) shoulderRisk -= 0.3;
-  
-  if(shoulderRisk>=3) risks.push({
-    zone:"épaule", icon:"🦴", severity: shoulderRisk>=5?3:shoulderRisk>=4?2:1,
-    message: hasShoulderHistory
-      ? `Attention épaule fragile : poids et équilibre trop sollicitants en jeu répété`
-      : `Fatigue épaule probable : ${rWeight>0?rWeight+"g":"lourde"}, ${freq>=2?"usage fréquent":"équilibre haut"}`,
-  });
-  
-  // === DOS ===
-  let backRisk = 0;
-  if(rWeight>=365) backRisk += 0.5;
-  if(rWeight>=375) backRisk += 0.5;
-  if(isHardCore) backRisk += 1;
-  else if(isMediumCore && rWeight>=365) backRisk += 0.3;
-  if(isDiamond && isHighBalance) backRisk += 0.5;
-  if(freq>=3) backRisk += 1;
-  if(age>=50) backRisk += 0.5;
-  if(gIdx<0.4) backRisk += 0.3;
-  if(hasBackHistory) backRisk += 2.5;
-  if(isSoftCore) backRisk -= 0.5;
-  if(hasAntivib) backRisk -= 0.3;
-  
-  if(backRisk>=3) risks.push({
-    zone:"dos", icon:"🔙", severity: backRisk>=5?3:backRisk>=4?2:1,
-    message: hasBackHistory
-      ? `Dos fragile : les vibrations de cette raquette ${isHardCore?"à mousse dure ":""} risquent d'aggraver les douleurs`
-      : `Sollicitation lombaire : combinaison poids/rigidité + fréquence élevée`,
-  });
-
-  // === FATIGUE MUSCULAIRE GÉNÉRALE ===
-  // Heavy + high balance + light/medium build + not athletic
-  let fatigueRisk = 0;
-  if(rWeight>=355) fatigueRisk += 0.5;
-  if(rWeight>=370) fatigueRisk += 0.5;
-  if(isHighBalance) fatigueRisk += 1;
-  if(isDiamond) fatigueRisk += 0.3;
-  if(gIdx<0.3) fatigueRisk += 1.5;
-  else if(gIdx<0.45) fatigueRisk += 0.8;
-  if((profile.fitness||"actif")==="occasionnel") fatigueRisk += 1;
-  if(freq>=2) fatigueRisk += 0.3;
-  if(age>=55) fatigueRisk += 0.5;
-  
-  if(fatigueRisk>=3 && !risks.some(r=>r.zone==="épaule")) risks.push({
-    zone:"fatigue", icon:"⚡", severity: fatigueRisk>=5?3:fatigueRisk>=4?2:1,
-    message: `Risque de fatigue musculaire rapide : raquette trop exigeante pour ton gabarit${(profile.fitness||"")==="occasionnel"?" et ta condition physique":""}`,
-  });
-  
-  // Sort by severity desc
-  risks.sort((a,b)=>b.severity-a.severity);
-  return risks;
-}
-
-// Severity color helper
-function riskColor(severity) {
-  return severity>=3?"#ef4444":severity>=2?"#f97316":"#fbbf24";
+  const physique = [p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null].filter(Boolean).join(", ");
+  const genderStr = p.gender === "femme" ? "Femme" : p.gender === "homme" ? "Homme" : "Non précisé";
+  return `Joueur: ${physique || "Non renseigné"} (${genderStr}). Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
 }
 
 // Weighted global score /10 based on player profile
-function computeGlobalScore(scores, profile, racket) {
+function computeGlobalScore(scores, profile) {
   if (!scores || typeof scores !== 'object') return 0;
   // Base weights (equal)
   const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
@@ -550,41 +312,20 @@ function computeGlobalScore(scores, profile, racket) {
   if (hasArmInjury) w.Confort = (w.Confort||1) + 2;
   if (hasLegInjury) w.Maniabilité = (w.Maniabilité||1) + 1.5;
   
-  // === GABARIT INDEX (replaces hard age/height thresholds) ===
-  const gIdx = computeGabaritIndex(profile);
-  // Light builds (gIdx < 0.35) → boost Maniabilité + Confort + Tolérance
-  // Heavy builds (gIdx > 0.6) → slight boost Puissance tolerance
-  if(gIdx < 0.2) {
-    w.Maniabilité = (w.Maniabilité||1) + 2.0;
-    w.Confort = (w.Confort||1) + 1.5;
-    w.Tolérance = (w.Tolérance||1) + 1.0;
-  } else if(gIdx < 0.35) {
-    w.Maniabilité = (w.Maniabilité||1) + 1.2;
-    w.Confort = (w.Confort||1) + 0.8;
-    w.Tolérance = (w.Tolérance||1) + 0.5;
-  } else if(gIdx < 0.45) {
-    w.Maniabilité = (w.Maniabilité||1) + 0.5;
-    w.Confort = (w.Confort||1) + 0.3;
-  } else if(gIdx > 0.65) {
-    w.Puissance = (w.Puissance||1) + 0.3;
-  }
+  // Height influence — shorter players need more maniabilité, taller tolerate more power
+  const h = Number(profile.height)||0;
+  if (h > 0 && h < 170) w.Maniabilité = (w.Maniabilité||1) + 0.5;
+  if (h >= 185) w.Puissance = (w.Puissance||1) + 0.3;
   
-  // === FREQUENCY IMPACT ===
-  const freq = freqIndex(profile.frequency);
-  // Assidu/Intensif: accumulated impacts → more comfort needed, but also more skill → tolerate exigence
-  if(freq>=3) { w.Confort = (w.Confort||1) + 0.8; w.Tolérance = (w.Tolérance||1) + 0.3; }
-  else if(freq>=2) { w.Confort = (w.Confort||1) + 0.4; }
-  // Occasionnel: less technique → needs forgiveness + maneuverability
-  if(freq===0) { w.Tolérance = (w.Tolérance||1) + 0.5; w.Maniabilité = (w.Maniabilité||1) + 0.3; }
-  
-  // === INJURY RISK PENALTY ===
-  // If racket has injury risks for this player, penalize score proportionally
-  const injRisks = racket ? computeInjuryRisks(racket, profile) : [];
-  const totalRiskSeverity = injRisks.reduce((s,r) => s + r.severity, 0);
-  // Each severity point = -0.12 on final score (max ~0.5 penalty for severe multi-zone)
-  const riskPenalty = Math.min(totalRiskSeverity * 0.12, 0.6);
+  // Age influence — older players need more comfort, tolerance, maniability
+  const age = Number(profile.age)||0;
+  if (age >= 40) { w.Confort = (w.Confort||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
+  if (age >= 50) { w.Confort = (w.Confort||1) + 0.5; w.Maniabilité = (w.Maniabilité||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
+  if (age >= 60) { w.Confort = (w.Confort||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.5; }
   
   // Side + Hand → attacker vs constructor role
+  // Forehand at center = attacker: Droitier+Gauche OR Gaucher+Droite
+  // Backhand at center = constructor: Droitier+Droite OR Gaucher+Gauche
   const hand = profile.hand || "Droitier";
   const side = profile.side || "Droite";
   const isAttacker = (hand==="Droitier" && side==="Gauche") || (hand==="Gaucher" && side==="Droite");
@@ -592,11 +333,11 @@ function computeGlobalScore(scores, profile, racket) {
   if (isAttacker) { w.Puissance = (w.Puissance||1) + 0.5; w.Spin = (w.Spin||1) + 0.3; }
   if (isConstructor) { w.Contrôle = (w.Contrôle||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
   
-  // === WOMAN LINE BOOST for lighter gabarits ===
-  // If racket is from a woman line and player has light gabarit, small affinity bonus
-  let womanLineBonus = 0;
-  if(racket?.womanLine && gIdx < 0.45) {
-    womanLineBonus = gIdx < 0.3 ? 0.15 : 0.08; // up to +0.15 points on final score
+  // Gender influence — women typically benefit from lighter, more maneuverable rackets with comfort
+  if (profile.gender === "femme") {
+    w.Maniabilité = (w.Maniabilité||1) + 0.5;
+    w.Confort = (w.Confort||1) + 0.3;
+    w.Tolérance = (w.Tolérance||1) + 0.3;
   }
   
   // Weighted average
@@ -606,21 +347,30 @@ function computeGlobalScore(scores, profile, racket) {
     total += (scores[attr]||0) * weight;
     wSum += weight;
   }
-  return (total / wSum) + womanLineBonus - riskPenalty;
+  return total / wSum;
 }
 
 // Dynamic verdict based on pertinence score + injury constraints
 // Format score as percentage with 2 decimals (7.724 → "77.24%")
 function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
 
-function computeForYou(scores, profile) {
+function computeForYou(scores, profile, racket) {
   if (!scores || typeof scores !== 'object') return "no";
   const gs = computeGlobalScore(scores, profile);
   const ARM_INJURIES = ["dos","poignet","coude","epaule"];
   const hasArmInjury = (profile.injuryTags||[]).some(t=>ARM_INJURIES.includes(t));
   const comfortOk = !hasArmInjury || (scores.Confort||0) >= 7;
   
-  if (gs >= 7.0 && comfortOk) return "recommended";
+  // Health brand bonus: Pro Kennex / Royal Padel get automatic "recommended" for injured players
+  const isHealthBrand = racket && ["Pro Kennex","Royal Padel"].includes(racket.brand);
+  if (isHealthBrand && hasArmInjury && (scores.Confort||0) >= 9) return "recommended";
+  
+  // Woman-line bonus for women profiles
+  const isWoman = profile.gender === "femme";
+  const isWomanLine = racket && racket.womanLine;
+  const womanBonus = (isWoman && isWomanLine) ? 0.3 : 0;
+  
+  if ((gs + womanBonus) >= 7.0 && comfortOk) return "recommended";
   if (hasArmInjury && scores.Confort < 7 && gs < 6.0) return "no";
   return "partial";
 }
@@ -685,6 +435,8 @@ const MAGAZINE_CATEGORIES = [
   {id:"spin", label:"🌀 Spin", attr:"Spin", desc:"Effets et rotations maximales"},
   {id:"polyvalence", label:"⚖️ Polyvalence", attr:null, desc:"Les meilleures all-round"},
   {id:"rapport", label:"💰 Rapport qualité/prix", attr:null, desc:"Performances au meilleur prix"},
+  {id:"sante", label:"🏥 Pôle Santé", attr:null, desc:"Anti-vibrations & protection articulaire"},
+  {id:"femmes", label:"♀️ Gamme Femmes", attr:null, desc:"Légères, maniables, confortables"},
 ];
 
 function getTopByCategory(catId, year, n=5) {
@@ -711,6 +463,24 @@ function getTopByCategory(catId, year, n=5) {
     pool.sort((a,b)=>b._rawQP-a._rawQP);
     const maxQP = pool[0]?._rawQP || 1;
     pool = pool.map(r=>({...r, _sortScore: Math.round((r._rawQP / maxQP) * 100) / 10}));
+  } else if(catId==="sante") {
+    // Health rackets: sort by Confort, prefer health brands (Pro Kennex, Royal Padel), then high comfort + anti-vib
+    const HEALTH_BRANDS = ["Pro Kennex","Royal Padel"];
+    pool = pool.map(r=>{
+      const sc = r.scores||{};
+      const comf = sc.Confort||0;
+      const tol = sc.Tolérance||0;
+      const healthBonus = HEALTH_BRANDS.includes(r.brand) ? 2 : 0;
+      const antivibBonus = (r.antivib||"").length > 10 ? 0.5 : 0;
+      return {...r, _sortScore: comf*0.6 + tol*0.2 + (sc.Maniabilité||0)*0.2 + healthBonus + antivibBonus};
+    });
+  } else if(catId==="femmes") {
+    // Woman-line rackets: filter womanLine first, sort by balanced score weighted toward comfort+maniability
+    pool = pool.filter(r=>r.womanLine);
+    pool = pool.map(r=>{
+      const sc = r.scores||{};
+      return {...r, _sortScore: (sc.Confort||0)*0.3 + (sc.Maniabilité||0)*0.25 + (sc.Contrôle||0)*0.2 + (sc.Tolérance||0)*0.15 + (sc.Puissance||0)*0.1};
+    });
   } else {
     pool = pool.map(r=>({...r, _sortScore: (r.scores||{})[cat.attr]||0}));
   }
@@ -741,21 +511,16 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   const ARM_I=["dos","poignet","coude","epaule"],LEG_I=["genou","cheville","mollet","hanche","achille"];
   if(injuries.some(t=>ARM_I.includes(t)))w.Confort+=2;
   if(injuries.some(t=>LEG_I.includes(t)))w.Maniabilité+=1.5;
-  // Gabarit index (mirrors computeGlobalScore)
-  const gIdx = computeGabaritIndex(profile);
-  if(gIdx<0.2){w.Maniabilité+=2.0;w.Confort+=1.5;w.Tolérance+=1.0;}
-  else if(gIdx<0.35){w.Maniabilité+=1.2;w.Confort+=0.8;w.Tolérance+=0.5;}
-  else if(gIdx<0.45){w.Maniabilité+=0.5;w.Confort+=0.3;}
-  else if(gIdx>0.65){w.Puissance+=0.3;}
-  // Frequency (mirrors computeGlobalScore)
-  const freq = freqIndex(profile.frequency);
-  if(freq>=3){w.Confort+=0.8;w.Tolérance+=0.3;}
-  else if(freq>=2){w.Confort+=0.4;}
-  if(freq===0){w.Tolérance+=0.5;w.Maniabilité+=0.3;}
+  const h=Number(profile.height)||0,age=Number(profile.age)||0;
+  if(h>0&&h<170)w.Maniabilité+=0.5;if(h>=185)w.Puissance+=0.3;
+  if(age>=40){w.Confort+=0.5;w.Tolérance+=0.3;}
+  if(age>=50){w.Confort+=0.5;w.Maniabilité+=0.5;w.Tolérance+=0.3;}
+  if(age>=60){w.Confort+=0.5;w.Tolérance+=0.5;}
   const hand=profile.hand||"Droitier",side=profile.side||"Droite";
   const isAtt=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
   const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
   if(isAtt){w.Puissance+=0.5;w.Spin+=0.3;}if(isCon){w.Contrôle+=0.5;w.Tolérance+=0.3;}
+  if(profile.gender==="femme"){w.Maniabilité+=0.5;w.Confort+=0.3;w.Tolérance+=0.3;}
   const wT=Object.values(w).reduce((s,v)=>s+v,0);
   const wS=attrs.map(a=>({attr:a,weight:w[a],pct:Math.round(w[a]/wT*100)})).sort((a,b)=>b.weight-a.weight);
   const top2=wS.slice(0,2),top2pct=top2.reduce((s,x)=>s+x.pct,0),rest4pct=100-top2pct;
@@ -1102,54 +867,10 @@ export default function PadelAnalyzer() {
   // ============================================================
   // SEARCH: manual racket lookup
   // ============================================================
-  // --- Fuzzy DB search helper ---
-  function fuzzyMatchDB(query) {
-    const q = query.toLowerCase().replace(/[^a-z0-9àâäéèêëïôùûüç ]/g,' ').replace(/\s+/g,' ').trim();
-    const qTokens = q.split(' ').filter(t=>t.length>=2);
-    if(!qTokens.length) return [];
-    return RACKETS_DB.map(r=>{
-      const name = (r.name||'').toLowerCase();
-      const short = (r.shortName||'').toLowerCase();
-      const brand = (r.brand||'').toLowerCase();
-      const proPlayer = (r.proPlayerInfo?.name||'').toLowerCase();
-      const haystack = `${name} ${short} ${brand} ${proPlayer}`;
-      // Count matching tokens
-      let matched = 0;
-      for(const t of qTokens) {
-        if(haystack.includes(t)) matched++;
-      }
-      // Also check if query contains key parts of shortName
-      const shortTokens = short.split(/\s+/).filter(t=>t.length>=2);
-      let reverseMatched = 0;
-      for(const st of shortTokens) {
-        if(q.includes(st)) reverseMatched++;
-      }
-      const score = Math.max(matched/qTokens.length, shortTokens.length?reverseMatched/shortTokens.length:0);
-      return {racket:r, score};
-    }).filter(m=>m.score>=0.4).sort((a,b)=>b.score-a.score).slice(0,8);
-  }
-
   const searchRackets = useCallback(async()=>{
     if(!searchQ.trim())return;
     setLoading(true); setError(""); setSuggestions(null); setLoadMsg("🔍 Recherche en cours...");
     try {
-      // Phase 1: Local DB search (instant)
-      const dbResults = fuzzyMatchDB(searchQ);
-      if(dbResults.length>=1) {
-        const localSuggestions = dbResults.map(m=>({
-          name: m.racket.name,
-          brand: m.racket.brand,
-          shape: m.racket.shape,
-          weight: m.racket.weight,
-          description: m.racket.verdict || generateRacketDescription(m.racket),
-          _fromDB: true,
-        }));
-        setSuggestions(localSuggestions);
-        setLoading(false); setLoadMsg("");
-        return;
-      }
-      // Phase 2: Fallback to AI web search
-      setLoadMsg("🌐 Recherche web en cours...");
       const txt = await callAI([{role:"user",content:`Search the web for padel rackets matching: "${searchQ}". The user may have typed an approximate name, brand, player name, or partial model. Find the 2-4 most likely padel racket matches currently on sale (2024-2026 models).
 For EACH match: exact full official name, brand, shape (Diamant/Goutte d'eau/Ronde/Hybride), approximate weight, one-line description in French.
 Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":"...","description":"..."}]. No markdown.`}], {webSearch:true});
@@ -1395,6 +1116,8 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     const ht = Number(profile.height)||0;
     const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
     const brandPref = profile.brandTags.map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+    const isWoman = profile.gender === "femme";
+    const hasArmInjury = (profile.injuryTags||[]).some(t=>["dos","poignet","coude","epaule"].includes(t));
     
     // Merge embedded DB + any localStorage supplements
     let allDB = [...RACKETS_DB];
@@ -1425,12 +1148,21 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       brandPool = pool.filter(r=>prefLower.includes(r.brand.toLowerCase()));
       // Always include a few from other brands
       const otherPool = pool.filter(r=>!prefLower.includes(r.brand.toLowerCase()));
-      const otherTop = otherPool.sort((a,b)=>computeGlobalScore(a.scores,profile,a)-computeGlobalScore(b.scores,profile,b)).reverse().slice(0,2);
+      const otherTop = otherPool.sort((a,b)=>computeGlobalScore(a.scores,profile)-computeGlobalScore(b.scores,profile)).reverse().slice(0,2);
       brandPool = [...brandPool, ...otherTop];
     }
     
-    // Score all and sort
-    const scored = brandPool.map(r=>({...r, _globalScore: computeGlobalScore(r.scores, profile, r)}));
+    // Score all with woman-line and health bonuses
+    const HEALTH_BRANDS = ["Pro Kennex","Royal Padel"];
+    const scored = brandPool.map(r=>{
+      let gs = computeGlobalScore(r.scores, profile);
+      // Woman-line bonus for women profiles
+      if (isWoman && r.womanLine) gs += 0.2;
+      // Health brand bonus for injured players
+      if (hasArmInjury && HEALTH_BRANDS.includes(r.brand) && (r.scores?.Confort||0) >= 9) gs += 0.5;
+      if (hasArmInjury && (r.scores?.Confort||0) >= 8.5) gs += 0.2;
+      return {...r, _globalScore: gs};
+    });
     scored.sort((a,b)=>b._globalScore-a._globalScore);
     
     // Split into heart (top matches) and priority (match priority tags)
@@ -1456,7 +1188,16 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     }
     const priority = prioPool.slice(0, 3);
     
-    return { heart, priority, totalPool: pool.length };
+    // Health picks: if arm injury, add specific health racket if not already in results
+    let health = [];
+    if (hasArmInjury) {
+      const allResults = [...heart, ...priority];
+      const allIds = new Set(allResults.map(r=>r.id));
+      const healthPicks = scored.filter(r=>!allIds.has(r.id) && HEALTH_BRANDS.includes(r.brand)).slice(0, 2);
+      health = healthPicks;
+    }
+    
+    return { heart, priority, health, totalPool: pool.length };
   }
 
   // ============================================================
@@ -1472,13 +1213,14 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     try {
       // Phase 1: Try DB first
       const dbMatch = matchFromDB(profile, existingNames);
-      console.log("[DB] Pool:", dbMatch.totalPool, "Heart:", dbMatch.heart.length, "Priority:", dbMatch.priority.length);
+      console.log("[DB] Pool:", dbMatch.totalPool, "Heart:", dbMatch.heart.length, "Priority:", dbMatch.priority.length, "Health:", (dbMatch.health||[]).length);
       
       if (dbMatch.heart.length + dbMatch.priority.length >= 6) {
         // Enough results from DB — format as suggestions
         const results = [
-          ...dbMatch.heart.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"heart", description:r.verdict, _fromDB:true})),
-          ...dbMatch.priority.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"priority", description:r.verdict, _fromDB:true})),
+          ...dbMatch.heart.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"heart", description:r.verdict, womanLine:r.womanLine, _fromDB:true})),
+          ...dbMatch.priority.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"priority", description:r.verdict, womanLine:r.womanLine, _fromDB:true})),
+          ...(dbMatch.health||[]).map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"health", description:r.verdict||"Raquette santé — confort et protection articulaire maximale.", womanLine:r.womanLine, _fromDB:true})),
         ];
         console.log("[DB] Sufficient results:", results.length, "— skipping web search");
         setSuggestResults(results);
@@ -1508,7 +1250,7 @@ ${brandPref.length ? `PREFERRED BRANDS: ${brandPref.join(', ')}. Include 5+ from
 
 You MUST return TWO categories:
 
-CATEGORY "heart" (4-5 rackets) — COUPS DE CŒUR: Best overall match for the player's FULL profile (style, level, side, priorities).${(profile.injuryTags||[]).some(t=>t!=="aucune") ? ' Player has injuries — prioritize comfort and safety. Avoid stiff carbon with hard EVA.' : ' No injuries — focus on best performance match for the player style and priorities.'}
+CATEGORY "heart" (4-5 rackets) — COUPS DE CŒUR: Best overall match for the player's FULL profile (style, level, side, priorities).${(profile.injuryTags||[]).some(t=>t!=="aucune") ? ' Player has injuries — prioritize comfort and safety. Avoid stiff carbon with hard EVA. Include health brands (Pro Kennex Kinetic, Royal Padel) if arm/back injuries.' : ' No injuries — focus on best performance match for the player style and priorities.'}${profile.gender==="femme"?' FEMALE PLAYER — include woman-line models when available.':''}
 
 CATEGORY "priority" (3 rackets) — ALTERNATIVES PRIORITÉ: Rackets that specifically match the player's PRIORITY TAGS: ${prioLabels.join(', ')}. These can sacrifice some comfort for performance in the priority areas. ${prioLabels.includes('Puissance') ? 'Include powerful rackets (diamond/drop shapes, high balance) even if comfort is lower.' : ''} ${prioLabels.includes('Spin') ? 'Include textured surface rackets for maximum spin.' : ''} Still exclude truly dangerous choices (no comfort below 4/10). Add a warning in description if comfort is limited.
 
@@ -1528,6 +1270,8 @@ ${(()=>{
     lines.push('- Débutant level → price range 50-150€. Prioritize round shapes, light weight, high tolerance.');
   }
   if(isSenior) lines.push('- Player is 50+ years old → prioritize lightweight rackets (340-360g), excellent comfort and vibration dampening.');
+  if(profile.gender==="femme") lines.push('- FEMALE PLAYER: Prioritize woman-line rackets when available (lighter 340-360g, softer EVA, ergonomic grip). Include brands with dedicated female lines (Bullpadel Woman, Adidas Arrow Hit, Varlion LW, Kuikma LS Pro, Nox VK10).');
+  if((profile.injuryTags||[]).some(t=>["dos","poignet","coude","epaule"].includes(t))) lines.push('- ARM/BACK INJURIES: Include at least 1 health-focused racket (Pro Kennex Kinetic = MIT anti-vibrations, Royal Padel = polyethylene comfort). Confort MUST be >= 7 for heart picks.');
   lines.push('- Véloce/Endurant → light weight preferred.');
   lines.push('- Each racket: name (exact official name), brand, shape, weight, price (€), category ("heart" or "priority"), description (2 sentences French: WHY it fits + warning if comfort limited).');
   return lines.join('\n');
@@ -1895,7 +1639,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
 
         <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.10 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V9.0 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
         </div>
       </div>}
 
@@ -1942,12 +1686,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
 
             {/* === BLUEPRINT ZONE: image center + annotations sides === */}
-            <div style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:12,position:"relative",maxWidth:480,margin:"0 auto 12px"}}>
+            <div style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:12,position:"relative"}}>
               {/* Left annotations */}
-              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:6,paddingRight:6,maxWidth:170}}>
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingRight:8}}>
                 {leftThs.map((h,i)=>(
                   <div key={i} style={{
-                    padding:"7px 9px",borderRadius:10,textAlign:"right",
+                    padding:"8px 10px",borderRadius:10,textAlign:"right",
                     background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",
                     borderRight:"2px solid rgba(249,115,22,0.3)",
                   }}>
@@ -1959,21 +1703,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
 
               {/* Center: Image + Score */}
-              <div style={{width:130,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
-                <div style={{position:"absolute",width:110,height:110,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}/>
-                {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{width:110,height:110,objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(0 6px 20px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none"}}/>
-                :<div style={{width:90,height:90,borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"2px dashed rgba(249,115,22,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36}}>{"🏸"}</div>}
-                <div style={{marginTop:6,padding:"3px 14px",borderRadius:14,background:"rgba(8,12,20,0.9)",border:"2px solid rgba(249,115,22,0.35)",backdropFilter:"blur(8px)",zIndex:2}}>
-                  <span style={{fontSize:24,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
+              <div style={{width:140,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
+                <div style={{position:"absolute",width:120,height:120,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}/>
+                {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{width:120,height:120,objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(0 6px 20px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none"}}/>
+                :<div style={{width:100,height:100,borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"2px dashed rgba(249,115,22,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36}}>{"🏸"}</div>}
+                <div style={{marginTop:8,padding:"4px 16px",borderRadius:16,background:"rgba(8,12,20,0.9)",border:"2px solid rgba(249,115,22,0.35)",backdropFilter:"blur(8px)",zIndex:2}}>
+                  <span style={{fontSize:26,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
                   <span style={{fontSize:9,color:"#94a3b8"}}>/10</span>
                 </div>
               </div>
 
               {/* Right annotations */}
-              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:6,paddingLeft:6,maxWidth:170}}>
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingLeft:8}}>
                 {rightThs.map((h,i)=>(
                   <div key={i} style={{
-                    padding:"7px 9px",borderRadius:10,textAlign:"left",
+                    padding:"8px 10px",borderRadius:10,textAlign:"left",
                     background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",
                     borderLeft:"2px solid rgba(249,115,22,0.3)",
                   }}>
@@ -2151,7 +1895,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Footer */}
           <div style={{textAlign:"center",padding:"8px 0 16px"}}>
             <div style={{fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-              <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Magazine · {RACKETS_DB.length} raquettes
+              <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Magazine · {RACKETS_DB.length} raquettes · 16 marques
             </div>
           </div>
         </div>;
@@ -2248,25 +1992,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>📏</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton gabarit</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 20px"}}>Pour calibrer le poids et le type de raquette idéale.</p>
-            
-            {/* Gender */}
-            <div style={{marginBottom:16}}>
-              <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Genre</label>
-              <div style={{display:"flex",gap:10,justifyContent:"center"}}>
-                {["Homme","Femme"].map(g=>(
-                  <button key={g} onClick={()=>setProfile(p=>({...p,gender:g}))} style={{
-                    padding:"12px 28px",borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",fontSize:14,fontWeight:700,
-                    background:profile.gender===g?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
-                    border:`2px solid ${profile.gender===g?"#f97316":"rgba(255,255,255,0.08)"}`,
-                    color:profile.gender===g?"#f97316":"#94a3b8",transition:"all 0.2s",
-                  }}>{g==="Homme"?"👨":"👩"} {g}</button>
-                ))}
-              </div>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Pour adapter le poids et la taille de raquette idéale.</p>
+            {/* Gender selector */}
+            <div style={{display:"flex",gap:12,justifyContent:"center",marginBottom:20,maxWidth:280,margin:"0 auto 20px"}}>
+              {GENDER_OPTIONS.map(g=>{
+                const sel = profile.gender===g.value;
+                return <button key={g.value} onClick={()=>setProfile(p=>({...p,gender:g.value}))} style={{
+                  flex:1,padding:"12px 16px",borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",
+                  background:sel?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                  border:`2px solid ${sel?"rgba(249,115,22,0.4)":"rgba(255,255,255,0.08)"}`,
+                  color:sel?"#f97316":"#94a3b8",fontSize:14,fontWeight:sel?700:500,
+                  transition:"all 0.2s ease",transform:sel?"scale(1.04)":"scale(1)",
+                }}>{g.icon} {g.label}</button>;
+              })}
             </div>
-
-            {/* Age/Height/Weight */}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto",marginBottom:16}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto"}}>
               {[{key:"age",label:"Âge",ph:"49",unit:"ans"},{key:"height",label:"Taille",ph:"175",unit:"cm"},{key:"weight",label:"Poids",ph:"80",unit:"kg"}].map(f=>
                 <div key={f.key} style={{textAlign:"center"}}>
                   <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:6}}>{f.label}</label>
@@ -2280,37 +2020,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               )}
             </div>
-
-            {/* Fitness level */}
-            <div style={{marginBottom:12}}>
-              <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Condition physique</label>
-              <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
-                {[{id:"athletique",label:"Athlétique",icon:"💪",desc:"Sport intensif, compétition"},{id:"actif",label:"Actif",icon:"🏃",desc:"Sport régulier, bonne forme"},{id:"occasionnel",label:"Occasionnel",icon:"🚶",desc:"Sport loisir, sédentaire"}].map(f=>(
-                  <button key={f.id} onClick={()=>setProfile(p=>({...p,fitness:f.id}))} style={{
-                    padding:"10px 16px",borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"center",minWidth:120,
-                    background:profile.fitness===f.id?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
-                    border:`2px solid ${profile.fitness===f.id?"#f97316":"rgba(255,255,255,0.08)"}`,
-                    transition:"all 0.2s",
-                  }}>
-                    <div style={{fontSize:20,marginBottom:4}}>{f.icon}</div>
-                    <div style={{fontSize:12,fontWeight:700,color:profile.fitness===f.id?"#f97316":"#e2e8f0"}}>{f.label}</div>
-                    <div style={{fontSize:9,color:profile.fitness===f.id?"#fb923c":"#475569",marginTop:2}}>{f.desc}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Dynamic gabarit indicator */}
-            {(()=>{
-              const gIdx = (Number(profile.age)>0||Number(profile.weight)>0) ? computeGabaritIndex(profile) : null;
-              if(gIdx===null) return null;
-              const label = gIdx<0.2?"Gabarit très léger":gIdx<0.35?"Gabarit léger":gIdx<0.5?"Gabarit moyen":gIdx<0.65?"Gabarit costaud":"Gabarit puissant";
-              const color = gIdx<0.35?"#60a5fa":gIdx<0.5?"#4CAF50":gIdx<0.65?"#f97316":"#ef4444";
-              return <div style={{background:`${color}12`,border:`1px solid ${color}40`,borderRadius:10,padding:"8px 14px",marginTop:12,fontSize:11,color,fontWeight:600,maxWidth:400,margin:"12px auto 0"}}>
-                📊 {label} — l'algo adaptera les recommandations en conséquence
-              </div>;
-            })()}
-            {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:12,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"12px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
+            {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
+            {Number(profile.age)>=50&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>👤 Profil 50+ — Confort et Maniabilité renforcés</div>}
           </div>,
 
           // Step 2: Level
@@ -2487,7 +2198,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               {/* Details grid */}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-                {profile.age&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Gabarit</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{profile.gender?profile.gender+", ":""}{profile.age} ans{profile.height?`, ${profile.height}cm`:""}{profile.weight?`, ${profile.weight}kg`:""}{profile.fitness?` · ${profile.fitness==="athletique"?"Athlétique":profile.fitness==="actif"?"Actif":"Occasionnel"}`:""}</div></div>}
+                {profile.age&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Gabarit</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{profile.gender==="femme"?"♀️ ":"♂️ "}{profile.age} ans{profile.height?`, ${profile.height}cm`:""}{profile.weight?`, ${profile.weight}kg`:""}</div></div>}
                 <div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Rôle</div><div style={{fontSize:12,color:isAttacker?"#f97316":"#a5b4fc",fontWeight:600}}>🎯 {role}</div></div>
                 {profile.frequency&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Fréquence</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{FREQ_OPTIONS.find(f=>f.value===profile.frequency)?.label||profile.frequency}{profile.competition?" · 🏅 Compétition":""}</div></div>}
                 {styles.length>0&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Style</div><div style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>{styles.join(", ")}</div></div>}
@@ -2545,7 +2256,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Build analysis lines (different from pertinence!)
         const lines = [];
         lines.push(`Analyse du profil de ${profileName}...`);
-        if(age) lines.push(`${age} ans, ${role.toLowerCase()} côté ${side.toLowerCase()}${profile.competition?" en compétition":""}.`);
+        if(age) lines.push(`${profile.gender==="femme"?"♀️ ":"♂️ "}${age} ans, ${role.toLowerCase()} côté ${side.toLowerCase()}${profile.competition?" en compétition":""}.`);
+        if(profile.gender==="femme") lines.push(`Gamme féminine activée — maniabilité et confort renforcés, raquettes woman-line priorisées.`);
         if(styles.length>0) {
           const defStyles = styles.filter(s=>["Défensif / Mur","Endurant","Contre-attaquant"].includes(s));
           const atkStyles = styles.filter(s=>["Offensif","Puissant / Frappeur"].includes(s));
@@ -2557,9 +2269,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           lines.push(`Pas de style déclaré — on se base sur les priorités et le profil physique.`);
         }
         if(priorities.length>0) lines.push(`Priorités : ${priorities.join(", ")}. Ces critères pèsent le plus lourd dans le scoring.`);
-        if(injuries.length>0) lines.push(`⚠ Attention ${injuries.join(", ")} — le confort sera un critère non négociable.`);
+        if(injuries.length>0) {
+          const armInj = injuries.filter(i=>["Dos","Poignet","Coude (tennis elbow)","Épaule"].includes(i));
+          if(armInj.length>0) lines.push(`🏥 Blessures bras/dos (${armInj.join(", ")}) — activation du Pôle Santé : Pro Kennex, Royal Padel et raquettes Confort 8+ prioritaires.`);
+          else lines.push(`⚠ Attention ${injuries.join(", ")} — maniabilité et légèreté renforcées.`);
+        }
         if(isJuniorA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
-        lines.push(`Calcul en cours sur ${RACKETS_DB.length} raquettes...`);
+        lines.push(`Calcul en cours sur ${RACKETS_DB.length} raquettes, 16 marques...`);
         lines.push(`Résultats prêts.`);
 
         return (
@@ -2631,7 +2347,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile)}));
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
         const prioLabels = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
@@ -2722,9 +2438,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,textAlign:"center",margin:0}}>{makeVerdict(r,revealIdx)}</p>
 
-              {/* Injury risk alerts */}
-              {(()=>{const risks=computeInjuryRisks(r,profile);if(!risks.length)return null;return<div style={{width:"100%",display:"flex",flexDirection:"column",gap:3}}>{risks.slice(0,2).map((ir,iri)=><div key={iri} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 10px",borderRadius:8,background:ir.severity>=3?"rgba(239,68,68,0.1)":ir.severity>=2?"rgba(249,115,22,0.08)":"rgba(251,191,36,0.06)",border:`1px solid ${riskColor(ir.severity)}30`}}><span style={{fontSize:14,flexShrink:0}}>{ir.icon}</span><span style={{fontSize:9,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span></div>)}</div>;})()}
-
               {r.price&&<div style={{fontSize:10,color:"#475569"}}>💰 {r.price}</div>}
             </div>
 
@@ -2774,7 +2487,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Brand preferences — used for display info only, NOT for filtering Top 3
         const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
         // Score ALL compatible rackets — unbiased Top 3
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r), _fy: computeForYou(r.scores, profile)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile), _fy: computeForYou(r.scores, profile, r)}));
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
 
@@ -2930,7 +2643,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.10 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V9.0 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -2954,7 +2667,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.10</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V9.0</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -3003,11 +2716,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {(()=>{
             const hearts = suggestResults.filter(s=>s.category==="heart");
             const prios = suggestResults.filter(s=>s.category==="priority");
+            const healthPicks = suggestResults.filter(s=>s.category==="health");
             // Fallback if API didn't use categories
             const hasCategories = hearts.length>0 || prios.length>0;
             const topPicks = hasCategories ? hearts : suggestResults.slice(0,4);
             const prioAlts = hasCategories ? prios : [];
-            const others = hasCategories ? suggestResults.filter(s=>s.category!=="heart"&&s.category!=="priority") : suggestResults.slice(4);
+            const others = hasCategories ? suggestResults.filter(s=>s.category!=="heart"&&s.category!=="priority"&&s.category!=="health") : suggestResults.slice(4);
             const prioLabels = profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
             return <>
               {topPicks.length>0&&<>
@@ -3021,6 +2735,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <p style={{fontSize:11,color:"#fbbf24",fontWeight:700,marginBottom:4,marginTop:14}}>⚡ Alternatives Priorité — {prioLabels.join(', ')} :</p>
                 <p style={{fontSize:9,color:"#64748b",marginBottom:6}}>Raquettes orientées vers tes priorités, confort parfois limité — à tester avant d'acheter.</p>
                 {prioAlts.map(s=>{
+                  const ri = suggestResults.indexOf(s);
+                  return renderSuggestCard(s, ri, suggestChecked.has(ri), false);
+                })}
+              </>}
+              {healthPicks.length>0&&<>
+                <p style={{fontSize:11,color:"#4CAF50",fontWeight:700,marginBottom:4,marginTop:14}}>🏥 Pôle Santé — Protection articulaire :</p>
+                <p style={{fontSize:9,color:"#64748b",marginBottom:6}}>Raquettes conçues pour réduire les vibrations et protéger les articulations. Idéales en cas de tennis elbow, douleurs au poignet ou au dos.</p>
+                {healthPicks.map(s=>{
                   const ri = suggestResults.indexOf(s);
                   return renderSuggestCard(s, ri, suggestChecked.has(ri), false);
                 })}
@@ -3071,29 +2793,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <p style={{fontSize:11,color:"#f97316",fontWeight:700,marginBottom:8}}>📋 Résultats — clique pour voir la fiche technique :</p>
           {suggestions.map((s,i)=>{
             const isExpanded = addDetail === i;
-            // Try to match with DB — improved matching
+            // Try to match with DB
             const nameLower = (s.name||"").toLowerCase();
-            const dbMatch = RACKETS_DB.find(r=>r.name.toLowerCase()===nameLower)
-              || RACKETS_DB.find(r=>{
-                const rName = r.name.toLowerCase();
-                const rShort = (r.shortName||"").toLowerCase();
-                // Strip brand prefix for comparison
-                const brands = ["nox","head","adidas","bullpadel","babolat","wilson","siux","starvie","varlion","drop shot","dunlop","star vie"];
-                let cleanQ = nameLower, cleanR = rName;
-                for(const b of brands) { cleanQ = cleanQ.replace(b+" ",""); cleanR = cleanR.replace(b+" ",""); }
-                // Check normalized containment
-                if(cleanQ.length>=8 && cleanR.length>=8) {
-                  if(cleanR.includes(cleanQ) || cleanQ.includes(cleanR)) return true;
-                }
-                // Token-based matching
-                const qTokens = nameLower.split(/\s+/).filter(t=>t.length>=2);
-                const rTokens = rName.split(/\s+/).filter(t=>t.length>=2);
-                const matched = qTokens.filter(t=>rTokens.some(rt=>rt.includes(t)||t.includes(rt))).length;
-                return qTokens.length>=3 && matched >= qTokens.length * 0.6;
-              });
+            const dbMatch = RACKETS_DB.find(r=>r.name.toLowerCase()===nameLower) || RACKETS_DB.find(r=>nameLower.includes((r.shortName||r.name).toLowerCase().slice(0,12))||(r.shortName||r.name).toLowerCase().includes(nameLower.slice(0,12)));
             const sc = dbMatch?.scores||{};
             const hasScores = dbMatch && Object.keys(sc).length>0;
-            const gs = hasScores ? computeGlobalScore(sc, profile, dbMatch) : null;
+            const gs = hasScores ? computeGlobalScore(sc, profile) : null;
             const fyConfig = hasScores ? computeForYou(sc, profile) : null;
             const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:fyConfig==="no"?{text:"PEU ADAPTÉ",color:"#64748b"}:null;
             return (
@@ -3125,9 +2830,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <span style={{fontSize:10,fontWeight:700,color:badge.color,background:`${badge.color}18`,border:`1px solid ${badge.color}40`,borderRadius:8,padding:"3px 10px",textTransform:"uppercase"}}>{badge.text}</span>
                   <span style={{fontSize:10,color:"#64748b"}}>pour {profileName}</span>
                 </div>}
-
-                {/* Injury risk alerts in suggestion detail */}
-                {dbMatch&&(()=>{const risks=computeInjuryRisks(dbMatch,profile);if(!risks.length)return null;return<div style={{marginBottom:8}}>{risks.slice(0,2).map((ir,iri)=><div key={iri} style={{display:"flex",alignItems:"center",gap:5,padding:"4px 8px",marginBottom:2,borderRadius:6,background:ir.severity>=3?"rgba(239,68,68,0.08)":ir.severity>=2?"rgba(249,115,22,0.06)":"rgba(251,191,36,0.05)",border:`1px solid ${riskColor(ir.severity)}30`}}><span style={{fontSize:11,flexShrink:0}}>{ir.icon}</span><span style={{fontSize:8,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span></div>)}</div>;})()}
 
                 {hasScores ? <>
                   {/* Scores grid */}
@@ -3176,8 +2878,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </p>}
                 </> : <p style={{fontSize:10,color:"#64748b",margin:"10px 0 8px",lineHeight:1.4}}>{s.description||"Raquette non référencée dans la base locale. Les scores ne sont pas disponibles."}</p>}
 
-                {/* Injury risk alerts */}
-                {dbMatch&&(()=>{const risks=computeInjuryRisks(dbMatch,profile);if(!risks.length)return null;return<div style={{marginTop:4,marginBottom:4}}>{risks.slice(0,2).map((ir,iri)=><div key={iri} style={{display:"flex",alignItems:"center",gap:5,padding:"3px 8px",marginBottom:2,borderRadius:6,background:ir.severity>=3?"rgba(239,68,68,0.08)":ir.severity>=2?"rgba(249,115,22,0.06)":"rgba(251,191,36,0.05)",border:`1px solid ${riskColor(ir.severity)}30`}}><span style={{fontSize:11,flexShrink:0}}>{ir.icon}</span><span style={{fontSize:8,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span></div>)}</div>;})()}
                 {/* Add button */}
                 {!s._selected&&!s._disabled&&<button onClick={(e)=>{e.stopPropagation();selectSuggestion(i);setAddDetail(null);}} style={{
                   width:"100%",padding:"10px",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
@@ -3240,17 +2940,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Noah, Maman..." style={{...S.input,fontSize:13,padding:"11px 14px"}}/>
           </div>
 
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
-            <div><label style={S.label}>Genre</label>
-            <select value={profile.gender||""} onChange={e=>setProfile(p=>({...p,gender:e.target.value}))} style={S.select}>
-              <option value="">—</option><option value="Homme">Homme</option><option value="Femme">Femme</option>
-            </select></div>
-            <div><label style={S.label}>Condition physique</label>
-            <select value={profile.fitness||""} onChange={e=>setProfile(p=>({...p,fitness:e.target.value}))} style={S.select}>
-              <option value="">—</option><option value="athletique">Athlétique</option><option value="actif">Actif</option><option value="occasionnel">Occasionnel</option>
-            </select></div>
-          </div>
-
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
             <div><label style={S.label}>Âge</label>
             <input type="number" value={profile.age} onChange={e=>setProfile(p=>({...p,age:Number(e.target.value)}))} placeholder="49" style={S.input}/></div>
@@ -3294,7 +2983,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           }
           {Number(profile.age)>=50&&
             <div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#fbbf24",fontWeight:600}}>
-              📊 L'algo calibre automatiquement selon ton gabarit{profile.fitness?` (${profile.fitness})`:""}
+              👤 Profil 50+ — Confort, Tolérance et Maniabilité renforcés automatiquement
             </div>
           }
         </div>}
@@ -3473,7 +3162,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <p style={{margin:0}}>Clique sur <strong>🎯 Suggère-moi</strong> pour des recommandations personnalisées<br/>ou <strong>+ Ajouter</strong> pour chercher un modèle précis</p>
         </div>}
         {rackets.map(r=>{
-          const isSel=selected.includes(r.id); const fy=fyConfig[computeForYou(r.scores, profile)]||fyConfig.partial;
+          const isSel=selected.includes(r.id); const fy=fyConfig[computeForYou(r.scores, profile, r)]||fyConfig.partial;
           return(<button key={r.id} className="pa-card" onClick={()=>toggleRacket(r.id)}
             onMouseEnter={()=>setHoveredRacket(r.id)} onMouseLeave={()=>setHoveredRacket(null)}
             style={{
@@ -3489,7 +3178,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{fontSize:11,fontWeight:700,color:isSel?"#fff":"#94a3b8",lineHeight:1.3,transition:"color 0.2s ease"}}>{r.shortName}</div>
             <div style={{fontSize:9,color:"#475569",marginTop:3}}>{r.shape} · {r.weight}</div>
             <div style={{fontSize:9,color:"#475569"}}>{r.brand} · {r.price}</div>
-            {(()=>{const risks=computeInjuryRisks(r,profile);if(!risks.length)return null;return<div style={{marginTop:4,display:"flex",gap:3,flexWrap:"wrap"}}>{risks.slice(0,2).map((ir,iri)=><span key={iri} title={ir.message} style={{fontSize:9,background:ir.severity>=3?"rgba(239,68,68,0.15)":ir.severity>=2?"rgba(249,115,22,0.1)":"rgba(251,191,36,0.08)",borderRadius:4,padding:"1px 5px",color:riskColor(ir.severity),fontWeight:600}}>{ir.icon} {ir.zone}</span>)}</div>;})()}
             {r._incomplete&&<div onClick={e=>{e.stopPropagation();rescoreRacket(r.id)}} style={{position:"absolute",bottom:4,right:4,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.4)",borderRadius:6,padding:"2px 6px",fontSize:8,color:"#f97316",fontWeight:700,cursor:"pointer"}}>🔄 Re-scorer</div>}
           </button>);
         })}
@@ -3776,15 +3464,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const ARM=["dos","poignet","coude","epaule"]; const LEG=["genou","cheville","mollet","hanche","achille"];
               if((profile.injuryTags||[]).some(t=>ARM.includes(t))) w.Confort+=2;
               if((profile.injuryTags||[]).some(t=>LEG.includes(t))) w.Maniabilité+=1.5;
-              const gIdx = computeGabaritIndex(profile);
-              if(gIdx<0.2){w.Maniabilité+=2.0;w.Confort+=1.5;w.Tolérance+=1.0;}
-              else if(gIdx<0.35){w.Maniabilité+=1.2;w.Confort+=0.8;w.Tolérance+=0.5;}
-              else if(gIdx<0.45){w.Maniabilité+=0.5;w.Confort+=0.3;}
-              else if(gIdx>0.65){w.Puissance+=0.3;}
-              const freq2 = freqIndex(profile.frequency);
-              if(freq2>=3){w.Confort+=0.8;w.Tolérance+=0.3;}
-              else if(freq2>=2){w.Confort+=0.4;}
-              if(freq2===0){w.Tolérance+=0.5;w.Maniabilité+=0.3;}
+              const h=Number(profile.height)||0;
+              if(h>0&&h<170) w.Maniabilité+=0.5;
+              if(h>=185) w.Puissance+=0.3;
+              const age=Number(profile.age)||0;
+              if(age>=40){w.Confort+=0.5;w.Tolérance+=0.3;}
+              if(age>=50){w.Confort+=0.5;w.Maniabilité+=0.5;w.Tolérance+=0.3;}
+              if(age>=60){w.Confort+=0.5;w.Tolérance+=0.5;}
               const hand=profile.hand||"Droitier"; const side=profile.side||"Droite";
               const isAtk=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
               const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
@@ -3808,7 +3494,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const idealRadar2 = ATTRS.map(a=>({ attribute: a, "Raquette idéale": Math.round((w2[a]/maxW2)*10*10)/10 }));
             
             // Best racket overlay
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
             const bestShort = ranked.length>0 ? (ranked[0].shortName || ranked[0].name?.slice(0,28) || "N°1") : "";
             if(ranked.length>0) {
               idealRadar2.forEach(pt => { pt["🥇 "+bestShort] = Number(ranked[0].scores?.[pt.attribute])||0; });
@@ -3831,7 +3517,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 {ranked.slice(0,3).map((r,i)=>{
                   const medals=["🥇","🥈","🥉"];
                   const gs = r.globalScore;
-                  const fy2 = computeForYou(r.scores, profile);
+                  const fy2 = computeForYou(r.scores, profile, r);
                   const fyC = fy2==="recommended"?"#22c55e":fy2==="no"?"#ef4444":"#FF9800";
                   return <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.06)"}`,borderRadius:10,flex:1}}>
                     <span style={{fontSize:18}}>{medals[i]}</span>
@@ -3854,7 +3540,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== SMART COACH VERDICT — "En bref" ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(!ranked.length) return null;
             const best = ranked[0];
             const second = ranked[1];
@@ -3963,7 +3649,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== DEEP ANALYSIS — Profile Intelligence ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(ranked.length<2) return null;
             const deepLines = generateDeepAnalysis(profile, ranked, ATTRS);
             if(!deepLines.length) return null;
@@ -3988,7 +3674,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== PERTINENCE RANKING ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
             const cards = [];
             ranked.forEach((r,i)=>{
               // Insert section divider after top 3
@@ -3998,7 +3684,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>);
               }
 
-              const forYouVal = computeForYou(r.scores, profile);
+              const forYouVal = computeForYou(r.scores, profile, r);
               const fy = fyConfig[forYouVal]||fyConfig.partial;
               const gs = r.globalScore;
               const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
@@ -4069,20 +3755,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   })}
                 </div>
                 
-                {/* Injury risk alerts */}
-                {(()=>{
-                  const injRisks = computeInjuryRisks(r, profile);
-                  if(!injRisks.length && !criticalLow) return null;
-                  return <div className="print-risks" style={{marginBottom:4}}>
-                    {criticalLow&&!injRisks.some(ir=>ir.zone==="coude")&&<div className="print-warn" style={{fontSize:9,color:"#f87171",fontWeight:600,marginBottom:2}}>⚠ Confort insuffisant ({r.scores.Confort}/10) pour blessures déclarées</div>}
-                    {injRisks.map((ir,iri)=>(
-                      <div key={iri} style={{display:"flex",alignItems:"flex-start",gap:5,padding:"3px 8px",marginBottom:2,borderRadius:6,background:ir.severity>=3?"rgba(239,68,68,0.08)":ir.severity>=2?"rgba(249,115,22,0.06)":"rgba(251,191,36,0.05)",border:`1px solid ${riskColor(ir.severity)}30`}}>
-                        <span style={{fontSize:12,flexShrink:0,lineHeight:1.3}}>{ir.icon}</span>
-                        <span style={{fontSize:8,color:riskColor(ir.severity),fontWeight:600,lineHeight:1.4}}>{ir.message}</span>
-                      </div>
-                    ))}
-                  </div>;
-                })()}
+                {/* Warnings and verdict */}
+                {criticalLow&&<div className="print-warn" style={{fontSize:9,color:"#f87171",fontWeight:600,marginBottom:3}}>⚠ Confort insuffisant ({r.scores.Confort}/10) pour blessures {ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/")} — risque de douleurs</div>}
                 <div className="print-verdict" style={{fontSize:isPodium?10:9,color:"#94a3b8",lineHeight:1.6}}>{r.verdict}</div>
               </div>);
             });
@@ -4134,7 +3808,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             // Score by priority attributes average (70%) + global score (30%)
             const scored = pool.map(r=>{
               const prioAvg = prioAttrs.reduce((s,k)=>(s+(r.scores[k]||0)),0)/prioAttrs.length;
-              const gs = computeGlobalScore(r.scores, profile, r);
+              const gs = computeGlobalScore(r.scores, profile);
               return {...r, _prioAvg: Math.round(prioAvg*10)/10, _prioScore: prioAvg*0.7 + gs*0.3, globalScore: gs};
             });
             scored.sort((a,b)=>b.globalScore-a.globalScore);
@@ -4151,7 +3825,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
               {picks.map((r,idx)=>{
                 const gs = r.globalScore;
-                const forYouVal = computeForYou(r.scores, profile);
+                const forYouVal = computeForYou(r.scores, profile, r);
                 const fy = fyConfig[forYouVal]||fyConfig.partial;
                 const badgeClass = forYouVal==="recommended"?"print-badge-green":forYouVal==="no"?"print-badge-red":"print-badge-orange";
                 return <div key={"disco-"+r.id} className="print-card" style={{
@@ -4210,7 +3884,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.10 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V9.0 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -4233,7 +3907,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.10 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V9.0 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
 
@@ -4247,8 +3921,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Compute all data
         const scored = r2.map(r=>({
           ...r,
-          _gs: computeGlobalScore(r.scores, profile, r),
-          _fy: computeForYou(r.scores, profile),
+          _gs: computeGlobalScore(r.scores, profile),
+          _fy: computeForYou(r.scores, profile, r),
         }));
         scored.sort((a,b)=>b._gs-a._gs);
         const champion = scored[0];
@@ -4565,10 +4239,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
   // ============================================================
   function renderSuggestCard(s, realIdx, checked, isTopPick) {
     const isPrio = s.category === "priority";
-    const accentColor = isPrio ? "#fbbf24" : "#f97316";
+    const isHealth = s.category === "health";
+    const accentColor = isHealth ? "#4CAF50" : isPrio ? "#fbbf24" : "#f97316";
+    const HEALTH_BRANDS = ["Pro Kennex","Royal Padel"];
+    const isHealthBrand = HEALTH_BRANDS.includes(s.brand);
     return (
       <div key={realIdx} onClick={()=>!s._added&&toggleSuggestCheck(realIdx)} style={{
-        background:s._added?"rgba(76,175,80,0.08)":checked?`${isPrio?"rgba(251,191,36,0.12)":"rgba(249,115,22,0.12)"}`:"rgba(255,255,255,0.04)",
+        background:s._added?"rgba(76,175,80,0.08)":checked?`${isHealth?"rgba(76,175,80,0.12)":isPrio?"rgba(251,191,36,0.12)":"rgba(249,115,22,0.12)"}`:"rgba(255,255,255,0.04)",
         border:`1px solid ${s._added?"#4CAF50":checked?accentColor:"rgba(255,255,255,0.1)"}`,
         borderRadius:10,padding:"10px 12px",marginBottom:6,
         cursor:s._added?"default":"pointer",opacity:s._added?0.7:1,
@@ -4584,8 +4261,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               fontSize:11,color:accentColor,fontWeight:700,flexShrink:0,
             }}>{checked?"✓":""}</div>}
             <div>
-              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>
-                {isTopPick&&!s._added?"⭐ ":isPrio&&!s._added?"⚡ ":""}{s.name}
+              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
+                {isTopPick&&!s._added?"⭐ ":isHealth&&!s._added?"🏥 ":isPrio&&!s._added?"⚡ ":""}{s.name}
+                {isHealthBrand&&<span style={{fontSize:8,background:"rgba(76,175,80,0.15)",border:"1px solid rgba(76,175,80,0.3)",borderRadius:3,padding:"1px 5px",color:"#4CAF50",fontWeight:700}}>SANTÉ</span>}
+                {s.womanLine&&<span style={{fontSize:8,background:"rgba(236,72,153,0.15)",border:"1px solid rgba(236,72,153,0.3)",borderRadius:3,padding:"1px 5px",color:"#ec4899",fontWeight:700}}>♀ FEMME</span>}
               </div>
               <div style={{fontSize:10,color:"#94a3b8",marginTop:1}}>{s.brand} · {s.shape} · {s.weight} · {s.price}</div>
             </div>

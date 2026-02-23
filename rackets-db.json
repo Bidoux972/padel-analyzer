@@ -9343,5 +9343,887 @@
       }
     ],
     "targetProfile": "Joueurs intermédiaires à avancés sensibles du bras. Entrée en gamme Royal Padel polyéthylène. Budget modéré."
+  },
+  {
+    "id": "oxdog-ultimate-pro-plus-2025",
+    "name": "Oxdog Ultimate Pro+ 2025",
+    "brand": "Oxdog",
+    "year": 2025,
+    "category": "avance",
+    "shape": "Diamant",
+    "weight": "365-370g",
+    "balance": "Haut",
+    "surface": "HES Carbon + Sandy Surface",
+    "core": "EVA Hard",
+    "antivib": "Vibradamp (4 silicones sous le grip) + PowerRibs",
+    "price": "200-280€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 9,
+      "Contrôle": 6.5,
+      "Confort": 5.5,
+      "Spin": 8,
+      "Maniabilité": 6,
+      "Tolérance": 5.5
+    },
+    "verdict": "Le fer de lance d'Oxdog. Diamant pur power avec surface sablée, balance haute, toucher dur. Pour smasheurs confirmés qui veulent innovation suédoise (PowerRibs, RBS ±8g).",
+    "editorial": "Oxdog, la marque suédoise venue du floorball, bouscule les codes avec le Ultimate Pro+. Le HES Carbon (High Energy System) est un carbone ultra-réactif et rigide exclusif à la marque. Les PowerRibs — des rails intégrés au cadre — redistribuent l'énergie et réduisent les vibrations tout en augmentant la puissance. Le système RBS (Racket Balance System) avec poids amovible de 8g permet de personnaliser l'équilibre. Surface sablée pour le spin. C'est du brut, du direct, du power — pas pour les bras fragiles.",
+    "techHighlights": [
+      {
+        "label": "HES Carbon",
+        "value": "Exclusif",
+        "detail": "Carbone haute énergie ultra-réactif, rigide et durable"
+      },
+      {
+        "label": "PowerRibs™",
+        "value": "Rails cadre",
+        "detail": "Rails latéraux réduisant vibrations et augmentant puissance"
+      },
+      {
+        "label": "RBS System",
+        "value": "±8g",
+        "detail": "Poids amovible pour ajuster balance et poids"
+      },
+      {
+        "label": "Sandy Surface",
+        "value": "Rugueux",
+        "detail": "Surface sablée pour grip balle et génération de spin"
+      }
+    ],
+    "targetProfile": "Attaquant confirmé cherchant puissance maximale avec innovation technologique. Joueur physique qui veut personnaliser son équilibre."
+  },
+  {
+    "id": "oxdog-hyper-pro-2-0-2026",
+    "name": "Oxdog Hyper Pro 2.0 2026",
+    "brand": "Oxdog",
+    "year": 2026,
+    "category": "intermediaire",
+    "shape": "Goutte d'eau",
+    "weight": "360-365g",
+    "balance": "Haut",
+    "surface": "HES Carbon + Sandy Surface",
+    "core": "EVA Medium+",
+    "antivib": "Vibradamp 4 silicones + PowerRibs + Side Ports",
+    "price": "200-320€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 7.5,
+      "Contrôle": 7.5,
+      "Confort": 6.5,
+      "Spin": 8,
+      "Maniabilité": 7.5,
+      "Tolérance": 7
+    },
+    "verdict": "Le polyvalent Oxdog. Goutte d'eau avec Side Ports aérodynamiques — rapide en défense, puissant en attaque. Le meilleur compromis de la gamme suédoise.",
+    "editorial": "La Hyper Pro 2.0 est le modèle le plus équilibré d'Oxdog. Sa forme goutte d'eau avec balance haute offre un mix puissance/contrôle convaincant. L'innovation clé : les Side Ports, des perforations latérales qui réduisent la résistance à l'air et augmentent la vitesse du bras. Le Vibradamp à 4 insertions silicone sous le grip protège le bras. DSH (Double Size Holes) améliore la jouabilité hors sweet spot. RBS inclus pour personnalisation.",
+    "techHighlights": [
+      {
+        "label": "Side Ports",
+        "value": "Aéro",
+        "detail": "Perforations latérales réduisant la résistance à l'air"
+      },
+      {
+        "label": "DSH Holes",
+        "value": "Double taille",
+        "detail": "Trous de tailles variées pour meilleur jeu hors sweet spot"
+      },
+      {
+        "label": "Vibradamp",
+        "value": "4 silicones",
+        "detail": "Système anti-vibrations sous le grip protégeant le bras"
+      },
+      {
+        "label": "EVA Medium+",
+        "value": "Équilibré",
+        "detail": "Mousse densité intermédiaire pour compromis puissance/confort"
+      }
+    ],
+    "targetProfile": "Joueur polyvalent intermédiaire-avancé cherchant vitesse et contrôle. Bon pour joueur de droite qui veut un all-round aérodynamique."
+  },
+  {
+    "id": "oxdog-sense-pro-2026",
+    "name": "Oxdog Sense Pro 2026",
+    "brand": "Oxdog",
+    "year": 2026,
+    "category": "intermediaire",
+    "shape": "Ronde",
+    "weight": "355-365g",
+    "balance": "Moyen-haut",
+    "surface": "HES Carbon + Sandy Surface",
+    "core": "EVA Medium+",
+    "antivib": "Vibradamp 3 couches + PowerRibs",
+    "price": "180-250€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 6.5,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.5,
+      "Maniabilité": 8,
+      "Tolérance": 8
+    },
+    "verdict": "\"Potentiellement la ronde la plus rapide du monde\" selon Oxdog. Contrôle + balance étonnamment haute pour une ronde = défense + capacité offensive. Le Vibradamp protège le bras.",
+    "editorial": "La Sense Pro est la raquette de contrôle d'Oxdog, mais pas une ronde timide. Son balance moyen-haut (inhabituel pour une ronde) lui donne une capacité offensive rare dans sa catégorie. Le Vibradamp 3 couches réduit le stress sur poignet, coude et épaule — un vrai argument santé. Les PowerRibs en position haute ajoutent de la puissance sans effort. RBS permet d'affiner. Surface sablée pour le spin. Un choix santé intelligent pour défenseurs actifs.",
+    "techHighlights": [
+      {
+        "label": "Vibradamp 3 couches",
+        "value": "Anti-blessure",
+        "detail": "Réduit stress poignet, coude et épaule — protection articulaire"
+      },
+      {
+        "label": "Balance haute",
+        "value": "Ronde offensive",
+        "detail": "Balance inhabituelle pour une ronde, capacité offensive accrue"
+      },
+      {
+        "label": "PowerRibs™",
+        "value": "Position haute",
+        "detail": "Plus de puissance sans effort supplémentaire"
+      },
+      {
+        "label": "RBS",
+        "value": "±8g",
+        "detail": "Personnalisation du poids et de l'équilibre"
+      }
+    ],
+    "targetProfile": "Défenseur/polyvalent qui veut du contrôle SANS sacrifier toute puissance. Bon choix santé grâce au Vibradamp 3 couches."
+  },
+  {
+    "id": "oxdog-ultimate-tour-2026",
+    "name": "Oxdog Ultimate Tour X 2026",
+    "brand": "Oxdog",
+    "year": 2026,
+    "category": "intermediaire",
+    "shape": "Diamant",
+    "weight": "360-365g",
+    "balance": "Moyen",
+    "surface": "HES Carbon + Sandy Surface",
+    "core": "EVA Medium",
+    "antivib": "Vibradamp + PowerRibs + RBS",
+    "price": "180-250€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 8,
+      "Contrôle": 7,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 7,
+      "Tolérance": 7
+    },
+    "verdict": "Diamant accessible. Balance moyen pour un diamant = plus de contrôle et polyvalence qu'un Ultimate Pro+. Le pont entre puissance et maîtrise chez Oxdog.",
+    "editorial": "Le Tour X est le diamant polyvalent d'Oxdog. Contrairement au Pro+ (balance haute, toucher dur), le Tour X a un balance moyen qui le rend plus maniable et tolérant. C'est le meilleur choix pour qui veut la forme diamant Oxdog sans l'exigence technique du Pro+. Surface sablée, HES Carbon, PowerRibs et RBS inclus. Un bon point d'entrée dans l'écosystème offensif Oxdog.",
+    "techHighlights": [
+      {
+        "label": "Diamant accessible",
+        "value": "Balance moyen",
+        "detail": "Puissance du diamant avec contrôle d'un balance centré"
+      },
+      {
+        "label": "HES Carbon",
+        "value": "Faces réactives",
+        "detail": "Carbone haute énergie pour retour rapide"
+      },
+      {
+        "label": "Sandy Surface",
+        "value": "Spin+",
+        "detail": "Texture sablée pour effets et précision"
+      },
+      {
+        "label": "RBS",
+        "value": "±8g",
+        "detail": "Ajustement personnalisé du poids"
+      }
+    ],
+    "targetProfile": "Joueur offensif intermédiaire qui veut du diamant sans l'exigence du Pro+. Bon premier diamant pour joueurs en progression."
+  },
+  {
+    "id": "starvie-kenta-eternal-pro-2026",
+    "name": "Starvie Kenta Eternal Pro 2026",
+    "brand": "Starvie",
+    "year": 2026,
+    "category": "intermediaire",
+    "shape": "Ronde",
+    "weight": "365-375g",
+    "balance": "Moyen-haut",
+    "surface": "Carbon 3K double couche + Hex Tech",
+    "core": "EVA Pro (dur)",
+    "antivib": "Noene grip anti-vibrations",
+    "price": "250-300€",
+    "player": "Bea González",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 7.5,
+      "Contrôle": 8,
+      "Confort": 6,
+      "Spin": 9,
+      "Maniabilité": 7,
+      "Tolérance": 6.5
+    },
+    "verdict": "La ronde la plus offensive de Starvie. Bea González joue avec. Double couche 3K carbon + EVA Pro dur = spin monstrueux et attaque depuis une forme ronde. Grip Noene anti-vibrations.",
+    "editorial": "La Kenta Eternal Pro remplace la Raptor Evolution et se positionne entre la Metheora (contrôle) et la Triton (puissance). Sa double couche de carbone 3K sur les faces la rend très rigide — c'est une raquette exigeante mais redoutable en spin. La technologie Hex Tech (hexagones 3D) est considérée comme le meilleur système de rugosité du marché. Le grip Noene absorbe les vibrations malgré la dureté. Grip allongé +1.5cm pour les revers à deux mains.",
+    "techHighlights": [
+      {
+        "label": "Hex Tech",
+        "value": "Spin #1",
+        "detail": "Rugosité hexagonale 3D — meilleur système de spin du marché selon les testeurs"
+      },
+      {
+        "label": "3K Carbon x2",
+        "value": "Double couche",
+        "detail": "Deux couches de carbone 3K pour rigidité et précision maximales"
+      },
+      {
+        "label": "Noene",
+        "value": "Anti-vibrations",
+        "detail": "Matériau absorbant les vibrations intégré au grip"
+      },
+      {
+        "label": "Grip +1.5cm",
+        "value": "Allongé",
+        "detail": "Grip plus long pour revers à deux mains"
+      }
+    ],
+    "targetProfile": "Joueur avancé technique cherchant spin maximal depuis une forme ronde. Pour Bea González fans et joueurs qui veulent contrôle + attaque aérienne."
+  },
+  {
+    "id": "starvie-astrum-2026",
+    "name": "Starvie Astrum Eris 2026",
+    "brand": "Starvie",
+    "year": 2026,
+    "category": "intermediaire",
+    "shape": "Ronde",
+    "weight": "360-375g",
+    "balance": "Moyen",
+    "surface": "Carbon 3K + Fiberglass",
+    "core": "EVA Soft V30",
+    "antivib": "Fiberglass + EVA Soft V30",
+    "price": "220-280€",
+    "player": "Bea González",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 6,
+      "Contrôle": 8.5,
+      "Confort": 8.5,
+      "Spin": 7.5,
+      "Maniabilité": 8,
+      "Tolérance": 8.5
+    },
+    "verdict": "La plus confortable de la gamme Premium Starvie. Fiberglass + Carbon 3K + EVA Soft = toucher doux et sweet spot large. Protection articulaire naturelle. Idéal centre santé.",
+    "editorial": "L'Astrum Eris est le pilier confort de Starvie. Sa combinaison fiberglass + carbone 3K sur les faces crée un toucher plus doux que la Kenta ou la Metheora. L'EVA Soft V30 absorbe les vibrations naturellement. Le sweet spot est le plus large de la gamme Premium. C'est LA raquette Starvie à recommander aux joueurs sensibles du bras ou en reprise après blessure. Full Plane Effect pour le spin malgré le confort.",
+    "techHighlights": [
+      {
+        "label": "Fiberglass + 3K",
+        "value": "Toucher doux",
+        "detail": "Mix fibre de verre et carbone pour souplesse et confort"
+      },
+      {
+        "label": "EVA Soft V30",
+        "value": "Absorption max",
+        "detail": "Mousse souple absorbant les vibrations pour protection bras"
+      },
+      {
+        "label": "Sweet spot large",
+        "value": "Tolérance",
+        "detail": "Le plus grand sweet spot de la gamme Premium Starvie"
+      },
+      {
+        "label": "Full Plane Effect",
+        "value": "Spin",
+        "detail": "Rugosité intégrée au moule pour spin malgré le confort"
+      }
+    ],
+    "targetProfile": "Joueur cherchant confort maximal dans une marque premium. Excellent choix santé pour joueurs sensibles du bras ou en reprise."
+  },
+  {
+    "id": "starvie-metheora-warrior-2026",
+    "name": "Starvie Metheora Warrior 2026",
+    "brand": "Starvie",
+    "year": 2026,
+    "category": "intermediaire",
+    "shape": "Ronde",
+    "weight": "360-375g",
+    "balance": "Moyen",
+    "surface": "Carbon 3K double couche + Full Plane Effect",
+    "core": "EVA Soft V30",
+    "antivib": "EVA Soft + structure 3K",
+    "price": "240-300€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 7,
+      "Contrôle": 8,
+      "Confort": 7,
+      "Spin": 8,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
+    },
+    "verdict": "Le compromis Starvie. Entre Astrum (confort) et Kenta (attaque). Double 3K carbon + EVA Soft = la ronde la plus puissante de la gamme tout en restant confortable. Polyvalence totale.",
+    "editorial": "La Metheora Warrior est le juste milieu de la gamme Premium Starvie. Elle combine le sweet spot moyen de l'Astrum avec la double couche 3K de la Kenta, ce qui en fait la ronde la plus puissante des trois tout en gardant le confort de l'EVA Soft V30. Idéale pour les joueurs qui veulent tout : contrôle, puissance au filet, spin, et un minimum de confort. Full Plane Effect pour la rugosité. 100% carbone pour la durabilité.",
+    "techHighlights": [
+      {
+        "label": "3K Carbon x2",
+        "value": "Puissance ronde",
+        "detail": "Double couche pour la puissance maximale dans une forme ronde"
+      },
+      {
+        "label": "EVA Soft V30",
+        "value": "Confort",
+        "detail": "Mousse souple pour toucher agréable et absorption"
+      },
+      {
+        "label": "Full Plane Effect",
+        "value": "Rugosité",
+        "detail": "Spin optimisé par texture intégrée au moule"
+      },
+      {
+        "label": "100% Carbone",
+        "value": "Durabilité",
+        "detail": "Structure tout carbone pour résistance maximale"
+      }
+    ],
+    "targetProfile": "Joueur polyvalent avancé cherchant la ronde la plus complète. Pour ceux qui hésitent entre confort et puissance."
+  },
+  {
+    "id": "varlion-bourne-summum-prisma-2026",
+    "name": "Varlion Bourne Summum Prisma 2026",
+    "brand": "Varlion",
+    "year": 2026,
+    "category": "avance",
+    "shape": "Hybride",
+    "weight": "350-365g",
+    "balance": "Haut",
+    "surface": "Carbon 12K + Fiberglass",
+    "core": "Hypersoft EVA (dur)",
+    "antivib": "Wings Diffuser + Adhesive Bumper Prisma",
+    "price": "280-350€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 8.5,
+      "Contrôle": 6.5,
+      "Confort": 5.5,
+      "Spin": 7.5,
+      "Maniabilité": 7,
+      "Tolérance": 6
+    },
+    "verdict": "Le diamant offensif de Varlion. Forme Bourne exclusive (60% puissance / 40% contrôle). Cadre Prisma aérodynamique (-10% résistance air). Grip Summum 14.5cm. Pour attaquants exigeants.",
+    "editorial": "La Bourne Summum Prisma est le fer de lance offensif de Varlion. Sa forme exclusive Bourne (hybride entre diamant et goutte d'eau) offre 60% puissance / 40% contrôle. Le cadre Prisma en forme de prisme réduit la surface de contact avec les vitres de 90% et la résistance à l'air de 10%. Le Wings Diffuser dans le cœur optimise le flux d'air. Grip Summum allongé à 14.5cm pour les revers à deux mains. Résine VAR-FLEX exclusive pour élasticité maximale.",
+    "techHighlights": [
+      {
+        "label": "Cadre Prisma",
+        "value": "-10% air",
+        "detail": "Forme prisme réduisant résistance au vent et contact vitres -90%"
+      },
+      {
+        "label": "Wings Diffuser",
+        "value": "Aérodynamique",
+        "detail": "Diffuseur en forme d'aile d'avion dans le cœur de la raquette"
+      },
+      {
+        "label": "Grip Summum",
+        "value": "14.5cm",
+        "detail": "Grip allongé pour revers à deux mains et meilleur confort"
+      },
+      {
+        "label": "VAR-FLEX",
+        "value": "Résine exclusive",
+        "detail": "Résine époxy Varlion pour élasticité et résistance maximales"
+      }
+    ],
+    "targetProfile": "Attaquant avancé qui veut innovation aérodynamique espagnole. Pour joueurs techniques cherchant puissance + technologies uniques."
+  },
+  {
+    "id": "varlion-lw-summum-prisma-2026",
+    "name": "Varlion LW Summum Prisma 2026",
+    "brand": "Varlion",
+    "year": 2026,
+    "category": "intermediaire",
+    "shape": "Ronde",
+    "weight": "340-355g",
+    "balance": "Bas",
+    "surface": "Carbon 12K + Fiberglass",
+    "core": "Softcolor EVA (moyen)",
+    "antivib": "Wings Diffuser + ErgoSlice texture",
+    "price": "260-320€",
+    "player": "",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 5.5,
+      "Contrôle": 9,
+      "Confort": 8.5,
+      "Spin": 7,
+      "Maniabilité": 9,
+      "Tolérance": 9
+    },
+    "verdict": "La légende du contrôle Varlion depuis 1995. LW = Lethal Weapon. Ronde, balance bas, sweet spot immense, 340-355g. Grip 14.5cm. Le best-seller historique réédité avec techs Prisma.",
+    "editorial": "La LW (Lethal Weapon) est LA raquette historique de Varlion, best-seller depuis sa création en 1995. Cette réédition Summum Prisma intègre toutes les technologies modernes dans le modèle le plus vendu de l'histoire de la marque. Forme ronde + balance bas = maniabilité et sweet spot maximum. Parfait pour les défenseurs et les joueurs cherchant le contrôle absolu. Légèreté (340-355g) idéale pour femmes et seniors. Le cadre Prisma protège contre les chocs aux vitres.",
+    "techHighlights": [
+      {
+        "label": "LW Legacy",
+        "value": "Depuis 1995",
+        "detail": "Best-seller historique Varlion, la référence contrôle espagnole"
+      },
+      {
+        "label": "340-355g",
+        "value": "Ultra-légère",
+        "detail": "Poids réduit pour maniabilité maximale — femmes et seniors"
+      },
+      {
+        "label": "Cadre Prisma",
+        "value": "Protection",
+        "detail": "Réduit contact vitres -90% et résistance air -10%"
+      },
+      {
+        "label": "ErgoHoles",
+        "value": "Sweet spot+",
+        "detail": "Perforation graduelle brevetée agrandissant le sweet spot"
+      }
+    ],
+    "targetProfile": "Défenseur pur, joueur de contrôle, femme ou senior cherchant maniabilité absolue. Le choix historique pour le fond de court."
+  },
+  {
+    "id": "kuikma-ms-pro-2025",
+    "name": "Kuikma MS Pro 2025",
+    "brand": "Kuikma",
+    "year": 2025,
+    "category": "avance",
+    "shape": "Diamant",
+    "weight": "365-375g",
+    "balance": "Moyen",
+    "surface": "Textreme Carbon 18K + 3 couches Fiberglass",
+    "core": "Dual-Foam EVA (double densité)",
+    "antivib": "Shock Block (élastomère certifié Testea)",
+    "price": "200€",
+    "player": "Maxi Sánchez",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 8.5,
+      "Contrôle": 7,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 6.5
+    },
+    "verdict": "Le diamant Decathlon signé Maxi Sánchez. Textreme 18K aérospatial + Dual-Foam + Shock Block. Qualité pro à 200€. Le meilleur rapport qualité/prix du marché en diamant.",
+    "editorial": "La MS Pro est la raquette signature de Maxi Sánchez chez Kuikma (Decathlon). Le carbone Textreme 18K, utilisé dans l'aérospatiale, offre puissance et légèreté. Le Dual-Foam (double densité EVA) combine puissance en surface et contrôle en profondeur. Le Shock Block, un insert élastomère dans le manche certifié par le labo Testea (Polytechnique de Valence), réduit les vibrations. À 200€, c'est probablement le meilleur rapport qualité/prix du marché en raquette pro.",
+    "techHighlights": [
+      {
+        "label": "Textreme 18K",
+        "value": "Aérospatial",
+        "detail": "Carbone dernière génération utilisé dans l'industrie aérospatiale"
+      },
+      {
+        "label": "Dual-Foam",
+        "value": "Double densité",
+        "detail": "EVA noire intérieure + EVA blanche en surface pour polyvalence"
+      },
+      {
+        "label": "Shock Block",
+        "value": "Certifié Testea",
+        "detail": "Insert élastomère anti-vibrations validé par labo universitaire"
+      },
+      {
+        "label": "Prix",
+        "value": "200€",
+        "detail": "Meilleur rapport qualité/prix du marché en raquette pro"
+      }
+    ],
+    "targetProfile": "Attaquant cherchant qualité pro accessible. Le choix intelligent Decathlon pour joueurs avancés avec budget maîtrisé."
+  },
+  {
+    "id": "kuikma-ls-pro-2025",
+    "name": "Kuikma LS Pro 2025",
+    "brand": "Kuikma",
+    "year": 2025,
+    "category": "intermediaire",
+    "shape": "Goutte d'eau",
+    "weight": "360-370g",
+    "balance": "Moyen",
+    "surface": "Textreme Carbon 18K + 3 couches Fiberglass",
+    "core": "Dual-Foam EVA (double densité)",
+    "antivib": "Shock Block (certifié Testea)",
+    "price": "200€",
+    "player": "Lucía Sainz",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 7.5,
+      "Contrôle": 8,
+      "Confort": 7,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
+    },
+    "verdict": "La goutte d'eau Decathlon signée Lucía Sainz. Même technologies pro que la MS Pro en format polyvalent. Toucher moyen-dur, sweet spot centré. 200€ pour une raquette World Padel Tour.",
+    "editorial": "La LS Pro est la raquette de Lucía Sainz, conçue avec les mêmes technologies que la MS Pro mais en forme goutte d'eau pour plus de polyvalence. Le sweet spot est centré (pas haut comme un diamant), offrant plus de tolérance. Textreme 18K + Dual-Foam + Shock Block anti-vibrations certifié. Design neutre (noir et blanc) adapté à tous. À 200€, impossible de trouver mieux en rapport qualité/prix pour une raquette signature WPT.",
+    "techHighlights": [
+      {
+        "label": "Lucía Sainz",
+        "value": "Signature WPT",
+        "detail": "Co-créée avec l'ex-numéro 1 mondiale"
+      },
+      {
+        "label": "Textreme 18K",
+        "value": "Aérospatial",
+        "detail": "Même carbone haute performance que la MS Pro"
+      },
+      {
+        "label": "Shock Block",
+        "value": "Certifié Testea",
+        "detail": "Anti-vibrations validé scientifiquement"
+      },
+      {
+        "label": "200€",
+        "value": "Prix imbattable",
+        "detail": "Qualité pro au prix le plus accessible du marché"
+      }
+    ],
+    "targetProfile": "Joueuse ou joueur polyvalent cherchant qualité pro accessible. Le meilleur choix Decathlon pour le rapport qualité/prix."
+  },
+  {
+    "id": "nox-ml10-pro-cup-silver-2025",
+    "name": "Nox ML10 Pro Cup Silver 2025",
+    "brand": "Nox",
+    "year": 2025,
+    "category": "intermediaire",
+    "shape": "Ronde",
+    "weight": "350-365g",
+    "balance": "Bas",
+    "surface": "Fiberglass Silver",
+    "core": "HR3 EVA Soft",
+    "antivib": "Smartstrap + EVA Soft",
+    "price": "80-120€",
+    "player": "Miguel Lamperti",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 6,
+      "Contrôle": 9,
+      "Confort": 8.5,
+      "Spin": 6.5,
+      "Maniabilité": 9,
+      "Tolérance": 9
+    },
+    "verdict": "La ML10 légère. Version Silver (350-365g) du best-seller historique de Nox. Ronde, douce, maniable. Fiberglass Silver + HR3 Soft. Idéale femmes, seniors, bras sensibles. Prix accessible.",
+    "editorial": "La ML10 Pro Cup est LE classique de Nox — le best-seller historique de la marque, signature de Miguel Lamperti. La version Silver est plus légère (350-365g vs 360-375g pour la standard) pour ceux qui veulent plus de maniabilité. Fiberglass Silver (rigidité entre carbone et fibre de verre) + HR3 EVA Soft = toucher doux et sortie de balle confortable. Smartstrap interchangeable. À 80-120€, c'est le meilleur rapport qualité/prix en raquette de contrôle.",
+    "techHighlights": [
+      {
+        "label": "ML10 Legacy",
+        "value": "Best-seller Nox",
+        "detail": "La raquette la plus vendue de l'histoire de Nox"
+      },
+      {
+        "label": "350-365g",
+        "value": "Version légère",
+        "detail": "Plus maniable que la standard pour femmes et seniors"
+      },
+      {
+        "label": "Fiberglass Silver",
+        "value": "Toucher doux",
+        "detail": "Rigidité intermédiaire entre carbone et fibre de verre"
+      },
+      {
+        "label": "80-120€",
+        "value": "Prix accessible",
+        "detail": "Le meilleur rapport qualité/prix en contrôle"
+      }
+    ],
+    "targetProfile": "Joueur de contrôle cherchant maniabilité et prix accessible. Femmes, seniors, débutants avancés. Le classique Nox en version light."
+  },
+  {
+    "id": "nox-at10-genius-12k-xtrem-2026",
+    "name": "Nox AT10 Genius 12K Xtrem 2026",
+    "brand": "Nox",
+    "year": 2026,
+    "category": "avance",
+    "shape": "Goutte d'eau",
+    "weight": "360-375g",
+    "balance": "Moyen-haut",
+    "surface": "Carbon 12K Alum Xtrem + Dual Spin",
+    "core": "HR3 Black EVA",
+    "antivib": "Pulse System + Custom Grip + Weight Balance",
+    "price": "280-350€",
+    "player": "Agustín Tapia",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 8.5,
+      "Contrôle": 7.5,
+      "Confort": 6.5,
+      "Spin": 9,
+      "Maniabilité": 7,
+      "Tolérance": 7
+    },
+    "verdict": "La raquette du n°1 mondial Agustín Tapia. 12K Alum Xtrem = rigidité + stabilité thermique. Weight Balance ajustable. Dual Spin double rugosité. Le sommet de la tech Nox 2026.",
+    "editorial": "La AT10 Genius 2026 est la nouvelle arme d'Agustín Tapia, le Mozart du padel. Le 12K Alum Xtrem est une innovation majeure : l'aluminisation du carbone réduit l'ondulation des fibres de 50%, donnant une surface plus uniforme, plus rigide, et stable face aux changements de température. Le Weight Balance permet d'ajuster l'équilibre avec des pièces de 2g et 4g. Dual Spin combine hexagones 3D + sable silice pour le spin maximal. EOS Tunnel (perforations latérales) améliore l'aérodynamisme.",
+    "techHighlights": [
+      {
+        "label": "12K Alum Xtrem",
+        "value": "Innovation 2026",
+        "detail": "Carbone aluminisé — rigidité + stabilité thermique + durabilité"
+      },
+      {
+        "label": "Weight Balance",
+        "value": "2g + 4g",
+        "detail": "Contrepoids interchangeables pour ajuster l'équilibre"
+      },
+      {
+        "label": "Dual Spin",
+        "value": "Double rugosité",
+        "detail": "Hexagones 3D + sable silice pour spin maximal"
+      },
+      {
+        "label": "EOS Tunnel",
+        "value": "Aéro latéral",
+        "detail": "Perforations latérales intégrées au moule pour vitesse"
+      }
+    ],
+    "targetProfile": "Joueur avancé/pro cherchant le top absolu Nox. Fan d'Agustín Tapia. Attaquant-polyvalent voulant personnaliser son équilibre."
+  },
+  {
+    "id": "wilson-carbon-force-pro-2025",
+    "name": "Wilson Carbon Force Pro 2025",
+    "brand": "Wilson",
+    "year": 2025,
+    "category": "intermediaire",
+    "shape": "Goutte d'eau",
+    "weight": "365-370g",
+    "balance": "Moyen-bas",
+    "surface": "Carbon Fiberglass Composite + Tri-Hex Texture",
+    "core": "EVA Soft",
+    "antivib": "EVA Soft + Detachable Wrist Strap",
+    "price": "120-180€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 7,
+      "Contrôle": 7.5,
+      "Confort": 7.5,
+      "Spin": 7,
+      "Maniabilité": 7,
+      "Tolérance": 7.5
+    },
+    "verdict": "Le Carbon Force iconique en version Pro. Goutte d'eau, EVA Soft, sweet spot large. Polyvalent et confortable. La gamme Wilson la plus vendue, maintenant avec Tri-Hex Texture pour le spin.",
+    "editorial": "Le Carbon Force est la franchise iconique de Wilson en padel. La version Pro offre un profil polyvalent avec sa forme goutte d'eau et son EVA Soft. Le sweet spot est large et tolérant. La Tri-Hex Texture (texture hexagonale unique) améliore le spin. Le Carbon Fiberglass Composite combine légèreté et puissance. Sangle détachable personnalisable. Un excellent choix de milieu de gamme pour joueurs intermédiaires.",
+    "techHighlights": [
+      {
+        "label": "Carbon Force",
+        "value": "Franchise iconique",
+        "detail": "La gamme Wilson la plus populaire en padel"
+      },
+      {
+        "label": "Tri-Hex Texture",
+        "value": "Spin amélioré",
+        "detail": "Texture hexagonale unique pour rotation de balle"
+      },
+      {
+        "label": "EVA Soft",
+        "value": "Confort",
+        "detail": "Mousse souple pour absorption chocs et toucher agréable"
+      },
+      {
+        "label": "Sweet spot large",
+        "value": "Tolérance",
+        "detail": "Zone de frappe généreuse pour les frappes décentrées"
+      }
+    ],
+    "targetProfile": "Joueur intermédiaire cherchant polyvalence et confort à prix raisonnable. Le choix sûr Wilson."
+  },
+  {
+    "id": "wilson-carbon-force-lt-2025",
+    "name": "Wilson Carbon Force LT 2025",
+    "brand": "Wilson",
+    "year": 2025,
+    "category": "intermediaire",
+    "shape": "Goutte d'eau",
+    "weight": "350-355g",
+    "balance": "Moyen-bas",
+    "surface": "Carbon Fiberglass Composite + Tri-Hex Texture",
+    "core": "EVA Soft",
+    "antivib": "EVA Soft + lightweight design",
+    "price": "80-130€",
+    "player": "",
+    "womanLine": true,
+    "scores": {
+      "Puissance": 6,
+      "Contrôle": 8,
+      "Confort": 8.5,
+      "Spin": 7,
+      "Maniabilité": 9,
+      "Tolérance": 8.5
+    },
+    "verdict": "Le Carbon Force le plus léger (355g). Goutte d'eau maniable, EVA Soft confort, sweet spot large. Le meilleur rapport qualité/prix Wilson pour femmes, seniors et débutants.",
+    "editorial": "Le Carbon Force LT (Light) est la version allégée du best-seller Wilson. À seulement 355g, c'est l'une des raquettes les plus maniables du marché. EVA Soft pour le confort et l'absorption des chocs. Sweet spot large et tolérant. Tri-Hex Texture pour le spin. À 80-130€, c'est un choix excellent pour la boutique club : accessible, confortable, et adapté aux joueurs cherchant maniabilité sans complexité.",
+    "techHighlights": [
+      {
+        "label": "355g",
+        "value": "Ultra-light",
+        "detail": "La plus légère de la gamme Carbon Force"
+      },
+      {
+        "label": "EVA Soft",
+        "value": "Confort bras",
+        "detail": "Absorption des chocs pour protection articulaire"
+      },
+      {
+        "label": "Tri-Hex",
+        "value": "Spin",
+        "detail": "Texture hexagonale pour rotation sans effort"
+      },
+      {
+        "label": "80-130€",
+        "value": "Prix club",
+        "detail": "Excellent rapport qualité/prix pour boutique centre"
+      }
+    ],
+    "targetProfile": "Femmes, seniors, débutants avancés cherchant légèreté et confort. Idéal pour la boutique du centre padel."
+  },
+  {
+    "id": "babolat-technical-veron-2025",
+    "name": "Babolat Technical Veron 2025",
+    "brand": "Babolat",
+    "year": 2025,
+    "category": "avance",
+    "shape": "Diamant",
+    "weight": "360-370g",
+    "balance": "Haut",
+    "surface": "Carbon Flex (Carbon + Fiberglass)",
+    "core": "Black EVA",
+    "antivib": "Vibrasorb System (SMAC) + 3D Spin",
+    "price": "200-280€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 8.5,
+      "Contrôle": 6.5,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 6
+    },
+    "verdict": "Le diamant Veron pour attaquants flexibles. Carbon Flex = réactivité du carbone + souplesse du fiberglass. Vibrasorb SMAC pour le confort. Le pendant \"souple\" du Technical Viper.",
+    "editorial": "Le Technical Veron 2025 est le diamant de la gamme Veron — la ligne Babolat positionnée sur la flexibilité et le dynamisme. Là où le Technical Viper est rigide et explosif, le Veron utilise la technologie Carbon Flex (tissage carbone + fibre de verre) pour offrir puissance dynamique avec plus de souplesse. Le Vibrasorb System powered by SMAC intègre des élastomères dans les fibres de carbone et le manche pour réduire les vibrations. Holes Pattern System adapté à la forme diamant.",
+    "techHighlights": [
+      {
+        "label": "Carbon Flex",
+        "value": "Hybride",
+        "detail": "Tissage carbone + fiberglass pour puissance dynamique et souplesse"
+      },
+      {
+        "label": "Vibrasorb SMAC",
+        "value": "Élastomères",
+        "detail": "Absorption vibrations intégrée dans fibres et manche"
+      },
+      {
+        "label": "Holes Pattern",
+        "value": "Diamant",
+        "detail": "Perforation adaptée pour transmission de puissance optimale"
+      },
+      {
+        "label": "3D Spin",
+        "value": "Rugosité",
+        "detail": "Surface 3D pour génération de spin accrue"
+      }
+    ],
+    "targetProfile": "Attaquant cherchant puissance avec plus de flexibilité que le Viper. Bon choix pour joueurs trouvant le carbone pur trop dur."
+  },
+  {
+    "id": "babolat-air-veron-2025",
+    "name": "Babolat Air Veron 2025",
+    "brand": "Babolat",
+    "year": 2025,
+    "category": "intermediaire",
+    "shape": "Goutte d'eau",
+    "weight": "350-360g",
+    "balance": "Moyen",
+    "surface": "Carbon Flex (Carbon + Fiberglass)",
+    "core": "Black EVA",
+    "antivib": "Vibrasorb System (SMAC)",
+    "price": "180-240€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 7,
+      "Contrôle": 7.5,
+      "Confort": 7.5,
+      "Spin": 7,
+      "Maniabilité": 8,
+      "Tolérance": 7.5
+    },
+    "verdict": "Le Veron léger et maniable. Goutte d'eau 355g, balance moyen, Carbon Flex dynamique. \"Air Striker\" — vitesse et agilité pour dominer tout le court avec flexibilité.",
+    "editorial": "L'Air Veron 2025 est le polyvalent agile de la gamme Veron. À 355g avec une forme goutte d'eau et un balance moyen (265mm), c'est une raquette rapide dans les échanges. Le Carbon Flex offre une puissance dynamique sans la dureté du carbone pur. Black EVA pour stabilité et confort. Vibrasorb System pour la protection du bras. Holes Pattern System avec petits trous au centre (précision) et grands trous sur les bords (tolérance).",
+    "techHighlights": [
+      {
+        "label": "Air Striker",
+        "value": "355g",
+        "detail": "Légèreté et maniabilité pour vitesse de bras accrue"
+      },
+      {
+        "label": "Carbon Flex",
+        "value": "Dynamique",
+        "detail": "Réactivité carbone + confort fiberglass"
+      },
+      {
+        "label": "Vibrasorb",
+        "value": "SMAC",
+        "detail": "Élastomères anti-vibrations pour protection bras"
+      },
+      {
+        "label": "Holes Pattern",
+        "value": "Dual zone",
+        "detail": "Petits trous centraux + grands trous périphériques"
+      }
+    ],
+    "targetProfile": "Joueur polyvalent cherchant maniabilité et flexibilité. Alternative plus souple à l'Air Viper. Bon pour joueurs de droite dynamiques."
+  },
+  {
+    "id": "babolat-counter-veron-2025",
+    "name": "Babolat Counter Veron 2025",
+    "brand": "Babolat",
+    "year": 2025,
+    "category": "intermediaire",
+    "shape": "Ronde",
+    "weight": "360-370g",
+    "balance": "Bas",
+    "surface": "Carbon Flex (Carbon + Fiberglass)",
+    "core": "X-EVA (basse densité)",
+    "antivib": "Vibrasorb System (SMAC) + X-EVA Soft",
+    "price": "180-240€",
+    "player": "",
+    "womanLine": false,
+    "scores": {
+      "Puissance": 6,
+      "Contrôle": 8.5,
+      "Confort": 8,
+      "Spin": 7,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.5
+    },
+    "verdict": "Le \"Counter Striker\" Babolat. Ronde surdimensionnée, balance bas, X-EVA souple. Sweet spot élargi + Vibrasorb = tolérance et confort maximum. Pour les défenseurs qui retournent tout.",
+    "editorial": "Le Counter Veron 2025 est la raquette défensive de la gamme Veron. Sa forme ronde surdimensionnée offre un sweet spot élargi. Le X-EVA (basse densité) donne un toucher souple qui absorbe les chocs. Le Carbon Flex maintient une puissance dynamique pour la contre-attaque. Le Vibrasorb System SMAC protège le bras sur les retours puissants. Holes Pattern adapté à la forme ronde pour précision. 3D Spin+ pour les effets défensifs.",
+    "techHighlights": [
+      {
+        "label": "Ronde XL",
+        "value": "Sweet spot+",
+        "detail": "Forme ronde surdimensionnée pour tolérance maximale"
+      },
+      {
+        "label": "X-EVA",
+        "value": "Basse densité",
+        "detail": "Mousse souple pour toucher doux et absorption des chocs"
+      },
+      {
+        "label": "Vibrasorb SMAC",
+        "value": "Protection bras",
+        "detail": "Réduit les vibrations sur retours puissants"
+      },
+      {
+        "label": "3D Spin+",
+        "value": "Défensif",
+        "detail": "Rugosité améliorée pour effets défensifs (lob, bandeja)"
+      }
+    ],
+    "targetProfile": "Défenseur/contre-attaquant cherchant confort et tolérance. Bon choix santé dans la gamme Babolat. Alternative plus souple au Counter Viper."
   }
 ]
