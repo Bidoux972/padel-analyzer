@@ -817,10 +817,54 @@ export default function PadelAnalyzer() {
   // ============================================================
   // SEARCH: manual racket lookup
   // ============================================================
+  // --- Fuzzy DB search helper ---
+  function fuzzyMatchDB(query) {
+    const q = query.toLowerCase().replace(/[^a-z0-9àâäéèêëïôùûüç ]/g,' ').replace(/\s+/g,' ').trim();
+    const qTokens = q.split(' ').filter(t=>t.length>=2);
+    if(!qTokens.length) return [];
+    return RACKETS_DB.map(r=>{
+      const name = (r.name||'').toLowerCase();
+      const short = (r.shortName||'').toLowerCase();
+      const brand = (r.brand||'').toLowerCase();
+      const proPlayer = (r.proPlayerInfo?.name||'').toLowerCase();
+      const haystack = `${name} ${short} ${brand} ${proPlayer}`;
+      // Count matching tokens
+      let matched = 0;
+      for(const t of qTokens) {
+        if(haystack.includes(t)) matched++;
+      }
+      // Also check if query contains key parts of shortName
+      const shortTokens = short.split(/\s+/).filter(t=>t.length>=2);
+      let reverseMatched = 0;
+      for(const st of shortTokens) {
+        if(q.includes(st)) reverseMatched++;
+      }
+      const score = Math.max(matched/qTokens.length, shortTokens.length?reverseMatched/shortTokens.length:0);
+      return {racket:r, score};
+    }).filter(m=>m.score>=0.4).sort((a,b)=>b.score-a.score).slice(0,8);
+  }
+
   const searchRackets = useCallback(async()=>{
     if(!searchQ.trim())return;
     setLoading(true); setError(""); setSuggestions(null); setLoadMsg("🔍 Recherche en cours...");
     try {
+      // Phase 1: Local DB search (instant)
+      const dbResults = fuzzyMatchDB(searchQ);
+      if(dbResults.length>=1) {
+        const localSuggestions = dbResults.map(m=>({
+          name: m.racket.name,
+          brand: m.racket.brand,
+          shape: m.racket.shape,
+          weight: m.racket.weight,
+          description: m.racket.verdict || generateRacketDescription(m.racket),
+          _fromDB: true,
+        }));
+        setSuggestions(localSuggestions);
+        setLoading(false); setLoadMsg("");
+        return;
+      }
+      // Phase 2: Fallback to AI web search
+      setLoadMsg("🌐 Recherche web en cours...");
       const txt = await callAI([{role:"user",content:`Search the web for padel rackets matching: "${searchQ}". The user may have typed an approximate name, brand, player name, or partial model. Find the 2-4 most likely padel racket matches currently on sale (2024-2026 models).
 For EACH match: exact full official name, brand, shape (Diamant/Goutte d'eau/Ronde/Hybride), approximate weight, one-line description in French.
 Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":"...","description":"..."}]. No markdown.`}], {webSearch:true});
@@ -1566,7 +1610,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
 
         <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.10 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
         </div>
       </div>}
 
@@ -1613,12 +1657,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
 
             {/* === BLUEPRINT ZONE: image center + annotations sides === */}
-            <div style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:12,position:"relative"}}>
+            <div style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:12,position:"relative",maxWidth:480,margin:"0 auto 12px"}}>
               {/* Left annotations */}
-              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingRight:8}}>
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:6,paddingRight:6,maxWidth:170}}>
                 {leftThs.map((h,i)=>(
                   <div key={i} style={{
-                    padding:"8px 10px",borderRadius:10,textAlign:"right",
+                    padding:"7px 9px",borderRadius:10,textAlign:"right",
                     background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",
                     borderRight:"2px solid rgba(249,115,22,0.3)",
                   }}>
@@ -1630,21 +1674,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
 
               {/* Center: Image + Score */}
-              <div style={{width:140,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
-                <div style={{position:"absolute",width:120,height:120,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}/>
-                {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{width:120,height:120,objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(0 6px 20px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none"}}/>
-                :<div style={{width:100,height:100,borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"2px dashed rgba(249,115,22,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36}}>{"🏸"}</div>}
-                <div style={{marginTop:8,padding:"4px 16px",borderRadius:16,background:"rgba(8,12,20,0.9)",border:"2px solid rgba(249,115,22,0.35)",backdropFilter:"blur(8px)",zIndex:2}}>
-                  <span style={{fontSize:26,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
+              <div style={{width:130,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
+                <div style={{position:"absolute",width:110,height:110,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}/>
+                {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{width:110,height:110,objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(0 6px 20px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none"}}/>
+                :<div style={{width:90,height:90,borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"2px dashed rgba(249,115,22,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36}}>{"🏸"}</div>}
+                <div style={{marginTop:6,padding:"3px 14px",borderRadius:14,background:"rgba(8,12,20,0.9)",border:"2px solid rgba(249,115,22,0.35)",backdropFilter:"blur(8px)",zIndex:2}}>
+                  <span style={{fontSize:24,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
                   <span style={{fontSize:9,color:"#94a3b8"}}>/10</span>
                 </div>
               </div>
 
               {/* Right annotations */}
-              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingLeft:8}}>
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:6,paddingLeft:6,maxWidth:170}}>
                 {rightThs.map((h,i)=>(
                   <div key={i} style={{
-                    padding:"8px 10px",borderRadius:10,textAlign:"left",
+                    padding:"7px 9px",borderRadius:10,textAlign:"left",
                     background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",
                     borderLeft:"2px solid rgba(249,115,22,0.3)",
                   }}>
@@ -2552,7 +2596,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.10 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -2576,7 +2620,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.9</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.10</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -2693,9 +2737,26 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <p style={{fontSize:11,color:"#f97316",fontWeight:700,marginBottom:8}}>📋 Résultats — clique pour voir la fiche technique :</p>
           {suggestions.map((s,i)=>{
             const isExpanded = addDetail === i;
-            // Try to match with DB
+            // Try to match with DB — improved matching
             const nameLower = (s.name||"").toLowerCase();
-            const dbMatch = RACKETS_DB.find(r=>r.name.toLowerCase()===nameLower) || RACKETS_DB.find(r=>nameLower.includes((r.shortName||r.name).toLowerCase().slice(0,12))||(r.shortName||r.name).toLowerCase().includes(nameLower.slice(0,12)));
+            const dbMatch = RACKETS_DB.find(r=>r.name.toLowerCase()===nameLower)
+              || RACKETS_DB.find(r=>{
+                const rName = r.name.toLowerCase();
+                const rShort = (r.shortName||"").toLowerCase();
+                // Strip brand prefix for comparison
+                const brands = ["nox","head","adidas","bullpadel","babolat","wilson","siux","starvie","varlion","drop shot","dunlop","star vie"];
+                let cleanQ = nameLower, cleanR = rName;
+                for(const b of brands) { cleanQ = cleanQ.replace(b+" ",""); cleanR = cleanR.replace(b+" ",""); }
+                // Check normalized containment
+                if(cleanQ.length>=8 && cleanR.length>=8) {
+                  if(cleanR.includes(cleanQ) || cleanQ.includes(cleanR)) return true;
+                }
+                // Token-based matching
+                const qTokens = nameLower.split(/\s+/).filter(t=>t.length>=2);
+                const rTokens = rName.split(/\s+/).filter(t=>t.length>=2);
+                const matched = qTokens.filter(t=>rTokens.some(rt=>rt.includes(t)||t.includes(rt))).length;
+                return qTokens.length>=3 && matched >= qTokens.length * 0.6;
+              });
             const sc = dbMatch?.scores||{};
             const hasScores = dbMatch && Object.keys(sc).length>0;
             const gs = hasScores ? computeGlobalScore(sc, profile) : null;
@@ -3784,7 +3845,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.9 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.10 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -3807,7 +3868,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.10 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
 
