@@ -425,8 +425,9 @@ function getTopByCategory(catId, year, n=5) {
     pool = pool.filter(r=>r.price).map(r=>{
       const sc = r.scores||{};
       const avg = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
-      const priceNum = parseInt((r.price||"").replace(/[^0-9]/g,''))||300;
-      return {...r, _sortScore: avg / (priceNum/100)};
+      const priceNums = (r.price||"").match(/\d+/g);
+      const priceNum = priceNums ? (priceNums.length>1 ? (parseInt(priceNums[0])+parseInt(priceNums[1]))/2 : parseInt(priceNums[0])) : 300;
+      return {...r, _sortScore: priceNum>0 ? (avg / (priceNum/100)) : 0};
     });
   } else {
     pool = pool.map(r=>({...r, _sortScore: (r.scores||{})[cat.attr]||0}));
@@ -1542,116 +1543,247 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </p>}
 
         {/* ============================================================ */}
-        {/* MAGAZINE — Tendances & Classements */}
+        {/* MAGAZINE CTA */}
         {/* ============================================================ */}
         <div style={{marginTop:40,width:"100%",maxWidth:500}}>
-          <div style={{textAlign:"center",marginBottom:20}}>
-            <div style={{fontSize:18,fontWeight:800,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>📰 Tendances Padel</div>
-            <p style={{fontSize:11,color:"#64748b",margin:"4px 0 0"}}>Les meilleures raquettes par catégorie</p>
-          </div>
-
-          {/* Year toggle */}
-          <div style={{display:"flex",justifyContent:"center",gap:6,marginBottom:14}}>
-            {[2026,2025].map(y=>(
-              <button key={y} onClick={()=>setMagYear(y)} style={{
-                padding:"5px 16px",borderRadius:20,fontSize:11,fontWeight:magYear===y?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",
-                background:magYear===y?"rgba(249,115,22,0.15)":"rgba(255,255,255,0.04)",
-                border:`1px solid ${magYear===y?"rgba(249,115,22,0.4)":"rgba(255,255,255,0.08)"}`,
-                color:magYear===y?"#f97316":"#64748b",transition:"all 0.2s",
-              }}>{y}</button>
-            ))}
-          </div>
-
-          {/* Category tabs */}
-          <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none",msOverflowStyle:"none",marginBottom:16}}>
-            {MAGAZINE_CATEGORIES.map(c=>(
-              <button key={c.id} onClick={()=>setMagCat(c.id)} style={{
-                padding:"6px 12px",borderRadius:14,fontSize:10,fontWeight:magCat===c.id?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",
-                background:magCat===c.id?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
-                border:`1px solid ${magCat===c.id?"rgba(249,115,22,0.3)":"rgba(255,255,255,0.06)"}`,
-                color:magCat===c.id?"#f97316":"#94a3b8",transition:"all 0.2s",whiteSpace:"nowrap",flexShrink:0,
-              }}>{c.label}</button>
-            ))}
-          </div>
-
-          {/* Category description */}
-          <div style={{textAlign:"center",marginBottom:14}}>
-            <span style={{fontSize:11,color:"#94a3b8",fontStyle:"italic"}}>{MAGAZINE_CATEGORIES.find(c=>c.id===magCat)?.desc}</span>
-          </div>
-
-          {/* Top 5 cards */}
-          {(()=>{
-            const top5 = getTopByCategory(magCat, magYear);
-            if(!top5.length) return <p style={{textAlign:"center",color:"#475569",fontSize:11}}>Aucune raquette {magYear} dans cette catégorie.</p>;
-            return <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {top5.map((r,i)=>{
-                const sc = r.scores||{};
-                const medals = ["🥇","🥈","🥉","4️⃣","5️⃣"];
-                const catInfo = MAGAZINE_CATEGORIES.find(c=>c.id===magCat);
-                const mainScore = catInfo?.attr ? (sc[catInfo.attr]||0) : (r._sortScore||0).toFixed(1);
-                const isExpanded = magDetail?.id === r.id;
-                return <div key={r.id} style={{
-                  background:i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.03)",
-                  border:`1px solid ${i===0?"rgba(249,115,22,0.25)":"rgba(255,255,255,0.06)"}`,
-                  borderRadius:16,overflow:"hidden",transition:"all 0.3s",
-                }}>
-                  {/* Main row */}
-                  <div onClick={()=>setMagDetail(isExpanded?null:r)} style={{
-                    display:"flex",alignItems:"center",gap:12,padding:"12px 14px",cursor:"pointer",
-                  }}>
-                    <span style={{fontSize:20,flexShrink:0}}>{medals[i]}</span>
-                    {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:44,height:44,objectFit:"contain",flexShrink:0,borderRadius:8,background:"rgba(255,255,255,0.04)"}} onError={e=>{e.target.style.display="none";}}/>}
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
-                      <div style={{fontSize:10,color:"#64748b"}}>{r.brand} · {r.shape} · {r.weight}</div>
-                    </div>
-                    <div style={{textAlign:"right",flexShrink:0}}>
-                      <div style={{fontSize:20,fontWeight:900,fontFamily:"'Outfit'",color:i===0?"#f97316":"#e2e8f0"}}>{mainScore}</div>
-                      <div style={{fontSize:8,color:"#64748b",textTransform:"uppercase"}}>/10</div>
-                    </div>
-                    <span style={{fontSize:14,color:"#475569",flexShrink:0,transition:"transform 0.2s",transform:isExpanded?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
-                  </div>
-
-                  {/* Expanded tech sheet */}
-                  {isExpanded&&<div style={{padding:"0 14px 14px",borderTop:"1px solid rgba(255,255,255,0.05)",animation:"fadeIn 0.3s ease"}}>
-                    {/* Scores grid */}
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginTop:10,marginBottom:12}}>
-                      {ATTRS.map(a=>{
-                        const val = sc[a]||0;
-                        const isTop = catInfo?.attr===a;
-                        return <div key={a} style={{textAlign:"center",padding:"6px 4px",borderRadius:8,background:isTop?"rgba(249,115,22,0.1)":"rgba(255,255,255,0.02)"}}>
-                          <div style={{fontSize:16,fontWeight:800,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
-                          <div style={{fontSize:8,color:isTop?"#f97316":"#64748b",fontWeight:isTop?700:500,marginTop:2}}>{a}</div>
-                        </div>;
-                      })}
-                    </div>
-                    {/* Tech specs */}
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,marginBottom:10}}>
-                      {[["Forme",r.shape],["Poids",r.weight],["Équilibre",r.balance],["Surface",r.surface],["Noyau",r.core],["Prix",r.price]].map(([k,v])=>
-                        v&&v!=="—"&&<div key={k} style={{fontSize:9,color:"#94a3b8",padding:"3px 0"}}>
-                          <span style={{color:"#64748b"}}>{k}:</span> <span style={{fontWeight:600,color:"#cbd5e1"}}>{v}</span>
-                        </div>
-                      )}
-                    </div>
-                    {/* Description */}
-                    <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:"0 0 8px",padding:"10px 12px",background:"rgba(255,255,255,0.02)",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)"}}>
-                      {generateRacketDescription(r)}
-                    </p>
-                    {/* Verdict from DB if available */}
-                    {r.verdict&&r.verdict!=="—"&&<p style={{fontSize:10,color:"#64748b",lineHeight:1.5,margin:0,fontStyle:"italic"}}>
-                      💬 {r.verdict}
-                    </p>}
-                  </div>}
-                </div>;
-              })}
-            </div>;
-          })()}
+          <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setScreen("magazine");}} style={{
+            width:"100%",padding:"20px 24px",borderRadius:20,cursor:"pointer",
+            background:"linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(168,85,247,0.06) 100%)",
+            border:"1px solid rgba(249,115,22,0.2)",transition:"all 0.3s",position:"relative",overflow:"hidden",
+          }}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div style={{textAlign:"left"}}>
+                <div style={{fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>📰 Tendances &amp; Magazine</div>
+                <div style={{fontSize:11,color:"#94a3b8",marginTop:4}}>Top raquettes, fiches techniques, articles</div>
+              </div>
+              <span style={{fontSize:24,color:"#f97316"}}>→</span>
+            </div>
+          </button>
         </div>
 
         <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.6 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.7 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
         </div>
       </div>}
+
+      {/* ============================================================ */}
+      {/* MAGAZINE SCREEN — Full-page premium Tendances */}
+      {/* ============================================================ */}
+      {screen==="magazine"&&(()=>{
+        const catIdx = MAGAZINE_CATEGORIES.findIndex(c=>c.id===magCat);
+        const catInfo = MAGAZINE_CATEGORIES[catIdx];
+        const top5 = getTopByCategory(magCat, magYear);
+        const prevCat = ()=>{const i=(catIdx-1+MAGAZINE_CATEGORIES.length)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null);};
+        const nextCat = ()=>{const i=(catIdx+1)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null);};
+        const hero = top5[0];
+        const podium = top5.slice(1,3);
+        const rest = top5.slice(3,5);
+
+        // Helper: get display score for a racket
+        const getScore = (r)=>{
+          if(!r) return "—";
+          if(catInfo?.attr) return (r.scores||{})[catInfo.attr]||0;
+          return (r._sortScore||0).toFixed(1);
+        };
+
+        // DETAIL VIEW — single racket full page
+        if(magDetail) {
+          const r = magDetail;
+          const sc = r.scores||{};
+          return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",padding:"0 16px",maxWidth:520,margin:"0 auto",fontFamily:"'Inter',sans-serif"}}>
+            {/* Header */}
+            <div style={{display:"flex",alignItems:"center",padding:"16px 0 12px",gap:12}}>
+              <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:"#f97316",fontSize:14,cursor:"pointer",fontWeight:700,fontFamily:"'Outfit'"}}>← Top 5</button>
+              <div style={{flex:1}}/>
+              <span style={{fontSize:10,color:"#475569",fontFamily:"'Outfit'"}}>{catInfo?.label}</span>
+            </div>
+
+            {/* Racket name + badge */}
+            <div style={{textAlign:"center",marginBottom:12}}>
+              {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:80,height:80,objectFit:"contain",margin:"0 auto 10px",display:"block",filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.15))"}} onError={e=>{e.target.style.display="none";}}/>}
+              <div style={{fontSize:20,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{r.shortName||r.name}</div>
+              <div style={{fontSize:11,color:"#94a3b8",marginTop:4}}>{r.brand} · {r.category} · {r.shape} · {r.year}</div>
+              <div style={{display:"inline-block",marginTop:8,padding:"4px 14px",borderRadius:20,background:"rgba(249,115,22,0.12)",border:"1px solid rgba(249,115,22,0.25)"}}>
+                <span style={{fontSize:22,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
+                <span style={{fontSize:10,color:"#94a3b8",marginLeft:2}}>/10</span>
+              </div>
+            </div>
+
+            {/* Editorial */}
+            {r.editorial&&<div style={{padding:"14px 16px",background:"rgba(255,255,255,0.03)",borderRadius:14,borderLeft:"3px solid rgba(249,115,22,0.3)",marginBottom:14}}>
+              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}}>{r.editorial}</p>
+            </div>}
+
+            {/* Target profile */}
+            {r.targetProfile&&<div style={{padding:"10px 14px",background:"rgba(76,175,80,0.06)",borderRadius:12,border:"1px solid rgba(76,175,80,0.15)",marginBottom:14}}>
+              <div style={{fontSize:9,color:"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4}}>🎯 Cette raquette s'adresse à</div>
+              <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:0}}>{r.targetProfile}</p>
+            </div>}
+
+            {/* Scores grid */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:14}}>
+              {ATTRS.map(a=>{
+                const val = sc[a]||0;
+                const isHighlight = catInfo?.attr===a;
+                return <div key={a} style={{textAlign:"center",padding:"8px 4px",borderRadius:10,background:isHighlight?"rgba(249,115,22,0.08)":"rgba(255,255,255,0.02)",border:`1px solid ${isHighlight?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.04)"}`}}>
+                  <div style={{fontSize:20,fontWeight:900,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
+                  <div style={{fontSize:8,color:isHighlight?"#f97316":"#64748b",fontWeight:isHighlight?700:500,marginTop:2}}>{a}</div>
+                </div>;
+              })}
+            </div>
+
+            {/* Tech highlights */}
+            {r.techHighlights&&r.techHighlights.length>0&&<div style={{marginBottom:14}}>
+              {r.techHighlights.map((h,i)=>(
+                <div key={i} style={{padding:"8px 12px",marginBottom:4,borderRadius:10,background:"rgba(255,255,255,0.02)",borderLeft:"2px solid rgba(249,115,22,0.15)"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                    <span style={{fontSize:9,color:"#64748b",fontWeight:600}}>{h.label}</span>
+                    <span style={{fontSize:10,color:"#e2e8f0",fontWeight:700}}>{h.value}</span>
+                  </div>
+                  <p style={{fontSize:10,color:"#94a3b8",margin:"3px 0 0",lineHeight:1.5}}>{h.detail}</p>
+                </div>
+              ))}
+            </div>}
+
+            {/* Specs row */}
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+              {[["Poids",r.weight],["Prix",r.price],["Équilibre",r.balance]].map(([k,v])=>
+                v&&v!=="—"&&<span key={k} style={{fontSize:9,padding:"4px 10px",borderRadius:8,background:"rgba(255,255,255,0.04)",color:"#94a3b8"}}>
+                  <span style={{color:"#64748b"}}>{k}:</span> <span style={{fontWeight:600,color:"#cbd5e1"}}>{v}</span>
+                </span>
+              )}
+            </div>
+
+            {/* Pro player */}
+            {r.proPlayerInfo&&r.proPlayerInfo.name&&<div style={{padding:"10px 14px",background:"rgba(168,85,247,0.06)",borderRadius:12,border:"1px solid rgba(168,85,247,0.15)",marginBottom:14}}>
+              <div style={{fontSize:9,color:"#a855f7",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4}}>👤 Joueur Pro</div>
+              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{r.proPlayerInfo.name}</div>
+              <p style={{fontSize:10,color:"#94a3b8",lineHeight:1.5,margin:"3px 0 0"}}>{r.proPlayerInfo.context}</p>
+            </div>}
+
+            {/* Verdict */}
+            {r.verdict&&r.verdict!=="—"&&<p style={{fontSize:10,color:"#64748b",lineHeight:1.5,margin:"0 0 20px",fontStyle:"italic",textAlign:"center"}}>
+              💬 {r.verdict}
+            </p>}
+          </div>;
+        }
+
+        // PODIUM VIEW — Top 5 one-page layout
+        return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",padding:"0 16px",maxWidth:520,margin:"0 auto",fontFamily:"'Inter',sans-serif"}}>
+          {/* Header — Category + Year */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 8px"}}>
+            <button onClick={()=>{setScreen("home");setMagDetail(null);}} style={{background:"none",border:"none",color:"#64748b",fontSize:12,cursor:"pointer",fontFamily:"'Outfit'",fontWeight:600}}>← Accueil</button>
+            <div style={{display:"flex",gap:4}}>
+              {[2026,2025].map(y=>(
+                <button key={y} onClick={()=>setMagYear(y)} style={{
+                  padding:"3px 12px",borderRadius:14,fontSize:10,fontWeight:magYear===y?700:500,cursor:"pointer",fontFamily:"'Inter'",
+                  background:magYear===y?"rgba(249,115,22,0.15)":"transparent",
+                  border:`1px solid ${magYear===y?"rgba(249,115,22,0.3)":"rgba(255,255,255,0.08)"}`,
+                  color:magYear===y?"#f97316":"#64748b",transition:"all 0.2s",
+                }}>{y}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* Category navigator */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,padding:"6px 0 14px"}}>
+            <button onClick={prevCat} style={{background:"none",border:"none",color:"#f97316",fontSize:20,cursor:"pointer",padding:"4px 8px"}}>‹</button>
+            <div style={{textAlign:"center",minWidth:180}}>
+              <div style={{fontSize:22,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{catInfo?.label}</div>
+              <div style={{fontSize:10,color:"#94a3b8",fontStyle:"italic",marginTop:2}}>{catInfo?.desc}</div>
+            </div>
+            <button onClick={nextCat} style={{background:"none",border:"none",color:"#f97316",fontSize:20,cursor:"pointer",padding:"4px 8px"}}>›</button>
+          </div>
+
+          {/* Category dots */}
+          <div style={{display:"flex",justifyContent:"center",gap:6,marginBottom:16}}>
+            {MAGAZINE_CATEGORIES.map((c,i)=>(
+              <button key={c.id} onClick={()=>{setMagCat(c.id);setMagDetail(null);}} style={{
+                width:i===catIdx?20:6,height:6,borderRadius:3,cursor:"pointer",transition:"all 0.3s",border:"none",
+                background:i===catIdx?"#f97316":"rgba(255,255,255,0.15)",
+              }}/>
+            ))}
+          </div>
+
+          {/* No results */}
+          {!top5.length&&<div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <p style={{color:"#475569",fontSize:13,textAlign:"center"}}>Aucune raquette {magYear} dans cette catégorie</p>
+          </div>}
+
+          {/* HERO — #1 */}
+          {hero&&<div onClick={()=>setMagDetail(hero)} style={{
+            cursor:"pointer",padding:"16px",borderRadius:20,marginBottom:10,position:"relative",overflow:"hidden",
+            background:"linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(249,115,22,0.02) 100%)",
+            border:"1px solid rgba(249,115,22,0.2)",transition:"all 0.3s",
+          }}>
+            <div style={{position:"absolute",top:10,left:14,fontSize:28}}>🥇</div>
+            <div style={{display:"flex",alignItems:"center",gap:14,marginLeft:38}}>
+              {hero.imageUrl&&<img src={hero.imageUrl} alt={hero.name} style={{width:64,height:64,objectFit:"contain",flexShrink:0,filter:"drop-shadow(0 4px 8px rgba(0,0,0,0.3))"}} onError={e=>{e.target.style.display="none";}}/>}
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:16,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.01em"}}>{hero.shortName||hero.name}</div>
+                <div style={{fontSize:10,color:"#94a3b8",marginTop:2}}>{hero.brand} · {hero.shape} · {hero.weight}</div>
+                {hero.editorial&&<p style={{fontSize:10,color:"#64748b",lineHeight:1.5,margin:"6px 0 0",overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{hero.editorial.substring(0,120)}…</p>}
+              </div>
+              <div style={{textAlign:"center",flexShrink:0}}>
+                <div style={{fontSize:28,fontWeight:900,fontFamily:"'Outfit'",color:"#f97316"}}>{getScore(hero)}</div>
+                <div style={{fontSize:8,color:"#94a3b8"}}>/10</div>
+              </div>
+            </div>
+            {hero.proPlayerInfo?.name&&<div style={{marginTop:8,marginLeft:38,fontSize:9,color:"#a855f7"}}>👤 {hero.proPlayerInfo.name}</div>}
+          </div>}
+
+          {/* PODIUM — #2 & #3 */}
+          {podium.length>0&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
+            {podium.map((r,i)=>{
+              const medal = i===0?"🥈":"🥉";
+              return <div key={r.id} onClick={()=>setMagDetail(r)} style={{
+                cursor:"pointer",padding:"12px",borderRadius:16,
+                background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",transition:"all 0.3s",
+              }}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+                  <span style={{fontSize:18}}>{medal}</span>
+                  <div style={{textAlign:"right"}}>
+                    <span style={{fontSize:20,fontWeight:900,fontFamily:"'Outfit'",color:"#e2e8f0"}}>{getScore(r)}</span>
+                    <span style={{fontSize:8,color:"#64748b"}}>/10</span>
+                  </div>
+                </div>
+                {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:40,height:40,objectFit:"contain",margin:"0 auto 6px",display:"block"}} onError={e=>{e.target.style.display="none";}}/>}
+                <div style={{fontSize:12,fontWeight:700,fontFamily:"'Outfit'",color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
+                <div style={{fontSize:9,color:"#64748b",marginTop:2}}>{r.brand} · {r.shape}</div>
+                {r.proPlayerInfo?.name&&<div style={{fontSize:8,color:"#a855f7",marginTop:3}}>👤 {r.proPlayerInfo.name}</div>}
+              </div>;
+            })}
+          </div>}
+
+          {/* REST — #4 & #5 */}
+          {rest.length>0&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}}>
+            {rest.map((r,i)=>{
+              const badge = i===0?"4":"5";
+              return <div key={r.id} onClick={()=>setMagDetail(r)} style={{
+                cursor:"pointer",padding:"10px 12px",borderRadius:14,
+                background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.04)",transition:"all 0.3s",
+              }}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
+                  <span style={{fontSize:10,fontWeight:700,color:"#475569",background:"rgba(255,255,255,0.06)",borderRadius:6,padding:"2px 6px"}}>{badge}</span>
+                  <div>
+                    <span style={{fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:"#94a3b8"}}>{getScore(r)}</span>
+                    <span style={{fontSize:7,color:"#475569"}}>/10</span>
+                  </div>
+                </div>
+                <div style={{fontSize:11,fontWeight:700,fontFamily:"'Outfit'",color:"#cbd5e1",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
+                <div style={{fontSize:9,color:"#475569",marginTop:2}}>{r.brand} · {r.shape}</div>
+              </div>;
+            })}
+          </div>}
+
+          {/* Footer */}
+          <div style={{textAlign:"center",padding:"8px 0 20px"}}>
+            <div style={{fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
+              <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Magazine · {RACKETS_DB.length} raquettes
+            </div>
+          </div>
+        </div>;
+      })()}
 
       {/* ============================================================ */}
       {/* WIZARD SCREEN — Step-by-step profile creation */}
@@ -2376,7 +2508,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.6 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.7 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -2400,7 +2532,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.6</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.7</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -3589,7 +3721,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.6 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.7 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -3612,7 +3744,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.6 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.7 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
 
@@ -3908,7 +4040,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 else{setPinError("Code incorrect");}
               }
             }}}
-            placeholder={passwordModal.mode==="setpin"?"Choisir un code (4+ car.)":"Entrer le code"}
+            placeholder={passwordModal.mode==="setpin"?"Code (4+ caractères)":"Entrer le code"}
             autoFocus
             style={{width:"100%",padding:"12px 14px",borderRadius:12,fontSize:18,fontWeight:700,textAlign:"center",letterSpacing:"0.3em",
               background:"rgba(255,255,255,0.06)",border:`1px solid ${pinError?"rgba(239,68,68,0.5)":"rgba(255,255,255,0.12)"}`,
