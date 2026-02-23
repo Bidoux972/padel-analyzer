@@ -365,6 +365,76 @@ function TagGroup({tags, selected, onToggle, color="#f97316"}) {
   );
 }
 
+// === RACKET DESCRIPTION GENERATOR ===
+function generateRacketDescription(r) {
+  const sc = r.scores||{};
+  const attrs = ATTRS.map(a=>({name:a,val:sc[a]||0})).sort((a,b)=>b.val-a.val);
+  const top2 = attrs.slice(0,2);
+  const low = attrs[attrs.length-1];
+  const cat = r.category||"intermediaire";
+  const catLabels = {debutant:"débutant",intermediaire:"intermédiaire",avance:"avancé",expert:"expert",junior:"junior"};
+  const shape = (r.shape||"").toLowerCase();
+  
+  let profile = "";
+  // Shape-based
+  if(shape.includes("diamant")||shape.includes("diamond")) profile = "joueurs offensifs qui cherchent de la puissance en smash";
+  else if(shape.includes("ronde")||shape.includes("round")) profile = "joueurs défensifs ou polyvalents qui valorisent le contrôle";
+  else if(shape.includes("goutte")||shape.includes("drop")||shape.includes("hybride")) profile = "joueurs polyvalents qui veulent un bon équilibre attaque/défense";
+  else profile = "joueurs polyvalents";
+  
+  // Level
+  const levelStr = catLabels[cat]||"intermédiaire";
+  
+  // Build description
+  let desc = `Raquette de niveau ${levelStr}. `;
+  desc += `Points forts : ${top2[0].name} (${top2[0].val}/10) et ${top2[1].name} (${top2[1].val}/10). `;
+  if(low.val<=5) desc += `Point faible : ${low.name} (${low.val}/10). `;
+  desc += `Idéale pour les ${profile}. `;
+  
+  // Injury/comfort note
+  if(sc["Confort"]>=8) desc += "Son excellent confort la rend adaptée aux joueurs sujets aux tendinites.";
+  else if(sc["Confort"]<=5) desc += "⚠ Peu confortable, déconseillée si vous avez des douleurs articulaires.";
+  
+  return desc;
+}
+
+// === TOP RACKETS BY ATTRIBUTE ===
+const MAGAZINE_CATEGORIES = [
+  {id:"puissance", label:"💥 Puissance", attr:"Puissance", desc:"Les frappes les plus dévastatrices"},
+  {id:"controle", label:"🎯 Contrôle", attr:"Contrôle", desc:"Précision chirurgicale"},
+  {id:"confort", label:"🛡 Confort", attr:"Confort", desc:"Protège tes articulations"},
+  {id:"spin", label:"🌀 Spin", attr:"Spin", desc:"Effets et rotations maximales"},
+  {id:"polyvalence", label:"⚖️ Polyvalence", attr:null, desc:"Les meilleures all-round"},
+  {id:"rapport", label:"💰 Rapport qualité/prix", attr:null, desc:"Performances au meilleur prix"},
+];
+
+function getTopByCategory(catId, year, n=5) {
+  const cat = MAGAZINE_CATEGORIES.find(c=>c.id===catId);
+  if(!cat) return [];
+  let pool = RACKETS_DB.filter(r=>!year||r.year===year);
+  if(catId==="polyvalence") {
+    // Score = min score across all attrs (best worst attribute)
+    pool = pool.map(r=>{
+      const sc = r.scores||{};
+      const vals = ATTRS.map(a=>sc[a]||0);
+      const minV = Math.min(...vals);
+      const avgV = vals.reduce((a,b)=>a+b,0)/vals.length;
+      return {...r, _sortScore: minV*0.6 + avgV*0.4};
+    });
+  } else if(catId==="rapport") {
+    pool = pool.filter(r=>r.price).map(r=>{
+      const sc = r.scores||{};
+      const avg = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
+      const priceNum = parseInt((r.price||"").replace(/[^0-9]/g,''))||300;
+      return {...r, _sortScore: avg / (priceNum/100)};
+    });
+  } else {
+    pool = pool.map(r=>({...r, _sortScore: (r.scores||{})[cat.attr]||0}));
+  }
+  pool.sort((a,b)=>b._sortScore-a._sortScore);
+  return pool.slice(0,n);
+}
+
 // === DEEP ANALYSIS — 100% deterministic, zero AI ===
 function generateDeepAnalysis(profile, ranked, attrs) {
   if (!ranked.length) return [];
@@ -569,6 +639,10 @@ export default function PadelAnalyzer() {
   const [passwordModal, setPasswordModal] = useState(null); // { mode:'unlock'|'setpin'|'lock', profileName, onSuccess }
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState("");
+  const [magCat, setMagCat] = useState("puissance");
+  const [magYear, setMagYear] = useState(2026);
+  const [magDetail, setMagDetail] = useState(null); // racket to show in detail
+  const [addDetail, setAddDetail] = useState(null); // index of expanded search result
 
   // Auto-save rackets and profile to localStorage
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
@@ -1467,8 +1541,115 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           Crée ton premier profil pour commencer l'analyse
         </p>}
 
+        {/* ============================================================ */}
+        {/* MAGAZINE — Tendances & Classements */}
+        {/* ============================================================ */}
+        <div style={{marginTop:40,width:"100%",maxWidth:500}}>
+          <div style={{textAlign:"center",marginBottom:20}}>
+            <div style={{fontSize:18,fontWeight:800,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>📰 Tendances Padel</div>
+            <p style={{fontSize:11,color:"#64748b",margin:"4px 0 0"}}>Les meilleures raquettes par catégorie</p>
+          </div>
+
+          {/* Year toggle */}
+          <div style={{display:"flex",justifyContent:"center",gap:6,marginBottom:14}}>
+            {[2026,2025].map(y=>(
+              <button key={y} onClick={()=>setMagYear(y)} style={{
+                padding:"5px 16px",borderRadius:20,fontSize:11,fontWeight:magYear===y?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",
+                background:magYear===y?"rgba(249,115,22,0.15)":"rgba(255,255,255,0.04)",
+                border:`1px solid ${magYear===y?"rgba(249,115,22,0.4)":"rgba(255,255,255,0.08)"}`,
+                color:magYear===y?"#f97316":"#64748b",transition:"all 0.2s",
+              }}>{y}</button>
+            ))}
+          </div>
+
+          {/* Category tabs */}
+          <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none",msOverflowStyle:"none",marginBottom:16}}>
+            {MAGAZINE_CATEGORIES.map(c=>(
+              <button key={c.id} onClick={()=>setMagCat(c.id)} style={{
+                padding:"6px 12px",borderRadius:14,fontSize:10,fontWeight:magCat===c.id?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",
+                background:magCat===c.id?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                border:`1px solid ${magCat===c.id?"rgba(249,115,22,0.3)":"rgba(255,255,255,0.06)"}`,
+                color:magCat===c.id?"#f97316":"#94a3b8",transition:"all 0.2s",whiteSpace:"nowrap",flexShrink:0,
+              }}>{c.label}</button>
+            ))}
+          </div>
+
+          {/* Category description */}
+          <div style={{textAlign:"center",marginBottom:14}}>
+            <span style={{fontSize:11,color:"#94a3b8",fontStyle:"italic"}}>{MAGAZINE_CATEGORIES.find(c=>c.id===magCat)?.desc}</span>
+          </div>
+
+          {/* Top 5 cards */}
+          {(()=>{
+            const top5 = getTopByCategory(magCat, magYear);
+            if(!top5.length) return <p style={{textAlign:"center",color:"#475569",fontSize:11}}>Aucune raquette {magYear} dans cette catégorie.</p>;
+            return <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {top5.map((r,i)=>{
+                const sc = r.scores||{};
+                const medals = ["🥇","🥈","🥉","4️⃣","5️⃣"];
+                const catInfo = MAGAZINE_CATEGORIES.find(c=>c.id===magCat);
+                const mainScore = catInfo?.attr ? (sc[catInfo.attr]||0) : (r._sortScore||0).toFixed(1);
+                const isExpanded = magDetail?.id === r.id;
+                return <div key={r.id} style={{
+                  background:i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.03)",
+                  border:`1px solid ${i===0?"rgba(249,115,22,0.25)":"rgba(255,255,255,0.06)"}`,
+                  borderRadius:16,overflow:"hidden",transition:"all 0.3s",
+                }}>
+                  {/* Main row */}
+                  <div onClick={()=>setMagDetail(isExpanded?null:r)} style={{
+                    display:"flex",alignItems:"center",gap:12,padding:"12px 14px",cursor:"pointer",
+                  }}>
+                    <span style={{fontSize:20,flexShrink:0}}>{medals[i]}</span>
+                    {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:44,height:44,objectFit:"contain",flexShrink:0,borderRadius:8,background:"rgba(255,255,255,0.04)"}} onError={e=>{e.target.style.display="none";}}/>}
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:13,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
+                      <div style={{fontSize:10,color:"#64748b"}}>{r.brand} · {r.shape} · {r.weight}</div>
+                    </div>
+                    <div style={{textAlign:"right",flexShrink:0}}>
+                      <div style={{fontSize:20,fontWeight:900,fontFamily:"'Outfit'",color:i===0?"#f97316":"#e2e8f0"}}>{mainScore}</div>
+                      <div style={{fontSize:8,color:"#64748b",textTransform:"uppercase"}}>/10</div>
+                    </div>
+                    <span style={{fontSize:14,color:"#475569",flexShrink:0,transition:"transform 0.2s",transform:isExpanded?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
+                  </div>
+
+                  {/* Expanded tech sheet */}
+                  {isExpanded&&<div style={{padding:"0 14px 14px",borderTop:"1px solid rgba(255,255,255,0.05)",animation:"fadeIn 0.3s ease"}}>
+                    {/* Scores grid */}
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginTop:10,marginBottom:12}}>
+                      {ATTRS.map(a=>{
+                        const val = sc[a]||0;
+                        const isTop = catInfo?.attr===a;
+                        return <div key={a} style={{textAlign:"center",padding:"6px 4px",borderRadius:8,background:isTop?"rgba(249,115,22,0.1)":"rgba(255,255,255,0.02)"}}>
+                          <div style={{fontSize:16,fontWeight:800,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
+                          <div style={{fontSize:8,color:isTop?"#f97316":"#64748b",fontWeight:isTop?700:500,marginTop:2}}>{a}</div>
+                        </div>;
+                      })}
+                    </div>
+                    {/* Tech specs */}
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,marginBottom:10}}>
+                      {[["Forme",r.shape],["Poids",r.weight],["Équilibre",r.balance],["Surface",r.surface],["Noyau",r.core],["Prix",r.price]].map(([k,v])=>
+                        v&&v!=="—"&&<div key={k} style={{fontSize:9,color:"#94a3b8",padding:"3px 0"}}>
+                          <span style={{color:"#64748b"}}>{k}:</span> <span style={{fontWeight:600,color:"#cbd5e1"}}>{v}</span>
+                        </div>
+                      )}
+                    </div>
+                    {/* Description */}
+                    <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:"0 0 8px",padding:"10px 12px",background:"rgba(255,255,255,0.02)",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)"}}>
+                      {generateRacketDescription(r)}
+                    </p>
+                    {/* Verdict from DB if available */}
+                    {r.verdict&&r.verdict!=="—"&&<p style={{fontSize:10,color:"#64748b",lineHeight:1.5,margin:0,fontStyle:"italic"}}>
+                      💬 {r.verdict}
+                    </p>}
+                  </div>}
+                </div>;
+              })}
+            </div>;
+          })()}
+        </div>
+
         <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.5 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.6 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
         </div>
       </div>}
 
@@ -2195,7 +2376,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.5 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.6 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -2219,7 +2400,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.5</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.6</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -2333,20 +2514,86 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {loadMsg&&<div style={{fontSize:11,color:"#f97316",marginTop:8}}>{loadMsg}</div>}
         {error&&<div style={{fontSize:11,color:"#ef4444",marginTop:8}}>{error}</div>}
         {suggestions&&<div style={{marginTop:10}}>
-          <p style={{fontSize:11,color:"#f97316",fontWeight:700,marginBottom:8}}>📋 Résultats — clique sur celle que tu veux ajouter :</p>
-          {suggestions.map((s,i)=>(
-            <div key={i} onClick={()=>!s._disabled&&selectSuggestion(i)} style={{
-              background:s._selected?"rgba(249,115,22,0.15)":"rgba(255,255,255,0.04)",
-              border:`1px solid ${s._selected?"#f97316":"rgba(255,255,255,0.1)"}`,
-              borderRadius:10,padding:"10px 12px",marginBottom:6,
+          <p style={{fontSize:11,color:"#f97316",fontWeight:700,marginBottom:8}}>📋 Résultats — clique pour voir la fiche technique :</p>
+          {suggestions.map((s,i)=>{
+            const isExpanded = addDetail === i;
+            // Try to match with DB
+            const nameLower = (s.name||"").toLowerCase();
+            const dbMatch = RACKETS_DB.find(r=>r.name.toLowerCase()===nameLower) || RACKETS_DB.find(r=>nameLower.includes((r.shortName||r.name).toLowerCase().slice(0,12))||(r.shortName||r.name).toLowerCase().includes(nameLower.slice(0,12)));
+            const sc = dbMatch?.scores||{};
+            const hasScores = dbMatch && Object.keys(sc).length>0;
+            const gs = hasScores ? computeGlobalScore(sc, profile) : null;
+            const fyConfig = hasScores ? computeForYou(sc, profile) : null;
+            const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:fyConfig==="no"?{text:"PEU ADAPTÉ",color:"#64748b"}:null;
+            return (
+            <div key={i} style={{
+              background:s._selected?"rgba(249,115,22,0.15)":isExpanded?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.04)",
+              border:`1px solid ${s._selected?"#f97316":isExpanded?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.1)"}`,
+              borderRadius:12,marginBottom:8,overflow:"hidden",
               cursor:s._disabled?"default":"pointer",opacity:s._disabled&&!s._selected?0.3:1,
               transition:"all 0.2s",
             }}>
-              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{s.name}</div>
-              <div style={{fontSize:10,color:"#94a3b8",marginTop:2}}>{s.brand} · {s.shape} · {s.weight}</div>
-              <div style={{fontSize:10,color:"#64748b",marginTop:1}}>{s.description}</div>
+              {/* Header row — click to expand */}
+              <div onClick={()=>!s._disabled&&setAddDetail(isExpanded?null:i)} style={{padding:"10px 12px",display:"flex",alignItems:"center",gap:10}}>
+                {dbMatch?.imageUrl&&<img src={dbMatch.imageUrl} alt={s.name} style={{width:38,height:38,objectFit:"contain",borderRadius:6,flexShrink:0,background:"rgba(255,255,255,0.04)"}} onError={e=>{e.target.style.display="none";}}/>}
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{s.name}</div>
+                  <div style={{fontSize:10,color:"#94a3b8",marginTop:2}}>{s.brand} · {s.shape} · {s.weight}</div>
+                </div>
+                {gs!==null&&<div style={{textAlign:"right",flexShrink:0}}>
+                  <div style={{fontSize:18,fontWeight:800,fontFamily:"'Outfit'",color:gs>=7?"#4CAF50":gs>=5?"#f97316":"#ef4444"}}>{(gs*10).toFixed(0)}%</div>
+                  <div style={{fontSize:7,color:"#64748b",textTransform:"uppercase"}}>pertinence</div>
+                </div>}
+                <span style={{fontSize:12,color:"#475569",flexShrink:0,transition:"transform 0.2s",transform:isExpanded?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
+              </div>
+
+              {/* Expanded tech sheet */}
+              {isExpanded&&<div style={{padding:"0 12px 12px",borderTop:"1px solid rgba(255,255,255,0.05)",animation:"fadeIn 0.3s ease"}}>
+                {/* Badge pertinence */}
+                {badge&&profileName&&<div style={{display:"flex",alignItems:"center",gap:8,marginTop:10,marginBottom:8}}>
+                  <span style={{fontSize:10,fontWeight:700,color:badge.color,background:`${badge.color}18`,border:`1px solid ${badge.color}40`,borderRadius:8,padding:"3px 10px",textTransform:"uppercase"}}>{badge.text}</span>
+                  <span style={{fontSize:10,color:"#64748b"}}>pour {profileName}</span>
+                </div>}
+
+                {hasScores ? <>
+                  {/* Scores grid */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:10}}>
+                    {ATTRS.map(a=>{
+                      const val = sc[a]||0;
+                      const isPrio = (profile.priorityTags||[]).some(pid=>{const m={puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort'};return m[pid]===a;});
+                      return <div key={a} style={{textAlign:"center",padding:"6px 4px",borderRadius:8,background:isPrio?"rgba(249,115,22,0.1)":"rgba(255,255,255,0.02)"}}>
+                        <div style={{fontSize:16,fontWeight:800,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
+                        <div style={{fontSize:8,color:isPrio?"#f97316":"#64748b",fontWeight:isPrio?700:500,marginTop:2}}>{isPrio?"★ ":""}{a}</div>
+                      </div>;
+                    })}
+                  </div>
+
+                  {/* Tech specs */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,marginBottom:8}}>
+                    {[["Forme",dbMatch.shape],["Poids",dbMatch.weight],["Équilibre",dbMatch.balance],["Surface",dbMatch.surface],["Noyau",dbMatch.core],["Prix",dbMatch.price],["Année",dbMatch.year]].map(([k,v])=>
+                      v&&v!=="—"&&<div key={k} style={{fontSize:9,color:"#94a3b8",padding:"2px 0"}}>
+                        <span style={{color:"#64748b"}}>{k}:</span> <span style={{fontWeight:600,color:"#cbd5e1"}}>{v}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Pour qui ? */}
+                  <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:"0 0 8px",padding:"10px 12px",background:"rgba(255,255,255,0.02)",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)"}}>
+                    🎯 {generateRacketDescription(dbMatch)}
+                  </p>
+                </> : <p style={{fontSize:10,color:"#64748b",margin:"10px 0 8px",lineHeight:1.4}}>{s.description||"Raquette non référencée dans la base locale. Les scores ne sont pas disponibles."}</p>}
+
+                {/* Add button */}
+                {!s._selected&&!s._disabled&&<button onClick={(e)=>{e.stopPropagation();selectSuggestion(i);setAddDetail(null);}} style={{
+                  width:"100%",padding:"10px",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+                  background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.12))",
+                  border:"1px solid rgba(249,115,22,0.4)",color:"#f97316",transition:"all 0.2s",marginTop:4,
+                }}>+ Ajouter au comparateur</button>}
+                {s._selected&&<div style={{textAlign:"center",padding:"8px",fontSize:11,color:"#4CAF50",fontWeight:600}}>✅ Ajoutée au comparateur</div>}
+              </div>}
             </div>
-          ))}
+            );
+          })}
         </div>}
       </div>}
 
@@ -3342,7 +3589,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.5 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.6 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -3365,7 +3612,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.5 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.6 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
 
