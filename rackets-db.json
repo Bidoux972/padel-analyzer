@@ -491,7 +491,40 @@
       "Maniabilité": 7.5,
       "Tolérance": 8
     },
-    "verdict": "Metalbone version contrôle ronde. Même qualité de construction avec focus sur précision et placement. Weight system personnalisable. Pour joueurs tactiques."
+    "verdict": "Metalbone version contrôle ronde. Même qualité de construction avec focus sur précision et placement. Weight system personnalisable. Pour joueurs tactiques.",
+    "editorial": "La Metalbone CTRL 2026 incarne le parfait équilibre entre puissance et contrôle chez Adidas. Son carbone aluminisé 16K offre une rigidité maîtrisée qui canalise la frappe sans sacrifier le toucher de balle. La mousse EVA Soft Performance absorbe les vibrations tout en restituant assez d'énergie pour des contres incisifs. C'est la pala des stratèges qui veulent dicter le jeu depuis le fond du court.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone Aluminisé 16K",
+        "detail": "Rigidité optimisée pour un retour d'énergie maîtrisé sans perte de toucher"
+      },
+      {
+        "label": "Noyau",
+        "value": "EVA Soft Performance",
+        "detail": "Mousse à densité intermédiaire : confort au bandeja, répondant au smash"
+      },
+      {
+        "label": "Technologie",
+        "value": "Weight & Balance System",
+        "detail": "Système de lests intégrés permettant d'ajuster l'équilibre selon votre style"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot centré et élargi, tolérance maximale sur les frappes décentrées"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Large et centré",
+        "detail": "La forme ronde combinée au carbone 16K offre une zone de frappe très tolérante"
+      }
+    ],
+    "targetProfile": "Joueurs avancés à experts défensifs ou polyvalents. Idéale pour le joueur de gauche qui aime contrer et placer, ou le joueur de droite qui veut sécuriser ses volées tout en gardant du répondant.",
+    "proPlayerInfo": {
+      "name": "Lorena Rufo",
+      "context": "Joueuse WPT connue pour son jeu de contrôle et sa régularité depuis le fond du court."
+    }
   },
   {
     "name": "Adidas Metalbone Carbon 2026",
@@ -543,7 +576,37 @@
       "Maniabilité": 7,
       "Tolérance": 7.5
     },
-    "verdict": "Contrôle premium en 24K Carbon ronde. Ultra-stable et précise. Pour experts défensifs exigeants qui veulent construction rigide et sensation sèche."
+    "verdict": "Contrôle premium en 24K Carbon ronde. Ultra-stable et précise. Pour experts défensifs exigeants qui veulent construction rigide et sensation sèche.",
+    "editorial": "La Metalbone Carbon CTRL 2026 est la version la plus extrême de la gamme contrôle Adidas. Le carbone aluminisé 24K — le même que sur la HRD — est ici associé à une mousse EVA Soft Performance et une forme ronde. Le résultat est unique : une rigidité de surface digne d'une pala de puissance, combinée à un sweet spot centré et tolérant. Le Weight & Balance System permet de basculer entre un setup plus défensif ou plus offensif. L'excellence du contrôle.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone Aluminisé 24K",
+        "detail": "Le carbone le plus dense d'Adidas — habituellement réservé aux palas de puissance, ici au service du contrôle"
+      },
+      {
+        "label": "Noyau",
+        "value": "EVA Soft Performance",
+        "detail": "Mousse douce mais réactive — absorbe les chocs tout en conservant du répondant"
+      },
+      {
+        "label": "Technologie",
+        "value": "Weight & Balance System",
+        "detail": "Lests ajustables pour personnaliser l'équilibre — unique en ronde sur le marché"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot centré pour le contrôle maximal — associé au 24K pour de la rigidité rare en ronde"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Centré mais rigide",
+        "detail": "Combinaison rare : tolérance de la ronde avec le retour d'énergie du carbone 24K"
+      }
+    ],
+    "targetProfile": "Joueurs experts de contrôle exigeants. Pour ceux qui trouvent les rondes classiques trop molles et veulent de la rigidité sans sacrifier la tolérance de la forme ronde.",
+    "proPlayerInfo": null
   },
   {
     "name": "Adidas Metalbone HRD 2026",
@@ -569,7 +632,40 @@
       "Tolérance": 5
     },
     "verdict": "Metalbone hardcore. EVA Hard pour sortie de balle max. Puissance brute.",
-    "id": "adidas-metalbone-hrd-2026"
+    "id": "adidas-metalbone-hrd-2026",
+    "editorial": "La Metalbone HRD 2026 est l'arme absolue d'Adidas — la plus radicale de la gamme. HRD pour 'Hard', et le nom ne ment pas : le carbone 24K aluminisé, le plus dense jamais utilisé sur une pala, ne fléchit pas. Chaque frappe est transmise intégralement à la balle, sans filtre. Le noyau Hard EVA confirme le parti-pris : zéro confort, 100% sortie de balle. Le Weight & Balance System permet d'ajuster les lests, seule concession à la personnalisation. C'est une pala de gladiateur.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone Aluminisé 24K",
+        "detail": "Le carbone le plus dense du marché — 24 000 filaments par mèche, traitement aluminium pour la rigidité absolue"
+      },
+      {
+        "label": "Noyau",
+        "value": "Hard EVA",
+        "detail": "Mousse ultra-dense — aucune absorption, toute l'énergie est retransmise à la balle. Le plus dur du catalogue Adidas"
+      },
+      {
+        "label": "Technologie",
+        "value": "Weight & Balance System",
+        "detail": "Système de lests amovibles dans le cadre — personnalisez l'équilibre selon votre style de jeu"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Masse concentrée en tête — effet de levier maximal pour les smashs"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Haut et exigeant",
+        "detail": "Zone de frappe réduite mais dévastatrice quand elle est trouvée. Pour les joueurs précis uniquement"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs purs avec un physique solide. Absolument déconseillée aux joueurs avec des douleurs articulaires. Réservée aux compétiteurs qui privilégient la puissance avant tout.",
+    "proPlayerInfo": {
+      "name": "Ale Galán",
+      "context": "N°2 mondial, l'un des attaquants les plus redoutés du circuit. Sa puissance au smash avec la Metalbone est devenue sa signature."
+    }
   },
   {
     "name": "Adidas Metalbone Team 2026",
@@ -933,7 +1029,37 @@
       "Tolérance": 7.5
     },
     "verdict": "Viper aérodynamique. 16K + X-EVA pour réactivité. Transitions filet-fond rapides.",
-    "id": "babolat-air-viper-2026"
+    "id": "babolat-air-viper-2026",
+    "editorial": "L'Air Viper 2026 est la version aérienne de la gamme Viper de Babolat. Le carbone 16K offre un bon niveau de rigidité, et le X-EVA Hard propulse la balle avec autorité. Le 'Air' du nom vient de sa construction optimisée pour la légèreté : même puissance que la Viper classique, mais un maniement plus rapide au filet. Pour les attaquants qui veulent de la vitesse de bras sans renoncer à la percussion au smash.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 16K",
+        "detail": "Carbone à densité intermédiaire-haute — bon compromis rigidité/poids"
+      },
+      {
+        "label": "Noyau",
+        "value": "X-EVA Hard",
+        "detail": "La mousse la plus dure de Babolat — retour d'énergie maximal, toucher sec"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Puissance en tête pour les smashs — forme offensive assumée"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Haut et dynamique",
+        "detail": "Zone de frappe haute, optimisée pour les coups au-dessus de la tête"
+      },
+      {
+        "label": "Construction",
+        "value": "Air (légère)",
+        "detail": "Construction allégée par rapport à la Viper standard — gain en vitesse de bras"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs rapides. L'attaquant qui mise sur la vitesse de bras et l'accélération plutôt que sur la puissance brute par le poids.",
+    "proPlayerInfo": null
   },
   {
     "name": "Babolat Counter Veron 2026",
@@ -985,7 +1111,37 @@
       "Tolérance": 8
     },
     "verdict": "Ronde offensive. 3K carbon pour précision + balance haute pour punch en contre.",
-    "id": "babolat-counter-viper-2026"
+    "id": "babolat-counter-viper-2026",
+    "editorial": "La Counter Viper 2026 est l'anti-thèse de la Viper classique — même technologie, philosophie opposée. Le carbone 3K avec Spin+ en surface génère des effets redoutables sur les contres et les lobs, tandis que le Power Foam offre assez de répondant pour punir les balles hautes. C'est la pala du contreur — celui qui retourne tout, qui lobe avec des effets impossibles, et qui attend patiemment que l'adversaire craque.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 3K + Spin+",
+        "detail": "Surface texturée Spin+ sur carbone 3K — accroche maximale pour les effets en défense"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive qui permet des contres puissants même depuis une position défensive"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Maximum de contrôle et de tolérance — la forme naturelle du défenseur"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Large et centré",
+        "detail": "Sweet spot ronde classique, élargi par la construction soignée de Babolat"
+      },
+      {
+        "label": "Spin",
+        "value": "Spin+ Technology",
+        "detail": "Texture de surface qui génère jusqu'à 20% plus de rotation qu'une surface lisse"
+      }
+    ],
+    "targetProfile": "Joueurs avancés défensifs-contreurs. Le joueur de droite qui ne rate rien, qui lobe avec précision, et qui transforme chaque balle défensive en opportunité avec du spin.",
+    "proPlayerInfo": null
   },
   {
     "id": "babolat-technical-veron-2026",
@@ -1141,7 +1297,40 @@
       "Maniabilité": 6,
       "Tolérance": 6
     },
-    "verdict": "Viper avec couche confort supplémentaire. Même puissance Lebrón avec toucher plus doux. Pour experts offensifs qui veulent ménager leur bras."
+    "verdict": "Viper avec couche confort supplémentaire. Même puissance Lebrón avec toucher plus doux. Pour experts offensifs qui veulent ménager leur bras.",
+    "editorial": "La Viper Soft 3.0 est la version confort de l'arme de Juan Lebrón. Babolat a gardé la puissance de la Viper originale — le carbone 3K Soft qui fléchit juste assez à l'impact pour emmagasiner de l'énergie — et a ajouté une couche de confort via le X-EVA avec Comfort Layer intégré. Le Vibrabsorb, système anti-vibrations maison, complète l'équation. Résultat : une pala qui frappe fort mais qui ne vous détruit pas le bras.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "3K Soft Carbon",
+        "detail": "Carbone 3K avec traitement 'Soft' — micro-flex contrôlé à l'impact pour plus de confort sans perdre en rigidité"
+      },
+      {
+        "label": "Noyau",
+        "value": "X-EVA + Comfort Layer",
+        "detail": "Double couche : X-EVA pour la réactivité, Comfort Layer pour filtrer les chocs. Le meilleur des deux mondes"
+      },
+      {
+        "label": "Technologie",
+        "value": "Vibrabsorb",
+        "detail": "Système anti-vibrations Babolat intégré dans le manche — réduit les chocs transmis au poignet et au coude"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Puissance assumée avec l'équilibre en tête — compensée par le noyau Soft"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Haut mais amorti",
+        "detail": "Le sweet spot diamant classique, mais le Soft Carbon pardonne davantage les frappes excentrées"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs qui ont besoin de confort. L'attaquant qui a des douleurs au coude mais qui refuse de passer à une ronde. Solution idéale pour garder de la puissance en protégeant ses articulations.",
+    "proPlayerInfo": {
+      "name": "Juan Lebrón",
+      "context": "Ex-N°1 mondial, l'un des joueurs les plus complets de l'histoire du padel. Puissance, toucher, intelligence tactique — il incarne la polyvalence au plus haut niveau."
+    }
   },
   {
     "id": "bullpadel-vertex-04-2024",
@@ -1505,7 +1694,37 @@
       "Maniabilité": 7.5,
       "Tolérance": 7
     },
-    "verdict": "Hack format hybride pour contre-attaque. Puissance dynamique avec meilleur contrôle défensif. Pour joueurs avancés offensifs polyvalents."
+    "verdict": "Hack format hybride pour contre-attaque. Puissance dynamique avec meilleur contrôle défensif. Pour joueurs avancés offensifs polyvalents.",
+    "editorial": "La Hack 04 Hybrid 2026 est le tank de Bullpadel — la pala des gros frappeurs qui ne veulent pas sacrifier le toucher. Le carbone aluminisé 18K en surface est l'un des plus rigides du catalogue, mais le noyau MultiEVA et le double système Ease Vibe + Total Channel tempèrent la brutalité. Le Total Channel — des canaux creusés dans le cadre — redistribue l'énergie d'impact pour un sweet spot plus homogène. C'est la puissance civilisée.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone Aluminisé 18K",
+        "detail": "Traitement aluminium sur carbone 18K — rigidité élevée pour les frappes puissantes"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEVA",
+        "detail": "Mousse multi-densité — dur au centre, souple en périphérie pour le confort"
+      },
+      {
+        "label": "Technologie",
+        "value": "Ease Vibe + Total Channel",
+        "detail": "Double système : Ease Vibe absorbe les vibrations, Total Channel redistribue l'énergie dans le cadre"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Le compromis Hack — puissance de la gamme offensive avec la tolérance de la forme goutte"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Élargi par Total Channel",
+        "detail": "Les canaux dans le cadre créent une zone de frappe plus large et plus uniforme"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs qui veulent de la puissance avec du confort. La passerelle entre les palas de contrôle et les diamants pures puissance.",
+    "proPlayerInfo": null
   },
   {
     "id": "bullpadel-icon-2026",
@@ -1531,7 +1750,40 @@
       "Maniabilité": 6,
       "Tolérance": 6.5
     },
-    "verdict": "Hommage au légendaire Juan Martín Díaz. Puissance et contrôle premium pour joueurs d'élite qui cherchent l'excellence sur chaque point."
+    "verdict": "Hommage au légendaire Juan Martín Díaz. Puissance et contrôle premium pour joueurs d'élite qui cherchent l'excellence sur chaque point.",
+    "editorial": "La Icon 2026 est la signature de Juan Martín Díaz — 'El Lobo', le loup du padel. À l'image de son créateur, cette pala est polyvalente, intelligente et redoutable quand le point se tend. Le Xtend Carbon 12K offre un bon compromis entre rigidité et toucher, tandis que le noyau MultiEVA s'adapte à tous les coups. L'Ease Vibe assure un confort sur la durée. Une pala de vétéran pour joueurs matures.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Xtend Carbon 12K",
+        "detail": "Carbone 12K extensible — plus rigide que le 3K mais avec le flex Xtend pour le toucher"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEVA",
+        "detail": "Mousse polyvalente multi-densité — ni trop dure, ni trop souple, adaptée à tous les coups"
+      },
+      {
+        "label": "Technologie",
+        "value": "Ease Vibe",
+        "detail": "Anti-vibrations Bullpadel pour le confort sur les longues sessions de jeu"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Le compromis parfait — sweet spot intermédiaire entre ronde et diamant"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Intermédiaire et polyvalent",
+        "detail": "Ni trop haut ni trop centré — s'adapte au jeu de fond comme au jeu de filet"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents. Le joueur expérimenté qui ne veut pas se spécialiser, qui défend puis attaque selon le point. Excellente première pala avancée.",
+    "proPlayerInfo": {
+      "name": "Juan Martín Díaz",
+      "context": "Légende absolue du padel. Multiple champion du monde, surnommé 'El Lobo'. Son style intelligent et son expérience ont façonné cette pala à son image."
+    }
   },
   {
     "name": "Bullpadel Neuron 02 2026",
@@ -1583,7 +1835,40 @@
       "Maniabilité": 7,
       "Tolérance": 6.5
     },
-    "verdict": "Version pro du Neuron avec géométrie modifiée pour plus de punch. Précision de Chingotto avec boost offensif. Pour experts tactiques qui veulent aussi accélérer."
+    "verdict": "Version pro du Neuron avec géométrie modifiée pour plus de punch. Précision de Chingotto avec boost offensif. Pour experts tactiques qui veulent aussi accélérer.",
+    "editorial": "La Neuron 02 Edge est la pala de Federico Chingotto — et elle lui ressemble : technique, précise, tactique. Le Xtend Carbon 3K est dosé pour offrir du toucher plutôt que de la brutalité. Le PrismLock, exclusivité Bullpadel, verrouille les fibres de carbone en position pour une réponse plus prévisible frappe après frappe. L'Ease Vibe filtre les vibrations parasites. C'est une pala d'orfèvre, pas de bûcheron.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Xtend Carbon 3K",
+        "detail": "Carbone extensible à maillage fin — réactivité et toucher plutôt que rigidité brute"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEVA",
+        "detail": "Mousse multi-densité pour un équilibre contrôle/puissance adapté au jeu de volée"
+      },
+      {
+        "label": "Technologie",
+        "value": "PrismLock + Ease Vibe",
+        "detail": "PrismLock verrouille les fibres pour une réponse constante, Ease Vibe absorbe les vibrations"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot centré et large — la forme des joueurs qui construisent les points avec intelligence"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Large et centré",
+        "detail": "Maximum de tolérance pour le jeu de volée et les contres rapides au filet"
+      }
+    ],
+    "targetProfile": "Joueurs experts défensifs ou de contrôle. Le joueur de droite qui ne rate jamais une volée, qui place et qui attend l'erreur adverse. Aussi pour les joueurs de gauche tactiques.",
+    "proPlayerInfo": {
+      "name": "Federico Chingotto",
+      "context": "Joueur argentin Top 10, surnommé 'El Mago' pour ses coups impossibles et sa créativité tactique unique sur le circuit."
+    }
   },
   {
     "name": "Bullpadel Vertex 05 2026",
@@ -1623,7 +1908,7 @@
     "core": "MultiEVA",
     "antivib": "Ease Vibe",
     "price": "300-380€",
-    "player": null,
+    "player": "Paquito Navarro",
     "imageUrl": "https://www.padelful.com/images/rackets/bullpadel-vertex-05-geo-2026-pablo-cardona.png",
     "year": 2026,
     "category": "expert",
@@ -1635,7 +1920,40 @@
       "Maniabilité": 5.5,
       "Tolérance": 5.5
     },
-    "verdict": "Version la plus agressive du Vertex. Géométrie optimisée pour surface de frappe élargie et balance encore plus haute. Puissance brute maximale."
+    "verdict": "Version la plus agressive du Vertex. Géométrie optimisée pour surface de frappe élargie et balance encore plus haute. Puissance brute maximale.",
+    "editorial": "La Vertex 05 GEO 2026 est le vaisseau amiral de Bullpadel — la pala que les attaquants rêvent de manier. Le Xtend Carbon 3K sur la face offre une frappe sèche et directe, tandis que la géométrie GEO redistribue les forces d'impact pour un sweet spot plus homogène. Le noyau MultiEVA stratifie plusieurs densités de mousse : dur au centre pour la puissance, plus souple en périphérie pour le confort. Un bijou d'ingénierie.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Xtend Carbon 3K",
+        "detail": "Carbone extensible propriétaire Bullpadel — combine rigidité et capacité de déformation contrôlée"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEVA",
+        "detail": "Mousse multi-densité : couche dure au centre (puissance), couche souple en périphérie (confort)"
+      },
+      {
+        "label": "Technologie",
+        "value": "GEO Geometry",
+        "detail": "Refonte géométrique du cadre qui redistribue les contraintes pour élargir le sweet spot"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Équilibre en tête assumé — chaque gramme de masse contribue à la puissance du smash"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Élargi par GEO",
+        "detail": "La technologie GEO compense le sweet spot naturellement réduit de la forme diamant"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs. L'attaquant complet qui smash mais qui veut garder du toucher sur les volées hautes. La version 05 est plus accessible que la 04.",
+    "proPlayerInfo": {
+      "name": "Paquito Navarro",
+      "context": "Légende du padel mondial, connu pour ses smashs dévastateurs et son charisme sur le court. Ambassadeur historique de la gamme Vertex."
+    }
   },
   {
     "name": "Bullpadel Vertex 05 Hybrid 2026",
@@ -1894,7 +2212,37 @@
     },
     "imageUrl": "https://www.padelful.com/images/rackets/dunlop-fx-lite-2026.png",
     "verdict": "Diamant légère qui privilégie la maniabilité sans sacrifier la frappe. Bon compromis pour attaquants qui veulent rester mobiles.",
-    "price": "170-230€"
+    "price": "170-230€",
+    "editorial": "La FX Lite 2026 est l'outsider de Dunlop — la marque historique du tennis qui s'impose progressivement en padel. Le carbone 12K offre une rigidité de bon niveau, et le noyau Soft EVA mise tout sur le confort et la maniabilité. C'est une pala honnête, bien construite, sans prétention marketing exagérée. Dunlop vise les joueurs avancés qui veulent du matériel fiable sans payer le prix des technologies propriétaires des leaders.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon 12K",
+        "detail": "Carbone 12K classique — bonne rigidité, réponse prévisible et fiable"
+      },
+      {
+        "label": "Noyau",
+        "value": "Soft EVA",
+        "detail": "Mousse souple pour un maximum de confort — idéale pour les sessions longues"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Polyvalence et tolérance — le choix sûr pour un joueur avancé"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Généreux",
+        "detail": "La combinaison forme goutte + EVA souple offre une grande zone de confort"
+      },
+      {
+        "label": "Poids",
+        "value": "Lite",
+        "detail": "Version légère pour la vitesse de bras et la réduction de la fatigue"
+      }
+    ],
+    "targetProfile": "Joueurs avancés qui privilégient le confort et la maniabilité. Excellent choix pour les joueurs de 40+ ans ou ceux qui jouent 3-4 fois par semaine et veulent préserver leur corps.",
+    "proPlayerInfo": null
   },
   {
     "id": "dunlop-fx-pro-26",
@@ -2178,7 +2526,40 @@
       "Maniabilité": 7.5,
       "Tolérance": 8
     },
-    "verdict": "Référence contrôle Head en forme ronde. Grand sweet spot, stable sur les blocks et les lobs. Pour joueurs de droite qui construisent le point avec patience et placement."
+    "verdict": "Référence contrôle Head en forme ronde. Grand sweet spot, stable sur les blocks et les lobs. Pour joueurs de droite qui construisent le point avec patience et placement.",
+    "editorial": "La Gravity Pro 2025 est le bijou technologique de Head pour les joueurs de contrôle haut niveau. Son hybride carbone/fibre de verre crée un flex unique à l'impact : la face absorbe puis restitue, offrant un toucher presque organique que les puristes adorent. L'Auxetic 2.0, technologie issue du tennis, déforme la structure au point d'impact pour agrandir virtuellement le sweet spot. C'est la pala la plus intelligente du marché.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon + Fiberglass Hybrid",
+        "detail": "Le mix carbone/fibre de verre crée un flex contrôlé unique — rigide au centre, souple en périphérie"
+      },
+      {
+        "label": "Noyau",
+        "value": "Control Foam",
+        "detail": "Mousse propriétaire Head à cellules fermées, optimisée pour le toucher et la précision des volées"
+      },
+      {
+        "label": "Technologie",
+        "value": "Auxetic 2.0",
+        "detail": "Structure auxétique qui s'élargit à l'impact, agrandissant le sweet spot de 23% selon Head"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot centré pour une tolérance maximale, pardon assuré sur les frappes décentrées"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Élargi par Auxetic",
+        "detail": "La technologie auxétique compense les frappes excentrées en déformant la structure localement"
+      }
+    ],
+    "targetProfile": "Joueurs experts orientés contrôle. Le défenseur technique qui construit les points avec patience et précision. Parfaite aussi pour le joueur de droite qui enchaîne volées et bandejas.",
+    "proPlayerInfo": {
+      "name": "Daniel Windahl",
+      "context": "Joueur suédois du circuit Premier Padel, reconnu pour son jeu tactique et son toucher exceptionnel."
+    }
   },
   {
     "id": "head-gravity-team-light-2025",
@@ -2308,7 +2689,37 @@
       "Maniabilité": 8,
       "Tolérance": 7.5
     },
-    "verdict": "Ultra-confortable grâce au DAMP+ dans le cœur. Polyvalente légère avec bon rendement. Pour joueurs confirmés qui cherchent sensations et protection du bras."
+    "verdict": "Ultra-confortable grâce au DAMP+ dans le cœur. Polyvalente légère avec bon rendement. Pour joueurs confirmés qui cherchent sensations et protection du bras.",
+    "editorial": "La Speed One X 2025 est le haut de gamme polyvalent de Head — la pala couteau suisse. Son carbone 2D offre une rigidité homogène sur toute la surface de frappe, sans point dur. Le Power Foam propulse la balle avec autorité, tandis que le double système DAMP+ et Auxetic 2.0 filtre chaque vibration indésirable. Le résultat est une pala qui fait tout bien : smash, volée, bandeja, défense. Aucune faiblesse, aucun compromis.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon 2D",
+        "detail": "Carbone à tissage bidimensionnel — rigidité uniforme sur toute la face, pas de zones mortes"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse haute performance Head — retour d'énergie optimal pour les frappes offensives"
+      },
+      {
+        "label": "Technologie",
+        "value": "DAMP+ et Auxetic 2.0",
+        "detail": "Double technologie : DAMP+ absorbe les vibrations basses fréquences, Auxetic élargit le sweet spot"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Polyvalence incarnée — sweet spot entre centre et haut de la pala"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Large et tolérant",
+        "detail": "La combinaison forme goutte + Auxetic crée l'une des zones de frappe les plus permissives du marché"
+      }
+    ],
+    "targetProfile": "Joueurs avancés à experts qui ne veulent aucune faiblesse. Le joueur complet qui change de rôle pendant le point — défense, transition, attaque. La pala de ceux qui refusent de choisir.",
+    "proPlayerInfo": null
   },
   {
     "id": "head-speed-pro-2025",
@@ -2438,7 +2849,40 @@
       "Maniabilité": 6.5,
       "Tolérance": 6.5
     },
-    "verdict": "La raquette signature d'Arturo Coello version pro. Carbone 3K premium avec Dual Spin pour un effet dévastateur. Réservée aux experts."
+    "verdict": "La raquette signature d'Arturo Coello version pro. Carbone 3K premium avec Dual Spin pour un effet dévastateur. Réservée aux experts.",
+    "editorial": "La Coello Pro 2026 porte le nom du prodige espagnol qui a révolutionné le padel à 19 ans. Head a conçu une arme de compétition pure : carbone 3K pour la réactivité, Power Foam pour l'explosivité, et l'incontournable Auxetic 2.0 pour pardonner les frappes légèrement décentrées. La forme diamant assumée envoie un message clair — cette pala est faite pour finir les points, pas pour les subir.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon 3K",
+        "detail": "Carbone à maillage serré (3K = 3000 filaments par mèche) — réactivité immédiate, toucher direct"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse haute densité Head — conçue pour maximiser la sortie de balle au smash"
+      },
+      {
+        "label": "Technologie",
+        "value": "Auxetic 2.0",
+        "detail": "La structure auxétique s'élargit à l'impact, crucial sur une diamant où le sweet spot est naturellement réduit"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Équilibre en tête, puissance maximale — le choix des attaquants qui jouent en l'air"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Compensé par Auxetic",
+        "detail": "Le sweet spot diamant naturellement haut et étroit est élargi par la technologie Auxetic"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs. Le joueur de gauche qui monte au filet et finit au smash. Nécessite un bon niveau technique pour exploiter la forme diamant.",
+    "proPlayerInfo": {
+      "name": "Arturo Coello",
+      "context": "Plus jeune N°1 mondial de l'histoire du padel (19 ans). Son jeu explosif et ses réflexes hors norme incarnent parfaitement cette pala."
+    }
   },
   {
     "name": "Head Coello Team 2026",
@@ -2516,7 +2960,37 @@
       "Maniabilité": 5,
       "Tolérance": 5
     },
-    "verdict": "Diamant ultime de Head. La plus puissante de la gamme avec carbone premium et EVA dure. Pour les attaquants d'élite exclusivement."
+    "verdict": "Diamant ultime de Head. La plus puissante de la gamme avec carbone premium et EVA dure. Pour les attaquants d'élite exclusivement.",
+    "editorial": "La Delta Elite 2026 est la déclaration de guerre de Head dans le segment puissance premium. Le carbone haute densité sur la face délivre une frappe sèche et claquante, typique des diamants haut de gamme. L'Auxetic 2.0, ici plus utile que jamais, rattrape les petites erreurs de centrage inhérentes à la forme diamant. Le Power Foam complète l'arsenal offensif. C'est la rivale directe de la Metalbone HRD, avec un peu plus de pardon.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone Haute Densité",
+        "detail": "Couche de carbone rigide et homogène pour un transfert d'énergie maximal au smash"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse dense et réactive — retour d'énergie immédiat pour les frappes agressives"
+      },
+      {
+        "label": "Technologie",
+        "value": "Auxetic 2.0",
+        "detail": "Crucial sur une diamant : la déformation auxétique élargit le sweet spot là où c'est le plus nécessaire"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Équilibre en tête, puissance maximale — la forme des finisseurs"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Diamant corrigé par Auxetic",
+        "detail": "Naturellement haut et étroit, mais l'Auxetic offre plus de marge qu'une diamant classique"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs qui veulent la puissance du diamant avec un filet de sécurité. Alternative intéressante à la Metalbone HRD pour ceux qui veulent un peu plus de tolérance.",
+    "proPlayerInfo": null
   },
   {
     "id": "head-delta-pro-2026",
@@ -2750,7 +3224,40 @@
       "Tolérance": 8.5
     },
     "verdict": "Reine du contrôle Head. Ronde Hybrid Woven pour stabilité et toucher premium.",
-    "id": "head-gravity-pro-2026"
+    "id": "head-gravity-pro-2026",
+    "editorial": "La Gravity Pro 2026 fait évoluer la formule gagnante de 2025 avec le carbone Hybrid Woven — un tissage hybride qui mêle fibres de carbone et fibres composites pour un flex encore plus calibré. La Control Foam reste au cœur de la pala pour ce toucher caractéristique que les joueurs de la Gravity adorent. L'Auxetic 2.0 est toujours là pour élargir le sweet spot. Évolution plutôt que révolution, mais quand la base est aussi bonne, c'est la bonne stratégie.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone Hybrid Woven + Auxetic 2.0",
+        "detail": "Tissage hybride nouvelle génération — flex optimisé par rapport au modèle 2025"
+      },
+      {
+        "label": "Noyau",
+        "value": "Control Foam",
+        "detail": "Mousse propriétaire Head — le saint-graal du toucher de balle en padel"
+      },
+      {
+        "label": "Technologie",
+        "value": "Auxetic 2.0",
+        "detail": "Deuxième génération du système auxétique — sweet spot agrandi, réponse plus homogène"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Maximum de contrôle et de tolérance — la forme des tacticiens"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Le plus large de la gamme Head",
+        "detail": "Forme ronde + Auxetic 2.0 = probablement le sweet spot le plus tolérant du marché"
+      }
+    ],
+    "targetProfile": "Joueurs experts défensifs ou polyvalents-contrôle. Le joueur de droite ultime, ou le défenseur qui ne rate jamais. Aussi parfaite pour les joueurs avancés qui veulent monter de niveau en toute sécurité.",
+    "proPlayerInfo": {
+      "name": "Style Windahl-like",
+      "context": "La Gravity Pro est le choix des joueurs tactiques du circuit qui construisent les points avec patience et précision."
+    }
   },
   {
     "name": "Head Gravity Team 2026",
@@ -2854,7 +3361,32 @@
       "Tolérance": 7
     },
     "verdict": "Flagship contrôle Head 2026. 3K carbon + balance basse pour précision chirurgicale.",
-    "id": "head-radical-pro-2026"
+    "id": "head-radical-pro-2026",
+    "editorial": "La Radical Pro 2026 est la pala des tacticiens experts. Le double couche de carbone 3K crée une surface d'une rigidité calculée — assez ferme pour punir, assez flexible pour placer. L'Auxetic 2.0 est un atout décisif sur les frappes rapides au filet où la précision est primordiale. La Control Foam confirme l'orientation : cette pala est faite pour dominer les échanges, pas pour les raccourcir.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 3K Double + Auxetic 2.0",
+        "detail": "Double couche de carbone 3K — rigidité supérieure au simple 3K, avec l'Auxetic pour la tolérance"
+      },
+      {
+        "label": "Noyau",
+        "value": "Control Foam",
+        "detail": "La mousse de contrôle signature Head — toucher doux, placement millimétrique"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Sweet spot légèrement relevé — bon compromis entre contrôle et capacité offensive"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Relevé et précis",
+        "detail": "La double couche carbone concentre la réponse au centre du sweet spot pour un placement chirurgical"
+      }
+    ],
+    "targetProfile": "Joueurs experts contrôle-puissance. Ceux qui construisent les points méthodiquement puis accélèrent au moment parfait.",
+    "proPlayerInfo": null
   },
   {
     "name": "Head Radical Team 2026",
@@ -2932,7 +3464,37 @@
       "Tolérance": 7.5
     },
     "verdict": "Polyvalente rapide. Hybrid Woven pour toucher précis. Couteau suisse Head 2026.",
-    "id": "head-speed-motion-2026"
+    "id": "head-speed-motion-2026",
+    "editorial": "La Speed Motion 2026 est la polyvalente par excellence de Head — rapide, réactive, adaptable. Le carbone Hybrid Woven avec Auxetic 2.0 offre le même niveau technologique que la Gravity Pro, mais orienté vers plus de punch. Le Power Foam remplace ici la Control Foam pour un retour d'énergie supérieur. C'est la pala caméléon : défensive quand il faut l'être, offensive quand l'opportunité se présente.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone Hybrid Woven + Auxetic 2.0",
+        "detail": "Tissage hybride dernière génération — flexibilité contrôlée pour un toucher naturel"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Plus réactive que la Control Foam — meilleur retour d'énergie pour les frappes offensives"
+      },
+      {
+        "label": "Technologie",
+        "value": "Auxetic 2.0",
+        "detail": "Sweet spot élargi pour tolérer les frappes excentrées dans le feu de l'action"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "L'ADN polyvalent — ni trop offensive, ni trop défensive, juste au milieu"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Bien dimensionné",
+        "detail": "Goutte + Auxetic = zone de frappe généreuse, adaptée au jeu rapide"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents qui veulent progresser sans se spécialiser. Excellente pala de transition vers le haut niveau.",
+    "proPlayerInfo": null
   },
   {
     "name": "Head Speed One X 2026",
@@ -3296,7 +3858,40 @@
       "Maniabilité": 7,
       "Tolérance": 6.5
     },
-    "verdict": "Version plus rigide du AT10. 12K Xtrem pour frappe plus sèche et puissante. Toucher dur et réactif pour joueurs offensifs techniques."
+    "verdict": "Version plus rigide du AT10. 12K Xtrem pour frappe plus sèche et puissante. Toucher dur et réactif pour joueurs offensifs techniques.",
+    "editorial": "La AT10 Luxury Genius 12K est LA pala de référence d'Agustín Tapia en version plein poids. Le carbone 12K aluminisé Xtrem délivre une puissance dévastatrice au smash — chaque frappe semble catapultée. Le noyau EVA HR3 Black, le plus dense du catalogue Nox, est un choix radical : zéro compromis sur la dureté pour un maximum de sortie de balle. Réservée aux bras solides et aux ambitions de compétition.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 12K Aluminisé Xtrem",
+        "detail": "Même surface que la version Lite — rigidité et puissance brute au rendez-vous"
+      },
+      {
+        "label": "Noyau",
+        "value": "EVA HR3 Black",
+        "detail": "La mousse la plus dure de Nox. Retour d'énergie maximal, toucher sec et direct. Pas de place pour l'approximation"
+      },
+      {
+        "label": "Technologie",
+        "value": "Pulse System + EOS Tunnel",
+        "detail": "Indispensable sur cette pala : le double système canalise les vibrations du carbone ultra-rigide"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Sweet spot haut, équilibre en tête — toute la masse concentrée pour le smash"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Haut et concentré",
+        "detail": "Zone de frappe optimale dans le tiers supérieur de la pala, exige de la précision"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs purs. Le smasheur qui finit les points en l'air. Déconseillée aux joueurs avec des douleurs au coude ou au poignet.",
+    "proPlayerInfo": {
+      "name": "Agustín Tapia",
+      "context": "Utilise cette version en compétition officielle Premier Padel. Sa capacité à générer de la puissance avec ce cadre est unique sur le circuit."
+    }
   },
   {
     "id": "nox-at10-luxury-genius-12k-xtrem-lite-2026",
@@ -3322,7 +3917,40 @@
       "Maniabilité": 8,
       "Tolérance": 7
     },
-    "verdict": "AT10 allégée pour maniabilité. Même qualité Tapia avec moins de fatigue. Idéale joueuses ou joueurs techniques cherchant réactivité et confort."
+    "verdict": "AT10 allégée pour maniabilité. Même qualité Tapia avec moins de fatigue. Idéale joueuses ou joueurs techniques cherchant réactivité et confort.",
+    "editorial": "La AT10 Luxury Genius 12K Xtrem Lite est la signature d'Agustín Tapia en version allégée. Même ADN de puissance brute avec le carbone 12K aluminisé Xtrem, mais un poids réduit qui libère la vitesse de bras. Le noyau EVA HR4 White — le plus récent de Nox — offre un retour d'énergie phénoménal tout en gardant un confort surprenant pour une pala de ce calibre. Le Pulse System couplé à l'EOS Tunnel canalise les vibrations vers le cadre.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 12K Aluminisé Xtrem",
+        "detail": "Traitement aluminium sur carbone 12K : rigidité extrême, retour d'énergie maximal au smash"
+      },
+      {
+        "label": "Noyau",
+        "value": "EVA HR4 White",
+        "detail": "Dernière génération Nox — haute résilience, rebond puissant mais toucher préservé"
+      },
+      {
+        "label": "Technologie",
+        "value": "Pulse System + EOS Tunnel",
+        "detail": "Double système anti-vibrations : le Pulse absorbe, l'EOS canalise vers le cadre"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Sweet spot relevé, compromis entre la puissance du diamant et la tolérance de la ronde"
+      },
+      {
+        "label": "Poids",
+        "value": "Lite (355-365g)",
+        "detail": "Version allégée de la AT10 : vitesse de bras accrue sans sacrifier la puissance du cadre"
+      }
+    ],
+    "targetProfile": "Joueurs avancés à experts polyvalents qui cherchent de la puissance sans subir le poids. Parfaite pour les attaquants rapides qui aiment les volées agressives et les smashs en bandeja.",
+    "proPlayerInfo": {
+      "name": "Agustín Tapia",
+      "context": "N°1 mondial 2024-2025. Considéré comme le joueur le plus talentueux de sa génération, jeu spectaculaire et imprévisible."
+    }
   },
   {
     "name": "Nox AT10 Luxury Genius 18K Alum 2026",
@@ -3348,7 +3976,40 @@
       "Tolérance": 6.5
     },
     "verdict": "Raquette Agustín Tapia. 18K Aluminisé + Dual Spin. Référence polyvalente expert.",
-    "id": "nox-at10-luxury-genius-18k-alum-2026"
+    "id": "nox-at10-luxury-genius-18k-alum-2026",
+    "editorial": "La AT10 18K Alum 2026 est la version premium polyvalente de la gamme Tapia. Le carbone 18K aluminisé avec Dual Spin — texture de surface qui mord la balle — génère des effets dévastateurs. Le noyau MultiEva offre plus de polyvalence que le HR3 Black de la version puissance. C'est la AT10 pour ceux qui veulent le prestige de la gamme Tapia avec un jeu plus complet et moins radical.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 18K Aluminisé + Dual Spin",
+        "detail": "Carbone haute densité avec texture Dual Spin — accroche la balle pour des effets liftés et slicés"
+      },
+      {
+        "label": "Noyau",
+        "value": "MultiEva",
+        "detail": "Mousse polyvalente multi-densité — plus confortable et polyvalente que le HR3 Black"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Le compromis polyvalent — attaque et défense dans le même package"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Élargi et texturé",
+        "detail": "La texture Dual Spin ajoute de l'accroche même en périphérie du sweet spot"
+      },
+      {
+        "label": "Spin",
+        "value": "Dual Spin Technology",
+        "detail": "Rugosité de surface calculée pour maximiser la rotation de balle — liftés et slicés plus efficaces"
+      }
+    ],
+    "targetProfile": "Joueurs experts polyvalents qui aiment varier les effets. Parfaite pour le joueur de gauche technique qui alterne smash, bandeja liftée et bajada slicée.",
+    "proPlayerInfo": {
+      "name": "Gamme Agustín Tapia",
+      "context": "Version polyvalente de la gamme signature du N°1 mondial, pour les joueurs qui veulent sa technologie sans le radicalisme de la version diamant."
+    }
   },
   {
     "id": "nox-at10-luxury-attack-12k-xtrem-2026",
@@ -3607,7 +4268,40 @@
     "imageUrl": "https://www.padelful.com/images/rackets/siux-diablo-pro-night-blue-2026.png",
     "verdict": "Polyvalente haut de gamme avec un équilibre rare entre puissance et contrôle. Son confort et son spin en font une valeur sûre pour joueurs complets.",
     "price": "300-350€",
-    "player": "Martin Di Nenno / Federico Libaak"
+    "player": "Martin Di Nenno / Federico Libaak",
+    "editorial": "La Diablo Pro 2026 est l'arme secrète de Siux — et de Martin Di Nenno. Le TeXtreme 18K, technologie issue de la Formule 1 et de l'aérospatiale, offre un ratio rigidité/poids inégalé sur le marché. Combiné au carbone 3K en sous-couche, la face délivre une frappe explosive et nette. Le noyau Ultra Soft EVA est un choix audacieux sur une pala de puissance : Siux parie sur le confort pour permettre de jouer des matchs entiers sans fatigue musculaire.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme 18K + Carbon 3K",
+        "detail": "TeXtreme 18K (technologie F1) en surface + 3K en sous-couche — le combo le plus rigide du marché"
+      },
+      {
+        "label": "Noyau",
+        "value": "Ultra Soft EVA",
+        "detail": "Choix surprenant : mousse très souple pour compenser la rigidité extrême de la surface carbone"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Compromis parfait — sweet spot relevé pour la puissance, tolérance supérieure au diamant"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Relevé et généreux",
+        "detail": "La forme goutte place le sweet spot entre le centre et le haut — polyvalent"
+      },
+      {
+        "label": "Poids",
+        "value": "370-380g",
+        "detail": "Poids standard qui assure stabilité et puissance sans fatiguer le bras"
+      }
+    ],
+    "targetProfile": "Joueurs avancés à experts polyvalents-offensifs. Ceux qui veulent de la puissance en smash tout en gardant un maximum de confort. Excellente option pour les joueurs sujets aux tendinites qui refusent de sacrifier la performance.",
+    "proPlayerInfo": {
+      "name": "Martin Di Nenno / Federico Libaak",
+      "context": "Di Nenno, joueur argentin Top 5 mondial, jeu puissant et régulier. Libaak, étoile montante du circuit, explosif et imprévisible."
+    }
   },
   {
     "id": "siux-electra-pro-26",
@@ -3633,7 +4327,40 @@
     "imageUrl": "https://www.padelful.com/images/rackets/siux-electra-pro-fire-red-2026-franco-stupackzuk.png",
     "verdict": "Puissance explosive en goutte d'eau — un profil rare. Le TeXtreme 18K frappe fort tout en gardant du contrôle. Pour attaquants techniques.",
     "price": "300-350€",
-    "player": "Franco Stupaczuk"
+    "player": "Franco Stupaczuk",
+    "editorial": "L'Electra Pro 2026 est la machine offensive de Siux pour les joueurs qui veulent de la puissance sans compromis. Le TeXtreme 18K en surface — la même technologie que sur les monoplaces de F1 — offre une rigidité extrême pour un poids plume. Le noyau EVA standard laisse parler le carbone sans interférence. Pas d'anti-vibrations, pas de technologie de confort : Siux assume le choix de la performance pure. C'est la F1 des palas — rapide, nerveuse, exigeante.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme 18K Carbon",
+        "detail": "Technologie TeXtreme issue de la F1 — rapport rigidité/poids le plus élevé disponible en padel"
+      },
+      {
+        "label": "Noyau",
+        "value": "EVA",
+        "detail": "Mousse EVA standard — laisse le carbone TeXtreme dicter le comportement de la pala"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Puissance maximale, sweet spot haut — pour les joueurs qui finissent les points en l'air"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Haut et précis",
+        "detail": "Zone de frappe exigeante qui récompense la précision technique"
+      },
+      {
+        "label": "Construction",
+        "value": "Minimaliste",
+        "detail": "Pas de système anti-vibrations — choix délibéré pour ne pas altérer le retour d'information"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs avec une technique solide et aucun problème articulaire. Pour les compétiteurs qui veulent sentir chaque frappe et maximiser la puissance.",
+    "proPlayerInfo": {
+      "name": "Franco Stupaczuk",
+      "context": "Joueur argentin du circuit Premier Padel, connu pour ses smashs surpuissants et son physique imposant."
+    }
   },
   {
     "id": "siux-fenix-pro-26",
@@ -3889,7 +4616,32 @@
     },
     "imageUrl": "https://www.padelful.com/images/rackets/star-vie-raptor-2026-plus.png",
     "verdict": "Goutte all-court renouvelée : spin et contrôle en vedette avec un confort correct. Polyvalente fiable pour joueurs avancés complets.",
-    "price": "200-260€"
+    "price": "200-260€",
+    "editorial": "Le Raptor 2026 est le prédateur de StarVie — la marque madrilène qui monte en gamme année après année. Le carbone 3D, procédé de moulage tridimensionnel exclusif, crée une surface aux propriétés inhabituelles : plus réactive dans l'axe de la frappe, plus tolérante en latéral. Le noyau M-EVA Balance porte bien son nom : une densité intermédiaire qui ne sacrifie ni la puissance ni le confort. StarVie vise le zéro défaut.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon 3D",
+        "detail": "Moulage tridimensionnel exclusif StarVie — comportement anisotrope : rigide dans l'axe, souple en travers"
+      },
+      {
+        "label": "Noyau",
+        "value": "M-EVA Balance",
+        "detail": "Mousse à densité calibrée — le juste milieu entre réactivité et absorption"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Le choix polyvalent de StarVie pour ses modèles avancés"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Optimisé par le 3D",
+        "detail": "Le carbone 3D crée un sweet spot aux contours progressifs — pas de rupture brutale entre zone optimale et périphérie"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents qui cherchent une marque alternative avec un excellent rapport technologie/prix. StarVie offre souvent des specs comparables aux grandes marques pour 20-30% moins cher.",
+    "proPlayerInfo": null
   },
   {
     "id": "starvie-triton-balance-26",
@@ -4118,7 +4870,37 @@
     },
     "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-carbon-ti-2023.png",
     "verdict": "Ronde de précision chirurgicale : contrôle à 9 et tolérance à 8.5. Le choix des tacticiens et constructeurs de points patients.",
-    "price": "180-250€"
+    "price": "180-250€",
+    "editorial": "La LW Carbon Ti 2026 est la pépite cachée de Varlion — la marque espagnole qui refuse de suivre les tendances. L'alliage carbone-titane sur la surface est unique sur le marché : le titane ajoute une dureté que le carbone seul ne peut atteindre, pour un 'pop' sonore distinctif à chaque frappe. Le noyau Pro-Touch EVA, développé en interne, offre un toucher particulier que les fidèles de Varlion ne trouvent nulle part ailleurs.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon + Titanium",
+        "detail": "Alliage exclusif carbone-titane — le titane apporte une dureté et une résonance uniques"
+      },
+      {
+        "label": "Noyau",
+        "value": "Pro-Touch EVA",
+        "detail": "Mousse exclusive Varlion — toucher distinctif, ni trop dur ni trop mou, très personnel"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Polyvalence assumée — Varlion privilégie l'adaptabilité sur ses modèles phares"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Central et réactif",
+        "detail": "Le titane en surface offre un retour d'information très net — vous sentez exactement où la balle touche"
+      },
+      {
+        "label": "Poids",
+        "value": "LW (Light Weight)",
+        "detail": "Version allégée pour la maniabilité — vitesse de bras accrue au filet"
+      }
+    ],
+    "targetProfile": "Joueurs avancés à experts polyvalents qui cherchent une sensation différente. Pour ceux qui en ont assez du carbone classique et veulent découvrir le toucher unique du carbone-titane.",
+    "proPlayerInfo": null
   },
   {
     "id": "vermont-origin-jr-2025",
@@ -4403,7 +5185,40 @@
     "imageUrl": "https://www.padelful.com/images/rackets/wilson-bela-v3-2025.png",
     "verdict": "Co-design Bela en goutte versatile : spin à 8 et bon équilibre global. Polyvalente fiable qui s'adapte à tous les styles de jeu.",
     "price": "200-280€",
-    "player": "Fernando Belasteguín"
+    "player": "Fernando Belasteguín",
+    "editorial": "La Bela V3 2026 perpétue l'héritage du plus grand joueur de l'histoire du padel. Le carbone 3K offre une réactivité immédiate, tandis que le Power Foam EVA injecte de l'explosivité dans chaque frappe. Wilson a fait le choix d'une construction relativement simple mais maîtrisée — pas de gadget technologique, juste un équilibre parfaitement calibré entre puissance et contrôle. Comme Bela lui-même : efficace, sans fioritures, légendaire.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon 3K",
+        "detail": "Carbone classique à maillage serré — toucher direct et prévisible, frappe après frappe"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam EVA",
+        "detail": "Mousse EVA haute performance — bon compromis entre rebond et absorption des chocs"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Le choix polyvalent de Bela — sweet spot intermédiaire pour attaquer et défendre"
+      },
+      {
+        "label": "Sweet spot",
+        "value": "Polyvalent et fiable",
+        "detail": "Zone de frappe bien dimensionnée qui s'adapte à tous les coups du répertoire"
+      },
+      {
+        "label": "Héritage",
+        "value": "Signature Belasteguín",
+        "detail": "Conçue en collaboration avec le GOAT du padel — chaque détail reflète 20 ans d'expérience au sommet"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents qui veulent une pala fiable et complète. Le choix sûr pour progresser vers le haut niveau sans prendre de risque sur le matériel.",
+    "proPlayerInfo": {
+      "name": "Fernando Belasteguín",
+      "context": "Le GOAT du padel. 16 ans N°1 mondial consécutifs, record absolu. Sa longévité et sa capacité d'adaptation sont légendaires."
+    }
   },
   {
     "id": "wilson-blade-pro-v2-26",
