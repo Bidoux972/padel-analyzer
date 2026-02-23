@@ -427,8 +427,11 @@ function getTopByCategory(catId, year, n=5) {
       const avg = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
       const priceNums = (r.price||"").match(/\d+/g);
       const priceNum = priceNums ? (priceNums.length>1 ? (parseInt(priceNums[0])+parseInt(priceNums[1]))/2 : parseInt(priceNums[0])) : 300;
-      return {...r, _sortScore: priceNum>0 ? (avg / (priceNum/100)) : 0};
+      return {...r, _rawQP: priceNum>0 ? (avg / (priceNum/100)) : 0};
     });
+    pool.sort((a,b)=>b._rawQP-a._rawQP);
+    const maxQP = pool[0]?._rawQP || 1;
+    pool = pool.map(r=>({...r, _sortScore: Math.round((r._rawQP / maxQP) * 100) / 10}));
   } else {
     pool = pool.map(r=>({...r, _sortScore: (r.scores||{})[cat.attr]||0}));
   }
@@ -643,6 +646,7 @@ export default function PadelAnalyzer() {
   const [magCat, setMagCat] = useState("puissance");
   const [magYear, setMagYear] = useState(2026);
   const [magDetail, setMagDetail] = useState(null); // racket to show in detail
+  const [magSlide, setMagSlide] = useState(0); // current slide index in top5
   const [addDetail, setAddDetail] = useState(null); // index of expanded search result
 
   // Auto-save rackets and profile to localStorage
@@ -1076,7 +1080,7 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       pool = allDB.filter(r=>r.category==='junior');
     } else {
       const lvl = profile.level||'Débutant';
-      const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance']};
+      const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
       const cats = catMap[lvl]||['debutant','intermediaire'];
       pool = allDB.filter(r=>cats.includes(r.category));
     }
@@ -1546,7 +1550,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* MAGAZINE CTA */}
         {/* ============================================================ */}
         <div style={{marginTop:40,width:"100%",maxWidth:500}}>
-          <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setScreen("magazine");}} style={{
+          <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} style={{
             width:"100%",padding:"20px 24px",borderRadius:20,cursor:"pointer",
             background:"linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(168,85,247,0.06) 100%)",
             border:"1px solid rgba(249,115,22,0.2)",transition:"all 0.3s",position:"relative",overflow:"hidden",
@@ -1562,7 +1566,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
 
         <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.7 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
         </div>
       </div>}
 
@@ -1573,109 +1577,139 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const catIdx = MAGAZINE_CATEGORIES.findIndex(c=>c.id===magCat);
         const catInfo = MAGAZINE_CATEGORIES[catIdx];
         const top5 = getTopByCategory(magCat, magYear);
-        const prevCat = ()=>{const i=(catIdx-1+MAGAZINE_CATEGORIES.length)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null);};
-        const nextCat = ()=>{const i=(catIdx+1)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null);};
-        const hero = top5[0];
-        const podium = top5.slice(1,3);
-        const rest = top5.slice(3,5);
+        const prevCat = ()=>{const i=(catIdx-1+MAGAZINE_CATEGORIES.length)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null); setMagSlide(0);};
+        const nextCat = ()=>{const i=(catIdx+1)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null); setMagSlide(0);};
 
-        // Helper: get display score for a racket
         const getScore = (r)=>{
           if(!r) return "—";
           if(catInfo?.attr) return (r.scores||{})[catInfo.attr]||0;
           return (r._sortScore||0).toFixed(1);
         };
 
-        // DETAIL VIEW — single racket full page
+        const medals = ["🥇","🥈","🥉","4","5"];
+
+        // ========== BLUEPRINT TECH DETAIL VIEW ==========
         if(magDetail) {
           const r = magDetail;
           const sc = r.scores||{};
-          return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",padding:"0 16px",maxWidth:520,margin:"0 auto",fontFamily:"'Inter',sans-serif"}}>
+          const ths = r.techHighlights||[];
+          const leftThs = ths.filter((_,i)=>i%2===0);
+          const rightThs = ths.filter((_,i)=>i%2===1);
+
+          return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",padding:"0 14px",maxWidth:540,margin:"0 auto",fontFamily:"'Inter',sans-serif"}}>
             {/* Header */}
-            <div style={{display:"flex",alignItems:"center",padding:"16px 0 12px",gap:12}}>
-              <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:"#f97316",fontSize:14,cursor:"pointer",fontWeight:700,fontFamily:"'Outfit'"}}>← Top 5</button>
-              <div style={{flex:1}}/>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 10px"}}>
+              <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:"#f97316",fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:"'Outfit'"}}>{"← Top 5"}</button>
               <span style={{fontSize:10,color:"#475569",fontFamily:"'Outfit'"}}>{catInfo?.label}</span>
             </div>
 
-            {/* Racket name + badge */}
+            {/* Name + brand */}
             <div style={{textAlign:"center",marginBottom:12}}>
-              {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:80,height:80,objectFit:"contain",margin:"0 auto 10px",display:"block",filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.15))"}} onError={e=>{e.target.style.display="none";}}/>}
-              <div style={{fontSize:20,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{r.shortName||r.name}</div>
-              <div style={{fontSize:11,color:"#94a3b8",marginTop:4}}>{r.brand} · {r.category} · {r.shape} · {r.year}</div>
-              <div style={{display:"inline-block",marginTop:8,padding:"4px 14px",borderRadius:20,background:"rgba(249,115,22,0.12)",border:"1px solid rgba(249,115,22,0.25)"}}>
-                <span style={{fontSize:22,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
-                <span style={{fontSize:10,color:"#94a3b8",marginLeft:2}}>/10</span>
+              <div style={{fontSize:22,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{r.shortName||r.name}</div>
+              <div style={{fontSize:11,color:"#94a3b8",marginTop:3}}>{r.brand} · {r.shape} · {r.weight} · {r.year}</div>
+              {r.proPlayerInfo?.name&&<div style={{display:"inline-flex",alignItems:"center",gap:4,marginTop:6,padding:"3px 12px",borderRadius:16,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)"}}>
+                <span style={{fontSize:10,color:"#a855f7",fontWeight:700}}>{"🎾"} {r.proPlayerInfo.name}</span>
+              </div>}
+            </div>
+
+            {/* === BLUEPRINT ZONE: image center + annotations sides === */}
+            <div style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:12,position:"relative"}}>
+              {/* Left annotations */}
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingRight:8}}>
+                {leftThs.map((h,i)=>(
+                  <div key={i} style={{
+                    padding:"8px 10px",borderRadius:10,textAlign:"right",
+                    background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",
+                    borderRight:"2px solid rgba(249,115,22,0.3)",
+                  }}>
+                    <div style={{fontSize:10,color:"#e2e8f0",fontWeight:800,fontFamily:"'Outfit'"}}>{h.value}</div>
+                    <div style={{fontSize:8,color:"#f97316",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:1}}>{h.label}</div>
+                    <p style={{fontSize:8,color:"#64748b",margin:"3px 0 0",lineHeight:1.4}}>{h.detail}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Center: Image + Score */}
+              <div style={{width:140,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
+                <div style={{position:"absolute",width:120,height:120,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}/>
+                {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{width:120,height:120,objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(0 6px 20px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none"}}/>
+                :<div style={{width:100,height:100,borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"2px dashed rgba(249,115,22,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36}}>{"🏸"}</div>}
+                <div style={{marginTop:8,padding:"4px 16px",borderRadius:16,background:"rgba(8,12,20,0.9)",border:"2px solid rgba(249,115,22,0.35)",backdropFilter:"blur(8px)",zIndex:2}}>
+                  <span style={{fontSize:26,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
+                  <span style={{fontSize:9,color:"#94a3b8"}}>/10</span>
+                </div>
+              </div>
+
+              {/* Right annotations */}
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingLeft:8}}>
+                {rightThs.map((h,i)=>(
+                  <div key={i} style={{
+                    padding:"8px 10px",borderRadius:10,textAlign:"left",
+                    background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",
+                    borderLeft:"2px solid rgba(249,115,22,0.3)",
+                  }}>
+                    <div style={{fontSize:10,color:"#e2e8f0",fontWeight:800,fontFamily:"'Outfit'"}}>{h.value}</div>
+                    <div style={{fontSize:8,color:"#f97316",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:1}}>{h.label}</div>
+                    <p style={{fontSize:8,color:"#64748b",margin:"3px 0 0",lineHeight:1.4}}>{h.detail}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
+            {/* Pro player context */}
+            {r.proPlayerInfo?.context&&<div style={{textAlign:"center",marginBottom:10}}>
+              <p style={{fontSize:9,color:"#94a3b8",fontStyle:"italic",margin:0}}>{r.proPlayerInfo.context}</p>
+            </div>}
+
             {/* Editorial */}
-            {r.editorial&&<div style={{padding:"14px 16px",background:"rgba(255,255,255,0.03)",borderRadius:14,borderLeft:"3px solid rgba(249,115,22,0.3)",marginBottom:14}}>
-              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}}>{r.editorial}</p>
+            {r.editorial&&<div style={{position:"relative",padding:"16px 18px 16px 28px",margin:"0 0 12px",background:"linear-gradient(135deg, rgba(249,115,22,0.04) 0%, rgba(168,85,247,0.02) 100%)",borderRadius:16,border:"1px solid rgba(255,255,255,0.06)"}}>
+              <div style={{position:"absolute",top:6,left:10,fontSize:32,color:"rgba(249,115,22,0.12)",fontFamily:"Georgia",lineHeight:1}}>{"\u201C"}</div>
+              <p style={{fontSize:12,color:"#e2e8f0",lineHeight:1.8,margin:0,fontStyle:"italic"}}>{r.editorial}</p>
             </div>}
 
             {/* Target profile */}
-            {r.targetProfile&&<div style={{padding:"10px 14px",background:"rgba(76,175,80,0.06)",borderRadius:12,border:"1px solid rgba(76,175,80,0.15)",marginBottom:14}}>
-              <div style={{fontSize:9,color:"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4}}>🎯 Cette raquette s'adresse à</div>
-              <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:0}}>{r.targetProfile}</p>
+            {r.targetProfile&&<div style={{padding:"10px 14px",background:"rgba(76,175,80,0.05)",borderRadius:12,border:"1px solid rgba(76,175,80,0.12)",marginBottom:12}}>
+              <div style={{fontSize:8,color:"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}}>{"🎯 CETTE RAQUETTE S\u2019ADRESSE \u00C0"}</div>
+              <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0}}>{r.targetProfile}</p>
             </div>}
 
-            {/* Scores grid */}
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:14}}>
+            {/* Scores — 2 rows of 3 */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5,marginBottom:12}}>
               {ATTRS.map(a=>{
                 const val = sc[a]||0;
-                const isHighlight = catInfo?.attr===a;
-                return <div key={a} style={{textAlign:"center",padding:"8px 4px",borderRadius:10,background:isHighlight?"rgba(249,115,22,0.08)":"rgba(255,255,255,0.02)",border:`1px solid ${isHighlight?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.04)"}`}}>
+                const isH = catInfo?.attr===a;
+                return <div key={a} style={{textAlign:"center",padding:"8px 4px",borderRadius:10,background:isH?"rgba(249,115,22,0.08)":"rgba(255,255,255,0.02)",border:`1px solid ${isH?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.04)"}`}}>
                   <div style={{fontSize:20,fontWeight:900,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
-                  <div style={{fontSize:8,color:isHighlight?"#f97316":"#64748b",fontWeight:isHighlight?700:500,marginTop:2}}>{a}</div>
+                  <div style={{fontSize:8,color:isH?"#f97316":"#64748b",fontWeight:isH?700:500,marginTop:1}}>{a}</div>
                 </div>;
               })}
             </div>
 
-            {/* Tech highlights */}
-            {r.techHighlights&&r.techHighlights.length>0&&<div style={{marginBottom:14}}>
-              {r.techHighlights.map((h,i)=>(
-                <div key={i} style={{padding:"8px 12px",marginBottom:4,borderRadius:10,background:"rgba(255,255,255,0.02)",borderLeft:"2px solid rgba(249,115,22,0.15)"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
-                    <span style={{fontSize:9,color:"#64748b",fontWeight:600}}>{h.label}</span>
-                    <span style={{fontSize:10,color:"#e2e8f0",fontWeight:700}}>{h.value}</span>
-                  </div>
-                  <p style={{fontSize:10,color:"#94a3b8",margin:"3px 0 0",lineHeight:1.5}}>{h.detail}</p>
-                </div>
-              ))}
-            </div>}
-
-            {/* Specs row */}
-            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
-              {[["Poids",r.weight],["Prix",r.price],["Équilibre",r.balance]].map(([k,v])=>
-                v&&v!=="—"&&<span key={k} style={{fontSize:9,padding:"4px 10px",borderRadius:8,background:"rgba(255,255,255,0.04)",color:"#94a3b8"}}>
-                  <span style={{color:"#64748b"}}>{k}:</span> <span style={{fontWeight:600,color:"#cbd5e1"}}>{v}</span>
-                </span>
+            {/* Specs pills */}
+            <div style={{display:"flex",flexWrap:"wrap",gap:4,justifyContent:"center",marginBottom:20}}>
+              {[["\u2696\uFE0F",r.balance],["\uD83D\uDCB0",r.price]].map(([icon,v])=>
+                v&&v!=="\u2014"&&<span key={icon} style={{fontSize:9,padding:"4px 12px",borderRadius:8,background:"rgba(255,255,255,0.04)",color:"#94a3b8"}}>{icon} {v}</span>
               )}
             </div>
-
-            {/* Pro player */}
-            {r.proPlayerInfo&&r.proPlayerInfo.name&&<div style={{padding:"10px 14px",background:"rgba(168,85,247,0.06)",borderRadius:12,border:"1px solid rgba(168,85,247,0.15)",marginBottom:14}}>
-              <div style={{fontSize:9,color:"#a855f7",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4}}>👤 Joueur Pro</div>
-              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{r.proPlayerInfo.name}</div>
-              <p style={{fontSize:10,color:"#94a3b8",lineHeight:1.5,margin:"3px 0 0"}}>{r.proPlayerInfo.context}</p>
-            </div>}
-
-            {/* Verdict */}
-            {r.verdict&&r.verdict!=="—"&&<p style={{fontSize:10,color:"#64748b",lineHeight:1.5,margin:"0 0 20px",fontStyle:"italic",textAlign:"center"}}>
-              💬 {r.verdict}
-            </p>}
           </div>;
         }
 
-        // PODIUM VIEW — Top 5 one-page layout
-        return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",padding:"0 16px",maxWidth:520,margin:"0 auto",fontFamily:"'Inter',sans-serif"}}>
-          {/* Header — Category + Year */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 8px"}}>
-            <button onClick={()=>{setScreen("home");setMagDetail(null);}} style={{background:"none",border:"none",color:"#64748b",fontSize:12,cursor:"pointer",fontFamily:"'Outfit'",fontWeight:600}}>← Accueil</button>
+        // ========== SLIDES VIEW — Full-screen swipable Top 5 ==========
+        const currentR = top5[magSlide] || null;
+        const cSc = currentR?.scores || {};
+        const prevSlide = ()=>setMagSlide(s=>(s-1+top5.length)%top5.length);
+        const nextSlide = ()=>setMagSlide(s=>(s+1)%top5.length);
+
+        return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:"'Inter',sans-serif",position:"relative",overflow:"hidden"}}
+          onTouchStart={e=>{e.currentTarget._touchX=e.touches[0].clientX;}}
+          onTouchEnd={e=>{const dx=e.changedTouches[0].clientX-(e.currentTarget._touchX||0); if(Math.abs(dx)>50){dx<0?nextSlide():prevSlide();}}}>
+
+          {/* Top bar */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 16px 4px",zIndex:10}}>
+            <button onClick={()=>{setScreen("home");setMagDetail(null);setMagSlide(0);}} style={{background:"none",border:"none",color:"#64748b",fontSize:12,cursor:"pointer",fontFamily:"'Outfit'",fontWeight:600}}>← Accueil</button>
             <div style={{display:"flex",gap:4}}>
               {[2026,2025].map(y=>(
-                <button key={y} onClick={()=>setMagYear(y)} style={{
+                <button key={y} onClick={()=>{setMagYear(y);setMagSlide(0);}} style={{
                   padding:"3px 12px",borderRadius:14,fontSize:10,fontWeight:magYear===y?700:500,cursor:"pointer",fontFamily:"'Inter'",
                   background:magYear===y?"rgba(249,115,22,0.15)":"transparent",
                   border:`1px solid ${magYear===y?"rgba(249,115,22,0.3)":"rgba(255,255,255,0.08)"}`,
@@ -1686,104 +1720,114 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           {/* Category navigator */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,padding:"6px 0 14px"}}>
-            <button onClick={prevCat} style={{background:"none",border:"none",color:"#f97316",fontSize:20,cursor:"pointer",padding:"4px 8px"}}>‹</button>
-            <div style={{textAlign:"center",minWidth:180}}>
-              <div style={{fontSize:22,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{catInfo?.label}</div>
-              <div style={{fontSize:10,color:"#94a3b8",fontStyle:"italic",marginTop:2}}>{catInfo?.desc}</div>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,padding:"4px 0 8px"}}>
+            <button onClick={prevCat} style={{background:"none",border:"none",color:"#f97316",fontSize:22,cursor:"pointer",padding:"4px 8px",fontWeight:300}}>‹</button>
+            <div style={{textAlign:"center",minWidth:200}}>
+              <div style={{fontSize:24,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{catInfo?.label}</div>
+              <div style={{fontSize:10,color:"#64748b",fontStyle:"italic",marginTop:1}}>{catInfo?.desc}</div>
             </div>
-            <button onClick={nextCat} style={{background:"none",border:"none",color:"#f97316",fontSize:20,cursor:"pointer",padding:"4px 8px"}}>›</button>
+            <button onClick={nextCat} style={{background:"none",border:"none",color:"#f97316",fontSize:22,cursor:"pointer",padding:"4px 8px",fontWeight:300}}>›</button>
           </div>
 
           {/* Category dots */}
-          <div style={{display:"flex",justifyContent:"center",gap:6,marginBottom:16}}>
+          <div style={{display:"flex",justifyContent:"center",gap:5,marginBottom:10}}>
             {MAGAZINE_CATEGORIES.map((c,i)=>(
-              <button key={c.id} onClick={()=>{setMagCat(c.id);setMagDetail(null);}} style={{
+              <button key={c.id} onClick={()=>{setMagCat(c.id);setMagDetail(null);setMagSlide(0);}} style={{
                 width:i===catIdx?20:6,height:6,borderRadius:3,cursor:"pointer",transition:"all 0.3s",border:"none",
-                background:i===catIdx?"#f97316":"rgba(255,255,255,0.15)",
+                background:i===catIdx?"#f97316":"rgba(255,255,255,0.12)",
               }}/>
             ))}
           </div>
 
-          {/* No results */}
           {!top5.length&&<div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <p style={{color:"#475569",fontSize:13,textAlign:"center"}}>Aucune raquette {magYear} dans cette catégorie</p>
+            <p style={{color:"#475569",fontSize:13,textAlign:"center"}}>Aucune raquette {magYear}</p>
           </div>}
 
-          {/* HERO — #1 */}
-          {hero&&<div onClick={()=>setMagDetail(hero)} style={{
-            cursor:"pointer",padding:"16px",borderRadius:20,marginBottom:10,position:"relative",overflow:"hidden",
-            background:"linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(249,115,22,0.02) 100%)",
-            border:"1px solid rgba(249,115,22,0.2)",transition:"all 0.3s",
-          }}>
-            <div style={{position:"absolute",top:10,left:14,fontSize:28}}>🥇</div>
-            <div style={{display:"flex",alignItems:"center",gap:14,marginLeft:38}}>
-              {hero.imageUrl&&<img src={hero.imageUrl} alt={hero.name} style={{width:64,height:64,objectFit:"contain",flexShrink:0,filter:"drop-shadow(0 4px 8px rgba(0,0,0,0.3))"}} onError={e=>{e.target.style.display="none";}}/>}
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:16,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.01em"}}>{hero.shortName||hero.name}</div>
-                <div style={{fontSize:10,color:"#94a3b8",marginTop:2}}>{hero.brand} · {hero.shape} · {hero.weight}</div>
-                {hero.editorial&&<p style={{fontSize:10,color:"#64748b",lineHeight:1.5,margin:"6px 0 0",overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{hero.editorial.substring(0,120)}…</p>}
+          {/* ===== CURRENT SLIDE ===== */}
+          {currentR&&<div style={{flex:1,display:"flex",flexDirection:"column",padding:"0 16px",maxWidth:520,margin:"0 auto",width:"100%",animation:"fadeIn 0.35s ease"}}>
+
+            {/* Rank badge + navigation arrows */}
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+              <button onClick={prevSlide} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,color:"#94a3b8",fontSize:16,cursor:"pointer",padding:"6px 14px",fontWeight:300}}>‹</button>
+              <div style={{textAlign:"center"}}>
+                <div style={{fontSize:magSlide<3?36:22}}>{magSlide<3?medals[magSlide]:""}</div>
+                {magSlide>=3&&<span style={{fontSize:14,fontWeight:800,color:"#475569",background:"rgba(255,255,255,0.06)",borderRadius:8,padding:"4px 12px"}}>#{magSlide+1}</span>}
               </div>
-              <div style={{textAlign:"center",flexShrink:0}}>
-                <div style={{fontSize:28,fontWeight:900,fontFamily:"'Outfit'",color:"#f97316"}}>{getScore(hero)}</div>
-                <div style={{fontSize:8,color:"#94a3b8"}}>/10</div>
-              </div>
+              <button onClick={nextSlide} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,color:"#94a3b8",fontSize:16,cursor:"pointer",padding:"6px 14px",fontWeight:300}}>›</button>
             </div>
-            {hero.proPlayerInfo?.name&&<div style={{marginTop:8,marginLeft:38,fontSize:9,color:"#a855f7"}}>👤 {hero.proPlayerInfo.name}</div>}
-          </div>}
 
-          {/* PODIUM — #2 & #3 */}
-          {podium.length>0&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
-            {podium.map((r,i)=>{
-              const medal = i===0?"🥈":"🥉";
-              return <div key={r.id} onClick={()=>setMagDetail(r)} style={{
-                cursor:"pointer",padding:"12px",borderRadius:16,
-                background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",transition:"all 0.3s",
-              }}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
-                  <span style={{fontSize:18}}>{medal}</span>
-                  <div style={{textAlign:"right"}}>
-                    <span style={{fontSize:20,fontWeight:900,fontFamily:"'Outfit'",color:"#e2e8f0"}}>{getScore(r)}</span>
-                    <span style={{fontSize:8,color:"#64748b"}}>/10</span>
-                  </div>
-                </div>
-                {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:40,height:40,objectFit:"contain",margin:"0 auto 6px",display:"block"}} onError={e=>{e.target.style.display="none";}}/>}
-                <div style={{fontSize:12,fontWeight:700,fontFamily:"'Outfit'",color:"#f1f5f9",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
-                <div style={{fontSize:9,color:"#64748b",marginTop:2}}>{r.brand} · {r.shape}</div>
-                {r.proPlayerInfo?.name&&<div style={{fontSize:8,color:"#a855f7",marginTop:3}}>👤 {r.proPlayerInfo.name}</div>}
-              </div>;
-            })}
-          </div>}
+            {/* Slide dots */}
+            <div style={{display:"flex",justifyContent:"center",gap:6,marginBottom:12}}>
+              {top5.map((_,i)=>(
+                <button key={i} onClick={()=>setMagSlide(i)} style={{
+                  width:i===magSlide?24:8,height:8,borderRadius:4,cursor:"pointer",transition:"all 0.3s",border:"none",
+                  background:i===magSlide?"#f97316":i<3?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.1)",
+                }}/>
+              ))}
+            </div>
 
-          {/* REST — #4 & #5 */}
-          {rest.length>0&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}}>
-            {rest.map((r,i)=>{
-              const badge = i===0?"4":"5";
-              return <div key={r.id} onClick={()=>setMagDetail(r)} style={{
-                cursor:"pointer",padding:"10px 12px",borderRadius:14,
-                background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.04)",transition:"all 0.3s",
-              }}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
-                  <span style={{fontSize:10,fontWeight:700,color:"#475569",background:"rgba(255,255,255,0.06)",borderRadius:6,padding:"2px 6px"}}>{badge}</span>
-                  <div>
-                    <span style={{fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:"#94a3b8"}}>{getScore(r)}</span>
-                    <span style={{fontSize:7,color:"#475569"}}>/10</span>
-                  </div>
-                </div>
-                <div style={{fontSize:11,fontWeight:700,fontFamily:"'Outfit'",color:"#cbd5e1",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
-                <div style={{fontSize:9,color:"#475569",marginTop:2}}>{r.brand} · {r.shape}</div>
-              </div>;
-            })}
+            {/* Racket image + name + score */}
+            <div onClick={()=>setMagDetail(currentR)} style={{cursor:"pointer",textAlign:"center",marginBottom:10}}>
+              {currentR.imageUrl&&<img src={currentR.imageUrl} alt={currentR.name} style={{
+                width:140,height:140,objectFit:"contain",margin:"0 auto",display:"block",
+                filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.15))",transition:"transform 0.3s",
+              }} onError={e=>{e.target.style.display="none";}}/>}
+              <div style={{fontSize:22,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",marginTop:10,letterSpacing:"-0.02em"}}>{currentR.shortName||currentR.name}</div>
+              <div style={{fontSize:11,color:"#94a3b8",marginTop:3}}>{currentR.brand} · {currentR.shape} · {currentR.weight}</div>
+              {currentR.price&&<div style={{fontSize:10,color:"#64748b",marginTop:2}}>{currentR.price}</div>}
+            </div>
+
+            {/* BIG score */}
+            <div style={{textAlign:"center",marginBottom:12}}>
+              <span style={{
+                fontSize:48,fontWeight:900,fontFamily:"'Outfit'",letterSpacing:"-0.04em",
+                background:"linear-gradient(135deg, #f97316 0%, #fb923c 100%)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",
+              }}>{getScore(currentR)}</span>
+              <span style={{fontSize:14,color:"#64748b",marginLeft:2}}>/10</span>
+            </div>
+
+            {/* Pro player */}
+            {currentR.proPlayerInfo?.name&&<div style={{display:"flex",alignItems:"center",gap:6,justifyContent:"center",marginBottom:10}}>
+              <span style={{fontSize:10,color:"#a855f7",fontWeight:700,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",borderRadius:20,padding:"3px 12px"}}>🎾 {currentR.proPlayerInfo.name}</span>
+            </div>}
+
+            {/* Editorial excerpt */}
+            {currentR.editorial&&<div style={{position:"relative",padding:"14px 16px 14px 28px",background:"rgba(255,255,255,0.03)",borderRadius:14,marginBottom:10,border:"1px solid rgba(255,255,255,0.05)"}}>
+              <div style={{position:"absolute",top:6,left:10,fontSize:24,color:"rgba(249,115,22,0.2)",fontFamily:"Georgia"}}>“</div>
+              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0,fontStyle:"italic"}}>{currentR.editorial.length>200?currentR.editorial.substring(0,200)+"…":currentR.editorial}</p>
+            </div>}
+
+            {/* Scores compact */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:4,marginBottom:10}}>
+              {ATTRS.map(a=>{
+                const val = cSc[a]||0;
+                const isH = catInfo?.attr===a;
+                return <div key={a} style={{textAlign:"center",padding:"6px 4px",borderRadius:8,background:isH?"rgba(249,115,22,0.08)":"rgba(255,255,255,0.02)",border:isH?"1px solid rgba(249,115,22,0.2)":"1px solid transparent"}}>
+                  <div style={{fontSize:18,fontWeight:900,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
+                  <div style={{fontSize:7,color:isH?"#f97316":"#64748b",fontWeight:isH?700:500}}>{a}</div>
+                </div>;
+              })}
+            </div>
+
+            {/* CTA see full detail */}
+            <button onClick={()=>setMagDetail(currentR)} style={{
+              width:"100%",padding:"12px",borderRadius:14,cursor:"pointer",marginBottom:16,
+              background:"linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(168,85,247,0.06) 100%)",
+              border:"1px solid rgba(249,115,22,0.2)",color:"#f97316",fontSize:12,fontWeight:700,fontFamily:"'Outfit'",
+              transition:"all 0.2s",
+            }}>Voir la fiche technique complète →</button>
+
           </div>}
 
           {/* Footer */}
-          <div style={{textAlign:"center",padding:"8px 0 20px"}}>
+          <div style={{textAlign:"center",padding:"8px 0 16px"}}>
             <div style={{fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
               <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Magazine · {RACKETS_DB.length} raquettes
             </div>
           </div>
         </div>;
       })()}
+
 
       {/* ============================================================ */}
       {/* WIZARD SCREEN — Step-by-step profile creation */}
@@ -2209,7 +2253,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ? RACKETS_DB.filter(r=>r.category==='junior')
           : (()=>{
               const lvl = profile.level||'Débutant';
-              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance']};
+              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
         const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile)}));
@@ -2346,7 +2390,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ? RACKETS_DB.filter(r=>r.category==='junior')
           : (()=>{
               const lvl = profile.level||'Débutant';
-              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance']};
+              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
         // Brand preferences — used for display info only, NOT for filtering Top 3
@@ -2508,7 +2552,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.7 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -2532,7 +2576,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.7</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.9</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -2710,9 +2754,28 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </div>
 
                   {/* Pour qui ? */}
-                  <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:"0 0 8px",padding:"10px 12px",background:"rgba(255,255,255,0.02)",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)"}}>
+                  {dbMatch.editorial&&<div style={{position:"relative",padding:"12px 14px 12px 24px",background:"rgba(255,255,255,0.02)",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)",marginBottom:8}}>
+                    <div style={{position:"absolute",top:4,left:8,fontSize:20,color:"rgba(249,115,22,0.15)",fontFamily:"Georgia"}}>"</div>
+                    <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{dbMatch.editorial}</p>
+                  </div>}
+
+                  {dbMatch.targetProfile&&<div style={{padding:"8px 12px",background:"rgba(76,175,80,0.05)",borderRadius:10,border:"1px solid rgba(76,175,80,0.1)",marginBottom:8}}>
+                    <span style={{fontSize:8,color:"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>🎯 S'adresse à : </span>
+                    <span style={{fontSize:10,color:"#94a3b8"}}>{dbMatch.targetProfile}</span>
+                  </div>}
+
+                  {dbMatch.techHighlights&&dbMatch.techHighlights.length>0&&<div style={{marginBottom:8}}>
+                    {dbMatch.techHighlights.slice(0,3).map((h,hi)=>(
+                      <div key={hi} style={{padding:"4px 10px",marginBottom:2,borderRadius:6,background:"rgba(255,255,255,0.02)",display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:8}}>
+                        <span style={{fontSize:8,color:"#64748b",fontWeight:600}}>{h.label}</span>
+                        <span style={{fontSize:9,color:"#e2e8f0",fontWeight:700,fontFamily:"'Outfit'",whiteSpace:"nowrap"}}>{h.value}</span>
+                      </div>
+                    ))}
+                  </div>}
+
+                  {!dbMatch.editorial&&<p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:"0 0 8px",padding:"10px 12px",background:"rgba(255,255,255,0.02)",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)"}}>
                     🎯 {generateRacketDescription(dbMatch)}
-                  </p>
+                  </p>}
                 </> : <p style={{fontSize:10,color:"#64748b",margin:"10px 0 8px",lineHeight:1.4}}>{s.description||"Raquette non référencée dans la base locale. Les scores ne sont pas disponibles."}</p>}
 
                 {/* Add button */}
@@ -3624,7 +3687,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               pool = RACKETS_DB.filter(r=>r.category==='junior');
             } else {
               const lvl = profile.level||'Débutant';
-              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance']};
+              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               const cats = catMap[lvl]||['debutant','intermediaire'];
               pool = RACKETS_DB.filter(r=>cats.includes(r.category));
             }
@@ -3721,7 +3784,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.7 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.9 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -3744,7 +3807,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.7 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
 
