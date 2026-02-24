@@ -265,7 +265,7 @@ function buildProfileText(p) {
 }
 
 // Weighted global score /10 based on player profile
-function computeGlobalScore(scores, profile) {
+function computeGlobalScore(scores, profile, racket) {
   if (!scores || typeof scores !== 'object') return 0;
   // Base weights (equal)
   const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
@@ -361,6 +361,13 @@ function computeGlobalScore(scores, profile) {
     gs += adj;
   }
   
+  // Woman-line gabarit filter — penalize woman-line rackets for heavy male profiles
+  if (racket && racket.womanLine && profile.gender !== "femme") {
+    const w_kg = Number(profile.weight)||0;
+    const h_cm = Number(profile.height)||0;
+    if (w_kg >= 80 || h_cm >= 180) gs -= 0.3;
+  }
+  
   return gs;
 }
 
@@ -370,7 +377,7 @@ function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
 
 function computeForYou(scores, profile, racket) {
   if (!scores || typeof scores !== 'object') return "no";
-  const gs = computeGlobalScore(scores, profile);
+  const gs = computeGlobalScore(scores, profile, racket);
   const ARM_INJURIES = ["dos","poignet","coude","epaule"];
   const hasArmInjury = (profile.injuryTags||[]).some(t=>ARM_INJURIES.includes(t));
   const comfortOk = !hasArmInjury || (scores.Confort||0) >= 7;
@@ -1162,14 +1169,14 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       brandPool = pool.filter(r=>prefLower.includes(r.brand.toLowerCase()));
       // Always include a few from other brands
       const otherPool = pool.filter(r=>!prefLower.includes(r.brand.toLowerCase()));
-      const otherTop = otherPool.sort((a,b)=>computeGlobalScore(a.scores,profile)-computeGlobalScore(b.scores,profile)).reverse().slice(0,2);
+      const otherTop = otherPool.sort((a,b)=>computeGlobalScore(a.scores,profile,a)-computeGlobalScore(b.scores,profile,b)).reverse().slice(0,2);
       brandPool = [...brandPool, ...otherTop];
     }
     
     // Score all with woman-line and health bonuses
     const HEALTH_BRANDS = ["Pro Kennex","Royal Padel"];
     const scored = brandPool.map(r=>{
-      let gs = computeGlobalScore(r.scores, profile);
+      let gs = computeGlobalScore(r.scores, profile, r);
       // Woman-line bonus for women profiles
       if (isWoman && r.womanLine) gs += 0.2;
       // Health brand bonus for injured players
@@ -2361,7 +2368,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r)}));
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
         const prioLabels = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
@@ -2501,7 +2508,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Brand preferences — used for display info only, NOT for filtering Top 3
         const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
         // Score ALL compatible rackets — unbiased Top 3
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile), _fy: computeForYou(r.scores, profile, r)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r), _fy: computeForYou(r.scores, profile, r)}));
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
 
@@ -2812,7 +2819,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const dbMatch = RACKETS_DB.find(r=>r.name.toLowerCase()===nameLower) || RACKETS_DB.find(r=>nameLower.includes((r.shortName||r.name).toLowerCase().slice(0,12))||(r.shortName||r.name).toLowerCase().includes(nameLower.slice(0,12)));
             const sc = dbMatch?.scores||{};
             const hasScores = dbMatch && Object.keys(sc).length>0;
-            const gs = hasScores ? computeGlobalScore(sc, profile) : null;
+            const gs = hasScores ? computeGlobalScore(sc, profile, r) : null;
             const fyConfig = hasScores ? computeForYou(sc, profile) : null;
             const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:fyConfig==="no"?{text:"PEU ADAPTÉ",color:"#64748b"}:null;
             return (
@@ -3508,7 +3515,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const idealRadar2 = ATTRS.map(a=>({ attribute: a, "Raquette idéale": Math.round((w2[a]/maxW2)*10*10)/10 }));
             
             // Best racket overlay
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             const bestShort = ranked.length>0 ? (ranked[0].shortName || ranked[0].name?.slice(0,28) || "N°1") : "";
             if(ranked.length>0) {
               idealRadar2.forEach(pt => { pt["🥇 "+bestShort] = Number(ranked[0].scores?.[pt.attribute])||0; });
@@ -3554,7 +3561,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== SMART COACH VERDICT — "En bref" ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(!ranked.length) return null;
             const best = ranked[0];
             const second = ranked[1];
@@ -3663,7 +3670,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== DEEP ANALYSIS — Profile Intelligence ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(ranked.length<2) return null;
             const deepLines = generateDeepAnalysis(profile, ranked, ATTRS);
             if(!deepLines.length) return null;
@@ -3688,7 +3695,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== PERTINENCE RANKING ===== */}
           {(()=>{
             try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile)})).sort((a,b)=>b.globalScore-a.globalScore);
+            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             const cards = [];
             ranked.forEach((r,i)=>{
               // Insert section divider after top 3
@@ -3822,7 +3829,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             // Score by priority attributes average (70%) + global score (30%)
             const scored = pool.map(r=>{
               const prioAvg = prioAttrs.reduce((s,k)=>(s+(r.scores[k]||0)),0)/prioAttrs.length;
-              const gs = computeGlobalScore(r.scores, profile);
+              const gs = computeGlobalScore(r.scores, profile, r);
               return {...r, _prioAvg: Math.round(prioAvg*10)/10, _prioScore: prioAvg*0.7 + gs*0.3, globalScore: gs};
             });
             scored.sort((a,b)=>b.globalScore-a.globalScore);
@@ -3935,7 +3942,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Compute all data
         const scored = r2.map(r=>({
           ...r,
-          _gs: computeGlobalScore(r.scores, profile),
+          _gs: computeGlobalScore(r.scores, profile, r),
           _fy: computeForYou(r.scores, profile, r),
         }));
         scored.sort((a,b)=>b._gs-a._gs);
