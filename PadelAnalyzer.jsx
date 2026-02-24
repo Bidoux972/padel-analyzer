@@ -341,11 +341,18 @@ function computeGlobalScore(scores, profile, racket) {
     w.Tolérance = (w.Tolérance||1) + 0.3;
   }
   
-  // Weighted average
+  // Weighted average — with diminishing returns on non-priority attributes above 8
+  // If a player didn't ask for Confort but a racket scores 9.5, the excess above 8 counts half
+  // This prevents comfort-specialist rackets from dominating offensive profiles
   let total = 0, wSum = 0;
   for (const attr of ATTRS) {
     const weight = w[attr] || 1;
-    total += (scores[attr]||0) * weight;
+    let val = scores[attr] || 0;
+    // Diminishing returns: non-priority attributes above 8 → excess counts 50%
+    if (!activePrioAttrs.includes(attr) && val > 8) {
+      val = 8 + (val - 8) * 0.5;
+    }
+    total += val * weight;
     wSum += weight;
   }
   let gs = total / wSum;
