@@ -270,20 +270,23 @@ function computeGlobalScore(scores, profile) {
   // Base weights (equal)
   const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
   
-  // Priority tags boost relevant criteria
+  // Priority tags boost relevant criteria — strong boost (2.5) so priorities dominate over style accumulation
+  const prioAttrMap = { puissance:"Puissance", spin:"Spin", confort:"Confort", controle:"Contrôle", legerete:"Maniabilité", protection:"Confort" };
+  const activePrioAttrs = [];
   const prioMap = {
-    confort: { Confort:1.5 },
-    polyvalence: { Contrôle:0.5, Maniabilité:0.5, Tolérance:0.5 },
-    puissance: { Puissance:1.5 },
-    controle: { Contrôle:1.5 },
-    spin: { Spin:1.5 },
-    legerete: { Maniabilité:1.5 },
-    protection: { Confort:1.5 },
-    reprise: { Confort:1.5, Tolérance:1.0, Maniabilité:0.5 },
+    confort: { Confort:2.5 },
+    polyvalence: { Contrôle:0.8, Maniabilité:0.8, Tolérance:0.8 },
+    puissance: { Puissance:2.5 },
+    controle: { Contrôle:2.5 },
+    spin: { Spin:2.5 },
+    legerete: { Maniabilité:2.5 },
+    protection: { Confort:2.5 },
+    reprise: { Confort:2.0, Tolérance:1.5, Maniabilité:0.8 },
   };
   for (const tag of (profile.priorityTags||[])) {
     const boosts = prioMap[tag];
     if (boosts) for (const [k,v] of Object.entries(boosts)) w[k] = (w[k]||1)+v;
+    if (prioAttrMap[tag] && !activePrioAttrs.includes(prioAttrMap[tag])) activePrioAttrs.push(prioAttrMap[tag]);
   }
   
   // Style tags influence
@@ -324,8 +327,6 @@ function computeGlobalScore(scores, profile) {
   if (age >= 60) { w.Confort = (w.Confort||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.5; }
   
   // Side + Hand → attacker vs constructor role
-  // Forehand at center = attacker: Droitier+Gauche OR Gaucher+Droite
-  // Backhand at center = constructor: Droitier+Droite OR Gaucher+Gauche
   const hand = profile.hand || "Droitier";
   const side = profile.side || "Droite";
   const isAttacker = (hand==="Droitier" && side==="Gauche") || (hand==="Gaucher" && side==="Droite");
@@ -347,7 +348,20 @@ function computeGlobalScore(scores, profile) {
     total += (scores[attr]||0) * weight;
     wSum += weight;
   }
-  return total / wSum;
+  let gs = total / wSum;
+  
+  // Priority alignment adjustment — penalize rackets weak on declared priorities, reward strong ones
+  if (activePrioAttrs.length > 0) {
+    let adj = 0;
+    for (const pa of activePrioAttrs) {
+      const val = scores[pa] || 0;
+      if (val < 7) adj -= (7 - val) * 0.12;      // Penalty: weak on player's priority
+      else if (val >= 8) adj += (val - 8) * 0.08;  // Bonus: strong on player's priority
+    }
+    gs += adj;
+  }
+  
+  return gs;
 }
 
 // Dynamic verdict based on pertinence score + injury constraints
@@ -504,7 +518,7 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   const isComplex=styles.length>=4||(styles.length>=3&&hasTension);
   // Compute weights (mirror computeGlobalScore)
   const w={}; attrs.forEach(a=>w[a]=1);
-  const PM={confort:{Confort:1.5},polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5},puissance:{Puissance:1.5},controle:{Contrôle:1.5},spin:{Spin:1.5},legerete:{Maniabilité:1.5},protection:{Confort:1.5},reprise:{Confort:1.5,Tolérance:1,Maniabilité:0.5}};
+  const PM={confort:{Confort:2.5},polyvalence:{Contrôle:0.8,Maniabilité:0.8,Tolérance:0.8},puissance:{Puissance:2.5},controle:{Contrôle:2.5},spin:{Spin:2.5},legerete:{Maniabilité:2.5},protection:{Confort:2.5},reprise:{Confort:2.0,Tolérance:1.5,Maniabilité:0.8}};
   priorities.forEach(t=>{const b=PM[t];if(b)Object.entries(b).forEach(([k,v])=>w[k]=(w[k]||1)+v);});
   const SM={offensif:{Puissance:0.5},defensif:{Contrôle:0.5,Tolérance:0.5},tactique:{Contrôle:0.5,Maniabilité:0.3},puissant:{Puissance:0.5,Spin:0.3},veloce:{Maniabilité:0.8},endurant:{Confort:0.5,Tolérance:0.3},contre:{Tolérance:0.5,Contrôle:0.3},polyvalent:{Contrôle:0.3,Tolérance:0.3},technique:{Contrôle:0.5,Spin:0.3}};
   styles.forEach(t=>{const b=SM[t];if(b)Object.entries(b).forEach(([k,v])=>w[k]=(w[k]||1)+v);});
@@ -2493,7 +2507,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         // Compute player's ideal weights for radar
         const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
-        const prioMap = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
+        const prioMap = { confort:{Confort:2.5}, polyvalence:{Contrôle:0.8,Maniabilité:0.8,Tolérance:0.8}, puissance:{Puissance:2.5}, controle:{Contrôle:2.5}, spin:{Spin:2.5}, legerete:{Maniabilité:2.5}, protection:{Confort:2.5}, reprise:{Confort:2.0,Tolérance:1.5,Maniabilité:0.8} };
         for (const tag of (profile.priorityTags||[])) { const boosts=prioMap[tag]; if(boosts) for(const[k,v] of Object.entries(boosts)) w[k]=(w[k]||1)+v; }
         const styleMap = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
         for (const tag of (profile.styleTags||[])) { const boosts=styleMap[tag]; if(boosts) for(const[k,v] of Object.entries(boosts)) w[k]=(w[k]||1)+v; }
@@ -3457,7 +3471,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <p style={{fontSize:9,color:"#94a3b8",margin:0,lineHeight:1.5}}>{profileText}</p>
             <p style={{fontSize:8,color:"#475569",margin:"4px 0 0"}}>{(()=>{
               const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
-              const prioMap = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
+              const prioMap = { confort:{Confort:2.5}, polyvalence:{Contrôle:0.8,Maniabilité:0.8,Tolérance:0.8}, puissance:{Puissance:2.5}, controle:{Contrôle:2.5}, spin:{Spin:2.5}, legerete:{Maniabilité:2.5}, protection:{Confort:2.5}, reprise:{Confort:2.0,Tolérance:1.5,Maniabilité:0.8} };
               const styleMap = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
               for (const tag of (profile.priorityTags||[])) { const b=prioMap[tag]; if(b) for(const[k,v] of Object.entries(b)) w[k]=(w[k]||1)+v; }
               for (const tag of (profile.styleTags||[])) { const b=styleMap[tag]; if(b) for(const[k,v] of Object.entries(b)) w[k]=(w[k]||1)+v; }
@@ -3486,7 +3500,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {(()=>{
             try {
             const w2 = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
-            const prioMap2 = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
+            const prioMap2 = { confort:{Confort:2.5}, polyvalence:{Contrôle:0.8,Maniabilité:0.8,Tolérance:0.8}, puissance:{Puissance:2.5}, controle:{Contrôle:2.5}, spin:{Spin:2.5}, legerete:{Maniabilité:2.5}, protection:{Confort:2.5}, reprise:{Confort:2.0,Tolérance:1.5,Maniabilité:0.8} };
             const styleMap2 = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
             for (const tag of (profile.priorityTags||[])) { const b=prioMap2[tag]; if(b) for(const[k,v] of Object.entries(b)) w2[k]=(w2[k]||1)+v; }
             for (const tag of (profile.styleTags||[])) { const b=styleMap2[tag]; if(b) for(const[k,v] of Object.entries(b)) w2[k]=(w2[k]||1)+v; }
