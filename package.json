@@ -1,1 +1,5 @@
-{"name":"padel-analyzer","version":"5.9.0","private":true}
+{
+  "name": "padel-analyzer",
+  "version": "10.3.0",
+  "private": true
+}
