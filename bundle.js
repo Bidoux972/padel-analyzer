@@ -43960,8 +43960,9 @@ function buildProfileText(p) {
   const injuryStr = [...injuries, p.injuryExtra].filter(Boolean).join(", ") || "Aucune";
   const prioStr = [...priorities, p.priorityExtra].filter(Boolean).join(", ") || "Non pr\xE9cis\xE9";
   const brandStr = brands.length ? brands.join(", ") : "Toutes marques";
+  const isFemme = (p.genre || "Homme") === "Femme";
   const physique = [p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null, p.genre || "Homme", `fitness: ${p.fitness || "actif"}`].filter(Boolean).join(", ");
-  return `Joueur: ${physique || "Non renseign\xE9"}. Niveau: ${p.level}. Main: ${p.hand || "Droitier"}. C\xF4t\xE9: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fr\xE9quence: ${p.frequency}. Comp\xE9tition: ${p.competition ? "Oui" : "Non"}. Priorit\xE9: ${prioStr}. Marques pr\xE9f\xE9r\xE9es: ${brandStr}.`;
+  return `${isFemme ? "Joueuse" : "Joueur"}: ${physique || "Non renseign\xE9"}. Niveau: ${p.level}. Main: ${p.hand || "Droitier"}. C\xF4t\xE9: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fr\xE9quence: ${p.frequency}. Comp\xE9tition: ${p.competition ? "Oui" : "Non"}. Priorit\xE9: ${prioStr}. Marques pr\xE9f\xE9r\xE9es: ${brandStr}.`;
 }
 function detectPlayerMode(profile) {
   const age = Number(profile.age) || 30;
@@ -46357,7 +46358,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       const brands = (profile.brandTags || []).map((id) => BRAND_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
       const hand = profile.hand || "Droitier", side = profile.side || "Droite";
       const isAttacker = hand === "Droitier" && side === "Gauche" || hand === "Gaucher" && side === "Droite";
-      const role = side === "Les deux" ? "Polyvalent" : isAttacker ? "Attaquant" : "Constructeur";
+      const isFemme_r = (profile.genre || "Homme") === "Femme";
+      const role = side === "Les deux" ? isFemme_r ? "Polyvalente" : "Polyvalent" : isAttacker ? isFemme_r ? "Attaquante" : "Attaquant" : isFemme_r ? "Constructrice" : "Constructeur";
       const levelColors = { D\u00E9butant: "#4CAF50", Interm\u00E9diaire: "#FF9800", Avanc\u00E9: "#ef4444", Expert: "#9C27B0" };
       return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "20px 16px", animation: "fadeIn 0.5s ease" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { width: "100%", maxWidth: 480 }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", marginBottom: 24 }, children: [
@@ -46472,9 +46474,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       const priorities = (profile.priorityTags || []).map((id) => PRIORITY_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
       const hand = profile.hand || "Droitier", side = profile.side || "Droite";
       const isAttacker = hand === "Droitier" && side === "Gauche" || hand === "Gaucher" && side === "Droite";
-      const role = side === "Les deux" ? "Polyvalent" : isAttacker ? "Attaquant" : "Constructeur";
+      const isFemme_r = (profile.genre || "Homme") === "Femme";
+      const role = side === "Les deux" ? isFemme_r ? "Polyvalente" : "Polyvalent" : isAttacker ? isFemme_r ? "Attaquante" : "Attaquant" : isFemme_r ? "Constructrice" : "Constructeur";
       const age = Number(profile.age) || 0;
-      const isJuniorA = age > 0 && age < 15 || Number(profile.height) > 0 && Number(profile.height) < 150;
+      const isJuniorA = age > 0 && age < 15;
+      const isPepiteA = detectPlayerMode(profile) === "pepite";
+      const isExpertA = detectPlayerMode(profile) === "expert";
       const lines = [];
       lines.push(`Analyse du profil de ${profileName}...`);
       if (age)
@@ -46497,8 +46502,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         lines.push(`Priorit\xE9s : ${priorities.join(", ")}. Ces crit\xE8res p\xE8sent le plus lourd dans le scoring.`);
       if (injuries.length > 0)
         lines.push(`\u26A0 Attention ${injuries.join(", ")} \u2014 le confort sera un crit\xE8re non n\xE9gociable.`);
-      if (isJuniorA)
+      if (isJuniorA && !isPepiteA)
         lines.push(`Profil junior : raquettes l\xE9g\xE8res et tol\xE9rantes en priorit\xE9.`);
+      if (isPepiteA)
+        lines.push(`\u{1F31F} Jeune P\xE9pite : raquettes junior + adultes l\xE9g\xE8res \u2264350g.`);
+      if (isExpertA)
+        lines.push(`\u26A1 Mode Expert : les priorit\xE9s dominent le scoring.`);
       lines.push(`Calcul en cours sur ${rackets_db_default.length} raquettes...`);
       lines.push(`R\xE9sultats pr\xEAts.`);
       return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "fixed", inset: 0, background: "#0b0f1a", zIndex: 1e3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px", animation: "fadeIn 0.4s ease" }, children: [
@@ -46754,7 +46763,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       const hand = profile.hand || "Droitier";
       const side = profile.side || "Droite";
       const isAttacker = hand === "Droitier" && side === "Gauche" || hand === "Gaucher" && side === "Droite";
-      const role = side === "Les deux" ? "Polyvalent" : isAttacker ? "Attaquant" : "Constructeur";
+      const isFemme_r = (profile.genre || "Homme") === "Femme";
+      const role = side === "Les deux" ? isFemme_r ? "Polyvalente" : "Polyvalent" : isAttacker ? isFemme_r ? "Attaquante" : "Attaquant" : isFemme_r ? "Constructrice" : "Constructeur";
       const hasSession = rackets.length > 0;
       const fyConfig2 = { recommended: { text: "RECOMMAND\xC9", bg: "#1B5E20", border: "#4CAF50", color: "#4CAF50" }, partial: { text: "JOUABLE", bg: "#E65100", border: "#FF9800", color: "#FF9800" }, no: { text: "D\xC9CONSEILL\xC9", bg: "#B71C1C", border: "#E53935", color: "#E53935" } };
       return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { maxWidth: 1020, margin: "0 auto", padding: "0 24px", animation: "fadeIn 0.5s ease" }, children: [

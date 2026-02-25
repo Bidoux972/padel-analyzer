@@ -254,8 +254,9 @@ function buildProfileText(p) {
   const injuryStr = [...injuries, p.injuryExtra].filter(Boolean).join(", ") || "Aucune";
   const prioStr = [...priorities, p.priorityExtra].filter(Boolean).join(", ") || "Non précisé";
   const brandStr = brands.length ? brands.join(", ") : "Toutes marques";
+  const isFemme = (p.genre || "Homme") === "Femme";
   const physique = [p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null, p.genre || "Homme", `fitness: ${p.fitness||"actif"}`].filter(Boolean).join(", ");
-  return `Joueur: ${physique || "Non renseigné"}. Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
+  return `${isFemme?"Joueuse":"Joueur"}: ${physique || "Non renseigné"}. Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
 }
 
 // =====================================================
@@ -2353,7 +2354,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const brands = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
         const hand = profile.hand||"Droitier", side = profile.side||"Droite";
         const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
-        const role = side==="Les deux"?"Polyvalent":isAttacker?"Attaquant":"Constructeur";
+        const isFemme_r = (profile.genre||"Homme")==="Femme"; const role = side==="Les deux"?(isFemme_r?"Polyvalente":"Polyvalent"):isAttacker?(isFemme_r?"Attaquante":"Attaquant"):(isFemme_r?"Constructrice":"Constructeur");
         const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Expert:"#9C27B0"};
 
         return (
@@ -2433,9 +2434,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const priorities = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
         const hand = profile.hand||"Droitier", side = profile.side||"Droite";
         const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
-        const role = side==="Les deux"?"Polyvalent":isAttacker?"Attaquant":"Constructeur";
+        const isFemme_r = (profile.genre||"Homme")==="Femme"; const role = side==="Les deux"?(isFemme_r?"Polyvalente":"Polyvalent"):isAttacker?(isFemme_r?"Attaquante":"Attaquant"):(isFemme_r?"Constructrice":"Constructeur");
         const age = Number(profile.age)||0;
-        const isJuniorA = (age>0&&age<15)||(Number(profile.height)>0&&Number(profile.height)<150);
+        const isJuniorA = age>0&&age<15;
+        const isPepiteA = detectPlayerMode(profile)==="pepite";
+        const isExpertA = detectPlayerMode(profile)==="expert";
 
         // Build analysis lines (different from pertinence!)
         const lines = [];
@@ -2453,7 +2456,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         }
         if(priorities.length>0) lines.push(`Priorités : ${priorities.join(", ")}. Ces critères pèsent le plus lourd dans le scoring.`);
         if(injuries.length>0) lines.push(`⚠ Attention ${injuries.join(", ")} — le confort sera un critère non négociable.`);
-        if(isJuniorA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
+        if(isJuniorA&&!isPepiteA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
+        if(isPepiteA) lines.push(`🌟 Jeune Pépite : raquettes junior + adultes légères ≤350g.`);
+        if(isExpertA) lines.push(`⚡ Mode Expert : les priorités dominent le scoring.`);
         lines.push(`Calcul en cours sur ${RACKETS_DB.length} raquettes...`);
         lines.push(`Résultats prêts.`);
 
@@ -2688,7 +2693,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const hand = profile.hand||"Droitier";
         const side = profile.side||"Droite";
         const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
-        const role = side==="Les deux" ? "Polyvalent" : isAttacker ? "Attaquant" : "Constructeur";
+        const isFemme_r = (profile.genre||"Homme")==="Femme"; const role = side==="Les deux" ? (isFemme_r?"Polyvalente":"Polyvalent") : isAttacker ? (isFemme_r?"Attaquante":"Attaquant") : (isFemme_r?"Constructrice":"Constructeur");
         const hasSession = rackets.length > 0;
         const fyConfig2 = {recommended:{text:"RECOMMANDÉ",bg:"#1B5E20",border:"#4CAF50",color:"#4CAF50"},partial:{text:"JOUABLE",bg:"#E65100",border:"#FF9800",color:"#FF9800"},no:{text:"DÉCONSEILLÉ",bg:"#B71C1C",border:"#E53935",color:"#E53935"}};
 
