@@ -46786,10 +46786,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, minWidth: 0 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 18, fontWeight: 700, color: "#f1f5f9" }, children: profileName }),
-              profile.level && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 10, fontWeight: 600, color: levelColors[profile.level] || "#64748b", background: `${levelColors[profile.level] || "#64748b"}18`, padding: "3px 10px", borderRadius: 8, textTransform: "uppercase" }, children: [
-                profile.level,
-                isJunior ? " \xB7 Junior" : ""
-              ] }),
+              profile.level && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, fontWeight: 600, color: levelColors[profile.level] || "#64748b", background: `${levelColors[profile.level] || "#64748b"}18`, padding: "3px 10px", borderRadius: 8, textTransform: "uppercase" }, children: profile.level }),
+              (() => {
+                const m = detectPlayerMode(profile);
+                const cfg = { expert: { text: "\u26A1 Expert", bg: "rgba(168,85,247,0.15)", border: "rgba(168,85,247,0.4)", color: "#c084fc" }, pepite: { text: "\u{1F31F} P\xE9pite", bg: "rgba(59,130,246,0.15)", border: "rgba(59,130,246,0.4)", color: "#60a5fa" }, junior: { text: "\u{1F9D2} Junior", bg: "rgba(59,130,246,0.15)", border: "rgba(59,130,246,0.4)", color: "#60a5fa" } };
+                const c2 = cfg[m];
+                return c2 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, fontWeight: 700, color: c2.color, background: c2.bg, border: `1px solid ${c2.border}`, padding: "3px 10px", borderRadius: 8 }, children: c2.text }) : null;
+              })(),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 11, color: "#94a3b8" }, children: [
                 hand,
                 " \xB7 C\xF4t\xE9 ",
