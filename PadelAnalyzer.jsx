@@ -2060,141 +2060,175 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* WIZARD SCREEN — Step-by-step profile creation */}
       {/* ============================================================ */}
       {screen==="wizard"&&(()=>{
-        const TOTAL_STEPS = 9;
+        const TOTAL_STEPS = 11;
         const progress = (wizardStep+1) / TOTAL_STEPS;
-        const isJuniorW = (Number(profile.age)>0&&Number(profile.age)<15)||(Number(profile.height)>0&&Number(profile.height)<150);
+        const isJuniorW = (Number(profile.age)>0&&Number(profile.age)<15);
+        const isFemme = profile.genre === "Femme";
+        const g = (m, f) => isFemme ? f : m;
+        const wizMode = detectPlayerMode(profile);
+        const isExpertMode = wizMode === "expert";
+        const isPepiteMode = wizMode === "pepite";
+
+        // Auto-fill for Expert mode (P4/P5)
+        if (isExpertMode && profile.frequency !== "Intensif (5+/semaine)") {
+          setProfile(p=>({...p, frequency: "Intensif (5+/semaine)", competition: true}));
+        }
 
         // Can advance?
         const canNext = [
-          ()=>profileName.trim().length>0, // 0: name
-          ()=>Number(profile.age)>0, // 1: gabarit (age required)
-          ()=>!!profile.level, // 2: level
-          ()=>!!profile.hand && !!profile.side, // 3: hand+side
-          ()=>!!profile.frequency, // 4: frequency
-          ()=>(profile.styleTags||[]).length>0, // 5: style
-          ()=>(profile.injuryTags||[]).length>0, // 6: injuries
-          ()=>(profile.priorityTags||[]).length>0, // 7: priorities
-          ()=>true, // 8: brands (optional)
+          ()=>profileName.trim().length>0,
+          ()=>!!profile.genre,
+          ()=>Number(profile.age)>0,
+          ()=>!!profile.fitness,
+          ()=>!!profile.level,
+          ()=>!!profile.hand && !!profile.side,
+          ()=>!!profile.frequency,
+          ()=>(profile.styleTags||[]).length>0,
+          ()=>(profile.injuryTags||[]).length>0,
+          ()=>(profile.priorityTags||[]).length>0,
+          ()=>true,
         ][wizardStep]();
 
-        const nextStep = () => { if(canNext && wizardStep<TOTAL_STEPS-1) setWizardStep(s=>s+1); };
-        const prevStep = () => { if(wizardStep>0) setWizardStep(s=>s-1); };
+        const nextStep = () => {
+          if(!canNext || wizardStep>=TOTAL_STEPS-1) return;
+          let next = wizardStep + 1;
+          if (next === 6 && isExpertMode) next = 7;
+          setWizardStep(next);
+        };
+        const prevStep = () => {
+          if(wizardStep<=0) return;
+          let prev = wizardStep - 1;
+          if (prev === 6 && isExpertMode) prev = 5;
+          setWizardStep(prev);
+        };
         const goRecap = () => { if(canNext) setScreen("recap"); };
 
-        // Card select helper
         const CardSelect = ({options, value, onChange, multi, columns=2}) => (
           <div style={{display:"grid",gridTemplateColumns:`repeat(${columns},1fr)`,gap:10,maxWidth:460,margin:"0 auto",width:"100%"}}>
             {options.map(o=>{
               const sel = multi ? (value||[]).includes(o.value) : value===o.value;
+              const disabled = o.disabled;
               return <button key={o.value} onClick={()=>{
+                if(disabled) return;
                 if(multi){
                   if(o.value==="aucune") onChange(sel?[]:[o.value]);
                   else onChange(sel?(value||[]).filter(v=>v!==o.value):[...(value||[]).filter(v=>v!=="aucune"),o.value]);
                 } else onChange(o.value);
               }} style={{
-                padding:"16px 12px",borderRadius:14,cursor:"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
-                background:sel?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
-                border:`2px solid ${sel?"#f97316":"rgba(255,255,255,0.08)"}`,
+                padding:"16px 12px",borderRadius:14,cursor:disabled?"not-allowed":"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
+                background:disabled?"rgba(255,255,255,0.01)":sel?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                border:`2px solid ${disabled?"rgba(255,255,255,0.04)":sel?"#f97316":"rgba(255,255,255,0.08)"}`,
                 transition:"all 0.25s ease",transform:sel?"scale(1.02)":"scale(1)",
                 boxShadow:sel?"0 4px 16px rgba(249,115,22,0.15)":"none",
+                opacity:disabled?0.35:1,
               }}>
-                {o.icon&&<div style={{fontSize:24,marginBottom:6}}>{o.icon}</div>}
-                <div style={{fontSize:14,fontWeight:700,color:sel?"#f97316":"#e2e8f0"}}>{o.label}</div>
-                {o.desc&&<div style={{fontSize:10,color:sel?"#fb923c":"#64748b",marginTop:3}}>{o.desc}</div>}
+                {o.icon&&<div style={{fontSize:24,marginBottom:4}}>{o.icon}</div>}
+                <div style={{fontSize:14,fontWeight:700,color:disabled?"#475569":sel?"#f97316":"#e2e8f0"}}>{o.label}</div>
+                {o.desc&&<div style={{fontSize:10,color:disabled?"#334155":"#64748b",marginTop:2}}>{o.desc}</div>}
               </button>;
             })}
           </div>
         );
 
-        // Tag multi-select helper
-        const TagSelect = ({tags, field, colors={on:"#f97316",bg:"rgba(249,115,22,0.12)",border:"#f97316"}}) => (
-          <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",maxWidth:500,margin:"0 auto"}}>
+        const TagSelect = ({tags, field, colors}) => {
+          const c = colors || {on:"#f97316",bg:"rgba(249,115,22,0.12)",border:"#f97316"};
+          return <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",maxWidth:460,margin:"0 auto"}}>
             {tags.map(t=>{
               const sel = (profile[field]||[]).includes(t.id);
-              const isNone = t.id==="aucune";
-              const c = isNone ? {on:"#4CAF50",bg:"rgba(76,175,80,0.15)",border:"#4CAF50"} : colors;
-              return <button key={t.id} onClick={()=>toggleTag(field,t.id)} style={{
-                padding:"10px 16px",borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",
+              return <button key={t.id} className="pa-tag" onClick={()=>{
+                setProfile(p=>{
+                  const arr = p[field]||[];
+                  if(t.id==="aucune") return {...p,[field]:sel?[]:[t.id]};
+                  return {...p,[field]:sel?arr.filter(x=>x!==t.id):[...arr.filter(x=>x!=="aucune"),t.id]};
+                });
+              }} title={t.tip||""} style={{
+                padding:"8px 16px",borderRadius:20,fontSize:12,fontWeight:600,cursor:"pointer",
                 background:sel?c.bg:"rgba(255,255,255,0.03)",
-                border:`2px solid ${sel?c.border:"rgba(255,255,255,0.08)"}`,
-                color:sel?c.on:"#94a3b8",fontSize:12,fontWeight:sel?700:500,
-                transition:"all 0.2s ease",transform:sel?"scale(1.04)":"scale(1)",
-              }}>
-                <div>{isNone?"✓ ":""}{t.label}</div>
-                {t.tip&&<div style={{fontSize:9,color:sel?"#fb923c":"#475569",marginTop:2,fontWeight:400}}>{t.tip}</div>}
-              </button>;
+                border:`1.5px solid ${sel?c.border:"rgba(255,255,255,0.08)"}`,
+                color:sel?c.on:"#64748b",fontFamily:"'Inter',sans-serif",
+                boxShadow:sel?`0 2px 8px ${c.on}22`:"none",transition:"all 0.2s ease",
+              }}>{sel?"✓ ":""}{t.label}</button>;
             })}
-          </div>
-        );
+          </div>;
+        };
+
+        const fitLevel = (profile.fitness || "actif").toLowerCase();
+        const expertAllowed = fitLevel === "athletique";
+        const levelOptions = LEVEL_OPTIONS.map(o => ({
+          value: o.value, label: o.label, desc: o.desc,
+          icon: {Débutant:"🌱",Intermédiaire:"🎾",Avancé:"🔥",Expert:"💎"}[o.value],
+          disabled: o.value === "Expert" && !expertAllowed,
+        }));
 
         const stepContent = [
-          // Step 0: Name
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>👤</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Comment tu t'appelles ?</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Le nom de ton profil joueur.</p>
-            <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Noah, Maman..."
+            <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Manon, Noah..."
               onKeyDown={e=>{if(e.key==="Enter"&&canNext)nextStep();}}
-              autoFocus style={{
-              width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,
-              background:"rgba(255,255,255,0.05)",border:"2px solid rgba(249,115,22,0.3)",color:"#f1f5f9",
-              fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center",
-            }}/>
+              autoFocus style={{width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,background:"rgba(255,255,255,0.05)",border:"2px solid rgba(249,115,22,0.3)",color:"#f1f5f9",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
           </div>,
 
-          // Step 1: Gabarit
+          ()=><div style={{textAlign:"center"}}>
+            <div style={{fontSize:40,marginBottom:16}}>{isFemme?"👩":"👨"}</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Tu es…</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Les recommandations s'adaptent au genre (gammes, poids, confort).</p>
+            <CardSelect options={[
+              {value:"Homme",label:"Homme",icon:"♂️",desc:"Gammes standard"},
+              {value:"Femme",label:"Femme",icon:"♀️",desc:"Gammes adaptées + WomanLine"},
+            ]} value={profile.genre||"Homme"} onChange={v=>{setProfile(p=>({...p,genre:v}));setTimeout(nextStep,300);}}/>
+          </div>,
+
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>📏</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton gabarit</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Pour adapter le poids et la taille de raquette idéale.</p>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Pour adapter le poids et le type de raquette {g("idéal","idéale")}.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto"}}>
-              {[{key:"age",label:"Âge",ph:"49",unit:"ans"},{key:"height",label:"Taille",ph:"175",unit:"cm"},{key:"weight",label:"Poids",ph:"80",unit:"kg"}].map(f=>
+              {[{key:"age",label:"Âge",ph:"30",unit:"ans"},{key:"height",label:"Taille",ph:"170",unit:"cm"},{key:"weight",label:"Poids",ph:"70",unit:"kg"}].map(f=>
                 <div key={f.key} style={{textAlign:"center"}}>
                   <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:6}}>{f.label}</label>
                   <input type="number" value={profile[f.key]} onChange={e=>setProfile(p=>({...p,[f.key]:Number(e.target.value)}))}
-                    placeholder={f.ph} style={{
-                    width:"100%",padding:"14px 8px",borderRadius:12,fontSize:22,fontWeight:700,
-                    background:"rgba(255,255,255,0.05)",border:"2px solid rgba(255,255,255,0.1)",color:"#f1f5f9",
-                    fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center",
-                  }}/>
+                    placeholder={f.ph} style={{width:"100%",padding:"14px 8px",borderRadius:12,fontSize:22,fontWeight:700,background:"rgba(255,255,255,0.05)",border:"2px solid rgba(255,255,255,0.1)",color:"#f1f5f9",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
                   <div style={{fontSize:9,color:"#475569",marginTop:4}}>{f.unit}</div>
                 </div>
               )}
             </div>
             {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
-            {Number(profile.age)>=50&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>👤 Profil 50+ — Confort et Maniabilité renforcés</div>}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,maxWidth:400,margin:"20px auto 0"}}>
-              <div>
-                <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Genre</label>
-                <CardSelect columns={2} options={[{value:"Homme",label:"Homme",icon:"♂️"},{value:"Femme",label:"Femme",icon:"♀️"}]} value={profile.genre||"Homme"} onChange={v=>setProfile(p=>({...p,genre:v}))}/>
-              </div>
-              <div>
-                <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Condition physique</label>
-                <CardSelect columns={1} options={FITNESS_OPTIONS.map(o=>({value:o.value,label:o.label,icon:o.icon,desc:o.desc}))} value={profile.fitness||"actif"} onChange={v=>setProfile(p=>({...p,fitness:v}))}/>
-              </div>
-            </div>
-            {(()=>{
-              const lvl = (profile.level||"").toLowerCase();
-              const fit = (profile.fitness||"actif").toLowerCase();
-              const isProElite = (lvl.includes("expert")||lvl.includes("avanc")) && fit==="athletique";
-              return isProElite ? <div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#c084fc",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>⚡ Tier PRO/ELITE — Le gabarit ne limite plus les recommandations</div> : null;
-            })()}
           </div>,
 
-          // Step 2: Level
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>🏆</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Quel est ton niveau ?</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ça détermine la gamme de raquettes qu'on va te proposer.</p>
-            <CardSelect options={LEVEL_OPTIONS.map(o=>({value:o.value,label:o.label,desc:o.desc,icon:{Débutant:"🌱",Intermédiaire:"🎾",Avancé:"🔥",Expert:"💎"}[o.value]}))} value={profile.level} onChange={v=>{setProfile(p=>({...p,level:v}));setTimeout(nextStep,300);}}/>
+            <div style={{fontSize:40,marginBottom:16}}>💪</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{g("Ta condition physique","Ta condition physique")}</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Influence la tolérance au poids et les recommandations avancées.</p>
+            <CardSelect columns={1} options={FITNESS_OPTIONS.map(o=>({value:o.value,label:o.label,icon:o.icon,desc:o.desc}))} value={profile.fitness||"actif"} onChange={v=>{
+              setProfile(p=>{
+                const updated = {...p, fitness:v};
+                if(v !== "athletique" && (p.level||"").toLowerCase().includes("expert")) updated.level = "Avancé";
+                return updated;
+              });
+              setTimeout(nextStep,300);
+            }}/>
           </div>,
 
-          // Step 3: Hand + Side
+          ()=>{
+            const expertBlocked = !expertAllowed;
+            return <div style={{textAlign:"center"}}>
+              <div style={{fontSize:40,marginBottom:16}}>🏆</div>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Quel est ton niveau ?</h2>
+              <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ça détermine la gamme de raquettes qu'on va te proposer.</p>
+              <CardSelect options={levelOptions} value={profile.level} onChange={v=>{setProfile(p=>({...p,level:v}));setTimeout(nextStep,300);}}/>
+              {expertBlocked&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>💡 Le niveau Expert nécessite une condition physique Athlétique</div>}
+              {isPepiteMode&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>🌟 Jeune Pépite détecté{g("","e")} — accès aux raquettes adultes légères !</div>}
+              {isExpertMode&&<div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#c084fc",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>⚡ Mode Expert (Tapia) — les priorités dominent, fréquence et compétition auto-remplies</div>}
+            </div>;
+          },
+
           ()=>{
             const h=profile.hand||"Droitier",s=profile.side||"Droite";
             const atk=(h==="Droitier"&&s==="Gauche")||(h==="Gaucher"&&s==="Droite");
             const cst=(h==="Droitier"&&s==="Droite")||(h==="Gaucher"&&s==="Gauche");
-            const role=s==="Les deux"?"Polyvalent":atk?"Attaquant (coup droit au centre)":"Constructeur (revers au centre)";
+            const role=s==="Les deux"?g("Polyvalent","Polyvalente"):atk?g("Attaquant","Attaquante")+" (coup droit au centre)":g("Constructeur","Constructrice")+" (revers au centre)";
             const roleColor=atk?"#f97316":cst?"#6366f1":"#94a3b8";
             return <div style={{textAlign:"center"}}>
               <div style={{fontSize:40,marginBottom:16}}>🤚</div>
@@ -2207,13 +2241,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Côté de jeu</label>
                 <CardSelect columns={3} options={SIDE_OPTIONS.map(o=>({value:o,label:o,icon:{Gauche:"⬅️",Droite:"➡️","Les deux":"↔️"}[o]}))} value={profile.side} onChange={v=>setProfile(p=>({...p,side:v}))}/>
               </div>
-              {profile.hand&&profile.side&&<div style={{background:`${roleColor}15`,border:`1.5px solid ${roleColor}40`,borderRadius:12,padding:"12px 16px",marginTop:20,fontSize:13,color:roleColor,fontWeight:700,maxWidth:400,margin:"20px auto 0"}}>
-                🎯 Rôle détecté : {role}
-              </div>}
+              {profile.hand&&profile.side&&<div style={{background:`${roleColor}15`,border:`1.5px solid ${roleColor}40`,borderRadius:12,padding:"12px 16px",marginTop:20,fontSize:13,color:roleColor,fontWeight:700,maxWidth:400,margin:"20px auto 0"}}>🎯 Rôle détecté : {role}</div>}
             </div>;
           },
 
-          // Step 4: Frequency + Competition
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>📅</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton rythme de jeu</h2>
@@ -2225,7 +2256,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
           </div>,
 
-          // Step 5: Style
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>🎾</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Comment tu joues ?</h2>
@@ -2233,7 +2263,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <TagSelect tags={STYLE_TAGS} field="styleTags"/>
           </div>,
 
-          // Step 6: Injuries
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>🩹</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton corps</h2>
@@ -2241,7 +2270,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <TagSelect tags={INJURY_TAGS} field="injuryTags" colors={{on:"#ef4444",bg:"rgba(239,68,68,0.12)",border:"#ef4444"}}/>
           </div>,
 
-          // Step 7: Priorities
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>🎯</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Qu'est-ce que tu cherches ?</h2>
@@ -2249,7 +2277,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <TagSelect tags={PRIORITY_TAGS} field="priorityTags" colors={{on:"#4CAF50",bg:"rgba(76,175,80,0.12)",border:"#4CAF50"}}/>
           </div>,
 
-          // Step 8: Brands
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>🏷</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Marques préférées</h2>
@@ -3094,9 +3121,30 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
+            <div><label style={S.label}>Genre</label>
+            <select value={profile.genre||"Homme"} onChange={e=>setProfile(p=>({...p,genre:e.target.value}))} style={S.select}>
+              <option value="Homme">Homme</option><option value="Femme">Femme</option>
+            </select></div>
+            <div><label style={S.label}>Condition</label>
+            <select value={profile.fitness||"actif"} onChange={e=>{
+              const v=e.target.value;
+              setProfile(p=>{
+                const u={...p,fitness:v};
+                if(v!=="athletique"&&(p.level||"").toLowerCase().includes("expert")) u.level="Avancé";
+                return u;
+              });
+            }} style={S.select}>
+              {FITNESS_OPTIONS.map(o=>(<option key={o.value} value={o.value}>{o.label}</option>))}
+            </select></div>
+          </div>
+
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
             <div><label style={S.label}>Niveau</label>
             <select value={profile.level} onChange={e=>setProfile(p=>({...p,level:e.target.value}))} style={S.select}>
-              {LEVEL_OPTIONS.map(o=>(<option key={o.value} value={o.value}>{o.label} — {o.desc}</option>))}
+              {LEVEL_OPTIONS.map(o=>{
+                const disabled = o.value==="Expert"&&(profile.fitness||"actif").toLowerCase()!=="athletique";
+                return <option key={o.value} value={o.value} disabled={disabled}>{o.label} — {o.desc}{disabled?" (nécessite Athlétique)":""}</option>;
+              })}
             </select></div>
             <div><label style={S.label}>Fréquence</label>
             <select value={profile.frequency} onChange={e=>setProfile(p=>({...p,frequency:e.target.value}))} style={S.select}>
@@ -3120,14 +3168,19 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           {/* Junior/Senior indicators */}
-          {((Number(profile.age)>0&&Number(profile.age)<15)||(Number(profile.height)>0&&Number(profile.height)<150))&&
+          {((Number(profile.age)>0&&Number(profile.age)<15))&&
             <div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#60a5fa",fontWeight:600}}>
-              🧒 Profil junior détecté — recommandations adaptées (poids léger, grip réduit)
+              🧒 Profil junior détecté — recommandations adaptées
             </div>
           }
-          {Number(profile.age)>=50&&
-            <div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#fbbf24",fontWeight:600}}>
-              👤 Profil 50+ — Confort, Tolérance et Maniabilité renforcés automatiquement
+          {detectPlayerMode(profile)==="pepite"&&
+            <div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#60a5fa",fontWeight:700}}>
+              🌟 Jeune Pépite — accès aux raquettes adultes légères !
+            </div>
+          }
+          {detectPlayerMode(profile)==="expert"&&
+            <div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#c084fc",fontWeight:700}}>
+              ⚡ Mode Expert (Tapia) — priorités dominent
             </div>
           }
         </div>}

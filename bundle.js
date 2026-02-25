@@ -46048,36 +46048,45 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       );
     })(),
     screen === "wizard" && (() => {
-      const TOTAL_STEPS = 9;
+      const TOTAL_STEPS = 11;
       const progress = (wizardStep + 1) / TOTAL_STEPS;
-      const isJuniorW = Number(profile.age) > 0 && Number(profile.age) < 15 || Number(profile.height) > 0 && Number(profile.height) < 150;
+      const isJuniorW = Number(profile.age) > 0 && Number(profile.age) < 15;
+      const isFemme = profile.genre === "Femme";
+      const g = (m, f) => isFemme ? f : m;
+      const wizMode = detectPlayerMode(profile);
+      const isExpertMode = wizMode === "expert";
+      const isPepiteMode = wizMode === "pepite";
+      if (isExpertMode && profile.frequency !== "Intensif (5+/semaine)") {
+        setProfile((p) => ({ ...p, frequency: "Intensif (5+/semaine)", competition: true }));
+      }
       const canNext = [
         () => profileName.trim().length > 0,
-        // 0: name
+        () => !!profile.genre,
         () => Number(profile.age) > 0,
-        // 1: gabarit (age required)
+        () => !!profile.fitness,
         () => !!profile.level,
-        // 2: level
         () => !!profile.hand && !!profile.side,
-        // 3: hand+side
         () => !!profile.frequency,
-        // 4: frequency
         () => (profile.styleTags || []).length > 0,
-        // 5: style
         () => (profile.injuryTags || []).length > 0,
-        // 6: injuries
         () => (profile.priorityTags || []).length > 0,
-        // 7: priorities
         () => true
-        // 8: brands (optional)
       ][wizardStep]();
       const nextStep = () => {
-        if (canNext && wizardStep < TOTAL_STEPS - 1)
-          setWizardStep((s2) => s2 + 1);
+        if (!canNext || wizardStep >= TOTAL_STEPS - 1)
+          return;
+        let next = wizardStep + 1;
+        if (next === 6 && isExpertMode)
+          next = 7;
+        setWizardStep(next);
       };
       const prevStep = () => {
-        if (wizardStep > 0)
-          setWizardStep((s2) => s2 - 1);
+        if (wizardStep <= 0)
+          return;
+        let prev = wizardStep - 1;
+        if (prev === 6 && isExpertMode)
+          prev = 5;
+        setWizardStep(prev);
       };
       const goRecap = () => {
         if (canNext)
@@ -46085,7 +46094,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       };
       const CardSelect = ({ options, value, onChange, multi, columns = 2 }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: `repeat(${columns},1fr)`, gap: 10, maxWidth: 460, margin: "0 auto", width: "100%" }, children: options.map((o) => {
         const sel = multi ? (value || []).includes(o.value) : value === o.value;
+        const disabled = o.disabled;
         return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
+          if (disabled)
+            return;
           if (multi) {
             if (o.value === "aucune")
               onChange(sel ? [] : [o.value]);
@@ -46096,46 +46108,60 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         }, style: {
           padding: "16px 12px",
           borderRadius: 14,
-          cursor: "pointer",
+          cursor: disabled ? "not-allowed" : "pointer",
           textAlign: "center",
           fontFamily: "'Inter',sans-serif",
-          background: sel ? "rgba(249,115,22,0.12)" : "rgba(255,255,255,0.03)",
-          border: `2px solid ${sel ? "#f97316" : "rgba(255,255,255,0.08)"}`,
+          background: disabled ? "rgba(255,255,255,0.01)" : sel ? "rgba(249,115,22,0.12)" : "rgba(255,255,255,0.03)",
+          border: `2px solid ${disabled ? "rgba(255,255,255,0.04)" : sel ? "#f97316" : "rgba(255,255,255,0.08)"}`,
           transition: "all 0.25s ease",
           transform: sel ? "scale(1.02)" : "scale(1)",
-          boxShadow: sel ? "0 4px 16px rgba(249,115,22,0.15)" : "none"
+          boxShadow: sel ? "0 4px 16px rgba(249,115,22,0.15)" : "none",
+          opacity: disabled ? 0.35 : 1
         }, children: [
-          o.icon && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 24, marginBottom: 6 }, children: o.icon }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 14, fontWeight: 700, color: sel ? "#f97316" : "#e2e8f0" }, children: o.label }),
-          o.desc && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: sel ? "#fb923c" : "#64748b", marginTop: 3 }, children: o.desc })
+          o.icon && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 24, marginBottom: 4 }, children: o.icon }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 14, fontWeight: 700, color: disabled ? "#475569" : sel ? "#f97316" : "#e2e8f0" }, children: o.label }),
+          o.desc && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: disabled ? "#334155" : "#64748b", marginTop: 2 }, children: o.desc })
         ] }, o.value);
       }) });
-      const TagSelect = ({ tags, field, colors = { on: "#f97316", bg: "rgba(249,115,22,0.12)", border: "#f97316" } }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", maxWidth: 500, margin: "0 auto" }, children: tags.map((t) => {
-        const sel = (profile[field] || []).includes(t.id);
-        const isNone = t.id === "aucune";
-        const c2 = isNone ? { on: "#4CAF50", bg: "rgba(76,175,80,0.15)", border: "#4CAF50" } : colors;
-        return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => toggleTag(field, t.id), style: {
-          padding: "10px 16px",
-          borderRadius: 12,
-          cursor: "pointer",
-          fontFamily: "'Inter',sans-serif",
-          background: sel ? c2.bg : "rgba(255,255,255,0.03)",
-          border: `2px solid ${sel ? c2.border : "rgba(255,255,255,0.08)"}`,
-          color: sel ? c2.on : "#94a3b8",
-          fontSize: 12,
-          fontWeight: sel ? 700 : 500,
-          transition: "all 0.2s ease",
-          transform: sel ? "scale(1.04)" : "scale(1)"
-        }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            isNone ? "\u2713 " : "",
+      const TagSelect = ({ tags, field, colors }) => {
+        const c2 = colors || { on: "#f97316", bg: "rgba(249,115,22,0.12)", border: "#f97316" };
+        return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", maxWidth: 460, margin: "0 auto" }, children: tags.map((t) => {
+          const sel = (profile[field] || []).includes(t.id);
+          return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: "pa-tag", onClick: () => {
+            setProfile((p) => {
+              const arr = p[field] || [];
+              if (t.id === "aucune")
+                return { ...p, [field]: sel ? [] : [t.id] };
+              return { ...p, [field]: sel ? arr.filter((x2) => x2 !== t.id) : [...arr.filter((x2) => x2 !== "aucune"), t.id] };
+            });
+          }, title: t.tip || "", style: {
+            padding: "8px 16px",
+            borderRadius: 20,
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: "pointer",
+            background: sel ? c2.bg : "rgba(255,255,255,0.03)",
+            border: `1.5px solid ${sel ? c2.border : "rgba(255,255,255,0.08)"}`,
+            color: sel ? c2.on : "#64748b",
+            fontFamily: "'Inter',sans-serif",
+            boxShadow: sel ? `0 2px 8px ${c2.on}22` : "none",
+            transition: "all 0.2s ease"
+          }, children: [
+            sel ? "\u2713 " : "",
             t.label
-          ] }),
-          t.tip && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: sel ? "#fb923c" : "#475569", marginTop: 2, fontWeight: 400 }, children: t.tip })
-        ] }, t.id);
-      }) });
+          ] }, t.id);
+        }) });
+      };
+      const fitLevel = (profile.fitness || "actif").toLowerCase();
+      const expertAllowed = fitLevel === "athletique";
+      const levelOptions = LEVEL_OPTIONS.map((o) => ({
+        value: o.value,
+        label: o.label,
+        desc: o.desc,
+        icon: { D\u00E9butant: "\u{1F331}", Interm\u00E9diaire: "\u{1F3BE}", Avanc\u00E9: "\u{1F525}", Expert: "\u{1F48E}" }[o.value],
+        disabled: o.value === "Expert" && !expertAllowed
+      }));
       const stepContent = [
-        // Step 0: Name
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F464}" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Comment tu t'appelles ?" }),
@@ -46145,35 +46171,37 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {
               value: profileName,
               onChange: (e) => setProfileName(e.target.value),
-              placeholder: "Ex: Bidou, Noah, Maman...",
+              placeholder: "Ex: Bidou, Manon, Noah...",
               onKeyDown: (e) => {
                 if (e.key === "Enter" && canNext)
                   nextStep();
               },
               autoFocus: true,
-              style: {
-                width: "100%",
-                maxWidth: 360,
-                padding: "16px 20px",
-                borderRadius: 14,
-                fontSize: 18,
-                fontWeight: 600,
-                background: "rgba(255,255,255,0.05)",
-                border: "2px solid rgba(249,115,22,0.3)",
-                color: "#f1f5f9",
-                fontFamily: "'Inter',sans-serif",
-                outline: "none",
-                textAlign: "center"
-              }
+              style: { width: "100%", maxWidth: 360, padding: "16px 20px", borderRadius: 14, fontSize: 18, fontWeight: 600, background: "rgba(255,255,255,0.05)", border: "2px solid rgba(249,115,22,0.3)", color: "#f1f5f9", fontFamily: "'Inter',sans-serif", outline: "none", textAlign: "center" }
             }
           )
         ] }),
-        // Step 1: Gabarit
+        () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: isFemme ? "\u{1F469}" : "\u{1F468}" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Tu es\u2026" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "Les recommandations s'adaptent au genre (gammes, poids, confort)." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { options: [
+            { value: "Homme", label: "Homme", icon: "\u2642\uFE0F", desc: "Gammes standard" },
+            { value: "Femme", label: "Femme", icon: "\u2640\uFE0F", desc: "Gammes adapt\xE9es + WomanLine" }
+          ], value: profile.genre || "Homme", onChange: (v) => {
+            setProfile((p) => ({ ...p, genre: v }));
+            setTimeout(nextStep, 300);
+          } })
+        ] }),
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F4CF}" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Ton gabarit" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "Pour adapter le poids et la taille de raquette id\xE9ale." }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, maxWidth: 400, margin: "0 auto" }, children: [{ key: "age", label: "\xC2ge", ph: "49", unit: "ans" }, { key: "height", label: "Taille", ph: "175", unit: "cm" }, { key: "weight", label: "Poids", ph: "80", unit: "kg" }].map(
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: [
+            "Pour adapter le poids et le type de raquette ",
+            g("id\xE9al", "id\xE9ale"),
+            "."
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, maxWidth: 400, margin: "0 auto" }, children: [{ key: "age", label: "\xC2ge", ph: "30", unit: "ans" }, { key: "height", label: "Taille", ph: "170", unit: "cm" }, { key: "weight", label: "Poids", ph: "70", unit: "kg" }].map(
             (f) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { fontSize: 10, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 6 }, children: f.label }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
@@ -46183,59 +46211,52 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   value: profile[f.key],
                   onChange: (e) => setProfile((p) => ({ ...p, [f.key]: Number(e.target.value) })),
                   placeholder: f.ph,
-                  style: {
-                    width: "100%",
-                    padding: "14px 8px",
-                    borderRadius: 12,
-                    fontSize: 22,
-                    fontWeight: 700,
-                    background: "rgba(255,255,255,0.05)",
-                    border: "2px solid rgba(255,255,255,0.1)",
-                    color: "#f1f5f9",
-                    fontFamily: "'Inter',sans-serif",
-                    outline: "none",
-                    textAlign: "center"
-                  }
+                  style: { width: "100%", padding: "14px 8px", borderRadius: 12, fontSize: 22, fontWeight: 700, background: "rgba(255,255,255,0.05)", border: "2px solid rgba(255,255,255,0.1)", color: "#f1f5f9", fontFamily: "'Inter',sans-serif", outline: "none", textAlign: "center" }
                 }
               ),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#475569", marginTop: 4 }, children: f.unit })
             ] }, f.key)
           ) }),
-          isJuniorW && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 10, padding: "10px 14px", marginTop: 16, fontSize: 11, color: "#60a5fa", fontWeight: 600, maxWidth: 400, margin: "16px auto 0" }, children: "\u{1F9D2} Profil junior d\xE9tect\xE9 \u2014 recommandations adapt\xE9es" }),
-          Number(profile.age) >= 50 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)", borderRadius: 10, padding: "10px 14px", marginTop: 16, fontSize: 11, color: "#fbbf24", fontWeight: 600, maxWidth: 400, margin: "16px auto 0" }, children: "\u{1F464} Profil 50+ \u2014 Confort et Maniabilit\xE9 renforc\xE9s" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, maxWidth: 400, margin: "20px auto 0" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { fontSize: 10, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }, children: "Genre" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { columns: 2, options: [{ value: "Homme", label: "Homme", icon: "\u2642\uFE0F" }, { value: "Femme", label: "Femme", icon: "\u2640\uFE0F" }], value: profile.genre || "Homme", onChange: (v) => setProfile((p) => ({ ...p, genre: v })) })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { fontSize: 10, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }, children: "Condition physique" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { columns: 1, options: FITNESS_OPTIONS.map((o) => ({ value: o.value, label: o.label, icon: o.icon, desc: o.desc })), value: profile.fitness || "actif", onChange: (v) => setProfile((p) => ({ ...p, fitness: v })) })
-            ] })
-          ] }),
-          (() => {
-            const lvl = (profile.level || "").toLowerCase();
-            const fit = (profile.fitness || "actif").toLowerCase();
-            const isProElite = (lvl.includes("expert") || lvl.includes("avanc")) && fit === "athletique";
-            return isProElite ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(168,85,247,0.1)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 10, padding: "10px 14px", marginTop: 16, fontSize: 11, color: "#c084fc", fontWeight: 700, maxWidth: 400, margin: "16px auto 0" }, children: "\u26A1 Tier PRO/ELITE \u2014 Le gabarit ne limite plus les recommandations" }) : null;
-          })()
+          isJuniorW && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 10, padding: "10px 14px", marginTop: 16, fontSize: 11, color: "#60a5fa", fontWeight: 600, maxWidth: 400, margin: "16px auto 0" }, children: "\u{1F9D2} Profil junior d\xE9tect\xE9 \u2014 recommandations adapt\xE9es" })
         ] }),
-        // Step 2: Level
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F3C6}" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Quel est ton niveau ?" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "\xC7a d\xE9termine la gamme de raquettes qu'on va te proposer." }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { options: LEVEL_OPTIONS.map((o) => ({ value: o.value, label: o.label, desc: o.desc, icon: { D\u00E9butant: "\u{1F331}", Interm\u00E9diaire: "\u{1F3BE}", Avanc\u00E9: "\u{1F525}", Expert: "\u{1F48E}" }[o.value] })), value: profile.level, onChange: (v) => {
-            setProfile((p) => ({ ...p, level: v }));
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F4AA}" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: g("Ta condition physique", "Ta condition physique") }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "Influence la tol\xE9rance au poids et les recommandations avanc\xE9es." }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { columns: 1, options: FITNESS_OPTIONS.map((o) => ({ value: o.value, label: o.label, icon: o.icon, desc: o.desc })), value: profile.fitness || "actif", onChange: (v) => {
+            setProfile((p) => {
+              const updated = { ...p, fitness: v };
+              if (v !== "athletique" && (p.level || "").toLowerCase().includes("expert"))
+                updated.level = "Avanc\xE9";
+              return updated;
+            });
             setTimeout(nextStep, 300);
           } })
         ] }),
-        // Step 3: Hand + Side
+        () => {
+          const expertBlocked = !expertAllowed;
+          return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F3C6}" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Quel est ton niveau ?" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "\xC7a d\xE9termine la gamme de raquettes qu'on va te proposer." }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { options: levelOptions, value: profile.level, onChange: (v) => {
+              setProfile((p) => ({ ...p, level: v }));
+              setTimeout(nextStep, 300);
+            } }),
+            expertBlocked && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)", borderRadius: 10, padding: "10px 14px", marginTop: 16, fontSize: 11, color: "#fbbf24", fontWeight: 600, maxWidth: 400, margin: "16px auto 0" }, children: "\u{1F4A1} Le niveau Expert n\xE9cessite une condition physique Athl\xE9tique" }),
+            isPepiteMode && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 10, padding: "10px 14px", marginTop: 16, fontSize: 11, color: "#60a5fa", fontWeight: 700, maxWidth: 400, margin: "16px auto 0" }, children: [
+              "\u{1F31F} Jeune P\xE9pite d\xE9tect\xE9",
+              g("", "e"),
+              " \u2014 acc\xE8s aux raquettes adultes l\xE9g\xE8res !"
+            ] }),
+            isExpertMode && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(168,85,247,0.1)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 10, padding: "10px 14px", marginTop: 16, fontSize: 11, color: "#c084fc", fontWeight: 700, maxWidth: 400, margin: "16px auto 0" }, children: "\u26A1 Mode Expert (Tapia) \u2014 les priorit\xE9s dominent, fr\xE9quence et comp\xE9tition auto-remplies" })
+          ] });
+        },
         () => {
           const h = profile.hand || "Droitier", s2 = profile.side || "Droite";
           const atk = h === "Droitier" && s2 === "Gauche" || h === "Gaucher" && s2 === "Droite";
           const cst = h === "Droitier" && s2 === "Droite" || h === "Gaucher" && s2 === "Gauche";
-          const role = s2 === "Les deux" ? "Polyvalent" : atk ? "Attaquant (coup droit au centre)" : "Constructeur (revers au centre)";
+          const role = s2 === "Les deux" ? g("Polyvalent", "Polyvalente") : atk ? g("Attaquant", "Attaquante") + " (coup droit au centre)" : g("Constructeur", "Constructrice") + " (revers au centre)";
           const roleColor = atk ? "#f97316" : cst ? "#6366f1" : "#94a3b8";
           return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F91A}" }),
@@ -46254,7 +46275,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             ] })
           ] });
         },
-        // Step 4: Frequency + Competition
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F4C5}" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Ton rythme de jeu" }),
@@ -46265,28 +46285,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { columns: 2, options: [{ value: true, label: "Oui", icon: "\u{1F3C5}", desc: "Tournois, classement" }, { value: false, label: "Non", icon: "\u{1F3BE}", desc: "Loisir, entre amis" }], value: profile.competition, onChange: (v) => setProfile((p) => ({ ...p, competition: v })) })
           ] })
         ] }),
-        // Step 5: Style
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F3BE}" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Comment tu joues ?" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "S\xE9lectionne tout ce qui te correspond. \xC7a influence le scoring." }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TagSelect, { tags: STYLE_TAGS, field: "styleTags" })
         ] }),
-        // Step 6: Injuries
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1FA79}" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Ton corps" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "Les blessures boostent le crit\xE8re Confort dans les recommandations." }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TagSelect, { tags: INJURY_TAGS, field: "injuryTags", colors: { on: "#ef4444", bg: "rgba(239,68,68,0.12)", border: "#ef4444" } })
         ] }),
-        // Step 7: Priorities
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F3AF}" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Qu'est-ce que tu cherches ?" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "Ces crit\xE8res pond\xE8rent le score de chaque raquette." }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TagSelect, { tags: PRIORITY_TAGS, field: "priorityTags", colors: { on: "#4CAF50", bg: "rgba(76,175,80,0.12)", border: "#4CAF50" } })
         ] }),
-        // Step 8: Brands
         () => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 40, marginBottom: 16 }, children: "\u{1F3F7}" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 26, fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px" }, children: "Marques pr\xE9f\xE9r\xE9es" }),
@@ -47231,12 +47247,37 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Genre" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: profile.genre || "Homme", onChange: (e) => setProfile((p) => ({ ...p, genre: e.target.value })), style: S.select, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "Homme", children: "Homme" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "Femme", children: "Femme" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Condition" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.fitness || "actif", onChange: (e) => {
+                const v = e.target.value;
+                setProfile((p) => {
+                  const u = { ...p, fitness: v };
+                  if (v !== "athletique" && (p.level || "").toLowerCase().includes("expert"))
+                    u.level = "Avanc\xE9";
+                  return u;
+                });
+              }, style: S.select, children: FITNESS_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: o.value, children: o.label }, o.value)) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Niveau" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.level, onChange: (e) => setProfile((p) => ({ ...p, level: e.target.value })), style: S.select, children: LEVEL_OPTIONS.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, children: [
-                o.label,
-                " \u2014 ",
-                o.desc
-              ] }, o.value)) })
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", { value: profile.level, onChange: (e) => setProfile((p) => ({ ...p, level: e.target.value })), style: S.select, children: LEVEL_OPTIONS.map((o) => {
+                const disabled = o.value === "Expert" && (profile.fitness || "actif").toLowerCase() !== "athletique";
+                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: o.value, disabled, children: [
+                  o.label,
+                  " \u2014 ",
+                  o.desc,
+                  disabled ? " (n\xE9cessite Athl\xE9tique)" : ""
+                ] }, o.value);
+              }) })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: S.label, children: "Fr\xE9quence" }),
@@ -47264,8 +47305,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               ] })
             ] })
           ] }),
-          (Number(profile.age) > 0 && Number(profile.age) < 15 || Number(profile.height) > 0 && Number(profile.height) < 150) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 8, padding: "8px 10px", marginTop: 12, fontSize: 10, color: "#60a5fa", fontWeight: 600 }, children: "\u{1F9D2} Profil junior d\xE9tect\xE9 \u2014 recommandations adapt\xE9es (poids l\xE9ger, grip r\xE9duit)" }),
-          Number(profile.age) >= 50 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.2)", borderRadius: 8, padding: "8px 10px", marginTop: 12, fontSize: 10, color: "#fbbf24", fontWeight: 600 }, children: "\u{1F464} Profil 50+ \u2014 Confort, Tol\xE9rance et Maniabilit\xE9 renforc\xE9s automatiquement" })
+          Number(profile.age) > 0 && Number(profile.age) < 15 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 8, padding: "8px 10px", marginTop: 12, fontSize: 10, color: "#60a5fa", fontWeight: 600 }, children: "\u{1F9D2} Profil junior d\xE9tect\xE9 \u2014 recommandations adapt\xE9es" }),
+          detectPlayerMode(profile) === "pepite" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 8, padding: "8px 10px", marginTop: 12, fontSize: 10, color: "#60a5fa", fontWeight: 700 }, children: "\u{1F31F} Jeune P\xE9pite \u2014 acc\xE8s aux raquettes adultes l\xE9g\xE8res !" }),
+          detectPlayerMode(profile) === "expert" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { background: "rgba(168,85,247,0.1)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 8, padding: "8px 10px", marginTop: 12, fontSize: 10, color: "#c084fc", fontWeight: 700 }, children: "\u26A1 Mode Expert (Tapia) \u2014 priorit\xE9s dominent" })
         ] }),
         wizardStep === 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { animation: "fadeIn 0.3s ease" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 18, fontWeight: 800, color: "#e2e8f0", marginBottom: 4, fontFamily: "'Outfit'" }, children: "\u{1F3BE} Comment tu joues ?" }),
