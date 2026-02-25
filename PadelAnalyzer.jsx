@@ -65,6 +65,7 @@ const PRIORITY_TAGS = [
 
 const INITIAL_PROFILE = {
   age: "", weight: "", height: "", level: "Intermédiaire", side: "Droite", hand: "Droitier",
+  genre: "Homme", fitness: "actif",
   styleTags: [],
   styleExtra: "",
   injuryTags: [],
@@ -74,6 +75,12 @@ const INITIAL_PROFILE = {
   brandTags: [],
   frequency: "Occasionnel (1-2x/mois)", competition: false,
 };
+
+const FITNESS_OPTIONS = [
+  { value: "athletique", label: "Athlétique", icon: "💪", desc: "Sport intensif" },
+  { value: "actif", label: "Actif", icon: "🏃", desc: "Sport régulier" },
+  { value: "occasionnel", label: "Occasionnel", icon: "🚶", desc: "Activité modérée" },
+];
 
 const INITIAL_RACKETS = [];
 
@@ -247,112 +254,198 @@ function buildProfileText(p) {
   const injuryStr = [...injuries, p.injuryExtra].filter(Boolean).join(", ") || "Aucune";
   const prioStr = [...priorities, p.priorityExtra].filter(Boolean).join(", ") || "Non précisé";
   const brandStr = brands.length ? brands.join(", ") : "Toutes marques";
-  const physique = [p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null].filter(Boolean).join(", ");
+  const physique = [p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null, p.genre || "Homme", `fitness: ${p.fitness||"actif"}`].filter(Boolean).join(", ");
   return `Joueur: ${physique || "Non renseigné"}. Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
 }
 
 // Weighted global score /10 based on player profile
-function computeGlobalScore(scores, profile) {
-  if (!scores || typeof scores !== 'object') return 0;
-  // Base weights (equal)
-  const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
-  
-  // Priority tags boost relevant criteria
-  const prioMap = {
-    confort: { Confort:1.5 },
-    polyvalence: { Contrôle:0.5, Maniabilité:0.5, Tolérance:0.5 },
-    puissance: { Puissance:1.5 },
-    controle: { Contrôle:1.5 },
-    spin: { Spin:1.5 },
-    legerete: { Maniabilité:1.5 },
-    protection: { Confort:1.5 },
-    reprise: { Confort:1.5, Tolérance:1.0, Maniabilité:0.5 },
-  };
-  for (const tag of (profile.priorityTags||[])) {
-    const boosts = prioMap[tag];
-    if (boosts) for (const [k,v] of Object.entries(boosts)) w[k] = (w[k]||1)+v;
-  }
-  
-  // Style tags influence
-  const styleMap = {
-    offensif: { Puissance:0.5 },
-    defensif: { Contrôle:0.5, Tolérance:0.5 },
-    tactique: { Contrôle:0.5, Maniabilité:0.3 },
-    puissant: { Puissance:0.5, Spin:0.3 },
-    veloce: { Maniabilité:0.8 },
-    endurant: { Confort:0.5, Tolérance:0.3 },
-    contre: { Tolérance:0.5, Contrôle:0.3 },
-    polyvalent: { Contrôle:0.3, Tolérance:0.3 },
-    technique: { Contrôle:0.5, Spin:0.3 },
-  };
-  for (const tag of (profile.styleTags||[])) {
-    const boosts = styleMap[tag];
-    if (boosts) for (const [k,v] of Object.entries(boosts)) w[k] = (w[k]||1)+v;
-  }
-  
-  // Injuries → arm injuries boost Confort, leg injuries boost Maniabilité
-  const ARM_INJURIES = ["dos","poignet","coude","epaule"];
-  const LEG_INJURIES = ["genou","cheville","mollet","hanche","achille"];
-  const tags = profile.injuryTags||[];
-  const hasArmInjury = tags.some(t=>ARM_INJURIES.includes(t));
-  const hasLegInjury = tags.some(t=>LEG_INJURIES.includes(t));
-  if (hasArmInjury) w.Confort = (w.Confort||1) + 2;
-  if (hasLegInjury) w.Maniabilité = (w.Maniabilité||1) + 1.5;
-  
-  // Height influence — shorter players need more maniabilité, taller tolerate more power
-  const h = Number(profile.height)||0;
-  if (h > 0 && h < 170) w.Maniabilité = (w.Maniabilité||1) + 0.5;
-  if (h >= 185) w.Puissance = (w.Puissance||1) + 0.3;
-  
-  // Age influence — older players need more comfort, tolerance, maniability
-  const age = Number(profile.age)||0;
-  if (age >= 40) { w.Confort = (w.Confort||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
-  if (age >= 50) { w.Confort = (w.Confort||1) + 0.5; w.Maniabilité = (w.Maniabilité||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
-  if (age >= 60) { w.Confort = (w.Confort||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.5; }
-  
-  // Side + Hand → attacker vs constructor role
-  // Forehand at center = attacker: Droitier+Gauche OR Gaucher+Droite
-  // Backhand at center = constructor: Droitier+Droite OR Gaucher+Gauche
-  const hand = profile.hand || "Droitier";
-  const side = profile.side || "Droite";
-  const isAttacker = (hand==="Droitier" && side==="Gauche") || (hand==="Gaucher" && side==="Droite");
-  const isConstructor = (hand==="Droitier" && side==="Droite") || (hand==="Gaucher" && side==="Gauche");
-  if (isAttacker) { w.Puissance = (w.Puissance||1) + 0.5; w.Spin = (w.Spin||1) + 0.3; }
-  if (isConstructor) { w.Contrôle = (w.Contrôle||1) + 0.5; w.Tolérance = (w.Tolérance||1) + 0.3; }
-  
-  // Weighted average
-  let total = 0, wSum = 0;
-  for (const attr of ATTRS) {
-    const weight = w[attr] || 1;
-    total += (scores[attr]||0) * weight;
-    wSum += weight;
-  }
-  let base = total / wSum;
-  
-  // === V12 BONUSES (shape affinity + brand preference) ===
-  // Only applied when racket metadata is passed as 3rd argument
-  const racket = arguments[2];
-  if (racket && typeof racket === 'object') {
-    // Shape affinity: play style → preferred shape
-    const rShape = (racket.shape||"").toLowerCase();
-    const styles = profile.styleTags||[];
-    const wantsOffensive = styles.some(s=>["offensif","puissant"].includes(s));
-    const wantsDefensive = styles.some(s=>["defensif","endurant"].includes(s));
-    const wantsTactical = styles.some(s=>["tactique","contre","technique"].includes(s));
-    const wantsVersatile = styles.some(s=>["polyvalent","veloce"].includes(s));
-    if (wantsOffensive && rShape.includes("diamant")) base += 0.15;
-    else if (wantsDefensive && rShape.includes("ronde")) base += 0.15;
-    else if (wantsTactical && (rShape.includes("goutte")||rShape.includes("hybride"))) base += 0.12;
-    else if (wantsVersatile && (rShape.includes("goutte")||rShape.includes("hybride"))) base += 0.10;
-    
-    // Brand preference bonus
-    const brandPref = (profile.brandTags||[]).map(b=>b.toLowerCase());
-    if (brandPref.length && racket.brand && brandPref.includes(racket.brand.toLowerCase())) {
-      base += 0.15;
+// === GABARIT INDEX (V8.9+) ===
+// Calculates a 0-1 scale combining gender, weight, height, age, and fitness level
+// Used to dynamically adjust scoring weights instead of rigid age/height thresholds
+function computeGabaritIndex(profile) {
+  const age = Number(profile.age) || 30;
+  const weight = Number(profile.weight) || 0;
+  const height = Number(profile.height) || 0;
+  const genre = (profile.genre || "Homme").toLowerCase();
+  const fitness = (profile.fitness || "actif").toLowerCase();
+
+  // Base from BMI if weight+height available
+  let base = 0.5;
+  if (weight > 0 && height > 0) {
+    const bmi = weight / (height / 100) ** 2;
+    if (genre === "femme") {
+      base = bmi < 17 ? 0.15 : bmi < 19 ? 0.3 : bmi < 22 ? 0.45 : bmi < 25 ? 0.55 : bmi < 28 ? 0.5 : 0.4;
+    } else {
+      base = bmi < 17 ? 0.1 : bmi < 19 ? 0.2 : bmi < 21 ? 0.35 : bmi < 24 ? 0.5 : bmi < 27 ? 0.65 : bmi < 30 ? 0.6 : 0.45;
+    }
+  } else if (weight > 0) {
+    if (genre === "femme") {
+      base = weight < 50 ? 0.2 : weight < 60 ? 0.4 : weight < 70 ? 0.55 : weight < 80 ? 0.5 : 0.4;
+    } else {
+      base = weight < 60 ? 0.2 : weight < 70 ? 0.35 : weight < 80 ? 0.5 : weight < 90 ? 0.6 : 0.55;
     }
   }
-  
-  return base;
+
+  const genderMod = genre === "femme" ? -0.12 : 0;
+  const ageMod = age < 20 ? 0.02 : age < 30 ? 0 : age < 40 ? -0.02 : age < 50 ? -0.06 : age < 60 ? -0.12 : age < 70 ? -0.2 : -0.28;
+  const fitnessMod = fitness === "athletique" ? 0.15 : fitness === "actif" ? 0 : -0.12;
+  let heightMod = 0;
+  if (height > 0) {
+    heightMod = height < 160 ? -0.06 : height < 170 ? -0.03 : height < 180 ? 0 : height < 190 ? 0.04 : 0.07;
+  }
+
+  const level = (profile.level || "").toLowerCase();
+  // PRO/ELITE override: expert+athlétique athletes get a floor of 0.55
+  if ((level.includes("expert") || level.includes("avanc")) && fitness === "athletique") {
+    return Math.max(0.55, Math.min(1, base + genderMod + ageMod + fitnessMod + heightMod));
+  }
+  return Math.max(0, Math.min(1, base + genderMod + ageMod + fitnessMod + heightMod));
+}
+
+// === PRIORITY-FIRST SCORING ENGINE (V10+) ===
+// Split: 65% priority criteria (direct average) + 35% secondary criteria (weighted)
+// Replaces the old simple weighted-average approach
+function computeGlobalScore(scores, profile) {
+  if (!scores || typeof scores !== 'object') return 0;
+  const racket = arguments[2];
+  const isMale = !profile.genre || profile.genre === "Homme";
+
+  // Hard filters: return 0 for incompatible rackets
+  if (isMale && racket && racket.womanLine) return 0;
+  if (racket && racket.junior) return 0;
+  if (profile.competition && racket && racket.category) {
+    const lvl = (profile.level || "").toLowerCase();
+    if ((lvl.includes("expert") || lvl.includes("avanc")) && racket.category === "debutant") return 0;
+    if (lvl.includes("expert") && racket.category === "intermediaire") return 0;
+  }
+
+  // Map priority tags to scoring attributes
+  const prioAttrMap = {
+    puissance: "Puissance", spin: "Spin", controle: "Contrôle",
+    confort: "Confort", legerete: "Maniabilité", protection: "Confort",
+    polyvalence: null, reprise: null,
+  };
+  const prioTags = profile.priorityTags || [];
+  let priorityAttrs = [...new Set(prioTags.map(t => prioAttrMap[t]).filter(Boolean))];
+  if (prioTags.includes("polyvalence")) priorityAttrs = [...ATTRS];
+  if (prioTags.includes("reprise")) priorityAttrs = [...new Set([...priorityAttrs, "Confort", "Tolérance", "Maniabilité"])];
+
+  // Secondary = all attrs NOT in priority
+  const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
+
+  // Priority score: simple average of priority attributes
+  let prioSum = 0;
+  for (const a of priorityAttrs) prioSum += scores[a] || 0;
+  const prioAvg = priorityAttrs.length ? prioSum / priorityAttrs.length : 5;
+
+  // Secondary score: weighted average with style/injury/gabarit influence
+  const w = {};
+  for (const a of secondaryAttrs) w[a] = 1;
+
+  // Style tags influence on secondary weights
+  const styleMap = {
+    offensif: {}, puissant: {},
+    defensif: { Contrôle: 0.3, Tolérance: 0.3 },
+    tactique: { Contrôle: 0.3, Maniabilité: 0.2 },
+    veloce: { Maniabilité: 0.4 },
+    endurant: { Confort: 0.3, Tolérance: 0.2 },
+    contre: { Tolérance: 0.3, Contrôle: 0.2 },
+    polyvalent: { Contrôle: 0.2, Tolérance: 0.2 },
+    technique: { Contrôle: 0.3 },
+  };
+  for (const tag of (profile.styleTags || [])) {
+    const boosts = styleMap[tag];
+    if (boosts) for (const [k, v] of Object.entries(boosts)) {
+      if (w[k] !== undefined) w[k] += v;
+    }
+  }
+
+  // Injuries
+  const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
+  const LEG_INJURIES = ["genou", "cheville", "mollet", "hanche", "achille"];
+  const tags = profile.injuryTags || [];
+  if (tags.some(t => ARM_INJURIES.includes(t)) && w.Confort !== undefined) w.Confort += 1.5;
+  if (tags.some(t => LEG_INJURIES.includes(t)) && w.Maniabilité !== undefined) w.Maniabilité += 1;
+
+  // Gabarit-based adjustments (replaces rigid age/height thresholds)
+  const gab = computeGabaritIndex(profile);
+  if (gab < 0.2) {
+    if (w.Maniabilité !== undefined) w.Maniabilité += 1.5;
+    if (w.Confort !== undefined) w.Confort += 1.2;
+    if (w.Tolérance !== undefined) w.Tolérance += 0.8;
+  } else if (gab < 0.35) {
+    if (w.Maniabilité !== undefined) w.Maniabilité += 0.8;
+    if (w.Confort !== undefined) w.Confort += 0.6;
+    if (w.Tolérance !== undefined) w.Tolérance += 0.3;
+  } else if (gab < 0.45) {
+    if (w.Maniabilité !== undefined) w.Maniabilité += 0.3;
+    if (w.Confort !== undefined) w.Confort += 0.2;
+  } else if (gab > 0.65) {
+    if (w.Puissance !== undefined) w.Puissance += 0.3;
+  }
+
+  // Weighted average of secondary attributes
+  let secTotal = 0, secWeight = 0;
+  for (const a of secondaryAttrs) {
+    const wt = w[a] || 1;
+    secTotal += (scores[a] || 0) * wt;
+    secWeight += wt;
+  }
+  const secAvg = secWeight > 0 ? secTotal / secWeight : 5;
+
+  // Combined: 65% priority + 35% secondary
+  let finalScore = prioAvg * 0.65 + secAvg * 0.35;
+
+  // === RACKET-LEVEL BONUSES ===
+  if (racket && typeof racket === 'object') {
+    const rShape = (racket.shape || "").toLowerCase();
+    const hand = profile.hand || "Droitier";
+    const side = profile.side || "Droite";
+    const isAttacker = (hand === "Droitier" && side === "Gauche") || (hand === "Gaucher" && side === "Droite");
+    const wantsPower = prioTags.includes("puissance") || isAttacker;
+    const wantsControl = prioTags.includes("controle") || prioTags.includes("protection");
+
+    // Shape affinity
+    if (wantsPower) {
+      if (rShape.includes("diamant")) finalScore += 0.25;
+      else if (rShape.includes("goutte") || rShape.includes("hybride")) finalScore += 0.05;
+      else if (rShape.includes("ronde")) finalScore -= 0.25;
+    } else if (wantsControl) {
+      if (rShape.includes("ronde")) finalScore += 0.25;
+      else if (rShape.includes("hybride") || rShape.includes("goutte")) finalScore += 0.05;
+    } else {
+      if (rShape.includes("goutte") || rShape.includes("hybride")) finalScore += 0.06;
+    }
+
+    // Brand preference
+    const brandPref = (profile.brandTags || []).map(b => b.toLowerCase());
+    if (brandPref.length && racket.brand && brandPref.includes(racket.brand.toLowerCase())) {
+      finalScore += 0.12;
+    }
+
+    // Competition mode: penalize low-category rackets
+    if (profile.competition && racket.category) {
+      if (racket.category === "debutant") finalScore -= 0.5;
+      else if (racket.category === "intermediaire") finalScore -= 0.08;
+    }
+
+    // Woman line bonus for female profiles
+    if (racket.womanLine && !isMale) {
+      const gabW = computeGabaritIndex(profile);
+      const lvlW = (profile.level || "").toLowerCase();
+      if ((lvlW.includes("expert") || lvlW.includes("avanc")) && (profile.fitness || "actif").toLowerCase() === "athletique") {
+        finalScore += 0.28;
+      } else if (gabW < 0.3) {
+        finalScore += 0.20;
+      } else if (gabW < 0.45) {
+        finalScore += 0.12;
+      } else {
+        finalScore += 0.05;
+      }
+    }
+  }
+
+  return finalScore;
 }
 
 // Dynamic verdict based on pertinence score + injury constraints
@@ -610,7 +703,7 @@ function generateDeepAnalysis(profile, ranked, attrs) {
     } else if(bestBR){
       // No brand in Top 3
       const gap=(bestScore-bestBR.globalScore)*10;
-      lines.push(`Marque préférée ${bL.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} à ${(bestBR.globalScore*10).toFixed(1)}% (${gap.toFixed(1)} pts sous la n°1). L'écart technique ne peut pas être comblé par un simple bonus marque — le classement reste objectif.`);
+      lines.push(`Marque préférée ${bOutLabels.join("/")} absente du Top 3 : la meilleure est la ${bestBR.name} à ${(bestBR.globalScore*10).toFixed(1)}% (${gap.toFixed(1)} pts sous la n°1). L'écart technique ne peut pas être comblé par un simple bonus marque — le classement reste objectif.`);
     }
   }
   // §5 Top 3 shapes
@@ -1126,8 +1219,9 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       brandPool = [...brandPool, ...otherTop];
     }
     
-    // Score all and sort
-    const scored = brandPool.map(r=>({...r, _globalScore: computeGlobalScore(r.scores, profile, r)}));
+    // Score all and sort (computeGlobalScore returns 0 for incompatible: womanLine for men, junior, etc.)
+    const scored = brandPool.map(r=>({...r, _globalScore: computeGlobalScore(r.scores, profile, r)}))
+      .filter(r=>r._globalScore > 0);
     scored.sort((a,b)=>b._globalScore-a._globalScore);
     
     // Split into heart (top matches) and priority (match priority tags)
@@ -1962,6 +2056,22 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
             {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
             {Number(profile.age)>=50&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>👤 Profil 50+ — Confort et Maniabilité renforcés</div>}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,maxWidth:400,margin:"20px auto 0"}}>
+              <div>
+                <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Genre</label>
+                <CardSelect columns={2} options={[{value:"Homme",label:"Homme",icon:"♂️"},{value:"Femme",label:"Femme",icon:"♀️"}]} value={profile.genre||"Homme"} onChange={v=>setProfile(p=>({...p,genre:v}))}/>
+              </div>
+              <div>
+                <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Condition physique</label>
+                <CardSelect columns={1} options={FITNESS_OPTIONS.map(o=>({value:o.value,label:o.label,icon:o.icon,desc:o.desc}))} value={profile.fitness||"actif"} onChange={v=>setProfile(p=>({...p,fitness:v}))}/>
+              </div>
+            </div>
+            {(()=>{
+              const lvl = (profile.level||"").toLowerCase();
+              const fit = (profile.fitness||"actif").toLowerCase();
+              const isProElite = (lvl.includes("expert")||lvl.includes("avanc")) && fit==="athletique";
+              return isProElite ? <div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#c084fc",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>⚡ Tier PRO/ELITE — Le gabarit ne limite plus les recommandations</div> : null;
+            })()}
           </div>,
 
           // Step 2: Level
@@ -2422,7 +2532,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Brand preferences — used for display info only, NOT for filtering Top 3
         const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
         // Score ALL compatible rackets — unbiased Top 3
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r), _fy: computeForYou(r.scores, profile, r)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r), _fy: computeForYou(r.scores, profile, r)}))
+          .filter(r=>r._gs > 0);
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
 
