@@ -258,10 +258,28 @@ function buildProfileText(p) {
   return `Joueur: ${physique || "Non renseigné"}. Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
 }
 
-// Weighted global score /10 based on player profile
-// === GABARIT INDEX (V8.9+) ===
-// Calculates a 0-1 scale combining gender, weight, height, age, and fitness level
-// Used to dynamically adjust scoring weights instead of rigid age/height thresholds
+// =====================================================
+// SCORING ENGINE V11 — 3 modes: Junior/Pépite, Expert (Tapia), Normal
+// Gabarit continu, pénalité poids, womanLine renforcé
+// =====================================================
+
+// === MODE DETECTION ===
+// Returns: "junior" | "pepite" | "expert" | "normal"
+function detectPlayerMode(profile) {
+  const age = Number(profile.age) || 30;
+  const level = (profile.level || "").toLowerCase();
+  const fitness = (profile.fitness || "actif").toLowerCase();
+  if (age > 0 && age < 15) {
+    const isAdvanced = level.includes("avanc") || level.includes("expert");
+    const isActive = fitness === "athletique" || fitness === "actif";
+    if (isAdvanced && isActive) return "pepite";
+    return "junior";
+  }
+  if (level.includes("expert") && fitness === "athletique") return "expert";
+  return "normal";
+}
+
+// === GABARIT INDEX (CONTINU V11) ===
 function computeGabaritIndex(profile) {
   const age = Number(profile.age) || 30;
   const weight = Number(profile.weight) || 0;
@@ -269,82 +287,198 @@ function computeGabaritIndex(profile) {
   const genre = (profile.genre || "Homme").toLowerCase();
   const fitness = (profile.fitness || "actif").toLowerCase();
 
-  // Base from BMI if weight+height available
   let base = 0.5;
   if (weight > 0 && height > 0) {
     const bmi = weight / (height / 100) ** 2;
-    if (genre === "femme") {
-      base = bmi < 17 ? 0.15 : bmi < 19 ? 0.3 : bmi < 22 ? 0.45 : bmi < 25 ? 0.55 : bmi < 28 ? 0.5 : 0.4;
-    } else {
-      base = bmi < 17 ? 0.1 : bmi < 19 ? 0.2 : bmi < 21 ? 0.35 : bmi < 24 ? 0.5 : bmi < 27 ? 0.65 : bmi < 30 ? 0.6 : 0.45;
-    }
+    const optimalBmi = genre === "femme" ? 21.5 : 23.5;
+    const deviation = (bmi - optimalBmi) / (genre === "femme" ? 6 : 7);
+    base = 0.6 * Math.exp(-deviation * deviation) + 0.1;
+    base = Math.max(0.08, Math.min(0.7, base));
   } else if (weight > 0) {
-    if (genre === "femme") {
-      base = weight < 50 ? 0.2 : weight < 60 ? 0.4 : weight < 70 ? 0.55 : weight < 80 ? 0.5 : 0.4;
-    } else {
-      base = weight < 60 ? 0.2 : weight < 70 ? 0.35 : weight < 80 ? 0.5 : weight < 90 ? 0.6 : 0.55;
-    }
+    const optW = genre === "femme" ? 62 : 78;
+    const dev = (weight - optW) / (genre === "femme" ? 20 : 25);
+    base = 0.55 * Math.exp(-dev * dev) + 0.1;
+    base = Math.max(0.08, Math.min(0.7, base));
   }
 
-  const genderMod = genre === "femme" ? -0.12 : 0;
-  const ageMod = age < 20 ? 0.02 : age < 30 ? 0 : age < 40 ? -0.02 : age < 50 ? -0.06 : age < 60 ? -0.12 : age < 70 ? -0.2 : -0.28;
+  const genderMod = genre === "femme" ? -0.10 : 0;
+  let ageMod = 0;
+  if (age < 25) {
+    ageMod = 0.02 * (1 - (25 - age) / 15);
+  } else if (age <= 35) {
+    ageMod = 0;
+  } else {
+    const yearsOver35 = age - 35;
+    if (yearsOver35 <= 15) ageMod = -yearsOver35 * 0.003;
+    else if (yearsOver35 <= 30) ageMod = -15 * 0.003 - (yearsOver35 - 15) * 0.006;
+    else ageMod = -15 * 0.003 - 15 * 0.006 - (yearsOver35 - 30) * 0.01;
+  }
   const fitnessMod = fitness === "athletique" ? 0.15 : fitness === "actif" ? 0 : -0.12;
   let heightMod = 0;
   if (height > 0) {
-    heightMod = height < 160 ? -0.06 : height < 170 ? -0.03 : height < 180 ? 0 : height < 190 ? 0.04 : 0.07;
+    const refHeight = genre === "femme" ? 165 : 178;
+    heightMod = (height - refHeight) * 0.002;
+    heightMod = Math.max(-0.08, Math.min(0.08, heightMod));
   }
 
-  const level = (profile.level || "").toLowerCase();
-  // PRO/ELITE override: expert+athlétique athletes get a floor of 0.55
-  if ((level.includes("expert") || level.includes("avanc")) && fitness === "athletique") {
-    return Math.max(0.55, Math.min(1, base + genderMod + ageMod + fitnessMod + heightMod));
-  }
-  return Math.max(0, Math.min(1, base + genderMod + ageMod + fitnessMod + heightMod));
+  const raw = base + genderMod + ageMod + fitnessMod + heightMod;
+  const mode = detectPlayerMode(profile);
+  if (mode === "expert") return Math.max(0.55, Math.min(1, raw));
+  if (mode === "pepite") return Math.max(0.35, Math.min(0.7, raw));
+  return Math.max(0, Math.min(1, raw));
 }
 
-// === PRIORITY-FIRST SCORING ENGINE (V10+) ===
-// Split: 65% priority criteria (direct average) + 35% secondary criteria (weighted)
-// Replaces the old simple weighted-average approach
-function computeGlobalScore(scores, profile) {
-  if (!scores || typeof scores !== 'object') return 0;
-  const racket = arguments[2];
-  const isMale = !profile.genre || profile.genre === "Homme";
+// === PARSE RACKET WEIGHT ===
+function parseRacketWeight(weightStr) {
+  if (!weightStr) return null;
+  const s = String(weightStr).replace(/g/gi, "").trim();
+  const parts = s.split("-").map(Number).filter(n => !isNaN(n) && n > 0);
+  if (parts.length === 2) return (parts[0] + parts[1]) / 2;
+  if (parts.length === 1) return parts[0];
+  return null;
+}
 
-  // Hard filters: return 0 for incompatible rackets
-  if (isMale && racket && racket.womanLine) return 0;
-  if (racket && racket.junior) return 0;
-  if (profile.competition && racket && racket.category) {
-    const lvl = (profile.level || "").toLowerCase();
-    if ((lvl.includes("expert") || lvl.includes("avanc")) && racket.category === "debutant") return 0;
-    if (lvl.includes("expert") && racket.category === "intermediaire") return 0;
+// === IDEAL WEIGHT FOR PROFILE ===
+function idealRacketWeight(profile, gabaritIndex) {
+  const genre = (profile.genre || "Homme").toLowerCase();
+  if (genre === "femme") return 310 + gabaritIndex * 80;
+  return 330 + gabaritIndex * 70;
+}
+
+// === WEIGHT PENALTY ===
+function weightPenalty(racketWeight, idealWeight) {
+  if (!racketWeight || !idealWeight) return 0;
+  const diff = racketWeight - idealWeight;
+  if (diff <= 0) return Math.max(-0.1, diff * 0.005);
+  return -Math.pow(diff / 10, 1.6) * 0.15;
+}
+
+// === MAIN SCORING ENGINE V11 ===
+function computeGlobalScore(scores, profile, racket) {
+  if (!scores || typeof scores !== "object") return 0;
+  const mode = detectPlayerMode(profile);
+  const isMale = !profile.genre || profile.genre === "Homme";
+  const isFemale = !isMale;
+  const gab = computeGabaritIndex(profile);
+  const rWeight = racket ? parseRacketWeight(racket.weight) : null;
+  const idealW = idealRacketWeight(profile, gab);
+
+  // === HARD FILTERS (all modes) ===
+  if (isMale && racket?.womanLine) return 0;
+  const isJuniorRacket = racket?.junior || racket?.category === "junior";
+  if ((mode === "normal" || mode === "expert") && isJuniorRacket) return 0;
+
+  // === JUNIOR MODE ===
+  if (mode === "junior") {
+    if (!isJuniorRacket) return 0;
+    let sum = 0, count = 0;
+    for (const a of ATTRS) { sum += scores[a] || 0; count++; }
+    let score = count > 0 ? sum / count : 5;
+    if (rWeight && rWeight > 340) score -= (rWeight - 340) * 0.02;
+    const brandPref = (profile.brandTags || []).map(b => b.toLowerCase());
+    if (brandPref.length && racket?.brand && brandPref.includes(racket.brand.toLowerCase())) score += 0.10;
+    return Math.max(0, score);
   }
 
-  // Map priority tags to scoring attributes
-  const prioAttrMap = {
-    puissance: "Puissance", spin: "Spin", controle: "Contrôle",
-    confort: "Confort", legerete: "Maniabilité", protection: "Confort",
-    polyvalence: null, reprise: null,
-  };
+  // === PEPITE MODE ===
+  if (mode === "pepite") {
+    const isJR = isJuniorRacket;
+    const isLightAdult = !isJR && rWeight && rWeight <= 350;
+    if (!isJR && !isLightAdult) return 0;
+
+    const prioTags = profile.priorityTags || [];
+    const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
+    let priorityAttrs = [...new Set(prioTags.map(t => prioAttrMap[t]).filter(Boolean))];
+    if (prioTags.includes("polyvalence")) priorityAttrs = [...ATTRS];
+    if (prioTags.includes("reprise")) priorityAttrs = [...new Set([...priorityAttrs, "Confort", "Tolérance", "Maniabilité"])];
+    const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
+
+    let prioSum = 0;
+    for (const a of priorityAttrs) prioSum += scores[a] || 0;
+    const prioAvg = priorityAttrs.length ? prioSum / priorityAttrs.length : 5;
+    let secSum = 0;
+    for (const a of secondaryAttrs) secSum += scores[a] || 0;
+    const secAvg = secondaryAttrs.length ? secSum / secondaryAttrs.length : 5;
+
+    let score = prioAvg * 0.6 + secAvg * 0.4;
+    if (isLightAdult) score += 0.15;
+    if (rWeight) { const pepiteIdeal = 335; if (rWeight > pepiteIdeal) score -= (rWeight - pepiteIdeal) * 0.01; }
+    const brandPref = (profile.brandTags || []).map(b => b.toLowerCase());
+    if (brandPref.length && racket?.brand && brandPref.includes(racket.brand.toLowerCase())) score += 0.10;
+    return Math.max(0, score);
+  }
+
+  // === EXPERT (TAPIA) MODE ===
+  if (mode === "expert") {
+    if (racket?.category === "debutant") return 0;
+    if (racket?.category === "intermediaire") return 0;
+
+    const prioTags = profile.priorityTags || [];
+    const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
+    let priorityAttrs = [...new Set(prioTags.map(t => prioAttrMap[t]).filter(Boolean))];
+    if (prioTags.includes("polyvalence")) priorityAttrs = [...ATTRS];
+    if (prioTags.includes("reprise")) priorityAttrs = [...new Set([...priorityAttrs, "Confort", "Tolérance", "Maniabilité"])];
+    if (priorityAttrs.length === 0) priorityAttrs = [...ATTRS];
+    const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
+
+    let prioSum = 0;
+    for (const a of priorityAttrs) prioSum += scores[a] || 0;
+    const prioAvg = priorityAttrs.length ? prioSum / priorityAttrs.length : 5;
+    let secSum = 0;
+    for (const a of secondaryAttrs) secSum += scores[a] || 0;
+    const secAvg = secondaryAttrs.length ? secSum / secondaryAttrs.length : 5;
+
+    let score = prioAvg * 0.85 + secAvg * 0.15;
+
+    if (racket) {
+      const rShape = (racket.shape || "").toLowerCase();
+      const hand = profile.hand || "Droitier";
+      const side = profile.side || "Droite";
+      const isAttacker = (hand === "Droitier" && side === "Gauche") || (hand === "Gaucher" && side === "Droite");
+      const wantsPower = prioTags.includes("puissance") || isAttacker;
+      const wantsControl = prioTags.includes("controle") || prioTags.includes("protection");
+      if (wantsPower) {
+        if (rShape.includes("diamant")) score += 0.30;
+        else if (rShape.includes("goutte") || rShape.includes("hybride")) score += 0.05;
+        else if (rShape.includes("ronde")) score -= 0.30;
+      } else if (wantsControl) {
+        if (rShape.includes("ronde")) score += 0.30;
+        else if (rShape.includes("hybride") || rShape.includes("goutte")) score += 0.05;
+        else if (rShape.includes("diamant")) score -= 0.15;
+      }
+    }
+    const brandPref = (profile.brandTags || []).map(b => b.toLowerCase());
+    if (brandPref.length && racket?.brand && brandPref.includes(racket.brand.toLowerCase())) score += 0.12;
+
+    if (isFemale && racket) {
+      if (racket.womanLine) score += 0.30;
+      if (rWeight && rWeight > 370) score -= (rWeight - 370) * 0.015;
+    }
+    return Math.max(0, score);
+  }
+
+  // === NORMAL MODE (Débutant → Avancé) ===
+  if (profile.competition && racket?.category) {
+    const lvl = (profile.level || "").toLowerCase();
+    if (lvl.includes("avanc") && racket.category === "debutant") return 0;
+  }
+
   const prioTags = profile.priorityTags || [];
+  const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
   let priorityAttrs = [...new Set(prioTags.map(t => prioAttrMap[t]).filter(Boolean))];
   if (prioTags.includes("polyvalence")) priorityAttrs = [...ATTRS];
   if (prioTags.includes("reprise")) priorityAttrs = [...new Set([...priorityAttrs, "Confort", "Tolérance", "Maniabilité"])];
-
-  // Secondary = all attrs NOT in priority
   const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
 
-  // Priority score: simple average of priority attributes
   let prioSum = 0;
   for (const a of priorityAttrs) prioSum += scores[a] || 0;
   const prioAvg = priorityAttrs.length ? prioSum / priorityAttrs.length : 5;
 
-  // Secondary score: weighted average with style/injury/gabarit influence
   const w = {};
   for (const a of secondaryAttrs) w[a] = 1;
 
-  // Style tags influence on secondary weights
   const styleMap = {
-    offensif: {}, puissant: {},
+    offensif: { Puissance: 0.2 }, puissant: { Puissance: 0.3 },
     defensif: { Contrôle: 0.3, Tolérance: 0.3 },
     tactique: { Contrôle: 0.3, Maniabilité: 0.2 },
     veloce: { Maniabilité: 0.4 },
@@ -355,113 +489,86 @@ function computeGlobalScore(scores, profile) {
   };
   for (const tag of (profile.styleTags || [])) {
     const boosts = styleMap[tag];
-    if (boosts) for (const [k, v] of Object.entries(boosts)) {
-      if (w[k] !== undefined) w[k] += v;
-    }
+    if (boosts) for (const [k, v] of Object.entries(boosts)) { if (w[k] !== undefined) w[k] += v; }
   }
 
-  // Injuries
   const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
   const LEG_INJURIES = ["genou", "cheville", "mollet", "hanche", "achille"];
-  const tags = profile.injuryTags || [];
-  if (tags.some(t => ARM_INJURIES.includes(t)) && w.Confort !== undefined) w.Confort += 1.5;
-  if (tags.some(t => LEG_INJURIES.includes(t)) && w.Maniabilité !== undefined) w.Maniabilité += 1;
+  const injTags = profile.injuryTags || [];
+  if (injTags.some(t => ARM_INJURIES.includes(t))) { if (w.Confort !== undefined) w.Confort += 1.5; if (w.Tolérance !== undefined) w.Tolérance += 0.5; }
+  if (injTags.some(t => LEG_INJURIES.includes(t))) { if (w.Maniabilité !== undefined) w.Maniabilité += 1; }
 
-  // Gabarit-based adjustments (replaces rigid age/height thresholds)
-  const gab = computeGabaritIndex(profile);
-  if (gab < 0.2) {
-    if (w.Maniabilité !== undefined) w.Maniabilité += 1.5;
-    if (w.Confort !== undefined) w.Confort += 1.2;
-    if (w.Tolérance !== undefined) w.Tolérance += 0.8;
-  } else if (gab < 0.35) {
-    if (w.Maniabilité !== undefined) w.Maniabilité += 0.8;
-    if (w.Confort !== undefined) w.Confort += 0.6;
-    if (w.Tolérance !== undefined) w.Tolérance += 0.3;
-  } else if (gab < 0.45) {
-    if (w.Maniabilité !== undefined) w.Maniabilité += 0.3;
-    if (w.Confort !== undefined) w.Confort += 0.2;
-  } else if (gab > 0.65) {
-    if (w.Puissance !== undefined) w.Puissance += 0.3;
+  if (gab < 0.3) {
+    const factor = (0.3 - gab) / 0.3;
+    if (w.Maniabilité !== undefined) w.Maniabilité += 1.5 * factor;
+    if (w.Confort !== undefined) w.Confort += 1.2 * factor;
+    if (w.Tolérance !== undefined) w.Tolérance += 0.8 * factor;
+  } else if (gab > 0.6) {
+    const factor = (gab - 0.6) / 0.4;
+    if (w.Puissance !== undefined) w.Puissance += 0.4 * factor;
   }
 
-  // Weighted average of secondary attributes
   let secTotal = 0, secWeight = 0;
-  for (const a of secondaryAttrs) {
-    const wt = w[a] || 1;
-    secTotal += (scores[a] || 0) * wt;
-    secWeight += wt;
-  }
+  for (const a of secondaryAttrs) { const wt = w[a] || 1; secTotal += (scores[a] || 0) * wt; secWeight += wt; }
   const secAvg = secWeight > 0 ? secTotal / secWeight : 5;
 
-  // Combined: 65% priority + 35% secondary
-  let finalScore = prioAvg * 0.65 + secAvg * 0.35;
+  let score = prioAvg * 0.65 + secAvg * 0.35;
 
-  // === RACKET-LEVEL BONUSES ===
-  if (racket && typeof racket === 'object') {
+  if (racket) {
+    score += weightPenalty(rWeight, idealW);
+
     const rShape = (racket.shape || "").toLowerCase();
     const hand = profile.hand || "Droitier";
     const side = profile.side || "Droite";
     const isAttacker = (hand === "Droitier" && side === "Gauche") || (hand === "Gaucher" && side === "Droite");
     const wantsPower = prioTags.includes("puissance") || isAttacker;
     const wantsControl = prioTags.includes("controle") || prioTags.includes("protection");
-
-    // Shape affinity
     if (wantsPower) {
-      if (rShape.includes("diamant")) finalScore += 0.25;
-      else if (rShape.includes("goutte") || rShape.includes("hybride")) finalScore += 0.05;
-      else if (rShape.includes("ronde")) finalScore -= 0.25;
+      if (rShape.includes("diamant")) score += 0.25;
+      else if (rShape.includes("goutte") || rShape.includes("hybride")) score += 0.05;
+      else if (rShape.includes("ronde")) score -= 0.25;
     } else if (wantsControl) {
-      if (rShape.includes("ronde")) finalScore += 0.25;
-      else if (rShape.includes("hybride") || rShape.includes("goutte")) finalScore += 0.05;
+      if (rShape.includes("ronde")) score += 0.25;
+      else if (rShape.includes("hybride") || rShape.includes("goutte")) score += 0.05;
     } else {
-      if (rShape.includes("goutte") || rShape.includes("hybride")) finalScore += 0.06;
+      if (rShape.includes("goutte") || rShape.includes("hybride")) score += 0.06;
     }
 
-    // Brand preference
     const brandPref = (profile.brandTags || []).map(b => b.toLowerCase());
-    if (brandPref.length && racket.brand && brandPref.includes(racket.brand.toLowerCase())) {
-      finalScore += 0.12;
-    }
+    if (brandPref.length && racket.brand && brandPref.includes(racket.brand.toLowerCase())) score += 0.12;
 
-    // Competition mode: penalize low-category rackets
     if (profile.competition && racket.category) {
-      if (racket.category === "debutant") finalScore -= 0.5;
-      else if (racket.category === "intermediaire") finalScore -= 0.08;
+      if (racket.category === "debutant") score -= 0.5;
+      else if (racket.category === "intermediaire") score -= 0.08;
     }
 
-    // Woman line bonus for female profiles
-    if (racket.womanLine && !isMale) {
-      const gabW = computeGabaritIndex(profile);
-      const lvlW = (profile.level || "").toLowerCase();
-      if ((lvlW.includes("expert") || lvlW.includes("avanc")) && (profile.fitness || "actif").toLowerCase() === "athletique") {
-        finalScore += 0.28;
-      } else if (gabW < 0.3) {
-        finalScore += 0.20;
-      } else if (gabW < 0.45) {
-        finalScore += 0.12;
-      } else {
-        finalScore += 0.05;
-      }
+    if (isFemale && racket.womanLine) {
+      if (gab < 0.3) score += 0.25;
+      else if (gab < 0.45) score += 0.18;
+      else if (gab < 0.6) score += 0.10;
+      else score += 0.05;
+    }
+    if (isFemale && !racket.womanLine && rWeight) {
+      const femmeThreshold = 310 + gab * 80;
+      if (rWeight > femmeThreshold + 10) score -= (rWeight - femmeThreshold - 10) * 0.01;
     }
   }
-
-  return finalScore;
+  return Math.max(0, score);
 }
 
-// Dynamic verdict based on pertinence score + injury constraints
-// Format score as percentage with 2 decimals (7.724 → "77.24%")
+// Format score as percentage
 function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
 
-function computeForYou(scores, profile) {
-  if (!scores || typeof scores !== 'object') return "no";
-  const racket = arguments[2];
+// === FOR YOU VERDICT ===
+function computeForYou(scores, profile, racket) {
+  if (!scores || typeof scores !== "object") return "no";
   const gs = computeGlobalScore(scores, profile, racket);
-  const ARM_INJURIES = ["dos","poignet","coude","epaule"];
-  const hasArmInjury = (profile.injuryTags||[]).some(t=>ARM_INJURIES.includes(t));
-  const comfortOk = !hasArmInjury || (scores.Confort||0) >= 7;
-  
-  if (gs >= 7.0 && comfortOk) return "recommended";
-  if (hasArmInjury && scores.Confort < 7 && gs < 6.0) return "no";
+  const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
+  const hasArmInjury = (profile.injuryTags || []).some(t => ARM_INJURIES.includes(t));
+  const comfort = scores.Confort || 0;
+  if (gs >= 7.0 && (!hasArmInjury || comfort >= 7)) return "recommended";
+  if (hasArmInjury && comfort < 5 && gs < 6) return "no";
+  if (gs < 4) return "no";
   return "partial";
 }
 
