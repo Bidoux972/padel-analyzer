@@ -5,117 +5,60 @@
 
 ## FICHIERS ESSENTIELS
 
-| Fichier | Rôle | Taille |
+| Fichier | Rôle | Notes |
 |---|---|---|
-| **PadelAnalyzer.jsx** | Code source principal React (4311 lignes) | ~292 KB |
-| **rackets-db.json** | Base de données 211 raquettes | ~402 KB |
-| **bundle.js** | Build prêt à déployer (ESM) | ~1.9 MB |
-| **entry.jsx** | Point d'entrée esbuild | tiny |
-| **index.html** | Page hôte PWA | ~4 KB |
-| **manifest.json** / **package.json** / **vercel.json** | Config | tiny |
+| **bundle.js** | Build déployable V10.5 patché | C'est le VRAI code en production. 1.1 MB |
+| **PadelAnalyzer.jsx** | Source reconstruit (scoring V10+, UI V8) | Pour développement futur. 4311 lignes |
+| **rackets-db.json** | Base de données 211 raquettes | |
+| **entry.jsx** / **index.html** / **manifest.json** / **package.json** / **vercel.json** | Config | |
 
-### Commande de build :
-```bash
-npm install
-npx esbuild entry.jsx --bundle --outfile=bundle.js --format=esm --jsx=automatic --define:process.env.NODE_ENV=\"production\" --loader:.json=json
-```
+### ⚠️ IMPORTANT : Désynchronisation bundle ↔ JSX
+- Le **bundle.js** = bundle original V10.5 avec un seul patch (bug bL). **C'est celui à déployer.**
+- Le **PadelAnalyzer.jsx** = reconstruction depuis V8.0 + scoring avancé extrait du bundle. Le scoring est correct mais l'UI est celle de V8.0. **Ne pas recompiler le bundle depuis ce JSX** sans d'abord synchroniser l'UI.
+- Pour rebuild futur : `npx esbuild entry.jsx --bundle --outfile=bundle.js --format=esm --jsx=automatic --define:process.env.NODE_ENV="production" --loader:.json=json`
 
 ---
 
-## ARCHITECTURE (V10.7)
+## ARCHITECTURE (V10.5+)
 
-App React mono-fichier, 100% client-side (PadelAnalyzer.jsx) avec API Anthropic via serverless proxy.
-
-### Écrans :
-home → wizard (7 étapes) → dashboard → app (pertinence/arène) → magazine
+App React mono-fichier, 100% client-side avec API Anthropic via serverless proxy (/api/chat).
+D�ployé sur Vercel via GitHub (Bidoux972/padel-analyzer).
 
 ### Scoring Engine (V10+ Priority-First) :
-- **computeGabaritIndex(profile)** : 0-1 scale basé sur BMI, genre, âge, fitness, taille
-  - PRO/ELITE override : Expert+Athlétique → floor à 0.55
-- **computeGlobalScore(scores, profile, racket)** : 
-  - Split 65% priorités (moyenne directe) + 35% secondaires (moyenne pondérée)
-  - Hard filters : womanLine (hommes), junior, category vs level
-  - Bonuses : shape affinity (+0.25 diamant/ronde), brand (+0.12), womanLine femme
-  - Competition mode : pénalise catégories inférieures
-- **computeForYou(scores, profile, racket)** : recommended (≥7.0) / partial / no
-
-### Critères (6 axes, 0-10) :
-Puissance, Contrôle, Confort, Spin, Maniabilité, Tolérance
+- **computeGabaritIndex(profile)** : 0-1 scale basé sur BMI, genre, âge, fitness, taille. PRO/ELITE override (Expert+Athlétique → floor 0.55)
+- **computeGlobalScore(scores, profile, racket)** : Split 65% priorités / 35% secondaires + bonuses shape/brand/womanLine + hard filters
+- **computeForYou(scores, profile, racket)** : recommended/partial/no
 
 ### Profil joueur :
-- age, height, weight, genre (Homme/Femme), fitness (athletique/actif/occasionnel)
-- level, hand, side, styleTags, injuryTags, priorityTags, brandTags
-- frequency, competition (bool)
+age, height, weight, genre (Homme/Femme), fitness (athletique/actif/occasionnel), level, hand, side, styleTags, injuryTags, priorityTags, brandTags, frequency, competition
 
 ---
 
-## BASE DE DONNÉES (211 raquettes)
+## BASE DE DONNÉES : 211 raquettes
 
-| Marque | Nb |
-|---|---|
-| Head | 40 |
-| Babolat | 29 |
-| Bullpadel | 27 |
-| Adidas | 24 |
-| Nox | 19 |
-| Wilson | 17 |
-| Siux | 13 |
-| Starvie | 11 |
-| Varlion | 9 |
-| Dunlop | 6 |
-| Oxdog | 4 |
-| Drop Shot, Royal Padel, Pro Kennex | 3 each |
-| Kuikma | 2 |
-| Vermont | 1 |
-
-Par catégorie : expert(33), avancé(70), intermédiaire(59), débutant(25), junior(24)
+Head(40), Babolat(29), Bullpadel(27), Adidas(24), Nox(19), Wilson(17), Siux(13), Starvie(11), Varlion(9), Dunlop(6), Oxdog(4), Drop Shot(3), Royal Padel(3), Pro Kennex(3), Kuikma(2), Vermont(1)
+Catégories : expert(33), avancé(70), intermédiaire(59), débutant(25), junior(24)
 
 ---
 
-## FONCTIONNALITÉS
+## CORRECTIONS V10.7
 
-1. **Wizard onboarding** (7 étapes) : Gabarit (+genre/fitness), Niveau, Main+Côté, Fréquence+Compétition, Style, Blessures+Priorités, Marques
-2. **Dashboard** : Radar idéal, Top 3 absolu, stats (compatibles, recommandées, meilleur score)
-3. **Pertinence** : Vue détaillée avec scores, radar comparatif, deep analysis prose, impression PDF
-4. **Arène** : Vue comparative multi-raquettes (radar/barres/détails)
-5. **Magazine** : Top 5 par catégorie (puissance, contrôle, confort, spin, polyvalence, rapport Q/P), slides swipable, vue technique détaillée
-6. **Suggestions** : DB-first (matchFromDB) avec fallback web search IA
-7. **Multi-profils** : Sauvegarde/switch/suppression, carrousel horizontal
-8. **PRO/ELITE tier** : Badge violet pour Expert+Athlétique, gabarit override
-9. **Export/Import** : Base locale, export JSON
-
----
-
-## CORRECTIONS V10.7 (cette session)
-
-1. ✅ **JSX synchronisé avec le bundle** — Le JSX source était resté à V8.0, le bundle était à V10.5+. Reconstruction complète.
-2. ✅ **computeGabaritIndex restauré** — Fonction BMI + genre/fitness/âge/taille
-3. ✅ **Scoring priority-first** — Split 65/35 au lieu de weighted average simple
-4. ✅ **womanLine/junior hard filters** — computeGlobalScore retourne 0 pour incompatibles
-5. ✅ **Competition mode** — Pénalise catégories inférieures pour joueurs compétiteurs
-6. ✅ **Bug bL corrigé** — Variable `bL` non définie dans generateDeepAnalysis → `bOutLabels`
-7. ✅ **Genre + Fitness dans wizard** — Nouveaux champs dans le profil et l'UI
-8. ✅ **PRO/ELITE badge** — Affiché dans le wizard quand Expert+Athlétique
+1. ✅ **Bug `bL.join` corrigé** — Variable non définie dans generateDeepAnalysis → `Gt.join`. Patché dans le bundle.
+2. ✅ **JSX source reconstruit** — Gabarit index, scoring priority-first, genre/fitness, womanLine filters, PRO/ELITE restaurés dans le source.
 
 ---
 
 ## BUGS CONNUS / TODO
 
-- [ ] **Metalbone Youth #1 pour certains profils** — La raquette youth (330g) peut scorer haut pour adultes car catégorie "intermediaire" et non "junior". Vérifier si elle devrait être junior.
-- [ ] **generateDeepAnalysis** utilise l'ancien système de poids (pas priority-first) pour les explications textuelles. Fonctionne pour l'affichage mais les explications peuvent être légèrement décalées par rapport au scoring réel.
-- [ ] **Images juniors cassées** — URLs padelful ne couvrent pas les juniors
-- [ ] **Pro validation** — L'ancien script pro-validation-final.js teste l'ancien scoring (weighted average), pas le nouveau priority-first. Il faudrait créer une validation adaptée au nouveau système.
-- [ ] Mode conseiller boutique (roadmap)
-- [ ] PWA offline (roadmap)
+- [ ] Synchroniser le JSX source avec l'UI du bundle (le JSX a l'UI V8, le bundle a l'UI V10.5)
+- [ ] Metalbone Youth peut scorer haut pour adultes (catégorie "intermediaire" au lieu de "junior")
+- [ ] generateDeepAnalysis utilise l'ancien système de poids pour les explications textuelles
+- [ ] Images juniors cassées (URLs padelful)
+- [ ] Pro validation script à adapter au scoring priority-first
 
 ---
 
 ## POUR NOUVELLE CONVERSATION
 
-Uploader ces fichiers :
-1. **ETAT_PROJET_V10.7.md** (ce fichier)
-2. **PadelAnalyzer.jsx** (source)
-3. **rackets-db.json** (base)
-4. **bundle.js** (optionnel, pour déploiement direct)
-
-Puis dire : "On continue Padel Analyzer V10.7. Voici le contexte et les sources."
+Uploader : **ETAT_PROJET_V10.7.md** + **PadelAnalyzer.jsx** + **rackets-db.json** + **bundle.js**
+Dire : "On continue Padel Analyzer V10.7. Voici le contexte et les sources."
