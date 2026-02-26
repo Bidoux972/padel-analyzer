@@ -551,14 +551,14 @@ function computeGlobalScore(scores, profile, racket) {
     }
 
     if (isFemale && racket.womanLine) {
-      if (gab < 0.3) score += 0.25;
-      else if (gab < 0.45) score += 0.18;
-      else if (gab < 0.6) score += 0.10;
-      else score += 0.05;
+      if (gab < 0.3) score += 0.45;
+      else if (gab < 0.45) score += 0.35;
+      else if (gab < 0.6) score += 0.25;
+      else score += 0.18;
     }
     if (isFemale && !racket.womanLine && rWeight) {
       const femmeThreshold = 310 + gab * 80;
-      if (rWeight > femmeThreshold + 10) score -= (rWeight - femmeThreshold - 10) * 0.01;
+      if (rWeight > femmeThreshold + 10) score -= (rWeight - femmeThreshold - 10) * 0.015;
     }
   }
   return Math.max(0, score);
@@ -1369,7 +1369,19 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     if (prioTags.includes('spin')) prioAttrs.push('Spin');
     if (prioTags.includes('legerete')) prioAttrs.push('Maniabilité');
     
-    const heart = scored.slice(0, 5);
+    // For female profiles, ensure womanLine representation in heart
+    let heart;
+    const isFemaleProfile = (profile.genre||"").toLowerCase() === "femme";
+    if (isFemaleProfile) {
+      const wlScored = scored.filter(r=>r.womanLine);
+      const nonWl = scored.filter(r=>!r.womanLine);
+      const wlCount = Math.min(wlScored.length, 3); // up to 3 womanLine
+      const nonWlCount = 5 - wlCount;
+      heart = [...wlScored.slice(0, wlCount), ...nonWl.slice(0, nonWlCount)];
+      heart.sort((a,b)=>b._globalScore - a._globalScore);
+    } else {
+      heart = scored.slice(0, 5);
+    }
     const heartIds = new Set(heart.map(r=>r.id));
     
     // Priority: sort remaining by average of priority attributes
@@ -3186,6 +3198,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </select></div>
           </div>
 
+          {/* Expert mode hint */}
+          {(profile.fitness||"").toLowerCase()==="athletique"&&!(profile.level||"").includes("Expert")&&Number(profile.age)>=15&&
+            <div style={{background:"rgba(168,85,247,0.06)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:8,padding:"6px 10px",marginBottom:12,fontSize:10,color:"#c084fc",fontWeight:500,cursor:"pointer"}}
+              onClick={()=>setProfile(p=>({...p,level:"Expert"}))}>
+              💡 Condition Athlétique détectée → le <strong>Mode Expert</strong> est disponible ! <span style={{textDecoration:"underline"}}>Activer</span>
+            </div>
+          }
+
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
             <div><label style={S.label}>Main</label>
             <select value={profile.hand} onChange={e=>setProfile(p=>({...p,hand:e.target.value}))} style={S.select}>
@@ -4415,18 +4435,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           padding:"28px 24px 22px",maxWidth:340,width:"90%",textAlign:"center",
           boxShadow:"0 20px 60px rgba(0,0,0,0.5)",animation:"fadeIn 0.25s ease",
         }}>
-          <div style={{fontSize:32,marginBottom:12}}>{passwordModal.mode==="setpin"?"🔑":"🔒"}</div>
+          <div style={{fontSize:32,marginBottom:12}}>{(passwordModal.mode==="setpin"||(!getAdminPin()&&passwordModal.mode!=="setpin"))?"🔑":"🔒"}</div>
           <div style={{fontSize:15,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif",marginBottom:6}}>
-            {passwordModal.mode==="setpin"?"Créer un code administrateur":"Code administrateur requis"}
+            {(passwordModal.mode==="setpin"||(!getAdminPin()&&passwordModal.mode!=="setpin"))
+              ?"Créer un code administrateur"
+              :"Code administrateur requis"}
           </div>
           <p style={{fontSize:11,color:"#64748b",margin:"0 0 16px"}}>
-            {passwordModal.mode==="setpin"
+            {(passwordModal.mode==="setpin"||(!getAdminPin()&&passwordModal.mode!=="setpin"))
               ?"Ce code unique protégera tous les profils verrouillés."
-              :`Entrez le code pour accéder au profil "${passwordModal.profileName}".`}
+              :`Entrez le code pour ${passwordModal.mode==="unlock-toggle"?"déverrouiller":"accéder au"} profil "${passwordModal.profileName}".`}
           </p>
           <input type="text" inputMode="numeric" value={pinInput} autoComplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" name={"pa-pin-"+Date.now()} onChange={e=>{setPinInput(e.target.value);setPinError("");}}
             onKeyDown={e=>{if(e.key==="Enter"){
-              if(passwordModal.mode==="setpin"){
+              const needsSetPin = passwordModal.mode==="setpin" || !getAdminPin();
+              if(needsSetPin){
                 if(pinInput.length<4){setPinError("4 caractères minimum");return;}
                 setAdminPin(pinInput);passwordModal.onSuccess();setPinInput("");setPinError("");
               } else {
@@ -4434,7 +4457,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 else{setPinError("Code incorrect");}
               }
             }}}
-            placeholder={passwordModal.mode==="setpin"?"Code (4+ caractères)":"Entrer le code"}
+            placeholder={(passwordModal.mode==="setpin"||!getAdminPin())?"Code (4+ caractères)":"Entrer le code"}
             autoFocus
             style={{width:"100%",padding:"12px 14px",borderRadius:12,fontSize:18,fontWeight:700,textAlign:"center",letterSpacing:"0.3em",WebkitTextSecurity:"disc",
               background:"rgba(255,255,255,0.06)",border:`1px solid ${pinError?"rgba(239,68,68,0.5)":"rgba(255,255,255,0.12)"}`,
@@ -4447,7 +4470,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#94a3b8",
             }}>Annuler</button>
             <button onClick={()=>{
-              if(passwordModal.mode==="setpin"){
+              const needsSetPin = passwordModal.mode==="setpin" || !getAdminPin();
+              if(needsSetPin){
                 if(pinInput.length<4){setPinError("4 caractères minimum");return;}
                 setAdminPin(pinInput);passwordModal.onSuccess();setPinInput("");setPinError("");
               } else {
@@ -4457,7 +4481,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             }} style={{
               flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
               background:"rgba(99,102,241,0.15)",border:"1px solid rgba(99,102,241,0.4)",color:"#a5b4fc",
-            }}>{passwordModal.mode==="setpin"?"Créer":"Valider"}</button>
+            }}>{(passwordModal.mode==="setpin"||!getAdminPin())?"Créer":"Valider"}</button>
           </div>
         </div>
       </div>}
