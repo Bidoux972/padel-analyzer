@@ -4305,44 +4305,45 @@
     "shortName": "Speed Pro 25",
     "brand": "Head",
     "shape": "Goutte d'eau",
-    "weight": "355-370g",
+    "weight": "360-375",
     "balance": "Moyen",
-    "surface": "Carbon",
-    "core": "Standard EVA",
+    "surface": "Fibre de verre / Carbone",
+    "core": "Mousse Dure/Rigide",
     "antivib": "Innegra",
     "price": "180-230€",
     "player": "—",
     "imageUrl": "https://www.padelful.com/images/rackets/head-speed-pro-2025.png",
     "year": 2025,
-    "category": "intermediaire",
+    "category": "expert",
     "scores": {
-      "Puissance": 6.0,
-      "Contrôle": 8.5,
-      "Confort": 7.0,
-      "Spin": 7.0,
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 6.5,
+      "Spin": 7.5,
       "Maniabilité": 8.5,
-      "Tolérance": 8.0
+      "Tolérance": 7.5
     },
-    "verdict": "Raquette de vitesse avec bon équilibre. Le carbone offre de la réactivité, l'Innegra adoucit les vibrations. Pour joueurs intermédiaires cherchant la polyvalence.",
-    "editorial": "La Speed Pro 2025 est l'intermédiaire de la gamme rapide Head. Carbone standard et EVA standard en goutte d'eau. Construction classique, sans technologie spectaculaire, mais le toucher Head est présent. Bonne pala de progression pour les joueurs polyvalents rapides.",
+    "verdict": "Raquette polyvalente expert à mousse dure. Toucher sec et direct, réactivité carbone/fibre de verre + Smart Bridge. La Speed d'un joueur WPT qui veut tout maîtriser.",
+    "editorial": "La Speed Pro 2025 est la pala que choisissent les joueurs expert qui veulent un toucher sec sans sacrifier la polyvalence. Mousse dure/rigide pour des sensations directes, cadre carbone/fibre de verre pour le contrôle, technologie Auxetic 2.0 et Smart Bridge pour l'équilibre des forces. C'est une raquette de sensations — pas la plus puissante, pas la plus confortable, mais celle qui parle au bras du joueur exigeant.",
     "techHighlights": [
       {
         "label": "Surface",
-        "value": "Carbon standard",
-        "detail": "Carbone classique — toucher Head direct"
+        "value": "Fibre de verre / Carbone",
+        "detail": "Cadre hybride — toucher sec Head avec contrôle fibre"
       },
       {
         "label": "Noyau",
-        "value": "Standard EVA",
-        "detail": "Mousse neutre polyvalente"
+        "value": "Mousse Dure/Rigide",
+        "detail": "Sortie de balle directe, sensations nettes"
       },
       {
         "label": "Forme",
         "value": "Goutte d'eau",
-        "detail": "Polyvalence rapide"
+        "detail": "Sweet spot centré, polyvalence expert"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires polyvalents. La Speed pour progresser."
+    "targetProfile": "Joueurs expert/WPT cherchant un toucher sec, polyvalent et réactif. La Speed pour ceux qui sentent la balle.",
+    "balance_mm": "260"
   },
   {
     "id": "head-speed-team-2025",
