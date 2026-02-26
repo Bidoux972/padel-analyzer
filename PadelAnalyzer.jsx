@@ -3,45 +3,62 @@ import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend,
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
 } from "recharts";
-import { createClient } from "@supabase/supabase-js";
 import RACKETS_DB from "./rackets-db.json";
 
-// ==================== SUPABASE CONFIG ====================
-const SUPABASE_URL = "https://nvomaxjynuemdtvhzcbf.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b21heGp5aHVlbWRmdmh6Y2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwOTI3NjEsImV4cCI6MjA4NzY2ODc2MX0.2vQyuT6rPTeGzMp244L9n0OzBwOnW3WTviC3RKxrp8U";
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ==================== SUPABASE REST API (no SDK needed) ====================
+const SB_URL = "https://nvomaxjynuemdtvhzcbf.supabase.co/rest/v1";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b21heGp5aHVlbWRmdmh6Y2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwOTI3NjEsImV4cCI6MjA4NzY2ODc2MX0.2vQyuT6rPTeGzMp244L9n0OzBwOnW3WTviC3RKxrp8U";
+const SB_HEADERS = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json", "Prefer": "return=representation" };
+
+async function sbGet(table, query) {
+  const r = await fetch(`${SB_URL}/${table}?${query}`, { headers: SB_HEADERS });
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
+  return r.json();
+}
+async function sbPost(table, data) {
+  const r = await fetch(`${SB_URL}/${table}`, { method: "POST", headers: SB_HEADERS, body: JSON.stringify(data) });
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
+  return r.json();
+}
+async function sbUpsert(table, data, onConflict) {
+  const h = { ...SB_HEADERS, "Prefer": "return=representation,resolution=merge-duplicates" };
+  const url = onConflict ? `${SB_URL}/${table}?on_conflict=${onConflict}` : `${SB_URL}/${table}`;
+  const r = await fetch(url, { method: "POST", headers: h, body: JSON.stringify(data) });
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
+  return r.json();
+}
+async function sbDelete(table, query) {
+  const r = await fetch(`${SB_URL}/${table}?${query}`, { method: "DELETE", headers: SB_HEADERS });
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
+}
+async function sbPatch(table, query, data) {
+  const r = await fetch(`${SB_URL}/${table}?${query}`, { method: "PATCH", headers: SB_HEADERS, body: JSON.stringify(data) });
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
+  return r.json();
+}
 
 // ==================== SUPABASE HELPERS ====================
 function getFamilyCode() { return localStorage.getItem('padel_family_code') || ''; }
 function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', code); }
 
-// Generate random 6-char code
 function generateFamilyCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no I,O,0,1 to avoid confusion
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
   for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
   return code;
 }
 
-// Register a new family
 async function registerFamily(code, adminPin) {
-  const { data, error } = await supabase.from('families').insert({ code, admin_pin: adminPin || null }).select();
-  if (error) throw error;
-  return data[0];
+  return sbPost('families', { code, admin_pin: adminPin || null });
 }
 
-// Check if family code exists
 async function checkFamilyExists(code) {
-  const { data, error } = await supabase.from('families').select('*').eq('code', code).single();
-  if (error && error.code === 'PGRST116') return null; // not found
-  if (error) throw error;
-  return data;
+  const data = await sbGet('families', `code=eq.${code}&limit=1`);
+  return data.length ? data[0] : null;
 }
 
-// ---- Profiles CRUD ----
 async function cloudLoadProfiles(familyCode) {
-  const { data, error } = await supabase.from('profiles').select('*').eq('family_code', familyCode).order('created_at');
-  if (error) throw error;
+  const data = await sbGet('profiles', `family_code=eq.${familyCode}&order=created_at`);
   return (data || []).map(row => ({
     name: row.name,
     profile: row.data || {},
@@ -52,59 +69,44 @@ async function cloudLoadProfiles(familyCode) {
 }
 
 async function cloudSaveProfile(familyCode, name, profileData, locked) {
-  const { data, error } = await supabase.from('profiles')
-    .upsert({ family_code: familyCode, name, data: profileData, locked: locked || false, updated_at: new Date().toISOString() },
-      { onConflict: 'family_code,name' })
-    .select();
-  if (error) throw error;
-  return data;
+  return sbUpsert('profiles', {
+    family_code: familyCode, name, data: profileData, locked: locked || false, updated_at: new Date().toISOString()
+  }, 'family_code,name');
 }
 
 async function cloudDeleteProfile(familyCode, name) {
-  const { error } = await supabase.from('profiles').delete().eq('family_code', familyCode).eq('name', name);
-  if (error) throw error;
+  return sbDelete('profiles', `family_code=eq.${familyCode}&name=eq.${encodeURIComponent(name)}`);
 }
 
-// ---- Saved rackets ----
 async function cloudLoadSavedRackets(familyCode) {
-  const { data, error } = await supabase.from('saved_rackets').select('*').eq('family_code', familyCode).single();
-  if (error && error.code === 'PGRST116') return []; // not found
-  if (error) throw error;
-  return data?.data || [];
+  const data = await sbGet('saved_rackets', `family_code=eq.${familyCode}&limit=1`);
+  return data.length ? (data[0].data || []) : [];
 }
 
 async function cloudSaveSavedRackets(familyCode, rackets) {
-  const { error } = await supabase.from('saved_rackets')
-    .upsert({ family_code: familyCode, data: rackets, updated_at: new Date().toISOString() },
-      { onConflict: 'family_code' });
-  if (error) throw error;
+  return sbUpsert('saved_rackets', {
+    family_code: familyCode, data: rackets, updated_at: new Date().toISOString()
+  }, 'family_code');
 }
 
-// ---- Extra rackets (user-added DB) ----
 async function cloudLoadExtraRackets(familyCode) {
-  const { data, error } = await supabase.from('extra_rackets').select('*').eq('family_code', familyCode).single();
-  if (error && error.code === 'PGRST116') return [];
-  if (error) throw error;
-  return data?.data || [];
+  const data = await sbGet('extra_rackets', `family_code=eq.${familyCode}&limit=1`);
+  return data.length ? (data[0].data || []) : [];
 }
 
 async function cloudSaveExtraRackets(familyCode, extras) {
-  const { error } = await supabase.from('extra_rackets')
-    .upsert({ family_code: familyCode, data: extras, updated_at: new Date().toISOString() },
-      { onConflict: 'family_code' });
-  if (error) throw error;
+  return sbUpsert('extra_rackets', {
+    family_code: familyCode, data: extras, updated_at: new Date().toISOString()
+  }, 'family_code');
 }
 
-// ---- Admin PIN ----
 async function cloudGetAdminPin(familyCode) {
-  const { data, error } = await supabase.from('families').select('admin_pin').eq('code', familyCode).single();
-  if (error) return '';
-  return data?.admin_pin || '';
+  const data = await sbGet('families', `code=eq.${familyCode}&select=admin_pin&limit=1`);
+  return data.length ? (data[0].admin_pin || '') : '';
 }
 
 async function cloudSetAdminPin(familyCode, pin) {
-  const { error } = await supabase.from('families').update({ admin_pin: pin }).eq('code', familyCode);
-  if (error) throw error;
+  return sbPatch('families', `code=eq.${familyCode}`, { admin_pin: pin });
 }
 
 const LEVEL_OPTIONS = [
@@ -1608,8 +1610,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <defs><linearGradient id="logoGradCloud" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
             <rect width="44" height="44" rx="10" fill="url(#logoGradCloud)"/>
             <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
-            <line x1="17" y1="36" x2="27" y2="36" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
+            <line x1="22" y1="10" x2="22" y2="26" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
+            <line x1="14" y1="18" x2="30" y2="18" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
+            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
           </svg>
         </div>
         <div style={{fontSize:22,fontWeight:800,color:"#f1f5f9",letterSpacing:"-0.02em",marginBottom:4}}>PadelAnalyzer</div>
