@@ -45768,7 +45768,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       ] }) }) }),
       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 40, fontSize: 8, color: "#334155", letterSpacing: "0.05em", textAlign: "center" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
-        " V8.9 \xB7 ",
+        " V11 \xB7 ",
         rackets_db_default.length,
         " raquettes \xB7 Scoring hybride calibr\xE9"
       ] })
@@ -46926,7 +46926,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 7, color: "#334155", letterSpacing: "0.05em", textAlign: "center", marginTop: 8 }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
-          " V8.9 \xB7 ",
+          " V11 \xB7 ",
           rackets_db_default.length,
           " raquettes \xB7 Scoring hybride calibr\xE9"
         ] })
@@ -46951,7 +46951,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { color: "#475569", fontSize: 10, margin: 0, letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 500 }, children: "Recherche web \xB7 Notation calibr\xE9e \xB7 Profil personnalisable" }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#334155", marginTop: 4, fontFamily: "'Outfit'", fontWeight: 500, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "V8.9" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "V11" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 10, padding: "1px 7px", color: "#f97316", fontSize: 8, fontWeight: 600 }, children: [
             "\u{1F5C3}\uFE0F ",
             rackets_db_default.length,
@@ -48343,7 +48343,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 8, color: "#999" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "#f97316", fontWeight: 700 }, children: "Padel Analyzer" }),
-                " V8.9 \xB7 Scoring hybride calibr\xE9"
+                " V11 \xB7 Scoring hybride calibr\xE9"
               ] })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#999", textAlign: "right" }, children: [
@@ -48365,7 +48365,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", marginTop: 18, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.04)", fontSize: 8, color: "#334155", letterSpacing: "0.05em" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
-        " V8.9 \xB7 Analyse personnalis\xE9e \xB7 ",
+        " V11 \xB7 Analyse personnalis\xE9e \xB7 ",
         (/* @__PURE__ */ new Date()).toLocaleDateString("fr-FR"),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 7, opacity: 0.7 }, children: "Prix indicatifs \u2014 v\xE9rifier en boutique" })
