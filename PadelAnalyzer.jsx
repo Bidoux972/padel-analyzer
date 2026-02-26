@@ -6,7 +6,7 @@ import {
 import RACKETS_DB from "./rackets-db.json";
 
 // ==================== SUPABASE REST API (no SDK needed) ====================
-const SB_URL = "https://nvomaxjynuemdtvhzcbf.supabase.co/rest/v1";
+const SB_URL = "https://nvomaxjyhuemdfvhzcbf.supabase.co/rest/v1";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b21heGp5aHVlbWRmdmh6Y2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwOTI3NjEsImV4cCI6MjA4NzY2ODc2MX0.2vQyuT6rPTeGzMp244L9n0OzBwOnW3WTviC3RKxrp8U";
 const SB_HEADERS = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json", "Prefer": "return=representation" };
 
