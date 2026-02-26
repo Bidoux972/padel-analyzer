@@ -1342,6 +1342,19 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       brandPool = [...brandPool, ...otherTop];
     }
     
+    // Deduplicate by model: keep newest year when same model exists in multiple years
+    const deduped = [];
+    const modelMap = new Map();
+    for (const r of brandPool) {
+      // Extract model name without year (e.g. "Bullpadel Vertex 04" from "Bullpadel Vertex 04 2024")
+      const modelKey = r.name.replace(/\s*20\d{2}\s*/g, '').toLowerCase().trim();
+      const existing = modelMap.get(modelKey);
+      if (!existing || (r.year||0) > (existing.year||0)) {
+        modelMap.set(modelKey, r);
+      }
+    }
+    brandPool = [...modelMap.values()];
+
     // Score all and sort (computeGlobalScore returns 0 for incompatible: womanLine for men, junior, etc.)
     const scored = brandPool.map(r=>({...r, _globalScore: computeGlobalScore(r.scores, profile, r)}))
       .filter(r=>r._globalScore > 0);
@@ -1679,7 +1692,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   return (
                     <button key={sp.name} onClick={()=>{
                       if(sp.locked){
-                        setPasswordModal({mode:'unlock',profileName:sp.name,onSuccess:()=>{selectHomeProfile(sp);setPasswordModal(null);}});
+                        setPinInput("");setPinError("");setPasswordModal({mode:'unlock',profileName:sp.name,onSuccess:()=>{selectHomeProfile(sp);setPasswordModal(null);}});
                       } else { selectHomeProfile(sp); }
                     }} style={{
                       background: isActive ? "rgba(249,115,22,0.08)" : "rgba(255,255,255,0.03)",
@@ -1695,10 +1708,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       {/* Lock toggle (top-left) */}
                       <div onClick={e=>{e.stopPropagation();
                         if(sp.locked){
-                          setPasswordModal({mode:'unlock-toggle',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});
+                          setPinInput("");setPinError("");setPasswordModal({mode:'unlock-toggle',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});
                         } else {
                           const pin=getAdminPin();
-                          if(!pin){setPasswordModal({mode:'setpin',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});}
+                          if(!pin){setPinInput("");setPinError("");setPasswordModal({mode:'setpin',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});}
                           else{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);}
                         }
                       }} style={{
@@ -4411,7 +4424,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               ?"Ce code unique protégera tous les profils verrouillés."
               :`Entrez le code pour accéder au profil "${passwordModal.profileName}".`}
           </p>
-          <input type="password" value={pinInput} onChange={e=>{setPinInput(e.target.value);setPinError("");}}
+          <input type="text" inputMode="numeric" value={pinInput} autoComplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" name={"pa-pin-"+Date.now()} onChange={e=>{setPinInput(e.target.value);setPinError("");}}
             onKeyDown={e=>{if(e.key==="Enter"){
               if(passwordModal.mode==="setpin"){
                 if(pinInput.length<4){setPinError("4 caractères minimum");return;}
@@ -4423,7 +4436,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             }}}
             placeholder={passwordModal.mode==="setpin"?"Code (4+ caractères)":"Entrer le code"}
             autoFocus
-            style={{width:"100%",padding:"12px 14px",borderRadius:12,fontSize:18,fontWeight:700,textAlign:"center",letterSpacing:"0.3em",
+            style={{width:"100%",padding:"12px 14px",borderRadius:12,fontSize:18,fontWeight:700,textAlign:"center",letterSpacing:"0.3em",WebkitTextSecurity:"disc",
               background:"rgba(255,255,255,0.06)",border:`1px solid ${pinError?"rgba(239,68,68,0.5)":"rgba(255,255,255,0.12)"}`,
               color:"#f1f5f9",fontFamily:"'Outfit',sans-serif",outline:"none",boxSizing:"border-box",
             }}/>

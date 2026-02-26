@@ -2,7 +2,7 @@
   {
     "id": "adidas-adipower-ctrl-2025",
     "name": "Adidas Adipower CTRL 3.4 2025",
-    "shortName": "Adipower CTRL",
+    "shortName": "Adipower CTRL 25",
     "brand": "Adidas",
     "shape": "Ronde",
     "weight": "365-375g",
@@ -52,7 +52,7 @@
   {
     "id": "adidas-adipower-jr-2025",
     "name": "Adidas Adipower Junior 3.4 2025",
-    "shortName": "Adipower Jr 3.4",
+    "shortName": "Adipower Jr 3.4 25",
     "brand": "Adidas",
     "shape": "Ronde",
     "weight": "310-330g",
@@ -98,7 +98,7 @@
   {
     "id": "adidas-adipower-light-2025",
     "name": "Adidas Adipower Light 3.4 2025",
-    "shortName": "Adipower Light",
+    "shortName": "Adipower Light 25",
     "brand": "Adidas",
     "shape": "Ronde",
     "weight": "350-360g",
@@ -143,7 +143,7 @@
   {
     "id": "adidas-adipower-multiweight-2025",
     "name": "Adidas Adipower Multiweight 2025",
-    "shortName": "Adipower Multi",
+    "shortName": "Adipower Multi 25",
     "brand": "Adidas",
     "shape": "Goutte d'eau",
     "weight": "355-375g",
@@ -193,7 +193,7 @@
   {
     "id": "adidas-metalbone-2025",
     "name": "Adidas Metalbone 3.4 2025",
-    "shortName": "Metalbone 3.4",
+    "shortName": "Metalbone 3.4 25",
     "brand": "Adidas",
     "shape": "Diamant",
     "weight": "360-375g",
@@ -238,7 +238,7 @@
   {
     "id": "adidas-metalbone-hrd-2025",
     "name": "Adidas Metalbone HRD 3.4 2025",
-    "shortName": "Metalbone HRD",
+    "shortName": "Metalbone HRD 25",
     "brand": "Adidas",
     "shape": "Diamant",
     "weight": "365-380g",
@@ -288,7 +288,7 @@
   {
     "id": "adidas-metalbone-youth-2025",
     "name": "Adidas Metalbone Youth 3.4 2025",
-    "shortName": "Metalbone Youth",
+    "shortName": "Metalbone Youth 25",
     "brand": "Adidas",
     "shape": "Diamant",
     "weight": "330-345g",
@@ -1405,7 +1405,7 @@
   {
     "id": "babolat-counter-viper-2025",
     "name": "Babolat Counter Viper 2025",
-    "shortName": "Counter Viper",
+    "shortName": "Counter Viper 25",
     "brand": "Babolat",
     "shape": "Goutte d'eau",
     "weight": "360-370g",
@@ -2464,7 +2464,7 @@
   {
     "id": "bullpadel-vertex-04-2025",
     "name": "Bullpadel Vertex 04 2025",
-    "shortName": "Vertex 04",
+    "shortName": "Vertex 04 25",
     "brand": "Bullpadel",
     "shape": "Diamant",
     "weight": "360-375g",
@@ -2509,7 +2509,7 @@
   {
     "id": "bullpadel-vertex-elite-2025",
     "name": "Bullpadel Vertex Elite 2025",
-    "shortName": "Vertex Elite",
+    "shortName": "Vertex Elite 25",
     "brand": "Bullpadel",
     "shape": "Diamant",
     "weight": "370-385g",
@@ -3224,7 +3224,7 @@
   {
     "id": "drop-shot-conqueror-2025",
     "name": "Drop Shot Conqueror 10.0 2025",
-    "shortName": "Conqueror 10",
+    "shortName": "Conqueror 10 25",
     "brand": "Drop Shot",
     "shape": "Diamant",
     "weight": "365-380g",
@@ -3320,7 +3320,7 @@
   {
     "id": "drop-shot-legend-2025",
     "name": "Drop Shot Legend 4.0 2025",
-    "shortName": "Legend 4.0",
+    "shortName": "Legend 4.0 25",
     "brand": "Drop Shot",
     "shape": "Goutte d'eau",
     "weight": "355-370g",
@@ -3365,7 +3365,7 @@
   {
     "id": "dunlop-galactica-jr-2025",
     "name": "Dunlop Galactica Junior 2025",
-    "shortName": "Galactica Jr",
+    "shortName": "Galactica Jr 25",
     "brand": "Dunlop",
     "shape": "Ronde",
     "weight": "310-330g",
@@ -3411,7 +3411,7 @@
   {
     "id": "dunlop-galactica-pro-2025",
     "name": "Dunlop Galactica Pro 2025",
-    "shortName": "Galactica Pro",
+    "shortName": "Galactica Pro 25",
     "brand": "Dunlop",
     "shape": "Goutte d'eau",
     "weight": "355-370g",
@@ -3456,7 +3456,7 @@
   {
     "id": "dunlop-rocket-ultra-2025",
     "name": "Dunlop Rocket Ultra 2025",
-    "shortName": "Rocket Ultra",
+    "shortName": "Rocket Ultra 25",
     "brand": "Dunlop",
     "shape": "Ronde",
     "weight": "350-360g",
@@ -3826,7 +3826,7 @@
   {
     "id": "head-extreme-motion-2025",
     "name": "Head Extreme Motion 2025",
-    "shortName": "Extreme Motion",
+    "shortName": "Extreme Motion 25",
     "brand": "Head",
     "shape": "Diamant",
     "weight": "355-365g",
@@ -4110,7 +4110,7 @@
   {
     "id": "head-one-ultralight-2025",
     "name": "Head One Ultralight 2025",
-    "shortName": "One Ultralight",
+    "shortName": "One Ultralight 25",
     "brand": "Head",
     "shape": "Ronde",
     "weight": "300g",
@@ -4438,7 +4438,7 @@
   {
     "id": "head-coello-motion-2026",
     "name": "Head Coello Motion 2026",
-    "shortName": "Coello Motion",
+    "shortName": "Coello Motion 26",
     "brand": "Head",
     "shape": "Diamant",
     "weight": "360g",
@@ -5583,7 +5583,7 @@
   {
     "id": "nox-at10-genius-18k-2025",
     "name": "Nox AT10 Genius 18K 2025",
-    "shortName": "AT10 18K",
+    "shortName": "AT10 18K 25",
     "brand": "Nox",
     "shape": "Ronde",
     "weight": "365-375g",
@@ -5673,7 +5673,7 @@
   {
     "id": "nox-at10-genius-jr-2025",
     "name": "Nox AT10 Genius Junior 2025",
-    "shortName": "AT10 Genius Jr",
+    "shortName": "AT10 Genius Jr 25",
     "brand": "Nox",
     "shape": "Ronde",
     "weight": "300-325g",
@@ -5719,7 +5719,7 @@
   {
     "id": "nox-at10-genius-luxury-2025",
     "name": "Nox AT10 Genius Luxury 2025",
-    "shortName": "AT10 Luxury",
+    "shortName": "AT10 Luxury 25",
     "brand": "Nox",
     "shape": "Ronde",
     "weight": "365-380g",
@@ -5764,7 +5764,7 @@
   {
     "id": "nox-ml10-pro-cup-2025",
     "name": "Nox ML10 Pro Cup 2025",
-    "shortName": "ML10 Pro Cup",
+    "shortName": "ML10 Pro Cup 25",
     "brand": "Nox",
     "shape": "Ronde",
     "weight": "360-375g",
@@ -5809,7 +5809,7 @@
   {
     "id": "nox-ml10-beginner-2025",
     "name": "Nox ML10 Pro Cup Beginner 2025",
-    "shortName": "ML10 Beginner",
+    "shortName": "ML10 Beginner 25",
     "brand": "Nox",
     "shape": "Ronde",
     "weight": "355-365g",
@@ -5900,7 +5900,7 @@
   {
     "id": "nox-nerbo-wpt-2025",
     "name": "Nox Nerbo WPT 2025",
-    "shortName": "Nerbo WPT",
+    "shortName": "Nerbo WPT 25",
     "brand": "Nox",
     "shape": "Diamant",
     "weight": "365-380g",
@@ -6222,7 +6222,7 @@
   {
     "id": "siux-electra-st3-jr-2024",
     "name": "Siux Electra ST3 Junior 2024",
-    "shortName": "Electra ST3 Jr",
+    "shortName": "Electra ST3 Jr 24",
     "brand": "Siux",
     "shape": "Ronde",
     "weight": "320g",
@@ -6314,7 +6314,7 @@
   {
     "id": "siux-diablo-black-2025",
     "name": "Siux Diablo Black Carbon 2025",
-    "shortName": "Diablo Black",
+    "shortName": "Diablo Black 25",
     "brand": "Siux",
     "shape": "Goutte d'eau",
     "weight": "370-380g",
@@ -6359,7 +6359,7 @@
   {
     "id": "siux-diablo-revolution-2025",
     "name": "Siux Diablo Revolution 2025",
-    "shortName": "Diablo Revol",
+    "shortName": "Diablo Revol 25",
     "brand": "Siux",
     "shape": "Goutte d'eau",
     "weight": "360-370g",
@@ -6404,7 +6404,7 @@
   {
     "id": "siux-diablo-xtrem-2025",
     "name": "Siux Diablo Xtrem Carbon 2025",
-    "shortName": "Diablo Xtrem",
+    "shortName": "Diablo Xtrem 25",
     "brand": "Siux",
     "shape": "Diamant",
     "weight": "365-380g",
@@ -6880,7 +6880,7 @@
   {
     "id": "starvie-metheora-galaxy-2025",
     "name": "Starvie Metheora Galaxy 2025",
-    "shortName": "Metheora Galaxy",
+    "shortName": "Metheora Galaxy 25",
     "brand": "Starvie",
     "shape": "Goutte d'eau",
     "weight": "365-375g",
@@ -6925,7 +6925,7 @@
   {
     "id": "starvie-metheora-2025",
     "name": "Starvie Metheora Warrior 2025",
-    "shortName": "Metheora",
+    "shortName": "Metheora 25",
     "brand": "Starvie",
     "shape": "Goutte d'eau",
     "weight": "360-375g",
@@ -7197,7 +7197,7 @@
   {
     "id": "varlion-bourne-2025",
     "name": "Varlion Bourne Carbon 2025",
-    "shortName": "Bourne Carbon",
+    "shortName": "Bourne Carbon 25",
     "brand": "Varlion",
     "shape": "Goutte d'eau",
     "weight": "360-375g",
@@ -7242,7 +7242,7 @@
   {
     "id": "varlion-canas-jr-2025",
     "name": "Varlion Cañas Junior 2025",
-    "shortName": "Cañas Junior",
+    "shortName": "Cañas Junior 25",
     "brand": "Varlion",
     "shape": "Ronde",
     "weight": "310-320g",
@@ -7570,7 +7570,7 @@
   {
     "id": "wilson-minions-jr-face-2024",
     "name": "Wilson Minions Junior Face 2024",
-    "shortName": "Minions Jr Face",
+    "shortName": "Minions Jr Face 24",
     "brand": "Wilson",
     "shape": "Goutte d'eau",
     "weight": "300g",
@@ -7616,7 +7616,7 @@
   {
     "id": "wilson-bela-elite-pro-2025",
     "name": "Wilson Bela Elite Pro V2 2025",
-    "shortName": "Bela Elite Pro",
+    "shortName": "Bela Elite Pro 25",
     "brand": "Wilson",
     "shape": "Goutte d'eau",
     "weight": "370-385g",
@@ -7661,7 +7661,7 @@
   {
     "id": "wilson-bela-elite-v2-2025",
     "name": "Wilson Bela Elite V2 2025",
-    "shortName": "Bela Elite V2",
+    "shortName": "Bela Elite V2 25",
     "brand": "Wilson",
     "shape": "Goutte d'eau",
     "weight": "365-375g",
@@ -7706,7 +7706,7 @@
   {
     "id": "wilson-bela-pro-v2-2025",
     "name": "Wilson Bela Pro V2 2025",
-    "shortName": "Bela Pro V2",
+    "shortName": "Bela Pro V2 25",
     "brand": "Wilson",
     "shape": "Goutte d'eau",
     "weight": "360-375g",
@@ -7751,7 +7751,7 @@
   {
     "id": "wilson-blade-jr-v2",
     "name": "Wilson Blade Junior V2 2025",
-    "shortName": "Blade Jr V2",
+    "shortName": "Blade Jr V2 25",
     "brand": "Wilson",
     "shape": "Goutte d'eau",
     "weight": "300g",
@@ -7797,7 +7797,7 @@
   {
     "id": "wilson-ultra-v2-2025",
     "name": "Wilson Ultra V2 2025",
-    "shortName": "Ultra V2",
+    "shortName": "Ultra V2 25",
     "brand": "Wilson",
     "shape": "Goutte d'eau",
     "weight": "355-365g",
@@ -8260,7 +8260,7 @@
   {
     "id": "bullpadel-vertex-04-woman-2025",
     "name": "Bullpadel Vertex 04 Woman 2025",
-    "shortName": "Vertex 04 W",
+    "shortName": "Vertex 04 W 25",
     "brand": "Bullpadel",
     "shape": "Diamant",
     "weight": "350-370g",
@@ -8412,7 +8412,7 @@
   {
     "id": "bullpadel-vertex-05-woman-2026",
     "name": "Bullpadel Vertex 05 Woman 2026",
-    "shortName": "Vertex 05 W",
+    "shortName": "Vertex 05 W 26",
     "brand": "Bullpadel",
     "shape": "Diamant",
     "weight": "350-360g",
@@ -8514,7 +8514,7 @@
   {
     "id": "nox-vk10-quantum-3k-2025",
     "name": "Nox VK10 Quantum 3K 2025",
-    "shortName": "VK10 Quantum",
+    "shortName": "VK10 Quantum 25",
     "brand": "Nox",
     "shape": "Ronde",
     "weight": "350-365g",
@@ -8565,7 +8565,7 @@
   {
     "id": "nox-la10-quantum-12k-2025",
     "name": "Nox LA10 Quantum 12K 2025",
-    "shortName": "LA10 Quantum",
+    "shortName": "LA10 Quantum 25",
     "brand": "Nox",
     "shape": "Diamant",
     "weight": "360-375g",
@@ -8615,7 +8615,7 @@
   {
     "id": "nox-tl10-quantum-12k-2025",
     "name": "Nox TL10 Quantum 12K 2025",
-    "shortName": "TL10 Quantum",
+    "shortName": "TL10 Quantum 25",
     "brand": "Nox",
     "shape": "Goutte d'eau",
     "weight": "360-375g",
@@ -8665,7 +8665,7 @@
   {
     "id": "babolat-stima-spirit-2025",
     "name": "Babolat Stima Spirit 2025",
-    "shortName": "Stima Spirit",
+    "shortName": "Stima Spirit 25",
     "brand": "Babolat",
     "shape": "Ronde",
     "weight": "330-340g",
@@ -8716,7 +8716,7 @@
   {
     "id": "babolat-dyna-spirit-2025",
     "name": "Babolat Dyna Spirit 2025",
-    "shortName": "Dyna Spirit",
+    "shortName": "Dyna Spirit 25",
     "brand": "Babolat",
     "shape": "Hybride",
     "weight": "330-340g",
@@ -8767,7 +8767,7 @@
   {
     "id": "babolat-technical-vertuo-2025",
     "name": "Babolat Technical Vertuo 2025",
-    "shortName": "Technical Vertuo",
+    "shortName": "Technical Vertuo 25",
     "brand": "Babolat",
     "shape": "Diamant",
     "weight": "350-360g",
@@ -8967,7 +8967,7 @@
   {
     "id": "prokennex-kinetic-legend-pro",
     "name": "Pro Kennex Kinetic Legend Pro 2025",
-    "shortName": "Kinetic Legend Pro",
+    "shortName": "Kinetic Legend Pro 25",
     "brand": "Pro Kennex",
     "shape": "Ronde",
     "weight": "360-375g",
@@ -9017,7 +9017,7 @@
   {
     "id": "prokennex-kinetic-focus-pro",
     "name": "Pro Kennex Kinetic Focus Pro 2025",
-    "shortName": "Kinetic Focus Pro",
+    "shortName": "Kinetic Focus Pro 25",
     "brand": "Pro Kennex",
     "shape": "Diamant",
     "weight": "360-375g",
@@ -9067,7 +9067,7 @@
   {
     "id": "prokennex-kinetic-black-ace",
     "name": "Pro Kennex Kinetic Black Ace 2025",
-    "shortName": "Kinetic Black Ace",
+    "shortName": "Kinetic Black Ace 25",
     "brand": "Pro Kennex",
     "shape": "Goutte d'eau",
     "weight": "355-370g",
@@ -9117,7 +9117,7 @@
   {
     "id": "royal-padel-m27-poly-2025",
     "name": "Royal Padel M27 Polyethylene 2025",
-    "shortName": "RP M27 Poly",
+    "shortName": "RP M27 Poly 25",
     "brand": "Royal Padel",
     "shape": "Ronde",
     "weight": "360-380g",
@@ -9167,7 +9167,7 @@
   {
     "id": "royal-padel-m27-light-2025",
     "name": "Royal Padel M27 Light 2025",
-    "shortName": "RP M27 Light",
+    "shortName": "RP M27 Light 25",
     "brand": "Royal Padel",
     "shape": "Ronde",
     "weight": "350-365g",
@@ -9218,7 +9218,7 @@
   {
     "id": "royal-padel-whip-extreme-2025",
     "name": "Royal Padel Whip Extreme 2025",
-    "shortName": "RP Whip Extreme",
+    "shortName": "RP Whip Extreme 25",
     "brand": "Royal Padel",
     "shape": "Ronde",
     "weight": "355-375g",
@@ -9313,7 +9313,8 @@
       }
     ],
     "targetProfile": "Attaquant confirmé cherchant puissance maximale avec innovation technologique. Joueur physique qui veut personnaliser son équilibre.",
-    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-ultimate-pro-plus-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-ultimate-pro-plus-2025.png",
+    "shortName": "Ultimate Pro+ 2025"
   },
   {
     "id": "oxdog-hyper-pro-2-0-2026",
@@ -9363,7 +9364,8 @@
       }
     ],
     "targetProfile": "Joueur polyvalent intermédiaire-avancé cherchant vitesse et contrôle. Bon pour joueur de droite qui veut un all-round aérodynamique.",
-    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-hyper-pro-plus-2-0-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-hyper-pro-plus-2-0-2026.png",
+    "shortName": "Hyper Pro 2.0 2026"
   },
   {
     "id": "oxdog-sense-pro-2026",
@@ -9413,7 +9415,8 @@
       }
     ],
     "targetProfile": "Défenseur/polyvalent qui veut du contrôle SANS sacrifier toute puissance. Bon choix santé grâce au Vibradamp 3 couches.",
-    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-sense-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-sense-pro-2026.png",
+    "shortName": "Sense Pro 2026"
   },
   {
     "id": "oxdog-ultimate-tour-2026",
@@ -9463,7 +9466,8 @@
       }
     ],
     "targetProfile": "Joueur offensif intermédiaire qui veut du diamant sans l'exigence du Pro+. Bon premier diamant pour joueurs en progression.",
-    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-ultimate-tour-x-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-ultimate-tour-x-2026.png",
+    "shortName": "Ultimate Tour X 2026"
   },
   {
     "id": "starvie-kenta-eternal-pro-2026",
@@ -9513,7 +9517,8 @@
       }
     ],
     "targetProfile": "Joueur avancé technique cherchant spin maximal depuis une forme ronde. Pour Bea González fans et joueurs qui veulent contrôle + attaque aérienne.",
-    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-kenta-eternal-pro-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-kenta-eternal-pro-2026.png",
+    "shortName": "Kenta Eternal Pro 2026"
   },
   {
     "id": "starvie-astrum-2026",
@@ -9563,7 +9568,8 @@
       }
     ],
     "targetProfile": "Joueur cherchant confort maximal dans une marque premium. Excellent choix santé pour joueurs sensibles du bras ou en reprise.",
-    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-astrum-eris-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-astrum-eris-2026.png",
+    "shortName": "Astrum Eris 2026"
   },
   {
     "id": "starvie-metheora-warrior-2026",
@@ -9613,7 +9619,8 @@
       }
     ],
     "targetProfile": "Joueur polyvalent avancé cherchant la ronde la plus complète. Pour ceux qui hésitent entre confort et puissance.",
-    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-metheora-warrior-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-metheora-warrior-2026.png",
+    "shortName": "Metheora Warrior 2026"
   },
   {
     "id": "varlion-bourne-summum-prisma-2026",
@@ -9663,7 +9670,8 @@
       }
     ],
     "targetProfile": "Attaquant avancé qui veut innovation aérodynamique espagnole. Pour joueurs techniques cherchant puissance + technologies uniques.",
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-bourne-summum-prisma-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-bourne-summum-prisma-2026.png",
+    "shortName": "Bourne Summum Prisma 2026"
   },
   {
     "id": "varlion-lw-summum-prisma-2026",
@@ -9713,7 +9721,8 @@
       }
     ],
     "targetProfile": "Défenseur pur, joueur de contrôle, femme ou senior cherchant maniabilité absolue. Le choix historique pour le fond de court.",
-    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-summum-prisma-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-summum-prisma-2026.png",
+    "shortName": "LW Summum Prisma 2026"
   },
   {
     "id": "kuikma-ms-pro-2025",
@@ -9763,7 +9772,8 @@
       }
     ],
     "targetProfile": "Attaquant cherchant qualité pro accessible. Le choix intelligent Decathlon pour joueurs avancés avec budget maîtrisé.",
-    "imageUrl": "https://www.padelful.com/images/rackets/kuikma-ms-pro-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/kuikma-ms-pro-2025.png",
+    "shortName": "MS Pro 2025"
   },
   {
     "id": "kuikma-ls-pro-2025",
@@ -9813,7 +9823,8 @@
       }
     ],
     "targetProfile": "Joueuse ou joueur polyvalent cherchant qualité pro accessible. Le meilleur choix Decathlon pour le rapport qualité/prix.",
-    "imageUrl": "https://www.padelful.com/images/rackets/kuikma-ls-pro-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/kuikma-ls-pro-2025.png",
+    "shortName": "LS Pro 2025"
   },
   {
     "id": "nox-ml10-pro-cup-silver-2025",
@@ -9863,7 +9874,8 @@
       }
     ],
     "targetProfile": "Joueur de contrôle cherchant maniabilité et prix accessible. Femmes, seniors, débutants avancés. Le classique Nox en version light.",
-    "imageUrl": "https://www.padelful.com/images/rackets/nox-ml10-pro-cup-silver-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ml10-pro-cup-silver-2025.png",
+    "shortName": "ML10 Pro Cup Silver 2025"
   },
   {
     "id": "nox-at10-genius-12k-xtrem-2026",
@@ -9913,7 +9925,8 @@
       }
     ],
     "targetProfile": "Joueur avancé/pro cherchant le top absolu Nox. Fan d'Agustín Tapia. Attaquant-polyvalent voulant personnaliser son équilibre.",
-    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-12k-alum-xtrem-2026.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-12k-alum-xtrem-2026.png",
+    "shortName": "AT10 Genius 12K Xtrem 2026"
   },
   {
     "id": "wilson-carbon-force-pro-2025",
@@ -9963,7 +9976,8 @@
       }
     ],
     "targetProfile": "Joueur intermédiaire cherchant polyvalence et confort à prix raisonnable. Le choix sûr Wilson.",
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-carbon-force-pro.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-carbon-force-pro.png",
+    "shortName": "Carbon Force Pro 2025"
   },
   {
     "id": "wilson-carbon-force-lt-2025",
@@ -10013,7 +10027,8 @@
       }
     ],
     "targetProfile": "Femmes, seniors, débutants avancés cherchant légèreté et confort. Idéal pour la boutique du centre padel.",
-    "imageUrl": "https://www.padelful.com/images/rackets/wilson-carbon-force-lt.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-carbon-force-lt.png",
+    "shortName": "Carbon Force LT 2025"
   },
   {
     "id": "babolat-technical-veron-2025",
@@ -10063,7 +10078,8 @@
       }
     ],
     "targetProfile": "Attaquant cherchant puissance avec plus de flexibilité que le Viper. Bon choix pour joueurs trouvant le carbone pur trop dur.",
-    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-veron-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-veron-2025.png",
+    "shortName": "Technical Veron 2025"
   },
   {
     "id": "babolat-air-veron-2025",
@@ -10113,7 +10129,8 @@
       }
     ],
     "targetProfile": "Joueur polyvalent cherchant maniabilité et flexibilité. Alternative plus souple à l'Air Viper. Bon pour joueurs de droite dynamiques.",
-    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-veron-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-veron-2025.png",
+    "shortName": "Air Veron 2025"
   },
   {
     "id": "babolat-counter-veron-2025",
@@ -10163,6 +10180,7 @@
       }
     ],
     "targetProfile": "Défenseur/contre-attaquant cherchant confort et tolérance. Bon choix santé dans la gamme Babolat. Alternative plus souple au Counter Viper.",
-    "imageUrl": "https://www.padelful.com/images/rackets/babolat-counter-veron-2025.png"
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-counter-veron-2025.png",
+    "shortName": "Counter Veron 2025"
   }
 ]
