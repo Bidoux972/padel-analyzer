@@ -60557,7 +60557,7 @@ Return ONLY valid JSON, no markdown, no backticks.`;
           if (racket.womanLine) score2 += 0.3;
           if (rWeight2 && rWeight2 > 370) score2 -= (rWeight2 - 370) * 0.015;
         }
-        return Math.max(0, Math.min(1, (score2 - 2) / 8));
+        return Math.max(0, Math.min(10, (score2 - 2) / 8 * 10));
       } else {
         const prioTags2 = profile.priorityTags || [];
         const prioAttrMap2 = { puissance: "Puissance", spin: "Spin", controle: "Contr\xF4le", confort: "Confort", legerete: "Maniabilit\xE9", protection: "Confort", polyvalence: null, reprise: null };
@@ -62061,7 +62061,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const styles = (p.styleTags || []).map((id) => STYLE_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
                   const injuries = (p.injuryTags || []).filter((t) => t !== "aucune").map((id) => INJURY_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
                   const isJunior = p.age && parseInt(p.age) < 16;
-                  const levelColors = { D\u00E9butant: "#4CAF50", Interm\u00E9diaire: "#FF9800", Avanc\u00E9: "#ef4444", Comp\u00E9tition: "#9C27B0" };
+                  const levelColors = { D\u00E9butant: "#4CAF50", Interm\u00E9diaire: "#FF9800", Avanc\u00E9: "#ef4444", Comp\u00E9tition: "#9C27B0", Expert: "#a855f7" };
                   const desc = [p.side && `C\xF4t\xE9 ${p.side}`, p.hand].filter(Boolean).join(" \xB7 ");
                   const stylesStr = styles.length ? styles.slice(0, 2).join(", ") : "";
                   const isActive = i === activeProfileIdx;
@@ -64350,10 +64350,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             to { opacity: 1; transform: scale(1); }
           }
           @media (max-width: 700px) {
-            .pa-radar-layout { flex-direction: column !important; }
-            .pa-radar-showcase { width: 100% !important; min-height: auto !important; max-height: 200px !important; padding: 8px !important; }
-            .pa-radar-showcase img { width: 120px !important; height: 140px !important; }
-            .pa-radar-chart { min-height: 320px !important; }
+            .pa-radar-layout { flex-direction: column !important; min-height: auto !important; }
+            .pa-radar-showcase { display: none !important; }
+            .pa-radar-chart { min-height: 340px !important; width: 100% !important; flex: none !important; }
           }
         ` }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "pa-radar-layout", style: { display: "flex", alignItems: "center", gap: 0, minHeight: 400 }, children: [
