@@ -8877,7 +8877,7 @@
     "antivib": "Vibrasorb System",
     "price": "150-200€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-vertuo-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
@@ -8927,7 +8927,7 @@
     "antivib": "Vibrasorb System",
     "price": "160-210€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-vertuo-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
@@ -8977,7 +8977,7 @@
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "200-280€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/pro-kennex-kinetic-legend-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9027,7 +9027,7 @@
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "220-300€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/pro-kennex-kinetic-focus-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9077,7 +9077,7 @@
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "230-310€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/pro-kennex-kinetic-black-ace-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9127,7 +9127,7 @@
     "antivib": "Shock Absorption System",
     "price": "250-350€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/royal-padel-m27-polyethylene-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9177,7 +9177,7 @@
     "antivib": "Shock Absorption System",
     "price": "230-320€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/royal-padel-m27-light-2025.png",
     "year": 2025,
     "category": "avance",
     "womanLine": true,
@@ -9228,7 +9228,7 @@
     "antivib": "Shock Absorption System",
     "price": "180-260€",
     "player": "—",
-    "imageUrl": "",
+    "imageUrl": "https://www.padelful.com/images/rackets/royal-padel-whip-extreme-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -9312,7 +9312,8 @@
         "detail": "Surface sablée pour grip balle et génération de spin"
       }
     ],
-    "targetProfile": "Attaquant confirmé cherchant puissance maximale avec innovation technologique. Joueur physique qui veut personnaliser son équilibre."
+    "targetProfile": "Attaquant confirmé cherchant puissance maximale avec innovation technologique. Joueur physique qui veut personnaliser son équilibre.",
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-ultimate-pro-plus-2025.png"
   },
   {
     "id": "oxdog-hyper-pro-2-0-2026",
@@ -9361,7 +9362,8 @@
         "detail": "Mousse densité intermédiaire pour compromis puissance/confort"
       }
     ],
-    "targetProfile": "Joueur polyvalent intermédiaire-avancé cherchant vitesse et contrôle. Bon pour joueur de droite qui veut un all-round aérodynamique."
+    "targetProfile": "Joueur polyvalent intermédiaire-avancé cherchant vitesse et contrôle. Bon pour joueur de droite qui veut un all-round aérodynamique.",
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-hyper-pro-plus-2-0-2026.png"
   },
   {
     "id": "oxdog-sense-pro-2026",
@@ -9410,7 +9412,8 @@
         "detail": "Personnalisation du poids et de l'équilibre"
       }
     ],
-    "targetProfile": "Défenseur/polyvalent qui veut du contrôle SANS sacrifier toute puissance. Bon choix santé grâce au Vibradamp 3 couches."
+    "targetProfile": "Défenseur/polyvalent qui veut du contrôle SANS sacrifier toute puissance. Bon choix santé grâce au Vibradamp 3 couches.",
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-sense-pro-2026.png"
   },
   {
     "id": "oxdog-ultimate-tour-2026",
@@ -9459,7 +9462,8 @@
         "detail": "Ajustement personnalisé du poids"
       }
     ],
-    "targetProfile": "Joueur offensif intermédiaire qui veut du diamant sans l'exigence du Pro+. Bon premier diamant pour joueurs en progression."
+    "targetProfile": "Joueur offensif intermédiaire qui veut du diamant sans l'exigence du Pro+. Bon premier diamant pour joueurs en progression.",
+    "imageUrl": "https://www.padelful.com/images/rackets/oxdog-ultimate-tour-x-2026.png"
   },
   {
     "id": "starvie-kenta-eternal-pro-2026",
@@ -9508,7 +9512,8 @@
         "detail": "Grip plus long pour revers à deux mains"
       }
     ],
-    "targetProfile": "Joueur avancé technique cherchant spin maximal depuis une forme ronde. Pour Bea González fans et joueurs qui veulent contrôle + attaque aérienne."
+    "targetProfile": "Joueur avancé technique cherchant spin maximal depuis une forme ronde. Pour Bea González fans et joueurs qui veulent contrôle + attaque aérienne.",
+    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-kenta-eternal-pro-2026.png"
   },
   {
     "id": "starvie-astrum-2026",
@@ -9557,7 +9562,8 @@
         "detail": "Rugosité intégrée au moule pour spin malgré le confort"
       }
     ],
-    "targetProfile": "Joueur cherchant confort maximal dans une marque premium. Excellent choix santé pour joueurs sensibles du bras ou en reprise."
+    "targetProfile": "Joueur cherchant confort maximal dans une marque premium. Excellent choix santé pour joueurs sensibles du bras ou en reprise.",
+    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-astrum-eris-2026.png"
   },
   {
     "id": "starvie-metheora-warrior-2026",
@@ -9606,7 +9612,8 @@
         "detail": "Structure tout carbone pour résistance maximale"
       }
     ],
-    "targetProfile": "Joueur polyvalent avancé cherchant la ronde la plus complète. Pour ceux qui hésitent entre confort et puissance."
+    "targetProfile": "Joueur polyvalent avancé cherchant la ronde la plus complète. Pour ceux qui hésitent entre confort et puissance.",
+    "imageUrl": "https://www.padelful.com/images/rackets/star-vie-metheora-warrior-2026.png"
   },
   {
     "id": "varlion-bourne-summum-prisma-2026",
@@ -9655,7 +9662,8 @@
         "detail": "Résine époxy Varlion pour élasticité et résistance maximales"
       }
     ],
-    "targetProfile": "Attaquant avancé qui veut innovation aérodynamique espagnole. Pour joueurs techniques cherchant puissance + technologies uniques."
+    "targetProfile": "Attaquant avancé qui veut innovation aérodynamique espagnole. Pour joueurs techniques cherchant puissance + technologies uniques.",
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-bourne-summum-prisma-2026.png"
   },
   {
     "id": "varlion-lw-summum-prisma-2026",
@@ -9704,7 +9712,8 @@
         "detail": "Perforation graduelle brevetée agrandissant le sweet spot"
       }
     ],
-    "targetProfile": "Défenseur pur, joueur de contrôle, femme ou senior cherchant maniabilité absolue. Le choix historique pour le fond de court."
+    "targetProfile": "Défenseur pur, joueur de contrôle, femme ou senior cherchant maniabilité absolue. Le choix historique pour le fond de court.",
+    "imageUrl": "https://www.padelful.com/images/rackets/varlion-lw-summum-prisma-2026.png"
   },
   {
     "id": "kuikma-ms-pro-2025",
@@ -9753,7 +9762,8 @@
         "detail": "Meilleur rapport qualité/prix du marché en raquette pro"
       }
     ],
-    "targetProfile": "Attaquant cherchant qualité pro accessible. Le choix intelligent Decathlon pour joueurs avancés avec budget maîtrisé."
+    "targetProfile": "Attaquant cherchant qualité pro accessible. Le choix intelligent Decathlon pour joueurs avancés avec budget maîtrisé.",
+    "imageUrl": "https://www.padelful.com/images/rackets/kuikma-ms-pro-2025.png"
   },
   {
     "id": "kuikma-ls-pro-2025",
@@ -9802,7 +9812,8 @@
         "detail": "Qualité pro au prix le plus accessible du marché"
       }
     ],
-    "targetProfile": "Joueuse ou joueur polyvalent cherchant qualité pro accessible. Le meilleur choix Decathlon pour le rapport qualité/prix."
+    "targetProfile": "Joueuse ou joueur polyvalent cherchant qualité pro accessible. Le meilleur choix Decathlon pour le rapport qualité/prix.",
+    "imageUrl": "https://www.padelful.com/images/rackets/kuikma-ls-pro-2025.png"
   },
   {
     "id": "nox-ml10-pro-cup-silver-2025",
@@ -9851,7 +9862,8 @@
         "detail": "Le meilleur rapport qualité/prix en contrôle"
       }
     ],
-    "targetProfile": "Joueur de contrôle cherchant maniabilité et prix accessible. Femmes, seniors, débutants avancés. Le classique Nox en version light."
+    "targetProfile": "Joueur de contrôle cherchant maniabilité et prix accessible. Femmes, seniors, débutants avancés. Le classique Nox en version light.",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-ml10-pro-cup-silver-2025.png"
   },
   {
     "id": "nox-at10-genius-12k-xtrem-2026",
@@ -9900,7 +9912,8 @@
         "detail": "Perforations latérales intégrées au moule pour vitesse"
       }
     ],
-    "targetProfile": "Joueur avancé/pro cherchant le top absolu Nox. Fan d'Agustín Tapia. Attaquant-polyvalent voulant personnaliser son équilibre."
+    "targetProfile": "Joueur avancé/pro cherchant le top absolu Nox. Fan d'Agustín Tapia. Attaquant-polyvalent voulant personnaliser son équilibre.",
+    "imageUrl": "https://www.padelful.com/images/rackets/nox-at10-genius-12k-alum-xtrem-2026.png"
   },
   {
     "id": "wilson-carbon-force-pro-2025",
@@ -9949,7 +9962,8 @@
         "detail": "Zone de frappe généreuse pour les frappes décentrées"
       }
     ],
-    "targetProfile": "Joueur intermédiaire cherchant polyvalence et confort à prix raisonnable. Le choix sûr Wilson."
+    "targetProfile": "Joueur intermédiaire cherchant polyvalence et confort à prix raisonnable. Le choix sûr Wilson.",
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-carbon-force-pro.png"
   },
   {
     "id": "wilson-carbon-force-lt-2025",
@@ -9998,7 +10012,8 @@
         "detail": "Excellent rapport qualité/prix pour boutique centre"
       }
     ],
-    "targetProfile": "Femmes, seniors, débutants avancés cherchant légèreté et confort. Idéal pour la boutique du centre padel."
+    "targetProfile": "Femmes, seniors, débutants avancés cherchant légèreté et confort. Idéal pour la boutique du centre padel.",
+    "imageUrl": "https://www.padelful.com/images/rackets/wilson-carbon-force-lt.png"
   },
   {
     "id": "babolat-technical-veron-2025",
@@ -10047,7 +10062,8 @@
         "detail": "Surface 3D pour génération de spin accrue"
       }
     ],
-    "targetProfile": "Attaquant cherchant puissance avec plus de flexibilité que le Viper. Bon choix pour joueurs trouvant le carbone pur trop dur."
+    "targetProfile": "Attaquant cherchant puissance avec plus de flexibilité que le Viper. Bon choix pour joueurs trouvant le carbone pur trop dur.",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-technical-veron-2025.png"
   },
   {
     "id": "babolat-air-veron-2025",
@@ -10096,7 +10112,8 @@
         "detail": "Petits trous centraux + grands trous périphériques"
       }
     ],
-    "targetProfile": "Joueur polyvalent cherchant maniabilité et flexibilité. Alternative plus souple à l'Air Viper. Bon pour joueurs de droite dynamiques."
+    "targetProfile": "Joueur polyvalent cherchant maniabilité et flexibilité. Alternative plus souple à l'Air Viper. Bon pour joueurs de droite dynamiques.",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-air-veron-2025.png"
   },
   {
     "id": "babolat-counter-veron-2025",
@@ -10145,6 +10162,7 @@
         "detail": "Rugosité améliorée pour effets défensifs (lob, bandeja)"
       }
     ],
-    "targetProfile": "Défenseur/contre-attaquant cherchant confort et tolérance. Bon choix santé dans la gamme Babolat. Alternative plus souple au Counter Viper."
+    "targetProfile": "Défenseur/contre-attaquant cherchant confort et tolérance. Bon choix santé dans la gamme Babolat. Alternative plus souple au Counter Viper.",
+    "imageUrl": "https://www.padelful.com/images/rackets/babolat-counter-veron-2025.png"
   }
 ]
