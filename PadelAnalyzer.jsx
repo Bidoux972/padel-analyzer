@@ -2720,7 +2720,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{flex:1,minWidth:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
                   <span style={{fontSize:18,fontWeight:700,color:"#f1f5f9"}}>{profileName}</span>
-                  {profile.level&&<span style={{fontSize:10,fontWeight:600,color:levelColors[profile.level]||"#64748b",background:`${levelColors[profile.level]||"#64748b"}18`,padding:"3px 10px",borderRadius:8,textTransform:"uppercase"}}>{profile.level}{isJunior?" · Junior":""}</span>}
+                  {profile.level&&<span style={{fontSize:10,fontWeight:600,color:levelColors[profile.level]||"#64748b",background:`${levelColors[profile.level]||"#64748b"}18`,padding:"3px 10px",borderRadius:8,textTransform:"uppercase"}}>{profile.level}</span>}
+                  {(()=>{const m=detectPlayerMode(profile); const cfg={expert:{text:"⚡ Expert",bg:"rgba(168,85,247,0.15)",border:"rgba(168,85,247,0.4)",color:"#c084fc"},pepite:{text:"🌟 Pépite",bg:"rgba(59,130,246,0.15)",border:"rgba(59,130,246,0.4)",color:"#60a5fa"},junior:{text:"🧒 Junior",bg:"rgba(59,130,246,0.15)",border:"rgba(59,130,246,0.4)",color:"#60a5fa"}}; const c=cfg[m]; return c?<span style={{fontSize:10,fontWeight:700,color:c.color,background:c.bg,border:`1px solid ${c.border}`,padding:"3px 10px",borderRadius:8}}>{c.text}</span>:null;})()}
                   <span style={{fontSize:11,color:"#94a3b8"}}>{hand} · Côté {side}</span>
                   <span style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>🎯 {role}</span>
                 </div>
@@ -2812,7 +2813,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <button onClick={()=>launchAnalysis(top3)} style={{flex:"1 1 220px",padding:"14px",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.35)",borderRadius:14,color:"#f97316",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",letterSpacing:"-0.01em",textAlign:"center"}}>
               📊 Analyser ce Top 3 en détail
             </button>
-            <button onClick={()=>{setPanel("suggest");goToApp();}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(76,175,80,0.08)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:14,color:"#4CAF50",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+            <button onClick={()=>{setPanel("suggest");setScreen("app");}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(76,175,80,0.08)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:14,color:"#4CAF50",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
               <div>🎯 Suggère-moi d'autres</div>
               <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{brandPref.length>0?`Priorité ${brandPref.join(", ")}`:"Recommandations IA"}</div>
             </button>
@@ -2820,7 +2821,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div>{hasSession ? "📊 Reprendre l'analyse" : "📊 Explorer la base"}</div>
               <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{hasSession?"Session en cours":"Comparer, radars, PDF"}</div>
             </button>
-            <button onClick={()=>{setWizardStep(0);setPanel("profile");goToApp();}} style={{flex:"0 1 150px",padding:"14px 16px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,color:"#94a3b8",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+            <button onClick={()=>{setWizardStep(0);setPanel("profile");setScreen("app");}} style={{flex:"0 1 150px",padding:"14px 16px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,color:"#94a3b8",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
               <div>✏️ Modifier profil</div>
               <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>Affiner les résultats</div>
             </button>
