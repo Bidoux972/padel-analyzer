@@ -60467,95 +60467,170 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     if (mode === "expert") {
       if (racket?.category === "debutant") return 0;
       if (racket?.category === "intermediaire") return 0;
-      const toucher = profile.expertToucher || "medium";
-      const reactivite = profile.expertReactivite || "explosive";
-      const poidsPrefer = profile.expertPoids || "equilibre";
-      const formePrefer = profile.expertForme || "indifferent";
-      const core = (racket?.core || "").toLowerCase();
-      const surface = (racket?.surface || "").toLowerCase();
-      const rShape = (racket?.shape || "").toLowerCase();
-      const rWeight2 = racket?.weight ? parseFloat(racket.weight) : 365;
-      const balanceMm = racket?.balance_mm ? parseFloat(racket.balance_mm) : 260;
-      let score2 = 5;
-      const isHardCore = core.includes("hard") || core.includes("rigide") || core.includes("dure") || core.includes("hr3") || core.includes("carbon power");
-      const isSoftCore = core.includes("soft") || core.includes("comfort") || core.includes("foam") && !core.includes("power foam");
-      const isMediumCore = core.includes("multieva") && !core.includes("hard") && !core.includes("soft");
-      const isPowerFoam = core.includes("power foam");
-      const isCarbonSurface = surface.includes("carbon") || surface.includes("carbone") || surface.includes("18k") || surface.includes("12k") || surface.includes("3k");
-      const isFiberSurface = surface.includes("fibre") || surface.includes("fiber") || surface.includes("glass") || surface.includes("verre");
-      if (toucher === "sec") {
-        if (isHardCore) score2 += 1.5;
-        else if (isPowerFoam) score2 += 0.8;
-        else if (isMediumCore) score2 += 0.3;
-        else if (isSoftCore) score2 -= 1.2;
-        if (isCarbonSurface) score2 += 0.6;
-        if (isFiberSurface) score2 -= 0.5;
-      } else if (toucher === "souple") {
-        if (isSoftCore) score2 += 1.5;
-        else if (isMediumCore) score2 += 0.6;
-        else if (isPowerFoam) score2 += 0.3;
-        else if (isHardCore) score2 -= 1;
-        if (isFiberSurface) score2 += 0.3;
-      } else {
-        if (isMediumCore || isPowerFoam) score2 += 0.8;
-        else if (isHardCore) score2 += 0.2;
-        else if (isSoftCore) score2 += 0.2;
-      }
-      if (reactivite === "explosive") {
-        score2 += Math.max(0, balanceMm - 258) * 0.08;
-        if (isHardCore || isPowerFoam) score2 += 0.4;
-        if (isSoftCore) score2 -= 0.3;
-      } else {
-        score2 += Math.max(0, 265 - balanceMm) * 0.06;
-        if (isMediumCore || isSoftCore) score2 += 0.3;
-      }
-      if (poidsPrefer === "lourd") {
-        if (rWeight2 >= 370) score2 += 1;
-        else if (rWeight2 >= 365) score2 += 0.5;
-        else if (rWeight2 < 355) score2 -= 1;
-        else if (rWeight2 < 360) score2 -= 0.4;
-      } else if (poidsPrefer === "leger") {
-        if (rWeight2 <= 355) score2 += 1;
-        else if (rWeight2 <= 360) score2 += 0.5;
-        else if (rWeight2 > 370) score2 -= 1;
-        else if (rWeight2 > 365) score2 -= 0.4;
-      } else {
-        if (rWeight2 >= 355 && rWeight2 <= 370) score2 += 0.5;
-        else if (rWeight2 > 375 || rWeight2 < 350) score2 -= 0.5;
-      }
-      if (formePrefer !== "indifferent") {
-        const shapeMatch = {
-          diamant: rShape.includes("diamant"),
-          goutte: rShape.includes("goutte") || rShape.includes("hybride"),
-          ronde: rShape.includes("ronde") || rShape.includes("rond")
-        };
-        if (shapeMatch[formePrefer]) {
-          score2 += 1.5;
+      const hasExpertFeel = !!profile.expertToucher;
+      if (hasExpertFeel) {
+        const toucher = profile.expertToucher;
+        const reactivite = profile.expertReactivite || "explosive";
+        const poidsPrefer = profile.expertPoids || "equilibre";
+        const formePrefer = profile.expertForme || "indifferent";
+        const core = (racket?.core || "").toLowerCase();
+        const surface = (racket?.surface || "").toLowerCase();
+        const rShape = (racket?.shape || "").toLowerCase();
+        const rWeight2 = racket?.weight ? parseFloat(racket.weight) : 365;
+        const balanceMm = racket?.balance_mm ? parseFloat(racket.balance_mm) : 260;
+        let score2 = 5;
+        const isHardCore = core.includes("hard") || core.includes("rigide") || core.includes("dure") || core.includes("hr3") || core.includes("carbon power");
+        const isSoftCore = core.includes("soft") || core.includes("comfort") || core.includes("foam") && !core.includes("power foam");
+        const isMediumCore = core.includes("multieva") && !core.includes("hard") && !core.includes("soft");
+        const isPowerFoam = core.includes("power foam");
+        const isCarbonSurface = surface.includes("carbon") || surface.includes("carbone") || surface.includes("18k") || surface.includes("12k") || surface.includes("3k");
+        const isFiberSurface = surface.includes("fibre") || surface.includes("fiber") || surface.includes("glass") || surface.includes("verre");
+        if (toucher === "sec") {
+          if (isHardCore) score2 += 1.5;
+          else if (isPowerFoam) score2 += 0.8;
+          else if (isMediumCore) score2 += 0.3;
+          else if (isSoftCore) score2 -= 1.2;
+          if (isCarbonSurface) score2 += 0.6;
+          if (isFiberSurface) score2 -= 0.5;
+        } else if (toucher === "souple") {
+          if (isSoftCore) score2 += 1.5;
+          else if (isMediumCore) score2 += 0.6;
+          else if (isPowerFoam) score2 += 0.3;
+          else if (isHardCore) score2 -= 1;
+          if (isFiberSurface) score2 += 0.3;
         } else {
-          if (formePrefer === "diamant" && (rShape.includes("goutte") || rShape.includes("hybride"))) score2 -= 0.5;
-          else if (formePrefer === "diamant" && rShape.includes("ronde")) score2 -= 2;
-          else if (formePrefer === "ronde" && rShape.includes("diamant")) score2 -= 2;
-          else if (formePrefer === "ronde" && (rShape.includes("goutte") || rShape.includes("hybride"))) score2 -= 0.5;
-          else if (formePrefer === "goutte" && rShape.includes("diamant")) score2 -= 0.8;
-          else if (formePrefer === "goutte" && rShape.includes("ronde")) score2 -= 0.8;
+          if (isMediumCore || isPowerFoam) score2 += 0.8;
+          else if (isHardCore) score2 += 0.2;
+          else if (isSoftCore) score2 += 0.2;
         }
+        if (reactivite === "explosive") {
+          score2 += Math.max(0, balanceMm - 258) * 0.08;
+          if (isHardCore || isPowerFoam) score2 += 0.4;
+          if (isSoftCore) score2 -= 0.3;
+        } else {
+          score2 += Math.max(0, 265 - balanceMm) * 0.06;
+          if (isMediumCore || isSoftCore) score2 += 0.3;
+        }
+        if (poidsPrefer === "lourd") {
+          if (rWeight2 >= 370) score2 += 1;
+          else if (rWeight2 >= 365) score2 += 0.5;
+          else if (rWeight2 < 355) score2 -= 1;
+          else if (rWeight2 < 360) score2 -= 0.4;
+        } else if (poidsPrefer === "leger") {
+          if (rWeight2 <= 355) score2 += 1;
+          else if (rWeight2 <= 360) score2 += 0.5;
+          else if (rWeight2 > 370) score2 -= 1;
+          else if (rWeight2 > 365) score2 -= 0.4;
+        } else {
+          if (rWeight2 >= 355 && rWeight2 <= 370) score2 += 0.5;
+          else if (rWeight2 > 375 || rWeight2 < 350) score2 -= 0.5;
+        }
+        if (formePrefer !== "indifferent") {
+          const shapeMatch = {
+            diamant: rShape.includes("diamant"),
+            goutte: rShape.includes("goutte") || rShape.includes("hybride"),
+            ronde: rShape.includes("ronde") || rShape.includes("rond")
+          };
+          if (shapeMatch[formePrefer]) {
+            score2 += 1.5;
+          } else {
+            if (formePrefer === "diamant" && (rShape.includes("goutte") || rShape.includes("hybride"))) score2 -= 0.5;
+            else if (formePrefer === "diamant" && rShape.includes("ronde")) score2 -= 2;
+            else if (formePrefer === "ronde" && rShape.includes("diamant")) score2 -= 2;
+            else if (formePrefer === "ronde" && (rShape.includes("goutte") || rShape.includes("hybride"))) score2 -= 0.5;
+            else if (formePrefer === "goutte" && rShape.includes("diamant")) score2 -= 0.8;
+            else if (formePrefer === "goutte" && rShape.includes("ronde")) score2 -= 0.8;
+          }
+        }
+        const brandPref = (profile.brandTags || []).map((b) => b.toLowerCase());
+        if (brandPref.length && racket?.brand && brandPref.includes(racket.brand.toLowerCase())) score2 += 0.15;
+        const injuries = profile.injuryTags || [];
+        if (injuries.length && !injuries.includes("aucune")) {
+          const injuryCount = injuries.filter((i) => i !== "aucune").length;
+          if (isHardCore) score2 -= injuryCount * 0.3;
+          if (isSoftCore) score2 += injuryCount * 0.15;
+          if (rWeight2 > 375) score2 -= injuryCount * 0.1;
+        }
+        if (racket?.category === "expert") score2 += 0.5;
+        else if (racket?.category === "avance") score2 += 0.1;
+        if (isFemale && racket) {
+          if (racket.womanLine) score2 += 0.3;
+          if (rWeight2 && rWeight2 > 370) score2 -= (rWeight2 - 370) * 0.015;
+        }
+        return Math.max(0, Math.min(1, (score2 - 2) / 8));
+      } else {
+        const prioTags2 = profile.priorityTags || [];
+        const prioAttrMap2 = { puissance: "Puissance", spin: "Spin", controle: "Contr\xF4le", confort: "Confort", legerete: "Maniabilit\xE9", protection: "Confort", polyvalence: null, reprise: null };
+        const orderedWeightsEx = [2, 1.5, 1, 0.7, 0.7];
+        let priorityAttrsX = [];
+        let prioAttrWeightsX = {};
+        prioTags2.forEach((tag, idx) => {
+          const w_val = orderedWeightsEx[Math.min(idx, orderedWeightsEx.length - 1)];
+          if (tag === "polyvalence") {
+            ATTRS.forEach((a2) => {
+              if (!prioAttrWeightsX[a2]) {
+                prioAttrWeightsX[a2] = w_val * 0.5;
+                priorityAttrsX.push(a2);
+              }
+            });
+          } else if (tag === "reprise") {
+            ["Confort", "Tol\xE9rance", "Maniabilit\xE9"].forEach((a2) => {
+              if (!prioAttrWeightsX[a2]) {
+                prioAttrWeightsX[a2] = w_val;
+                priorityAttrsX.push(a2);
+              } else {
+                prioAttrWeightsX[a2] += w_val * 0.3;
+              }
+            });
+          } else {
+            const attr = prioAttrMap2[tag];
+            if (attr && !prioAttrWeightsX[attr]) {
+              prioAttrWeightsX[attr] = w_val;
+              priorityAttrsX.push(attr);
+            } else if (attr) {
+              prioAttrWeightsX[attr] += w_val * 0.3;
+            }
+          }
+        });
+        priorityAttrsX = [...new Set(priorityAttrsX)];
+        if (priorityAttrsX.length === 0) priorityAttrsX = [...ATTRS];
+        const secondaryAttrsX = ATTRS.filter((a2) => !priorityAttrsX.includes(a2));
+        let prioSumX = 0, prioWSumX = 0;
+        for (const a2 of priorityAttrsX) {
+          const pw = prioAttrWeightsX[a2] || 1;
+          prioSumX += (scores[a2] || 0) * pw;
+          prioWSumX += pw;
+        }
+        const prioAvgX = prioWSumX > 0 ? prioSumX / prioWSumX : 5;
+        let secSumX = 0;
+        for (const a2 of secondaryAttrsX) secSumX += scores[a2] || 0;
+        const secAvgX = secondaryAttrsX.length ? secSumX / secondaryAttrsX.length : 5;
+        let scoreX = prioAvgX * 0.85 + secAvgX * 0.15;
+        if (racket) {
+          const rShape = (racket.shape || "").toLowerCase();
+          const hand = profile.hand || "Droitier";
+          const side = profile.side || "Droite";
+          const isAttacker = hand === "Droitier" && side === "Gauche" || hand === "Gaucher" && side === "Droite";
+          const wantsPower = prioTags2.includes("puissance") || isAttacker;
+          const wantsControl = prioTags2.includes("controle") || prioTags2.includes("protection");
+          if (wantsPower) {
+            if (rShape.includes("diamant")) scoreX += 0.3;
+            else if (rShape.includes("goutte") || rShape.includes("hybride")) scoreX += 0.05;
+            else if (rShape.includes("ronde")) scoreX -= 0.3;
+          } else if (wantsControl) {
+            if (rShape.includes("ronde")) scoreX += 0.3;
+            else if (rShape.includes("hybride") || rShape.includes("goutte")) scoreX += 0.05;
+            else if (rShape.includes("diamant")) scoreX -= 0.15;
+          }
+        }
+        const brandPrefL = (profile.brandTags || []).map((b) => b.toLowerCase());
+        if (brandPrefL.length && racket?.brand && brandPrefL.includes(racket.brand.toLowerCase())) scoreX += 0.12;
+        if (isFemale && racket) {
+          if (racket.womanLine) scoreX += 0.3;
+          if (rWeight && rWeight > 370) scoreX -= (rWeight - 370) * 0.015;
+        }
+        return Math.max(0, scoreX);
       }
-      const brandPref = (profile.brandTags || []).map((b) => b.toLowerCase());
-      if (brandPref.length && racket?.brand && brandPref.includes(racket.brand.toLowerCase())) score2 += 0.15;
-      const injuries = profile.injuryTags || [];
-      if (injuries.length && !injuries.includes("aucune")) {
-        const injuryCount = injuries.filter((i) => i !== "aucune").length;
-        if (isHardCore) score2 -= injuryCount * 0.3;
-        if (isSoftCore) score2 += injuryCount * 0.15;
-        if (rWeight2 > 375) score2 -= injuryCount * 0.1;
-      }
-      if (racket?.category === "expert") score2 += 0.5;
-      else if (racket?.category === "avance") score2 += 0.1;
-      if (isFemale && racket) {
-        if (racket.womanLine) score2 += 0.3;
-        if (rWeight2 && rWeight2 > 370) score2 -= (rWeight2 - 370) * 0.015;
-      }
-      return Math.max(0, Math.min(1, (score2 - 2) / 8));
     }
     if (profile.competition && racket?.category) {
       const lvl = (profile.level || "").toLowerCase();
@@ -64268,15 +64343,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 2, marginBottom: 18, background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: 4, border: "1px solid rgba(255,255,255,0.04)" }, children: [["radar", "\u{1F578} Radar"], ["bars", "\u{1F4CA} Barres"], ["table", "\u{1F4CB} D\xE9tails"], ["fit", "\u{1F3AF} Pertinence"]].map(([k2, l]) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: `pa-tab ${tab === k2 ? "pa-tab-active" : ""}`, onClick: () => setTab(k2), style: { flex: 1, padding: "9px 0", background: tab === k2 ? "rgba(255,255,255,0.06)" : "transparent", border: "none", borderRadius: 9, color: tab === k2 ? "#fff" : "#64748b", fontSize: 11, fontWeight: tab === k2 ? 700 : 500, cursor: "pointer", fontFamily: "'Inter',sans-serif", letterSpacing: "-0.01em", transition: "all 0.2s ease" }, children: l }, k2)) }),
-        tab === "radar" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: 20, position: "relative", overflow: "hidden" }, children: [
+        tab === "radar" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { ...S.card, padding: "16px 12px", position: "relative", overflow: "hidden" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
           @keyframes racketFadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
           }
+          @media (max-width: 700px) {
+            .pa-radar-layout { flex-direction: column !important; }
+            .pa-radar-showcase { width: 100% !important; min-height: auto !important; max-height: 200px !important; padding: 8px !important; }
+            .pa-radar-showcase img { width: 120px !important; height: 140px !important; }
+            .pa-radar-chart { min-height: 320px !important; }
+          }
         ` }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 0, minHeight: 400 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 280, flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 400 }, children: (() => {
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "pa-radar-layout", style: { display: "flex", alignItems: "center", gap: 0, minHeight: 400 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "pa-radar-showcase", style: { width: 280, flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 400 }, children: (() => {
               const hr = hoveredRacket ? selRackets.find((r2) => r2.id === hoveredRacket) : null;
               if (!hr || !hr.imageUrl) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", opacity: 0.3 }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 100, height: 100, borderRadius: "50%", border: "2px dashed rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 32, opacity: 0.4 }, children: "\u{1F446}" }) }),
@@ -64322,10 +64403,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 ] })
               ] }, hr.id);
             })() }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, minWidth: 0, position: "relative" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 400, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: radarData, cx: "50%", cy: "50%", outerRadius: "75%", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "pa-radar-chart", style: { flex: 1, minWidth: 0, position: "relative" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 400, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: radarData, cx: "50%", cy: "48%", outerRadius: "68%", children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarGrid, { stroke: "rgba(255,255,255,0.12)", strokeDasharray: "3 3", gridType: "polygon" }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fill: "#94a3b8", fontSize: 11, fontWeight: 600, fontFamily: "Inter" } }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fill: "#94a3b8", fontSize: 10, fontWeight: 600, fontFamily: "Inter" } }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarRadiusAxis, { angle: 90, domain: [0, 10], tick: { fill: "#64748b", fontSize: 9, fontWeight: 500 }, tickCount: 6, axisLine: false }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                   Radar,
@@ -64359,7 +64440,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     r2.id
                   );
                 }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Legend, { wrapperStyle: { fontSize: 10, color: "#94a3b8", paddingTop: 10, fontFamily: "Inter" } })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Legend, { layout: "horizontal", verticalAlign: "bottom", align: "center", wrapperStyle: { fontSize: 9, color: "#94a3b8", paddingTop: 6, fontFamily: "Inter", lineHeight: "18px" } })
               ] }) }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "absolute", top: 8, right: 12, fontSize: 9, color: "#475569", display: "flex", alignItems: "center", gap: 5 }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", { width: "20", height: "8", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "0", y1: "4", x2: "20", y2: "4", stroke: "rgba(255,255,255,0.3)", strokeWidth: "1.5", strokeDasharray: "4 2" }) }),
