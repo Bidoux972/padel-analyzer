@@ -46904,7 +46904,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => launchAnalysis(top3), style: { flex: "1 1 220px", padding: "14px", background: "linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 14, color: "#f97316", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", letterSpacing: "-0.01em", textAlign: "center" }, children: "\u{1F4CA} Analyser ce Top 3 en d\xE9tail" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
             setPanel("suggest");
-            goToApp();
+            setScreen("app");
           }, style: { flex: "1 1 180px", padding: "14px 16px", background: "rgba(76,175,80,0.08)", border: "1px solid rgba(76,175,80,0.25)", borderRadius: 14, color: "#4CAF50", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: "\u{1F3AF} Sugg\xE8re-moi d'autres" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#64748b", fontWeight: 400, marginTop: 3 }, children: brandPref.length > 0 ? `Priorit\xE9 ${brandPref.join(", ")}` : "Recommandations IA" })
@@ -46918,7 +46918,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
             setWizardStep(0);
             setPanel("profile");
-            goToApp();
+            setScreen("app");
           }, style: { flex: "0 1 150px", padding: "14px 16px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, color: "#94a3b8", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: "\u270F\uFE0F Modifier profil" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#64748b", fontWeight: 400, marginTop: 3 }, children: "Affiner les r\xE9sultats" })
