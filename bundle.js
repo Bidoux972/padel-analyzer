@@ -60477,14 +60477,21 @@ Return ONLY valid JSON, no markdown, no backticks.`;
         const surface = (racket?.surface || "").toLowerCase();
         const rShape = (racket?.shape || "").toLowerCase();
         const rWeight2 = racket?.weight ? parseFloat(racket.weight) : 365;
-        const balanceMm = racket?.balance_mm ? parseFloat(racket.balance_mm) : 260;
+        let balanceMm = racket?.balance_mm ? parseFloat(racket.balance_mm) : 0;
+        if (!balanceMm) {
+          const sh = (racket?.shape || "").toLowerCase();
+          if (sh.includes("diamant")) balanceMm = 268;
+          else if (sh.includes("ronde") || sh.includes("rond")) balanceMm = 254;
+          else if (sh.includes("goutte") || sh.includes("hybride")) balanceMm = 260;
+          else balanceMm = 260;
+        }
         let score2 = 5;
-        const isHardCore = core.includes("hard") || core.includes("rigide") || core.includes("dure") || core.includes("hr3") || core.includes("carbon power");
-        const isSoftCore = core.includes("soft") || core.includes("comfort") || core.includes("foam") && !core.includes("power foam");
-        const isMediumCore = core.includes("multieva") && !core.includes("hard") && !core.includes("soft");
+        const isHardCore = core.includes("hard") || core.includes("rigide") || core.includes("dure") || core.includes("dur)") || core.includes("hr3") || core.includes("hr4") || core.includes("carbon power") || core.includes("dense") || core.includes("h-eva") || core.includes("high memory") || core.includes("x-eva") && !core.includes("basse") || core.includes("eva power") || core.includes("eva pro") || core.includes("pro eva");
+        const isSoftCore = core.includes("soft") || core.includes("comfort") || core.includes("foam") && !core.includes("power foam") || core.includes("basse densit\xE9");
+        const isMediumCore = !isHardCore && !isSoftCore && (core.includes("multieva") || core.includes("multi eva") || core.includes("m-eva") || core.includes("standard") || core.includes("medium") || core.includes("balance") || core.includes("pro-touch") || core.includes("black eva") || core.includes("performance") || core === "eva" || core === "eva ");
         const isPowerFoam = core.includes("power foam");
-        const isCarbonSurface = surface.includes("carbon") || surface.includes("carbone") || surface.includes("18k") || surface.includes("12k") || surface.includes("3k");
-        const isFiberSurface = surface.includes("fibre") || surface.includes("fiber") || surface.includes("glass") || surface.includes("verre");
+        const isCarbonSurface = surface.includes("carbon") || surface.includes("carbone") || surface.includes("18k") || surface.includes("12k") || surface.includes("3k") || surface.includes("graphite") || surface.includes("woven");
+        const isFiberSurface = surface.includes("fibre") || surface.includes("fiber") || surface.includes("glass") || surface.includes("verre") || surface.includes("fibrix");
         if (toucher === "sec") {
           if (isHardCore) score2 += 1.5;
           else if (isPowerFoam) score2 += 0.8;
