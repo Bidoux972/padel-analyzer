@@ -775,10 +775,40 @@ export default function PadelAnalyzer() {
   const [localDBCount, setLocalDBCount] = useState(()=>{
     try { return JSON.parse(localStorage.getItem('padel_db_extra')||'[]').length; } catch{ return 0; }
   });
-  const [screen, setScreen] = useState(()=>{
+  const [screen, setScreenRaw] = useState(()=>{
     const p = loadSavedProfile();
     return (p._name) ? "dashboard" : "home";
   });
+  const [screenHistory, setScreenHistory] = useState([]);
+  const navigateTo = useCallback((next) => {
+    setScreenRaw(prev => {
+      if (prev && prev !== next) setScreenHistory(h => [...h, prev]);
+      return next;
+    });
+  }, []);
+  const goBack = useCallback(() => {
+    setScreenHistory(h => {
+      if (!h.length) return h;
+      const copy = [...h];
+      const prev = copy.pop();
+      setScreenRaw(prev);
+      return copy;
+    });
+  }, []);
+  const setScreen = navigateTo; // alias for compatibility
+  const canGoBack = screenHistory.length > 0;
+
+  // Responsive hook
+  const [winW, setWinW] = useState(()=>typeof window!=='undefined'?window.innerWidth:1200);
+  useEffect(()=>{
+    const onResize = ()=>setWinW(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return ()=>window.removeEventListener('resize', onResize);
+  },[]);
+  const isMobile = winW < 640;
+  const isTablet = winW >= 640 && winW < 1024;
+  const isDesktop = winW >= 1024;
+
   const [wizardStep, setWizardStep] = useState(0);
   const [revealIdx, setRevealIdx] = useState(0);
   const [confirmModal, setConfirmModal] = useState(null); // { message, onConfirm }
@@ -906,6 +936,8 @@ export default function PadelAnalyzer() {
     setFamilyCode("");
     setCloudReady(false);
     setLoginMode("choose");
+    setScreenHistory([]);
+    setScreenRaw("home");
   };
 
   const toggleRacket = (id) => {
@@ -947,7 +979,8 @@ export default function PadelAnalyzer() {
     setSuggestResults(null);
     setSuggestChecked(new Set());
     setError("");
-    setScreen("home");
+    setScreenHistory([]);
+    setScreenRaw("home");
   };
   // Dashboard → App with Top 3 loaded
   const launchAnalysis = (top3Rackets) => {
@@ -1566,7 +1599,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
   // STYLES
   // ============================================================
   const S = {
-    root:{fontFamily:"'Inter',sans-serif",background:"linear-gradient(160deg,#080c14,#0f1623,#0d1520,#0a0f1a)",color:"#e2e8f0",minHeight:"100vh",padding:"24px 16px",letterSpacing:"-0.01em"},
+    root:{fontFamily:"'Inter',sans-serif",background:"linear-gradient(160deg,#080c14,#0f1623,#0d1520,#0a0f1a)",color:"#e2e8f0",minHeight:"100vh",padding:isMobile?"16px 10px":"24px 16px",letterSpacing:"-0.01em"},
     card:{background:"rgba(255,255,255,0.025)",borderRadius:16,padding:18,border:"1px solid rgba(255,255,255,0.06)",marginBottom:18,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"fadeIn 0.3s ease"},
     title:{fontFamily:"'Outfit'",fontSize:12,fontWeight:700,color:"#f97316",marginBottom:12,letterSpacing:"0.04em",textTransform:"uppercase"},
     btn:(a)=>({padding:"8px 16px",background:a?"rgba(249,115,22,0.15)":"rgba(255,255,255,0.04)",border:`1px solid ${a?"#f97316":"rgba(255,255,255,0.08)"}`,borderRadius:10,color:a?"#f97316":"#94a3b8",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s cubic-bezier(.4,0,.2,1)",letterSpacing:"-0.01em"}),
@@ -1598,7 +1631,101 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         .pa-section { border-left: 3px solid; padding-left: 10px; margin-top: 14px; margin-bottom: 4px; }
         tr.pa-row { transition: background 0.15s ease; }
         tr.pa-row:hover { background: rgba(255,255,255,0.04) !important; }
+
+        /* ===== PERSISTENT HEADER ===== */
+        .pa-header { position: sticky; top: 0; z-index: 50; background: rgba(8,12,20,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 8px 16px; display: flex; align-items: center; gap: 10px; margin: -24px -16px 16px; }
+        .pa-header-logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .pa-header-logo h1 { font-family: 'Outfit'; font-size: 16px; font-weight: 800; background: linear-gradient(135deg,#f97316,#ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; letter-spacing: -0.02em; }
+        .pa-header-center { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; }
+        .pa-header-profile { display: flex; align-items: center; gap: 6px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.15); border-radius: 16px; padding: 3px 10px 3px 4px; max-width: 200px; overflow: hidden; }
+        .pa-header-profile-avatar { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2)); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #f97316; flex-shrink: 0; }
+        .pa-header-profile-name { font-size: 11px; font-weight: 600; color: #a5b4fc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pa-header-actions { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+        .pa-header-btn { background: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 10px; color: #94a3b8; font-size: 11px; cursor: pointer; font-family: inherit; transition: all 0.2s; display: flex; align-items: center; gap: 4px; white-space: nowrap; min-height: 34px; }
+        .pa-header-btn:hover { border-color: rgba(249,115,22,0.3); color: #f97316; }
+        .pa-header-btn-back { color: #f97316; border-color: rgba(249,115,22,0.2); }
+        .pa-header-btn-home { color: #64748b; }
+
+        /* ===== RESPONSIVE — Mobile <640px ===== */
+        @media (max-width: 639px) {
+          .pa-header h1 { font-size: 13px !important; }
+          .pa-header-btn span.pa-btn-label { display: none; }
+          .pa-header-btn { padding: 6px 8px; min-width: 34px; justify-content: center; }
+          .pa-dashboard-cols { flex-direction: column !important; }
+          .pa-dashboard-btns { flex-direction: column !important; }
+          .pa-dashboard-btns > button { flex: 1 1 auto !important; }
+          .pa-dashboard-profile-row { flex-direction: column !important; align-items: flex-start !important; }
+          .pa-dashboard-profile-row > div:first-child { align-self: center; }
+          .pa-dashboard-profile-tags { justify-content: center; }
+          .pa-dashboard-profile-actions { align-self: center; margin-top: 8px; }
+          .pa-mag-blueprint { flex-direction: column !important; }
+          .pa-mag-blueprint > div:first-child, .pa-mag-blueprint > div:last-child { flex-direction: row !important; flex-wrap: wrap; gap: 6px !important; padding: 0 !important; }
+          .pa-mag-blueprint > div:first-child > div, .pa-mag-blueprint > div:last-child > div { text-align: center !important; flex: 1 1 45%; border-left: none !important; border-right: none !important; border-bottom: 2px solid rgba(249,115,22,0.3) !important; }
+          .pa-mag-center-img { width: 100px !important; height: 100px !important; }
+          .pa-app-actions { gap: 6px !important; }
+          .pa-app-actions button { padding: 8px 10px !important; font-size: 11px !important; border-radius: 14px !important; }
+          .pa-home-title { font-size: 24px !important; }
+          .pa-home-subtitle { font-size: 11px !important; }
+          .pa-wizard-title { font-size: 20px !important; }
+          .pa-wizard-content { padding: 0 4px !important; }
+          .pa-top3-score { font-size: 18px !important; }
+          .pa-top3-name { font-size: 12px !important; }
+          .pa-top3-meta { font-size: 10px !important; }
+          .pa-radar-wrap { height: 200px !important; }
+          .pa-profile-card-inner { padding: 12px 14px !important; }
+        }
+
+        /* ===== RESPONSIVE — Tablet 640-1023px ===== */
+        @media (min-width: 640px) and (max-width: 1023px) {
+          .pa-dashboard-cols { flex-direction: column !important; }
+          .pa-dashboard-btns { flex-wrap: wrap !important; }
+          .pa-dashboard-btns > button { flex: 1 1 45% !important; }
+          .pa-mag-blueprint > div:first-child, .pa-mag-blueprint > div:last-child { gap: 6px !important; }
+        }
+
+        /* ===== RESPONSIVE — Desktop >1024px ===== */
+        @media (min-width: 1024px) {
+          .pa-header { padding: 8px 24px; }
+        }
       `}</style>
+
+      {/* ============================================================ */}
+      {/* PERSISTENT HEADER — visible on all screens except login */}
+      {/* ============================================================ */}
+      {familyCode && screen !== "analyzing" && screen !== "reveal" && <div className="pa-header">
+        {/* Left: Back + Logo */}
+        <div className="pa-header-logo">
+          {canGoBack && <button className="pa-header-btn pa-header-btn-back" onClick={goBack} title="Retour">
+            <span style={{fontSize:14}}>←</span><span className="pa-btn-label"> Retour</span>
+          </button>}
+          <svg width="26" height="26" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 2px 8px rgba(249,115,22,0.25))",cursor:"pointer"}} onClick={()=>navigateTo("home")}>
+            <defs><linearGradient id="logoGradHdr" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+            <rect width="44" height="44" rx="10" fill="url(#logoGradHdr)"/>
+            <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
+            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
+          </svg>
+          <h1 style={{cursor:"pointer"}} onClick={()=>navigateTo("home")}>PADEL ANALYZER</h1>
+        </div>
+
+        {/* Center: Profile chip */}
+        <div className="pa-header-center">
+          {profileName && screen !== "home" && <div className="pa-header-profile" onClick={()=>navigateTo("dashboard")} style={{cursor:"pointer"}}>
+            <div className="pa-header-profile-avatar">{profileName.charAt(0).toUpperCase()}</div>
+            <span className="pa-header-profile-name">{profileName}</span>
+          </div>}
+        </div>
+
+        {/* Right: Actions */}
+        <div className="pa-header-actions">
+          {screen !== "home" && <button className="pa-header-btn pa-header-btn-home" onClick={()=>navigateTo("home")} title="Accueil">
+            <span style={{fontSize:14}}>🏠</span><span className="pa-btn-label"> Accueil</span>
+          </button>}
+          {screen === "app" && profileName && <button className="pa-header-btn" onClick={()=>navigateTo("dashboard")} title="Dashboard" style={{color:"#f97316",borderColor:"rgba(249,115,22,0.2)"}}>
+            <span style={{fontSize:12}}>📊</span><span className="pa-btn-label"> Dashboard</span>
+          </button>}
+        </div>
+      </div>}
 
       {/* ============================================================ */}
       {/* CLOUD LOGIN SCREEN */}
@@ -1669,10 +1796,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* ============================================================ */}
       {/* HOME SCREEN */}
       {/* ============================================================ */}
-      {familyCode && screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"80vh",animation:"fadeIn 0.5s ease",padding:"0 16px"}}>
+      {familyCode && screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"70vh",animation:"fadeIn 0.5s ease",padding:isMobile?"0 8px":"0 16px"}}>
         {/* Big logo */}
-        <div style={{marginBottom:24,animation:"fadeIn 0.6s ease"}}>
-          <svg width="80" height="80" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.35))"}}>
+        <div style={{marginBottom:20,animation:"fadeIn 0.6s ease"}}>
+          <svg width={isMobile?60:80} height={isMobile?60:80} viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.35))"}}>
             <defs><linearGradient id="logoGradHome" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
             <rect width="44" height="44" rx="10" fill="url(#logoGradHome)"/>
             <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
@@ -1682,15 +1809,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
           </svg>
         </div>
-        <h1 style={{fontFamily:"'Outfit'",fontSize:32,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 6px",letterSpacing:"-0.03em",textAlign:"center"}}>PADEL ANALYZER</h1>
-        <p style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>
-        <p style={{color:"#475569",fontSize:11,margin:"0 0 36px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {RACKETS_DB.length}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
+        <h1 className="pa-home-title" style={{fontFamily:"'Outfit'",fontSize:32,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 6px",letterSpacing:"-0.03em",textAlign:"center"}}>PADEL ANALYZER</h1>
+        <p className="pa-home-subtitle" style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>
+        <p style={{color:"#475569",fontSize:isMobile?10:11,margin:"0 0 28px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {RACKETS_DB.length}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
 
         {/* Saved profiles — Carousel */}
         {savedProfiles.length>0&&(()=>{
           const profileSearch = profileSearchTerm;
           const filtered = savedProfiles.filter(sp=>!profileSearch||sp.name.toLowerCase().includes(profileSearch.toLowerCase()));
-          const CARD_W = 210;
+          const CARD_W = isMobile ? 170 : 210;
           const GAP = 14;
           const scrollToIdx = (idx)=>{
             const el = carouselRef.current;
@@ -1886,8 +2013,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </button>
         </div>
 
-        <div style={{marginTop:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+        <div style={{marginTop:30,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
         </div>
 
         {/* Cloud status & family code */}
@@ -1932,7 +2059,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           const leftThs = ths.filter((_,i)=>i%2===0);
           const rightThs = ths.filter((_,i)=>i%2===1);
 
-          return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",padding:"0 14px",maxWidth:540,margin:"0 auto",fontFamily:"'Inter',sans-serif"}}>
+          return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",padding:isMobile?"0 8px":"0 14px",maxWidth:540,margin:"0 auto",fontFamily:"'Inter',sans-serif"}}>
             {/* Header */}
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 10px"}}>
               <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:"#f97316",fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:"'Outfit'"}}>{"← Top 5"}</button>
@@ -1941,7 +2068,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
             {/* Name + brand */}
             <div style={{textAlign:"center",marginBottom:12}}>
-              <div style={{fontSize:22,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{r.shortName||r.name}</div>
+              <div style={{fontSize:isMobile?18:22,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>{r.shortName||r.name}</div>
               <div style={{fontSize:11,color:"#94a3b8",marginTop:3}}>{r.brand} · {r.shape} · {r.weight} · {r.year}</div>
               {r.proPlayerInfo?.name&&<div style={{display:"inline-flex",alignItems:"center",gap:4,marginTop:6,padding:"3px 12px",borderRadius:16,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)"}}>
                 <span style={{fontSize:10,color:"#a855f7",fontWeight:700}}>{"🎾"} {r.proPlayerInfo.name}</span>
@@ -1949,7 +2076,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
 
             {/* === BLUEPRINT ZONE: image center + annotations sides === */}
-            <div style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:12,position:"relative"}}>
+            <div className="pa-mag-blueprint" style={{display:"flex",alignItems:"stretch",gap:0,marginBottom:12,position:"relative"}}>
               {/* Left annotations */}
               <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingRight:8}}>
                 {leftThs.map((h,i)=>(
@@ -1966,9 +2093,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
 
               {/* Center: Image + Score */}
-              <div style={{width:140,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
-                <div style={{position:"absolute",width:120,height:120,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}/>
-                {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{width:120,height:120,objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(0 6px 20px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none"}}/>
+              <div style={{width:isMobile?120:140,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
+                <div style={{position:"absolute",width:isMobile?90:120,height:isMobile?90:120,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%)",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}/>
+                {r.imageUrl?<img src={r.imageUrl} alt={r.name} className="pa-mag-center-img" style={{width:isMobile?90:120,height:isMobile?90:120,objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(0 6px 20px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none"}}/>
                 :<div style={{width:100,height:100,borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"2px dashed rgba(249,115,22,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36}}>{"🏸"}</div>}
                 <div style={{marginTop:8,padding:"4px 16px",borderRadius:16,background:"rgba(8,12,20,0.9)",border:"2px solid rgba(249,115,22,0.35)",backdropFilter:"blur(8px)",zIndex:2}}>
                   <span style={{fontSize:26,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{getScore(r)}</span>
@@ -2352,37 +2479,38 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ];
 
         return (
-        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px",animation:"fadeIn 0.3s ease"}}>
+        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:isMobile?"60px 10px 20px":"20px 16px",animation:"fadeIn 0.3s ease"}}>
           <style>{`
             @keyframes wizardSlideIn { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
             @keyframes wizardSlideOut { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-40px); } }
           `}</style>
 
           {/* Progress bar */}
-          <div style={{position:"fixed",top:0,left:0,right:0,height:4,background:"rgba(255,255,255,0.06)",zIndex:10}}>
+          <div style={{position:"fixed",top:isMobile?49:49,left:0,right:0,height:4,background:"rgba(255,255,255,0.06)",zIndex:40}}>
             <div style={{height:"100%",background:"linear-gradient(90deg,#f97316,#ef4444)",borderRadius:"0 2px 2px 0",transition:"width 0.5s cubic-bezier(.4,0,.2,1)",width:`${progress*100}%`}}/>
           </div>
 
           {/* Step counter */}
-          <div style={{position:"fixed",top:16,right:20,fontSize:11,color:"#475569",fontWeight:600,zIndex:10}}>
+          <div style={{position:"fixed",top:isMobile?58:58,right:20,fontSize:11,color:"#475569",fontWeight:600,zIndex:40}}>
             {wizardStep+1}/{TOTAL_STEPS}
           </div>
 
-          {/* Back button */}
-          {wizardStep>0&&<button onClick={prevStep} style={{position:"fixed",top:14,left:16,background:"none",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,padding:"6px 14px",color:"#94a3b8",fontSize:11,cursor:"pointer",fontFamily:"inherit",zIndex:10}}>
-            ← Retour
-          </button>}
-
           {/* Content */}
-          <div key={wizardStep} style={{width:"100%",maxWidth:540,animation:"wizardSlideIn 0.4s ease"}}>
+          <div key={wizardStep} className="pa-wizard-content" style={{width:"100%",maxWidth:540,animation:"wizardSlideIn 0.4s ease"}}>
             {stepContent[wizardStep]()}
           </div>
 
           {/* Navigation */}
-          <div style={{marginTop:36,display:"flex",gap:12,alignItems:"center"}}>
+          <div style={{marginTop:isMobile?24:36,display:"flex",gap:12,alignItems:"center"}}>
+            {wizardStep>0&&<button onClick={prevStep} style={{
+              padding:isMobile?"12px 24px":"14px 32px",borderRadius:14,fontSize:isMobile?13:15,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+              background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.12)",color:"#94a3b8",transition:"all 0.3s ease",
+            }}>
+              ← Retour
+            </button>}
             {wizardStep===TOTAL_STEPS-1 ? (
               <button onClick={goRecap} style={{
-                padding:"14px 40px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+                padding:isMobile?"12px 30px":"14px 40px",borderRadius:14,fontSize:isMobile?13:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
                 background:"linear-gradient(135deg,rgba(76,175,80,0.25),rgba(76,175,80,0.12))",
                 border:"1.5px solid rgba(76,175,80,0.4)",color:"#4CAF50",transition:"all 0.3s ease",
               }}>
@@ -2390,7 +2518,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </button>
             ) : (
               <button onClick={nextStep} disabled={!canNext} style={{
-                padding:"14px 40px",borderRadius:14,fontSize:15,fontWeight:800,cursor:canNext?"pointer":"not-allowed",fontFamily:"'Outfit',sans-serif",
+                padding:isMobile?"12px 30px":"14px 40px",borderRadius:14,fontSize:isMobile?13:15,fontWeight:800,cursor:canNext?"pointer":"not-allowed",fontFamily:"'Outfit',sans-serif",
                 background:canNext?"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))":"rgba(255,255,255,0.03)",
                 border:`1.5px solid ${canNext?"rgba(249,115,22,0.4)":"rgba(255,255,255,0.06)"}`,
                 color:canNext?"#f97316":"#334155",transition:"all 0.3s ease",
@@ -2400,11 +2528,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </button>
             )}
           </div>
-
-          {/* Home link */}
-          <button onClick={()=>setScreen("home")} style={{position:"fixed",bottom:20,left:"50%",transform:"translateX(-50%)",background:"none",border:"none",color:"#334155",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
-            ← Retour à l'accueil
-          </button>
         </div>
         );
       })()}
@@ -2758,101 +2881,92 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const fyConfig2 = {recommended:{text:"RECOMMANDÉ",bg:"#1B5E20",border:"#4CAF50",color:"#4CAF50"},partial:{text:"JOUABLE",bg:"#E65100",border:"#FF9800",color:"#FF9800"},no:{text:"DÉCONSEILLÉ",bg:"#B71C1C",border:"#E53935",color:"#E53935"}};
 
         return (
-        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",animation:"fadeIn 0.5s ease"}}>
-          {/* Header — compact inline */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:18}}>
-            <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
-              <defs><linearGradient id="logoGradDash" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-              <rect width="44" height="44" rx="10" fill="url(#logoGradDash)"/>
-              <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-              <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-              <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
-            </svg>
-            <h1 style={{fontFamily:"'Outfit'",fontSize:24,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0}}>PADEL ANALYZER</h1>
-          </div>
+        <div style={{maxWidth:1020,margin:"0 auto",padding:isMobile?"0 8px":"0 24px",animation:"fadeIn 0.5s ease"}}>
 
           {/* Profile card — full width, compact */}
-          <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"16px 22px",marginBottom:20,animation:"fadeIn 0.3s ease"}}>
-            <div style={{display:"flex",alignItems:"center",gap:14}}>
-              <div style={{width:48,height:48,borderRadius:14,background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"2px solid rgba(249,115,22,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:700,color:"#f97316",flexShrink:0}}>
+          <div className="pa-profile-card-inner" style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:isMobile?"12px 14px":"16px 22px",marginBottom:20,animation:"fadeIn 0.3s ease"}}>
+            <div className="pa-dashboard-profile-row" style={{display:"flex",alignItems:"center",gap:isMobile?10:14}}>
+              <div style={{width:isMobile?42:48,height:isMobile?42:48,borderRadius:14,background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"2px solid rgba(249,115,22,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:isMobile?18:22,fontWeight:700,color:"#f97316",flexShrink:0}}>
                 {profileName.charAt(0).toUpperCase()}
               </div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
-                  <span style={{fontSize:18,fontWeight:700,color:"#f1f5f9"}}>{profileName}</span>
-                  {profile.level&&<span style={{fontSize:10,fontWeight:600,color:levelColors[profile.level]||"#64748b",background:`${levelColors[profile.level]||"#64748b"}18`,padding:"3px 10px",borderRadius:8,textTransform:"uppercase"}}>{profile.level}{isJunior?" · Junior":""}</span>}
-                  <span style={{fontSize:11,color:"#94a3b8"}}>{hand} · Côté {side}</span>
-                  <span style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>🎯 {role}</span>
+                <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                  <span style={{fontSize:isMobile?15:18,fontWeight:700,color:"#f1f5f9"}}>{profileName}</span>
+                  {profile.level&&<span style={{fontSize:isMobile?9:10,fontWeight:600,color:levelColors[profile.level]||"#64748b",background:`${levelColors[profile.level]||"#64748b"}18`,padding:"3px 10px",borderRadius:8,textTransform:"uppercase"}}>{profile.level}{isJunior?" · Junior":""}</span>}
+                  <span style={{fontSize:isMobile?10:11,color:"#94a3b8"}}>{hand} · Côté {side}</span>
+                  <span style={{fontSize:isMobile?10:11,color:"#a5b4fc",fontWeight:600}}>🎯 {role}</span>
                 </div>
-                <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:6}}>
-                  {styles.map(s=><span key={s} style={{fontSize:10,background:"rgba(99,102,241,0.1)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:8,padding:"2px 8px",color:"#a5b4fc"}}>{s}</span>)}
-                  {priorities.map(p=><span key={p} style={{fontSize:10,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:8,padding:"2px 8px",color:"#f97316"}}>{p}</span>)}
-                  {injuries.map(inj=><span key={inj} style={{fontSize:10,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:8,padding:"2px 8px",color:"#ef4444"}}>🩹 {inj}</span>)}
+                <div className="pa-dashboard-profile-tags" style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:6}}>
+                  {styles.map(s=><span key={s} style={{fontSize:isMobile?9:10,background:"rgba(99,102,241,0.1)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:8,padding:"2px 8px",color:"#a5b4fc"}}>{s}</span>)}
+                  {priorities.map(p=><span key={p} style={{fontSize:isMobile?9:10,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:8,padding:"2px 8px",color:"#f97316"}}>{p}</span>)}
+                  {injuries.map(inj=><span key={inj} style={{fontSize:isMobile?9:10,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:8,padding:"2px 8px",color:"#ef4444"}}>🩹 {inj}</span>)}
                 </div>
               </div>
-              <div style={{display:"flex",gap:6,flexShrink:0}}>
-                <button onClick={()=>{setScreen("home");}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title="Changer de profil">👥</button>
-                <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title="Déconnexion">⏻</button>
+              <div className="pa-dashboard-profile-actions" style={{display:"flex",gap:6,flexShrink:0}}>
+                <button onClick={()=>{setScreen("home");}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",minHeight:34}} title="Changer de profil">👥</button>
+                <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",minHeight:34}} title="Déconnexion">⏻</button>
               </div>
             </div>
           </div>
 
-          {/* ===== MAIN 2-COLUMN LAYOUT ===== */}
-          <div style={{display:"flex",gap:20,marginBottom:20,alignItems:"stretch"}}>
+          {/* ===== MAIN 2-COLUMN LAYOUT (stacks on mobile) ===== */}
+          <div className="pa-dashboard-cols" style={{display:"flex",gap:20,marginBottom:20,alignItems:"stretch"}}>
 
             {/* LEFT COLUMN — Radar + Stats */}
-            <div style={{flex:"0 0 400px",display:"flex",flexDirection:"column",gap:12}}>
+            <div style={{flex:isMobile?"1 1 auto":"0 0 400px",display:"flex",flexDirection:"column",gap:12}}>
               {/* Radar */}
-              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"14px 12px",flex:1,animation:"fadeIn 0.4s ease"}}>
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:isMobile?"10px 6px":"14px 12px",flex:1,animation:"fadeIn 0.4s ease"}}>
                 <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginBottom:4,marginTop:0}}>📊 Raquette idéale pour {profileName}</p>
-                <ResponsiveContainer width="100%" height={195}>
-                  <RadarChart data={idealRadar} margin={{top:10,right:34,bottom:8,left:34}}>
-                    <PolarGrid stroke="rgba(255,255,255,0.08)"/>
-                    <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:10}}/>
-                    <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
-                    <Radar name="Idéal" dataKey="Idéal" stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>
-                  </RadarChart>
-                </ResponsiveContainer>
+                <div className="pa-radar-wrap" style={{width:"100%",height:isMobile?200:195}}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart data={idealRadar} margin={{top:10,right:isMobile?20:34,bottom:8,left:isMobile?20:34}}>
+                      <PolarGrid stroke="rgba(255,255,255,0.08)"/>
+                      <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:isMobile?9:10}}/>
+                      <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
+                      <Radar name="Idéal" dataKey="Idéal" stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
               {/* Stats row */}
-              <div style={{display:"flex",gap:10}}>
-                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
-                  <div style={{fontSize:28,fontWeight:800,color:"#f97316",fontFamily:"'Outfit'"}}>{pool.length}</div>
-                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Compatibles</div>
+              <div style={{display:"flex",gap:isMobile?8:10}}>
+                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:isMobile?"10px 6px":"14px 10px",textAlign:"center"}}>
+                  <div style={{fontSize:isMobile?22:28,fontWeight:800,color:"#f97316",fontFamily:"'Outfit'"}}>{pool.length}</div>
+                  <div style={{fontSize:isMobile?8:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Compatibles</div>
                 </div>
-                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
-                  <div style={{fontSize:28,fontWeight:800,color:"#4CAF50",fontFamily:"'Outfit'"}}>{scored.filter(r=>r._fy==="recommended").length}</div>
-                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Recommandées</div>
+                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:isMobile?"10px 6px":"14px 10px",textAlign:"center"}}>
+                  <div style={{fontSize:isMobile?22:28,fontWeight:800,color:"#4CAF50",fontFamily:"'Outfit'"}}>{scored.filter(r=>r._fy==="recommended").length}</div>
+                  <div style={{fontSize:isMobile?8:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Recommandées</div>
                 </div>
-                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
-                  <div style={{fontSize:20,fontWeight:800,color:"#a5b4fc",fontFamily:"'Outfit'"}}>{top3.length>0?top3[0]._gs.toFixed(1):"—"}<span style={{fontSize:11,color:"#64748b"}}>/10</span></div>
-                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Meilleur score</div>
+                <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:isMobile?"10px 6px":"14px 10px",textAlign:"center"}}>
+                  <div style={{fontSize:isMobile?16:20,fontWeight:800,color:"#a5b4fc",fontFamily:"'Outfit'"}}>{top3.length>0?top3[0]._gs.toFixed(1):"—"}<span style={{fontSize:11,color:"#64748b"}}>/10</span></div>
+                  <div style={{fontSize:isMobile?8:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Meilleur score</div>
                 </div>
               </div>
             </div>
 
             {/* RIGHT COLUMN — Top 3 + Explanation */}
-            <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"18px 20px",animation:"fadeIn 0.5s ease",display:"flex",flexDirection:"column"}}>
+            <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:isMobile?"14px 12px":"18px 20px",animation:"fadeIn 0.5s ease",display:"flex",flexDirection:"column"}}>
               <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginTop:0,marginBottom:4}}>🏆 Top 3 absolu pour {profileName}</p>
               <p style={{fontSize:10,color:"#475569",textAlign:"center",margin:"0 0 14px",lineHeight:1.4}}>Sur {scored.length} raquettes compatibles{brandPref.length>0?<span> · Toutes marques confondues</span>:""}</p>
-              <div style={{display:"flex",flexDirection:"column",gap:10,flex:1}}>
+              <div style={{display:"flex",flexDirection:"column",gap:isMobile?8:10,flex:1}}>
                 {top3.map((r, i)=>{
                   const fy = fyConfig2[r._fy]||fyConfig2.partial;
                   const medals = ["🥇","🥈","🥉"];
                   return (
-                    <div key={r.id} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background: i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.06)"}`,borderRadius:14,transition:"all 0.2s"}}>
-                      <div style={{fontSize:22,flexShrink:0,width:28,textAlign:"center"}}>{medals[i]}</div>
-                      {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:48,height:48,objectFit:"contain",borderRadius:8,background:"rgba(255,255,255,0.06)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
+                    <div key={r.id} style={{display:"flex",alignItems:"center",gap:isMobile?8:12,padding:isMobile?"10px 10px":"12px 14px",background: i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.06)"}`,borderRadius:14,transition:"all 0.2s"}}>
+                      <div style={{fontSize:isMobile?18:22,flexShrink:0,width:isMobile?22:28,textAlign:"center"}}>{medals[i]}</div>
+                      {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:isMobile?38:48,height:isMobile?38:48,objectFit:"contain",borderRadius:8,background:"rgba(255,255,255,0.06)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:14,fontWeight:700,color:"#f1f5f9",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
-                        <div style={{fontSize:11,color:"#94a3b8",marginTop:2}}>{r.brand} · {r.shape} · {r.weight}</div>
+                        <div className="pa-top3-name" style={{fontSize:isMobile?12:14,fontWeight:700,color:"#f1f5f9",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
+                        <div className="pa-top3-meta" style={{fontSize:isMobile?10:11,color:"#94a3b8",marginTop:2}}>{r.brand} · {r.shape}{!isMobile&&<> · {r.weight}</>}</div>
                         <div style={{display:"flex",alignItems:"center",gap:6,marginTop:3}}>
                           <span style={{fontSize:9,fontWeight:600,color:fy.color,background:`${fy.bg}30`,border:`1px solid ${fy.border}40`,borderRadius:6,padding:"2px 7px",textTransform:"uppercase"}}>{fy.text}</span>
-                          {r.price&&r.price!=="—"&&<span style={{fontSize:10,color:"#64748b"}}>{r.price}</span>}
+                          {r.price&&r.price!=="—"&&!isMobile&&<span style={{fontSize:10,color:"#64748b"}}>{r.price}</span>}
                         </div>
                       </div>
                       <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0}}>
-                        <div style={{fontSize:22,fontWeight:800,color: i===0?"#f97316":"#cbd5e1",fontFamily:"'Outfit'"}}>{r._gs.toFixed(1)}</div>
+                        <div className="pa-top3-score" style={{fontSize:isMobile?18:22,fontWeight:800,color: i===0?"#f97316":"#cbd5e1",fontFamily:"'Outfit'"}}>{r._gs.toFixed(1)}</div>
                         <div style={{fontSize:8,color:"#64748b",textTransform:"uppercase"}}>Score</div>
                       </div>
                     </div>
@@ -2868,27 +2982,27 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           {/* BOTTOM ROW — Analyze button + Action buttons */}
-          <div style={{display:"flex",gap:12,marginBottom:14,animation:"fadeIn 0.6s ease"}}>
-            <button onClick={()=>launchAnalysis(top3)} style={{flex:"1 1 220px",padding:"14px",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.35)",borderRadius:14,color:"#f97316",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",letterSpacing:"-0.01em",textAlign:"center"}}>
+          <div className="pa-dashboard-btns" style={{display:"flex",gap:isMobile?8:12,marginBottom:14,animation:"fadeIn 0.6s ease",flexWrap:"wrap"}}>
+            <button onClick={()=>launchAnalysis(top3)} style={{flex:"1 1 220px",padding:isMobile?"12px":"14px",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.35)",borderRadius:14,color:"#f97316",fontSize:isMobile?13:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",letterSpacing:"-0.01em",textAlign:"center",minHeight:48}}>
               📊 Analyser ce Top 3 en détail
             </button>
-            <button onClick={()=>{setPanel("suggest");goToApp();}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(76,175,80,0.08)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:14,color:"#4CAF50",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+            <button onClick={()=>{setPanel("suggest");goToApp();}} style={{flex:"1 1 180px",padding:isMobile?"10px 12px":"14px 16px",background:"rgba(76,175,80,0.08)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:14,color:"#4CAF50",fontSize:isMobile?12:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center",minHeight:48}}>
               <div>🎯 Suggère-moi d'autres</div>
-              <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{brandPref.length>0?`Priorité ${brandPref.join(", ")}`:"Recommandations IA"}</div>
+              {!isMobile&&<div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{brandPref.length>0?`Priorité ${brandPref.join(", ")}`:"Recommandations IA"}</div>}
             </button>
-            <button onClick={()=>{goToApp();}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.25)",borderRadius:14,color:"#a5b4fc",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+            <button onClick={()=>{goToApp();}} style={{flex:"1 1 180px",padding:isMobile?"10px 12px":"14px 16px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.25)",borderRadius:14,color:"#a5b4fc",fontSize:isMobile?12:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center",minHeight:48}}>
               <div>{hasSession ? "📊 Reprendre l'analyse" : "📊 Explorer la base"}</div>
-              <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{hasSession?"Session en cours":"Comparer, radars, PDF"}</div>
+              {!isMobile&&<div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>{hasSession?"Session en cours":"Comparer, radars, PDF"}</div>}
             </button>
-            <button onClick={()=>{setWizardStep(0);setPanel("profile");goToApp();}} style={{flex:"0 1 150px",padding:"14px 16px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,color:"#94a3b8",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+            <button onClick={()=>{setWizardStep(0);setPanel("profile");goToApp();}} style={{flex:"0 1 150px",padding:isMobile?"10px 12px":"14px 16px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,color:"#94a3b8",fontSize:isMobile?12:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center",minHeight:48}}>
               <div>✏️ Modifier profil</div>
-              <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>Affiner les résultats</div>
+              {!isMobile&&<div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>Affiner les résultats</div>}
             </button>
           </div>
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -2898,40 +3012,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* APP SCREEN */}
       {/* ============================================================ */}
       {familyCode&&screen==="app"&&<>
-      <div style={{textAlign:"center",marginBottom:28,paddingBottom:20,borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:10,marginBottom:6}}>
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
-            <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-            <rect width="44" height="44" rx="10" fill="url(#logoGrad)"/>
-            <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-            <line x1="22" y1="10" x2="22" y2="26" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
-            <line x1="14" y1="18" x2="30" y2="18" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
-            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
-          </svg>
-          <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
-        </div>
-        <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V8.9</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
-        {/* Profile bar */}
-        {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
-          <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
-            <div style={{width:22,height:22,borderRadius:7,background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,color:"#f97316",flexShrink:0}}>{profileName.charAt(0).toUpperCase()}</div>
-            <span style={{fontSize:11,fontWeight:600,color:"#a5b4fc"}}>{profileName}</span>
-          </div>
-          <button onClick={goToDashboard} style={{background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:20,padding:"4px 10px",color:"#f97316",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
-            <span style={{fontSize:11}}>🏠</span> Dashboard
-          </button>
-          <button onClick={disconnect} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:20,padding:"4px 10px",color:"#64748b",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
-            <span style={{fontSize:12}}>⏻</span> Déconnexion
-          </button>
-        </div>}
+      <div style={{textAlign:"center",marginBottom:isMobile?16:28,paddingBottom:isMobile?12:20,borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
+        <p style={{color:"#475569",fontSize:10,margin:"0 0 2px",letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Comparateur · {RACKETS_DB.length} raquettes</p>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V12</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
       </div>
 
       {/* Actions */}
-      <div style={{display:"flex",gap:8,marginBottom:18,flexWrap:"wrap"}}>
+      <div className="pa-app-actions" style={{display:"flex",gap:8,marginBottom:18,flexWrap:"wrap"}}>
         {[["suggest","🎯 Suggère-moi"],["add","+ Ajouter"],["profile","👤 Profil"],["manage","🗑 Gérer"]].map(([k,l])=>(
-          <button key={k} onClick={()=>{if(k==="profile")setWizardStep(0);setPanel(p=>p===k?null:k);}} style={{...S.btn(panel===k),borderRadius:20}}>{l}</button>
+          <button key={k} onClick={()=>{if(k==="profile")setWizardStep(0);setPanel(p=>p===k?null:k);}} style={{...S.btn(panel===k),borderRadius:20,minHeight:38,fontSize:isMobile?11:12}}>{l}</button>
         ))}
       </div>
 
@@ -3444,16 +3533,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ))}
       </div>
 
-      {tab==="radar"&&<div style={{...S.card,padding:20,position:"relative",overflow:"hidden"}}>
+      {tab==="radar"&&<div style={{...S.card,padding:isMobile?10:20,position:"relative",overflow:"hidden"}}>
         <style>{`
           @keyframes racketFadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
           }
         `}</style>
-        <div style={{display:"flex",alignItems:"center",gap:0,minHeight:400}}>
-          {/* LEFT — Racket showcase image */}
-          <div style={{width:280,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:400}}>
+        <div style={{display:"flex",alignItems:isMobile?"stretch":"center",gap:0,minHeight:isMobile?280:400,flexDirection:isMobile?"column":"row"}}>
+          {/* LEFT — Racket showcase image (hidden on mobile) */}
+          {!isMobile&&<div style={{width:280,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:400}}>
             {(()=>{
               const hr = hoveredRacket ? selRackets.find(r=>r.id===hoveredRacket) : null;
               if(!hr || !hr.imageUrl) return <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",opacity:0.3}}>
@@ -3482,14 +3571,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               </div>;
             })()}
-          </div>
+          </div>}
 
           {/* RIGHT — Radar chart (takes remaining space) */}
           <div style={{flex:1,minWidth:0,position:"relative"}}>
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={isMobile?280:400}>
               <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="75%">
                 <PolarGrid stroke="rgba(255,255,255,0.12)" strokeDasharray="3 3" gridType="polygon"/>
-                <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:11,fontWeight:600,fontFamily:"Inter"}}/>
+                <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:isMobile?9:11,fontWeight:600,fontFamily:"Inter"}}/>
                 <PolarRadiusAxis angle={90} domain={[0,10]} tick={{fill:"#64748b",fontSize:9,fontWeight:500}} tickCount={6} axisLine={false}/>
                 {/* Perfect 10/10 reference hexagon */}
                 <Radar name="— 10/10 —" dataKey="— 10/10 —" stroke="rgba(255,255,255,0.25)" fill="none"
@@ -4120,7 +4209,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
                   <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V8.9 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V12 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -4143,7 +4232,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>
 
       <div style={{textAlign:"center",marginTop:18,paddingTop:16,borderTop:"1px solid rgba(255,255,255,0.04)",fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V8.9 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
+        <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · Analyse personnalisée · {new Date().toLocaleDateString('fr-FR')}<br/><span style={{fontSize:7,opacity:0.7}}>Prix indicatifs — vérifier en boutique</span>
       </div>
       </>}
 
