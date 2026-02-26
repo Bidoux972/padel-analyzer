@@ -377,6 +377,47 @@ function buildProfileText(p) {
 
 // === MODE DETECTION ===
 // Returns: "junior" | "pepite" | "expert" | "normal"
+// === COACH DIAGNOSTIC — Contradiction detection ===
+function detectProfileContradictions(profile) {
+  const prioTags = profile.priorityTags || [];
+  const styleTags = profile.styleTags || [];
+  const notes = [];
+  
+  // Contradiction pairs in priorities
+  const contradictions = [
+    {a:"puissance",b:"controle",msg:"Puissance et Contrôle s'opposent physiquement : une raquette diamant donne de la puissance mais réduit le contrôle, et inversement. Les scores reflètent le meilleur compromis — ta 1ère priorité pèse plus."},
+    {a:"puissance",b:"protection",msg:"Puissance et Protection bras sont en tension : frapper fort demande rigidité, protéger le bras demande souplesse. L'algo cherche l'équilibre optimal."},
+    {a:"puissance",b:"legerete",msg:"Puissance et Légèreté sont contradictoires : les raquettes légères manquent de punch, les puissantes sont plus lourdes. L'ordre de tes priorités guide le compromis."},
+    {a:"legerete",b:"spin",msg:"Légèreté et Spin se contredisent partiellement : le spin demande du poids en tête et une surface rugueuse, ce qui ajoute des grammes."},
+    {a:"controle",b:"spin",msg:"Contrôle et Spin sont en légère tension : le contrôle favorise les raquettes rondes et douces, le spin les surfaces agressives et les formes hybrides."},
+  ];
+  
+  for (const c of contradictions) {
+    const idxA = prioTags.indexOf(c.a);
+    const idxB = prioTags.indexOf(c.b);
+    if (idxA >= 0 && idxB >= 0) {
+      // Both present — stronger warning if both in top 2
+      const bothTop2 = idxA < 2 && idxB < 2;
+      notes.push({severity: bothTop2 ? "high" : "medium", text: c.msg, tags: [c.a, c.b]});
+    }
+  }
+  
+  // Style contradictions with priorities
+  const styleConflicts = [
+    {styles:["offensif","puissant"],prio:"controle",msg:"Ton style offensif favorise la puissance, mais ta priorité Contrôle tire vers la rondeur : les scores sont un compromis entre attaque et précision."},
+    {styles:["defensif","contre"],prio:"puissance",msg:"Ton style défensif favorise le contrôle, mais ta priorité Puissance tire vers le diamant : les scores reflètent ce compromis attaque/défense."},
+    {styles:["veloce"],prio:"puissance",msg:"Ton style véloce demande légèreté, mais ta priorité Puissance demande du poids : les scores reflètent ce compromis vitesse/punch."},
+  ];
+  
+  for (const sc of styleConflicts) {
+    if (sc.styles.some(s => styleTags.includes(s)) && prioTags.includes(sc.prio)) {
+      notes.push({severity: "medium", text: sc.msg, tags: [sc.prio]});
+    }
+  }
+  
+  return notes.slice(0, 2); // Max 2 notes to not overwhelm
+}
+
 function detectPlayerMode(profile) {
   const age = Number(profile.age) || 30;
   const level = (profile.level || "").toLowerCase();
@@ -500,14 +541,21 @@ function computeGlobalScore(scores, profile, racket) {
 
     const prioTags = profile.priorityTags || [];
     const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
-    let priorityAttrs = [...new Set(prioTags.map(t => prioAttrMap[t]).filter(Boolean))];
-    if (prioTags.includes("polyvalence")) priorityAttrs = [...ATTRS];
-    if (prioTags.includes("reprise")) priorityAttrs = [...new Set([...priorityAttrs, "Confort", "Tolérance", "Maniabilité"])];
+    const orderedWeightsPep = [2.0, 1.5, 1.0, 0.7, 0.7];
+    let priorityAttrs = [];
+    let prioAttrWeights = {};
+    prioTags.forEach((tag, idx) => {
+      const w_val = orderedWeightsPep[Math.min(idx, orderedWeightsPep.length-1)];
+      if (tag === "polyvalence") { ATTRS.forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val * 0.5; priorityAttrs.push(a); } }); }
+      else if (tag === "reprise") { ["Confort","Tolérance","Maniabilité"].forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val; priorityAttrs.push(a); } else { prioAttrWeights[a] += w_val * 0.3; } }); }
+      else { const attr = prioAttrMap[tag]; if (attr && !prioAttrWeights[attr]) { prioAttrWeights[attr] = w_val; priorityAttrs.push(attr); } else if (attr) { prioAttrWeights[attr] += w_val * 0.3; } }
+    });
+    priorityAttrs = [...new Set(priorityAttrs)];
     const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
 
-    let prioSum = 0;
-    for (const a of priorityAttrs) prioSum += scores[a] || 0;
-    const prioAvg = priorityAttrs.length ? prioSum / priorityAttrs.length : 5;
+    let prioSum = 0, prioWSum = 0;
+    for (const a of priorityAttrs) { const pw = prioAttrWeights[a] || 1; prioSum += (scores[a] || 0) * pw; prioWSum += pw; }
+    const prioAvg = prioWSum > 0 ? prioSum / prioWSum : 5;
     let secSum = 0;
     for (const a of secondaryAttrs) secSum += scores[a] || 0;
     const secAvg = secondaryAttrs.length ? secSum / secondaryAttrs.length : 5;
@@ -527,15 +575,22 @@ function computeGlobalScore(scores, profile, racket) {
 
     const prioTags = profile.priorityTags || [];
     const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
-    let priorityAttrs = [...new Set(prioTags.map(t => prioAttrMap[t]).filter(Boolean))];
-    if (prioTags.includes("polyvalence")) priorityAttrs = [...ATTRS];
-    if (prioTags.includes("reprise")) priorityAttrs = [...new Set([...priorityAttrs, "Confort", "Tolérance", "Maniabilité"])];
+    const orderedWeightsEx = [2.0, 1.5, 1.0, 0.7, 0.7];
+    let priorityAttrs = [];
+    let prioAttrWeights = {};
+    prioTags.forEach((tag, idx) => {
+      const w_val = orderedWeightsEx[Math.min(idx, orderedWeightsEx.length-1)];
+      if (tag === "polyvalence") { ATTRS.forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val * 0.5; priorityAttrs.push(a); } }); }
+      else if (tag === "reprise") { ["Confort","Tolérance","Maniabilité"].forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val; priorityAttrs.push(a); } else { prioAttrWeights[a] += w_val * 0.3; } }); }
+      else { const attr = prioAttrMap[tag]; if (attr && !prioAttrWeights[attr]) { prioAttrWeights[attr] = w_val; priorityAttrs.push(attr); } else if (attr) { prioAttrWeights[attr] += w_val * 0.3; } }
+    });
+    priorityAttrs = [...new Set(priorityAttrs)];
     if (priorityAttrs.length === 0) priorityAttrs = [...ATTRS];
     const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
 
-    let prioSum = 0;
-    for (const a of priorityAttrs) prioSum += scores[a] || 0;
-    const prioAvg = priorityAttrs.length ? prioSum / priorityAttrs.length : 5;
+    let prioSum = 0, prioWSum = 0;
+    for (const a of priorityAttrs) { const pw = prioAttrWeights[a] || 1; prioSum += (scores[a] || 0) * pw; prioWSum += pw; }
+    const prioAvg = prioWSum > 0 ? prioSum / prioWSum : 5;
     let secSum = 0;
     for (const a of secondaryAttrs) secSum += scores[a] || 0;
     const secAvg = secondaryAttrs.length ? secSum / secondaryAttrs.length : 5;
@@ -577,14 +632,22 @@ function computeGlobalScore(scores, profile, racket) {
 
   const prioTags = profile.priorityTags || [];
   const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
-  let priorityAttrs = [...new Set(prioTags.map(t => prioAttrMap[t]).filter(Boolean))];
-  if (prioTags.includes("polyvalence")) priorityAttrs = [...ATTRS];
-  if (prioTags.includes("reprise")) priorityAttrs = [...new Set([...priorityAttrs, "Confort", "Tolérance", "Maniabilité"])];
+  // Ordered priority weights: 1st=2.0, 2nd=1.5, 3rd=1.0, 4th+=0.7
+  const orderedWeights = [2.0, 1.5, 1.0, 0.7, 0.7];
+  let priorityAttrs = [];
+  let prioAttrWeights = {};
+  prioTags.forEach((tag, idx) => {
+    const w_val = orderedWeights[Math.min(idx, orderedWeights.length-1)];
+    if (tag === "polyvalence") { ATTRS.forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val * 0.5; priorityAttrs.push(a); } }); }
+    else if (tag === "reprise") { ["Confort","Tolérance","Maniabilité"].forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val; priorityAttrs.push(a); } else { prioAttrWeights[a] += w_val * 0.3; } }); }
+    else { const attr = prioAttrMap[tag]; if (attr && !prioAttrWeights[attr]) { prioAttrWeights[attr] = w_val; priorityAttrs.push(attr); } else if (attr) { prioAttrWeights[attr] += w_val * 0.3; } }
+  });
+  priorityAttrs = [...new Set(priorityAttrs)];
   const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
 
-  let prioSum = 0;
-  for (const a of priorityAttrs) prioSum += scores[a] || 0;
-  const prioAvg = priorityAttrs.length ? prioSum / priorityAttrs.length : 5;
+  let prioSum = 0, prioWSum = 0;
+  for (const a of priorityAttrs) { const pw = prioAttrWeights[a] || 1; prioSum += (scores[a] || 0) * pw; prioWSum += pw; }
+  const prioAvg = prioWSum > 0 ? prioSum / prioWSum : 5;
 
   const w = {};
   for (const a of secondaryAttrs) w[a] = 1;
@@ -674,7 +737,8 @@ function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
 // === FOR YOU VERDICT ===
 function computeForYou(scores, profile, racket) {
   if (!scores || typeof scores !== "object") return "no";
-  const gs = computeGlobalScore(scores, profile, racket);
+  const gsRaw = computeGlobalScore(scores, profile, racket);
+  const gs = Math.round(gsRaw * 10) / 10; // Round to 1 decimal like display
   const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
   const hasArmInjury = (profile.injuryTags || []).some(t => ARM_INJURIES.includes(t));
   const comfort = scores.Confort || 0;
@@ -794,7 +858,8 @@ function generateDeepAnalysis(profile, ranked, attrs) {
   // Compute weights (mirror computeGlobalScore)
   const w={}; attrs.forEach(a=>w[a]=1);
   const PM={confort:{Confort:1.5},polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5},puissance:{Puissance:1.5},controle:{Contrôle:1.5},spin:{Spin:1.5},legerete:{Maniabilité:1.5},protection:{Confort:1.5},reprise:{Confort:1.5,Tolérance:1,Maniabilité:0.5}};
-  priorities.forEach(t=>{const b=PM[t];if(b)Object.entries(b).forEach(([k,v])=>w[k]=(w[k]||1)+v);});
+  const ordMult = [1.4, 1.0, 0.7, 0.5, 0.5];
+  priorities.forEach((t,idx)=>{const b=PM[t];const m=ordMult[Math.min(idx,ordMult.length-1)];if(b)Object.entries(b).forEach(([k,v])=>w[k]=(w[k]||1)+v*m);});
   const SM={offensif:{Puissance:0.5},defensif:{Contrôle:0.5,Tolérance:0.5},tactique:{Contrôle:0.5,Maniabilité:0.3},puissant:{Puissance:0.5,Spin:0.3},veloce:{Maniabilité:0.8},endurant:{Confort:0.5,Tolérance:0.3},contre:{Tolérance:0.5,Contrôle:0.3},polyvalent:{Contrôle:0.3,Tolérance:0.3},technique:{Contrôle:0.5,Spin:0.3}};
   styles.forEach(t=>{const b=SM[t];if(b)Object.entries(b).forEach(([k,v])=>w[k]=(w[k]||1)+v);});
   const ARM_I=["dos","poignet","coude","epaule"],LEG_I=["genou","cheville","mollet","hanche","achille"];
@@ -2535,8 +2600,41 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>🎯</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Qu'est-ce que tu cherches ?</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ces critères pondèrent le score de chaque raquette.</p>
-            <TagSelect tags={PRIORITY_TAGS} field="priorityTags" colors={{on:"#4CAF50",bg:"rgba(76,175,80,0.12)",border:"#4CAF50"}}/>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>Clique dans l'ordre d'importance — la 1ère priorité pèse plus.</p>
+            <p style={{fontSize:11,color:"#475569",margin:"0 0 22px"}}>1️⃣ = priorité forte · 2️⃣ = importante · 3️⃣+ = secondaire</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",maxWidth:460,margin:"0 auto"}}>
+              {PRIORITY_TAGS.map(t=>{
+                const prioList = profile.priorityTags||[];
+                const idx = prioList.indexOf(t.id);
+                const isOn = idx >= 0;
+                const rank = idx + 1;
+                const rankColors = ["#4CAF50","#8BC34A","#FFC107","#FF9800","#f97316"];
+                const c = isOn ? (rankColors[Math.min(idx,rankColors.length-1)]) : "rgba(255,255,255,0.08)";
+                return <button key={t.id} onClick={()=>{
+                  setProfile(p=>{
+                    const cur = [...(p.priorityTags||[])];
+                    if (isOn) return {...p, priorityTags: cur.filter(x=>x!==t.id)};
+                    return {...p, priorityTags: [...cur, t.id]};
+                  });
+                }} style={{
+                  padding:"10px 18px",borderRadius:14,fontSize:12,fontWeight:700,cursor:"pointer",
+                  background:isOn?`${c}20`:"rgba(255,255,255,0.03)",
+                  border:`2px solid ${isOn?c:"rgba(255,255,255,0.08)"}`,
+                  color:isOn?c:"#94a3b8",fontFamily:"inherit",transition:"all 0.2s",
+                  position:"relative",minWidth:110,
+                }}>
+                  {isOn&&<span style={{position:"absolute",top:-8,left:-8,width:22,height:22,borderRadius:"50%",background:c,color:"#000",fontSize:12,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 6px rgba(0,0,0,0.3)"}}>{rank}</span>}
+                  {t.label}
+                  {t.tip&&<div style={{fontSize:9,color:isOn?c:"#475569",marginTop:3,fontWeight:400,opacity:0.8}}>{t.tip}</div>}
+                </button>;
+              })}
+            </div>
+            {(profile.priorityTags||[]).length>0&&<div style={{marginTop:16,display:"flex",gap:6,justifyContent:"center",flexWrap:"wrap"}}>
+              {(profile.priorityTags||[]).map((id,i)=>{
+                const t = PRIORITY_TAGS.find(x=>x.id===id);
+                return t&&<span key={id} style={{fontSize:11,fontWeight:700,color:i===0?"#4CAF50":i===1?"#8BC34A":"#FFC107",background:i===0?"rgba(76,175,80,0.15)":i===1?"rgba(139,195,74,0.15)":"rgba(255,193,7,0.15)",padding:"4px 12px",borderRadius:10}}>{i+1}. {t.label}</span>;
+              })}
+            </div>}
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
@@ -2652,7 +2750,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               {/* Tags */}
               <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:14,justifyContent:"center"}}>
-                {priorities.map(p=><span key={p} style={{fontSize:10,background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:8,padding:"4px 10px",color:"#4CAF50",fontWeight:600}}>🎯 {p}</span>)}
+                {priorities.map((p,i)=><span key={p} style={{fontSize:10,background:i===0?"rgba(76,175,80,0.15)":i===1?"rgba(139,195,74,0.12)":"rgba(255,193,7,0.1)",border:`1px solid ${i===0?"rgba(76,175,80,0.35)":i===1?"rgba(139,195,74,0.3)":"rgba(255,193,7,0.25)"}`,borderRadius:8,padding:"4px 10px",color:i===0?"#4CAF50":i===1?"#8BC34A":"#FFC107",fontWeight:600}}>{i+1}️⃣ {p}</span>)}
                 {injuries.map(i=><span key={i} style={{fontSize:10,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:8,padding:"4px 10px",color:"#ef4444",fontWeight:600}}>🩹 {i}</span>)}
                 {brands.map(b=><span key={b} style={{fontSize:10,background:"rgba(156,39,176,0.1)",border:"1px solid rgba(156,39,176,0.25)",borderRadius:8,padding:"4px 10px",color:"#CE93D8",fontWeight:600}}>🏷 {b}</span>)}
               </div>
@@ -2716,7 +2814,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         } else {
           lines.push(`Pas de style déclaré — on se base sur les priorités et le profil physique.`);
         }
-        if(priorities.length>0) lines.push(`Priorités : ${priorities.join(", ")}. Ces critères pèsent le plus lourd dans le scoring.`);
+        if(priorities.length>0) lines.push(`Priorités : ${priorities.map((p,i)=>`${i+1}. ${p}`).join(", ")}. La 1ère priorité pèse plus dans le scoring.`);
         if(injuries.length>0) lines.push(`⚠ Attention ${injuries.join(", ")} — le confort sera un critère non négociable.`);
         if(isJuniorA&&!isPepiteA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
         if(isPepiteA) lines.push(`🌟 Jeune Pépite : raquettes junior + adultes légères ≤350g.`);
@@ -2941,7 +3039,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         // Compute player's ideal weights for radar
         const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
         const prioMap = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
-        for (const tag of (profile.priorityTags||[])) { const boosts=prioMap[tag]; if(boosts) for(const[k,v] of Object.entries(boosts)) w[k]=(w[k]||1)+v; }
+        const ordM2 = [1.4, 1.0, 0.7, 0.5, 0.5];
+        (profile.priorityTags||[]).forEach((tag,idx)=>{ const boosts=prioMap[tag]; const m=ordM2[Math.min(idx,ordM2.length-1)]; if(boosts) for(const[k,v] of Object.entries(boosts)) w[k]=(w[k]||1)+v*m; });
         const styleMap = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
         for (const tag of (profile.styleTags||[])) { const boosts=styleMap[tag]; if(boosts) for(const[k,v] of Object.entries(boosts)) w[k]=(w[k]||1)+v; }
         const maxW = Math.max(...Object.values(w));
@@ -3069,6 +3168,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
             </div>
           </div>
+
+          {/* COACH DIAGNOSTIC — contradiction notes */}
+          {(()=>{
+            const coachNotes = detectProfileContradictions(profile);
+            if (!coachNotes.length) return null;
+            return <div style={{marginBottom:14,animation:"fadeIn 0.8s ease"}}>
+              {coachNotes.map((note,i)=><div key={i} style={{
+                background:note.severity==="high"?"rgba(251,191,36,0.08)":"rgba(99,102,241,0.08)",
+                border:`1px solid ${note.severity==="high"?"rgba(251,191,36,0.25)":"rgba(99,102,241,0.2)"}`,
+                borderRadius:14,padding:"14px 16px",marginBottom:i<coachNotes.length-1?8:0,
+              }}>
+                <div style={{fontSize:12,fontWeight:700,color:note.severity==="high"?"#fbbf24":"#a5b4fc",marginBottom:6,letterSpacing:"-0.01em"}}>
+                  {note.severity==="high"?"⚡":"💡"} Note du coach
+                </div>
+                <p style={{fontSize:11,color:"#cbd5e1",margin:0,lineHeight:1.5}}>{note.text}</p>
+              </div>)}
+            </div>;
+          })()}
 
           {/* BOTTOM ROW — Analyze button + Action buttons */}
           <div style={{display:"flex",gap:12,marginBottom:14,animation:"fadeIn 0.6s ease"}}>
@@ -3933,7 +4050,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
               const prioMap = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
               const styleMap = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
-              for (const tag of (profile.priorityTags||[])) { const b=prioMap[tag]; if(b) for(const[k,v] of Object.entries(b)) w[k]=(w[k]||1)+v; }
+              const ordM3 = [1.4, 1.0, 0.7, 0.5, 0.5];
+              (profile.priorityTags||[]).forEach((tag,idx)=>{ const b=prioMap[tag]; const m=ordM3[Math.min(idx,ordM3.length-1)]; if(b) for(const[k,v] of Object.entries(b)) w[k]=(w[k]||1)+v*m; });
               for (const tag of (profile.styleTags||[])) { const b=styleMap[tag]; if(b) for(const[k,v] of Object.entries(b)) w[k]=(w[k]||1)+v; }
               const ARM=["dos","poignet","coude","epaule"]; const LEG=["genou","cheville","mollet","hanche","achille"];
               if((profile.injuryTags||[]).some(t=>ARM.includes(t))) w.Confort+=2;
