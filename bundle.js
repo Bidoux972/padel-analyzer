@@ -40260,11 +40260,11 @@ var rackets_db_default = [
     year: 2025,
     category: "avance",
     scores: {
-      Puissance: 6,
+      Puissance: 5.5,
       Contr\u00F4le: 9,
-      Confort: 7,
-      Spin: 6.5,
-      Maniabilit\u00E9: 8,
+      Confort: 6.5,
+      Spin: 7,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
     },
     verdict: "Ronde carbone pour le contr\xF4le pur. Grande tol\xE9rance gr\xE2ce \xE0 la forme ronde malgr\xE9 le carbone. Pour les d\xE9fenseurs avanc\xE9s.",
@@ -40310,8 +40310,8 @@ var rackets_db_default = [
     year: 2025,
     category: "junior",
     scores: {
-      Puissance: 3,
-      Contr\u00F4le: 9.5,
+      Puissance: 3.5,
+      Contr\u00F4le: 9,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 10,
@@ -40357,8 +40357,8 @@ var rackets_db_default = [
     category: "debutant",
     scores: {
       Puissance: 3.5,
-      Contr\u00F4le: 9,
-      Confort: 9.5,
+      Contr\u00F4le: 9.5,
+      Confort: 9,
       Spin: 6,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
@@ -40401,9 +40401,9 @@ var rackets_db_default = [
     year: 2025,
     category: "intermediaire",
     scores: {
-      Puissance: 5.5,
+      Puissance: 6,
       Contr\u00F4le: 9,
-      Confort: 8,
+      Confort: 7.5,
       Spin: 6.5,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
@@ -40453,7 +40453,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 8.5,
       Contr\u00F4le: 8.5,
-      Confort: 6.5,
+      Confort: 6,
       Spin: 7,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
@@ -40486,8 +40486,8 @@ var rackets_db_default = [
     brand: "Adidas",
     shape: "Diamant",
     weight: "365-380g",
-    balance: "Haut",
-    surface: "Carbon 18K",
+    balance: "270mm Haute",
+    surface: "Carbon 18K Aluminized",
     core: "Hard EVA",
     antivib: "\u2014",
     price: "280-380\u20AC",
@@ -40500,7 +40500,7 @@ var rackets_db_default = [
       Contr\u00F4le: 8.5,
       Confort: 4.5,
       Spin: 7.5,
-      Maniabilit\u00E9: 7,
+      Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 6.5
     },
     verdict: "La plus puissante du march\xE9. Carbone 18K + EVA dure + balance haute = frappe d\xE9vastatrice. Attention : confort tr\xE8s limit\xE9, bras sensibles s'abstenir.",
@@ -40592,11 +40592,11 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 8.5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 8.5,
       Confort: 8.5,
-      Spin: 6.5,
-      Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8
+      Spin: 7,
+      Maniabilit\u00E9: 8.5,
+      Tol\u00E9rance: 7.5
     },
     verdict: "Nouvelle gamme Adidas avec balance intelligente ajustable (IBS). Diamant polyvalent et adaptable. Pour joueurs avanc\xE9s qui veulent personnaliser leur jeu.",
     editorial: "L'Arrow Hit 2026 est la nouvelle gamme d'Adidas \u2014 un compromis entre la puissance Metalbone et le contr\xF4le Adipower. Carbone aluminis\xE9 en surface pour la r\xE9activit\xE9, EVA Soft Performance pour le confort. Forme diamant pour l'orientation offensive, mais un \xE9quilibre moins radical que la Metalbone. C'est la pala de l'attaquant intelligent qui veut de la puissance dos\xE9e.",
@@ -40642,7 +40642,7 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 9.5,
-      Contr\u00F4le: 8,
+      Contr\u00F4le: 8.5,
       Confort: 6,
       Spin: 6.5,
       Maniabilit\u00E9: 8,
@@ -40693,11 +40693,11 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 5,
+      Puissance: 5.5,
       Contr\u00F4le: 9.5,
-      Confort: 9,
-      Spin: 6.5,
-      Maniabilit\u00E9: 8.5,
+      Confort: 8.5,
+      Spin: 7,
+      Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
     },
     verdict: "Arrow Hit version contr\xF4le ronde. IBS et nervures MPS pour stabilit\xE9 maximale. Contact net et pr\xE9visible pour placement chirurgical.",
@@ -40744,8 +40744,8 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 6.5,
-      Contr\u00F4le: 9,
+      Puissance: 6,
+      Contr\u00F4le: 9.5,
       Confort: 7,
       Spin: 7.5,
       Maniabilit\u00E9: 9,
@@ -40841,11 +40841,11 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 7,
+      Puissance: 6.5,
       Contr\u00F4le: 9,
       Confort: 6,
       Spin: 7.5,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
     },
     verdict: "Raquette Martita Ortega. Dynamic Air Flow + 24K. L\xE9g\xE8re et maniable.",
@@ -40893,7 +40893,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 8.5,
       Contr\u00F4le: 8,
-      Confort: 5.5,
+      Confort: 6,
       Spin: 7,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
@@ -40937,12 +40937,12 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 5.5,
-      Contr\u00F4le: 9,
+      Puissance: 6,
+      Contr\u00F4le: 8.5,
       Confort: 8.5,
-      Spin: 7,
-      Maniabilit\u00E9: 9.5,
-      Tol\u00E9rance: 8.5
+      Spin: 6.5,
+      Maniabilit\u00E9: 9,
+      Tol\u00E9rance: 9
     },
     verdict: "Hybride l\xE9g\xE8re orient\xE9e contr\xF4le. Dynamic Air Flow pour rapidit\xE9 et maniabilit\xE9. Confort et tol\xE9rance pour interm\xE9diaires en progression.",
     editorial: "La Cross It Team Light 2026 est la version l\xE9g\xE8re et hybride de la gamme Cross It. Carbone aluminis\xE9 \u2014 un cran au-dessus de la fibre de verre \u2014 avec EVA Soft Performance pour le confort. Forme hybride pour la polyvalence. La version la plus \xE9quilibr\xE9e de la gamme Cross It, parfaite pour progresser en douceur.",
@@ -40985,7 +40985,7 @@ var rackets_db_default = [
       Puissance: 3.5,
       Contr\u00F4le: 9,
       Confort: 9.5,
-      Spin: 6,
+      Spin: 6.5,
       Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9.5
     },
@@ -41027,8 +41027,8 @@ var rackets_db_default = [
     year: 2026,
     category: "debutant",
     scores: {
-      Puissance: 3,
-      Contr\u00F4le: 9.5,
+      Puissance: 3.5,
+      Contr\u00F4le: 9,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 10,
@@ -41072,9 +41072,9 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 8.5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 8.5,
       Confort: 7.5,
-      Spin: 8.5,
+      Spin: 8,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 7.5
     },
@@ -41123,11 +41123,11 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 5.5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 8.5,
-      Spin: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 9.5
+      Tol\u00E9rance: 9
     },
     verdict: "Metalbone version contr\xF4le ronde. M\xEAme qualit\xE9 de construction avec focus sur pr\xE9cision et placement. Weight system personnalisable. Pour joueurs tactiques.",
     editorial: "La Metalbone CTRL 2026 incarne le parfait \xE9quilibre entre puissance et contr\xF4le chez Adidas. Son carbone aluminis\xE9 16K offre une rigidit\xE9 ma\xEEtris\xE9e qui canalise la frappe sans sacrifier le toucher de balle. La mousse EVA Soft Performance absorbe les vibrations tout en restituant assez d'\xE9nergie pour des contres incisifs. C'est la pala des strat\xE8ges qui veulent dicter le jeu depuis le fond du court.",
@@ -41184,8 +41184,8 @@ var rackets_db_default = [
       Contr\u00F4le: 8,
       Confort: 5.5,
       Spin: 8,
-      Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 6.5
+      Maniabilit\u00E9: 7.5,
+      Tol\u00E9rance: 7
     },
     verdict: "Metalbone 6K pour maniabilit\xE9 accrue. Bon compromis puissance-vitesse.",
     id: "adidas-metalbone-carbon-2026",
@@ -41231,11 +41231,11 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 6,
-      Contr\u00F4le: 10,
+      Puissance: 5.5,
+      Contr\u00F4le: 9.5,
       Confort: 8,
-      Spin: 7.5,
-      Maniabilit\u00E9: 9,
+      Spin: 8,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9
     },
     verdict: "Contr\xF4le premium en 24K Carbon ronde. Ultra-stable et pr\xE9cise. Pour experts d\xE9fensifs exigeants qui veulent construction rigide et sensation s\xE8che.",
@@ -41289,8 +41289,8 @@ var rackets_db_default = [
       Puissance: 9,
       Contr\u00F4le: 8.5,
       Confort: 6,
-      Spin: 8.5,
-      Maniabilit\u00E9: 8.5,
+      Spin: 8,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
     },
     verdict: "Metalbone hardcore. EVA Hard pour sortie de balle max. Puissance brute.",
@@ -41346,10 +41346,10 @@ var rackets_db_default = [
     category: "intermediaire",
     scores: {
       Puissance: 9,
-      Contr\u00F4le: 7.5,
-      Confort: 6,
+      Contr\u00F4le: 8,
+      Confort: 5.5,
       Spin: 8,
-      Maniabilit\u00E9: 8,
+      Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
     verdict: "Metalbone accessible. Fibre de verre pour tol\xE9rance, diamant pour puissance.",
@@ -41393,8 +41393,8 @@ var rackets_db_default = [
       Puissance: 8.5,
       Contr\u00F4le: 8,
       Confort: 6,
-      Spin: 6.5,
-      Maniabilit\u00E9: 9,
+      Spin: 7,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 7
     },
     verdict: "Metalbone l\xE9g\xE8re pour progression. Fibre de verre + EVA Soft pour confort.",
@@ -41482,9 +41482,9 @@ var rackets_db_default = [
     category: "intermediaire",
     scores: {
       Puissance: 7,
-      Contr\u00F4le: 8.5,
-      Confort: 7,
-      Spin: 6.5,
+      Contr\u00F4le: 9,
+      Confort: 6.5,
+      Spin: 7,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
     },
@@ -41529,7 +41529,7 @@ var rackets_db_default = [
       Puissance: 3,
       Contr\u00F4le: 9.5,
       Confort: 9.5,
-      Spin: 6.5,
+      Spin: 6,
       Maniabilit\u00E9: 10,
       Tol\u00E9rance: 9.5
     },
@@ -41573,7 +41573,7 @@ var rackets_db_default = [
     category: "junior",
     scores: {
       Puissance: 3,
-      Contr\u00F4le: 8.5,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 10,
@@ -41620,7 +41620,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 3.5,
       Contr\u00F4le: 9.5,
-      Confort: 9.5,
+      Confort: 9,
       Spin: 6,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
@@ -41664,11 +41664,11 @@ var rackets_db_default = [
     category: "intermediaire",
     scores: {
       Puissance: 6,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 8.5,
       Confort: 7,
-      Spin: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8
+      Tol\u00E9rance: 8.5
     },
     verdict: "Goutte d'eau polyvalente avec syst\xE8me anti-vibrations Vibrasorb. Bonne r\xE9partition des performances pour progresser sereinement.",
     editorial: "La Counter Viper 2025 est l'interm\xE9diaire de la gamme d\xE9fensive Babolat. Carbone standard et EVA standard en goutte d'eau. Construction solide pour d\xE9velopper un jeu de contr\xF4le et de contre. Moins technique que la Counter Viper 2026, mais un bon tremplin pour apprendre le jeu tactique.",
@@ -41698,8 +41698,8 @@ var rackets_db_default = [
     brand: "Babolat",
     shape: "Diamant",
     weight: "370-385g",
-    balance: "Haut",
-    surface: "Carbon 18K",
+    balance: "Haute",
+    surface: "Carbon 12K",
     core: "Hard EVA",
     antivib: "\u2014",
     price: "300-400\u20AC",
@@ -41710,8 +41710,8 @@ var rackets_db_default = [
     scores: {
       Puissance: 10,
       Contr\u00F4le: 8.5,
-      Confort: 4,
-      Spin: 7.5,
+      Confort: 4.5,
+      Spin: 7,
       Maniabilit\u00E9: 7,
       Tol\u00E9rance: 6.5
     },
@@ -41763,7 +41763,7 @@ var rackets_db_default = [
       Confort: 9,
       Spin: 6,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 9
+      Tol\u00E9rance: 9.5
     },
     verdict: "Goutte d'eau accessible avec fibre de verre pour un bon confort. Premier pas vers une raquette plus polyvalente.",
     editorial: "La Revenge 2025 est la d\xE9butante polyvalente de Babolat. Fibre de verre et Soft EVA en goutte d'eau \u2014 un format l\xE9g\xE8rement plus offensif que la Contact ronde. Pour les d\xE9butants qui veulent commencer avec un peu plus de punch.",
@@ -41849,11 +41849,11 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 9,
-      Contr\u00F4le: 8.5,
+      Contr\u00F4le: 8,
       Confort: 6,
       Spin: 7,
       Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 7.5
+      Tol\u00E9rance: 7
     },
     verdict: "Diamant offensive Babolat. Puissance brute avec carbone et balance haute. Pour les joueurs avanc\xE9s qui dominent au filet.",
     editorial: "La Viper Air 2025 est la version a\xE9rodynamique de la Viper \u2014 m\xEAme carbone, m\xEAme EVA, mais en diamant et avec une construction optimis\xE9e pour la l\xE9g\xE8ret\xE9. Le gain en vitesse de bras se ressent imm\xE9diatement au filet. C'est la Viper pour ceux qui veulent attaquer vite plut\xF4t que fort.",
@@ -41897,11 +41897,11 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 6.5,
+      Puissance: 7,
       Contr\u00F4le: 8.5,
-      Confort: 6.5,
+      Confort: 6,
       Spin: 7,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8
     },
     verdict: "Polyvalente dynamique. CarbonFlex pour puissance facile. Excellente all-rounder.",
@@ -41942,9 +41942,9 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 8,
-      Contr\u00F4le: 8.5,
-      Confort: 6,
+      Puissance: 7.5,
+      Contr\u00F4le: 9,
+      Confort: 5.5,
       Spin: 6.5,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8
@@ -41998,7 +41998,7 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 6.5,
+      Puissance: 6,
       Contr\u00F4le: 8.5,
       Confort: 6,
       Spin: 7,
@@ -42100,10 +42100,10 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 9,
+      Puissance: 8.5,
       Contr\u00F4le: 8.5,
-      Confort: 6.5,
-      Spin: 7,
+      Confort: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
     },
@@ -42140,9 +42140,9 @@ var rackets_db_default = [
     brand: "Babolat",
     shape: "Diamant",
     weight: "365-375g",
-    balance: "Haut",
-    surface: "Carbon 12K",
-    core: "X-EVA",
+    balance: "Haute",
+    surface: "3K Carbon + 3D Spin+",
+    core: "EVA + Carbon Power Layer",
     antivib: "Vibrabsorb",
     price: "300-370\u20AC",
     player: null,
@@ -42150,12 +42150,12 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 9.5,
+      Puissance: 10,
       Contr\u00F4le: 8.5,
-      Confort: 6.5,
-      Spin: 7,
+      Confort: 5.5,
+      Spin: 9,
       Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 7
+      Tol\u00E9rance: 6.5
     },
     verdict: "Diamant expert pour attaquants purs. Carbon 12K ultra-rigide et X-EVA pour sortie de balle explosive. Spin d\xE9vastateur gr\xE2ce au 3D Spin+.",
     editorial: "La Technical Viper 2026 est la version purement offensive de la nouvelle gamme. Carbone 12K pour la rigidit\xE9, X-EVA pour l'explosivit\xE9, forme diamant. Pas de CarbonFlex ici \u2014 Babolat veut de la rigidit\xE9 pure. C'est la Viper pour les comp\xE9titeurs qui veulent du retour d'\xE9nergie sans compromis. La rivale directe de la Bullpadel Hack 04.",
@@ -42201,7 +42201,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 9,
       Contr\u00F4le: 8,
-      Confort: 6,
+      Confort: 5.5,
       Spin: 7,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
@@ -42284,9 +42284,9 @@ var rackets_db_default = [
     brand: "Babolat",
     shape: "Diamant",
     weight: "370g",
-    balance: "Haute (272mm)",
-    surface: "Carbone 3K + Carbon Power Layer",
-    core: "X-EVA hard",
+    balance: "Haute",
+    surface: "3K Carbon + 3D Spin+",
+    core: "EVA + Carbon Power Layer",
     antivib: true,
     price: "350-400\u20AC",
     player: "Expert puissance max",
@@ -42295,9 +42295,9 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 10,
-      Contr\u00F4le: 8.5,
-      Confort: 5,
-      Spin: 7,
+      Contr\u00F4le: 8,
+      Confort: 5.5,
+      Spin: 9,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 6.5
     },
@@ -42347,7 +42347,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 9.5,
       Contr\u00F4le: 8.5,
-      Confort: 7,
+      Confort: 6.5,
       Spin: 7,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
@@ -42405,11 +42405,11 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 9.5,
-      Contr\u00F4le: 8,
-      Confort: 5.5,
+      Contr\u00F4le: 8.5,
+      Confort: 5,
       Spin: 7,
       Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 7
+      Tol\u00E9rance: 6.5
     },
     verdict: "Vertex 2024 en d\xE9stockage. M\xEAme puissance d\xE9vastatrice que la 2025. Prix plus doux pour la m\xEAme performance.",
     editorial: "La Vertex 04 2024 est le mill\xE9sime qui a pr\xE9c\xE9d\xE9 la r\xE9volution GEO. Carbone 12K et mousse Hard EVA pour une puissance directe. Pas de CurvAktiv ni de GEO Geometry \u2014 c'est du Bullpadel classique, efficace, sans technologie superflue. En d\xE9stockage, c'est un excellent rapport qualit\xE9/puissance pour un joueur avanc\xE9.",
@@ -42453,7 +42453,7 @@ var rackets_db_default = [
       Contr\u00F4le: 9,
       Confort: 9.5,
       Spin: 6,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9.5
     },
     verdict: "Raquette d\xE9butant Bullpadel, ronde et l\xE9g\xE8re. Construction robuste pour apprendre les bases.",
@@ -42499,8 +42499,8 @@ var rackets_db_default = [
       Contr\u00F4le: 8.5,
       Confort: 7,
       Spin: 7,
-      Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8
+      Maniabilit\u00E9: 7.5,
+      Tol\u00E9rance: 8.5
     },
     verdict: "La Hack offre un bon compromis entre puissance et contr\xF4le. Le Vibradrive aide au confort mais le carbone reste ferme. Bonne raquette de progression.",
     editorial: "La Hack 03 2025 est l'interm\xE9diaire de la gamme polyvalente Bullpadel. Carbone standard et EVA standard en goutte d'eau. La Hack est la gamme la plus vendue de Bullpadel pour une bonne raison : elle fait tout correctement. La 03 est le tremplin vers la Hack Elite et la Hack 04.",
@@ -42585,12 +42585,12 @@ var rackets_db_default = [
     year: 2025,
     category: "junior",
     scores: {
-      Puissance: 5.5,
+      Puissance: 5,
       Contr\u00F4le: 8.5,
       Confort: 9.5,
-      Spin: 6.5,
+      Spin: 6,
       Maniabilit\u00E9: 9,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 9
     },
     verdict: "Version junior offensive inspir\xE9e de Paquito Navarro. Forme diamant pour puissance maximale, mais confort et tol\xE9rance limit\xE9s. Pour jeunes joueurs offensifs.",
     editorial: "La Hack Jr 2025 est la junior de la gamme polyvalente Bullpadel. Fibre de verre et Soft EVA en diamant \u2014 l'esprit offensif Hack d\xE8s le plus jeune \xE2ge. Pour les juniors comp\xE9titeurs qui veulent un format offensive.",
@@ -42632,7 +42632,7 @@ var rackets_db_default = [
     category: "junior",
     scores: {
       Puissance: 3,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 10,
@@ -42680,7 +42680,7 @@ var rackets_db_default = [
       Puissance: 8.5,
       Contr\u00F4le: 8,
       Confort: 6.5,
-      Spin: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7.5
     },
@@ -42723,11 +42723,11 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 9.5,
-      Contr\u00F4le: 8.5,
-      Confort: 5,
+      Contr\u00F4le: 8,
+      Confort: 5.5,
       Spin: 7,
       Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 7
+      Tol\u00E9rance: 6.5
     },
     verdict: "La Vertex ultime. Carbone 12K + EVA dure pour une sortie de balle explosive. Confort minimal \u2014 r\xE9serv\xE9e aux experts avec bras solide.",
     editorial: "La Vertex 04 2025 est la mise \xE0 jour annuelle du best-seller offensif de Bullpadel. M\xEAme recette gagnante \u2014 carbone 12K, Hard EVA, diamant \u2014 avec des ajustements de construction pour plus d'homog\xE9n\xE9it\xE9. La Vertex est \xE0 Bullpadel ce que la Metalbone est \xE0 Adidas : la r\xE9f\xE9rence puissance. Cette version 2025 affine la recette sans la r\xE9volutionner.",
@@ -42757,9 +42757,9 @@ var rackets_db_default = [
     brand: "Bullpadel",
     shape: "Diamant",
     weight: "370-385g",
-    balance: "Haut",
-    surface: "Carbon 18K",
-    core: "Hard EVA",
+    balance: "260mm",
+    surface: "Carbon 12K",
+    core: "MultiEVA Hard",
     antivib: "Vibradrive",
     price: "350-420\u20AC",
     player: "Ale Gal\xE1n",
@@ -42768,11 +42768,11 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 10,
-      Contr\u00F4le: 8,
-      Confort: 5,
-      Spin: 7.5,
-      Maniabilit\u00E9: 7,
-      Tol\u00E9rance: 7
+      Contr\u00F4le: 8.5,
+      Confort: 5.5,
+      Spin: 7,
+      Maniabilit\u00E9: 7.5,
+      Tol\u00E9rance: 6.5
     },
     verdict: "Le top absolu de Bullpadel. Carbone 18K + EVA Hard pour une puissance d\xE9vastatrice. Vibradrive aide un peu mais confort minimal.",
     editorial: "La Vertex Elite 2025 est le haut de gamme puissance de Bullpadel pour 2025. Carbone 18K \u2014 un cran au-dessus du 12K \u2014 et mousse Hard EVA pour une frappe d\xE9vastatrice. C'est la Vertex pour les comp\xE9titeurs qui veulent le maximum de rigidit\xE9 avant l'\xE8re du Xtend Carbon. Un classique de la puissance brute.",
@@ -42813,7 +42813,7 @@ var rackets_db_default = [
     category: "junior",
     scores: {
       Puissance: 5,
-      Contr\u00F4le: 8,
+      Contr\u00F4le: 8.5,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 9,
@@ -42857,12 +42857,12 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 6.5,
+      Puissance: 7,
       Contr\u00F4le: 9.5,
-      Confort: 8,
+      Confort: 8.5,
       Spin: 7,
-      Maniabilit\u00E9: 9.5,
-      Tol\u00E9rance: 8.5
+      Maniabilit\u00E9: 9,
+      Tol\u00E9rance: 9
     },
     verdict: "L\xE9g\xE8re et punchy. Inspir\xE9e par Alejandra Salazar. Id\xE9ale joueuses avanc\xE9es.",
     id: "bullpadel-flow-legend-2026",
@@ -42897,10 +42897,10 @@ var rackets_db_default = [
     shortName: "Hack 04 26",
     brand: "Bullpadel",
     shape: "Diamant",
-    weight: "370g",
-    balance: "Haute (272mm)",
-    surface: "TriCarbon 18K + Total Channel",
-    core: "Tricore hard",
+    weight: "365-375g",
+    balance: "264mm Haute",
+    surface: "TriCarbon 18K + 3D Grain",
+    core: "MultiEVA + Tricore",
     antivib: true,
     price: "300-380\u20AC",
     player: "Expert puissance pure",
@@ -42908,12 +42908,12 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 10,
-      Contr\u00F4le: 8,
-      Confort: 5,
+      Puissance: 9.5,
+      Contr\u00F4le: 9,
+      Confort: 6.5,
       Spin: 8,
       Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 6.5
+      Tol\u00E9rance: 7
     },
     verdict: "Puissance max Bullpadel. TriCarbon 18K + Tricore. Raquette de Paquito Navarro.",
     id: "bullpadel-hack-04-2026",
@@ -42960,9 +42960,9 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 7,
-      Contr\u00F4le: 9,
-      Confort: 7.5,
-      Spin: 7.5,
+      Contr\u00F4le: 9.5,
+      Confort: 8,
+      Spin: 7,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
     },
@@ -43004,12 +43004,12 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 7.5,
-      Contr\u00F4le: 9,
+      Puissance: 7,
+      Contr\u00F4le: 9.5,
       Confort: 7,
       Spin: 7.5,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     verdict: "Hack format hybride pour contre-attaque. Puissance dynamique avec meilleur contr\xF4le d\xE9fensif. Pour joueurs avanc\xE9s offensifs polyvalents.",
     editorial: "La Hack 04 Hybrid 2026 est le tank de Bullpadel \u2014 la pala des gros frappeurs qui ne veulent pas sacrifier le toucher. Le carbone aluminis\xE9 18K en surface est l'un des plus rigides du catalogue, mais le noyau MultiEVA et le double syst\xE8me Ease Vibe + Total Channel temp\xE8rent la brutalit\xE9. Le Total Channel \u2014 des canaux creus\xE9s dans le cadre \u2014 redistribue l'\xE9nergie d'impact pour un sweet spot plus homog\xE8ne. C'est la puissance civilis\xE9e.",
@@ -43050,8 +43050,8 @@ var rackets_db_default = [
     brand: "Bullpadel",
     shape: "Diamant",
     weight: "365-375g",
-    balance: "Haut",
-    surface: "12K Xtend Carbon",
+    balance: "268mm",
+    surface: "TriCarbon 18K",
     core: "MultiEVA",
     antivib: "Ease Vibe",
     price: "300-380\u20AC",
@@ -43060,10 +43060,10 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 10,
-      Contr\u00F4le: 9,
+      Puissance: 9.5,
+      Contr\u00F4le: 8.5,
       Confort: 6.5,
-      Spin: 7,
+      Spin: 7.5,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
@@ -43118,11 +43118,11 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 6.5,
-      Contr\u00F4le: 9.5,
+      Puissance: 7.5,
+      Contr\u00F4le: 9,
       Confort: 7.5,
       Spin: 7,
-      Maniabilit\u00E9: 8.5,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 8.5
     },
     verdict: "Contr\xF4le structurel. PrismLock r\xE9duit torsions. Raquette de Chingotto.",
@@ -43170,8 +43170,8 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 8,
-      Contr\u00F4le: 9.5,
-      Confort: 6.5,
+      Contr\u00F4le: 9,
+      Confort: 7,
       Spin: 8.5,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 8
@@ -43216,10 +43216,10 @@ var rackets_db_default = [
     shortName: "Vertex 05 26",
     brand: "Bullpadel",
     shape: "Diamant",
-    weight: "365g",
-    balance: "Haute (270mm)",
-    surface: "Xtend Carbon 12K + CurvAktiv",
-    core: "MultiEva",
+    weight: "365-375g",
+    balance: "254mm",
+    surface: "X-Tend Carbon 12K + Top Spin",
+    core: "MultiEVA",
     antivib: true,
     price: "300-380\u20AC",
     player: "Expert polyvalent offensif",
@@ -43227,11 +43227,11 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 10,
-      Contr\u00F4le: 8.5,
+      Puissance: 8.5,
+      Contr\u00F4le: 9,
       Confort: 6.5,
-      Spin: 7,
-      Maniabilit\u00E9: 8,
+      Spin: 8.5,
+      Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
     verdict: "Flagship Bullpadel 2026. 12K + MultiEva pour puissance ET toucher. Raquette de Juan Tello.",
@@ -43268,9 +43268,9 @@ var rackets_db_default = [
     brand: "Bullpadel",
     shape: "Diamant",
     weight: "370-380g",
-    balance: "Haute",
-    surface: "Xtend Carbon 12K + Top Spin 3D",
-    core: "MultiEva",
+    balance: "254mm",
+    surface: "X-Tend Carbon 12K + Top Spin",
+    core: "MultiEVA",
     antivib: "Ease Vibe + Vibradrive",
     price: "300-380\u20AC",
     player: "Paquito Navarro",
@@ -43278,12 +43278,12 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 10,
-      Contr\u00F4le: 8.5,
+      Puissance: 9,
+      Contr\u00F4le: 9,
       Confort: 6.5,
       Spin: 8.5,
       Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 7
+      Tol\u00E9rance: 7.5
     },
     verdict: "Version la plus agressive du Vertex. G\xE9om\xE9trie optimis\xE9e pour surface de frappe \xE9largie et balance encore plus haute. Puissance brute maximale.",
     editorial: "La Vertex 05 GEO 2026 est le vaisseau amiral de Bullpadel \u2014 la pala que les attaquants r\xEAvent de manier. Le Xtend Carbon 3K sur la face offre une frappe s\xE8che et directe, tandis que la g\xE9om\xE9trie GEO redistribue les forces d'impact pour un sweet spot plus homog\xE8ne. Le noyau MultiEVA stratifie plusieurs densit\xE9s de mousse : dur au centre pour la puissance, plus souple en p\xE9riph\xE9rie pour le confort. Un bijou d'ing\xE9nierie.",
@@ -43341,7 +43341,7 @@ var rackets_db_default = [
       Confort: 7,
       Spin: 8.5,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     verdict: "Vertex en goutte d'eau. Plus de contr\xF4le et maniabilit\xE9. Joueurs complets c\xF4t\xE9 droit.",
     id: "bullpadel-vertex-05-hybrid-2026",
@@ -43376,9 +43376,9 @@ var rackets_db_default = [
     brand: "Bullpadel",
     shape: "Diamant",
     weight: "375g",
-    balance: "Haute (274mm)",
-    surface: "TriCarbon 18K",
-    core: "Tricore hard",
+    balance: "270mm Haute",
+    surface: "TriCarbon 18K + 3D Grain",
+    core: "MultiEVA Hard",
     antivib: false,
     price: "320-400\u20AC",
     player: "Expert puissance explosive",
@@ -43387,9 +43387,9 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 10,
-      Contr\u00F4le: 8,
-      Confort: 4.5,
-      Spin: 7.5,
+      Contr\u00F4le: 8.5,
+      Confort: 5,
+      Spin: 8.5,
       Maniabilit\u00E9: 7,
       Tol\u00E9rance: 7
     },
@@ -43431,12 +43431,12 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 9.5,
+      Puissance: 9,
       Contr\u00F4le: 8.5,
-      Confort: 7,
+      Confort: 7.5,
       Spin: 7,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 7
+      Tol\u00E9rance: 7.5
     },
     verdict: "XPLO apprivois\xE9e. M\xEAme ADN avec plus de confort. Attaquants sensibles du bras.",
     id: "bullpadel-xplo-comfort-2026",
@@ -43471,10 +43471,10 @@ var rackets_db_default = [
     shortName: "Conqueror 10 25",
     brand: "Drop Shot",
     shape: "Diamant",
-    weight: "365-380g",
-    balance: "Haut",
-    surface: "Carbon",
-    core: "Hard EVA",
+    weight: "370-385g",
+    balance: "265mm",
+    surface: "Carbon 12K",
+    core: "EVA Power",
     antivib: "\u2014",
     price: "200-280\u20AC",
     player: "\u2014",
@@ -43482,8 +43482,8 @@ var rackets_db_default = [
     year: 2025,
     category: "avance",
     scores: {
-      Puissance: 10,
-      Contr\u00F4le: 8,
+      Puissance: 9.5,
+      Contr\u00F4le: 8.5,
       Confort: 5,
       Spin: 7,
       Maniabilit\u00E9: 7.5,
@@ -43578,7 +43578,7 @@ var rackets_db_default = [
     year: 2025,
     category: "intermediaire",
     scores: {
-      Puissance: 6,
+      Puissance: 5.5,
       Contr\u00F4le: 9,
       Confort: 7.5,
       Spin: 7,
@@ -43623,7 +43623,7 @@ var rackets_db_default = [
     year: 2025,
     category: "junior",
     scores: {
-      Puissance: 3.5,
+      Puissance: 3,
       Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
@@ -43669,12 +43669,12 @@ var rackets_db_default = [
     year: 2025,
     category: "intermediaire",
     scores: {
-      Puissance: 5.5,
-      Contr\u00F4le: 8.5,
+      Puissance: 6,
+      Contr\u00F4le: 9,
       Confort: 7.5,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 9
     },
     verdict: "Polyvalente Dunlop avec mix carbone/verre. Bon confort pour une raquette carbone, id\xE9ale pour progresser.",
     editorial: "La Galactica Pro 2025 est l'interm\xE9diaire de Dunlop. Hybride carbone/fibre de verre et EVA standard en goutte d'eau. Construction classique de la marque historique du tennis. Dunlop propose des specs honn\xEAtes sans surench\xE8re technologique ni surench\xE8re tarifaire.",
@@ -43714,9 +43714,9 @@ var rackets_db_default = [
     year: 2025,
     category: "debutant",
     scores: {
-      Puissance: 3.5,
+      Puissance: 3,
       Contr\u00F4le: 9.5,
-      Confort: 9.5,
+      Confort: 9,
       Spin: 6,
       Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9.5
@@ -43757,8 +43757,8 @@ var rackets_db_default = [
     description: "Diamant l\xE9g\xE8re offensive. 12K Carbon + Soft EVA + Sonic Core Infinergy. Maniabilit\xE9 sans sacrifier puissance.",
     scores: {
       Puissance: 8,
-      Contr\u00F4le: 9,
-      Confort: 7.5,
+      Contr\u00F4le: 8.5,
+      Confort: 7,
       Spin: 7,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 7.5
@@ -43813,7 +43813,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 9.5,
       Contr\u00F4le: 8.5,
-      Confort: 6,
+      Confort: 5.5,
       Spin: 7.5,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
@@ -43948,7 +43948,7 @@ var rackets_db_default = [
     category: "junior",
     scores: {
       Puissance: 3,
-      Contr\u00F4le: 9.5,
+      Contr\u00F4le: 9,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 10,
@@ -43993,12 +43993,12 @@ var rackets_db_default = [
     year: 2024,
     category: "debutant",
     scores: {
-      Puissance: 5.5,
+      Puissance: 5,
       Contr\u00F4le: 8.5,
       Confort: 8,
       Spin: 6,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 9
     },
     verdict: "Ancienne Speed Motion \xE0 prix r\xE9duit. Fibre de verre et Innegra pour un excellent confort. Tr\xE8s bon choix d\xE9butant en promotion.",
     editorial: "La Speed Motion 2024 est la d\xE9butante Head mill\xE9sime 2024. Fibre de verre et Comfort Foam en goutte d'eau. La Comfort Foam \u2014 la mousse la plus souple de Head \u2014 est un choix parfait pour l'apprentissage. Bonne affaire en fin de s\xE9rie.",
@@ -44084,12 +44084,12 @@ var rackets_db_default = [
     year: 2025,
     category: "debutant",
     scores: {
-      Puissance: 7,
+      Puissance: 6.5,
       Contr\u00F4le: 8,
       Confort: 7.5,
-      Spin: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 7.5
+      Tol\u00E9rance: 8
     },
     verdict: "Raquette polyvalente et confortable pour d\xE9buter ou reprendre. Le syst\xE8me Auxetic 2.0 absorbe bien les vibrations, forme goutte d'eau \xE9quilibr\xE9e.",
     editorial: "L'Extreme Motion 2025 est la d\xE9butante dynamique de Head. Hybride carbone/fibre de verre et Comfort Foam en goutte d'eau. Un cran au-dessus de la Speed Motion avec un peu plus de rigidit\xE9. Pour les d\xE9butants sportifs qui progressent vite.",
@@ -44129,10 +44129,10 @@ var rackets_db_default = [
     year: 2025,
     category: "debutant",
     scores: {
-      Puissance: 4,
+      Puissance: 3.5,
       Contr\u00F4le: 9,
-      Confort: 8,
-      Spin: 6.5,
+      Confort: 8.5,
+      Spin: 7,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
     },
@@ -44268,7 +44268,7 @@ var rackets_db_default = [
       Contr\u00F4le: 9.5,
       Confort: 9,
       Spin: 7,
-      Maniabilit\u00E9: 8.5,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 9.5
     },
     verdict: "R\xE9f\xE9rence contr\xF4le Head en forme ronde. Grand sweet spot, stable sur les blocks et les lobs. Pour joueurs de droite qui construisent le point avec patience et placement.",
@@ -44369,7 +44369,7 @@ var rackets_db_default = [
     category: "junior",
     scores: {
       Puissance: 3,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 10,
@@ -44413,7 +44413,7 @@ var rackets_db_default = [
     year: 2025,
     category: "junior",
     scores: {
-      Puissance: 4,
+      Puissance: 3.5,
       Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
@@ -44459,11 +44459,11 @@ var rackets_db_default = [
     year: 2025,
     category: "debutant",
     scores: {
-      Puissance: 6,
+      Puissance: 6.5,
       Contr\u00F4le: 8,
       Confort: 6.5,
       Spin: 6.5,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
     },
     verdict: "Raquette d\xE9butant avec fibre de verre douce et anti-vibrations Innegra. Bon \xE9quilibre entre facilit\xE9 et progression.",
@@ -44504,11 +44504,11 @@ var rackets_db_default = [
     year: 2025,
     category: "avance",
     scores: {
-      Puissance: 6.5,
-      Contr\u00F4le: 8.5,
+      Puissance: 7,
+      Contr\u00F4le: 9,
       Confort: 6,
       Spin: 7,
-      Maniabilit\u00E9: 9.5,
+      Maniabilit\u00E9: 9,
       Tol\u00E9rance: 8
     },
     verdict: "Ultra-confortable gr\xE2ce au DAMP+ dans le c\u0153ur. Polyvalente l\xE9g\xE8re avec bon rendement. Pour joueurs confirm\xE9s qui cherchent sensations et protection du bras.",
@@ -44560,12 +44560,12 @@ var rackets_db_default = [
     year: 2025,
     category: "intermediaire",
     scores: {
-      Puissance: 6.5,
-      Contr\u00F4le: 8.5,
-      Confort: 7.5,
-      Spin: 6.5,
+      Puissance: 6,
+      Contr\u00F4le: 9,
+      Confort: 7,
+      Spin: 7,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     verdict: "Raquette de vitesse avec bon \xE9quilibre. Le carbone offre de la r\xE9activit\xE9, l'Innegra adoucit les vibrations. Pour joueurs interm\xE9diaires cherchant la polyvalence.",
     editorial: "La Speed Pro 2025 est l'interm\xE9diaire de la gamme rapide Head. Carbone standard et EVA standard en goutte d'eau. Construction classique, sans technologie spectaculaire, mais le toucher Head est pr\xE9sent. Bonne pala de progression pour les joueurs polyvalents rapides.",
@@ -44606,9 +44606,9 @@ var rackets_db_default = [
     category: "intermediaire",
     scores: {
       Puissance: 6.5,
-      Contr\u00F4le: 8.5,
+      Contr\u00F4le: 9,
       Confort: 7.5,
-      Spin: 6.5,
+      Spin: 6,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
     },
@@ -44651,9 +44651,9 @@ var rackets_db_default = [
     category: "junior",
     scores: {
       Puissance: 4,
-      Contr\u00F4le: 9.5,
+      Contr\u00F4le: 9,
       Confort: 9.5,
-      Spin: 5.5,
+      Spin: 6,
       Maniabilit\u00E9: 10,
       Tol\u00E9rance: 9.5
     },
@@ -44698,9 +44698,9 @@ var rackets_db_default = [
     scores: {
       Puissance: 9,
       Contr\u00F4le: 8.5,
-      Confort: 5.5,
+      Confort: 6,
       Spin: 8.5,
-      Maniabilit\u00E9: 8.5,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
     },
     verdict: "Signature Arturo Coello. Goutte d'eau \xE9quilibr\xE9e avec Power Foam et Auxetic pour un mix puissance/toucher de balle remarquable.",
@@ -44736,8 +44736,8 @@ var rackets_db_default = [
     brand: "Head",
     shape: "Diamant",
     weight: "370g",
-    balance: "Haute (272mm)",
-    surface: "Carbon Hybrid HS + Extreme Spin 3D",
+    balance: "272mm Haute",
+    surface: "Carbon Hybrid + Extreme Spin",
     core: "Power Foam",
     antivib: "Auxetic 2.0 + Soft Cap+",
     price: "350-400\u20AC",
@@ -44747,9 +44747,9 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 10,
-      Contr\u00F4le: 8,
+      Contr\u00F4le: 8.5,
       Confort: 5.5,
-      Spin: 8.5,
+      Spin: 8,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
@@ -44804,11 +44804,11 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 9,
+      Puissance: 8.5,
       Contr\u00F4le: 8,
       Confort: 5.5,
       Spin: 8,
-      Maniabilit\u00E9: 8.5,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
     },
     verdict: "Version accessible de la gamme Coello. Diamant fibre de verre pour puissance facile et confort.",
@@ -44852,7 +44852,7 @@ var rackets_db_default = [
       Puissance: 6,
       Contr\u00F4le: 8.5,
       Confort: 6.5,
-      Spin: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 8
     },
@@ -44895,10 +44895,10 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 6.5,
-      Contr\u00F4le: 8.5,
-      Confort: 5.5,
-      Spin: 7,
+      Puissance: 7,
+      Contr\u00F4le: 9,
+      Confort: 6,
+      Spin: 6.5,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 8
     },
@@ -44945,10 +44945,10 @@ var rackets_db_default = [
     year: 2026,
     category: "debutant",
     scores: {
-      Puissance: 4.5,
+      Puissance: 5,
       Contr\u00F4le: 9,
       Confort: 9.5,
-      Spin: 6.5,
+      Spin: 6,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9
     },
@@ -44990,7 +44990,7 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 9,
-      Contr\u00F4le: 8,
+      Contr\u00F4le: 8.5,
       Confort: 5.5,
       Spin: 8,
       Maniabilit\u00E9: 8,
@@ -45044,7 +45044,7 @@ var rackets_db_default = [
       Confort: 6.5,
       Spin: 8,
       Maniabilit\u00E9: 9.5,
-      Tol\u00E9rance: 9
+      Tol\u00E9rance: 8.5
     },
     verdict: "Plus l\xE9g\xE8re des Extreme. Goutte d'eau maniable avec carbone 2D. Bonne entr\xE9e gamme Extreme.",
     id: "head-extreme-one-2026",
@@ -45129,9 +45129,9 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 9,
-      Contr\u00F4le: 8,
-      Confort: 6,
+      Puissance: 8.5,
+      Contr\u00F4le: 7.5,
+      Confort: 5.5,
       Spin: 8,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7
@@ -45176,8 +45176,8 @@ var rackets_db_default = [
     scores: {
       Puissance: 4.5,
       Contr\u00F4le: 9,
-      Confort: 9,
-      Spin: 7,
+      Confort: 8.5,
+      Spin: 6.5,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
     },
@@ -45223,7 +45223,7 @@ var rackets_db_default = [
       Contr\u00F4le: 9.5,
       Confort: 8.5,
       Spin: 6.5,
-      Maniabilit\u00E9: 8.5,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 9.5
     },
     verdict: "Reine du contr\xF4le Head. Ronde Hybrid Woven pour stabilit\xE9 et toucher premium.",
@@ -45278,11 +45278,11 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 4.5,
+      Puissance: 5,
       Contr\u00F4le: 9,
-      Confort: 9,
-      Spin: 6.5,
-      Maniabilit\u00E9: 9,
+      Confort: 8.5,
+      Spin: 7,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9
     },
     verdict: "Contr\xF4le confortable. Fibre de verre + Auxetic 2.0 pour tol\xE9rance maximale.",
@@ -45325,9 +45325,9 @@ var rackets_db_default = [
     scores: {
       Puissance: 4.5,
       Contr\u00F4le: 9,
-      Confort: 9.5,
+      Confort: 9,
       Spin: 6.5,
-      Maniabilit\u00E9: 10,
+      Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9.5
     },
     verdict: "Ultra-l\xE9g\xE8re 340g. Ronde pardonnante pour d\xE9buter sans fatigue.",
@@ -45368,11 +45368,11 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 6,
-      Contr\u00F4le: 9.5,
-      Confort: 8,
+      Puissance: 6.5,
+      Contr\u00F4le: 9,
+      Confort: 8.5,
       Spin: 7,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
     },
     verdict: "Radical all\xE9g\xE9e pour joueurs techniques rapides. Pr\xE9cision + maniabilit\xE9.",
@@ -45418,11 +45418,11 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 5.5,
-      Contr\u00F4le: 10,
-      Confort: 8,
-      Spin: 7,
-      Maniabilit\u00E9: 8.5,
+      Puissance: 6,
+      Contr\u00F4le: 9.5,
+      Confort: 8.5,
+      Spin: 7.5,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 9
     },
     verdict: "Flagship contr\xF4le Head 2026. 3K carbon + balance basse pour pr\xE9cision chirurgicale.",
@@ -45471,8 +45471,8 @@ var rackets_db_default = [
     scores: {
       Puissance: 6,
       Contr\u00F4le: 9,
-      Confort: 8.5,
-      Spin: 7,
+      Confort: 8,
+      Spin: 6.5,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9
     },
@@ -45517,8 +45517,8 @@ var rackets_db_default = [
       Puissance: 3.5,
       Contr\u00F4le: 9,
       Confort: 9,
-      Spin: 6.5,
-      Maniabilit\u00E9: 9.5,
+      Spin: 7,
+      Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
     },
     verdict: "Plus l\xE9g\xE8re Radical. Ronde + fibre de verre + balance basse = confort et contr\xF4le pour d\xE9buter.",
@@ -45559,7 +45559,7 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 7,
+      Puissance: 7.5,
       Contr\u00F4le: 8.5,
       Confort: 6,
       Spin: 7,
@@ -45615,7 +45615,7 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 6.5,
+      Puissance: 7,
       Contr\u00F4le: 8.5,
       Confort: 6,
       Spin: 6.5,
@@ -45663,10 +45663,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 7,
       Contr\u00F4le: 9,
-      Confort: 7,
+      Confort: 6.5,
       Spin: 7,
-      Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8.5
+      Maniabilit\u00E9: 8.5,
+      Tol\u00E9rance: 8
     },
     verdict: "Raquette de vitesse avec excellent contr\xF4le. Le carbone 3K offre de la pr\xE9cision, l'Innegra prot\xE8ge le bras. Pour les joueurs techniques.",
     editorial: "La Speed Pro 2026 est la pala rapide avanc\xE9e de Head. Carbone 3K et EVA standard en forme goutte d'eau \u2014 construction classique mais efficace. Pas d'Auxetic ni de mousse sp\xE9ciale \u2014 Head mise ici sur la puret\xE9 de la construction carbone. C'est la Speed pour les joueurs qui veulent sentir le carbone sans filtrage technologique.",
@@ -45705,7 +45705,7 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 6.5,
+      Puissance: 7,
       Contr\u00F4le: 8.5,
       Confort: 6,
       Spin: 8,
@@ -45752,8 +45752,8 @@ var rackets_db_default = [
     category: "debutant",
     scores: {
       Puissance: 5,
-      Contr\u00F4le: 8.5,
-      Confort: 9,
+      Contr\u00F4le: 9,
+      Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
@@ -45798,8 +45798,8 @@ var rackets_db_default = [
     scores: {
       Puissance: 5,
       Contr\u00F4le: 9,
-      Confort: 8,
-      Spin: 6,
+      Confort: 7.5,
+      Spin: 6.5,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9.5
     },
@@ -45843,10 +45843,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 6,
       Contr\u00F4le: 9.5,
-      Confort: 7,
-      Spin: 7.5,
+      Confort: 6,
+      Spin: 7,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 9
     },
     verdict: "La raquette d'Agust\xEDn Tapia version pro. Carbone 18K rigide pour une sortie de balle nette. Contr\xF4le exceptionnel mais confort limit\xE9.",
     editorial: "La AT10 Genius 18K 2025 est la version avanc\xE9e de la gamme Tapia pour 2025. Carbone 18K pour la rigidit\xE9, EVA standard pour la polyvalence. Forme ronde \u2014 inhabituelle pour la gamme AT10 \u2014 qui offre un maximum de contr\xF4le. C'est la AT10 pour les joueurs d\xE9fensifs qui veulent le prestige de la gamme Tapia dans un format contr\xF4le.",
@@ -45888,10 +45888,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 5,
       Contr\u00F4le: 9,
-      Confort: 8,
+      Confort: 7.5,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 9
+      Tol\u00E9rance: 9.5
     },
     verdict: "La raquette d'Agust\xEDn Tapia en version interm\xE9diaire. Forme ronde pour un contr\xF4le exceptionnel et une grande tol\xE9rance.",
     editorial: "La AT10 Genius 2025 est la version interm\xE9diaire de la gamme Tapia. Hybride carbone/fibre de verre et EVA standard en ronde. C'est le prestige AT10 \xE0 prix accessible \u2014 le nom du champion sur une pala de progression. Bonne pala pour les fans de Tapia qui construisent leur jeu.",
@@ -45931,10 +45931,10 @@ var rackets_db_default = [
     year: 2025,
     category: "junior",
     scores: {
-      Puissance: 3,
-      Contr\u00F4le: 9,
+      Puissance: 3.5,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
-      Spin: 6,
+      Spin: 6.5,
       Maniabilit\u00E9: 10,
       Tol\u00E9rance: 9.5
     },
@@ -45980,7 +45980,7 @@ var rackets_db_default = [
       Puissance: 7,
       Contr\u00F4le: 9,
       Confort: 5,
-      Spin: 7,
+      Spin: 7.5,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 8.5
     },
@@ -46025,7 +46025,7 @@ var rackets_db_default = [
       Puissance: 4.5,
       Contr\u00F4le: 9,
       Confort: 8,
-      Spin: 6,
+      Spin: 6.5,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9.5
     },
@@ -46068,7 +46068,7 @@ var rackets_db_default = [
     category: "debutant",
     scores: {
       Puissance: 3.5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 9,
@@ -46113,7 +46113,7 @@ var rackets_db_default = [
     category: "junior",
     scores: {
       Puissance: 3,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 10,
@@ -46159,9 +46159,9 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 9.5,
-      Contr\u00F4le: 8.5,
+      Contr\u00F4le: 8,
       Confort: 5,
-      Spin: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
@@ -46203,12 +46203,12 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 7.5,
+      Puissance: 8,
       Contr\u00F4le: 9,
-      Confort: 6.5,
-      Spin: 8.5,
-      Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8
+      Confort: 8,
+      Spin: 8,
+      Maniabilit\u00E9: 8.5,
+      Tol\u00E9rance: 7.5
     },
     verdict: "Version plus rigide du AT10. 12K Xtrem pour frappe plus s\xE8che et puissante. Toucher dur et r\xE9actif pour joueurs offensifs techniques.",
     editorial: "La AT10 Luxury Genius 12K est LA pala de r\xE9f\xE9rence d'Agust\xEDn Tapia en version plein poids. Le carbone 12K aluminis\xE9 Xtrem d\xE9livre une puissance d\xE9vastatrice au smash \u2014 chaque frappe semble catapult\xE9e. Le noyau EVA HR3 Black, le plus dense du catalogue Nox, est un choix radical : z\xE9ro compromis sur la duret\xE9 pour un maximum de sortie de balle. R\xE9serv\xE9e aux bras solides et aux ambitions de comp\xE9tition.",
@@ -46320,8 +46320,8 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     scores: {
-      Puissance: 7.5,
-      Contr\u00F4le: 9,
+      Puissance: 8,
+      Contr\u00F4le: 9.5,
       Confort: 6.5,
       Spin: 8.5,
       Maniabilit\u00E9: 8,
@@ -46370,9 +46370,9 @@ var rackets_db_default = [
     brand: "Nox",
     shape: "Diamant",
     weight: "365-380g",
-    balance: "Haut",
-    surface: "Carbon 12K Aluminis\xE9 Xtrem + Dual Spin",
-    core: "HR3 Hard EVA",
+    balance: "Haute",
+    surface: "12K Xtrem + Dual Spin 3D sand",
+    core: "HR3 Black EVA Hard",
     antivib: "Pulse System",
     price: "300-370\u20AC",
     player: "Agust\xEDn Tapia",
@@ -46382,10 +46382,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 10,
       Contr\u00F4le: 8.5,
-      Confort: 5,
-      Spin: 8,
-      Maniabilit\u00E9: 7,
-      Tol\u00E9rance: 6.5
+      Confort: 6.5,
+      Spin: 8.5,
+      Maniabilit\u00E9: 7.5,
+      Tol\u00E9rance: 7
     },
     verdict: "Version diamant offensive maximale de la gamme AT10. Puissance explosive pour joueurs de gauche experts. Dual Spin pour spin d\xE9vastateur.",
     editorial: "La AT10 Luxury Attack 12K Xtrem est la version diamant radicale de la gamme Tapia. Carbone 12K aluminis\xE9 Xtrem \u2014 m\xEAme surface que les versions Genius \u2014 mais en forme diamant avec noyau HR3 Black, le plus dur de Nox. C'est la AT10 la plus agressive : puissance brute, z\xE9ro compromis. Pour les smasheurs qui veulent la signature Tapia en mode destruction.",
@@ -46430,9 +46430,9 @@ var rackets_db_default = [
     year: 2026,
     category: "avance",
     scores: {
-      Puissance: 6.5,
+      Puissance: 7,
       Contr\u00F4le: 9,
-      Confort: 7,
+      Confort: 6.5,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8
@@ -46574,10 +46574,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 10,
       Contr\u00F4le: 8,
-      Confort: 4.5,
+      Confort: 5,
       Spin: 7.5,
       Maniabilit\u00E9: 7,
-      Tol\u00E9rance: 6.5
+      Tol\u00E9rance: 7
     },
     verdict: "Raquette de Stupaczuk version comp\xE9tition. Carbone 12K rigide avec surface textur\xE9e pour spin+puissance. Experte et exigeante.",
     editorial: "La Diablo Black 2025 est la version premium de la gamme offensive Siux pour 2025. Carbone 12K et mousse Hard EVA en goutte d'eau \u2014 une combinaison offensive dans un format tol\xE9rant. C'est le Diablo pour les joueurs experts qui veulent de la puissance avec la s\xE9curit\xE9 de la forme goutte.",
@@ -46619,10 +46619,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 7,
       Contr\u00F4le: 8.5,
-      Confort: 7,
-      Spin: 6.5,
+      Confort: 6.5,
+      Spin: 7,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     verdict: "Goutte d'eau avec surface textur\xE9e pour un bon spin. Le carbone offre de la r\xE9activit\xE9 pour les joueurs cherchant plus de mordant.",
     editorial: "La Diablo Revolution 2025 est l'interm\xE9diaire de la gamme Siux. Carbone standard et EVA standard en goutte d'eau. Construction honn\xEAte et accessible, tarif comp\xE9titif. Siux propose des specs correctes \xE0 prix serr\xE9 \u2014 la Revolution est une bonne pala de progression sans pression financi\xE8re.",
@@ -46652,8 +46652,8 @@ var rackets_db_default = [
     brand: "Siux",
     shape: "Diamant",
     weight: "365-380g",
-    balance: "Haut",
-    surface: "Carbon 12K",
+    balance: "270mm Haute",
+    surface: "Carbon 18K",
     core: "Hard EVA",
     antivib: "\u2014",
     price: "220-300\u20AC",
@@ -46663,9 +46663,9 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 10,
-      Contr\u00F4le: 8,
+      Contr\u00F4le: 8.5,
       Confort: 4.5,
-      Spin: 7,
+      Spin: 7.5,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
@@ -46709,7 +46709,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 3.5,
       Contr\u00F4le: 9.5,
-      Confort: 9.5,
+      Confort: 9,
       Spin: 6,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9.5
@@ -46750,8 +46750,8 @@ var rackets_db_default = [
     description: "Goutte interm\xE9diaire-avanc\xE9. Plus souple que le Pro, contr\xF4le et confort accrus. Progression Siux.",
     scores: {
       Puissance: 6.5,
-      Contr\u00F4le: 8.5,
-      Confort: 7,
+      Contr\u00F4le: 9,
+      Confort: 6.5,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
@@ -46794,7 +46794,7 @@ var rackets_db_default = [
     description: "Goutte hybride polyvalente signature Libaak. Texture 3D + Ultra Soft EVA. Contr\xF4le-puissance \xE9quilibr\xE9.",
     scores: {
       Puissance: 6.5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 8,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
@@ -46857,7 +46857,7 @@ var rackets_db_default = [
       Confort: 6,
       Spin: 7.5,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     imageUrl: "https://www.padelful.com/images/rackets/siux-electra-pro-fire-red-2026-franco-stupackzuk.png",
     verdict: "Puissance explosive en goutte d'eau \u2014 un profil rare. Le TeXtreme 18K frappe fort tout en gardant du contr\xF4le. Pour attaquants techniques.",
@@ -46905,16 +46905,16 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     shape: "Diamant",
-    weight: "360-380",
-    balance: "haut",
-    surface: "18K TeXtreme Carbon",
+    weight: "360-380g",
+    balance: "268mm",
+    surface: "Carbon 12K",
     core: "Hard EVA",
     description: "Diamant puissance max signature Augsburger. Balance haute + carbone TeXtreme. Offensif pur.",
     scores: {
       Puissance: 10,
       Contr\u00F4le: 8.5,
-      Confort: 4.5,
-      Spin: 7.5,
+      Confort: 5,
+      Spin: 7,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 6.5
     },
@@ -46958,10 +46958,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 6.5,
       Contr\u00F4le: 8.5,
-      Confort: 7.5,
+      Confort: 6.5,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     imageUrl: "https://www.padelful.com/images/rackets/siux-pegasus-elite-4-2026.png",
     verdict: "Goutte polyvalente et confortable \xE0 prix contenu. Profil \xE9quilibr\xE9 sans pic \u2014 rassurante pour interm\xE9diaires qui cherchent de la r\xE9gularit\xE9.",
@@ -47002,10 +47002,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 7.5,
       Contr\u00F4le: 9,
-      Confort: 6.5,
-      Spin: 7.5,
+      Confort: 6,
+      Spin: 7,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     imageUrl: "https://www.padelful.com/images/rackets/siux-pegasus-pro-storm-grey-2026.png",
     verdict: "Mont\xE9e en gamme avec TeXtreme 18K : plus de puissance et de spin que l'Elite. Pour avanc\xE9s qui veulent du mordant sans perdre en pr\xE9cision.",
@@ -47046,7 +47046,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 7,
       Contr\u00F4le: 9.5,
-      Confort: 6.5,
+      Confort: 6,
       Spin: 7.5,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 8.5
@@ -47092,7 +47092,7 @@ var rackets_db_default = [
     year: 2025,
     category: "junior",
     scores: {
-      Puissance: 3,
+      Puissance: 3.5,
       Contr\u00F4le: 9,
       Confort: 9.5,
       Spin: 6,
@@ -47138,12 +47138,12 @@ var rackets_db_default = [
     year: 2025,
     category: "avance",
     scores: {
-      Puissance: 7.5,
+      Puissance: 7,
       Contr\u00F4le: 9,
       Confort: 6.5,
       Spin: 7,
-      Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 8.5
+      Maniabilit\u00E9: 8,
+      Tol\u00E9rance: 8
     },
     verdict: "Goutte d'eau haut de gamme Starvie avec surface textur\xE9e pour le spin. Polyvalente et technique pour joueurs avanc\xE9s.",
     editorial: "La Metheora Galaxy 2025 est la polyvalente avanc\xE9e de StarVie. Carbone standard et EVA standard en goutte d'eau \u2014 construction classique mais efficace. StarVie compense l'absence de technologies propri\xE9taires spectaculaires par un prix attractif et une construction soign\xE9e. La Galaxy est la version premium de la gamme Metheora.",
@@ -47183,11 +47183,11 @@ var rackets_db_default = [
     year: 2025,
     category: "intermediaire",
     scores: {
-      Puissance: 6.5,
-      Contr\u00F4le: 8.5,
-      Confort: 7,
-      Spin: 6.5,
-      Maniabilit\u00E9: 8.5,
+      Puissance: 6,
+      Contr\u00F4le: 9,
+      Confort: 6.5,
+      Spin: 7,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 8
     },
     verdict: "Goutte d'eau Starvie polyvalente. Construction carbone/EVA classique pour un jeu \xE9quilibr\xE9.",
@@ -47270,10 +47270,10 @@ var rackets_db_default = [
     core: "H-EVA Power",
     description: "Hybride flagship puissance. 24K Carbon Master + Dynamic Star ajustable. Anti-Vibe. Pour experts offensifs.",
     scores: {
-      Puissance: 9,
+      Puissance: 8.5,
       Contr\u00F4le: 9,
       Confort: 5,
-      Spin: 8,
+      Spin: 7.5,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 8
     },
@@ -47314,9 +47314,9 @@ var rackets_db_default = [
     core: "M-EVA Balance",
     description: "Goutte polyvalente iconique renouvel\xE9e. Dynamic Star + Spin Boost Tech Pro + Anti-Vibe. All-court avanc\xE9.",
     scores: {
-      Puissance: 6.5,
+      Puissance: 7,
       Contr\u00F4le: 9,
-      Confort: 7,
+      Confort: 6,
       Spin: 8,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8
@@ -47366,7 +47366,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 8.5,
       Contr\u00F4le: 8.5,
-      Confort: 6,
+      Confort: 6.5,
       Spin: 7,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7.5
@@ -47402,16 +47402,16 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     shape: "Diamant",
-    weight: "360-380",
-    balance: "haut",
-    surface: "18K Carbon Hybrid",
-    core: "H-EVA Power",
+    weight: "360-380g",
+    balance: "268mm",
+    surface: "Carbon 12K + Rough",
+    core: "Hard EVA",
     description: "Diamant puissance explosive. 18K Carbon Hybrid + H-EVA Power haute densit\xE9 + TriTech Core. Attaquant pur.",
     scores: {
-      Puissance: 10,
+      Puissance: 9.5,
       Contr\u00F4le: 8.5,
       Confort: 4.5,
-      Spin: 7.5,
+      Spin: 8,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 6.5
     },
@@ -47456,7 +47456,7 @@ var rackets_db_default = [
     category: "intermediaire",
     scores: {
       Puissance: 6.5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 8.5,
       Confort: 6.5,
       Spin: 7,
       Maniabilit\u00E9: 8,
@@ -47547,7 +47547,7 @@ var rackets_db_default = [
     category: "debutant",
     scores: {
       Puissance: 3.5,
-      Contr\u00F4le: 9.5,
+      Contr\u00F4le: 9,
       Confort: 9.5,
       Spin: 6,
       Maniabilit\u00E9: 9.5,
@@ -47593,11 +47593,11 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 7.5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 8.5,
       Confort: 6.5,
       Spin: 7,
-      Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 8
+      Maniabilit\u00E9: 8,
+      Tol\u00E9rance: 8.5
     },
     verdict: "Goutte d'eau Varlion haut de gamme. Construction carbone traditionnelle pour joueurs avanc\xE9s polyvalents.",
     editorial: "La LW Carbon 2025 est la polyvalente carbone de Varlion. Construction classique carbone/EVA standard en goutte d'eau. Varlion apporte son toucher Pro-Touch distinctif, m\xEAme sur ses mod\xE8les standard. C'est une pala honn\xEAte et fiable pour les joueurs avanc\xE9s qui veulent d\xE9couvrir le toucher Varlion.",
@@ -47636,10 +47636,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 7.5,
       Contr\u00F4le: 9,
-      Confort: 7,
+      Confort: 6.5,
       Spin: 6.5,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     imageUrl: "https://www.padelful.com/images/rackets/varlion-bourne-carbon-ti-2023.png",
     verdict: "Hybride offensive avec grip long 14.5cm. Bonne puissance avec suffisamment de contr\xF4le pour construire avant de conclure.",
@@ -47679,10 +47679,10 @@ var rackets_db_default = [
     description: "Ronde d\xE9butante confort. Ergoholes sweet spot \xE9largi + Handlesafety. L\xE9g\xE8re et tol\xE9rante.",
     scores: {
       Puissance: 3,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
       Spin: 6,
-      Maniabilit\u00E9: 9.5,
+      Maniabilit\u00E9: 10,
       Tol\u00E9rance: 9.5
     },
     imageUrl: "https://www.padelful.com/images/rackets/varlion-lw-8-8-orquidea-2026.png",
@@ -47725,8 +47725,8 @@ var rackets_db_default = [
     scores: {
       Puissance: 5.5,
       Contr\u00F4le: 9.5,
-      Confort: 7.5,
-      Spin: 7,
+      Confort: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 9
     },
@@ -47828,7 +47828,7 @@ var rackets_db_default = [
     year: 2024,
     category: "junior",
     scores: {
-      Puissance: 3.5,
+      Puissance: 4,
       Contr\u00F4le: 9,
       Confort: 9.5,
       Spin: 6,
@@ -47875,9 +47875,9 @@ var rackets_db_default = [
     category: "expert",
     scores: {
       Puissance: 8.5,
-      Contr\u00F4le: 8.5,
+      Contr\u00F4le: 9,
       Confort: 5,
-      Spin: 7,
+      Spin: 7.5,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7.5
     },
@@ -47966,10 +47966,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 7,
       Contr\u00F4le: 8.5,
-      Confort: 7,
+      Confort: 6.5,
       Spin: 7,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     verdict: "Raquette signature de la l\xE9gende Belastegu\xEDn. Bon compromis puissance/contr\xF4le mais confort limit\xE9 par le carbone. Pour interm\xE9diaires exigeants.",
     editorial: "La Bela Pro V2 2025 est l'interm\xE9diaire de la gamme Bela. Carbone standard et EVA standard en goutte d'eau. La qualit\xE9 de construction Wilson est l\xE0 \u2014 finitions soign\xE9es, \xE9quilibre bien calibr\xE9. C'est la Bela pour progresser avec la fiabilit\xE9 Wilson avant de passer \xE0 l'Elite ou \xE0 la V3.",
@@ -48012,7 +48012,7 @@ var rackets_db_default = [
       Puissance: 3.5,
       Contr\u00F4le: 9.5,
       Confort: 9.5,
-      Spin: 6,
+      Spin: 5.5,
       Maniabilit\u00E9: 10,
       Tol\u00E9rance: 9.5
     },
@@ -48057,9 +48057,9 @@ var rackets_db_default = [
     scores: {
       Puissance: 5,
       Contr\u00F4le: 9,
-      Confort: 8.5,
+      Confort: 9,
       Spin: 6,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9
     },
     verdict: "Goutte d'eau Wilson accessible et polyvalente. Fibre de verre pour un bon confort de frappe.",
@@ -48098,10 +48098,10 @@ var rackets_db_default = [
     description: "Ronde confort-first pour d\xE9butants. Fibre de verre + EVA souple. Timing facile, l\xE9g\xE8re, gateway Wilson.",
     scores: {
       Puissance: 3,
-      Contr\u00F4le: 9,
-      Confort: 9.5,
+      Contr\u00F4le: 9.5,
+      Confort: 9,
       Spin: 6,
-      Maniabilit\u00E9: 10,
+      Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9.5
     },
     imageUrl: "https://www.padelful.com/images/rackets/wilson-accent-2026.png",
@@ -48144,7 +48144,7 @@ var rackets_db_default = [
       Puissance: 6.5,
       Contr\u00F4le: 8.5,
       Confort: 6,
-      Spin: 6.5,
+      Spin: 7,
       Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 8
     },
@@ -48180,16 +48180,16 @@ var rackets_db_default = [
     year: 2026,
     category: "expert",
     shape: "Diamant",
-    weight: "365-375",
-    balance: "haut",
-    surface: "24K Carbon",
-    core: "Power Foam EVA",
+    weight: "365-375g",
+    balance: "265mm",
+    surface: "Carbon + Spin Effect",
+    core: "EVA Standard",
     description: "Diamant offensive signature Bela. C2 Tubular Construction + 24K Carbon + DuoGrid. Puissance max pour joueurs confirm\xE9s.",
     scores: {
-      Puissance: 10,
+      Puissance: 9.5,
       Contr\u00F4le: 8.5,
-      Confort: 4.5,
-      Spin: 7.5,
+      Confort: 6,
+      Spin: 8,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
@@ -48231,8 +48231,8 @@ var rackets_db_default = [
     core: "Power Foam EVA",
     description: "Goutte versatile co-design Bela. V-Bridge + Spin2 Texture + DuoGrid Holes. Polyvalence attaque/d\xE9fense.",
     scores: {
-      Puissance: 7.5,
-      Contr\u00F4le: 8.5,
+      Puissance: 7,
+      Contr\u00F4le: 9,
       Confort: 5.5,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
@@ -48290,12 +48290,12 @@ var rackets_db_default = [
     core: "Soft EVA",
     description: "Goutte toucher doux et pr\xE9cision. Dwell time long pour touches et d\xE9fenses. Polyvalence attaque/d\xE9fense.",
     scores: {
-      Puissance: 6,
+      Puissance: 6.5,
       Contr\u00F4le: 9,
-      Confort: 8,
+      Confort: 7.5,
       Spin: 7,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 9
+      Tol\u00E9rance: 8.5
     },
     imageUrl: "https://www.padelful.com/images/rackets/wilson-blade-pro-v2-oro.png",
     verdict: "Toucher doux et dwell time long pour un contr\xF4le pr\xE9cis. Excellente en d\xE9fense et en construction \u2014 la patte du tacticien.",
@@ -48334,8 +48334,8 @@ var rackets_db_default = [
     core: "Soft EVA",
     description: "Goutte polyvalente interm\xE9diaire. Feel doux et sweet spot tol\xE9rant. Transition vers jeu technique.",
     scores: {
-      Puissance: 5,
-      Contr\u00F4le: 9,
+      Puissance: 5.5,
+      Contr\u00F4le: 9.5,
       Confort: 9,
       Spin: 6.5,
       Maniabilit\u00E9: 9,
@@ -48378,12 +48378,12 @@ var rackets_db_default = [
     core: "Dense EVA",
     description: "Ronde pr\xE9cision chirurgicale. Sweet spot central, r\xE9ponse crisp. Pour constructeurs de points tactiques.",
     scores: {
-      Puissance: 5.5,
+      Puissance: 5,
       Contr\u00F4le: 9.5,
       Confort: 7,
       Spin: 7,
-      Maniabilit\u00E9: 9,
-      Tol\u00E9rance: 9
+      Maniabilit\u00E9: 8.5,
+      Tol\u00E9rance: 8.5
     },
     imageUrl: "https://www.padelful.com/images/rackets/wilson-pro-staff-v2-azul.png",
     verdict: "Ronde contr\xF4le pur : r\xE9ponse nette et pr\xE9cision chirurgicale. Pour constructeurs patients qui placent chaque balle avec intention.",
@@ -48427,7 +48427,7 @@ var rackets_db_default = [
       Confort: 6,
       Spin: 7,
       Maniabilit\u00E9: 7.5,
-      Tol\u00E9rance: 7
+      Tol\u00E9rance: 7.5
     },
     imageUrl: "https://www.padelful.com/images/rackets/wilson-ultra-pro-v2.png",
     verdict: "Diamant explosive \xE0 9.5 en puissance avec sweet spot \xE9largi. Finisseur agressif \u2014 demande du physique et de la pr\xE9cision.",
@@ -48473,9 +48473,9 @@ var rackets_db_default = [
     scores: {
       Puissance: 8,
       Contr\u00F4le: 8.5,
-      Confort: 7.5,
+      Confort: 7,
       Spin: 7,
-      Maniabilit\u00E9: 8,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 7.5
     },
     imageUrl: "https://www.padelful.com/images/rackets/wilson-ultra-team-2026.png",
@@ -48520,11 +48520,11 @@ var rackets_db_default = [
     womanLine: true,
     scores: {
       Puissance: 8.5,
-      Contr\u00F4le: 8.5,
-      Confort: 7.5,
-      Spin: 6.5,
+      Contr\u00F4le: 9,
+      Confort: 8.5,
+      Spin: 6,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 7.5
+      Tol\u00E9rance: 8
     },
     verdict: "La Vertex de Delfi Brea. Diamant plus l\xE9g\xE8re (350-370g) adapt\xE9e aux joueuses avanc\xE9es. Puissance et spin gr\xE2ce au Fibrix et au Top Spin. Custom Weight pour ajuster l'\xE9quilibre.",
     editorial: "La Vertex 04 Woman reprend l'ADN de la Vertex classique \u2014 diamant, balance haute, carbone \u2014 mais calibr\xE9e 15-20g plus l\xE9ger pour les joueuses. Le Fibrix (hybride fibre de verre + carbone) offre plus de flexibilit\xE9 qu'un full carbone, ce qui apporte du confort sans sacrifier la r\xE9activit\xE9. Le noyau MultiEVA double densit\xE9 r\xE9agit fort sur les frappes rapides et absorbe sur les touches lentes. L'Ease Vibe dans le manche r\xE9duit les vibrations. Le Custom Weight permet d'ajouter jusqu'\xE0 12g en t\xEAte pour personnaliser. C'est la raquette de la joueuse compl\xE8te qui veut attaquer sans se fatiguer le bras.",
@@ -48572,10 +48572,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 6.5,
       Contr\u00F4le: 9,
-      Confort: 8,
-      Spin: 6.5,
+      Confort: 8.5,
+      Spin: 6,
       Maniabilit\u00E9: 9,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 9
     },
     verdict: "La raquette de Gemma Triay. Hybride l\xE9g\xE8re avec Vibradrive \u2014 l'\xE9quilibre parfait contr\xF4le/puissance pour les joueuses avanc\xE9es qui veulent tout.",
     editorial: "L'Elite Woman est la raquette la plus \xE9quilibr\xE9e de la gamme pro f\xE9minine Bullpadel. Forme hybride (entre goutte d'eau et ronde) avec balance moyenne \u2014 maniable partout, du fond de court au filet. Le Vibradrive est le vrai plus : un \xE9lastom\xE8re int\xE9gr\xE9 dans le manche qui absorbe les vibrations des frappes d\xE9centr\xE9es. Le Fibrix en surface donne un toucher souple mais r\xE9actif. Le noyau MultiEVA double densit\xE9 fait le job en puissance comme en contr\xF4le. L'Air React Channel dans le c\u0153ur am\xE9liore l'a\xE9rodynamisme. C'est la pala de la joueuse technique qui construit le point.",
@@ -48623,7 +48623,7 @@ var rackets_db_default = [
       Puissance: 7,
       Contr\u00F4le: 9,
       Confort: 7.5,
-      Spin: 6.5,
+      Spin: 7,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 8.5
     },
@@ -48671,12 +48671,12 @@ var rackets_db_default = [
     category: "avance",
     womanLine: true,
     scores: {
-      Puissance: 8.5,
+      Puissance: 8,
       Contr\u00F4le: 9,
-      Confort: 7.5,
+      Confort: 8.5,
       Spin: 8,
-      Maniabilit\u00E9: 9,
-      Tol\u00E9rance: 7.5
+      Maniabilit\u00E9: 8.5,
+      Tol\u00E9rance: 8
     },
     verdict: "\xC9volution 2026 de la Vertex Woman. Plus l\xE9g\xE8re, plus a\xE9rodynamique gr\xE2ce \xE0 l'Air Power. Diamant taill\xE9e pour l'attaque f\xE9minine de haut niveau.",
     editorial: "La Vertex 05 Woman 2026 pousse le curseur plus loin que la 04 : l'Air Power (canal a\xE9rodynamique agrandi de 50%) rend la raquette plus rapide en mouvement, le Curv:Aktiv (structure lat\xE9rale \xE0 section variable) am\xE9liore la stabilit\xE9 en torsion. Le Vertex Core redessin\xE9 avec pont diagonal double offre plus de rigidit\xE9 au c\u0153ur. Toujours en Fibrix + MultiEVA pour le confort, mais l'ensemble est plus r\xE9actif et explosif. Le Custom Weight permet jusqu'\xE0 12g d'ajustement. Pour les joueuses qui veulent la puissance maximale dans un poids contr\xF4l\xE9.",
@@ -48724,7 +48724,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 7,
       Contr\u00F4le: 9.5,
-      Confort: 8,
+      Confort: 8.5,
       Spin: 8,
       Maniabilit\u00E9: 9,
       Tol\u00E9rance: 8.5
@@ -48775,7 +48775,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 5,
       Contr\u00F4le: 9.5,
-      Confort: 8,
+      Confort: 7.5,
       Spin: 7,
       Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9
@@ -48825,8 +48825,8 @@ var rackets_db_default = [
     scores: {
       Puissance: 9,
       Contr\u00F4le: 8.5,
-      Confort: 6.5,
-      Spin: 7,
+      Confort: 6,
+      Spin: 7.5,
       Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
@@ -48875,9 +48875,9 @@ var rackets_db_default = [
     scores: {
       Puissance: 7,
       Contr\u00F4le: 9,
-      Confort: 7,
+      Confort: 6.5,
       Spin: 7,
-      Maniabilit\u00E9: 8,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8
     },
     verdict: "La polyvalente de Tino Libaak. Goutte d'eau en 12K \u2014 le meilleur compromis puissance/contr\xF4le de la gamme Quantum. Pour les all-rounders.",
@@ -48976,11 +48976,11 @@ var rackets_db_default = [
     womanLine: true,
     scores: {
       Puissance: 5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 9.5,
-      Spin: 6.5,
+      Spin: 6,
       Maniabilit\u00E9: 10,
-      Tol\u00E9rance: 9.5
+      Tol\u00E9rance: 9
     },
     verdict: "La Stima Spirit en mode dynamique. Hybride l\xE9g\xE8re pour les joueuses qui veulent attaquer au filet sans se fatiguer. 330g de pur confort offensif.",
     editorial: "La Dyna Spirit est la s\u0153ur offensive de la Stima Spirit. M\xEAme poids plume (330g) et m\xEAme profil 36mm, mais forme hybride (entre goutte d'eau et diamant) qui apporte plus de puissance en attaque. La fibre de verre en surface maintient le confort et la tol\xE9rance. Le noyau Black EVA Soft garde un toucher doux. Le Vibrasorb System prot\xE8ge le bras. C'est la raquette de la joueuse dynamique qui monte au filet mais qui veut un maximum de confort. Parfaite pour la transition vers un jeu plus agressif.",
@@ -49029,7 +49029,7 @@ var rackets_db_default = [
       Contr\u00F4le: 8.5,
       Confort: 9,
       Spin: 6,
-      Maniabilit\u00E9: 8,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8
     },
     verdict: "La version souple du diamant Babolat. Fibre de verre + EVA Soft pour les interm\xE9diaires qui veulent de la puissance sans la rigidit\xE9 du carbone.",
@@ -49075,9 +49075,9 @@ var rackets_db_default = [
     year: 2025,
     category: "intermediaire",
     scores: {
-      Puissance: 5,
-      Contr\u00F4le: 9,
-      Confort: 9,
+      Puissance: 5.5,
+      Contr\u00F4le: 9.5,
+      Confort: 9.5,
       Spin: 6.5,
       Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9
@@ -49175,11 +49175,11 @@ var rackets_db_default = [
     year: 2026,
     category: "intermediaire",
     scores: {
-      Puissance: 8.5,
-      Contr\u00F4le: 8,
-      Confort: 7,
+      Puissance: 8,
+      Contr\u00F4le: 8.5,
+      Confort: 8,
       Spin: 7,
-      Maniabilit\u00E9: 8,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 7.5
     },
     verdict: "Le diamant souple 2026. Soft Fiber + Black EVA pour un diamant qui reste confortable. L'offensif accessible des Vertuo.",
@@ -49225,12 +49225,12 @@ var rackets_db_default = [
     year: 2025,
     category: "avance",
     scores: {
-      Puissance: 5,
+      Puissance: 4.5,
       Contr\u00F4le: 9.5,
       Confort: 8,
       Spin: 7,
-      Maniabilit\u00E9: 9,
-      Tol\u00E9rance: 9
+      Maniabilit\u00E9: 8.5,
+      Tol\u00E9rance: 9.5
     },
     verdict: "LA r\xE9f\xE9rence anti-\xE9picondylite. Les billes Kinetic dans le cadre r\xE9duisent les vibrations de 43% et le choc de 20%. Ronde, confortable, 10/10 confort. \xC0 prescrire.",
     editorial: "Pro Kennex est LE sp\xE9cialiste du confort articulaire dans le monde de la raquette. La technologie Kinetic utilise des micro-billes dans des capsules int\xE9gr\xE9es au cadre : \xE0 l'impact, elles se d\xE9placent vers la zone de frappe et absorbent l'\xE9nergie du choc au lieu de la transmettre au bras. R\xE9sultat valid\xE9 par le MIT : -20% choc, -43% vibrations, +50% stabilit\xE9 en torsion. Le Kinetic Damping Chamber dans le manche absorbe les vibrations r\xE9siduelles. Le Spiral Tech Graphite en surface donne un toucher propre. Le noyau EVA Soft assure le confort. Forme ronde + balance basse = contr\xF4le et sweet spot g\xE9n\xE9reux. C'est la prescription n\xB01 pour l'\xE9picondylite, l'\xE9paule fragile ou le mal de dos.",
@@ -49276,10 +49276,10 @@ var rackets_db_default = [
     category: "avance",
     scores: {
       Puissance: 8.5,
-      Contr\u00F4le: 8.5,
+      Contr\u00F4le: 9,
       Confort: 8,
       Spin: 7,
-      Maniabilit\u00E9: 7.5,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7.5
     },
     verdict: "Le Kinetic en mode puissance. Diamant avec billes Kinetic \u2014 l'offensif qui prot\xE8ge le bras. Pour les attaquants avec douleur au coude.",
@@ -49327,7 +49327,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 6.5,
       Contr\u00F4le: 9.5,
-      Confort: 8.5,
+      Confort: 8,
       Spin: 6.5,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8.5
@@ -49375,7 +49375,7 @@ var rackets_db_default = [
     year: 2025,
     category: "avance",
     scores: {
-      Puissance: 5,
+      Puissance: 5.5,
       Contr\u00F4le: 9.5,
       Confort: 8.5,
       Spin: 7,
@@ -49427,10 +49427,10 @@ var rackets_db_default = [
     womanLine: true,
     scores: {
       Puissance: 5,
-      Contr\u00F4le: 9,
+      Contr\u00F4le: 9.5,
       Confort: 9,
       Spin: 7,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9.5
     },
     verdict: "Le M27 en version l\xE9g\xE8re (350-365g). M\xEAme poly\xE9thyl\xE8ne anti-vibrations, mais plus maniable. Id\xE9al pour les joueuses et les seniors sensibles du bras.",
@@ -49477,11 +49477,11 @@ var rackets_db_default = [
     category: "intermediaire",
     scores: {
       Puissance: 5,
-      Contr\u00F4le: 9.5,
+      Contr\u00F4le: 9,
       Confort: 8.5,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 9
+      Tol\u00E9rance: 9.5
     },
     verdict: "Le Whip poly\xE9thyl\xE8ne classique. Confort extr\xEAme \xE0 prix plus accessible que le M27. Ronde, adaptable, anti-blessures. Le confort Royal Padel pour tous.",
     editorial: "Le Whip Extreme est la version accessible du confort Royal Padel. M\xEAme noyau poly\xE9thyl\xE8ne que le M27 pour l'absorption maximale des vibrations. Forme ronde et balance moyenne pour la polyvalence. Le Shock Absorption System r\xE9duit les vibrations transmises au bras. Plus abordable que le M27, c'est l'entr\xE9e en mati\xE8re id\xE9ale dans le monde du poly\xE9thyl\xE8ne pour les joueurs qui veulent prot\xE9ger leurs articulations sans se ruiner.",
@@ -49526,10 +49526,10 @@ var rackets_db_default = [
     womanLine: false,
     scores: {
       Puissance: 9.5,
-      Contr\u00F4le: 8,
-      Confort: 5.5,
-      Spin: 7.5,
-      Maniabilit\u00E9: 8,
+      Contr\u00F4le: 8.5,
+      Confort: 6,
+      Spin: 8,
+      Maniabilit\u00E9: 7.5,
       Tol\u00E9rance: 7
     },
     verdict: "Le fer de lance d'Oxdog. Diamant pur power avec surface sabl\xE9e, balance haute, toucher dur. Pour smasheurs confirm\xE9s qui veulent innovation su\xE9doise (PowerRibs, RBS \xB18g).",
@@ -49578,10 +49578,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 7,
       Contr\u00F4le: 8.5,
-      Confort: 7.5,
-      Spin: 7.5,
+      Confort: 7,
+      Spin: 8,
       Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 8.5
+      Tol\u00E9rance: 8
     },
     verdict: "Le polyvalent Oxdog. Goutte d'eau avec Side Ports a\xE9rodynamiques \u2014 rapide en d\xE9fense, puissant en attaque. Le meilleur compromis de la gamme su\xE9doise.",
     editorial: "La Hyper Pro 2.0 est le mod\xE8le le plus \xE9quilibr\xE9 d'Oxdog. Sa forme goutte d'eau avec balance haute offre un mix puissance/contr\xF4le convaincant. L'innovation cl\xE9 : les Side Ports, des perforations lat\xE9rales qui r\xE9duisent la r\xE9sistance \xE0 l'air et augmentent la vitesse du bras. Le Vibradamp \xE0 4 insertions silicone sous le grip prot\xE8ge le bras. DSH (Double Size Holes) am\xE9liore la jouabilit\xE9 hors sweet spot. RBS inclus pour personnalisation.",
@@ -49627,11 +49627,11 @@ var rackets_db_default = [
     player: "",
     womanLine: false,
     scores: {
-      Puissance: 6,
-      Contr\u00F4le: 8.5,
-      Confort: 8,
+      Puissance: 5.5,
+      Contr\u00F4le: 9,
+      Confort: 7.5,
       Spin: 8,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9
     },
     verdict: '"Potentiellement la ronde la plus rapide du monde" selon Oxdog. Contr\xF4le + balance \xE9tonnamment haute pour une ronde = d\xE9fense + capacit\xE9 offensive. Le Vibradamp prot\xE8ge le bras.',
@@ -49678,12 +49678,12 @@ var rackets_db_default = [
     player: "",
     womanLine: false,
     scores: {
-      Puissance: 7.5,
+      Puissance: 8,
       Contr\u00F4le: 8.5,
       Confort: 7,
-      Spin: 7.5,
-      Maniabilit\u00E9: 8,
-      Tol\u00E9rance: 7.5
+      Spin: 8,
+      Maniabilit\u00E9: 8.5,
+      Tol\u00E9rance: 7
     },
     verdict: "Diamant accessible. Balance moyen pour un diamant = plus de contr\xF4le et polyvalence qu'un Ultimate Pro+. Le pont entre puissance et ma\xEEtrise chez Oxdog.",
     editorial: "Le Tour X est le diamant polyvalent d'Oxdog. Contrairement au Pro+ (balance haute, toucher dur), le Tour X a un balance moyen qui le rend plus maniable et tol\xE9rant. C'est le meilleur choix pour qui veut la forme diamant Oxdog sans l'exigence technique du Pro+. Surface sabl\xE9e, HES Carbon, PowerRibs et RBS inclus. Un bon point d'entr\xE9e dans l'\xE9cosyst\xE8me offensif Oxdog.",
@@ -49731,7 +49731,7 @@ var rackets_db_default = [
     scores: {
       Puissance: 6,
       Contr\u00F4le: 9,
-      Confort: 8,
+      Confort: 7,
       Spin: 7,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9
@@ -49780,10 +49780,10 @@ var rackets_db_default = [
     player: "Bea Gonz\xE1lez",
     womanLine: false,
     scores: {
-      Puissance: 4.5,
+      Puissance: 5.5,
       Contr\u00F4le: 9.5,
       Confort: 9.5,
-      Spin: 6.5,
+      Spin: 7,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9.5
     },
@@ -49985,9 +49985,9 @@ var rackets_db_default = [
     womanLine: false,
     scores: {
       Puissance: 8.5,
-      Contr\u00F4le: 8.5,
+      Contr\u00F4le: 9,
       Confort: 7.5,
-      Spin: 7,
+      Spin: 7.5,
       Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7.5
     },
@@ -50037,8 +50037,8 @@ var rackets_db_default = [
     scores: {
       Puissance: 6.5,
       Contr\u00F4le: 9,
-      Confort: 8.5,
-      Spin: 7,
+      Confort: 8,
+      Spin: 7.5,
       Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 9
     },
@@ -50087,10 +50087,10 @@ var rackets_db_default = [
     womanLine: true,
     scores: {
       Puissance: 4,
-      Contr\u00F4le: 9.5,
+      Contr\u00F4le: 10,
       Confort: 9.5,
       Spin: 6,
-      Maniabilit\u00E9: 9,
+      Maniabilit\u00E9: 9.5,
       Tol\u00E9rance: 9.5
     },
     verdict: "La ML10 l\xE9g\xE8re. Version Silver (350-365g) du best-seller historique de Nox. Ronde, douce, maniable. Fiberglass Silver + HR3 Soft. Id\xE9ale femmes, seniors, bras sensibles. Prix accessible.",
@@ -50139,9 +50139,9 @@ var rackets_db_default = [
     scores: {
       Puissance: 7.5,
       Contr\u00F4le: 9,
-      Confort: 6.5,
+      Confort: 8,
       Spin: 8,
-      Maniabilit\u00E9: 8,
+      Maniabilit\u00E9: 8.5,
       Tol\u00E9rance: 8
     },
     verdict: "La raquette du n\xB01 mondial Agust\xEDn Tapia. 12K Alum Xtrem = rigidit\xE9 + stabilit\xE9 thermique. Weight Balance ajustable. Dual Spin double rugosit\xE9. Le sommet de la tech Nox 2026.",
@@ -50242,9 +50242,9 @@ var rackets_db_default = [
       Puissance: 5,
       Contr\u00F4le: 9.5,
       Confort: 9.5,
-      Spin: 7,
+      Spin: 6.5,
       Maniabilit\u00E9: 9.5,
-      Tol\u00E9rance: 9
+      Tol\u00E9rance: 9.5
     },
     verdict: "Le Carbon Force le plus l\xE9ger (355g). Goutte d'eau maniable, EVA Soft confort, sweet spot large. Le meilleur rapport qualit\xE9/prix Wilson pour femmes, seniors et d\xE9butants.",
     editorial: "Le Carbon Force LT (Light) est la version all\xE9g\xE9e du best-seller Wilson. \xC0 seulement 355g, c'est l'une des raquettes les plus maniables du march\xE9. EVA Soft pour le confort et l'absorption des chocs. Sweet spot large et tol\xE9rant. Tri-Hex Texture pour le spin. \xC0 80-130\u20AC, c'est un choix excellent pour la boutique club : accessible, confortable, et adapt\xE9 aux joueurs cherchant maniabilit\xE9 sans complexit\xE9.",
@@ -50292,9 +50292,9 @@ var rackets_db_default = [
     scores: {
       Puissance: 8.5,
       Contr\u00F4le: 8.5,
-      Confort: 8,
-      Spin: 6.5,
-      Maniabilit\u00E9: 7.5,
+      Confort: 8.5,
+      Spin: 7,
+      Maniabilit\u00E9: 8,
       Tol\u00E9rance: 7.5
     },
     verdict: 'Le diamant Veron pour attaquants flexibles. Carbon Flex = r\xE9activit\xE9 du carbone + souplesse du fiberglass. Vibrasorb SMAC pour le confort. Le pendant "souple" du Technical Viper.',
@@ -50341,11 +50341,11 @@ var rackets_db_default = [
     player: "",
     womanLine: false,
     scores: {
-      Puissance: 5.5,
+      Puissance: 6,
       Contr\u00F4le: 9,
-      Confort: 8.5,
-      Spin: 7,
-      Maniabilit\u00E9: 8.5,
+      Confort: 9.5,
+      Spin: 6.5,
+      Maniabilit\u00E9: 9,
       Tol\u00E9rance: 8.5
     },
     verdict: `Le Veron l\xE9ger et maniable. Goutte d'eau 355g, balance moyen, Carbon Flex dynamique. "Air Striker" \u2014 vitesse et agilit\xE9 pour dominer tout le court avec flexibilit\xE9.`,
@@ -50394,10 +50394,10 @@ var rackets_db_default = [
     scores: {
       Puissance: 4.5,
       Contr\u00F4le: 9.5,
-      Confort: 8.5,
+      Confort: 8,
       Spin: 6.5,
       Maniabilit\u00E9: 8.5,
-      Tol\u00E9rance: 9
+      Tol\u00E9rance: 9.5
     },
     verdict: 'Le "Counter Striker" Babolat. Ronde surdimensionn\xE9e, balance bas, X-EVA souple. Sweet spot \xE9largi + Vibrasorb = tol\xE9rance et confort maximum. Pour les d\xE9fenseurs qui retournent tout.',
     editorial: "Le Counter Veron 2025 est la raquette d\xE9fensive de la gamme Veron. Sa forme ronde surdimensionn\xE9e offre un sweet spot \xE9largi. Le X-EVA (basse densit\xE9) donne un toucher souple qui absorbe les chocs. Le Carbon Flex maintient une puissance dynamique pour la contre-attaque. Le Vibrasorb System SMAC prot\xE8ge le bras sur les retours puissants. Holes Pattern adapt\xE9 \xE0 la forme ronde pour pr\xE9cision. 3D Spin+ pour les effets d\xE9fensifs.",
