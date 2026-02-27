@@ -48454,9 +48454,25 @@
     } catch {
     }
     if (!Array.isArray(extra)) extra = [];
+    const extraMap = /* @__PURE__ */ new Map();
+    extra.forEach((r2) => extraMap.set(r2.id, r2));
     const map3 = /* @__PURE__ */ new Map();
-    rackets_db_default.forEach((r2) => map3.set(r2.id, r2));
-    extra.forEach((r2) => map3.set(r2.id, r2));
+    rackets_db_default.forEach((r2) => {
+      const ex = extraMap.get(r2.id);
+      if (ex) {
+        const merged = { ...r2 };
+        if (ex.editorial && (!r2.editorial || ex.editorial.length > r2.editorial.length)) merged.editorial = ex.editorial;
+        if (ex.techHighlights && ex.techHighlights.length > (r2.techHighlights || []).length) merged.techHighlights = ex.techHighlights;
+        if (ex.targetProfile && (!r2.targetProfile || ex.targetProfile.length > r2.targetProfile.length)) merged.targetProfile = ex.targetProfile;
+        if (ex.imageUrl && !r2.imageUrl) merged.imageUrl = ex.imageUrl;
+        map3.set(r2.id, merged);
+      } else {
+        map3.set(r2.id, r2);
+      }
+    });
+    extra.forEach((r2) => {
+      if (!map3.has(r2.id)) map3.set(r2.id, r2);
+    });
     return [...map3.values()];
   }
   var SB_URL = "https://nvomaxjyhuemdfvhzcbf.supabase.co/rest/v1";

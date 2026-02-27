@@ -10,9 +10,25 @@ function getMergedDB() {
   let extra = [];
   try { extra = JSON.parse(localStorage.getItem('padel_db_extra') || '[]'); } catch {}
   if (!Array.isArray(extra)) extra = [];
+  const extraMap = new Map();
+  extra.forEach(r => extraMap.set(r.id, r));
   const map = new Map();
-  RACKETS_DB.forEach(r => map.set(r.id, r));
-  extra.forEach(r => map.set(r.id, r)); // extras override static
+  RACKETS_DB.forEach(r => {
+    const ex = extraMap.get(r.id);
+    if (ex) {
+      // Static DB wins for scores, but take richer content from extras
+      const merged = { ...r };
+      if (ex.editorial && (!r.editorial || ex.editorial.length > r.editorial.length)) merged.editorial = ex.editorial;
+      if (ex.techHighlights && ex.techHighlights.length > (r.techHighlights || []).length) merged.techHighlights = ex.techHighlights;
+      if (ex.targetProfile && (!r.targetProfile || ex.targetProfile.length > r.targetProfile.length)) merged.targetProfile = ex.targetProfile;
+      if (ex.imageUrl && !r.imageUrl) merged.imageUrl = ex.imageUrl;
+      map.set(r.id, merged);
+    } else {
+      map.set(r.id, r);
+    }
+  });
+  // Add extras that don't exist in static DB (new imports)
+  extra.forEach(r => { if (!map.has(r.id)) map.set(r.id, r); });
   return [...map.values()];
 }
 
