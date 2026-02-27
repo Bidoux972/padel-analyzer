@@ -1353,6 +1353,8 @@ export default function PadelAnalyzer() {
   const [adminEditRacket, setAdminEditRacket] = useState(null);
   const [adminLoading, setAdminLoading] = useState(false);
   const [adminMsg, setAdminMsg] = useState("");
+  const [adminFamiliesLoaded, setAdminFamiliesLoaded] = useState(false);
+  const [adminStatsLoaded, setAdminStatsLoaded] = useState(false);
 
   // Cloud sync: load profiles from Supabase when family code changes
   useEffect(()=>{
@@ -2442,9 +2444,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           setAdminLoading(true);
           try {
             const data = await adminListFamilies(familyCode);
-            setAdminFamilies(data||[]);
+            setAdminFamilies(Array.isArray(data) ? data : []);
           } catch(e) { setAdminMsg("Erreur: "+e.message); }
           setAdminLoading(false);
+          setAdminFamiliesLoaded(true);
         };
         const loadStats = async () => {
           setAdminLoading(true);
@@ -2453,6 +2456,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             setAdminStats(data);
           } catch(e) { setAdminMsg("Erreur: "+e.message); }
           setAdminLoading(false);
+          setAdminStatsLoaded(true);
         };
         const expandFamily = async (code) => {
           if (adminExpandedFamily === code) { setAdminExpandedFamily(null); return; }
@@ -2510,9 +2514,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           setAdminLoading(false);
         };
 
-        // Auto-load on tab change
-        if (adminTab === "families" && adminFamilies.length === 0 && !adminLoading) loadFamilies();
-        if (adminTab === "stats" && !adminStats && !adminLoading) loadStats();
+        // Auto-load on tab change (once only)
+        if (adminTab === "families" && !adminFamiliesLoaded && !adminLoading) loadFamilies();
+        if (adminTab === "stats" && !adminStatsLoaded && !adminLoading) loadStats();
 
         // Filtered rackets for admin view
         const allRackets = RACKETS_DB;
@@ -2545,7 +2549,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div style={{display:"flex",gap:8,marginBottom:20}}>
             <button onClick={()=>setAdminTab("families")} style={tabStyle(adminTab==="families")}>👥 Familles & Profils</button>
             <button onClick={()=>setAdminTab("rackets")} style={tabStyle(adminTab==="rackets")}>🏓 Raquettes</button>
-            <button onClick={()=>{setAdminTab("stats");setAdminStats(null);}} style={tabStyle(adminTab==="stats")}>📊 Statistiques</button>
+            <button onClick={()=>{setAdminTab("stats");setAdminStats(null);setAdminStatsLoaded(false);}} style={tabStyle(adminTab==="stats")}>📊 Statistiques</button>
           </div>
 
           {/* Status message */}
@@ -2560,7 +2564,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {adminTab==="families"&&!adminLoading&&<div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
               <span style={{fontSize:12,color:"#94a3b8",fontWeight:600}}>{adminFamilies.length} famille(s)</span>
-              <button onClick={()=>{setAdminFamilies([]);loadFamilies();}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"4px 10px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit"}}>🔄 Rafraîchir</button>
+              <button onClick={()=>{setAdminFamilies([]);setAdminFamiliesLoaded(false);}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"4px 10px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit"}}>🔄 Rafraîchir</button>
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {adminFamilies.map(fam=>(
@@ -2601,8 +2605,32 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                               {d.level||"—"} · {d.hand||"—"} · Côté {d.side||"—"}
                               {d.styleTags&&d.styleTags.length>0&&<span> · {d.styleTags.slice(0,3).join(", ")}</span>}
                             </div>
+                            {d.priorityTags&&d.priorityTags.length>0&&<div style={{fontSize:9,color:"#f97316",marginTop:2}}>Priorités: {d.priorityTags.slice(0,4).join(", ")}</div>}
+                            {d.injuryTags&&d.injuryTags.filter(t=>t!=="aucune").length>0&&<div style={{fontSize:9,color:"#ef4444",marginTop:1}}>🩹 {d.injuryTags.filter(t=>t!=="aucune").join(", ")}</div>}
                           </div>
-                          <div style={{fontSize:9,color:"#475569"}}>{p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):""}</div>
+                          <div style={{display:"flex",gap:4,flexShrink:0,alignItems:"center"}}>
+                            <button onClick={()=>{
+                              // "Voir comme" — charger ce profil et afficher le dashboard
+                              setProfile(d);
+                              setProfileName(p.name);
+                              setScreen("dashboard");
+                            }} style={{padding:"4px 8px",background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:6,color:"#f97316",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Voir comme ce joueur">
+                              👁️ Voir
+                            </button>
+                            <button onClick={async ()=>{
+                              if(!confirm(`Supprimer le profil "${p.name}" de ${fam.code} ?`)) return;
+                              try {
+                                await sbDelete('profiles', `id=eq.${p.id}`);
+                                setAdminMsg(`✅ Profil "${p.name}" supprimé`);
+                                // Reload profiles
+                                const profiles = await adminLoadFamilyProfiles(familyCode, fam.code);
+                                setAdminFamilyProfiles(profiles||[]);
+                              } catch(e) { setAdminMsg("Erreur: "+e.message); }
+                            }} style={{padding:"4px 8px",background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:6,color:"#ef4444",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Supprimer ce profil">
+                              🗑️
+                            </button>
+                            <div style={{fontSize:9,color:"#475569",marginLeft:4}}>{p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):""}</div>
+                          </div>
                         </div>
                       );
                     })}
@@ -2614,6 +2642,102 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* ====== TAB: RACKETS ====== */}
           {adminTab==="rackets"&&!adminLoading&&<div>
+            {/* Edit/Add form */}
+            {adminEditRacket&&(()=>{
+              const er = adminEditRacket;
+              const setField = (k,v) => setAdminEditRacket({...er, [k]:v});
+              const setScore = (k,v) => setAdminEditRacket({...er, scores:{...(er.scores||{}), [k]:parseFloat(v)||0}});
+              const inputS = {padding:"7px 10px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:7,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none",width:"100%",boxSizing:"border-box"};
+              const labelS = {fontSize:9,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:3,display:"block"};
+              const cellS = {flex:"1 1 140px",minWidth:0};
+              return (
+              <div style={{background:"rgba(168,85,247,0.05)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:16,padding:"20px",marginBottom:16,animation:"fadeIn 0.3s ease"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                  <h3 style={{fontSize:14,fontWeight:700,color:"#c084fc",margin:0}}>{er._isNew?"➕ Nouvelle raquette":"✏️ Modifier: "+er.name}</h3>
+                  <button onClick={()=>setAdminEditRacket(null)} style={{background:"none",border:"none",color:"#64748b",fontSize:16,cursor:"pointer"}}>✕</button>
+                </div>
+                {/* Row 1: identité */}
+                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
+                  <div style={cellS}><label style={labelS}>ID (unique)</label><input value={er.id||""} onChange={e=>setField("id",e.target.value)} style={inputS} placeholder="marque-modele-2026"/></div>
+                  <div style={cellS}><label style={labelS}>Nom complet</label><input value={er.name||""} onChange={e=>setField("name",e.target.value)} style={inputS} placeholder="Babolat Viper 2026"/></div>
+                  <div style={cellS}><label style={labelS}>Nom court</label><input value={er.short_name||""} onChange={e=>setField("short_name",e.target.value)} style={inputS} placeholder="Viper 2026"/></div>
+                </div>
+                {/* Row 2: marque, catégorie */}
+                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
+                  <div style={cellS}><label style={labelS}>Marque</label><input value={er.brand||""} onChange={e=>setField("brand",e.target.value)} style={inputS} placeholder="Babolat"/></div>
+                  <div style={cellS}><label style={labelS}>Catégorie</label>
+                    <select value={er.category||"intermediaire"} onChange={e=>setField("category",e.target.value)} style={inputS}>
+                      <option value="debutant">Débutant</option><option value="intermediaire">Intermédiaire</option>
+                      <option value="avance">Avancé</option><option value="expert">Expert</option><option value="junior">Junior</option>
+                    </select>
+                  </div>
+                  <div style={cellS}><label style={labelS}>Année</label><input type="number" value={er.year||2026} onChange={e=>setField("year",parseInt(e.target.value)||2026)} style={inputS}/></div>
+                </div>
+                {/* Row 3: specs physiques */}
+                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
+                  <div style={cellS}><label style={labelS}>Forme</label>
+                    <select value={er.shape||"Diamant"} onChange={e=>setField("shape",e.target.value)} style={inputS}>
+                      <option value="Diamant">Diamant</option><option value="Goutte d'eau">Goutte d'eau</option>
+                      <option value="Ronde">Ronde</option><option value="Hybride">Hybride</option>
+                    </select>
+                  </div>
+                  <div style={cellS}><label style={labelS}>Poids</label><input value={er.weight||""} onChange={e=>setField("weight",e.target.value)} style={inputS} placeholder="360-375g"/></div>
+                  <div style={cellS}><label style={labelS}>Balance</label><input value={er.balance||""} onChange={e=>setField("balance",e.target.value)} style={inputS} placeholder="Haute"/></div>
+                  <div style={cellS}><label style={labelS}>Surface</label><input value={er.surface||""} onChange={e=>setField("surface",e.target.value)} style={inputS} placeholder="Carbon 18K"/></div>
+                  <div style={cellS}><label style={labelS}>Noyau</label><input value={er.core||""} onChange={e=>setField("core",e.target.value)} style={inputS} placeholder="Hard EVA"/></div>
+                </div>
+                {/* Row 4: prix, image, joueur */}
+                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
+                  <div style={cellS}><label style={labelS}>Prix</label><input value={er.price||""} onChange={e=>setField("price",e.target.value)} style={inputS} placeholder="300-400€"/></div>
+                  <div style={cellS}><label style={labelS}>Joueur pro</label><input value={er.player||""} onChange={e=>setField("player",e.target.value)} style={inputS} placeholder="Lebrón"/></div>
+                  <div style={{flex:"2 1 280px",minWidth:0}}><label style={labelS}>Image URL</label><input value={er.image_url||""} onChange={e=>setField("image_url",e.target.value)} style={inputS} placeholder="https://..."/></div>
+                </div>
+                {/* Row 5: Scores */}
+                <div style={{marginBottom:8}}>
+                  <label style={{...labelS,marginBottom:6}}>Scores (0-10)</label>
+                  <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                    {["Puissance","Contrôle","Confort","Spin","Maniabilité","Tolérance"].map(attr=>(
+                      <div key={attr} style={{flex:"1 1 80px"}}>
+                        <label style={{fontSize:8,color:"#64748b"}}>{attr}</label>
+                        <input type="number" step="0.5" min="0" max="10" value={(er.scores||{})[attr]||""} onChange={e=>setScore(attr,e.target.value)} style={{...inputS,textAlign:"center"}}/>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* Row 6: textes */}
+                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
+                  <div style={{flex:"1 1 100%"}}><label style={labelS}>Verdict (1 ligne)</label><input value={er.verdict||""} onChange={e=>setField("verdict",e.target.value)} style={inputS}/></div>
+                </div>
+                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
+                  <div style={{flex:"1 1 100%"}}><label style={labelS}>Profil cible</label><input value={er.target_profile||""} onChange={e=>setField("target_profile",e.target.value)} style={inputS} placeholder="Joueurs experts offensifs"/></div>
+                </div>
+                <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+                  <div style={{flex:"1 1 100%"}}><label style={labelS}>Éditorial (texte long)</label><textarea value={er.editorial||""} onChange={e=>setField("editorial",e.target.value)} rows={3} style={{...inputS,resize:"vertical"}}/></div>
+                </div>
+                {/* Checkboxes */}
+                <div style={{display:"flex",gap:16,marginBottom:14}}>
+                  <label style={{fontSize:11,color:"#94a3b8",cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
+                    <input type="checkbox" checked={er.junior||false} onChange={e=>setField("junior",e.target.checked)}/> Junior
+                  </label>
+                  <label style={{fontSize:11,color:"#94a3b8",cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
+                    <input type="checkbox" checked={er.woman_line||false} onChange={e=>setField("woman_line",e.target.checked)}/> Ligne femme
+                  </label>
+                </div>
+                {/* Actions */}
+                <div style={{display:"flex",gap:8}}>
+                  <button onClick={()=>{
+                    if(!er.id||!er.name||!er.brand){setAdminMsg("⚠️ ID, Nom et Marque obligatoires");return;}
+                    handleSaveRacket(er);
+                  }} style={{padding:"10px 24px",background:"linear-gradient(135deg,rgba(168,85,247,0.25),rgba(99,102,241,0.2))",border:"1px solid rgba(168,85,247,0.4)",borderRadius:10,color:"#c084fc",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                    💾 Sauvegarder
+                  </button>
+                  <button onClick={()=>setAdminEditRacket(null)} style={{padding:"10px 24px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,color:"#64748b",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
+                    Annuler
+                  </button>
+                </div>
+              </div>);
+            })()}
+
             {/* Search + Filter bar */}
             <div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap"}}>
               <input value={adminRacketSearch} onChange={e=>setAdminRacketSearch(e.target.value)} placeholder="Rechercher nom ou marque…" style={{flex:"1 1 200px",padding:"8px 12px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none"}}/>
@@ -2621,6 +2745,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <option value="all">Toutes marques</option>
                 {brands.map(b=><option key={b} value={b}>{b}</option>)}
               </select>
+              <button onClick={()=>setAdminEditRacket({_isNew:true, year:2026, category:"intermediaire", shape:"Diamant", scores:{}, is_active:true})} style={{padding:"8px 14px",background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:8,color:"#c084fc",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>➕ Nouvelle raquette</button>
               <button onClick={()=>{
                 const json = prompt("Coller le JSON des raquettes à importer:");
                 if(json) handleImportJSON(json);
@@ -2640,7 +2765,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </div>
                   <div style={{fontSize:9,color:"#64748b",flexShrink:0}}>{r.price||"—"}</div>
                   <div style={{display:"flex",gap:4,flexShrink:0}}>
-                    <button onClick={()=>handleToggleRacket(r.id)} style={{padding:"4px 8px",background: "rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Activer/Désactiver">
+                    <button onClick={()=>setAdminEditRacket({
+                      ...r, short_name:r.shortName, image_url:r.imageUrl, target_profile:r.targetProfile,
+                      tech_highlights:r.techHighlights, woman_line:r.womanLine, pro_player_info:r.proPlayerInfo
+                    })} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Modifier">
+                      ✏️
+                    </button>
+                    <button onClick={()=>handleToggleRacket(r.id)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Activer/Désactiver">
                       {r.is_active===false?"🔴":"🟢"}
                     </button>
                   </div>

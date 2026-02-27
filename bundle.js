@@ -62689,21 +62689,176 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                           " \xB7 ",
                           d.styleTags.slice(0, 3).join(", ")
                         ] })
+                      ] }),
+                      d.priorityTags && d.priorityTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "#f97316", marginTop: 2 }, children: [
+                        "Priorit\xE9s: ",
+                        d.priorityTags.slice(0, 4).join(", ")
+                      ] }),
+                      d.injuryTags && d.injuryTags.filter((t) => t !== "aucune").length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "#ef4444", marginTop: 1 }, children: [
+                        "\u{1FA79} ",
+                        d.injuryTags.filter((t) => t !== "aucune").join(", ")
                       ] })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#475569" }, children: p.updated_at ? new Date(p.updated_at).toLocaleDateString("fr-FR") : "" })
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 4, flexShrink: 0, alignItems: "center" }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+                        setProfile(d);
+                        setProfileName(p.name);
+                        setScreen("dashboard");
+                      }, style: { padding: "4px 8px", background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 6, color: "#f97316", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, title: "Voir comme ce joueur", children: "\u{1F441}\uFE0F Voir" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: async () => {
+                        if (!confirm(`Supprimer le profil "${p.name}" de ${fam.code} ?`)) return;
+                        try {
+                          await sbDelete("profiles", `id=eq.${p.id}`);
+                          setAdminMsg(`\u2705 Profil "${p.name}" supprim\xE9`);
+                          const profiles = await adminLoadFamilyProfiles(familyCode, fam.code);
+                          setAdminFamilyProfiles(profiles || []);
+                        } catch (e) {
+                          setAdminMsg("Erreur: " + e.message);
+                        }
+                      }, style: { padding: "4px 8px", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 6, color: "#ef4444", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, title: "Supprimer ce profil", children: "\u{1F5D1}\uFE0F" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#475569", marginLeft: 4 }, children: p.updated_at ? new Date(p.updated_at).toLocaleDateString("fr-FR") : "" })
+                    ] })
                   ] }, p.id);
                 })
               ] })
             ] }, fam.code)) })
           ] }),
           adminTab === "rackets" && !adminLoading && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+            adminEditRacket && (() => {
+              const er = adminEditRacket;
+              const setField = (k2, v) => setAdminEditRacket({ ...er, [k2]: v });
+              const setScore = (k2, v) => setAdminEditRacket({ ...er, scores: { ...er.scores || {}, [k2]: parseFloat(v) || 0 } });
+              const inputS = { padding: "7px 10px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 7, color: "#e2e8f0", fontSize: 11, fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" };
+              const labelS = { fontSize: 9, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 3, display: "block" };
+              const cellS = { flex: "1 1 140px", minWidth: 0 };
+              return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(168,85,247,0.05)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: 16, padding: "20px", marginBottom: 16, animation: "fadeIn 0.3s ease" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { style: { fontSize: 14, fontWeight: 700, color: "#c084fc", margin: 0 }, children: er._isNew ? "\u2795 Nouvelle raquette" : "\u270F\uFE0F Modifier: " + er.name }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminEditRacket(null), style: { background: "none", border: "none", color: "#64748b", fontSize: 16, cursor: "pointer" }, children: "\u2715" })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "ID (unique)" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.id || "", onChange: (e) => setField("id", e.target.value), style: inputS, placeholder: "marque-modele-2026" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Nom complet" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.name || "", onChange: (e) => setField("name", e.target.value), style: inputS, placeholder: "Babolat Viper 2026" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Nom court" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.short_name || "", onChange: (e) => setField("short_name", e.target.value), style: inputS, placeholder: "Viper 2026" })
+                  ] })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Marque" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.brand || "", onChange: (e) => setField("brand", e.target.value), style: inputS, placeholder: "Babolat" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Cat\xE9gorie" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: er.category || "intermediaire", onChange: (e) => setField("category", e.target.value), style: inputS, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "debutant", children: "D\xE9butant" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "intermediaire", children: "Interm\xE9diaire" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "avance", children: "Avanc\xE9" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "expert", children: "Expert" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "junior", children: "Junior" })
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Ann\xE9e" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", value: er.year || 2026, onChange: (e) => setField("year", parseInt(e.target.value) || 2026), style: inputS })
+                  ] })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Forme" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: er.shape || "Diamant", onChange: (e) => setField("shape", e.target.value), style: inputS, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "Diamant", children: "Diamant" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "Goutte d'eau", children: "Goutte d'eau" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "Ronde", children: "Ronde" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "Hybride", children: "Hybride" })
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Poids" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.weight || "", onChange: (e) => setField("weight", e.target.value), style: inputS, placeholder: "360-375g" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Balance" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.balance || "", onChange: (e) => setField("balance", e.target.value), style: inputS, placeholder: "Haute" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Surface" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.surface || "", onChange: (e) => setField("surface", e.target.value), style: inputS, placeholder: "Carbon 18K" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Noyau" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.core || "", onChange: (e) => setField("core", e.target.value), style: inputS, placeholder: "Hard EVA" })
+                  ] })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Prix" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.price || "", onChange: (e) => setField("price", e.target.value), style: inputS, placeholder: "300-400\u20AC" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: cellS, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Joueur pro" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.player || "", onChange: (e) => setField("player", e.target.value), style: inputS, placeholder: "Lebr\xF3n" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: "2 1 280px", minWidth: 0 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Image URL" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.image_url || "", onChange: (e) => setField("image_url", e.target.value), style: inputS, placeholder: "https://..." })
+                  ] })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 8 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { ...labelS, marginBottom: 6 }, children: "Scores (0-10)" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" }, children: ["Puissance", "Contr\xF4le", "Confort", "Spin", "Maniabilit\xE9", "Tol\xE9rance"].map((attr) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: "1 1 80px" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { fontSize: 8, color: "#64748b" }, children: attr }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "number", step: "0.5", min: "0", max: "10", value: (er.scores || {})[attr] || "", onChange: (e) => setScore(attr, e.target.value), style: { ...inputS, textAlign: "center" } })
+                  ] }, attr)) })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: "1 1 100%" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Verdict (1 ligne)" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.verdict || "", onChange: (e) => setField("verdict", e.target.value), style: inputS })
+                ] }) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: "1 1 100%" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "Profil cible" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: er.target_profile || "", onChange: (e) => setField("target_profile", e.target.value), style: inputS, placeholder: "Joueurs experts offensifs" })
+                ] }) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: "1 1 100%" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelS, children: "\xC9ditorial (texte long)" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", { value: er.editorial || "", onChange: (e) => setField("editorial", e.target.value), rows: 3, style: { ...inputS, resize: "vertical" } })
+                ] }) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 16, marginBottom: 14 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { style: { fontSize: 11, color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "checkbox", checked: er.junior || false, onChange: (e) => setField("junior", e.target.checked) }),
+                    " Junior"
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { style: { fontSize: 11, color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { type: "checkbox", checked: er.woman_line || false, onChange: (e) => setField("woman_line", e.target.checked) }),
+                    " Ligne femme"
+                  ] })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+                    if (!er.id || !er.name || !er.brand) {
+                      setAdminMsg("\u26A0\uFE0F ID, Nom et Marque obligatoires");
+                      return;
+                    }
+                    handleSaveRacket(er);
+                  }, style: { padding: "10px 24px", background: "linear-gradient(135deg,rgba(168,85,247,0.25),rgba(99,102,241,0.2))", border: "1px solid rgba(168,85,247,0.4)", borderRadius: 10, color: "#c084fc", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }, children: "\u{1F4BE} Sauvegarder" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminEditRacket(null), style: { padding: "10px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, color: "#64748b", fontSize: 12, cursor: "pointer", fontFamily: "inherit" }, children: "Annuler" })
+                ] })
+              ] });
+            })(),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: adminRacketSearch, onChange: (e) => setAdminRacketSearch(e.target.value), placeholder: "Rechercher nom ou marque\u2026", style: { flex: "1 1 200px", padding: "8px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#e2e8f0", fontSize: 11, fontFamily: "inherit", outline: "none" } }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: adminRacketFilter, onChange: (e) => setAdminRacketFilter(e.target.value), style: { padding: "8px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#e2e8f0", fontSize: 11, fontFamily: "inherit", outline: "none" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "all", children: "Toutes marques" }),
                 brands.map((b) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: b, children: b }, b))
               ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminEditRacket({ _isNew: true, year: 2026, category: "intermediaire", shape: "Diamant", scores: {}, is_active: true }), style: { padding: "8px 14px", background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 8, color: "#c084fc", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }, children: "\u2795 Nouvelle raquette" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
                 const json = prompt("Coller le JSON des raquettes \xE0 importer:");
                 if (json) handleImportJSON(json);
@@ -62732,7 +62887,18 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   ] })
                 ] }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#64748b", flexShrink: 0 }, children: r2.price || "\u2014" }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 4, flexShrink: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => handleToggleRacket(r2.id), style: { padding: "4px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, color: "#64748b", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, title: "Activer/D\xE9sactiver", children: r2.is_active === false ? "\u{1F534}" : "\u{1F7E2}" }) })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 4, flexShrink: 0 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminEditRacket({
+                    ...r2,
+                    short_name: r2.shortName,
+                    image_url: r2.imageUrl,
+                    target_profile: r2.targetProfile,
+                    tech_highlights: r2.techHighlights,
+                    woman_line: r2.womanLine,
+                    pro_player_info: r2.proPlayerInfo
+                  }), style: { padding: "4px 8px", background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: 6, color: "#c084fc", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, title: "Modifier", children: "\u270F\uFE0F" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => handleToggleRacket(r2.id), style: { padding: "4px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, color: "#64748b", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, title: "Activer/D\xE9sactiver", children: r2.is_active === false ? "\u{1F534}" : "\u{1F7E2}" })
+                ] })
               ] }, r2.id)),
               filteredRackets.length > 50 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#475569", textAlign: "center", marginTop: 8 }, children: "Affichage limit\xE9 \xE0 50 \u2014 affinez votre recherche" })
             ] })
