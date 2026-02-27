@@ -37588,7 +37588,7 @@
       year: 2025,
       category: "avance",
       scores: {
-        Puissance: 7,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 7.9,
         Spin: 7.8,
@@ -37684,7 +37684,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.2,
@@ -38021,7 +38021,7 @@
       year: 2026,
       category: "avance",
       scores: {
-        Puissance: 7,
+        Puissance: 7.5,
         Contr\u00F4le: 9.5,
         Confort: 9.2,
         Spin: 7.8,
@@ -38072,7 +38072,7 @@
       year: 2026,
       category: "expert",
       scores: {
-        Puissance: 7.4,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 8.2,
         Spin: 8.1,
@@ -38310,7 +38310,7 @@
       year: 2026,
       category: "debutant",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.2,
@@ -38355,7 +38355,7 @@
       year: 2026,
       category: "debutant",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.5,
@@ -38450,7 +38450,7 @@
       year: 2026,
       category: "avance",
       scores: {
-        Puissance: 6.6,
+        Puissance: 7.5,
         Contr\u00F4le: 9.5,
         Confort: 9,
         Spin: 7.8,
@@ -38946,7 +38946,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.2,
@@ -39777,7 +39777,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.9,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.2,
@@ -41042,7 +41042,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.2,
@@ -41457,7 +41457,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.9,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9,
         Spin: 7.5,
@@ -41592,7 +41592,7 @@
       year: 2025,
       category: "avance",
       scores: {
-        Puissance: 7.2,
+        Puissance: 7.5,
         Contr\u00F4le: 9.5,
         Confort: 9.2,
         Spin: 7.8,
@@ -41696,7 +41696,7 @@
       year: 2025,
       category: "junior",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.5,
         Confort: 9.5,
         Spin: 7.2,
@@ -41787,7 +41787,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 8,
+        Puissance: 8.4,
         Contr\u00F4le: 8,
         Confort: 7.4,
         Spin: 7.5,
@@ -42548,7 +42548,7 @@
       year: 2026,
       category: "avance",
       scores: {
-        Puissance: 7.4,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 9,
         Spin: 7.5,
@@ -42888,7 +42888,7 @@
       year: 2026,
       category: "avance",
       scores: {
-        Puissance: 8.3,
+        Puissance: 8.4,
         Contr\u00F4le: 8.4,
         Confort: 7.4,
         Spin: 7.8,
@@ -43170,7 +43170,7 @@
       year: 2025,
       category: "avance",
       scores: {
-        Puissance: 7.4,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 7.4,
         Spin: 8.1,
@@ -43396,7 +43396,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.9,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.2,
@@ -44036,7 +44036,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.2,
@@ -44557,7 +44557,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.9,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.2,
@@ -44875,7 +44875,7 @@
       year: 2025,
       category: "debutant",
       scores: {
-        Puissance: 5.9,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.2,
@@ -45007,7 +45007,7 @@
       core: "Soft EVA",
       description: "Ronde d\xE9butante confort. Ergoholes sweet spot \xE9largi + Handlesafety. L\xE9g\xE8re et tol\xE9rante.",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.2,
@@ -45052,7 +45052,7 @@
       core: "Pro-Touch EVA",
       description: "Ronde contr\xF4le Lethal Weapon. Summum grip + Slice Texture. Pr\xE9cision d\xE9fensive pour tacticiens.",
       scores: {
-        Puissance: 7.1,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 8,
         Spin: 7.8,
@@ -45426,7 +45426,7 @@
       core: "Soft EVA",
       description: "Ronde confort-first pour d\xE9butants. Fibre de verre + EVA souple. Timing facile, l\xE9g\xE8re, gateway Wilson.",
       scores: {
-        Puissance: 5.5,
+        Puissance: 6,
         Contr\u00F4le: 9.5,
         Confort: 9.5,
         Spin: 7.2,
@@ -45707,7 +45707,7 @@
       core: "Dense EVA",
       description: "Ronde pr\xE9cision chirurgicale. Sweet spot central, r\xE9ponse crisp. Pour constructeurs de points tactiques.",
       scores: {
-        Puissance: 7.1,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 7.6,
         Spin: 7.8,
@@ -46102,7 +46102,7 @@
       category: "avance",
       womanLine: true,
       scores: {
-        Puissance: 7.1,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 8.3,
         Spin: 7.8,
@@ -46253,7 +46253,7 @@
       category: "intermediaire",
       womanLine: true,
       scores: {
-        Puissance: 5.5,
+        Puissance: 6.5,
         Contr\u00F4le: 9.5,
         Confort: 9.5,
         Spin: 7.5,
@@ -46304,7 +46304,7 @@
       category: "intermediaire",
       womanLine: true,
       scores: {
-        Puissance: 6.8,
+        Puissance: 7,
         Contr\u00F4le: 8.8,
         Confort: 9.5,
         Spin: 7.5,
@@ -46404,7 +46404,7 @@
       year: 2025,
       category: "intermediaire",
       scores: {
-        Puissance: 6.8,
+        Puissance: 7,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.5,
@@ -46454,7 +46454,7 @@
       year: 2026,
       category: "intermediaire",
       scores: {
-        Puissance: 6.8,
+        Puissance: 7,
         Contr\u00F4le: 8.8,
         Confort: 8.9,
         Spin: 7.5,
@@ -46554,7 +46554,7 @@
       year: 2025,
       category: "avance",
       scores: {
-        Puissance: 6.4,
+        Puissance: 7.5,
         Contr\u00F4le: 9.5,
         Confort: 8.9,
         Spin: 7.5,
@@ -46704,7 +46704,7 @@
       year: 2025,
       category: "avance",
       scores: {
-        Puissance: 6.8,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 8.9,
         Spin: 7.8,
@@ -46755,7 +46755,7 @@
       category: "avance",
       womanLine: true,
       scores: {
-        Puissance: 6.8,
+        Puissance: 7.5,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.8,
@@ -46805,7 +46805,7 @@
       year: 2025,
       category: "intermediaire",
       scores: {
-        Puissance: 6.4,
+        Puissance: 6.5,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.8,
@@ -47262,7 +47262,7 @@
       player: "",
       womanLine: true,
       scores: {
-        Puissance: 5.9,
+        Puissance: 6.5,
         Contr\u00F4le: 9.1,
         Confort: 9.5,
         Spin: 7.8,
@@ -47415,7 +47415,7 @@
       player: "Miguel Lamperti",
       womanLine: true,
       scores: {
-        Puissance: 5.5,
+        Puissance: 6.5,
         Contr\u00F4le: 9.5,
         Confort: 9.5,
         Spin: 7.2,
@@ -47517,7 +47517,7 @@
       player: "",
       womanLine: false,
       scores: {
-        Puissance: 6,
+        Puissance: 7,
         Contr\u00F4le: 9.5,
         Confort: 9.2,
         Spin: 7.8,
@@ -47568,7 +47568,7 @@
       player: "",
       womanLine: true,
       scores: {
-        Puissance: 6,
+        Puissance: 7,
         Contr\u00F4le: 9.5,
         Confort: 9.5,
         Spin: 7.8,
@@ -47670,7 +47670,7 @@
       player: "",
       womanLine: false,
       scores: {
-        Puissance: 6.6,
+        Puissance: 7,
         Contr\u00F4le: 9.1,
         Confort: 9.2,
         Spin: 7.5,
@@ -47721,7 +47721,7 @@
       player: "",
       womanLine: false,
       scores: {
-        Puissance: 5.5,
+        Puissance: 6.5,
         Contr\u00F4le: 9.5,
         Confort: 8.9,
         Spin: 7.8,
@@ -47971,7 +47971,7 @@
         Confort: 8.5,
         Contr\u00F4le: 9.5,
         Maniabilit\u00E9: 9.1,
-        Puissance: 7.3,
+        Puissance: 7.5,
         Spin: 7.8,
         Tol\u00E9rance: 8.8
       },
@@ -48003,7 +48003,7 @@
         Confort: 8.5,
         Contr\u00F4le: 7.4,
         Maniabilit\u00E9: 9.1,
-        Puissance: 5.5,
+        Puissance: 6,
         Spin: 6,
         Tol\u00E9rance: 9.2
       },
@@ -48134,7 +48134,7 @@
         Confort: 7.8,
         Contr\u00F4le: 9.5,
         Maniabilit\u00E9: 7.8,
-        Puissance: 7.3,
+        Puissance: 7.5,
         Spin: 8,
         Tol\u00E9rance: 8.8
       },
@@ -48169,7 +48169,7 @@
         Confort: 8.5,
         Contr\u00F4le: 9.5,
         Maniabilit\u00E9: 8.2,
-        Puissance: 6.1,
+        Puissance: 7.5,
         Spin: 7.5,
         Tol\u00E9rance: 9.2
       },
@@ -48268,7 +48268,7 @@
         Confort: 8,
         Contr\u00F4le: 7,
         Maniabilit\u00E9: 8,
-        Puissance: 8.2,
+        Puissance: 8.5,
         Spin: 7.5,
         Tol\u00E9rance: 7.1
       },
@@ -48300,7 +48300,7 @@
         Confort: 9.1,
         Contr\u00F4le: 9,
         Maniabilit\u00E9: 9.5,
-        Puissance: 5.5,
+        Puissance: 6.5,
         Spin: 7,
         Tol\u00E9rance: 9.1
       },
