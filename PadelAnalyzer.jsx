@@ -1,63 +1,19 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend,
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
 } from "recharts";
-import RACKETS_DB_FALLBACK from "./rackets-db.json";
+import RACKETS_DB from "./rackets-db.json";
 
-// ==================== RACKETS DB — Dynamic loading with fallback ====================
-let RACKETS_DB = [...RACKETS_DB_FALLBACK];
-
-const RACKETS_CACHE_KEY = 'padel_rackets_db_cache';
-const RACKETS_CACHE_TS_KEY = 'padel_rackets_db_cache_ts';
-const RACKETS_CACHE_TTL = 1000 * 60 * 30; // 30 minutes
-
-function mapRacketFromDB(row) {
-  return {
-    id: row.id,
-    name: row.name,
-    shortName: row.short_name || row.name.slice(0, 28),
-    brand: row.brand,
-    shape: row.shape,
-    weight: row.weight,
-    balance: row.balance,
-    surface: row.surface,
-    core: row.core,
-    antivib: row.antivib || "—",
-    price: row.price || "—",
-    player: row.player || "—",
-    imageUrl: row.image_url || null,
-    year: row.year,
-    category: row.category,
-    scores: row.scores || {},
-    verdict: row.verdict || "",
-    editorial: row.editorial || "",
-    techHighlights: row.tech_highlights || [],
-    targetProfile: row.target_profile || "",
-    junior: row.junior || false,
-    womanLine: row.woman_line || false,
-    description: row.description || undefined,
-    proPlayerInfo: row.pro_player_info || undefined,
-  };
-}
-
-function loadRacketsFromCache() {
-  try {
-    const ts = parseInt(localStorage.getItem(RACKETS_CACHE_TS_KEY) || '0');
-    if (Date.now() - ts > RACKETS_CACHE_TTL) return null;
-    const raw = localStorage.getItem(RACKETS_CACHE_KEY);
-    if (!raw) return null;
-    const arr = JSON.parse(raw);
-    if (Array.isArray(arr) && arr.length > 100) return arr;
-    return null;
-  } catch { return null; }
-}
-
-function saveRacketsToCache(rackets) {
-  try {
-    localStorage.setItem(RACKETS_CACHE_KEY, JSON.stringify(rackets));
-    localStorage.setItem(RACKETS_CACHE_TS_KEY, String(Date.now()));
-  } catch {}
+// Merged DB: RACKETS_DB + extras, dédupliqué par ID (extras override static)
+function getMergedDB() {
+  let extra = [];
+  try { extra = JSON.parse(localStorage.getItem('padel_db_extra') || '[]'); } catch {}
+  if (!Array.isArray(extra)) extra = [];
+  const map = new Map();
+  RACKETS_DB.forEach(r => map.set(r.id, r));
+  extra.forEach(r => map.set(r.id, r)); // extras override static
+  return [...map.values()];
 }
 
 // ==================== SUPABASE REST API (no SDK needed) ====================
@@ -93,33 +49,6 @@ async function sbPatch(table, query, data) {
 }
 
 // ==================== SUPABASE HELPERS ====================
-
-async function loadRacketsFromSupabase() {
-  try {
-    const rows = await sbGet('rackets', 'is_active=eq.true&order=brand,name&limit=1000');
-    if (!Array.isArray(rows) || rows.length < 10) {
-      throw new Error(`Unexpected: only ${rows?.length || 0} rackets returned`);
-    }
-    const mapped = rows.map(mapRacketFromDB);
-    RACKETS_DB.length = 0;
-    RACKETS_DB.push(...mapped);
-    saveRacketsToCache(mapped);
-    console.log(`[RacketsDB] ✅ ${mapped.length} raquettes chargées depuis Supabase`);
-    return { source: 'supabase', count: mapped.length };
-  } catch (err) {
-    console.warn('[RacketsDB] ⚠️ Supabase indisponible:', err.message);
-    const cached = loadRacketsFromCache();
-    if (cached) {
-      RACKETS_DB.length = 0;
-      RACKETS_DB.push(...cached);
-      console.log(`[RacketsDB] 📦 ${cached.length} raquettes chargées depuis le cache`);
-      return { source: 'cache', count: cached.length };
-    }
-    console.log(`[RacketsDB] 📄 Fallback JSON : ${RACKETS_DB.length} raquettes`);
-    return { source: 'fallback', count: RACKETS_DB.length };
-  }
-}
-
 function getFamilyCode() { return localStorage.getItem('padel_family_code') || ''; }
 function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', code); }
 
@@ -189,46 +118,6 @@ async function cloudGetAdminPin(familyCode) {
 
 async function cloudSetAdminPin(familyCode, pin) {
   return sbPatch('families', `code=eq.${familyCode}`, { admin_pin: pin });
-}
-
-// ==================== ADMIN RPC HELPERS ====================
-async function sbRpc(fnName, params) {
-  const r = await fetch(`${SB_URL.replace('/rest/v1','/rest/v1/rpc')}/${fnName}`, {
-    method: "POST", headers: SB_HEADERS, body: JSON.stringify(params)
-  });
-  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
-  return r.json();
-}
-
-async function checkIsAdmin(familyCode) {
-  try {
-    const result = await sbRpc('is_family_admin', { p_family_code: familyCode });
-    return result === true;
-  } catch { return false; }
-}
-
-async function adminListFamilies(familyCode) {
-  return sbRpc('admin_list_families', { p_family_code: familyCode });
-}
-
-async function adminLoadFamilyProfiles(familyCode, targetCode) {
-  return sbRpc('admin_load_family_profiles', { p_family_code: familyCode, p_target_code: targetCode });
-}
-
-async function adminUpsertRacket(familyCode, racket) {
-  return sbRpc('admin_upsert_racket', { p_family_code: familyCode, p_racket: racket });
-}
-
-async function adminToggleRacket(familyCode, racketId) {
-  return sbRpc('admin_toggle_racket', { p_family_code: familyCode, p_racket_id: racketId });
-}
-
-async function adminDeleteRacket(familyCode, racketId) {
-  return sbRpc('admin_delete_racket', { p_family_code: familyCode, p_racket_id: racketId });
-}
-
-async function adminGetStats(familyCode) {
-  return sbRpc('admin_get_stats', { p_family_code: familyCode });
 }
 
 const LEVEL_OPTIONS = [
@@ -324,7 +213,7 @@ function loadSavedRackets() {
       if (Array.isArray(arr) && arr.length) {
         // Refresh critical fields from current DB (localStorage may have stale/missing data)
         return arr.map(r => {
-          const dbMatch = RACKETS_DB.find(db => db.name.toLowerCase() === (r.name||"").toLowerCase());
+          const dbMatch = getMergedDB().find(db => db.name.toLowerCase() === (r.name||"").toLowerCase());
           if (dbMatch) {
             return { ...r,
               imageUrl: dbMatch.imageUrl || r.imageUrl,
@@ -1090,7 +979,7 @@ const MAGAZINE_CATEGORIES = [
 function getTopByCategory(catId, year, n=5) {
   const cat = MAGAZINE_CATEGORIES.find(c=>c.id===catId);
   if(!cat) return [];
-  let pool = RACKETS_DB.filter(r=>!year||r.year===year);
+  let pool = getMergedDB().filter(r=>!year||r.year===year);
   if(catId==="polyvalence") {
     // Score = min score across all attrs (best worst attribute)
     pool = pool.map(r=>{
@@ -1313,6 +1202,8 @@ export default function PadelAnalyzer() {
   const [localDBCount, setLocalDBCount] = useState(()=>{
     try { return JSON.parse(localStorage.getItem('padel_db_extra')||'[]').length; } catch{ return 0; }
   });
+  // Compteur dynamique = total unique (embedded + extras dédupliqués par ID)
+  const totalDBCount = useMemo(() => getMergedDB().length, [localDBCount]);
   const [screen, setScreen] = useState(()=>{
     if (!getFamilyCode()) return "login";
     const p = loadSavedProfile();
@@ -1337,25 +1228,6 @@ export default function PadelAnalyzer() {
   const [cloudLoginMode, setCloudLoginMode] = useState("join"); // "join" | "create"
   const [cloudError, setCloudError] = useState("");
 
-  // ============ RACKETS DB STATE ============
-  const [racketsSource, setRacketsSource] = useState("json");
-  const [, forceRacketsUpdate] = useState(0);
-
-  // ============ ADMIN STATE ============
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminTab, setAdminTab] = useState("families"); // "families" | "rackets" | "stats"
-  const [adminFamilies, setAdminFamilies] = useState([]);
-  const [adminExpandedFamily, setAdminExpandedFamily] = useState(null);
-  const [adminFamilyProfiles, setAdminFamilyProfiles] = useState([]);
-  const [adminStats, setAdminStats] = useState(null);
-  const [adminRacketSearch, setAdminRacketSearch] = useState("");
-  const [adminRacketFilter, setAdminRacketFilter] = useState("all"); // brand filter
-  const [adminEditRacket, setAdminEditRacket] = useState(null);
-  const [adminLoading, setAdminLoading] = useState(false);
-  const [adminMsg, setAdminMsg] = useState("");
-  const [adminFamiliesLoaded, setAdminFamiliesLoaded] = useState(false);
-  const [adminStatsLoaded, setAdminStatsLoaded] = useState(false);
-
   // Cloud sync: load profiles from Supabase when family code changes
   useEffect(()=>{
     if (!familyCode) return;
@@ -1370,20 +1242,7 @@ export default function PadelAnalyzer() {
       console.warn("[Cloud] Load error:", err.message);
       setCloudStatus("error");
     });
-    // Check admin status
-    checkIsAdmin(familyCode).then(admin => {
-      setIsAdmin(admin);
-      if (admin) console.log("[Admin] ✅ Mode admin activé");
-    });
   }, [familyCode]);
-
-  // Load rackets from Supabase (with cache + JSON fallback)
-  useEffect(() => {
-    loadRacketsFromSupabase().then(result => {
-      setRacketsSource(result.source);
-      forceRacketsUpdate(n => n + 1);
-    });
-  }, []);
 
   // Cloud save helper
   const cloudSyncProfile = useCallback(async (name, profileData, locked) => {
@@ -1663,9 +1522,10 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
   function saveToLocalDB(racket) {
     try {
       const extra = JSON.parse(localStorage.getItem('padel_db_extra')||'[]');
-      // Check if already exists
+      // Check if already exists in extras OR embedded DB
       const nameLower = racket.name.toLowerCase();
-      if (extra.some(r=>r.name.toLowerCase()===nameLower)) return;
+      if (extra.some(r=>r.name.toLowerCase()===nameLower || r.id===racket.id)) return;
+      if (RACKETS_DB.some(r=>r.name.toLowerCase()===nameLower || r.id===racket.id)) return;
       // Determine category from scores
       const avgScore = Object.values(racket.scores||{}).reduce((a,b)=>a+b,0)/6;
       let category = 'intermediaire';
@@ -1711,8 +1571,7 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
 
   // Load a racket directly from DB (no API needed)
   function loadRacketFromDB(name, brand, color) {
-    let allDB = [...RACKETS_DB];
-    try { const extra = JSON.parse(localStorage.getItem('padel_db_extra')||'[]'); if(Array.isArray(extra)) allDB=[...allDB,...extra]; } catch{}
+    const allDB = getMergedDB();
     
     const nameLower = name.toLowerCase();
     const entry = allDB.find(r=>r.name.toLowerCase()===nameLower) || allDB.find(r=>nameLower.includes(r.name.toLowerCase().slice(0,15))||r.name.toLowerCase().includes(nameLower.slice(0,15)));
@@ -1853,12 +1712,8 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
     const brandPref = profile.brandTags.map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
     
-    // Merge embedded DB + any localStorage supplements
-    let allDB = [...RACKETS_DB];
-    try {
-      const extra = JSON.parse(localStorage.getItem('padel_db_extra')||'[]');
-      if (Array.isArray(extra)) allDB = [...allDB, ...extra];
-    } catch{}
+    // Merge embedded DB + any localStorage supplements (deduped by ID)
+    const allDB = getMergedDB();
 
     // Filter by category
     let pool;
@@ -2199,7 +2054,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
         
         <p style={{fontSize:8,color:"#334155",marginTop:32,letterSpacing:"0.05em"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {RACKETS_DB.length} raquettes {racketsSource==='supabase'?'☁️':racketsSource==='cache'?'📦':''}
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {totalDBCount} raquettes
         </p>
       </div>}
 
@@ -2221,7 +2076,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
         <h1 style={{fontFamily:"'Outfit'",fontSize:32,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 6px",letterSpacing:"-0.03em",textAlign:"center"}}>PADEL ANALYZER</h1>
         <p style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>
-        <p style={{color:"#475569",fontSize:11,margin:"0 0 36px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {RACKETS_DB.length}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
+        <p style={{color:"#475569",fontSize:11,margin:"0 0 36px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {totalDBCount}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
 
         {/* Saved profiles — Carousel */}
         {savedProfiles.length>0&&(()=>{
@@ -2428,434 +2283,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {cloudStatus==="synced"?"☁️ Synchronisé":"☁️ Cloud"} · <span style={{fontFamily:"'Outfit'",fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
           </span>
           <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"3px 8px",color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}}>⏻</button>
-          {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
         </div>}
 
         <div style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {totalDBCount} raquettes · Scoring hybride calibré
         </div>
       </div>}
-
-      {/* ============================================================ */}
-      {/* ADMIN SCREEN */}
-      {/* ============================================================ */}
-      {screen==="admin"&&(()=>{
-        const loadFamilies = async () => {
-          setAdminLoading(true);
-          try {
-            const data = await adminListFamilies(familyCode);
-            setAdminFamilies(Array.isArray(data) ? data : []);
-          } catch(e) { setAdminMsg("Erreur: "+e.message); }
-          setAdminLoading(false);
-          setAdminFamiliesLoaded(true);
-        };
-        const loadStats = async () => {
-          setAdminLoading(true);
-          try {
-            const data = await adminGetStats(familyCode);
-            setAdminStats(data);
-          } catch(e) { setAdminMsg("Erreur: "+e.message); }
-          setAdminLoading(false);
-          setAdminStatsLoaded(true);
-        };
-        const expandFamily = async (code) => {
-          if (adminExpandedFamily === code) { setAdminExpandedFamily(null); return; }
-          setAdminExpandedFamily(code);
-          try {
-            const profiles = await adminLoadFamilyProfiles(familyCode, code);
-            setAdminFamilyProfiles(profiles||[]);
-          } catch(e) { setAdminFamilyProfiles([]); }
-        };
-        const handleToggleRacket = async (id) => {
-          try {
-            const newState = await adminToggleRacket(familyCode, id);
-            setAdminMsg(`Raquette ${id}: ${newState ? "activée" : "désactivée"}`);
-            forceRacketsUpdate(n=>n+1);
-          } catch(e) { setAdminMsg("Erreur: "+e.message); }
-        };
-        const handleSaveRacket = async (racket) => {
-          setAdminLoading(true);
-          try {
-            await adminUpsertRacket(familyCode, racket);
-            setAdminMsg("✅ Raquette sauvegardée: " + racket.name);
-            setAdminEditRacket(null);
-            // Refresh rackets from Supabase
-            loadRacketsFromSupabase().then(r => forceRacketsUpdate(n=>n+1));
-          } catch(e) { setAdminMsg("Erreur: "+e.message); }
-          setAdminLoading(false);
-        };
-        const handleImportJSON = async (jsonStr) => {
-          try {
-            const arr = JSON.parse(jsonStr);
-            if (!Array.isArray(arr)) throw new Error("Le JSON doit être un tableau");
-            setAdminLoading(true);
-            let ok = 0, fail = 0;
-            for (const r of arr) {
-              try {
-                const dbRacket = {
-                  id: r.id, name: r.name, short_name: r.shortName||r.short_name,
-                  brand: r.brand, shape: r.shape, weight: r.weight, balance: r.balance,
-                  surface: r.surface, core: r.core, antivib: r.antivib, price: r.price,
-                  player: r.player, image_url: r.imageUrl||r.image_url, year: r.year,
-                  category: r.category, scores: r.scores, verdict: r.verdict,
-                  editorial: r.editorial, tech_highlights: r.techHighlights||r.tech_highlights,
-                  target_profile: r.targetProfile||r.target_profile,
-                  junior: r.junior||false, woman_line: r.womanLine||r.woman_line||false,
-                  description: r.description, pro_player_info: r.proPlayerInfo||r.pro_player_info,
-                  is_active: true
-                };
-                await adminUpsertRacket(familyCode, dbRacket);
-                ok++;
-              } catch { fail++; }
-            }
-            setAdminMsg(`✅ Import: ${ok} OK, ${fail} erreurs sur ${arr.length}`);
-            loadRacketsFromSupabase().then(r => forceRacketsUpdate(n=>n+1));
-          } catch(e) { setAdminMsg("Erreur JSON: "+e.message); }
-          setAdminLoading(false);
-        };
-
-        // Auto-load on tab change (once only)
-        if (adminTab === "families" && !adminFamiliesLoaded && !adminLoading) loadFamilies();
-        if (adminTab === "stats" && !adminStatsLoaded && !adminLoading) loadStats();
-
-        // Filtered rackets for admin view
-        const allRackets = RACKETS_DB;
-        const filteredRackets = allRackets.filter(r => {
-          if (adminRacketSearch && !r.name.toLowerCase().includes(adminRacketSearch.toLowerCase()) && !r.brand.toLowerCase().includes(adminRacketSearch.toLowerCase())) return false;
-          if (adminRacketFilter !== "all" && r.brand !== adminRacketFilter) return false;
-          return true;
-        });
-        const brands = [...new Set(allRackets.map(r=>r.brand))].sort();
-
-        const tabStyle = (active) => ({
-          padding:"10px 20px", fontSize:12, fontWeight:active?700:500,
-          color: active?"#c084fc":"#64748b", background: active?"rgba(168,85,247,0.12)":"transparent",
-          border: active?"1px solid rgba(168,85,247,0.3)":"1px solid rgba(255,255,255,0.08)",
-          borderRadius:10, cursor:"pointer", fontFamily:"'Inter',sans-serif", transition:"all 0.2s"
-        });
-
-        return (
-        <div style={{maxWidth:1020,margin:"0 auto",padding:"20px 16px",animation:"fadeIn 0.4s ease"}}>
-          {/* Header */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
-            <div style={{display:"flex",alignItems:"center",gap:12}}>
-              <button onClick={()=>setScreen("home")} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"6px 12px",color:"#64748b",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>← Accueil</button>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#a855f7,#6366f1)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0}}>⚙️ Dashboard Admin</h2>
-            </div>
-            <span style={{fontSize:10,color:"#64748b"}}>{familyCode} · {RACKETS_DB.length} raquettes</span>
-          </div>
-
-          {/* Tabs */}
-          <div style={{display:"flex",gap:8,marginBottom:20}}>
-            <button onClick={()=>setAdminTab("families")} style={tabStyle(adminTab==="families")}>👥 Familles & Profils</button>
-            <button onClick={()=>setAdminTab("rackets")} style={tabStyle(adminTab==="rackets")}>🏓 Raquettes</button>
-            <button onClick={()=>{setAdminTab("stats");setAdminStats(null);setAdminStatsLoaded(false);}} style={tabStyle(adminTab==="stats")}>📊 Statistiques</button>
-          </div>
-
-          {/* Status message */}
-          {adminMsg&&<div style={{padding:"10px 14px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:10,marginBottom:16,fontSize:11,color:"#c084fc",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span>{adminMsg}</span>
-            <button onClick={()=>setAdminMsg("")} style={{background:"none",border:"none",color:"#c084fc",cursor:"pointer",fontSize:14}}>✕</button>
-          </div>}
-
-          {adminLoading&&<div style={{textAlign:"center",padding:20,color:"#64748b",fontSize:12}}>⏳ Chargement...</div>}
-
-          {/* ====== TAB: FAMILIES ====== */}
-          {adminTab==="families"&&!adminLoading&&<div>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-              <span style={{fontSize:12,color:"#94a3b8",fontWeight:600}}>{adminFamilies.length} famille(s)</span>
-              <button onClick={()=>{setAdminFamilies([]);setAdminFamiliesLoaded(false);}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"4px 10px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit"}}>🔄 Rafraîchir</button>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {adminFamilies.map(fam=>(
-                <div key={fam.code} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,overflow:"hidden"}}>
-                  <button onClick={()=>expandFamily(fam.code)} style={{width:"100%",padding:"14px 18px",background:"none",border:"none",cursor:"pointer",textAlign:"left",display:"flex",alignItems:"center",gap:14,fontFamily:"inherit"}}>
-                    <div style={{width:40,height:40,borderRadius:12,background:fam.is_admin?"linear-gradient(135deg,rgba(168,85,247,0.3),rgba(99,102,241,0.2))":"rgba(255,255,255,0.05)",border:fam.is_admin?"1px solid rgba(168,85,247,0.4)":"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>
-                      {fam.is_admin?"👑":"👤"}
-                    </div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <span style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'",letterSpacing:"0.08em"}}>{fam.code}</span>
-                        {fam.is_admin&&<span style={{fontSize:8,fontWeight:700,color:"#c084fc",background:"rgba(168,85,247,0.15)",padding:"2px 8px",borderRadius:6,textTransform:"uppercase"}}>Admin</span>}
-                      </div>
-                      <div style={{fontSize:10,color:"#64748b",marginTop:2}}>
-                        {fam.profile_count||0} profil(s)
-                        {fam.profile_names&&fam.profile_names.length>0&&<span> · {fam.profile_names.join(", ")}</span>}
-                      </div>
-                      <div style={{fontSize:9,color:"#475569",marginTop:2}}>
-                        {fam.last_activity ? `Dernière activité: ${new Date(fam.last_activity).toLocaleDateString('fr-FR')} ${new Date(fam.last_activity).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}` : "Aucune activité"}
-                      </div>
-                    </div>
-                    <span style={{color:"#64748b",fontSize:16,transition:"transform 0.2s",transform:adminExpandedFamily===fam.code?"rotate(90deg)":"rotate(0)"}}>{adminExpandedFamily===fam.code?"▾":"▸"}</span>
-                  </button>
-
-                  {/* Expanded: profiles detail */}
-                  {adminExpandedFamily===fam.code&&<div style={{padding:"0 18px 14px",borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-                    {adminFamilyProfiles.length===0&&<p style={{fontSize:11,color:"#475569",margin:"10px 0"}}>Aucun profil</p>}
-                    {adminFamilyProfiles.map(p=>{
-                      const d = p.data||{};
-                      return (
-                        <div key={p.id} style={{padding:"10px 0",borderBottom:"1px solid rgba(255,255,255,0.03)",display:"flex",alignItems:"center",gap:12}}>
-                          <div style={{width:32,height:32,borderRadius:10,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,color:"#f97316",flexShrink:0}}>
-                            {(p.name||"?").charAt(0).toUpperCase()}
-                          </div>
-                          <div style={{flex:1}}>
-                            <div style={{fontSize:13,fontWeight:600,color:"#e2e8f0"}}>{p.name} {p.locked&&"🔒"}</div>
-                            <div style={{fontSize:10,color:"#64748b"}}>
-                              {d.level||"—"} · {d.hand||"—"} · Côté {d.side||"—"}
-                              {d.styleTags&&d.styleTags.length>0&&<span> · {d.styleTags.slice(0,3).join(", ")}</span>}
-                            </div>
-                            {d.priorityTags&&d.priorityTags.length>0&&<div style={{fontSize:9,color:"#f97316",marginTop:2}}>Priorités: {d.priorityTags.slice(0,4).join(", ")}</div>}
-                            {d.injuryTags&&d.injuryTags.filter(t=>t!=="aucune").length>0&&<div style={{fontSize:9,color:"#ef4444",marginTop:1}}>🩹 {d.injuryTags.filter(t=>t!=="aucune").join(", ")}</div>}
-                          </div>
-                          <div style={{display:"flex",gap:4,flexShrink:0,alignItems:"center"}}>
-                            <button onClick={()=>{
-                              // "Voir comme" — charger ce profil et afficher le dashboard
-                              setProfile(d);
-                              setProfileName(p.name);
-                              setScreen("dashboard");
-                            }} style={{padding:"4px 8px",background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:6,color:"#f97316",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Voir comme ce joueur">
-                              👁️ Voir
-                            </button>
-                            <button onClick={async ()=>{
-                              if(!confirm(`Supprimer le profil "${p.name}" de ${fam.code} ?`)) return;
-                              try {
-                                await sbDelete('profiles', `id=eq.${p.id}`);
-                                setAdminMsg(`✅ Profil "${p.name}" supprimé`);
-                                // Reload profiles
-                                const profiles = await adminLoadFamilyProfiles(familyCode, fam.code);
-                                setAdminFamilyProfiles(profiles||[]);
-                              } catch(e) { setAdminMsg("Erreur: "+e.message); }
-                            }} style={{padding:"4px 8px",background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:6,color:"#ef4444",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Supprimer ce profil">
-                              🗑️
-                            </button>
-                            <div style={{fontSize:9,color:"#475569",marginLeft:4}}>{p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):""}</div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>}
-                </div>
-              ))}
-            </div>
-          </div>}
-
-          {/* ====== TAB: RACKETS ====== */}
-          {adminTab==="rackets"&&!adminLoading&&<div>
-            {/* Edit/Add form */}
-            {adminEditRacket&&(()=>{
-              const er = adminEditRacket;
-              const setField = (k,v) => setAdminEditRacket({...er, [k]:v});
-              const setScore = (k,v) => setAdminEditRacket({...er, scores:{...(er.scores||{}), [k]:parseFloat(v)||0}});
-              const inputS = {padding:"7px 10px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:7,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none",width:"100%",boxSizing:"border-box"};
-              const labelS = {fontSize:9,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:3,display:"block"};
-              const cellS = {flex:"1 1 140px",minWidth:0};
-              return (
-              <div style={{background:"rgba(168,85,247,0.05)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:16,padding:"20px",marginBottom:16,animation:"fadeIn 0.3s ease"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-                  <h3 style={{fontSize:14,fontWeight:700,color:"#c084fc",margin:0}}>{er._isNew?"➕ Nouvelle raquette":"✏️ Modifier: "+er.name}</h3>
-                  <button onClick={()=>setAdminEditRacket(null)} style={{background:"none",border:"none",color:"#64748b",fontSize:16,cursor:"pointer"}}>✕</button>
-                </div>
-                {/* Row 1: identité */}
-                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
-                  <div style={cellS}><label style={labelS}>ID (unique)</label><input value={er.id||""} onChange={e=>setField("id",e.target.value)} style={inputS} placeholder="marque-modele-2026"/></div>
-                  <div style={cellS}><label style={labelS}>Nom complet</label><input value={er.name||""} onChange={e=>setField("name",e.target.value)} style={inputS} placeholder="Babolat Viper 2026"/></div>
-                  <div style={cellS}><label style={labelS}>Nom court</label><input value={er.short_name||""} onChange={e=>setField("short_name",e.target.value)} style={inputS} placeholder="Viper 2026"/></div>
-                </div>
-                {/* Row 2: marque, catégorie */}
-                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
-                  <div style={cellS}><label style={labelS}>Marque</label><input value={er.brand||""} onChange={e=>setField("brand",e.target.value)} style={inputS} placeholder="Babolat"/></div>
-                  <div style={cellS}><label style={labelS}>Catégorie</label>
-                    <select value={er.category||"intermediaire"} onChange={e=>setField("category",e.target.value)} style={inputS}>
-                      <option value="debutant">Débutant</option><option value="intermediaire">Intermédiaire</option>
-                      <option value="avance">Avancé</option><option value="expert">Expert</option><option value="junior">Junior</option>
-                    </select>
-                  </div>
-                  <div style={cellS}><label style={labelS}>Année</label><input type="number" value={er.year||2026} onChange={e=>setField("year",parseInt(e.target.value)||2026)} style={inputS}/></div>
-                </div>
-                {/* Row 3: specs physiques */}
-                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
-                  <div style={cellS}><label style={labelS}>Forme</label>
-                    <select value={er.shape||"Diamant"} onChange={e=>setField("shape",e.target.value)} style={inputS}>
-                      <option value="Diamant">Diamant</option><option value="Goutte d'eau">Goutte d'eau</option>
-                      <option value="Ronde">Ronde</option><option value="Hybride">Hybride</option>
-                    </select>
-                  </div>
-                  <div style={cellS}><label style={labelS}>Poids</label><input value={er.weight||""} onChange={e=>setField("weight",e.target.value)} style={inputS} placeholder="360-375g"/></div>
-                  <div style={cellS}><label style={labelS}>Balance</label><input value={er.balance||""} onChange={e=>setField("balance",e.target.value)} style={inputS} placeholder="Haute"/></div>
-                  <div style={cellS}><label style={labelS}>Surface</label><input value={er.surface||""} onChange={e=>setField("surface",e.target.value)} style={inputS} placeholder="Carbon 18K"/></div>
-                  <div style={cellS}><label style={labelS}>Noyau</label><input value={er.core||""} onChange={e=>setField("core",e.target.value)} style={inputS} placeholder="Hard EVA"/></div>
-                </div>
-                {/* Row 4: prix, image, joueur */}
-                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
-                  <div style={cellS}><label style={labelS}>Prix</label><input value={er.price||""} onChange={e=>setField("price",e.target.value)} style={inputS} placeholder="300-400€"/></div>
-                  <div style={cellS}><label style={labelS}>Joueur pro</label><input value={er.player||""} onChange={e=>setField("player",e.target.value)} style={inputS} placeholder="Lebrón"/></div>
-                  <div style={{flex:"2 1 280px",minWidth:0}}><label style={labelS}>Image URL</label><input value={er.image_url||""} onChange={e=>setField("image_url",e.target.value)} style={inputS} placeholder="https://..."/></div>
-                </div>
-                {/* Row 5: Scores */}
-                <div style={{marginBottom:8}}>
-                  <label style={{...labelS,marginBottom:6}}>Scores (0-10)</label>
-                  <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                    {["Puissance","Contrôle","Confort","Spin","Maniabilité","Tolérance"].map(attr=>(
-                      <div key={attr} style={{flex:"1 1 80px"}}>
-                        <label style={{fontSize:8,color:"#64748b"}}>{attr}</label>
-                        <input type="number" step="0.5" min="0" max="10" value={(er.scores||{})[attr]||""} onChange={e=>setScore(attr,e.target.value)} style={{...inputS,textAlign:"center"}}/>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* Row 6: textes */}
-                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
-                  <div style={{flex:"1 1 100%"}}><label style={labelS}>Verdict (1 ligne)</label><input value={er.verdict||""} onChange={e=>setField("verdict",e.target.value)} style={inputS}/></div>
-                </div>
-                <div style={{display:"flex",gap:8,marginBottom:8,flexWrap:"wrap"}}>
-                  <div style={{flex:"1 1 100%"}}><label style={labelS}>Profil cible</label><input value={er.target_profile||""} onChange={e=>setField("target_profile",e.target.value)} style={inputS} placeholder="Joueurs experts offensifs"/></div>
-                </div>
-                <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
-                  <div style={{flex:"1 1 100%"}}><label style={labelS}>Éditorial (texte long)</label><textarea value={er.editorial||""} onChange={e=>setField("editorial",e.target.value)} rows={3} style={{...inputS,resize:"vertical"}}/></div>
-                </div>
-                {/* Checkboxes */}
-                <div style={{display:"flex",gap:16,marginBottom:14}}>
-                  <label style={{fontSize:11,color:"#94a3b8",cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
-                    <input type="checkbox" checked={er.junior||false} onChange={e=>setField("junior",e.target.checked)}/> Junior
-                  </label>
-                  <label style={{fontSize:11,color:"#94a3b8",cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>
-                    <input type="checkbox" checked={er.woman_line||false} onChange={e=>setField("woman_line",e.target.checked)}/> Ligne femme
-                  </label>
-                </div>
-                {/* Actions */}
-                <div style={{display:"flex",gap:8}}>
-                  <button onClick={()=>{
-                    if(!er.id||!er.name||!er.brand){setAdminMsg("⚠️ ID, Nom et Marque obligatoires");return;}
-                    handleSaveRacket(er);
-                  }} style={{padding:"10px 24px",background:"linear-gradient(135deg,rgba(168,85,247,0.25),rgba(99,102,241,0.2))",border:"1px solid rgba(168,85,247,0.4)",borderRadius:10,color:"#c084fc",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
-                    💾 Sauvegarder
-                  </button>
-                  <button onClick={()=>setAdminEditRacket(null)} style={{padding:"10px 24px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,color:"#64748b",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
-                    Annuler
-                  </button>
-                </div>
-              </div>);
-            })()}
-
-            {/* Search + Filter bar */}
-            <div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap"}}>
-              <input value={adminRacketSearch} onChange={e=>setAdminRacketSearch(e.target.value)} placeholder="Rechercher nom ou marque…" style={{flex:"1 1 200px",padding:"8px 12px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none"}}/>
-              <select value={adminRacketFilter} onChange={e=>setAdminRacketFilter(e.target.value)} style={{padding:"8px 12px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none"}}>
-                <option value="all">Toutes marques</option>
-                {brands.map(b=><option key={b} value={b}>{b}</option>)}
-              </select>
-              <button onClick={()=>setAdminEditRacket({_isNew:true, year:2026, category:"intermediaire", shape:"Diamant", scores:{}, is_active:true})} style={{padding:"8px 14px",background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:8,color:"#c084fc",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>➕ Nouvelle raquette</button>
-              <button onClick={()=>{
-                const json = prompt("Coller le JSON des raquettes à importer:");
-                if(json) handleImportJSON(json);
-              }} style={{padding:"8px 14px",background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:8,color:"#4CAF50",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>📥 Import JSON</button>
-            </div>
-
-            <div style={{fontSize:11,color:"#64748b",marginBottom:10}}>{filteredRackets.length} raquette(s) affichée(s) sur {allRackets.length}</div>
-
-            {/* Rackets table */}
-            <div style={{display:"flex",flexDirection:"column",gap:4}}>
-              {filteredRackets.slice(0,50).map(r=>(
-                <div key={r.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:10,fontSize:11}}>
-                  {r.imageUrl&&<img src={r.imageUrl} alt="" style={{width:36,height:36,objectFit:"contain",borderRadius:6,background:"rgba(255,255,255,0.05)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontWeight:600,color:"#e2e8f0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
-                    <div style={{fontSize:9,color:"#64748b"}}>{r.brand} · {r.shape} · {r.category} · {r.year}</div>
-                  </div>
-                  <div style={{fontSize:9,color:"#64748b",flexShrink:0}}>{r.price||"—"}</div>
-                  <div style={{display:"flex",gap:4,flexShrink:0}}>
-                    <button onClick={()=>setAdminEditRacket({
-                      ...r, short_name:r.shortName, image_url:r.imageUrl, target_profile:r.targetProfile,
-                      tech_highlights:r.techHighlights, woman_line:r.womanLine, pro_player_info:r.proPlayerInfo
-                    })} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Modifier">
-                      ✏️
-                    </button>
-                    <button onClick={()=>handleToggleRacket(r.id)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Activer/Désactiver">
-                      {r.is_active===false?"🔴":"🟢"}
-                    </button>
-                  </div>
-                </div>
-              ))}
-              {filteredRackets.length>50&&<p style={{fontSize:10,color:"#475569",textAlign:"center",marginTop:8}}>Affichage limité à 50 — affinez votre recherche</p>}
-            </div>
-          </div>}
-
-          {/* ====== TAB: STATS ====== */}
-          {adminTab==="stats"&&!adminLoading&&adminStats&&<div>
-            {/* KPI cards */}
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:10,marginBottom:20}}>
-              {[
-                {label:"Familles",value:adminStats.total_families,icon:"👥",color:"#a855f7"},
-                {label:"Profils",value:adminStats.total_profiles,icon:"👤",color:"#6366f1"},
-                {label:"Raquettes actives",value:adminStats.active_rackets,icon:"🏓",color:"#f97316"},
-                {label:"Marques",value:adminStats.brands,icon:"🏷️",color:"#22c55e"},
-              ].map(kpi=>(
-                <div key={kpi.label} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"16px",textAlign:"center"}}>
-                  <div style={{fontSize:24}}>{kpi.icon}</div>
-                  <div style={{fontSize:28,fontWeight:800,color:kpi.color,fontFamily:"'Outfit'",margin:"4px 0"}}>{kpi.value}</div>
-                  <div style={{fontSize:10,color:"#64748b",fontWeight:500}}>{kpi.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* By category */}
-            {adminStats.by_category&&<div style={{marginBottom:20}}>
-              <h3 style={{fontSize:13,fontWeight:700,color:"#94a3b8",marginBottom:10}}>Répartition par catégorie</h3>
-              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                {Object.entries(adminStats.by_category).sort((a,b)=>b[1]-a[1]).map(([cat,count])=>{
-                  const catColors = {debutant:"#22c55e",intermediaire:"#f59e0b",avance:"#ef4444",expert:"#a855f7",junior:"#3b82f6"};
-                  return (
-                    <div key={cat} style={{padding:"10px 16px",background:`${catColors[cat]||"#64748b"}12`,border:`1px solid ${catColors[cat]||"#64748b"}30`,borderRadius:10,textAlign:"center"}}>
-                      <div style={{fontSize:20,fontWeight:800,color:catColors[cat]||"#64748b",fontFamily:"'Outfit'"}}>{count}</div>
-                      <div style={{fontSize:10,color:"#94a3b8",textTransform:"capitalize"}}>{cat}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>}
-
-            {/* By brand */}
-            {adminStats.by_brand&&<div style={{marginBottom:20}}>
-              <h3 style={{fontSize:13,fontWeight:700,color:"#94a3b8",marginBottom:10}}>Raquettes par marque</h3>
-              <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                {Object.entries(adminStats.by_brand).sort((a,b)=>b[1]-a[1]).map(([brand,count])=>{
-                  const maxCount = Math.max(...Object.values(adminStats.by_brand));
-                  return (
-                    <div key={brand} style={{display:"flex",alignItems:"center",gap:10}}>
-                      <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600,width:100,flexShrink:0}}>{brand}</span>
-                      <div style={{flex:1,height:20,background:"rgba(255,255,255,0.03)",borderRadius:6,overflow:"hidden"}}>
-                        <div style={{width:`${(count/maxCount)*100}%`,height:"100%",background:"linear-gradient(90deg,rgba(168,85,247,0.3),rgba(99,102,241,0.3))",borderRadius:6,transition:"width 0.5s ease"}}/>
-                      </div>
-                      <span style={{fontSize:11,color:"#94a3b8",fontWeight:600,width:30,textAlign:"right"}}>{count}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>}
-
-            {/* Recent families */}
-            {adminStats.recent_families&&<div>
-              <h3 style={{fontSize:13,fontWeight:700,color:"#94a3b8",marginBottom:10}}>10 dernières familles actives</h3>
-              <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                {adminStats.recent_families.map((f,i)=>(
-                  <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:8,fontSize:11}}>
-                    <span style={{fontFamily:"'Outfit'",fontWeight:700,color:"#e2e8f0",letterSpacing:"0.06em"}}>{f.code}</span>
-                    <span style={{color:"#64748b"}}>{f.profiles} profil(s)</span>
-                    <span style={{fontSize:9,color:"#475569",marginLeft:"auto"}}>{f.last_activity?new Date(f.last_activity).toLocaleDateString('fr-FR'):""}</span>
-                  </div>
-                ))}
-              </div>
-            </div>}
-          </div>}
-
-          {/* Footer */}
-          <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:24}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Admin Dashboard · {RACKETS_DB.length} raquettes
-          </div>
-        </div>
-        );
-      })()}
 
       {/* ============================================================ */}
       {/* MAGAZINE SCREEN — Full-page premium Tendances */}
@@ -3109,7 +2542,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Footer */}
           <div style={{textAlign:"center",padding:"8px 0 16px"}}>
             <div style={{fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
-              <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Magazine · {RACKETS_DB.length} raquettes
+              <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Magazine · {totalDBCount} raquettes
             </div>
           </div>
         </div>;
@@ -3649,7 +3082,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         if(isJuniorA&&!isPepiteA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
         if(isPepiteA) lines.push(`🌟 Jeune Pépite : raquettes junior + adultes légères ≤350g.`);
         if(isExpertA && !profile.expertToucher) lines.push(`⚡ Mode Expert : les priorités dominent le scoring.`);
-        lines.push(`Calcul en cours sur ${RACKETS_DB.length} raquettes...`);
+        lines.push(`Calcul en cours sur ${totalDBCount} raquettes...`);
         lines.push(`Résultats prêts.`);
 
         return (
@@ -3715,11 +3148,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const ht = Number(profile.height)||0;
         const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
         let pool = isJunior 
-          ? RACKETS_DB.filter(r=>r.category==='junior')
+          ? getMergedDB().filter(r=>r.category==='junior')
           : (()=>{
               const lvl = profile.level||'Débutant';
               const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
-              return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
+              return getMergedDB().filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
         const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r)}));
         scored.sort((a,b)=>b._gs-a._gs);
@@ -3852,11 +3285,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const ht = Number(profile.height)||0;
         const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
         let pool = isJunior 
-          ? RACKETS_DB.filter(r=>r.category==='junior')
+          ? getMergedDB().filter(r=>r.category==='junior')
           : (()=>{
               const lvl = profile.level||'Débutant';
               const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
-              return RACKETS_DB.filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
+              return getMergedDB().filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
         // Brand preferences — used for display info only, NOT for filtering Top 3
         const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
@@ -3994,7 +3427,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               {/* Explanation — compact */}
               <div style={{marginTop:12,padding:"10px 14px",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.1)",borderRadius:12}}>
                 <p style={{fontSize:10,color:"#a5b4fc",margin:"0 0 3px",fontWeight:600}}>💡 Comment lire ce classement ?</p>
-                <p style={{fontSize:10,color:"#64748b",margin:0,lineHeight:1.6}}>Calculé sur {RACKETS_DB.length} raquettes en croisant profil, style et priorités. Lance l'analyse détaillée pour les scores par critère, radars comparatifs et l'Arène.</p>
+                <p style={{fontSize:10,color:"#64748b",margin:0,lineHeight:1.6}}>Calculé sur {totalDBCount} raquettes en croisant profil, style et priorités. Lance l'analyse détaillée pour les scores par critère, radars comparatifs et l'Arène.</p>
               </div>
             </div>
           </div>
@@ -4038,7 +3471,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
-            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {RACKETS_DB.length} raquettes · Scoring hybride calibré
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {totalDBCount} raquettes · Scoring hybride calibré
           </div>
         </div>
         );
@@ -4062,7 +3495,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V12</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {RACKETS_DB.length}{localDBCount>0&&<span style={{color:"#22c55e"}}> + {localDBCount}</span>}</span></div>
+        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V12</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {totalDBCount}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -4182,7 +3615,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const isExpanded = addDetail === i;
             // Try to match with DB
             const nameLower = (s.name||"").toLowerCase();
-            const dbMatch = RACKETS_DB.find(r=>r.name.toLowerCase()===nameLower) || RACKETS_DB.find(r=>nameLower.includes((r.shortName||r.name).toLowerCase().slice(0,12))||(r.shortName||r.name).toLowerCase().includes(nameLower.slice(0,12)));
+            const dbMatch = getMergedDB().find(r=>r.name.toLowerCase()===nameLower) || getMergedDB().find(r=>nameLower.includes((r.shortName||r.name).toLowerCase().slice(0,12))||(r.shortName||r.name).toLowerCase().includes(nameLower.slice(0,12)));
             const sc = dbMatch?.scores||{};
             const hasScores = dbMatch && Object.keys(sc).length>0;
             const gs = hasScores ? computeGlobalScore(sc, profile, dbMatch) : null;
@@ -4601,7 +4034,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{fontSize:14,color:"#334155"}}>=</div>
             <div style={{flex:1,background:"rgba(249,115,22,0.05)",borderRadius:8,padding:"6px 10px",border:"1px solid rgba(249,115,22,0.15)"}}>
               <div style={{fontSize:9,color:"#f97316"}}>Total</div>
-              <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:"'Outfit'"}}>{RACKETS_DB.length + localDBCount}</div>
+              <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:"'Outfit'"}}>{totalDBCount}</div>
             </div>
           </div>
           <div style={{display:"flex",gap:6}}>
@@ -5250,12 +4683,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
             let pool;
             if (isJunior) {
-              pool = RACKETS_DB.filter(r=>r.category==='junior');
+              pool = getMergedDB().filter(r=>r.category==='junior');
             } else {
               const lvl = profile.level||'Débutant';
               const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               const cats = catMap[lvl]||['debutant','intermediaire'];
-              pool = RACKETS_DB.filter(r=>cats.includes(r.category));
+              pool = getMergedDB().filter(r=>cats.includes(r.category));
             }
             
             // Exclude already analyzed rackets
