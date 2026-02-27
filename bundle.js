@@ -51087,7 +51087,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#64748b", margin: "0 0 28px" }, children: "Main + c\xF4t\xE9 = on d\xE9tecte ton r\xF4le sur le terrain." }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { maxWidth: 400, margin: "0 auto" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { fontSize: 10, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }, children: "Main dominante" }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { columns: 2, options: HAND_OPTIONS.map((o) => ({ value: o, label: o, icon: o === "Droitier" ? "\u{1FAF2}" : "\u{1FAF1}" })), value: profile.hand, onChange: (v) => setProfile((p) => ({ ...p, hand: v })) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { columns: 2, options: HAND_OPTIONS.map((o) => ({ value: o, label: o, icon: o === "Droitier" ? "\u{1FAF1}" : "\u{1FAF2}" })), value: profile.hand, onChange: (v) => setProfile((p) => ({ ...p, hand: v })) }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { height: 20 } }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: { fontSize: 10, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", display: "block", marginBottom: 8 }, children: "C\xF4t\xE9 de jeu" }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardSelect, { columns: 3, options: SIDE_OPTIONS.map((o) => ({ value: o, label: o, icon: { Gauche: "\u2B05\uFE0F", Droite: "\u27A1\uFE0F", "Les deux": "\u2194\uFE0F" }[o] })), value: profile.side, onChange: (v) => setProfile((p) => ({ ...p, side: v })) })
@@ -51868,8 +51868,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 12, marginBottom: 14, animation: "fadeIn 0.6s ease" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => launchAnalysis(top3), style: { flex: "1 1 220px", padding: "14px", background: "linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 14, color: "#f97316", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", letterSpacing: "-0.01em", textAlign: "center" }, children: "\u{1F4CA} Analyser ce Top 3 en d\xE9tail" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => {
-              setPanel("suggest");
-              setScreen("app");
+              launchAnalysis(top3);
+              setTimeout(() => setPanel("suggest"), 50);
             }, style: { flex: "1 1 180px", padding: "14px 16px", background: "rgba(76,175,80,0.08)", border: "1px solid rgba(76,175,80,0.25)", borderRadius: 14, color: "#4CAF50", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "all 0.2s", textAlign: "center" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: "\u{1F3AF} Sugg\xE8re-moi d'autres" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#64748b", fontWeight: 400, marginTop: 3 }, children: brandPref.length > 0 ? `Priorit\xE9 ${brandPref.join(", ")}` : "Recommandations IA" })
