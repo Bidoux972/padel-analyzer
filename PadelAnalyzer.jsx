@@ -1209,6 +1209,42 @@ export default function PadelAnalyzer() {
     const p = loadSavedProfile();
     return (p._name) ? "home" : "home";
   });
+
+  // ============ BROWSER BACK BUTTON SUPPORT ============
+  const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard" };
+  const screenRef = useRef(screen);
+  screenRef.current = screen;
+
+  // Push to browser history on screen change
+  useEffect(() => {
+    const current = window.history.state?.screen;
+    if (current !== screen && screen !== "analyzing") {
+      window.history.pushState({ screen }, "", "");
+    }
+  }, [screen]);
+
+  // Listen for browser back/forward
+  useEffect(() => {
+    const onPopState = (e) => {
+      if (e.state?.screen) {
+        setScreen(e.state.screen);
+      } else {
+        // No state = user went back past first screen → push them back in
+        const back = SCREEN_BACK[screenRef.current];
+        if (back) {
+          setScreen(back);
+          window.history.pushState({ screen: back }, "", "");
+        } else {
+          // Stay on current screen, re-push to prevent exit
+          window.history.pushState({ screen: screenRef.current }, "", "");
+        }
+      }
+    };
+    // Seed initial history entry
+    window.history.replaceState({ screen }, "", "");
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
   const [wizardStep, setWizardStep] = useState(0);
   const [revealIdx, setRevealIdx] = useState(0);
   const [confirmModal, setConfirmModal] = useState(null); // { message, onConfirm }
