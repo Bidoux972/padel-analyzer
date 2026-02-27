@@ -1212,13 +1212,15 @@ export default function PadelAnalyzer() {
 
   // ============ BROWSER BACK BUTTON SUPPORT ============
   const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard" };
-  const screenRef = useRef(screen);
-  screenRef.current = screen;
+  const isPopStateRef = useRef(false);
 
-  // Push to browser history on screen change
+  // Push to browser history on screen change (but NOT when triggered by popstate)
   useEffect(() => {
-    const current = window.history.state?.screen;
-    if (current !== screen && screen !== "analyzing") {
+    if (isPopStateRef.current) {
+      isPopStateRef.current = false;
+      return;
+    }
+    if (screen !== "analyzing") {
       window.history.pushState({ screen }, "", "");
     }
   }, [screen]);
@@ -1227,17 +1229,13 @@ export default function PadelAnalyzer() {
   useEffect(() => {
     const onPopState = (e) => {
       if (e.state?.screen) {
+        isPopStateRef.current = true;
         setScreen(e.state.screen);
       } else {
-        // No state = user went back past first screen → push them back in
-        const back = SCREEN_BACK[screenRef.current];
-        if (back) {
-          setScreen(back);
-          window.history.pushState({ screen: back }, "", "");
-        } else {
-          // Stay on current screen, re-push to prevent exit
-          window.history.pushState({ screen: screenRef.current }, "", "");
-        }
+        // No state = user went back past first screen → stay put
+        window.history.pushState({ screen: "home" }, "", "");
+        isPopStateRef.current = true;
+        setScreen("home");
       }
     };
     // Seed initial history entry
