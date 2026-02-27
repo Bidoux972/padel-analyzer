@@ -60052,6 +60052,41 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   async function cloudDeleteProfile(familyCode, name) {
     return sbDelete("profiles", `family_code=eq.${familyCode}&name=eq.${encodeURIComponent(name)}`);
   }
+  async function sbRpc(fnName, params) {
+    const r2 = await fetch(`${SB_URL.replace("/rest/v1", "/rest/v1/rpc")}/${fnName}`, {
+      method: "POST",
+      headers: SB_HEADERS,
+      body: JSON.stringify(params)
+    });
+    if (!r2.ok) {
+      const e = await r2.json().catch(() => ({}));
+      throw new Error(e.message || r2.statusText);
+    }
+    return r2.json();
+  }
+  async function checkIsAdmin(familyCode) {
+    try {
+      const result = await sbRpc("is_family_admin", { p_family_code: familyCode });
+      return result === true;
+    } catch {
+      return false;
+    }
+  }
+  async function adminListFamilies(familyCode) {
+    return sbRpc("admin_list_families", { p_family_code: familyCode });
+  }
+  async function adminLoadFamilyProfiles(familyCode, targetCode) {
+    return sbRpc("admin_load_family_profiles", { p_family_code: familyCode, p_target_code: targetCode });
+  }
+  async function adminUpsertRacket(familyCode, racket) {
+    return sbRpc("admin_upsert_racket", { p_family_code: familyCode, p_racket: racket });
+  }
+  async function adminToggleRacket(familyCode, racketId) {
+    return sbRpc("admin_toggle_racket", { p_family_code: familyCode, p_racket_id: racketId });
+  }
+  async function adminGetStats(familyCode) {
+    return sbRpc("admin_get_stats", { p_family_code: familyCode });
+  }
   var LEVEL_OPTIONS = [
     { value: "D\xE9butant", label: "D\xE9butant", desc: "D\xE9couverte, < 1 an" },
     { value: "Interm\xE9diaire", label: "Interm\xE9diaire", desc: "Bases acquises, 1-3 ans" },
@@ -61150,6 +61185,17 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     const [cloudError, setCloudError] = (0, import_react59.useState)("");
     const [racketsSource, setRacketsSource] = (0, import_react59.useState)("json");
     const [, forceRacketsUpdate] = (0, import_react59.useState)(0);
+    const [isAdmin, setIsAdmin] = (0, import_react59.useState)(false);
+    const [adminTab, setAdminTab] = (0, import_react59.useState)("families");
+    const [adminFamilies, setAdminFamilies] = (0, import_react59.useState)([]);
+    const [adminExpandedFamily, setAdminExpandedFamily] = (0, import_react59.useState)(null);
+    const [adminFamilyProfiles, setAdminFamilyProfiles] = (0, import_react59.useState)([]);
+    const [adminStats, setAdminStats] = (0, import_react59.useState)(null);
+    const [adminRacketSearch, setAdminRacketSearch] = (0, import_react59.useState)("");
+    const [adminRacketFilter, setAdminRacketFilter] = (0, import_react59.useState)("all");
+    const [adminEditRacket, setAdminEditRacket] = (0, import_react59.useState)(null);
+    const [adminLoading, setAdminLoading] = (0, import_react59.useState)(false);
+    const [adminMsg, setAdminMsg] = (0, import_react59.useState)("");
     (0, import_react59.useEffect)(() => {
       if (!familyCode) return;
       setCloudStatus("loading");
@@ -61162,6 +61208,10 @@ Return ONLY valid JSON, no markdown, no backticks.`;
       }).catch((err) => {
         console.warn("[Cloud] Load error:", err.message);
         setCloudStatus("error");
+      });
+      checkIsAdmin(familyCode).then((admin) => {
+        setIsAdmin(admin);
+        if (admin) console.log("[Admin] \u2705 Mode admin activ\xE9");
       });
     }, [familyCode]);
     (0, import_react59.useEffect)(() => {
@@ -62418,7 +62468,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             " \xB7 ",
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 700, letterSpacing: "0.1em" }, children: familyCode })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: handleCloudLogout, style: { background: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "3px 8px", color: "#64748b", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, children: "\u23FB" })
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: handleCloudLogout, style: { background: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "3px 8px", color: "#64748b", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, children: "\u23FB" }),
+          isAdmin && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+            setAdminTab("families");
+            setScreen("admin");
+          }, style: { background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 6, padding: "3px 8px", color: "#c084fc", fontSize: 9, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }, children: "\u2699\uFE0F Admin" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: familyCode && familyCode !== "LOCAL" ? 12 : 40, fontSize: 8, color: "#334155", letterSpacing: "0.05em", textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
@@ -62427,6 +62481,309 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           " raquettes \xB7 Scoring hybride calibr\xE9"
         ] })
       ] }),
+      screen === "admin" && (() => {
+        const loadFamilies = async () => {
+          setAdminLoading(true);
+          try {
+            const data = await adminListFamilies(familyCode);
+            setAdminFamilies(data || []);
+          } catch (e) {
+            setAdminMsg("Erreur: " + e.message);
+          }
+          setAdminLoading(false);
+        };
+        const loadStats = async () => {
+          setAdminLoading(true);
+          try {
+            const data = await adminGetStats(familyCode);
+            setAdminStats(data);
+          } catch (e) {
+            setAdminMsg("Erreur: " + e.message);
+          }
+          setAdminLoading(false);
+        };
+        const expandFamily = async (code) => {
+          if (adminExpandedFamily === code) {
+            setAdminExpandedFamily(null);
+            return;
+          }
+          setAdminExpandedFamily(code);
+          try {
+            const profiles = await adminLoadFamilyProfiles(familyCode, code);
+            setAdminFamilyProfiles(profiles || []);
+          } catch (e) {
+            setAdminFamilyProfiles([]);
+          }
+        };
+        const handleToggleRacket = async (id) => {
+          try {
+            const newState = await adminToggleRacket(familyCode, id);
+            setAdminMsg(`Raquette ${id}: ${newState ? "activ\xE9e" : "d\xE9sactiv\xE9e"}`);
+            forceRacketsUpdate((n) => n + 1);
+          } catch (e) {
+            setAdminMsg("Erreur: " + e.message);
+          }
+        };
+        const handleSaveRacket = async (racket) => {
+          setAdminLoading(true);
+          try {
+            await adminUpsertRacket(familyCode, racket);
+            setAdminMsg("\u2705 Raquette sauvegard\xE9e: " + racket.name);
+            setAdminEditRacket(null);
+            loadRacketsFromSupabase().then((r2) => forceRacketsUpdate((n) => n + 1));
+          } catch (e) {
+            setAdminMsg("Erreur: " + e.message);
+          }
+          setAdminLoading(false);
+        };
+        const handleImportJSON = async (jsonStr) => {
+          try {
+            const arr = JSON.parse(jsonStr);
+            if (!Array.isArray(arr)) throw new Error("Le JSON doit \xEAtre un tableau");
+            setAdminLoading(true);
+            let ok = 0, fail = 0;
+            for (const r2 of arr) {
+              try {
+                const dbRacket = {
+                  id: r2.id,
+                  name: r2.name,
+                  short_name: r2.shortName || r2.short_name,
+                  brand: r2.brand,
+                  shape: r2.shape,
+                  weight: r2.weight,
+                  balance: r2.balance,
+                  surface: r2.surface,
+                  core: r2.core,
+                  antivib: r2.antivib,
+                  price: r2.price,
+                  player: r2.player,
+                  image_url: r2.imageUrl || r2.image_url,
+                  year: r2.year,
+                  category: r2.category,
+                  scores: r2.scores,
+                  verdict: r2.verdict,
+                  editorial: r2.editorial,
+                  tech_highlights: r2.techHighlights || r2.tech_highlights,
+                  target_profile: r2.targetProfile || r2.target_profile,
+                  junior: r2.junior || false,
+                  woman_line: r2.womanLine || r2.woman_line || false,
+                  description: r2.description,
+                  pro_player_info: r2.proPlayerInfo || r2.pro_player_info,
+                  is_active: true
+                };
+                await adminUpsertRacket(familyCode, dbRacket);
+                ok++;
+              } catch {
+                fail++;
+              }
+            }
+            setAdminMsg(`\u2705 Import: ${ok} OK, ${fail} erreurs sur ${arr.length}`);
+            loadRacketsFromSupabase().then((r2) => forceRacketsUpdate((n) => n + 1));
+          } catch (e) {
+            setAdminMsg("Erreur JSON: " + e.message);
+          }
+          setAdminLoading(false);
+        };
+        if (adminTab === "families" && adminFamilies.length === 0 && !adminLoading) loadFamilies();
+        if (adminTab === "stats" && !adminStats && !adminLoading) loadStats();
+        const allRackets = RACKETS_DB;
+        const filteredRackets = allRackets.filter((r2) => {
+          if (adminRacketSearch && !r2.name.toLowerCase().includes(adminRacketSearch.toLowerCase()) && !r2.brand.toLowerCase().includes(adminRacketSearch.toLowerCase())) return false;
+          if (adminRacketFilter !== "all" && r2.brand !== adminRacketFilter) return false;
+          return true;
+        });
+        const brands = [...new Set(allRackets.map((r2) => r2.brand))].sort();
+        const tabStyle = (active) => ({
+          padding: "10px 20px",
+          fontSize: 12,
+          fontWeight: active ? 700 : 500,
+          color: active ? "#c084fc" : "#64748b",
+          background: active ? "rgba(168,85,247,0.12)" : "transparent",
+          border: active ? "1px solid rgba(168,85,247,0.3)" : "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 10,
+          cursor: "pointer",
+          fontFamily: "'Inter',sans-serif",
+          transition: "all 0.2s"
+        });
+        return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { maxWidth: 1020, margin: "0 auto", padding: "20px 16px", animation: "fadeIn 0.4s ease" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 12 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setScreen("home"), style: { background: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 12px", color: "#64748b", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }, children: "\u2190 Accueil" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { style: { fontFamily: "'Outfit'", fontSize: 22, fontWeight: 800, background: "linear-gradient(135deg,#a855f7,#6366f1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 }, children: "\u2699\uFE0F Dashboard Admin" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 10, color: "#64748b" }, children: [
+              familyCode,
+              " \xB7 ",
+              RACKETS_DB.length,
+              " raquettes"
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginBottom: 20 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminTab("families"), style: tabStyle(adminTab === "families"), children: "\u{1F465} Familles & Profils" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminTab("rackets"), style: tabStyle(adminTab === "rackets"), children: "\u{1F3D3} Raquettes" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+              setAdminTab("stats");
+              setAdminStats(null);
+            }, style: tabStyle(adminTab === "stats"), children: "\u{1F4CA} Statistiques" })
+          ] }),
+          adminMsg && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "10px 14px", background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: 10, marginBottom: 16, fontSize: 11, color: "#c084fc", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: adminMsg }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminMsg(""), style: { background: "none", border: "none", color: "#c084fc", cursor: "pointer", fontSize: 14 }, children: "\u2715" })
+          ] }),
+          adminLoading && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: 20, color: "#64748b", fontSize: 12 }, children: "\u23F3 Chargement..." }),
+          adminTab === "families" && !adminLoading && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 12, color: "#94a3b8", fontWeight: 600 }, children: [
+                adminFamilies.length,
+                " famille(s)"
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+                setAdminFamilies([]);
+                loadFamilies();
+              }, style: { background: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "4px 10px", color: "#64748b", fontSize: 10, cursor: "pointer", fontFamily: "inherit" }, children: "\u{1F504} Rafra\xEEchir" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 8 }, children: adminFamilies.map((fam) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, overflow: "hidden" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => expandFamily(fam.code), style: { width: "100%", padding: "14px 18px", background: "none", border: "none", cursor: "pointer", textAlign: "left", display: "flex", alignItems: "center", gap: 14, fontFamily: "inherit" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 40, height: 40, borderRadius: 12, background: fam.is_admin ? "linear-gradient(135deg,rgba(168,85,247,0.3),rgba(99,102,241,0.2))" : "rgba(255,255,255,0.05)", border: fam.is_admin ? "1px solid rgba(168,85,247,0.4)" : "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0 }, children: fam.is_admin ? "\u{1F451}" : "\u{1F464}" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, minWidth: 0 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 14, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Outfit'", letterSpacing: "0.08em" }, children: fam.code }),
+                    fam.is_admin && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, fontWeight: 700, color: "#c084fc", background: "rgba(168,85,247,0.15)", padding: "2px 8px", borderRadius: 6, textTransform: "uppercase" }, children: "Admin" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "#64748b", marginTop: 2 }, children: [
+                    fam.profile_count || 0,
+                    " profil(s)",
+                    fam.profile_names && fam.profile_names.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                      " \xB7 ",
+                      fam.profile_names.join(", ")
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#475569", marginTop: 2 }, children: fam.last_activity ? `Derni\xE8re activit\xE9: ${new Date(fam.last_activity).toLocaleDateString("fr-FR")} ${new Date(fam.last_activity).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}` : "Aucune activit\xE9" })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { color: "#64748b", fontSize: 16, transition: "transform 0.2s", transform: adminExpandedFamily === fam.code ? "rotate(90deg)" : "rotate(0)" }, children: adminExpandedFamily === fam.code ? "\u25BE" : "\u25B8" })
+              ] }),
+              adminExpandedFamily === fam.code && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "0 18px 14px", borderTop: "1px solid rgba(255,255,255,0.05)" }, children: [
+                adminFamilyProfiles.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 11, color: "#475569", margin: "10px 0" }, children: "Aucun profil" }),
+                adminFamilyProfiles.map((p) => {
+                  const d = p.data || {};
+                  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.03)", display: "flex", alignItems: "center", gap: 12 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 32, height: 32, borderRadius: 10, background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: "#f97316", flexShrink: 0 }, children: (p.name || "?").charAt(0).toUpperCase() }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1 }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 13, fontWeight: 600, color: "#e2e8f0" }, children: [
+                        p.name,
+                        " ",
+                        p.locked && "\u{1F512}"
+                      ] }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 10, color: "#64748b" }, children: [
+                        d.level || "\u2014",
+                        " \xB7 ",
+                        d.hand || "\u2014",
+                        " \xB7 C\xF4t\xE9 ",
+                        d.side || "\u2014",
+                        d.styleTags && d.styleTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                          " \xB7 ",
+                          d.styleTags.slice(0, 3).join(", ")
+                        ] })
+                      ] })
+                    ] }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#475569" }, children: p.updated_at ? new Date(p.updated_at).toLocaleDateString("fr-FR") : "" })
+                  ] }, p.id);
+                })
+              ] })
+            ] }, fam.code)) })
+          ] }),
+          adminTab === "rackets" && !adminLoading && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: adminRacketSearch, onChange: (e) => setAdminRacketSearch(e.target.value), placeholder: "Rechercher nom ou marque\u2026", style: { flex: "1 1 200px", padding: "8px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#e2e8f0", fontSize: 11, fontFamily: "inherit", outline: "none" } }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { value: adminRacketFilter, onChange: (e) => setAdminRacketFilter(e.target.value), style: { padding: "8px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#e2e8f0", fontSize: 11, fontFamily: "inherit", outline: "none" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "all", children: "Toutes marques" }),
+                brands.map((b) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: b, children: b }, b))
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+                const json = prompt("Coller le JSON des raquettes \xE0 importer:");
+                if (json) handleImportJSON(json);
+              }, style: { padding: "8px 14px", background: "rgba(76,175,80,0.1)", border: "1px solid rgba(76,175,80,0.25)", borderRadius: 8, color: "#4CAF50", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }, children: "\u{1F4E5} Import JSON" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 11, color: "#64748b", marginBottom: 10 }, children: [
+              filteredRackets.length,
+              " raquette(s) affich\xE9e(s) sur ",
+              allRackets.length
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: [
+              filteredRackets.slice(0, 50).map((r2) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10, fontSize: 11 }, children: [
+                r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: r2.imageUrl, alt: "", style: { width: 36, height: 36, objectFit: "contain", borderRadius: 6, background: "rgba(255,255,255,0.05)", flexShrink: 0 }, onError: (e) => {
+                  e.target.style.display = "none";
+                } }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, minWidth: 0 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontWeight: 600, color: "#e2e8f0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: r2.name }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "#64748b" }, children: [
+                    r2.brand,
+                    " \xB7 ",
+                    r2.shape,
+                    " \xB7 ",
+                    r2.category,
+                    " \xB7 ",
+                    r2.year
+                  ] })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#64748b", flexShrink: 0 }, children: r2.price || "\u2014" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 4, flexShrink: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => handleToggleRacket(r2.id), style: { padding: "4px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, color: "#64748b", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }, title: "Activer/D\xE9sactiver", children: r2.is_active === false ? "\u{1F534}" : "\u{1F7E2}" }) })
+              ] }, r2.id)),
+              filteredRackets.length > 50 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#475569", textAlign: "center", marginTop: 8 }, children: "Affichage limit\xE9 \xE0 50 \u2014 affinez votre recherche" })
+            ] })
+          ] }),
+          adminTab === "stats" && !adminLoading && adminStats && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: 10, marginBottom: 20 }, children: [
+              { label: "Familles", value: adminStats.total_families, icon: "\u{1F465}", color: "#a855f7" },
+              { label: "Profils", value: adminStats.total_profiles, icon: "\u{1F464}", color: "#6366f1" },
+              { label: "Raquettes actives", value: adminStats.active_rackets, icon: "\u{1F3D3}", color: "#f97316" },
+              { label: "Marques", value: adminStats.brands, icon: "\u{1F3F7}\uFE0F", color: "#22c55e" }
+            ].map((kpi) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "16px", textAlign: "center" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 24 }, children: kpi.icon }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 28, fontWeight: 800, color: kpi.color, fontFamily: "'Outfit'", margin: "4px 0" }, children: kpi.value }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "#64748b", fontWeight: 500 }, children: kpi.label })
+            ] }, kpi.label)) }),
+            adminStats.by_category && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 20 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { style: { fontSize: 13, fontWeight: 700, color: "#94a3b8", marginBottom: 10 }, children: "R\xE9partition par cat\xE9gorie" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" }, children: Object.entries(adminStats.by_category).sort((a2, b) => b[1] - a2[1]).map(([cat, count]) => {
+                const catColors = { debutant: "#22c55e", intermediaire: "#f59e0b", avance: "#ef4444", expert: "#a855f7", junior: "#3b82f6" };
+                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "10px 16px", background: `${catColors[cat] || "#64748b"}12`, border: `1px solid ${catColors[cat] || "#64748b"}30`, borderRadius: 10, textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 20, fontWeight: 800, color: catColors[cat] || "#64748b", fontFamily: "'Outfit'" }, children: count }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 10, color: "#94a3b8", textTransform: "capitalize" }, children: cat })
+                ] }, cat);
+              }) })
+            ] }),
+            adminStats.by_brand && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 20 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { style: { fontSize: 13, fontWeight: 700, color: "#94a3b8", marginBottom: 10 }, children: "Raquettes par marque" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: Object.entries(adminStats.by_brand).sort((a2, b) => b[1] - a2[1]).map(([brand, count]) => {
+                const maxCount = Math.max(...Object.values(adminStats.by_brand));
+                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 11, color: "#e2e8f0", fontWeight: 600, width: 100, flexShrink: 0 }, children: brand }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: 1, height: 20, background: "rgba(255,255,255,0.03)", borderRadius: 6, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: `${count / maxCount * 100}%`, height: "100%", background: "linear-gradient(90deg,rgba(168,85,247,0.3),rgba(99,102,241,0.3))", borderRadius: 6, transition: "width 0.5s ease" } }) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 11, color: "#94a3b8", fontWeight: 600, width: 30, textAlign: "right" }, children: count })
+                ] }, brand);
+              }) })
+            ] }),
+            adminStats.recent_families && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { style: { fontSize: 13, fontWeight: 700, color: "#94a3b8", marginBottom: 10 }, children: "10 derni\xE8res familles actives" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: adminStats.recent_families.map((f, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 8, fontSize: 11 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 700, color: "#e2e8f0", letterSpacing: "0.06em" }, children: f.code }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { color: "#64748b" }, children: [
+                  f.profiles,
+                  " profil(s)"
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 9, color: "#475569", marginLeft: "auto" }, children: f.last_activity ? new Date(f.last_activity).toLocaleDateString("fr-FR") : "" })
+              ] }, i)) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 7, color: "#334155", letterSpacing: "0.05em", textAlign: "center", marginTop: 24 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
+            " Admin Dashboard \xB7 ",
+            RACKETS_DB.length,
+            " raquettes"
+          ] })
+        ] });
+      })(),
       screen === "magazine" && (() => {
         const catIdx = MAGAZINE_CATEGORIES.findIndex((c2) => c2.id === magCat);
         const catInfo = MAGAZINE_CATEGORIES[catIdx];
