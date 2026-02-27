@@ -120,6 +120,12 @@ async function cloudSetAdminPin(familyCode, pin) {
   return sbPatch('families', `code=eq.${familyCode}`, { admin_pin: pin });
 }
 
+// Load ALL rackets from Supabase rackets table (admin imports go here)
+async function cloudLoadAllRackets() {
+  const data = await sbGet('rackets', 'select=*&limit=500');
+  return data || [];
+}
+
 const LEVEL_OPTIONS = [
   { value: "Débutant", label: "Débutant", desc: "Découverte, < 1 an" },
   { value: "Intermédiaire", label: "Intermédiaire", desc: "Bases acquises, 1-3 ans" },
@@ -1211,7 +1217,18 @@ export default function PadelAnalyzer() {
   });
 
   // ============ BROWSER BACK BUTTON SUPPORT ============
-  const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard" };
+  const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home" };
+
+  // Open a full racket sheet from any screen
+  const openRacketSheet = useCallback((racket, fromScreen) => {
+    if (!racket) return;
+    // Find full data from DB if needed
+    const allDB = getMergedDB();
+    const full = allDB.find(r => r.id === racket.id) || allDB.find(r => r.name === racket.name) || racket;
+    setRacketSheet(full);
+    setRacketSheetFrom(fromScreen || screen);
+    setScreen("racketSheet");
+  }, [screen]);
   const isPopStateRef = useRef(false);
 
   // Push to browser history on screen change (but NOT when triggered by popstate)
@@ -1252,6 +1269,9 @@ export default function PadelAnalyzer() {
   const [magCat, setMagCat] = useState("puissance");
   const [magYear, setMagYear] = useState(2026);
   const [magDetail, setMagDetail] = useState(null); // racket to show in detail
+  const [racketSheet, setRacketSheet] = useState(null); // full racket sheet view
+  const [racketSheetFrom, setRacketSheetFrom] = useState("home"); // screen to return to
+  const [catalogSearch, setCatalogSearch] = useState(""); // catalog search term
   const [magSlide, setMagSlide] = useState(0); // current slide index in top5
   const [addDetail, setAddDetail] = useState(null); // index of expanded search result
 
@@ -1268,33 +1288,26 @@ export default function PadelAnalyzer() {
     setCloudStatus("loading");
     Promise.all([
       cloudLoadProfiles(familyCode),
-      cloudLoadExtraRackets(familyCode)
-    ]).then(([cloudProfiles, cloudExtras]) => {
+      cloudLoadAllRackets()
+    ]).then(([cloudProfiles, cloudRackets]) => {
       if (cloudProfiles.length > 0) {
         setSavedProfiles(cloudProfiles);
         saveProfilesList(cloudProfiles);
       }
-      // Merge cloud extras into localStorage (dedup by id)
-      if (cloudExtras.length > 0) {
+      // Merge cloud rackets that aren't in static RACKETS_DB into localStorage extras
+      if (cloudRackets.length > 0) {
         try {
-          const local = JSON.parse(localStorage.getItem('padel_db_extra')||'[]');
-          const localIds = new Set(local.map(r=>r.id));
-          const staticIds = new Set(RACKETS_DB.map(r=>r.id));
-          const newExtras = cloudExtras.filter(r => r.id && !localIds.has(r.id) && !staticIds.has(r.id));
-          if (newExtras.length > 0) {
-            const merged = [...local, ...newExtras];
-            localStorage.setItem('padel_db_extra', JSON.stringify(merged));
-            setLocalDBCount(merged.length);
-            console.log(`[Cloud] Synced ${newExtras.length} extra rackets from cloud (total local: ${merged.length})`);
-          } else if (local.length === 0 && cloudExtras.length > 0) {
-            // Cloud has extras but none are truly new (all in static DB) — still sync for count
-            const filtered = cloudExtras.filter(r => r.id && !staticIds.has(r.id));
-            if (filtered.length > 0) {
-              localStorage.setItem('padel_db_extra', JSON.stringify(filtered));
-              setLocalDBCount(filtered.length);
-            }
+          const staticIds = new Set(RACKETS_DB.map(r => r.id));
+          const staticNames = new Set(RACKETS_DB.map(r => r.name.toLowerCase()));
+          const extras = cloudRackets.filter(r => 
+            r.id && !staticIds.has(r.id) && !staticNames.has((r.name||'').toLowerCase())
+          );
+          if (extras.length > 0) {
+            localStorage.setItem('padel_db_extra', JSON.stringify(extras));
+            setLocalDBCount(extras.length);
+            console.log(`[Cloud] Loaded ${extras.length} extra rackets from Supabase (${cloudRackets.length} total in cloud, ${RACKETS_DB.length} static)`);
           }
-        } catch(e) { console.warn('[Cloud] Extra rackets merge failed:', e.message); }
+        } catch(e) { console.warn('[Cloud] Rackets merge failed:', e.message); }
       }
       setCloudStatus("synced");
     }).catch(err => {
@@ -2337,6 +2350,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <span style={{fontSize:24,color:"#f97316"}}>→</span>
             </div>
           </button>
+
+          {/* CATALOGUE CTA */}
+          <button onClick={()=>{setCatalogSearch("");setScreen("catalog");}} style={{
+            width:"100%",padding:"20px 24px",borderRadius:20,cursor:"pointer",marginTop:12,
+            background:"linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(249,115,22,0.04) 100%)",
+            border:"1px solid rgba(34,197,94,0.15)",transition:"all 0.3s",
+          }}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div style={{textAlign:"left"}}>
+                <div style={{fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>🔍 Catalogue · {totalDBCount} raquettes</div>
+                <div style={{fontSize:11,color:"#94a3b8",marginTop:4}}>Rechercher, explorer, comparer toutes les palas</div>
+              </div>
+              <span style={{fontSize:24,color:"#22c55e"}}>→</span>
+            </div>
+          </button>
         </div>
 
         {familyCode && familyCode !== "LOCAL" && <div style={{marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
@@ -2591,7 +2619,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
 
             {/* CTA see full detail */}
-            <button onClick={()=>setMagDetail(currentR)} style={{
+            <button onClick={()=>openRacketSheet(currentR,"magazine")} style={{
               width:"100%",padding:"12px",borderRadius:14,cursor:"pointer",marginBottom:16,
               background:"linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(168,85,247,0.06) 100%)",
               border:"1px solid rgba(249,115,22,0.2)",color:"#f97316",fontSize:12,fontWeight:700,fontFamily:"'Outfit'",
@@ -2604,6 +2632,350 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div style={{textAlign:"center",padding:"8px 0 16px"}}>
             <div style={{fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
               <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Magazine · {totalDBCount} raquettes
+            </div>
+          </div>
+        </div>;
+      })()}
+
+
+      {/* ============================================================ */}
+      {/* CATALOG SCREEN — Browse & Search all rackets */}
+      {/* ============================================================ */}
+      {screen==="catalog"&&(()=>{
+        const allDB = getMergedDB();
+        const term = catalogSearch.toLowerCase().trim();
+        
+        // Get unique brands sorted
+        const allBrands = [...new Set(allDB.map(r=>r.brand))].sort();
+        const allCats = ["debutant","intermediaire","avance","expert"];
+        const catLabels = {debutant:"Débutant",intermediaire:"Intermédiaire",avance:"Avancé",expert:"Expert"};
+        
+        // Filter
+        const filtered = allDB.filter(r => {
+          if (!term) return true;
+          return (r.name||"").toLowerCase().includes(term) 
+            || (r.brand||"").toLowerCase().includes(term) 
+            || (r.shortName||"").toLowerCase().includes(term)
+            || (r.category||"").toLowerCase().includes(term)
+            || String(r.year||"").includes(term);
+        });
+        
+        // Group by brand
+        const byBrand = {};
+        filtered.forEach(r => { if(!byBrand[r.brand]) byBrand[r.brand]=[]; byBrand[r.brand].push(r); });
+        Object.values(byBrand).forEach(arr => arr.sort((a,b) => (b.year||0)-(a.year||0) || a.name.localeCompare(b.name)));
+        const sortedBrands = Object.keys(byBrand).sort();
+        
+        const avgScore = (r) => {
+          const sc = r.scores||{};
+          const vals = ATTRS.map(a=>sc[a]||0);
+          return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : "—";
+        };
+        
+        const catColor = (c) => c==="expert"?"#f97316":c==="avance"?"#a855f7":c==="intermediaire"?"#3b82f6":"#22c55e";
+
+        return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:"'Inter',sans-serif",animation:"fadeIn 0.3s ease",maxWidth:600,margin:"0 auto",padding:"0 12px"}}>
+          {/* Header */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 10px"}}>
+            <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:"#f97316",fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:"'Outfit'"}}>← Accueil</button>
+            <span style={{fontSize:11,color:"#64748b",fontFamily:"'Outfit'",fontWeight:600}}>{filtered.length} / {allDB.length} raquettes</span>
+          </div>
+          
+          {/* Title */}
+          <div style={{textAlign:"center",marginBottom:16}}>
+            <h1 style={{fontSize:26,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",margin:"0 0 4px",letterSpacing:"-0.02em"}}>🔍 Catalogue</h1>
+            <p style={{fontSize:11,color:"#64748b",margin:0}}>Explore {totalDBCount} raquettes · {allBrands.length} marques</p>
+          </div>
+          
+          {/* Search bar */}
+          <div style={{position:"relative",marginBottom:16}}>
+            <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",fontSize:14,opacity:0.4}}>🔎</span>
+            <input 
+              type="text" value={catalogSearch} 
+              onChange={e=>setCatalogSearch(e.target.value)}
+              placeholder="Nom, marque, année, niveau..."
+              style={{width:"100%",padding:"12px 14px 12px 40px",borderRadius:14,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.04)",color:"#e2e8f0",fontSize:13,fontFamily:"inherit",outline:"none",boxSizing:"border-box"}}
+            />
+            {catalogSearch&&<button onClick={()=>setCatalogSearch("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#64748b",fontSize:16,cursor:"pointer"}}>✕</button>}
+          </div>
+          
+          {/* Quick filter chips */}
+          <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16,justifyContent:"center"}}>
+            {["2026","2025"].map(y=>(
+              <button key={y} onClick={()=>setCatalogSearch(catalogSearch===y?"":y)} style={{
+                padding:"5px 14px",borderRadius:20,fontSize:10,fontWeight:catalogSearch===y?700:500,cursor:"pointer",
+                background:catalogSearch===y?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.04)",
+                border:`1px solid ${catalogSearch===y?"rgba(249,115,22,0.3)":"rgba(255,255,255,0.08)"}`,
+                color:catalogSearch===y?"#f97316":"#94a3b8",transition:"all 0.2s",fontFamily:"'Inter'",
+              }}>{y}</button>
+            ))}
+            {allCats.map(c=>(
+              <button key={c} onClick={()=>setCatalogSearch(catalogSearch===c?"":c)} style={{
+                padding:"5px 14px",borderRadius:20,fontSize:10,fontWeight:catalogSearch===c?700:500,cursor:"pointer",
+                background:catalogSearch===c?`${catColor(c)}15`:"rgba(255,255,255,0.04)",
+                border:`1px solid ${catalogSearch===c?catColor(c)+"40":"rgba(255,255,255,0.08)"}`,
+                color:catalogSearch===c?catColor(c):"#94a3b8",transition:"all 0.2s",fontFamily:"'Inter'",
+              }}>{catLabels[c]}</button>
+            ))}
+          </div>
+          
+          {/* Results by brand */}
+          <div style={{flex:1,overflowY:"auto",paddingBottom:40}}>
+            {!filtered.length&&<div style={{textAlign:"center",padding:"40px 0",color:"#475569"}}>
+              <div style={{fontSize:32,marginBottom:8}}>🔍</div>
+              <p style={{fontSize:13}}>Aucune raquette trouvée</p>
+            </div>}
+            
+            {sortedBrands.map(brand=>(
+              <div key={brand} style={{marginBottom:20}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8,padding:"0 4px"}}>
+                  <span style={{fontSize:14,fontWeight:800,fontFamily:"'Outfit'",color:"#f1f5f9"}}>{brand}</span>
+                  <span style={{fontSize:10,color:"#64748b",background:"rgba(255,255,255,0.04)",borderRadius:10,padding:"2px 8px"}}>{byBrand[brand].length}</span>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(150px, 1fr))",gap:8}}>
+                  {byBrand[brand].map(r=>(
+                    <button key={r.id||r.name} onClick={()=>openRacketSheet(r,"catalog")} style={{
+                      padding:"12px 10px",borderRadius:14,cursor:"pointer",textAlign:"center",
+                      background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",
+                      transition:"all 0.2s",display:"flex",flexDirection:"column",alignItems:"center",gap:6,
+                    }}>
+                      {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{width:60,height:60,objectFit:"contain",filter:"drop-shadow(0 4px 8px rgba(0,0,0,0.3))"}} onError={e=>{e.target.style.display="none";e.target.nextSibling&&(e.target.nextSibling.style.display="flex");}}/>:null}
+                      <div style={{display:r.imageUrl?"none":"flex",width:48,height:48,borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"1px dashed rgba(249,115,22,0.15)",alignItems:"center",justifyContent:"center",fontSize:20}}>🏸</div>
+                      <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",fontFamily:"'Outfit'",lineHeight:1.3}}>{r.shortName||r.name}</div>
+                      <div style={{display:"flex",alignItems:"center",gap:4}}>
+                        <span style={{fontSize:16,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{avgScore(r)}</span>
+                        <span style={{fontSize:8,color:"#64748b"}}>/10</span>
+                      </div>
+                      <div style={{display:"flex",gap:3,flexWrap:"wrap",justifyContent:"center"}}>
+                        <span style={{fontSize:8,padding:"2px 6px",borderRadius:6,background:`${catColor(r.category)}12`,color:catColor(r.category),fontWeight:600}}>{catLabels[r.category]||r.category}</span>
+                        <span style={{fontSize:8,padding:"2px 6px",borderRadius:6,background:"rgba(255,255,255,0.04)",color:"#64748b"}}>{r.year}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>;
+      })()}
+
+
+      {/* ============================================================ */}
+      {/* RACKET SHEET — Full premium magazine-style racket page */}
+      {/* ============================================================ */}
+      {screen==="racketSheet"&&racketSheet&&(()=>{
+        const r = racketSheet;
+        const sc = r.scores||{};
+        const ths = r.techHighlights||[];
+        const leftThs = ths.filter((_,i)=>i%2===0);
+        const rightThs = ths.filter((_,i)=>i%2===1);
+        const avgScore = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
+        const radarData = ATTRS.map(a=>({attribute:a, Score:sc[a]||0, Max:10}));
+        const catColor = r.category==="expert"?"#f97316":r.category==="avance"?"#a855f7":r.category==="intermediaire"?"#3b82f6":"#22c55e";
+        const catLabel = {debutant:"Débutant",intermediaire:"Intermédiaire",avance:"Avancé",expert:"Expert"}[r.category]||r.category;
+        
+        const handleBack = () => {
+          setRacketSheet(null);
+          setScreen(racketSheetFrom || "home");
+        };
+        
+        // PDF / Share
+        const handleShare = () => {
+          const printDiv = document.getElementById('racket-sheet-print');
+          if (!printDiv) return;
+          const printWin = window.open('','','width=800,height=1100');
+          printWin.document.write(`<!DOCTYPE html><html><head><title>${r.name} — PadelAnalyzer</title>
+            <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+            <style>
+              * { box-sizing: border-box; margin:0; padding:0; }
+              body { font-family:'Outfit','Inter',sans-serif; background:#0f172a; color:#e2e8f0; padding:24px; max-width:700px; margin:0 auto; }
+              .sheet-hero { text-align:center; margin-bottom:20px; }
+              .sheet-hero img { width:160px; height:160px; object-fit:contain; }
+              .sheet-title { font-size:28px; font-weight:900; color:#f1f5f9; }
+              .sheet-sub { font-size:12px; color:#94a3b8; margin-top:4px; }
+              .sheet-score { font-size:52px; font-weight:900; color:#f97316; text-align:center; margin:10px 0; }
+              .sheet-section { margin:16px 0; padding:14px 18px; background:rgba(255,255,255,0.03); border-radius:14px; border:1px solid rgba(255,255,255,0.06); }
+              .sheet-section-title { font-size:9px; color:#f97316; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+              .sheet-editorial { font-size:13px; line-height:1.8; color:#cbd5e1; font-style:italic; }
+              .sheet-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+              .sheet-score-cell { text-align:center; padding:8px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); }
+              .sheet-score-val { font-size:22px; font-weight:900; }
+              .sheet-score-label { font-size:8px; color:#64748b; margin-top:2px; }
+              .sheet-specs { display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; font-size:11px; }
+              .sheet-spec-label { color:#64748b; }
+              .sheet-spec-val { color:#e2e8f0; font-weight:600; }
+              .sheet-footer { text-align:center; margin-top:24px; font-size:9px; color:#334155; }
+              @media print { body { background:white; color:#1a1a1a; } .sheet-title,.sheet-score-val,.sheet-spec-val { color:#1a1a1a; } .sheet-sub,.sheet-spec-label,.sheet-score-label { color:#666; } .sheet-editorial { color:#333; } .sheet-section { border-color:#ddd; } }
+            </style>
+          </head><body>${printDiv.innerHTML}
+            <div class="sheet-footer">PadelAnalyzer · padelanalyzer.fr · ${new Date().toLocaleDateString('fr-FR')}</div>
+          </body></html>`);
+          printWin.document.close();
+          setTimeout(()=>printWin.print(), 500);
+        };
+
+        return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:"'Inter',sans-serif",animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
+          
+          {/* ===== HEADER ===== */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 8px",zIndex:10}}>
+            <button onClick={handleBack} style={{background:"none",border:"none",color:"#f97316",fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:"'Outfit'"}}>← Retour</button>
+            <div style={{display:"flex",gap:8}}>
+              <button onClick={handleShare} style={{
+                padding:"6px 14px",borderRadius:10,cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:"'Outfit'",
+                background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.25)",color:"#f97316",
+              }}>📄 PDF</button>
+            </div>
+          </div>
+
+          {/* ===== PRINTABLE CONTENT ===== */}
+          <div id="racket-sheet-print">
+
+          {/* ===== HERO: Image + Score badge ===== */}
+          <div style={{textAlign:"center",position:"relative",marginBottom:8}}>
+            {/* Background glow */}
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)",pointerEvents:"none"}}/>
+            
+            {r.imageUrl?<img src={r.imageUrl} alt={r.name} style={{
+              width:180,height:180,objectFit:"contain",position:"relative",zIndex:1,
+              filter:"drop-shadow(0 12px 32px rgba(0,0,0,0.5))",
+            }} onError={e=>{e.target.style.display="none"}}/>
+            :<div style={{width:140,height:140,margin:"0 auto",borderRadius:"50%",background:"rgba(249,115,22,0.06)",border:"2px dashed rgba(249,115,22,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:48}}>🏸</div>}
+            
+            {/* Score badge */}
+            <div style={{display:"inline-flex",alignItems:"baseline",gap:2,marginTop:12,padding:"6px 24px",borderRadius:20,background:"rgba(8,12,20,0.9)",border:"2px solid rgba(249,115,22,0.35)",backdropFilter:"blur(8px)",position:"relative",zIndex:2}}>
+              <span className="sheet-score" style={{fontSize:36,fontWeight:900,color:"#f97316",fontFamily:"'Outfit'"}}>{avgScore.toFixed(1)}</span>
+              <span style={{fontSize:12,color:"#94a3b8"}}>/10</span>
+            </div>
+          </div>
+
+          {/* ===== NAME + META ===== */}
+          <div style={{textAlign:"center",marginBottom:14}}>
+            <h1 className="sheet-title" style={{fontSize:26,fontWeight:900,fontFamily:"'Outfit'",color:"#f1f5f9",margin:"0 0 4px",letterSpacing:"-0.03em"}}>{r.name}</h1>
+            <p className="sheet-sub" style={{fontSize:12,color:"#94a3b8",margin:"0 0 8px"}}>{r.brand} · {r.shape} · {r.weight} · {r.year}</p>
+            <div style={{display:"flex",gap:6,justifyContent:"center",flexWrap:"wrap"}}>
+              <span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:`${catColor}15`,border:`1px solid ${catColor}30`,color:catColor,fontWeight:700}}>{catLabel}</span>
+              {r.price&&r.price!=="—"&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",color:"#94a3b8",fontWeight:600}}>💰 {r.price}</span>}
+              {r.junior&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",color:"#3b82f6",fontWeight:600}}>👦 Junior</span>}
+              {r.womanLine&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(236,72,153,0.1)",border:"1px solid rgba(236,72,153,0.2)",color:"#ec4899",fontWeight:600}}>♀ Ligne femme</span>}
+            </div>
+          </div>
+
+          {/* ===== PRO PLAYER ===== */}
+          {r.proPlayerInfo?.name&&<div style={{textAlign:"center",marginBottom:14}}>
+            <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"8px 18px",borderRadius:16,background:"rgba(168,85,247,0.06)",border:"1px solid rgba(168,85,247,0.15)"}}>
+              <span style={{fontSize:18}}>🎾</span>
+              <div style={{textAlign:"left"}}>
+                <div style={{fontSize:12,fontWeight:800,color:"#a855f7",fontFamily:"'Outfit'"}}>{r.proPlayerInfo.name}</div>
+                {r.proPlayerInfo.context&&<div style={{fontSize:9,color:"#94a3b8",marginTop:1,lineHeight:1.4,maxWidth:280}}>{r.proPlayerInfo.context}</div>}
+                {r.proPlayerInfo.rank&&<div style={{fontSize:9,color:"#c084fc",marginTop:1}}>Classement: {r.proPlayerInfo.rank}</div>}
+              </div>
+            </div>
+          </div>}
+
+          {/* ===== SCORES RADAR ===== */}
+          <div className="sheet-section" style={{background:"rgba(255,255,255,0.02)",borderRadius:16,border:"1px solid rgba(255,255,255,0.06)",padding:"14px 8px 8px",marginBottom:14}}>
+            <div className="sheet-section-title" style={{fontSize:9,color:"#f97316",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",textAlign:"center",marginBottom:6}}>📊 PROFIL DE PERFORMANCE</div>
+            <ResponsiveContainer width="100%" height={200}>
+              <RadarChart data={radarData} margin={{top:8,right:40,bottom:8,left:40}}>
+                <PolarGrid stroke="rgba(255,255,255,0.08)"/>
+                <PolarAngleAxis dataKey="attribute" tick={{fontSize:9,fill:"#94a3b8"}}/>
+                <PolarRadiusAxis domain={[0,10]} tick={false} axisLine={false}/>
+                <Radar name="Score" dataKey="Score" stroke="#f97316" fill="#f97316" fillOpacity={0.2} strokeWidth={2}/>
+              </RadarChart>
+            </ResponsiveContainer>
+            
+            {/* Score grid */}
+            <div className="sheet-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5,marginTop:4}}>
+              {ATTRS.map(a=>{
+                const val = sc[a]||0;
+                const best = Math.max(...ATTRS.map(a2=>sc[a2]||0));
+                const isBest = val===best && val>0;
+                return <div key={a} className="sheet-score-cell" style={{textAlign:"center",padding:"8px 4px",borderRadius:10,background:isBest?"rgba(249,115,22,0.08)":"rgba(255,255,255,0.02)",border:`1px solid ${isBest?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.04)"}`}}>
+                  <div className="sheet-score-val" style={{fontSize:22,fontWeight:900,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
+                  <div className="sheet-score-label" style={{fontSize:8,color:isBest?"#f97316":"#64748b",fontWeight:isBest?700:500,marginTop:1}}>{a}</div>
+                </div>;
+              })}
+            </div>
+          </div>
+
+          {/* ===== BLUEPRINT: Tech Highlights ===== */}
+          {ths.length>0&&<div style={{marginBottom:14}}>
+            <div style={{fontSize:9,color:"#f97316",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",textAlign:"center",marginBottom:10}}>🔬 TECHNOLOGIES</div>
+            <div style={{display:"flex",alignItems:"stretch",gap:0,position:"relative"}}>
+              {/* Left annotations */}
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingRight:6}}>
+                {leftThs.map((h,i)=>(
+                  <div key={i} style={{padding:"10px 10px",borderRadius:12,textAlign:"right",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",borderRight:"3px solid rgba(249,115,22,0.3)"}}>
+                    <div style={{fontSize:11,color:"#e2e8f0",fontWeight:800,fontFamily:"'Outfit'"}}>{h.value}</div>
+                    <div style={{fontSize:8,color:"#f97316",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:2}}>{h.label}</div>
+                    <p style={{fontSize:9,color:"#64748b",margin:"4px 0 0",lineHeight:1.5}}>{h.detail}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Center divider */}
+              <div style={{width:2,background:"linear-gradient(to bottom, transparent, rgba(249,115,22,0.2), transparent)",margin:"0 4px",flexShrink:0}}/>
+
+              {/* Right annotations */}
+              <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingLeft:6}}>
+                {rightThs.map((h,i)=>(
+                  <div key={i} style={{padding:"10px 10px",borderRadius:12,textAlign:"left",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(249,115,22,0.1)",borderLeft:"3px solid rgba(249,115,22,0.3)"}}>
+                    <div style={{fontSize:11,color:"#e2e8f0",fontWeight:800,fontFamily:"'Outfit'"}}>{h.value}</div>
+                    <div style={{fontSize:8,color:"#f97316",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:2}}>{h.label}</div>
+                    <p style={{fontSize:9,color:"#64748b",margin:"4px 0 0",lineHeight:1.5}}>{h.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>}
+
+          {/* ===== VERDICT ===== */}
+          {r.verdict&&r.verdict!=="—"&&r.verdict!=="Analyse non disponible"&&<div className="sheet-section" style={{padding:"14px 18px",marginBottom:14,background:"linear-gradient(135deg, rgba(249,115,22,0.05) 0%, rgba(168,85,247,0.03) 100%)",borderRadius:16,border:"1px solid rgba(249,115,22,0.12)"}}>
+            <div className="sheet-section-title" style={{fontSize:9,color:"#f97316",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>⚖️ VERDICT</div>
+            <p style={{fontSize:13,color:"#e2e8f0",lineHeight:1.7,margin:0,fontWeight:600}}>{r.verdict}</p>
+          </div>}
+
+          {/* ===== EDITORIAL ===== */}
+          {r.editorial&&<div className="sheet-section" style={{position:"relative",padding:"18px 20px 18px 32px",marginBottom:14,background:"rgba(255,255,255,0.02)",borderRadius:16,border:"1px solid rgba(255,255,255,0.06)"}}>
+            <div className="sheet-section-title" style={{fontSize:9,color:"#f97316",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>📝 ANALYSE ÉDITORIALE</div>
+            <div style={{position:"absolute",top:28,left:12,fontSize:40,color:"rgba(249,115,22,0.1)",fontFamily:"Georgia",lineHeight:1}}>"</div>
+            <p className="sheet-editorial" style={{fontSize:13,color:"#cbd5e1",lineHeight:1.9,margin:0,fontStyle:"italic"}}>{r.editorial}</p>
+          </div>}
+
+          {/* ===== TARGET PROFILE ===== */}
+          {r.targetProfile&&<div style={{padding:"14px 18px",background:"rgba(76,175,80,0.04)",borderRadius:16,border:"1px solid rgba(76,175,80,0.1)",marginBottom:14}}>
+            <div style={{fontSize:9,color:"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>🎯 PROFIL CIBLE</div>
+            <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}}>{r.targetProfile}</p>
+          </div>}
+
+          {/* ===== SPECS TABLE ===== */}
+          <div className="sheet-section" style={{padding:"14px 18px",marginBottom:14,background:"rgba(255,255,255,0.02)",borderRadius:16,border:"1px solid rgba(255,255,255,0.06)"}}>
+            <div className="sheet-section-title" style={{fontSize:9,color:"#f97316",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:10}}>📋 CARACTÉRISTIQUES</div>
+            <div className="sheet-specs" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px 20px"}}>
+              {[
+                ["Forme", r.shape],
+                ["Poids", r.weight],
+                ["Équilibre", r.balance],
+                ["Surface", r.surface],
+                ["Noyau", r.core],
+                ["Anti-vibration", r.antivib],
+                ["Joueur", r.player],
+                ["Année", r.year],
+              ].filter(([,v])=>v&&v!=="—"&&v!==undefined).map(([label,val])=>(
+                <div key={label} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+                  <span className="sheet-spec-label" style={{fontSize:11,color:"#64748b"}}>{label}</span>
+                  <span className="sheet-spec-val" style={{fontSize:11,color:"#e2e8f0",fontWeight:600,textAlign:"right"}}>{val}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          </div>{/* end print zone */}
+
+          {/* Footer */}
+          <div style={{textAlign:"center",padding:"12px 0 30px"}}>
+            <div style={{fontSize:8,color:"#334155",letterSpacing:"0.05em"}}>
+              <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> · padelanalyzer.fr
             </div>
           </div>
         </div>;
@@ -3466,7 +3838,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const fy = fyConfig2[r._fy]||fyConfig2.partial;
                   const medals = ["🥇","🥈","🥉"];
                   return (
-                    <div key={r.id} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background: i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.06)"}`,borderRadius:14,transition:"all 0.2s"}}>
+                    <div key={r.id} onClick={()=>openRacketSheet(r,"dashboard")} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background: i===0?"rgba(249,115,22,0.06)":"rgba(255,255,255,0.02)",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.06)"}`,borderRadius:14,transition:"all 0.2s",cursor:"pointer"}}>
                       <div style={{fontSize:22,flexShrink:0,width:28,textAlign:"center"}}>{medals[i]}</div>
                       {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:48,height:48,objectFit:"contain",borderRadius:8,background:"rgba(255,255,255,0.06)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
                       <div style={{flex:1,minWidth:0}}>
@@ -4133,6 +4505,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{fontSize:9,color:"#475569",marginTop:3}}>{r.shape} · {r.weight}</div>
             <div style={{fontSize:9,color:"#475569"}}>{r.brand} · {r.price}</div>
             {r._incomplete&&<div onClick={e=>{e.stopPropagation();rescoreRacket(r.id)}} style={{position:"absolute",bottom:4,right:4,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.4)",borderRadius:6,padding:"2px 6px",fontSize:8,color:"#f97316",fontWeight:700,cursor:"pointer"}}>🔄 Re-scorer</div>}
+            <div onClick={e=>{e.stopPropagation();openRacketSheet(r,"app")}} style={{fontSize:8,color:"#f97316",marginTop:4,cursor:"pointer",fontWeight:600,opacity:0.7}}>📋 Fiche</div>
           </button>);
         })}
       </div>

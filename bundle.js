@@ -48941,7 +48941,15 @@ Return ONLY valid JSON, no markdown, no backticks.`;
       const p = loadSavedProfile();
       return p._name ? "home" : "home";
     });
-    const SCREEN_BACK = { home: "login", magazine: "home", wizard: "home", recap: "wizard", analyzing: null, reveal: "dashboard", dashboard: "home", app: "dashboard" };
+    const SCREEN_BACK = { home: "login", magazine: "home", wizard: "home", recap: "wizard", analyzing: null, reveal: "dashboard", dashboard: "home", app: "dashboard", racketSheet: "home", catalog: "home" };
+    const openRacketSheet = (0, import_react39.useCallback)((racket, fromScreen) => {
+      if (!racket) return;
+      const allDB = getMergedDB();
+      const full = allDB.find((r2) => r2.id === racket.id) || allDB.find((r2) => r2.name === racket.name) || racket;
+      setRacketSheet(full);
+      setRacketSheetFrom(fromScreen || screen);
+      setScreen("racketSheet");
+    }, [screen]);
     const isPopStateRef = (0, import_react39.useRef)(false);
     (0, import_react39.useEffect)(() => {
       if (isPopStateRef.current) {
@@ -48976,6 +48984,9 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     const [magCat, setMagCat] = (0, import_react39.useState)("puissance");
     const [magYear, setMagYear] = (0, import_react39.useState)(2026);
     const [magDetail, setMagDetail] = (0, import_react39.useState)(null);
+    const [racketSheet, setRacketSheet] = (0, import_react39.useState)(null);
+    const [racketSheetFrom, setRacketSheetFrom] = (0, import_react39.useState)("home");
+    const [catalogSearch, setCatalogSearch] = (0, import_react39.useState)("");
     const [magSlide, setMagSlide] = (0, import_react39.useState)(0);
     const [addDetail, setAddDetail] = (0, import_react39.useState)(null);
     const [familyCode, setFamilyCode] = (0, import_react39.useState)(() => getFamilyCode());
@@ -50228,29 +50239,54 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           maxWidth: 400
         }, children: "+ Nouveau profil" }),
         savedProfiles.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 11, color: "#475569", marginTop: 12, textAlign: "center", lineHeight: 1.5 }, children: "Cr\xE9e ton premier profil pour commencer l'analyse" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 40, width: "100%", maxWidth: 500 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
-          setMagCat("puissance");
-          setMagYear(2026);
-          setMagDetail(null);
-          setMagSlide(0);
-          setScreen("magazine");
-        }, style: {
-          width: "100%",
-          padding: "20px 24px",
-          borderRadius: 20,
-          cursor: "pointer",
-          background: "linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(168,85,247,0.06) 100%)",
-          border: "1px solid rgba(249,115,22,0.2)",
-          transition: "all 0.3s",
-          position: "relative",
-          overflow: "hidden"
-        }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "left" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 800, fontFamily: "'Outfit'", color: "#f1f5f9", letterSpacing: "-0.02em" }, children: "\u{1F4F0} Tendances & Magazine" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#94a3b8", marginTop: 4 }, children: "Top raquettes, fiches techniques, articles" })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 24, color: "#f97316" }, children: "\u2192" })
-        ] }) }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 40, width: "100%", maxWidth: 500 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+            setMagCat("puissance");
+            setMagYear(2026);
+            setMagDetail(null);
+            setMagSlide(0);
+            setScreen("magazine");
+          }, style: {
+            width: "100%",
+            padding: "20px 24px",
+            borderRadius: 20,
+            cursor: "pointer",
+            background: "linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(168,85,247,0.06) 100%)",
+            border: "1px solid rgba(249,115,22,0.2)",
+            transition: "all 0.3s",
+            position: "relative",
+            overflow: "hidden"
+          }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "left" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 800, fontFamily: "'Outfit'", color: "#f1f5f9", letterSpacing: "-0.02em" }, children: "\u{1F4F0} Tendances & Magazine" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#94a3b8", marginTop: 4 }, children: "Top raquettes, fiches techniques, articles" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 24, color: "#f97316" }, children: "\u2192" })
+          ] }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
+            setCatalogSearch("");
+            setScreen("catalog");
+          }, style: {
+            width: "100%",
+            padding: "20px 24px",
+            borderRadius: 20,
+            cursor: "pointer",
+            marginTop: 12,
+            background: "linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(249,115,22,0.04) 100%)",
+            border: "1px solid rgba(34,197,94,0.15)",
+            transition: "all 0.3s"
+          }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "left" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 16, fontWeight: 800, fontFamily: "'Outfit'", color: "#f1f5f9", letterSpacing: "-0.02em" }, children: [
+                "\u{1F50D} Catalogue \xB7 ",
+                totalDBCount,
+                " raquettes"
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#94a3b8", marginTop: 4 }, children: "Rechercher, explorer, comparer toutes les palas" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 24, color: "#22c55e" }, children: "\u2192" })
+          ] }) })
+        ] }),
         familyCode && familyCode !== "LOCAL" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: 20, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 10, color: cloudStatus === "synced" ? "#4ade80" : cloudStatus === "loading" ? "#fbbf24" : "#64748b" }, children: [
             cloudStatus === "synced" ? "\u2601\uFE0F Synchronis\xE9" : "\u2601\uFE0F Cloud",
@@ -50514,7 +50550,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 7, color: isH ? "#f97316" : "#64748b", fontWeight: isH ? 700 : 500 }, children: a2 })
                   ] }, a2);
                 }) }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setMagDetail(currentR), style: {
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => openRacketSheet(currentR, "magazine"), style: {
                   width: "100%",
                   padding: "12px",
                   borderRadius: 14,
@@ -50538,6 +50574,313 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             ]
           }
         );
+      })(),
+      screen === "catalog" && (() => {
+        const allDB = getMergedDB();
+        const term = catalogSearch.toLowerCase().trim();
+        const allBrands = [...new Set(allDB.map((r2) => r2.brand))].sort();
+        const allCats = ["debutant", "intermediaire", "avance", "expert"];
+        const catLabels = { debutant: "D\xE9butant", intermediaire: "Interm\xE9diaire", avance: "Avanc\xE9", expert: "Expert" };
+        const filtered = allDB.filter((r2) => {
+          if (!term) return true;
+          return (r2.name || "").toLowerCase().includes(term) || (r2.brand || "").toLowerCase().includes(term) || (r2.shortName || "").toLowerCase().includes(term) || (r2.category || "").toLowerCase().includes(term) || String(r2.year || "").includes(term);
+        });
+        const byBrand = {};
+        filtered.forEach((r2) => {
+          if (!byBrand[r2.brand]) byBrand[r2.brand] = [];
+          byBrand[r2.brand].push(r2);
+        });
+        Object.values(byBrand).forEach((arr) => arr.sort((a2, b) => (b.year || 0) - (a2.year || 0) || a2.name.localeCompare(b.name)));
+        const sortedBrands = Object.keys(byBrand).sort();
+        const avgScore = (r2) => {
+          const sc = r2.scores || {};
+          const vals = ATTRS.map((a2) => sc[a2] || 0);
+          return vals.length ? (vals.reduce((a2, b) => a2 + b, 0) / vals.length).toFixed(1) : "\u2014";
+        };
+        const catColor = (c2) => c2 === "expert" ? "#f97316" : c2 === "avance" ? "#a855f7" : c2 === "intermediaire" ? "#3b82f6" : "#22c55e";
+        return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minHeight: "100dvh", display: "flex", flexDirection: "column", fontFamily: "'Inter',sans-serif", animation: "fadeIn 0.3s ease", maxWidth: 600, margin: "0 auto", padding: "0 12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0 10px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setScreen("home"), style: { background: "none", border: "none", color: "#f97316", fontSize: 13, cursor: "pointer", fontWeight: 700, fontFamily: "'Outfit'" }, children: "\u2190 Accueil" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 11, color: "#64748b", fontFamily: "'Outfit'", fontWeight: 600 }, children: [
+              filtered.length,
+              " / ",
+              allDB.length,
+              " raquettes"
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", marginBottom: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { style: { fontSize: 26, fontWeight: 900, fontFamily: "'Outfit'", color: "#f1f5f9", margin: "0 0 4px", letterSpacing: "-0.02em" }, children: "\u{1F50D} Catalogue" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 11, color: "#64748b", margin: 0 }, children: [
+              "Explore ",
+              totalDBCount,
+              " raquettes \xB7 ",
+              allBrands.length,
+              " marques"
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative", marginBottom: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", fontSize: 14, opacity: 0.4 }, children: "\u{1F50E}" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              "input",
+              {
+                type: "text",
+                value: catalogSearch,
+                onChange: (e) => setCatalogSearch(e.target.value),
+                placeholder: "Nom, marque, ann\xE9e, niveau...",
+                style: { width: "100%", padding: "12px 14px 12px 40px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "#e2e8f0", fontSize: 13, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }
+              }
+            ),
+            catalogSearch && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setCatalogSearch(""), style: { position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#64748b", fontSize: 16, cursor: "pointer" }, children: "\u2715" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16, justifyContent: "center" }, children: [
+            ["2026", "2025"].map((y2) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setCatalogSearch(catalogSearch === y2 ? "" : y2), style: {
+              padding: "5px 14px",
+              borderRadius: 20,
+              fontSize: 10,
+              fontWeight: catalogSearch === y2 ? 700 : 500,
+              cursor: "pointer",
+              background: catalogSearch === y2 ? "rgba(249,115,22,0.12)" : "rgba(255,255,255,0.04)",
+              border: `1px solid ${catalogSearch === y2 ? "rgba(249,115,22,0.3)" : "rgba(255,255,255,0.08)"}`,
+              color: catalogSearch === y2 ? "#f97316" : "#94a3b8",
+              transition: "all 0.2s",
+              fontFamily: "'Inter'"
+            }, children: y2 }, y2)),
+            allCats.map((c2) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setCatalogSearch(catalogSearch === c2 ? "" : c2), style: {
+              padding: "5px 14px",
+              borderRadius: 20,
+              fontSize: 10,
+              fontWeight: catalogSearch === c2 ? 700 : 500,
+              cursor: "pointer",
+              background: catalogSearch === c2 ? `${catColor(c2)}15` : "rgba(255,255,255,0.04)",
+              border: `1px solid ${catalogSearch === c2 ? catColor(c2) + "40" : "rgba(255,255,255,0.08)"}`,
+              color: catalogSearch === c2 ? catColor(c2) : "#94a3b8",
+              transition: "all 0.2s",
+              fontFamily: "'Inter'"
+            }, children: catLabels[c2] }, c2))
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, overflowY: "auto", paddingBottom: 40 }, children: [
+            !filtered.length && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", padding: "40px 0", color: "#475569" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 32, marginBottom: 8 }, children: "\u{1F50D}" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13 }, children: "Aucune raquette trouv\xE9e" })
+            ] }),
+            sortedBrands.map((brand) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 20 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8, padding: "0 4px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 14, fontWeight: 800, fontFamily: "'Outfit'", color: "#f1f5f9" }, children: brand }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, color: "#64748b", background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "2px 8px" }, children: byBrand[brand].length })
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 8 }, children: byBrand[brand].map((r2) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { onClick: () => openRacketSheet(r2, "catalog"), style: {
+                padding: "12px 10px",
+                borderRadius: 14,
+                cursor: "pointer",
+                textAlign: "center",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                transition: "all 0.2s",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 6
+              }, children: [
+                r2.imageUrl ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: r2.imageUrl, alt: r2.name, style: { width: 60, height: 60, objectFit: "contain", filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.3))" }, onError: (e) => {
+                  e.target.style.display = "none";
+                  e.target.nextSibling && (e.target.nextSibling.style.display = "flex");
+                } }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: r2.imageUrl ? "none" : "flex", width: 48, height: 48, borderRadius: "50%", background: "rgba(249,115,22,0.06)", border: "1px dashed rgba(249,115,22,0.15)", alignItems: "center", justifyContent: "center", fontSize: 20 }, children: "\u{1F3F8}" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, fontWeight: 700, color: "#e2e8f0", fontFamily: "'Outfit'", lineHeight: 1.3 }, children: r2.shortName || r2.name }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 16, fontWeight: 900, color: "#f97316", fontFamily: "'Outfit'" }, children: avgScore(r2) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, color: "#64748b" }, children: "/10" })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 3, flexWrap: "wrap", justifyContent: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, padding: "2px 6px", borderRadius: 6, background: `${catColor(r2.category)}12`, color: catColor(r2.category), fontWeight: 600 }, children: catLabels[r2.category] || r2.category }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 8, padding: "2px 6px", borderRadius: 6, background: "rgba(255,255,255,0.04)", color: "#64748b" }, children: r2.year })
+                ] })
+              ] }, r2.id || r2.name)) })
+            ] }, brand))
+          ] })
+        ] });
+      })(),
+      screen === "racketSheet" && racketSheet && (() => {
+        const r2 = racketSheet;
+        const sc = r2.scores || {};
+        const ths = r2.techHighlights || [];
+        const leftThs = ths.filter((_, i) => i % 2 === 0);
+        const rightThs = ths.filter((_, i) => i % 2 === 1);
+        const avgScore = ATTRS.map((a2) => sc[a2] || 0).reduce((a2, b) => a2 + b, 0) / 6;
+        const radarData2 = ATTRS.map((a2) => ({ attribute: a2, Score: sc[a2] || 0, Max: 10 }));
+        const catColor = r2.category === "expert" ? "#f97316" : r2.category === "avance" ? "#a855f7" : r2.category === "intermediaire" ? "#3b82f6" : "#22c55e";
+        const catLabel = { debutant: "D\xE9butant", intermediaire: "Interm\xE9diaire", avance: "Avanc\xE9", expert: "Expert" }[r2.category] || r2.category;
+        const handleBack = () => {
+          setRacketSheet(null);
+          setScreen(racketSheetFrom || "home");
+        };
+        const handleShare = () => {
+          const printDiv = document.getElementById("racket-sheet-print");
+          if (!printDiv) return;
+          const printWin = window.open("", "", "width=800,height=1100");
+          printWin.document.write(`<!DOCTYPE html><html><head><title>${r2.name} \u2014 PadelAnalyzer</title>
+            <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+            <style>
+              * { box-sizing: border-box; margin:0; padding:0; }
+              body { font-family:'Outfit','Inter',sans-serif; background:#0f172a; color:#e2e8f0; padding:24px; max-width:700px; margin:0 auto; }
+              .sheet-hero { text-align:center; margin-bottom:20px; }
+              .sheet-hero img { width:160px; height:160px; object-fit:contain; }
+              .sheet-title { font-size:28px; font-weight:900; color:#f1f5f9; }
+              .sheet-sub { font-size:12px; color:#94a3b8; margin-top:4px; }
+              .sheet-score { font-size:52px; font-weight:900; color:#f97316; text-align:center; margin:10px 0; }
+              .sheet-section { margin:16px 0; padding:14px 18px; background:rgba(255,255,255,0.03); border-radius:14px; border:1px solid rgba(255,255,255,0.06); }
+              .sheet-section-title { font-size:9px; color:#f97316; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+              .sheet-editorial { font-size:13px; line-height:1.8; color:#cbd5e1; font-style:italic; }
+              .sheet-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+              .sheet-score-cell { text-align:center; padding:8px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); }
+              .sheet-score-val { font-size:22px; font-weight:900; }
+              .sheet-score-label { font-size:8px; color:#64748b; margin-top:2px; }
+              .sheet-specs { display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; font-size:11px; }
+              .sheet-spec-label { color:#64748b; }
+              .sheet-spec-val { color:#e2e8f0; font-weight:600; }
+              .sheet-footer { text-align:center; margin-top:24px; font-size:9px; color:#334155; }
+              @media print { body { background:white; color:#1a1a1a; } .sheet-title,.sheet-score-val,.sheet-spec-val { color:#1a1a1a; } .sheet-sub,.sheet-spec-label,.sheet-score-label { color:#666; } .sheet-editorial { color:#333; } .sheet-section { border-color:#ddd; } }
+            </style>
+          </head><body>${printDiv.innerHTML}
+            <div class="sheet-footer">PadelAnalyzer \xB7 padelanalyzer.fr \xB7 ${(/* @__PURE__ */ new Date()).toLocaleDateString("fr-FR")}</div>
+          </body></html>`);
+          printWin.document.close();
+          setTimeout(() => printWin.print(), 500);
+        };
+        return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { minHeight: "100dvh", display: "flex", flexDirection: "column", fontFamily: "'Inter',sans-serif", animation: "fadeIn 0.3s ease", maxWidth: 540, margin: "0 auto", padding: "0 12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0 8px", zIndex: 10 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: handleBack, style: { background: "none", border: "none", color: "#f97316", fontSize: 13, cursor: "pointer", fontWeight: 700, fontFamily: "'Outfit'" }, children: "\u2190 Retour" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: handleShare, style: {
+              padding: "6px 14px",
+              borderRadius: 10,
+              cursor: "pointer",
+              fontSize: 10,
+              fontWeight: 700,
+              fontFamily: "'Outfit'",
+              background: "rgba(249,115,22,0.1)",
+              border: "1px solid rgba(249,115,22,0.25)",
+              color: "#f97316"
+            }, children: "\u{1F4C4} PDF" }) })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { id: "racket-sheet-print", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", position: "relative", marginBottom: 8 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)", pointerEvents: "none" } }),
+              r2.imageUrl ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: r2.imageUrl, alt: r2.name, style: {
+                width: 180,
+                height: 180,
+                objectFit: "contain",
+                position: "relative",
+                zIndex: 1,
+                filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.5))"
+              }, onError: (e) => {
+                e.target.style.display = "none";
+              } }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 140, height: 140, margin: "0 auto", borderRadius: "50%", background: "rgba(249,115,22,0.06)", border: "2px dashed rgba(249,115,22,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48 }, children: "\u{1F3F8}" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "inline-flex", alignItems: "baseline", gap: 2, marginTop: 12, padding: "6px 24px", borderRadius: 20, background: "rgba(8,12,20,0.9)", border: "2px solid rgba(249,115,22,0.35)", backdropFilter: "blur(8px)", position: "relative", zIndex: 2 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "sheet-score", style: { fontSize: 36, fontWeight: 900, color: "#f97316", fontFamily: "'Outfit'" }, children: avgScore.toFixed(1) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 12, color: "#94a3b8" }, children: "/10" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "center", marginBottom: 14 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { className: "sheet-title", style: { fontSize: 26, fontWeight: 900, fontFamily: "'Outfit'", color: "#f1f5f9", margin: "0 0 4px", letterSpacing: "-0.03em" }, children: r2.name }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { className: "sheet-sub", style: { fontSize: 12, color: "#94a3b8", margin: "0 0 8px" }, children: [
+                r2.brand,
+                " \xB7 ",
+                r2.shape,
+                " \xB7 ",
+                r2.weight,
+                " \xB7 ",
+                r2.year
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, padding: "3px 12px", borderRadius: 12, background: `${catColor}15`, border: `1px solid ${catColor}30`, color: catColor, fontWeight: 700 }, children: catLabel }),
+                r2.price && r2.price !== "\u2014" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { fontSize: 10, padding: "3px 12px", borderRadius: 12, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#94a3b8", fontWeight: 600 }, children: [
+                  "\u{1F4B0} ",
+                  r2.price
+                ] }),
+                r2.junior && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, padding: "3px 12px", borderRadius: 12, background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.2)", color: "#3b82f6", fontWeight: 600 }, children: "\u{1F466} Junior" }),
+                r2.womanLine && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 10, padding: "3px 12px", borderRadius: 12, background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.2)", color: "#ec4899", fontWeight: 600 }, children: "\u2640 Ligne femme" })
+              ] })
+            ] }),
+            r2.proPlayerInfo?.name && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", marginBottom: 14 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 16, background: "rgba(168,85,247,0.06)", border: "1px solid rgba(168,85,247,0.15)" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 18 }, children: "\u{1F3BE}" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { textAlign: "left" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, fontWeight: 800, color: "#a855f7", fontFamily: "'Outfit'" }, children: r2.proPlayerInfo.name }),
+                r2.proPlayerInfo.context && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#94a3b8", marginTop: 1, lineHeight: 1.4, maxWidth: 280 }, children: r2.proPlayerInfo.context }),
+                r2.proPlayerInfo.rank && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 9, color: "#c084fc", marginTop: 1 }, children: [
+                  "Classement: ",
+                  r2.proPlayerInfo.rank
+                ] })
+              ] })
+            ] }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "sheet-section", style: { background: "rgba(255,255,255,0.02)", borderRadius: 16, border: "1px solid rgba(255,255,255,0.06)", padding: "14px 8px 8px", marginBottom: 14 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-section-title", style: { fontSize: 9, color: "#f97316", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", textAlign: "center", marginBottom: 6 }, children: "\u{1F4CA} PROFIL DE PERFORMANCE" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, { width: "100%", height: 200, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(RadarChart, { data: radarData2, margin: { top: 8, right: 40, bottom: 8, left: 40 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarGrid, { stroke: "rgba(255,255,255,0.08)" }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarAngleAxis, { dataKey: "attribute", tick: { fontSize: 9, fill: "#94a3b8" } }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PolarRadiusAxis, { domain: [0, 10], tick: false, axisLine: false }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radar, { name: "Score", dataKey: "Score", stroke: "#f97316", fill: "#f97316", fillOpacity: 0.2, strokeWidth: 2 })
+              ] }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-grid", style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 5, marginTop: 4 }, children: ATTRS.map((a2) => {
+                const val = sc[a2] || 0;
+                const best = Math.max(...ATTRS.map((a22) => sc[a22] || 0));
+                const isBest = val === best && val > 0;
+                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "sheet-score-cell", style: { textAlign: "center", padding: "8px 4px", borderRadius: 10, background: isBest ? "rgba(249,115,22,0.08)" : "rgba(255,255,255,0.02)", border: `1px solid ${isBest ? "rgba(249,115,22,0.2)" : "rgba(255,255,255,0.04)"}` }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-score-val", style: { fontSize: 22, fontWeight: 900, color: val >= 8 ? "#4CAF50" : val >= 6 ? "#e2e8f0" : "#f97316", fontFamily: "'Outfit'" }, children: val }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-score-label", style: { fontSize: 8, color: isBest ? "#f97316" : "#64748b", fontWeight: isBest ? 700 : 500, marginTop: 1 }, children: a2 })
+                ] }, a2);
+              }) })
+            ] }),
+            ths.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginBottom: 14 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#f97316", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", textAlign: "center", marginBottom: 10 }, children: "\u{1F52C} TECHNOLOGIES" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "stretch", gap: 0, position: "relative" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 8, paddingRight: 6 }, children: leftThs.map((h, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "10px 10px", borderRadius: 12, textAlign: "right", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(249,115,22,0.1)", borderRight: "3px solid rgba(249,115,22,0.3)" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#e2e8f0", fontWeight: 800, fontFamily: "'Outfit'" }, children: h.value }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 8, color: "#f97316", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.03em", marginTop: 2 }, children: h.label }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#64748b", margin: "4px 0 0", lineHeight: 1.5 }, children: h.detail })
+                ] }, i)) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { width: 2, background: "linear-gradient(to bottom, transparent, rgba(249,115,22,0.2), transparent)", margin: "0 4px", flexShrink: 0 } }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 8, paddingLeft: 6 }, children: rightThs.map((h, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "10px 10px", borderRadius: 12, textAlign: "left", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(249,115,22,0.1)", borderLeft: "3px solid rgba(249,115,22,0.3)" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, color: "#e2e8f0", fontWeight: 800, fontFamily: "'Outfit'" }, children: h.value }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 8, color: "#f97316", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.03em", marginTop: 2 }, children: h.label }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 9, color: "#64748b", margin: "4px 0 0", lineHeight: 1.5 }, children: h.detail })
+                ] }, i)) })
+              ] })
+            ] }),
+            r2.verdict && r2.verdict !== "\u2014" && r2.verdict !== "Analyse non disponible" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "sheet-section", style: { padding: "14px 18px", marginBottom: 14, background: "linear-gradient(135deg, rgba(249,115,22,0.05) 0%, rgba(168,85,247,0.03) 100%)", borderRadius: 16, border: "1px solid rgba(249,115,22,0.12)" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-section-title", style: { fontSize: 9, color: "#f97316", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }, children: "\u2696\uFE0F VERDICT" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 13, color: "#e2e8f0", lineHeight: 1.7, margin: 0, fontWeight: 600 }, children: r2.verdict })
+            ] }),
+            r2.editorial && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "sheet-section", style: { position: "relative", padding: "18px 20px 18px 32px", marginBottom: 14, background: "rgba(255,255,255,0.02)", borderRadius: 16, border: "1px solid rgba(255,255,255,0.06)" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-section-title", style: { fontSize: 9, color: "#f97316", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }, children: "\u{1F4DD} ANALYSE \xC9DITORIALE" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "absolute", top: 28, left: 12, fontSize: 40, color: "rgba(249,115,22,0.1)", fontFamily: "Georgia", lineHeight: 1 }, children: '"' }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "sheet-editorial", style: { fontSize: 13, color: "#cbd5e1", lineHeight: 1.9, margin: 0, fontStyle: "italic" }, children: r2.editorial })
+            ] }),
+            r2.targetProfile && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "14px 18px", background: "rgba(76,175,80,0.04)", borderRadius: 16, border: "1px solid rgba(76,175,80,0.1)", marginBottom: 14 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#4CAF50", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }, children: "\u{1F3AF} PROFIL CIBLE" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 12, color: "#cbd5e1", lineHeight: 1.7, margin: 0 }, children: r2.targetProfile })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "sheet-section", style: { padding: "14px 18px", marginBottom: 14, background: "rgba(255,255,255,0.02)", borderRadius: 16, border: "1px solid rgba(255,255,255,0.06)" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-section-title", style: { fontSize: 9, color: "#f97316", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }, children: "\u{1F4CB} CARACT\xC9RISTIQUES" }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "sheet-specs", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 20px" }, children: [
+                ["Forme", r2.shape],
+                ["Poids", r2.weight],
+                ["\xC9quilibre", r2.balance],
+                ["Surface", r2.surface],
+                ["Noyau", r2.core],
+                ["Anti-vibration", r2.antivib],
+                ["Joueur", r2.player],
+                ["Ann\xE9e", r2.year]
+              ].filter(([, v]) => v && v !== "\u2014" && v !== void 0).map(([label, val]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "sheet-spec-label", style: { fontSize: 11, color: "#64748b" }, children: label }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "sheet-spec-val", style: { fontSize: 11, color: "#e2e8f0", fontWeight: 600, textAlign: "right" }, children: val })
+              ] }, label)) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "12px 0 30px" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#334155", letterSpacing: "0.05em" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
+            " \xB7 padelanalyzer.fr"
+          ] }) })
+        ] });
       })(),
       screen === "wizard" && (() => {
         const TOTAL_STEPS = 11;
@@ -51470,7 +51813,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 10, flex: 1 }, children: top3.map((r2, i) => {
                 const fy = fyConfig2[r2._fy] || fyConfig2.partial;
                 const medals = ["\u{1F947}", "\u{1F948}", "\u{1F949}"];
-                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", background: i === 0 ? "rgba(249,115,22,0.06)" : "rgba(255,255,255,0.02)", border: `1px solid ${i === 0 ? "rgba(249,115,22,0.2)" : "rgba(255,255,255,0.06)"}`, borderRadius: 14, transition: "all 0.2s" }, children: [
+                return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { onClick: () => openRacketSheet(r2, "dashboard"), style: { display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", background: i === 0 ? "rgba(249,115,22,0.06)" : "rgba(255,255,255,0.02)", border: `1px solid ${i === 0 ? "rgba(249,115,22,0.2)" : "rgba(255,255,255,0.06)"}`, borderRadius: 14, transition: "all 0.2s", cursor: "pointer" }, children: [
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 22, flexShrink: 0, width: 28, textAlign: "center" }, children: medals[i] }),
                   r2.imageUrl && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { src: proxyImg(r2.imageUrl), alt: "", style: { width: 48, height: 48, objectFit: "contain", borderRadius: 8, background: "rgba(255,255,255,0.06)", flexShrink: 0 }, onError: (e) => {
                     e.target.style.display = "none";
@@ -52222,7 +52565,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   r2._incomplete && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { onClick: (e) => {
                     e.stopPropagation();
                     rescoreRacket(r2.id);
-                  }, style: { position: "absolute", bottom: 4, right: 4, background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.4)", borderRadius: 6, padding: "2px 6px", fontSize: 8, color: "#f97316", fontWeight: 700, cursor: "pointer" }, children: "\u{1F504} Re-scorer" })
+                  }, style: { position: "absolute", bottom: 4, right: 4, background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.4)", borderRadius: 6, padding: "2px 6px", fontSize: 8, color: "#f97316", fontWeight: 700, cursor: "pointer" }, children: "\u{1F504} Re-scorer" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { onClick: (e) => {
+                    e.stopPropagation();
+                    openRacketSheet(r2, "app");
+                  }, style: { fontSize: 8, color: "#f97316", marginTop: 4, cursor: "pointer", fontWeight: 600, opacity: 0.7 }, children: "\u{1F4CB} Fiche" })
                 ]
               },
               r2.id
