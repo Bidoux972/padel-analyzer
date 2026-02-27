@@ -61196,6 +61196,8 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     const [adminEditRacket, setAdminEditRacket] = (0, import_react59.useState)(null);
     const [adminLoading, setAdminLoading] = (0, import_react59.useState)(false);
     const [adminMsg, setAdminMsg] = (0, import_react59.useState)("");
+    const [adminFamiliesLoaded, setAdminFamiliesLoaded] = (0, import_react59.useState)(false);
+    const [adminStatsLoaded, setAdminStatsLoaded] = (0, import_react59.useState)(false);
     (0, import_react59.useEffect)(() => {
       if (!familyCode) return;
       setCloudStatus("loading");
@@ -62486,11 +62488,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           setAdminLoading(true);
           try {
             const data = await adminListFamilies(familyCode);
-            setAdminFamilies(data || []);
+            setAdminFamilies(Array.isArray(data) ? data : []);
           } catch (e) {
             setAdminMsg("Erreur: " + e.message);
           }
           setAdminLoading(false);
+          setAdminFamiliesLoaded(true);
         };
         const loadStats = async () => {
           setAdminLoading(true);
@@ -62501,6 +62504,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             setAdminMsg("Erreur: " + e.message);
           }
           setAdminLoading(false);
+          setAdminStatsLoaded(true);
         };
         const expandFamily = async (code) => {
           if (adminExpandedFamily === code) {
@@ -62584,8 +62588,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           }
           setAdminLoading(false);
         };
-        if (adminTab === "families" && adminFamilies.length === 0 && !adminLoading) loadFamilies();
-        if (adminTab === "stats" && !adminStats && !adminLoading) loadStats();
+        if (adminTab === "families" && !adminFamiliesLoaded && !adminLoading) loadFamilies();
+        if (adminTab === "stats" && !adminStatsLoaded && !adminLoading) loadStats();
         const allRackets = RACKETS_DB;
         const filteredRackets = allRackets.filter((r2) => {
           if (adminRacketSearch && !r2.name.toLowerCase().includes(adminRacketSearch.toLowerCase()) && !r2.brand.toLowerCase().includes(adminRacketSearch.toLowerCase())) return false;
@@ -62624,6 +62628,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
               setAdminTab("stats");
               setAdminStats(null);
+              setAdminStatsLoaded(false);
             }, style: tabStyle(adminTab === "stats"), children: "\u{1F4CA} Statistiques" })
           ] }),
           adminMsg && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { padding: "10px 14px", background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: 10, marginBottom: 16, fontSize: 11, color: "#c084fc", display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
@@ -62639,7 +62644,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
                 setAdminFamilies([]);
-                loadFamilies();
+                setAdminFamiliesLoaded(false);
               }, style: { background: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "4px 10px", color: "#64748b", fontSize: 10, cursor: "pointer", fontFamily: "inherit" }, children: "\u{1F504} Rafra\xEEchir" })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 8 }, children: adminFamilies.map((fam) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, overflow: "hidden" }, children: [
