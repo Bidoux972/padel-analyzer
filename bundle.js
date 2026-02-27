@@ -47849,6 +47849,17 @@
   async function cloudDeleteProfile(familyCode, name) {
     return sbDelete("profiles", `family_code=eq.${familyCode}&name=eq.${encodeURIComponent(name)}`);
   }
+  async function cloudLoadExtraRackets(familyCode) {
+    const data = await sbGet("extra_rackets", `family_code=eq.${familyCode}&limit=1`);
+    return data.length ? data[0].data || [] : [];
+  }
+  async function cloudSaveExtraRackets(familyCode, extras) {
+    return sbUpsert("extra_rackets", {
+      family_code: familyCode,
+      data: extras,
+      updated_at: (/* @__PURE__ */ new Date()).toISOString()
+    }, "family_code");
+  }
   var LEVEL_OPTIONS = [
     { value: "D\xE9butant", label: "D\xE9butant", desc: "D\xE9couverte, < 1 an" },
     { value: "Interm\xE9diaire", label: "Interm\xE9diaire", desc: "Bases acquises, 1-3 ans" },
@@ -48975,10 +48986,35 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     (0, import_react39.useEffect)(() => {
       if (!familyCode) return;
       setCloudStatus("loading");
-      cloudLoadProfiles(familyCode).then((cloudProfiles) => {
+      Promise.all([
+        cloudLoadProfiles(familyCode),
+        cloudLoadExtraRackets(familyCode)
+      ]).then(([cloudProfiles, cloudExtras]) => {
         if (cloudProfiles.length > 0) {
           setSavedProfiles(cloudProfiles);
           saveProfilesList(cloudProfiles);
+        }
+        if (cloudExtras.length > 0) {
+          try {
+            const local = JSON.parse(localStorage.getItem("padel_db_extra") || "[]");
+            const localIds = new Set(local.map((r2) => r2.id));
+            const staticIds = new Set(rackets_db_default.map((r2) => r2.id));
+            const newExtras = cloudExtras.filter((r2) => r2.id && !localIds.has(r2.id) && !staticIds.has(r2.id));
+            if (newExtras.length > 0) {
+              const merged = [...local, ...newExtras];
+              localStorage.setItem("padel_db_extra", JSON.stringify(merged));
+              setLocalDBCount(merged.length);
+              console.log(`[Cloud] Synced ${newExtras.length} extra rackets from cloud (total local: ${merged.length})`);
+            } else if (local.length === 0 && cloudExtras.length > 0) {
+              const filtered = cloudExtras.filter((r2) => r2.id && !staticIds.has(r2.id));
+              if (filtered.length > 0) {
+                localStorage.setItem("padel_db_extra", JSON.stringify(filtered));
+                setLocalDBCount(filtered.length);
+              }
+            }
+          } catch (e) {
+            console.warn("[Cloud] Extra rackets merge failed:", e.message);
+          }
         }
         setCloudStatus("synced");
       }).catch((err) => {
@@ -49338,6 +49374,7 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
         localStorage.setItem("padel_db_extra", JSON.stringify(extra));
         setLocalDBCount(extra.length);
         console.log(`[DB+] Saved ${racket.name} to local DB supplement (total: ${extra.length})`);
+        if (familyCode) cloudSaveExtraRackets(familyCode, extra).catch((e) => console.warn("[Cloud] Extra sync:", e.message));
       } catch (e) {
         console.warn("[DB+] Save failed:", e.message);
       }
@@ -49368,6 +49405,8 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
         try {
           localStorage.removeItem("padel_db_extra");
           setLocalDBCount(0);
+          if (familyCode) cloudSaveExtraRackets(familyCode, []).catch(() => {
+          });
         } catch {
         }
         setConfirmModal(null);
