@@ -62545,9 +62545,19 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const arr = JSON.parse(jsonStr);
             if (!Array.isArray(arr)) throw new Error("Le JSON doit \xEAtre un tableau");
             setAdminLoading(true);
-            let ok = 0, fail = 0;
+            let added = 0, updated = 0, skipped = 0, failed = 0;
+            const skippedNames = [];
             for (const r2 of arr) {
               try {
+                const existById = RACKETS_DB.find((x2) => x2.id === r2.id);
+                const existByName = RACKETS_DB.find(
+                  (x2) => x2.name.toLowerCase().trim() === (r2.name || "").toLowerCase().trim() && x2.brand.toLowerCase().trim() === (r2.brand || "").toLowerCase().trim() && x2.id !== r2.id
+                );
+                if (existByName) {
+                  skipped++;
+                  skippedNames.push(r2.name);
+                  continue;
+                }
                 const dbRacket = {
                   id: r2.id,
                   name: r2.name,
@@ -62576,12 +62586,18 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   is_active: true
                 };
                 await adminUpsertRacket(familyCode, dbRacket);
-                ok++;
+                if (existById) updated++;
+                else added++;
               } catch {
-                fail++;
+                failed++;
               }
             }
-            setAdminMsg(`\u2705 Import: ${ok} OK, ${fail} erreurs sur ${arr.length}`);
+            let msg = `\u2705 Import: ${added} nouvelle(s), ${updated} mise(s) \xE0 jour`;
+            if (skipped > 0) msg += `, ${skipped} doublon(s) ignor\xE9(s)`;
+            if (failed > 0) msg += `, ${failed} erreur(s)`;
+            if (skippedNames.length > 0) msg += `
+\u26A0\uFE0F Ignor\xE9es: ${skippedNames.join(", ")}`;
+            setAdminMsg(msg);
             loadRacketsFromSupabase().then((r2) => forceRacketsUpdate((n) => n + 1));
           } catch (e) {
             setAdminMsg("Erreur JSON: " + e.message);
