@@ -29,6 +29,277 @@
     mod
   ));
 
+  // node_modules/scheduler/cjs/scheduler.development.js
+  var require_scheduler_development = __commonJS({
+    "node_modules/scheduler/cjs/scheduler.development.js"(exports) {
+      "use strict";
+      (function() {
+        function performWorkUntilDeadline() {
+          needsPaint = false;
+          if (isMessageLoopRunning) {
+            var currentTime = exports.unstable_now();
+            startTime = currentTime;
+            var hasMoreWork = true;
+            try {
+              a: {
+                isHostCallbackScheduled = false;
+                isHostTimeoutScheduled && (isHostTimeoutScheduled = false, localClearTimeout(taskTimeoutID), taskTimeoutID = -1);
+                isPerformingWork = true;
+                var previousPriorityLevel = currentPriorityLevel;
+                try {
+                  b: {
+                    advanceTimers(currentTime);
+                    for (currentTask = peek3(taskQueue); null !== currentTask && !(currentTask.expirationTime > currentTime && shouldYieldToHost()); ) {
+                      var callback = currentTask.callback;
+                      if ("function" === typeof callback) {
+                        currentTask.callback = null;
+                        currentPriorityLevel = currentTask.priorityLevel;
+                        var continuationCallback = callback(
+                          currentTask.expirationTime <= currentTime
+                        );
+                        currentTime = exports.unstable_now();
+                        if ("function" === typeof continuationCallback) {
+                          currentTask.callback = continuationCallback;
+                          advanceTimers(currentTime);
+                          hasMoreWork = true;
+                          break b;
+                        }
+                        currentTask === peek3(taskQueue) && pop(taskQueue);
+                        advanceTimers(currentTime);
+                      } else pop(taskQueue);
+                      currentTask = peek3(taskQueue);
+                    }
+                    if (null !== currentTask) hasMoreWork = true;
+                    else {
+                      var firstTimer = peek3(timerQueue);
+                      null !== firstTimer && requestHostTimeout(
+                        handleTimeout,
+                        firstTimer.startTime - currentTime
+                      );
+                      hasMoreWork = false;
+                    }
+                  }
+                  break a;
+                } finally {
+                  currentTask = null, currentPriorityLevel = previousPriorityLevel, isPerformingWork = false;
+                }
+                hasMoreWork = void 0;
+              }
+            } finally {
+              hasMoreWork ? schedulePerformWorkUntilDeadline() : isMessageLoopRunning = false;
+            }
+          }
+        }
+        function push(heap, node) {
+          var index = heap.length;
+          heap.push(node);
+          a: for (; 0 < index; ) {
+            var parentIndex = index - 1 >>> 1, parent = heap[parentIndex];
+            if (0 < compare(parent, node))
+              heap[parentIndex] = node, heap[index] = parent, index = parentIndex;
+            else break a;
+          }
+        }
+        function peek3(heap) {
+          return 0 === heap.length ? null : heap[0];
+        }
+        function pop(heap) {
+          if (0 === heap.length) return null;
+          var first = heap[0], last3 = heap.pop();
+          if (last3 !== first) {
+            heap[0] = last3;
+            a: for (var index = 0, length = heap.length, halfLength = length >>> 1; index < halfLength; ) {
+              var leftIndex = 2 * (index + 1) - 1, left = heap[leftIndex], rightIndex = leftIndex + 1, right = heap[rightIndex];
+              if (0 > compare(left, last3))
+                rightIndex < length && 0 > compare(right, left) ? (heap[index] = right, heap[rightIndex] = last3, index = rightIndex) : (heap[index] = left, heap[leftIndex] = last3, index = leftIndex);
+              else if (rightIndex < length && 0 > compare(right, last3))
+                heap[index] = right, heap[rightIndex] = last3, index = rightIndex;
+              else break a;
+            }
+          }
+          return first;
+        }
+        function compare(a2, b) {
+          var diff = a2.sortIndex - b.sortIndex;
+          return 0 !== diff ? diff : a2.id - b.id;
+        }
+        function advanceTimers(currentTime) {
+          for (var timer = peek3(timerQueue); null !== timer; ) {
+            if (null === timer.callback) pop(timerQueue);
+            else if (timer.startTime <= currentTime)
+              pop(timerQueue), timer.sortIndex = timer.expirationTime, push(taskQueue, timer);
+            else break;
+            timer = peek3(timerQueue);
+          }
+        }
+        function handleTimeout(currentTime) {
+          isHostTimeoutScheduled = false;
+          advanceTimers(currentTime);
+          if (!isHostCallbackScheduled)
+            if (null !== peek3(taskQueue))
+              isHostCallbackScheduled = true, isMessageLoopRunning || (isMessageLoopRunning = true, schedulePerformWorkUntilDeadline());
+            else {
+              var firstTimer = peek3(timerQueue);
+              null !== firstTimer && requestHostTimeout(
+                handleTimeout,
+                firstTimer.startTime - currentTime
+              );
+            }
+        }
+        function shouldYieldToHost() {
+          return needsPaint ? true : exports.unstable_now() - startTime < frameInterval ? false : true;
+        }
+        function requestHostTimeout(callback, ms) {
+          taskTimeoutID = localSetTimeout(function() {
+            callback(exports.unstable_now());
+          }, ms);
+        }
+        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
+        exports.unstable_now = void 0;
+        if ("object" === typeof performance && "function" === typeof performance.now) {
+          var localPerformance = performance;
+          exports.unstable_now = function() {
+            return localPerformance.now();
+          };
+        } else {
+          var localDate2 = Date, initialTime = localDate2.now();
+          exports.unstable_now = function() {
+            return localDate2.now() - initialTime;
+          };
+        }
+        var taskQueue = [], timerQueue = [], taskIdCounter = 1, currentTask = null, currentPriorityLevel = 3, isPerformingWork = false, isHostCallbackScheduled = false, isHostTimeoutScheduled = false, needsPaint = false, localSetTimeout = "function" === typeof setTimeout ? setTimeout : null, localClearTimeout = "function" === typeof clearTimeout ? clearTimeout : null, localSetImmediate = "undefined" !== typeof setImmediate ? setImmediate : null, isMessageLoopRunning = false, taskTimeoutID = -1, frameInterval = 5, startTime = -1;
+        if ("function" === typeof localSetImmediate)
+          var schedulePerformWorkUntilDeadline = function() {
+            localSetImmediate(performWorkUntilDeadline);
+          };
+        else if ("undefined" !== typeof MessageChannel) {
+          var channel = new MessageChannel(), port = channel.port2;
+          channel.port1.onmessage = performWorkUntilDeadline;
+          schedulePerformWorkUntilDeadline = function() {
+            port.postMessage(null);
+          };
+        } else
+          schedulePerformWorkUntilDeadline = function() {
+            localSetTimeout(performWorkUntilDeadline, 0);
+          };
+        exports.unstable_IdlePriority = 5;
+        exports.unstable_ImmediatePriority = 1;
+        exports.unstable_LowPriority = 4;
+        exports.unstable_NormalPriority = 3;
+        exports.unstable_Profiling = null;
+        exports.unstable_UserBlockingPriority = 2;
+        exports.unstable_cancelCallback = function(task2) {
+          task2.callback = null;
+        };
+        exports.unstable_forceFrameRate = function(fps) {
+          0 > fps || 125 < fps ? console.error(
+            "forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported"
+          ) : frameInterval = 0 < fps ? Math.floor(1e3 / fps) : 5;
+        };
+        exports.unstable_getCurrentPriorityLevel = function() {
+          return currentPriorityLevel;
+        };
+        exports.unstable_next = function(eventHandler) {
+          switch (currentPriorityLevel) {
+            case 1:
+            case 2:
+            case 3:
+              var priorityLevel = 3;
+              break;
+            default:
+              priorityLevel = currentPriorityLevel;
+          }
+          var previousPriorityLevel = currentPriorityLevel;
+          currentPriorityLevel = priorityLevel;
+          try {
+            return eventHandler();
+          } finally {
+            currentPriorityLevel = previousPriorityLevel;
+          }
+        };
+        exports.unstable_requestPaint = function() {
+          needsPaint = true;
+        };
+        exports.unstable_runWithPriority = function(priorityLevel, eventHandler) {
+          switch (priorityLevel) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+              break;
+            default:
+              priorityLevel = 3;
+          }
+          var previousPriorityLevel = currentPriorityLevel;
+          currentPriorityLevel = priorityLevel;
+          try {
+            return eventHandler();
+          } finally {
+            currentPriorityLevel = previousPriorityLevel;
+          }
+        };
+        exports.unstable_scheduleCallback = function(priorityLevel, callback, options) {
+          var currentTime = exports.unstable_now();
+          "object" === typeof options && null !== options ? (options = options.delay, options = "number" === typeof options && 0 < options ? currentTime + options : currentTime) : options = currentTime;
+          switch (priorityLevel) {
+            case 1:
+              var timeout = -1;
+              break;
+            case 2:
+              timeout = 250;
+              break;
+            case 5:
+              timeout = 1073741823;
+              break;
+            case 4:
+              timeout = 1e4;
+              break;
+            default:
+              timeout = 5e3;
+          }
+          timeout = options + timeout;
+          priorityLevel = {
+            id: taskIdCounter++,
+            callback,
+            priorityLevel,
+            startTime: options,
+            expirationTime: timeout,
+            sortIndex: -1
+          };
+          options > currentTime ? (priorityLevel.sortIndex = options, push(timerQueue, priorityLevel), null === peek3(taskQueue) && priorityLevel === peek3(timerQueue) && (isHostTimeoutScheduled ? (localClearTimeout(taskTimeoutID), taskTimeoutID = -1) : isHostTimeoutScheduled = true, requestHostTimeout(handleTimeout, options - currentTime))) : (priorityLevel.sortIndex = timeout, push(taskQueue, priorityLevel), isHostCallbackScheduled || isPerformingWork || (isHostCallbackScheduled = true, isMessageLoopRunning || (isMessageLoopRunning = true, schedulePerformWorkUntilDeadline())));
+          return priorityLevel;
+        };
+        exports.unstable_shouldYield = shouldYieldToHost;
+        exports.unstable_wrapCallback = function(callback) {
+          var parentPriorityLevel = currentPriorityLevel;
+          return function() {
+            var previousPriorityLevel = currentPriorityLevel;
+            currentPriorityLevel = parentPriorityLevel;
+            try {
+              return callback.apply(this, arguments);
+            } finally {
+              currentPriorityLevel = previousPriorityLevel;
+            }
+          };
+        };
+        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
+      })();
+    }
+  });
+
+  // node_modules/scheduler/index.js
+  var require_scheduler = __commonJS({
+    "node_modules/scheduler/index.js"(exports, module) {
+      "use strict";
+      if (false) {
+        module.exports = null;
+      } else {
+        module.exports = require_scheduler_development();
+      }
+    }
+  });
+
   // node_modules/react/cjs/react.development.js
   var require_react_development = __commonJS({
     "node_modules/react/cjs/react.development.js"(exports, module) {
@@ -1013,277 +1284,6 @@
     }
   });
 
-  // node_modules/scheduler/cjs/scheduler.development.js
-  var require_scheduler_development = __commonJS({
-    "node_modules/scheduler/cjs/scheduler.development.js"(exports) {
-      "use strict";
-      (function() {
-        function performWorkUntilDeadline() {
-          needsPaint = false;
-          if (isMessageLoopRunning) {
-            var currentTime = exports.unstable_now();
-            startTime = currentTime;
-            var hasMoreWork = true;
-            try {
-              a: {
-                isHostCallbackScheduled = false;
-                isHostTimeoutScheduled && (isHostTimeoutScheduled = false, localClearTimeout(taskTimeoutID), taskTimeoutID = -1);
-                isPerformingWork = true;
-                var previousPriorityLevel = currentPriorityLevel;
-                try {
-                  b: {
-                    advanceTimers(currentTime);
-                    for (currentTask = peek3(taskQueue); null !== currentTask && !(currentTask.expirationTime > currentTime && shouldYieldToHost()); ) {
-                      var callback = currentTask.callback;
-                      if ("function" === typeof callback) {
-                        currentTask.callback = null;
-                        currentPriorityLevel = currentTask.priorityLevel;
-                        var continuationCallback = callback(
-                          currentTask.expirationTime <= currentTime
-                        );
-                        currentTime = exports.unstable_now();
-                        if ("function" === typeof continuationCallback) {
-                          currentTask.callback = continuationCallback;
-                          advanceTimers(currentTime);
-                          hasMoreWork = true;
-                          break b;
-                        }
-                        currentTask === peek3(taskQueue) && pop(taskQueue);
-                        advanceTimers(currentTime);
-                      } else pop(taskQueue);
-                      currentTask = peek3(taskQueue);
-                    }
-                    if (null !== currentTask) hasMoreWork = true;
-                    else {
-                      var firstTimer = peek3(timerQueue);
-                      null !== firstTimer && requestHostTimeout(
-                        handleTimeout,
-                        firstTimer.startTime - currentTime
-                      );
-                      hasMoreWork = false;
-                    }
-                  }
-                  break a;
-                } finally {
-                  currentTask = null, currentPriorityLevel = previousPriorityLevel, isPerformingWork = false;
-                }
-                hasMoreWork = void 0;
-              }
-            } finally {
-              hasMoreWork ? schedulePerformWorkUntilDeadline() : isMessageLoopRunning = false;
-            }
-          }
-        }
-        function push(heap, node) {
-          var index = heap.length;
-          heap.push(node);
-          a: for (; 0 < index; ) {
-            var parentIndex = index - 1 >>> 1, parent = heap[parentIndex];
-            if (0 < compare(parent, node))
-              heap[parentIndex] = node, heap[index] = parent, index = parentIndex;
-            else break a;
-          }
-        }
-        function peek3(heap) {
-          return 0 === heap.length ? null : heap[0];
-        }
-        function pop(heap) {
-          if (0 === heap.length) return null;
-          var first = heap[0], last3 = heap.pop();
-          if (last3 !== first) {
-            heap[0] = last3;
-            a: for (var index = 0, length = heap.length, halfLength = length >>> 1; index < halfLength; ) {
-              var leftIndex = 2 * (index + 1) - 1, left = heap[leftIndex], rightIndex = leftIndex + 1, right = heap[rightIndex];
-              if (0 > compare(left, last3))
-                rightIndex < length && 0 > compare(right, left) ? (heap[index] = right, heap[rightIndex] = last3, index = rightIndex) : (heap[index] = left, heap[leftIndex] = last3, index = leftIndex);
-              else if (rightIndex < length && 0 > compare(right, last3))
-                heap[index] = right, heap[rightIndex] = last3, index = rightIndex;
-              else break a;
-            }
-          }
-          return first;
-        }
-        function compare(a2, b) {
-          var diff = a2.sortIndex - b.sortIndex;
-          return 0 !== diff ? diff : a2.id - b.id;
-        }
-        function advanceTimers(currentTime) {
-          for (var timer = peek3(timerQueue); null !== timer; ) {
-            if (null === timer.callback) pop(timerQueue);
-            else if (timer.startTime <= currentTime)
-              pop(timerQueue), timer.sortIndex = timer.expirationTime, push(taskQueue, timer);
-            else break;
-            timer = peek3(timerQueue);
-          }
-        }
-        function handleTimeout(currentTime) {
-          isHostTimeoutScheduled = false;
-          advanceTimers(currentTime);
-          if (!isHostCallbackScheduled)
-            if (null !== peek3(taskQueue))
-              isHostCallbackScheduled = true, isMessageLoopRunning || (isMessageLoopRunning = true, schedulePerformWorkUntilDeadline());
-            else {
-              var firstTimer = peek3(timerQueue);
-              null !== firstTimer && requestHostTimeout(
-                handleTimeout,
-                firstTimer.startTime - currentTime
-              );
-            }
-        }
-        function shouldYieldToHost() {
-          return needsPaint ? true : exports.unstable_now() - startTime < frameInterval ? false : true;
-        }
-        function requestHostTimeout(callback, ms) {
-          taskTimeoutID = localSetTimeout(function() {
-            callback(exports.unstable_now());
-          }, ms);
-        }
-        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        exports.unstable_now = void 0;
-        if ("object" === typeof performance && "function" === typeof performance.now) {
-          var localPerformance = performance;
-          exports.unstable_now = function() {
-            return localPerformance.now();
-          };
-        } else {
-          var localDate2 = Date, initialTime = localDate2.now();
-          exports.unstable_now = function() {
-            return localDate2.now() - initialTime;
-          };
-        }
-        var taskQueue = [], timerQueue = [], taskIdCounter = 1, currentTask = null, currentPriorityLevel = 3, isPerformingWork = false, isHostCallbackScheduled = false, isHostTimeoutScheduled = false, needsPaint = false, localSetTimeout = "function" === typeof setTimeout ? setTimeout : null, localClearTimeout = "function" === typeof clearTimeout ? clearTimeout : null, localSetImmediate = "undefined" !== typeof setImmediate ? setImmediate : null, isMessageLoopRunning = false, taskTimeoutID = -1, frameInterval = 5, startTime = -1;
-        if ("function" === typeof localSetImmediate)
-          var schedulePerformWorkUntilDeadline = function() {
-            localSetImmediate(performWorkUntilDeadline);
-          };
-        else if ("undefined" !== typeof MessageChannel) {
-          var channel = new MessageChannel(), port = channel.port2;
-          channel.port1.onmessage = performWorkUntilDeadline;
-          schedulePerformWorkUntilDeadline = function() {
-            port.postMessage(null);
-          };
-        } else
-          schedulePerformWorkUntilDeadline = function() {
-            localSetTimeout(performWorkUntilDeadline, 0);
-          };
-        exports.unstable_IdlePriority = 5;
-        exports.unstable_ImmediatePriority = 1;
-        exports.unstable_LowPriority = 4;
-        exports.unstable_NormalPriority = 3;
-        exports.unstable_Profiling = null;
-        exports.unstable_UserBlockingPriority = 2;
-        exports.unstable_cancelCallback = function(task2) {
-          task2.callback = null;
-        };
-        exports.unstable_forceFrameRate = function(fps) {
-          0 > fps || 125 < fps ? console.error(
-            "forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported"
-          ) : frameInterval = 0 < fps ? Math.floor(1e3 / fps) : 5;
-        };
-        exports.unstable_getCurrentPriorityLevel = function() {
-          return currentPriorityLevel;
-        };
-        exports.unstable_next = function(eventHandler) {
-          switch (currentPriorityLevel) {
-            case 1:
-            case 2:
-            case 3:
-              var priorityLevel = 3;
-              break;
-            default:
-              priorityLevel = currentPriorityLevel;
-          }
-          var previousPriorityLevel = currentPriorityLevel;
-          currentPriorityLevel = priorityLevel;
-          try {
-            return eventHandler();
-          } finally {
-            currentPriorityLevel = previousPriorityLevel;
-          }
-        };
-        exports.unstable_requestPaint = function() {
-          needsPaint = true;
-        };
-        exports.unstable_runWithPriority = function(priorityLevel, eventHandler) {
-          switch (priorityLevel) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-              break;
-            default:
-              priorityLevel = 3;
-          }
-          var previousPriorityLevel = currentPriorityLevel;
-          currentPriorityLevel = priorityLevel;
-          try {
-            return eventHandler();
-          } finally {
-            currentPriorityLevel = previousPriorityLevel;
-          }
-        };
-        exports.unstable_scheduleCallback = function(priorityLevel, callback, options) {
-          var currentTime = exports.unstable_now();
-          "object" === typeof options && null !== options ? (options = options.delay, options = "number" === typeof options && 0 < options ? currentTime + options : currentTime) : options = currentTime;
-          switch (priorityLevel) {
-            case 1:
-              var timeout = -1;
-              break;
-            case 2:
-              timeout = 250;
-              break;
-            case 5:
-              timeout = 1073741823;
-              break;
-            case 4:
-              timeout = 1e4;
-              break;
-            default:
-              timeout = 5e3;
-          }
-          timeout = options + timeout;
-          priorityLevel = {
-            id: taskIdCounter++,
-            callback,
-            priorityLevel,
-            startTime: options,
-            expirationTime: timeout,
-            sortIndex: -1
-          };
-          options > currentTime ? (priorityLevel.sortIndex = options, push(timerQueue, priorityLevel), null === peek3(taskQueue) && priorityLevel === peek3(timerQueue) && (isHostTimeoutScheduled ? (localClearTimeout(taskTimeoutID), taskTimeoutID = -1) : isHostTimeoutScheduled = true, requestHostTimeout(handleTimeout, options - currentTime))) : (priorityLevel.sortIndex = timeout, push(taskQueue, priorityLevel), isHostCallbackScheduled || isPerformingWork || (isHostCallbackScheduled = true, isMessageLoopRunning || (isMessageLoopRunning = true, schedulePerformWorkUntilDeadline())));
-          return priorityLevel;
-        };
-        exports.unstable_shouldYield = shouldYieldToHost;
-        exports.unstable_wrapCallback = function(callback) {
-          var parentPriorityLevel = currentPriorityLevel;
-          return function() {
-            var previousPriorityLevel = currentPriorityLevel;
-            currentPriorityLevel = parentPriorityLevel;
-            try {
-              return callback.apply(this, arguments);
-            } finally {
-              currentPriorityLevel = previousPriorityLevel;
-            }
-          };
-        };
-        "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
-      })();
-    }
-  });
-
-  // node_modules/scheduler/index.js
-  var require_scheduler = __commonJS({
-    "node_modules/scheduler/index.js"(exports, module) {
-      "use strict";
-      if (false) {
-        module.exports = null;
-      } else {
-        module.exports = require_scheduler_development();
-      }
-    }
-  });
-
   // node_modules/react-dom/cjs/react-dom.development.js
   var require_react_dom_development = __commonJS({
     "node_modules/react-dom/cjs/react-dom.development.js"(exports) {
@@ -1333,7 +1333,7 @@
           return dispatcher;
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var React53 = require_react(), Internals = {
+        var React52 = require_react(), Internals = {
           d: {
             f: noop4,
             r: function() {
@@ -1351,7 +1351,7 @@
           },
           p: 0,
           findDOMNode: null
-        }, REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), ReactSharedInternals = React53.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+        }, REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), ReactSharedInternals = React52.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
         "function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error(
           "React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills"
         );
@@ -2886,7 +2886,7 @@
           "number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
         }
         function validateOptionProps(element, props) {
-          null == props.value && ("object" === typeof props.children && null !== props.children ? React53.Children.forEach(props.children, function(child) {
+          null == props.value && ("object" === typeof props.children && null !== props.children ? React52.Children.forEach(props.children, function(child) {
             null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = true, console.error(
               "Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."
             ));
@@ -18518,14 +18518,14 @@
           ));
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var Scheduler = require_scheduler(), React53 = require_react(), ReactDOM = require_react_dom(), assign2 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.element"), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE2 = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE2 = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy");
+        var Scheduler = require_scheduler(), React52 = require_react(), ReactDOM = require_react_dom(), assign2 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.element"), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE2 = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE2 = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy");
         /* @__PURE__ */ Symbol.for("react.scope");
         var REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity");
         /* @__PURE__ */ Symbol.for("react.legacy_hidden");
         /* @__PURE__ */ Symbol.for("react.tracing_marker");
         var REACT_MEMO_CACHE_SENTINEL = /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel");
         /* @__PURE__ */ Symbol.for("react.view_transition");
-        var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React53.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+        var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React52.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
           pending: false,
           data: null,
           method: null,
@@ -21313,7 +21313,7 @@
           }
         };
         (function() {
-          var isomorphicReactPackageVersion = React53.version;
+          var isomorphicReactPackageVersion = React52.version;
           if ("19.2.4" !== isomorphicReactPackageVersion)
             throw Error(
               'Incompatible React versions: The "react" and "react-dom" packages must have the exact same version. Instead got:\n  - react:      ' + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch")
@@ -22561,7 +22561,7 @@
           return x2 === y2 && (0 !== x2 || 1 / x2 === 1 / y2) || x2 !== x2 && y2 !== y2;
         }
         function useSyncExternalStore$2(subscribe, getSnapshot) {
-          didWarnOld18Alpha || void 0 === React53.startTransition || (didWarnOld18Alpha = true, console.error(
+          didWarnOld18Alpha || void 0 === React52.startTransition || (didWarnOld18Alpha = true, console.error(
             "You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."
           ));
           var value = getSnapshot();
@@ -22609,8 +22609,8 @@
           return getSnapshot();
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var React53 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is4, useState14 = React53.useState, useEffect20 = React53.useEffect, useLayoutEffect9 = React53.useLayoutEffect, useDebugValue2 = React53.useDebugValue, didWarnOld18Alpha = false, didWarnUncachedGetSnapshot = false, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-        exports.useSyncExternalStore = void 0 !== React53.useSyncExternalStore ? React53.useSyncExternalStore : shim;
+        var React52 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is4, useState14 = React52.useState, useEffect20 = React52.useEffect, useLayoutEffect9 = React52.useLayoutEffect, useDebugValue2 = React52.useDebugValue, didWarnOld18Alpha = false, didWarnUncachedGetSnapshot = false, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+        exports.useSyncExternalStore = void 0 !== React52.useSyncExternalStore ? React52.useSyncExternalStore : shim;
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
       })();
     }
@@ -22637,7 +22637,7 @@
           return x2 === y2 && (0 !== x2 || 1 / x2 === 1 / y2) || x2 !== x2 && y2 !== y2;
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var React53 = require_react(), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is4, useSyncExternalStore2 = shim.useSyncExternalStore, useRef20 = React53.useRef, useEffect20 = React53.useEffect, useMemo13 = React53.useMemo, useDebugValue2 = React53.useDebugValue;
+        var React52 = require_react(), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is4, useSyncExternalStore2 = shim.useSyncExternalStore, useRef20 = React52.useRef, useEffect20 = React52.useEffect, useMemo13 = React52.useMemo, useDebugValue2 = React52.useDebugValue;
         exports.useSyncExternalStoreWithSelector = function(subscribe, getSnapshot, getServerSnapshot, selector, isEqual) {
           var instRef = useRef20(null);
           if (null === instRef.current) {
@@ -24611,7 +24611,7 @@
           return x2 === y2 && (0 !== x2 || 1 / x2 === 1 / y2) || x2 !== x2 && y2 !== y2;
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var React53 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is4, useSyncExternalStore2 = React53.useSyncExternalStore, useRef20 = React53.useRef, useEffect20 = React53.useEffect, useMemo13 = React53.useMemo, useDebugValue2 = React53.useDebugValue;
+        var React52 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is4, useSyncExternalStore2 = React52.useSyncExternalStore, useRef20 = React52.useRef, useEffect20 = React52.useEffect, useMemo13 = React52.useMemo, useDebugValue2 = React52.useDebugValue;
         exports.useSyncExternalStoreWithSelector = function(subscribe, getSnapshot, getServerSnapshot, selector, isEqual) {
           var instRef = useRef20(null);
           if (null === instRef.current) {
@@ -24895,18 +24895,18 @@
         function isValidElement20(object) {
           return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
         }
-        var React53 = require_react(), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE2 = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE2 = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), ReactSharedInternals = React53.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+        var React52 = require_react(), REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = /* @__PURE__ */ Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = /* @__PURE__ */ Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = /* @__PURE__ */ Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = /* @__PURE__ */ Symbol.for("react.context"), REACT_FORWARD_REF_TYPE2 = /* @__PURE__ */ Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = /* @__PURE__ */ Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = /* @__PURE__ */ Symbol.for("react.suspense_list"), REACT_MEMO_TYPE2 = /* @__PURE__ */ Symbol.for("react.memo"), REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = /* @__PURE__ */ Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = /* @__PURE__ */ Symbol.for("react.client.reference"), ReactSharedInternals = React52.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
           return null;
         };
-        React53 = {
+        React52 = {
           react_stack_bottom_frame: function(callStackForError) {
             return callStackForError();
           }
         };
         var specialPropKeyWarningShown;
         var didWarnAboutElementRef = {};
-        var unknownOwnerDebugStack = React53.react_stack_bottom_frame.bind(
-          React53,
+        var unknownOwnerDebugStack = React52.react_stack_bottom_frame.bind(
+          React52,
           UnknownOwner
         )();
         var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
@@ -24950,11 +24950,10 @@
     }
   });
 
-  // entry.jsx
-  var import_react60 = __toESM(require_react());
+  // src/index.jsx
   var import_client = __toESM(require_client());
 
-  // PadelAnalyzer.jsx
+  // src/PadelAnalyzer.jsx
   var import_react59 = __toESM(require_react());
 
   // node_modules/recharts/es6/container/Surface.js
@@ -49708,7 +49707,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     });
   });
 
-  // rackets-db.json
+  // src/rackets-db.json
   var rackets_db_default = [
     {
       id: "adidas-adipower-ctrl-2025",
@@ -59897,8 +59896,60 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   ];
 
-  // PadelAnalyzer.jsx
+  // src/PadelAnalyzer.jsx
   var import_jsx_runtime = __toESM(require_jsx_runtime());
+  var RACKETS_DB = [...rackets_db_default];
+  var RACKETS_CACHE_KEY = "padel_rackets_db_cache";
+  var RACKETS_CACHE_TS_KEY = "padel_rackets_db_cache_ts";
+  var RACKETS_CACHE_TTL = 1e3 * 60 * 30;
+  function mapRacketFromDB(row) {
+    return {
+      id: row.id,
+      name: row.name,
+      shortName: row.short_name || row.name.slice(0, 28),
+      brand: row.brand,
+      shape: row.shape,
+      weight: row.weight,
+      balance: row.balance,
+      surface: row.surface,
+      core: row.core,
+      antivib: row.antivib || "\u2014",
+      price: row.price || "\u2014",
+      player: row.player || "\u2014",
+      imageUrl: row.image_url || null,
+      year: row.year,
+      category: row.category,
+      scores: row.scores || {},
+      verdict: row.verdict || "",
+      editorial: row.editorial || "",
+      techHighlights: row.tech_highlights || [],
+      targetProfile: row.target_profile || "",
+      junior: row.junior || false,
+      womanLine: row.woman_line || false,
+      description: row.description || void 0,
+      proPlayerInfo: row.pro_player_info || void 0
+    };
+  }
+  function loadRacketsFromCache() {
+    try {
+      const ts = parseInt(localStorage.getItem(RACKETS_CACHE_TS_KEY) || "0");
+      if (Date.now() - ts > RACKETS_CACHE_TTL) return null;
+      const raw = localStorage.getItem(RACKETS_CACHE_KEY);
+      if (!raw) return null;
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length > 100) return arr;
+      return null;
+    } catch {
+      return null;
+    }
+  }
+  function saveRacketsToCache(rackets) {
+    try {
+      localStorage.setItem(RACKETS_CACHE_KEY, JSON.stringify(rackets));
+      localStorage.setItem(RACKETS_CACHE_TS_KEY, String(Date.now()));
+    } catch {
+    }
+  }
   var SB_URL = "https://nvomaxjyhuemdfvhzcbf.supabase.co/rest/v1";
   var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b21heGp5aHVlbWRmdmh6Y2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwOTI3NjEsImV4cCI6MjA4NzY2ODc2MX0.2vQyuT6rPTeGzMp244L9n0OzBwOnW3WTviC3RKxrp8U";
   var SB_HEADERS = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json", "Prefer": "return=representation" };
@@ -59933,6 +59984,31 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (!r2.ok) {
       const e = await r2.json().catch(() => ({}));
       throw new Error(e.message || r2.statusText);
+    }
+  }
+  async function loadRacketsFromSupabase() {
+    try {
+      const rows = await sbGet("rackets", "is_active=eq.true&order=brand,name&limit=1000");
+      if (!Array.isArray(rows) || rows.length < 10) {
+        throw new Error(`Unexpected: only ${rows?.length || 0} rackets returned`);
+      }
+      const mapped = rows.map(mapRacketFromDB);
+      RACKETS_DB.length = 0;
+      RACKETS_DB.push(...mapped);
+      saveRacketsToCache(mapped);
+      console.log(`[RacketsDB] \u2705 ${mapped.length} raquettes charg\xE9es depuis Supabase`);
+      return { source: "supabase", count: mapped.length };
+    } catch (err) {
+      console.warn("[RacketsDB] \u26A0\uFE0F Supabase indisponible:", err.message);
+      const cached = loadRacketsFromCache();
+      if (cached) {
+        RACKETS_DB.length = 0;
+        RACKETS_DB.push(...cached);
+        console.log(`[RacketsDB] \u{1F4E6} ${cached.length} raquettes charg\xE9es depuis le cache`);
+        return { source: "cache", count: cached.length };
+      }
+      console.log(`[RacketsDB] \u{1F4C4} Fallback JSON : ${RACKETS_DB.length} raquettes`);
+      return { source: "fallback", count: RACKETS_DB.length };
     }
   }
   function getFamilyCode() {
@@ -60074,7 +60150,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const arr = JSON.parse(raw);
         if (Array.isArray(arr) && arr.length) {
           return arr.map((r2) => {
-            const dbMatch = rackets_db_default.find((db) => db.name.toLowerCase() === (r2.name || "").toLowerCase());
+            const dbMatch = RACKETS_DB.find((db) => db.name.toLowerCase() === (r2.name || "").toLowerCase());
             if (dbMatch) {
               return {
                 ...r2,
@@ -60816,7 +60892,7 @@ Return ONLY valid JSON, no markdown, no backticks.`;
   function getTopByCategory(catId, year, n = 5) {
     const cat = MAGAZINE_CATEGORIES.find((c2) => c2.id === catId);
     if (!cat) return [];
-    let pool = rackets_db_default.filter((r2) => !year || r2.year === year);
+    let pool = RACKETS_DB.filter((r2) => !year || r2.year === year);
     if (catId === "polyvalence") {
       pool = pool.map((r2) => {
         const sc = r2.scores || {};
@@ -61072,6 +61148,8 @@ Return ONLY valid JSON, no markdown, no backticks.`;
     const [cloudLoginInput, setCloudLoginInput] = (0, import_react59.useState)("");
     const [cloudLoginMode, setCloudLoginMode] = (0, import_react59.useState)("join");
     const [cloudError, setCloudError] = (0, import_react59.useState)("");
+    const [racketsSource, setRacketsSource] = (0, import_react59.useState)("json");
+    const [, forceRacketsUpdate] = (0, import_react59.useState)(0);
     (0, import_react59.useEffect)(() => {
       if (!familyCode) return;
       setCloudStatus("loading");
@@ -61086,6 +61164,12 @@ Return ONLY valid JSON, no markdown, no backticks.`;
         setCloudStatus("error");
       });
     }, [familyCode]);
+    (0, import_react59.useEffect)(() => {
+      loadRacketsFromSupabase().then((result) => {
+        setRacketsSource(result.source);
+        forceRacketsUpdate((n) => n + 1);
+      });
+    }, []);
     const cloudSyncProfile = (0, import_react59.useCallback)(async (name, profileData, locked) => {
       if (!familyCode) return;
       try {
@@ -61473,7 +61557,7 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
       }, onCancel: () => setConfirmModal(null) });
     }
     function loadRacketFromDB(name, brand, color2) {
-      let allDB = [...rackets_db_default];
+      let allDB = [...RACKETS_DB];
       try {
         const extra = JSON.parse(localStorage.getItem("padel_db_extra") || "[]");
         if (Array.isArray(extra)) allDB = [...allDB, ...extra];
@@ -61618,7 +61702,7 @@ No markdown, no backticks, no explanation.` }], { systemPrompt: SCORING_SYSTEM_P
       const ht = Number(profile2.height) || 0;
       const isJunior = age > 0 && age < 15 || ht > 0 && ht < 150;
       const brandPref = profile2.brandTags.map((id) => BRAND_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
-      let allDB = [...rackets_db_default];
+      let allDB = [...RACKETS_DB];
       try {
         const extra = JSON.parse(localStorage.getItem("padel_db_extra") || "[]");
         if (Array.isArray(extra)) allDB = [...allDB, ...extra];
@@ -61930,8 +62014,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 8, color: "#334155", marginTop: 32, letterSpacing: "0.05em" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
           " V12 \xB7 ",
-          rackets_db_default.length,
-          " raquettes"
+          RACKETS_DB.length,
+          " raquettes ",
+          racketsSource === "supabase" ? "\u2601\uFE0F" : racketsSource === "cache" ? "\u{1F4E6}" : ""
         ] })
       ] }),
       screen === "home" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "80vh", animation: "fadeIn 0.5s ease", padding: "0 16px" }, children: [
@@ -61951,7 +62036,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { color: "#64748b", fontSize: 13, margin: "0 0 8px", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 500, textAlign: "center" }, children: "Ton conseiller raquette intelligent" }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { color: "#475569", fontSize: 11, margin: "0 0 36px", textAlign: "center", maxWidth: 340, lineHeight: 1.5 }, children: [
           "Analyse ton profil, explore ",
-          rackets_db_default.length,
+          RACKETS_DB.length,
           "+ raquettes, trouve la pala parfaite pour ton jeu."
         ] }),
         savedProfiles.length > 0 && (() => {
@@ -62338,7 +62423,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { marginTop: familyCode && familyCode !== "LOCAL" ? 12 : 40, fontSize: 8, color: "#334155", letterSpacing: "0.05em", textAlign: "center" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
           " V12 \xB7 ",
-          rackets_db_default.length,
+          RACKETS_DB.length,
           " raquettes \xB7 Scoring hybride calibr\xE9"
         ] })
       ] }),
@@ -62608,7 +62693,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { textAlign: "center", padding: "8px 0 16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 8, color: "#334155", letterSpacing: "0.05em" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
                 " Magazine \xB7 ",
-                rackets_db_default.length,
+                RACKETS_DB.length,
                 " raquettes"
               ] }) })
             ]
@@ -63194,7 +63279,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         if (isJuniorA && !isPepiteA) lines.push(`Profil junior : raquettes l\xE9g\xE8res et tol\xE9rantes en priorit\xE9.`);
         if (isPepiteA) lines.push(`\u{1F31F} Jeune P\xE9pite : raquettes junior + adultes l\xE9g\xE8res \u2264350g.`);
         if (isExpertA && !profile.expertToucher) lines.push(`\u26A1 Mode Expert : les priorit\xE9s dominent le scoring.`);
-        lines.push(`Calcul en cours sur ${rackets_db_default.length} raquettes...`);
+        lines.push(`Calcul en cours sur ${RACKETS_DB.length} raquettes...`);
         lines.push(`R\xE9sultats pr\xEAts.`);
         return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "fixed", inset: 0, background: "#0b0f1a", zIndex: 1e3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px", animation: "fadeIn 0.4s ease" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
@@ -63249,10 +63334,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const age = Number(profile.age) || 0;
         const ht = Number(profile.height) || 0;
         const isJunior = age > 0 && age < 15 || ht > 0 && ht < 150;
-        let pool = isJunior ? rackets_db_default.filter((r3) => r3.category === "junior") : (() => {
+        let pool = isJunior ? RACKETS_DB.filter((r3) => r3.category === "junior") : (() => {
           const lvl = profile.level || "D\xE9butant";
           const catMap = { "D\xE9butant": ["debutant", "intermediaire"], "Interm\xE9diaire": ["intermediaire", "debutant", "avance", "expert"], "Avanc\xE9": ["avance", "intermediaire", "expert"], "Expert": ["expert", "avance", "intermediaire"] };
-          return rackets_db_default.filter((r3) => (catMap[lvl] || ["debutant", "intermediaire"]).includes(r3.category));
+          return RACKETS_DB.filter((r3) => (catMap[lvl] || ["debutant", "intermediaire"]).includes(r3.category));
         })();
         const scored = pool.map((r3) => ({ ...r3, _gs: computeGlobalScore(r3.scores, profile, r3) }));
         scored.sort((a2, b) => b._gs - a2._gs);
@@ -63413,10 +63498,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const age = Number(profile.age) || 0;
         const ht = Number(profile.height) || 0;
         const isJunior = age > 0 && age < 15 || ht > 0 && ht < 150;
-        let pool = isJunior ? rackets_db_default.filter((r2) => r2.category === "junior") : (() => {
+        let pool = isJunior ? RACKETS_DB.filter((r2) => r2.category === "junior") : (() => {
           const lvl = profile.level || "D\xE9butant";
           const catMap = { "D\xE9butant": ["debutant", "intermediaire"], "Interm\xE9diaire": ["intermediaire", "debutant", "avance", "expert"], "Avanc\xE9": ["avance", "intermediaire", "expert"], "Expert": ["expert", "avance", "intermediaire"] };
-          return rackets_db_default.filter((r2) => (catMap[lvl] || ["debutant", "intermediaire"]).includes(r2.category));
+          return RACKETS_DB.filter((r2) => (catMap[lvl] || ["debutant", "intermediaire"]).includes(r2.category));
         })();
         const brandPref = (profile.brandTags || []).map((id) => BRAND_TAGS.find((t) => t.id === id)?.label).filter(Boolean);
         const scored = pool.map((r2) => ({ ...r2, _gs: computeGlobalScore(r2.scores, profile, r2), _fy: computeForYou(r2.scores, profile, r2) })).filter((r2) => r2._gs > 0);
@@ -63575,7 +63660,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { style: { fontSize: 10, color: "#a5b4fc", margin: "0 0 3px", fontWeight: 600 }, children: "\u{1F4A1} Comment lire ce classement ?" }),
                 /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { style: { fontSize: 10, color: "#64748b", margin: 0, lineHeight: 1.6 }, children: [
                   "Calcul\xE9 sur ",
-                  rackets_db_default.length,
+                  RACKETS_DB.length,
                   " raquettes en croisant profil, style et priorit\xE9s. Lance l'analyse d\xE9taill\xE9e pour les scores par crit\xE8re, radars comparatifs et l'Ar\xE8ne."
                 ] })
               ] })
@@ -63625,7 +63710,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 7, color: "#334155", letterSpacing: "0.05em", textAlign: "center", marginTop: 8 }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontFamily: "'Outfit'", fontWeight: 600 }, children: "PADEL ANALYZER" }),
             " V12 \xB7 ",
-            rackets_db_default.length,
+            RACKETS_DB.length,
             " raquettes \xB7 Scoring hybride calibr\xE9"
           ] })
         ] });
@@ -63652,7 +63737,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "V12" }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 10, padding: "1px 7px", color: "#f97316", fontSize: 8, fontWeight: 600 }, children: [
               "\u{1F5C3}\uFE0F ",
-              rackets_db_default.length,
+              RACKETS_DB.length,
               localDBCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { style: { color: "#22c55e" }, children: [
                 " + ",
                 localDBCount
@@ -63784,7 +63869,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             suggestions.map((s2, i) => {
               const isExpanded = addDetail === i;
               const nameLower = (s2.name || "").toLowerCase();
-              const dbMatch = rackets_db_default.find((r2) => r2.name.toLowerCase() === nameLower) || rackets_db_default.find((r2) => nameLower.includes((r2.shortName || r2.name).toLowerCase().slice(0, 12)) || (r2.shortName || r2.name).toLowerCase().includes(nameLower.slice(0, 12)));
+              const dbMatch = RACKETS_DB.find((r2) => r2.name.toLowerCase() === nameLower) || RACKETS_DB.find((r2) => nameLower.includes((r2.shortName || r2.name).toLowerCase().slice(0, 12)) || (r2.shortName || r2.name).toLowerCase().includes(nameLower.slice(0, 12)));
               const sc = dbMatch?.scores || {};
               const hasScores = dbMatch && Object.keys(sc).length > 0;
               const gs = hasScores ? computeGlobalScore(sc, profile, dbMatch) : null;
@@ -64221,7 +64306,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 6, alignItems: "center", marginBottom: 8 }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: "6px 10px", border: "1px solid rgba(255,255,255,0.06)" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#64748b" }, children: "Embarqu\xE9es" }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 700, color: "#f97316", fontFamily: "'Outfit'" }, children: rackets_db_default.length })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 700, color: "#f97316", fontFamily: "'Outfit'" }, children: RACKETS_DB.length })
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 14, color: "#334155" }, children: "+" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: "6px 10px", border: "1px solid rgba(255,255,255,0.06)" }, children: [
@@ -64231,7 +64316,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 14, color: "#334155" }, children: "=" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1, background: "rgba(249,115,22,0.05)", borderRadius: 8, padding: "6px 10px", border: "1px solid rgba(249,115,22,0.15)" }, children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 9, color: "#f97316" }, children: "Total" }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 700, color: "#fff", fontFamily: "'Outfit'" }, children: rackets_db_default.length + localDBCount })
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 16, fontWeight: 700, color: "#fff", fontFamily: "'Outfit'" }, children: RACKETS_DB.length + localDBCount })
               ] })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 6 }, children: [
@@ -64954,12 +65039,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 const isJunior = age > 0 && age < 15 || ht > 0 && ht < 150;
                 let pool;
                 if (isJunior) {
-                  pool = rackets_db_default.filter((r2) => r2.category === "junior");
+                  pool = RACKETS_DB.filter((r2) => r2.category === "junior");
                 } else {
                   const lvl = profile.level || "D\xE9butant";
                   const catMap = { "D\xE9butant": ["debutant", "intermediaire"], "Interm\xE9diaire": ["intermediaire", "debutant", "avance", "expert"], "Avanc\xE9": ["avance", "intermediaire", "expert"], "Expert": ["expert", "avance", "intermediaire"] };
                   const cats = catMap[lvl] || ["debutant", "intermediaire"];
-                  pool = rackets_db_default.filter((r2) => cats.includes(r2.category));
+                  pool = RACKETS_DB.filter((r2) => cats.includes(r2.category));
                 }
                 pool = pool.filter((r2) => !existingNames.has((r2.name || "").toLowerCase().trim()));
                 const brandPref = (profile.brandTags || []).map((id) => BRAND_TAGS.find((t) => t.id === id)?.label?.toLowerCase()).filter(Boolean);
@@ -65589,17 +65674,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
     }
   }
 
-  // entry.jsx
+  // src/index.jsx
   var import_jsx_runtime2 = __toESM(require_jsx_runtime());
   var root = (0, import_client.createRoot)(document.getElementById("root"));
   root.render(/* @__PURE__ */ (0, import_jsx_runtime2.jsx)(PadelAnalyzer, {}));
 })();
 /*! Bundled license information:
 
-react/cjs/react.development.js:
+scheduler/cjs/scheduler.development.js:
   (**
    * @license React
-   * react.development.js
+   * scheduler.development.js
    *
    * Copyright (c) Meta Platforms, Inc. and affiliates.
    *
@@ -65607,10 +65692,10 @@ react/cjs/react.development.js:
    * LICENSE file in the root directory of this source tree.
    *)
 
-scheduler/cjs/scheduler.development.js:
+react/cjs/react.development.js:
   (**
    * @license React
-   * scheduler.development.js
+   * react.development.js
    *
    * Copyright (c) Meta Platforms, Inc. and affiliates.
    *
