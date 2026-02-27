@@ -3,7 +3,62 @@ import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend,
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
 } from "recharts";
-import RACKETS_DB from "./rackets-db.json";
+import RACKETS_DB_FALLBACK from "./rackets-db.json";
+
+// ==================== RACKETS DB — Dynamic loading with fallback ====================
+let RACKETS_DB = [...RACKETS_DB_FALLBACK];
+
+const RACKETS_CACHE_KEY = 'padel_rackets_db_cache';
+const RACKETS_CACHE_TS_KEY = 'padel_rackets_db_cache_ts';
+const RACKETS_CACHE_TTL = 1000 * 60 * 30; // 30 minutes
+
+function mapRacketFromDB(row) {
+  return {
+    id: row.id,
+    name: row.name,
+    shortName: row.short_name || row.name.slice(0, 28),
+    brand: row.brand,
+    shape: row.shape,
+    weight: row.weight,
+    balance: row.balance,
+    surface: row.surface,
+    core: row.core,
+    antivib: row.antivib || "—",
+    price: row.price || "—",
+    player: row.player || "—",
+    imageUrl: row.image_url || null,
+    year: row.year,
+    category: row.category,
+    scores: row.scores || {},
+    verdict: row.verdict || "",
+    editorial: row.editorial || "",
+    techHighlights: row.tech_highlights || [],
+    targetProfile: row.target_profile || "",
+    junior: row.junior || false,
+    womanLine: row.woman_line || false,
+    description: row.description || undefined,
+    proPlayerInfo: row.pro_player_info || undefined,
+  };
+}
+
+function loadRacketsFromCache() {
+  try {
+    const ts = parseInt(localStorage.getItem(RACKETS_CACHE_TS_KEY) || '0');
+    if (Date.now() - ts > RACKETS_CACHE_TTL) return null;
+    const raw = localStorage.getItem(RACKETS_CACHE_KEY);
+    if (!raw) return null;
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr) && arr.length > 100) return arr;
+    return null;
+  } catch { return null; }
+}
+
+function saveRacketsToCache(rackets) {
+  try {
+    localStorage.setItem(RACKETS_CACHE_KEY, JSON.stringify(rackets));
+    localStorage.setItem(RACKETS_CACHE_TS_KEY, String(Date.now()));
+  } catch {}
+}
 
 // ==================== SUPABASE REST API (no SDK needed) ====================
 const SB_URL = "https://nvomaxjyhuemdfvhzcbf.supabase.co/rest/v1";
@@ -38,6 +93,33 @@ async function sbPatch(table, query, data) {
 }
 
 // ==================== SUPABASE HELPERS ====================
+
+async function loadRacketsFromSupabase() {
+  try {
+    const rows = await sbGet('rackets', 'is_active=eq.true&order=brand,name&limit=1000');
+    if (!Array.isArray(rows) || rows.length < 10) {
+      throw new Error(`Unexpected: only ${rows?.length || 0} rackets returned`);
+    }
+    const mapped = rows.map(mapRacketFromDB);
+    RACKETS_DB.length = 0;
+    RACKETS_DB.push(...mapped);
+    saveRacketsToCache(mapped);
+    console.log(`[RacketsDB] ✅ ${mapped.length} raquettes chargées depuis Supabase`);
+    return { source: 'supabase', count: mapped.length };
+  } catch (err) {
+    console.warn('[RacketsDB] ⚠️ Supabase indisponible:', err.message);
+    const cached = loadRacketsFromCache();
+    if (cached) {
+      RACKETS_DB.length = 0;
+      RACKETS_DB.push(...cached);
+      console.log(`[RacketsDB] 📦 ${cached.length} raquettes chargées depuis le cache`);
+      return { source: 'cache', count: cached.length };
+    }
+    console.log(`[RacketsDB] 📄 Fallback JSON : ${RACKETS_DB.length} raquettes`);
+    return { source: 'fallback', count: RACKETS_DB.length };
+  }
+}
+
 function getFamilyCode() { return localStorage.getItem('padel_family_code') || ''; }
 function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', code); }
 
@@ -178,6 +260,11 @@ const INITIAL_PROFILE = {
   priorityExtra: "",
   brandTags: [],
   frequency: "Occasionnel (1-2x/mois)", competition: false,
+  // Expert feel preferences (WPT-level)
+  expertToucher: "", // "sec" | "medium" | "souple"
+  expertReactivite: "", // "explosive" | "progressive"
+  expertPoids: "", // "lourd" | "equilibre" | "leger"
+  expertForme: "", // "diamant" | "goutte" | "ronde" | "indifferent"
 };
 
 const FITNESS_OPTIONS = [
@@ -363,10 +450,30 @@ function buildProfileText(p) {
   const brands = p.brandTags.map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
   const styleStr = [...styles, p.styleExtra].filter(Boolean).join(", ") || "Non précisé";
   const injuryStr = [...injuries, p.injuryExtra].filter(Boolean).join(", ") || "Aucune";
-  const prioStr = [...priorities, p.priorityExtra].filter(Boolean).join(", ") || "Non précisé";
   const brandStr = brands.length ? brands.join(", ") : "Toutes marques";
   const isFemme = (p.genre || "Homme") === "Femme";
   const physique = [p.age ? `${p.age} ans` : null, p.height ? `${p.height}cm` : null, p.weight ? `${p.weight}kg` : null, p.genre || "Homme", `fitness: ${p.fitness||"actif"}`].filter(Boolean).join(", ");
+
+  // Expert feel-based preferences
+  const toucherLabels = {sec:"Sec & Direct",medium:"Medium",souple:"Souple & Enveloppant"};
+  const reactLabels = {explosive:"Explosive",progressive:"Progressive"};
+  const poidsLabels = {lourd:"Lourd & Stable",equilibre:"Équilibré",leger:"Léger & Vif"};
+  const formeLabels = {diamant:"Diamant",goutte:"Goutte d'eau",ronde:"Ronde",indifferent:"Indifférent"};
+
+  let prioStr;
+  if (p.expertToucher) {
+    // Expert mode - show feel preferences
+    const feelParts = [
+      `Toucher: ${toucherLabels[p.expertToucher]||p.expertToucher}`,
+      p.expertReactivite ? `Réactivité: ${reactLabels[p.expertReactivite]||p.expertReactivite}` : null,
+      p.expertPoids ? `Poids: ${poidsLabels[p.expertPoids]||p.expertPoids}` : null,
+      p.expertForme ? `Forme: ${formeLabels[p.expertForme]||p.expertForme}` : null,
+    ].filter(Boolean);
+    prioStr = `[PRO] ${feelParts.join(", ")}`;
+  } else {
+    prioStr = [...priorities, p.priorityExtra].filter(Boolean).join(", ") || "Non précisé";
+  }
+
   return `${isFemme?"Joueuse":"Joueur"}: ${physique || "Non renseigné"}. Niveau: ${p.level}. Main: ${p.hand||"Droitier"}. Côté: ${p.side}. Style: ${styleStr}. Blessures: ${injuryStr}. Fréquence: ${p.frequency}. Compétition: ${p.competition?"Oui":"Non"}. Priorité: ${prioStr}. Marques préférées: ${brandStr}.`;
 }
 
@@ -573,55 +680,185 @@ function computeGlobalScore(scores, profile, racket) {
     if (racket?.category === "debutant") return 0;
     if (racket?.category === "intermediaire") return 0;
 
-    const prioTags = profile.priorityTags || [];
-    const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
-    const orderedWeightsEx = [2.0, 1.5, 1.0, 0.7, 0.7];
-    let priorityAttrs = [];
-    let prioAttrWeights = {};
-    prioTags.forEach((tag, idx) => {
-      const w_val = orderedWeightsEx[Math.min(idx, orderedWeightsEx.length-1)];
-      if (tag === "polyvalence") { ATTRS.forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val * 0.5; priorityAttrs.push(a); } }); }
-      else if (tag === "reprise") { ["Confort","Tolérance","Maniabilité"].forEach(a => { if (!prioAttrWeights[a]) { prioAttrWeights[a] = w_val; priorityAttrs.push(a); } else { prioAttrWeights[a] += w_val * 0.3; } }); }
-      else { const attr = prioAttrMap[tag]; if (attr && !prioAttrWeights[attr]) { prioAttrWeights[attr] = w_val; priorityAttrs.push(attr); } else if (attr) { prioAttrWeights[attr] += w_val * 0.3; } }
-    });
-    priorityAttrs = [...new Set(priorityAttrs)];
-    if (priorityAttrs.length === 0) priorityAttrs = [...ATTRS];
-    const secondaryAttrs = ATTRS.filter(a => !priorityAttrs.includes(a));
+    // === CHECK: New feel-based or legacy priority-based? ===
+    const hasExpertFeel = !!profile.expertToucher;
 
-    let prioSum = 0, prioWSum = 0;
-    for (const a of priorityAttrs) { const pw = prioAttrWeights[a] || 1; prioSum += (scores[a] || 0) * pw; prioWSum += pw; }
-    const prioAvg = prioWSum > 0 ? prioSum / prioWSum : 5;
-    let secSum = 0;
-    for (const a of secondaryAttrs) secSum += scores[a] || 0;
-    const secAvg = secondaryAttrs.length ? secSum / secondaryAttrs.length : 5;
+    if (hasExpertFeel) {
+      // === EXPERT MODE V2: FEEL-BASED MATCHING ===
+      const toucher = profile.expertToucher;
+      const reactivite = profile.expertReactivite || "explosive";
+      const poidsPrefer = profile.expertPoids || "equilibre";
+      const formePrefer = profile.expertForme || "indifferent";
 
-    let score = prioAvg * 0.85 + secAvg * 0.15;
-
-    if (racket) {
-      const rShape = (racket.shape || "").toLowerCase();
-      const hand = profile.hand || "Droitier";
-      const side = profile.side || "Droite";
-      const isAttacker = (hand === "Droitier" && side === "Gauche") || (hand === "Gaucher" && side === "Droite");
-      const wantsPower = prioTags.includes("puissance") || isAttacker;
-      const wantsControl = prioTags.includes("controle") || prioTags.includes("protection");
-      if (wantsPower) {
-        if (rShape.includes("diamant")) score += 0.30;
-        else if (rShape.includes("goutte") || rShape.includes("hybride")) score += 0.05;
-        else if (rShape.includes("ronde")) score -= 0.30;
-      } else if (wantsControl) {
-        if (rShape.includes("ronde")) score += 0.30;
-        else if (rShape.includes("hybride") || rShape.includes("goutte")) score += 0.05;
-        else if (rShape.includes("diamant")) score -= 0.15;
+      const core = (racket?.core || "").toLowerCase();
+      const surface = (racket?.surface || "").toLowerCase();
+      const rShape = (racket?.shape || "").toLowerCase();
+      const rWeight = racket?.weight ? parseFloat(racket.weight) : 365;
+      // Estimate balance from shape when not provided (diamant=head-heavy, ronde=head-light)
+      let balanceMm = racket?.balance_mm ? parseFloat(racket.balance_mm) : 0;
+      if (!balanceMm) {
+        const sh = (racket?.shape || "").toLowerCase();
+        if (sh.includes("diamant")) balanceMm = 268;
+        else if (sh.includes("ronde") || sh.includes("rond")) balanceMm = 254;
+        else if (sh.includes("goutte") || sh.includes("hybride")) balanceMm = 260;
+        else balanceMm = 260;
       }
-    }
-    const brandPref = (profile.brandTags || []).map(b => b.toLowerCase());
-    if (brandPref.length && racket?.brand && brandPref.includes(racket.brand.toLowerCase())) score += 0.12;
 
-    if (isFemale && racket) {
-      if (racket.womanLine) score += 0.30;
-      if (rWeight && rWeight > 370) score -= (rWeight - 370) * 0.015;
+      let score = 5.0;
+
+      const isHardCore = core.includes("hard") || core.includes("rigide") || core.includes("dure") || core.includes("dur)")
+        || core.includes("hr3") || core.includes("hr4") || core.includes("carbon power")
+        || core.includes("dense") || core.includes("h-eva") || core.includes("high memory")
+        || core.includes("x-eva") && !core.includes("basse")
+        || core.includes("eva power") || core.includes("eva pro") || core.includes("pro eva");
+      const isSoftCore = core.includes("soft") || core.includes("comfort") || (core.includes("foam") && !core.includes("power foam"))
+        || core.includes("basse densité");
+      const isMediumCore = !isHardCore && !isSoftCore && (
+        core.includes("multieva") || core.includes("multi eva") || core.includes("m-eva")
+        || core.includes("standard") || core.includes("medium") || core.includes("balance")
+        || core.includes("pro-touch") || core.includes("black eva") || core.includes("performance")
+        || core === "eva" || core === "eva "
+      );
+      const isPowerFoam = core.includes("power foam");
+      const isCarbonSurface = surface.includes("carbon") || surface.includes("carbone") || surface.includes("18k") || surface.includes("12k") || surface.includes("3k")
+        || surface.includes("graphite") || surface.includes("woven");
+      const isFiberSurface = surface.includes("fibre") || surface.includes("fiber") || surface.includes("glass") || surface.includes("verre")
+        || surface.includes("fibrix");
+
+      if (toucher === "sec") {
+        if (isHardCore) score += 1.5;
+        else if (isPowerFoam) score += 0.8;
+        else if (isMediumCore) score += 0.3;
+        else if (isSoftCore) score -= 1.2;
+        if (isCarbonSurface) score += 0.6;
+        if (isFiberSurface) score -= 0.5;
+      } else if (toucher === "souple") {
+        if (isSoftCore) score += 1.5;
+        else if (isMediumCore) score += 0.6;
+        else if (isPowerFoam) score += 0.3;
+        else if (isHardCore) score -= 1.0;
+        if (isFiberSurface) score += 0.3;
+      } else {
+        if (isMediumCore || isPowerFoam) score += 0.8;
+        else if (isHardCore) score += 0.2;
+        else if (isSoftCore) score += 0.2;
+      }
+
+      if (reactivite === "explosive") {
+        score += Math.max(0, (balanceMm - 258)) * 0.08;
+        if (isHardCore || isPowerFoam) score += 0.4;
+        if (isSoftCore) score -= 0.3;
+      } else {
+        score += Math.max(0, (265 - balanceMm)) * 0.06;
+        if (isMediumCore || isSoftCore) score += 0.3;
+      }
+
+      if (poidsPrefer === "lourd") {
+        if (rWeight >= 370) score += 1.0;
+        else if (rWeight >= 365) score += 0.5;
+        else if (rWeight < 355) score -= 1.0;
+        else if (rWeight < 360) score -= 0.4;
+      } else if (poidsPrefer === "leger") {
+        if (rWeight <= 355) score += 1.0;
+        else if (rWeight <= 360) score += 0.5;
+        else if (rWeight > 370) score -= 1.0;
+        else if (rWeight > 365) score -= 0.4;
+      } else {
+        if (rWeight >= 355 && rWeight <= 370) score += 0.5;
+        else if (rWeight > 375 || rWeight < 350) score -= 0.5;
+      }
+
+      if (formePrefer !== "indifferent") {
+        const shapeMatch = {
+          diamant: rShape.includes("diamant"),
+          goutte: rShape.includes("goutte") || rShape.includes("hybride"),
+          ronde: rShape.includes("ronde") || rShape.includes("rond"),
+        };
+        if (shapeMatch[formePrefer]) {
+          score += 1.5;
+        } else {
+          if (formePrefer === "diamant" && (rShape.includes("goutte") || rShape.includes("hybride"))) score -= 0.5;
+          else if (formePrefer === "diamant" && rShape.includes("ronde")) score -= 2.0;
+          else if (formePrefer === "ronde" && rShape.includes("diamant")) score -= 2.0;
+          else if (formePrefer === "ronde" && (rShape.includes("goutte") || rShape.includes("hybride"))) score -= 0.5;
+          else if (formePrefer === "goutte" && rShape.includes("diamant")) score -= 0.8;
+          else if (formePrefer === "goutte" && rShape.includes("ronde")) score -= 0.8;
+        }
+      }
+
+      const brandPref = (profile.brandTags || []).map(b => b.toLowerCase());
+      if (brandPref.length && racket?.brand && brandPref.includes(racket.brand.toLowerCase())) score += 0.15;
+
+      const injuries = profile.injuryTags || [];
+      if (injuries.length && !injuries.includes("aucune")) {
+        const injuryCount = injuries.filter(i => i !== "aucune").length;
+        if (isHardCore) score -= injuryCount * 0.3;
+        if (isSoftCore) score += injuryCount * 0.15;
+        if (rWeight > 375) score -= injuryCount * 0.1;
+      }
+
+      if (racket?.category === "expert") score += 0.5;
+      else if (racket?.category === "avance") score += 0.1;
+
+      if (isFemale && racket) {
+        if (racket.womanLine) score += 0.30;
+        if (rWeight && rWeight > 370) score -= (rWeight - 370) * 0.015;
+      }
+
+      return Math.max(0, Math.min(10, (score - 2) / 8 * 10));
+
+    } else {
+      // === LEGACY EXPERT: priority-based (backward compatible for old profiles) ===
+      const prioTags = profile.priorityTags || [];
+      const prioAttrMap = { puissance: "Puissance", spin: "Spin", controle: "Contrôle", confort: "Confort", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: null };
+      const orderedWeightsEx = [2.0, 1.5, 1.0, 0.7, 0.7];
+      let priorityAttrsX = [];
+      let prioAttrWeightsX = {};
+      prioTags.forEach((tag, idx) => {
+        const w_val = orderedWeightsEx[Math.min(idx, orderedWeightsEx.length-1)];
+        if (tag === "polyvalence") { ATTRS.forEach(a => { if (!prioAttrWeightsX[a]) { prioAttrWeightsX[a] = w_val * 0.5; priorityAttrsX.push(a); } }); }
+        else if (tag === "reprise") { ["Confort","Tolérance","Maniabilité"].forEach(a => { if (!prioAttrWeightsX[a]) { prioAttrWeightsX[a] = w_val; priorityAttrsX.push(a); } else { prioAttrWeightsX[a] += w_val * 0.3; } }); }
+        else { const attr = prioAttrMap[tag]; if (attr && !prioAttrWeightsX[attr]) { prioAttrWeightsX[attr] = w_val; priorityAttrsX.push(attr); } else if (attr) { prioAttrWeightsX[attr] += w_val * 0.3; } }
+      });
+      priorityAttrsX = [...new Set(priorityAttrsX)];
+      if (priorityAttrsX.length === 0) priorityAttrsX = [...ATTRS];
+      const secondaryAttrsX = ATTRS.filter(a => !priorityAttrsX.includes(a));
+
+      let prioSumX = 0, prioWSumX = 0;
+      for (const a of priorityAttrsX) { const pw = prioAttrWeightsX[a] || 1; prioSumX += (scores[a] || 0) * pw; prioWSumX += pw; }
+      const prioAvgX = prioWSumX > 0 ? prioSumX / prioWSumX : 5;
+      let secSumX = 0;
+      for (const a of secondaryAttrsX) secSumX += scores[a] || 0;
+      const secAvgX = secondaryAttrsX.length ? secSumX / secondaryAttrsX.length : 5;
+
+      let scoreX = prioAvgX * 0.85 + secAvgX * 0.15;
+
+      if (racket) {
+        const rShape = (racket.shape || "").toLowerCase();
+        const hand = profile.hand || "Droitier";
+        const side = profile.side || "Droite";
+        const isAttacker = (hand === "Droitier" && side === "Gauche") || (hand === "Gaucher" && side === "Droite");
+        const wantsPower = prioTags.includes("puissance") || isAttacker;
+        const wantsControl = prioTags.includes("controle") || prioTags.includes("protection");
+        if (wantsPower) {
+          if (rShape.includes("diamant")) scoreX += 0.30;
+          else if (rShape.includes("goutte") || rShape.includes("hybride")) scoreX += 0.05;
+          else if (rShape.includes("ronde")) scoreX -= 0.30;
+        } else if (wantsControl) {
+          if (rShape.includes("ronde")) scoreX += 0.30;
+          else if (rShape.includes("hybride") || rShape.includes("goutte")) scoreX += 0.05;
+          else if (rShape.includes("diamant")) scoreX -= 0.15;
+        }
+      }
+      const brandPrefL = (profile.brandTags || []).map(b => b.toLowerCase());
+      if (brandPrefL.length && racket?.brand && brandPrefL.includes(racket.brand.toLowerCase())) scoreX += 0.12;
+
+      if (isFemale && racket) {
+        if (racket.womanLine) scoreX += 0.30;
+        if (rWeight && rWeight > 370) scoreX -= (rWeight - 370) * 0.015;
+      }
+      return Math.max(0, scoreX);
     }
-    return Math.max(0, score);
   }
 
   // === NORMAL MODE (Débutant → Avancé) ===
@@ -738,7 +975,7 @@ function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
 function computeForYou(scores, profile, racket) {
   if (!scores || typeof scores !== "object") return "no";
   const gsRaw = computeGlobalScore(scores, profile, racket);
-  const gs = Math.round(gsRaw * 10) / 10; // Round to 1 decimal like display
+  const gs = Math.round(gsRaw * 10) / 10; // Round to 1 decimal
   const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
   const hasArmInjury = (profile.injuryTags || []).some(t => ARM_INJURIES.includes(t));
   const comfort = scores.Confort || 0;
@@ -1060,6 +1297,10 @@ export default function PadelAnalyzer() {
   const [cloudLoginMode, setCloudLoginMode] = useState("join"); // "join" | "create"
   const [cloudError, setCloudError] = useState("");
 
+  // ============ RACKETS DB STATE ============
+  const [racketsSource, setRacketsSource] = useState("json");
+  const [, forceRacketsUpdate] = useState(0);
+
   // Cloud sync: load profiles from Supabase when family code changes
   useEffect(()=>{
     if (!familyCode) return;
@@ -1075,6 +1316,14 @@ export default function PadelAnalyzer() {
       setCloudStatus("error");
     });
   }, [familyCode]);
+
+  // Load rackets from Supabase (with cache + JSON fallback)
+  useEffect(() => {
+    loadRacketsFromSupabase().then(result => {
+      setRacketsSource(result.source);
+      forceRacketsUpdate(n => n + 1);
+    });
+  }, []);
 
   // Cloud save helper
   const cloudSyncProfile = useCallback(async (name, profileData, locked) => {
@@ -1641,7 +1890,9 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     const existingNames = rackets.map(r=>r.name);
     const brandPref = profile.brandTags.map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
     const prioLabels = profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-    console.log("[Suggest] Starting. Existing:", existingNames, "Brands:", brandPref, "Priorities:", prioLabels);
+    const isExpertFeel = !!profile.expertToucher;
+    const feelDesc = isExpertFeel ? `PRO FEEL PREFERENCES: Toucher=${profile.expertToucher}, Réactivité=${profile.expertReactivite||"explosive"}, Poids=${profile.expertPoids||"equilibre"}, Forme=${profile.expertForme||"indifferent"}` : "";
+    console.log("[Suggest] Starting. Existing:", existingNames, "Brands:", brandPref, "Priorities:", isExpertFeel ? feelDesc : prioLabels);
     
     try {
       // Phase 1: Try DB first
@@ -1684,7 +1935,7 @@ You MUST return TWO categories:
 
 CATEGORY "heart" (4-5 rackets) — COUPS DE CŒUR: Best overall match for the player's FULL profile (style, level, side, priorities).${(profile.injuryTags||[]).some(t=>t!=="aucune") ? ' Player has injuries — prioritize comfort and safety. Avoid stiff carbon with hard EVA.' : ' No injuries — focus on best performance match for the player style and priorities.'}
 
-CATEGORY "priority" (3 rackets) — ALTERNATIVES PRIORITÉ: Rackets that specifically match the player's PRIORITY TAGS: ${prioLabels.join(', ')}. These can sacrifice some comfort for performance in the priority areas. ${prioLabels.includes('Puissance') ? 'Include powerful rackets (diamond/drop shapes, high balance) even if comfort is lower.' : ''} ${prioLabels.includes('Spin') ? 'Include textured surface rackets for maximum spin.' : ''} Still exclude truly dangerous choices (no comfort below 4/10). Add a warning in description if comfort is limited.
+CATEGORY "priority" (3 rackets) — ALTERNATIVES ${isExpertFeel ? "SENSATIONS" : "PRIORITÉ"}: ${isExpertFeel ? `Rackets that match the player's PRO FEEL: ${feelDesc}. A "sec" touch means hard EVA/rigid foam + carbon surface. A "souple" touch means soft EVA/foam. "Explosive" reactivity = high balance diamond shapes. "Progressive" = lower balance, control shapes.` : `Rackets that specifically match the player's PRIORITY TAGS: ${prioLabels.join(', ')}. These can sacrifice some comfort for performance in the priority areas. ${prioLabels.includes('Puissance') ? 'Include powerful rackets (diamond/drop shapes, high balance) even if comfort is lower.' : ''} ${prioLabels.includes('Spin') ? 'Include textured surface rackets for maximum spin.' : ''}`} Still exclude truly dangerous choices (no comfort below 4/10). Add a warning in description if comfort is limited.
 
 Key rules:
 ${(()=>{
@@ -1888,7 +2139,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
         
         <p style={{fontSize:8,color:"#334155",marginTop:32,letterSpacing:"0.05em"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {RACKETS_DB.length} raquettes
+          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {RACKETS_DB.length} raquettes {racketsSource==='supabase'?'☁️':racketsSource==='cache'?'📦':''}
         </p>
       </div>}
 
@@ -1976,7 +2227,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const styles = (p.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
                   const injuries = (p.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
                   const isJunior = p.age && parseInt(p.age)<16;
-                  const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0"};
+                  const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0",Expert:"#a855f7"};
                   const desc = [p.side&&`Côté ${p.side}`, p.hand].filter(Boolean).join(" · ");
                   const stylesStr = styles.length?styles.slice(0,2).join(", "):"";
                   const isActive = i === activeProfileIdx;
@@ -2412,7 +2663,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ()=>!!profile.frequency,
           ()=>(profile.styleTags||[]).length>0,
           ()=>(profile.injuryTags||[]).length>0,
-          ()=>(profile.priorityTags||[]).length>0,
+          ()=>isExpertMode ? (!!profile.expertToucher && !!profile.expertForme) : (profile.priorityTags||[]).length>0,
           ()=>true,
         ][wizardStep]();
 
@@ -2547,7 +2798,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <CardSelect options={levelOptions} value={profile.level} onChange={v=>{setProfile(p=>({...p,level:v}));setTimeout(nextStep,300);}}/>
               {expertBlocked&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>💡 Le niveau Expert nécessite une condition physique Athlétique</div>}
               {isPepiteMode&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>🌟 Jeune Pépite détecté{g("","e")} — accès aux raquettes adultes légères !</div>}
-              {isExpertMode&&<div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#c084fc",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>⚡ Mode Expert (Tapia) — les priorités dominent, fréquence et compétition auto-remplies</div>}
+              {isExpertMode&&<div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#c084fc",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>⚡ Mode Pro — matching par sensations physiques, fréquence et compétition auto-remplies</div>}
             </div>;
           },
 
@@ -2598,6 +2849,86 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
+            {isExpertMode ? (<>
+            <div style={{fontSize:40,marginBottom:16}}>🎾</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Tes sensations raquette</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>À ton niveau, c'est le ressenti qui guide. Dis-nous ce que tu cherches.</p>
+            <p style={{fontSize:11,color:"#a855f7",margin:"0 0 22px",fontWeight:600}}>⚡ Mode Pro — matching par propriétés physiques</p>
+
+            <div style={{display:"flex",flexDirection:"column",gap:20,maxWidth:460,margin:"0 auto",textAlign:"left"}}>
+              {/* TOUCHER */}
+              <div>
+                <div style={{fontSize:12,fontWeight:800,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>🤚 Toucher</div>
+                <div style={{display:"flex",gap:8}}>
+                  {[{v:"sec",l:"Sec & Direct",d:"Sortie de balle sèche, réponse immédiate"},{v:"medium",l:"Medium",d:"Polyvalent, entre fermeté et confort"},{v:"souple",l:"Souple & Enveloppant",d:"Toucher accompagné, confort maximal"}].map(o=>{
+                    const sel = profile.expertToucher===o.v;
+                    return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertToucher:o.v}))} style={{
+                      flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                    }}>
+                      <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
+                      <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
+                    </button>;
+                  })}
+                </div>
+              </div>
+
+              {/* RÉACTIVITÉ */}
+              <div>
+                <div style={{fontSize:12,fontWeight:800,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>⚡ Réactivité</div>
+                <div style={{display:"flex",gap:8}}>
+                  {[{v:"explosive",l:"Explosive",d:"Sortie de balle rapide, frappe sèche"},{v:"progressive",l:"Progressive",d:"Montée en puissance accompagnée"}].map(o=>{
+                    const sel = profile.expertReactivite===o.v;
+                    return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertReactivite:o.v}))} style={{
+                      flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                    }}>
+                      <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
+                      <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
+                    </button>;
+                  })}
+                </div>
+              </div>
+
+              {/* POIDS EN MAIN */}
+              <div>
+                <div style={{fontSize:12,fontWeight:800,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>⚖️ Poids en main</div>
+                <div style={{display:"flex",gap:8}}>
+                  {[{v:"lourd",l:"Lourd & Stable",d:"365g+, inertie pour frapper fort"},{v:"equilibre",l:"Équilibré",d:"355-365g, compromis idéal"},{v:"leger",l:"Léger & Vif",d:"<360g, réactivité au filet"}].map(o=>{
+                    const sel = profile.expertPoids===o.v;
+                    return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertPoids:o.v}))} style={{
+                      flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                    }}>
+                      <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
+                      <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
+                    </button>;
+                  })}
+                </div>
+              </div>
+
+              {/* FORME */}
+              <div>
+                <div style={{fontSize:12,fontWeight:800,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>🔷 Forme préférée</div>
+                <div style={{display:"flex",gap:8}}>
+                  {[{v:"diamant",l:"Diamant",d:"Puissance max, point de frappe haut"},{v:"goutte",l:"Goutte d'eau",d:"Polyvalence, sweet spot centré"},{v:"ronde",l:"Ronde",d:"Contrôle absolu, tolérance"},{v:"indifferent",l:"Indifférent",d:"Laisse l'algo choisir"}].map(o=>{
+                    const sel = profile.expertForme===o.v;
+                    return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertForme:o.v}))} style={{
+                      flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                    }}>
+                      <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
+                      <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
+                    </button>;
+                  })}
+                </div>
+              </div>
+            </div>
+            </>) : (<>
             <div style={{fontSize:40,marginBottom:16}}>🎯</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Qu'est-ce que tu cherches ?</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>Clique dans l'ordre d'importance — la 1ère priorité pèse plus.</p>
@@ -2635,6 +2966,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 return t&&<span key={id} style={{fontSize:11,fontWeight:700,color:i===0?"#4CAF50":i===1?"#8BC34A":"#FFC107",background:i===0?"rgba(76,175,80,0.15)":i===1?"rgba(139,195,74,0.15)":"rgba(255,193,7,0.15)",padding:"4px 12px",borderRadius:10}}>{i+1}. {t.label}</span>;
               })}
             </div>}
+            </>)}
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
@@ -2750,7 +3082,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               {/* Tags */}
               <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:14,justifyContent:"center"}}>
-                {priorities.map((p,i)=><span key={p} style={{fontSize:10,background:i===0?"rgba(76,175,80,0.15)":i===1?"rgba(139,195,74,0.12)":"rgba(255,193,7,0.1)",border:`1px solid ${i===0?"rgba(76,175,80,0.35)":i===1?"rgba(139,195,74,0.3)":"rgba(255,193,7,0.25)"}`,borderRadius:8,padding:"4px 10px",color:i===0?"#4CAF50":i===1?"#8BC34A":"#FFC107",fontWeight:600}}>{i+1}️⃣ {p}</span>)}
+                {profile.expertToucher ? (<>
+                  {[
+                    {l:`🤚 ${({sec:"Sec",medium:"Medium",souple:"Souple"})[profile.expertToucher]}`,c:"#a855f7"},
+                    profile.expertReactivite && {l:`⚡ ${({explosive:"Explosive",progressive:"Progressive"})[profile.expertReactivite]}`,c:"#a855f7"},
+                    profile.expertPoids && {l:`⚖️ ${({lourd:"Lourd",equilibre:"Équilibré",leger:"Léger"})[profile.expertPoids]}`,c:"#a855f7"},
+                    profile.expertForme && profile.expertForme!=="indifferent" && {l:`🔷 ${({diamant:"Diamant",goutte:"Goutte",ronde:"Ronde"})[profile.expertForme]}`,c:"#a855f7"},
+                  ].filter(Boolean).map((t,i)=><span key={i} style={{fontSize:10,background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:8,padding:"4px 10px",color:t.c,fontWeight:600}}>{t.l}</span>)}
+                </>) : (<>
+                  {priorities.map((p,i)=><span key={p} style={{fontSize:10,background:i===0?"rgba(76,175,80,0.15)":i===1?"rgba(139,195,74,0.12)":"rgba(255,193,7,0.1)",border:`1px solid ${i===0?"rgba(76,175,80,0.35)":i===1?"rgba(139,195,74,0.3)":"rgba(255,193,7,0.25)"}`,borderRadius:8,padding:"4px 10px",color:i===0?"#4CAF50":i===1?"#8BC34A":"#FFC107",fontWeight:600}}>{i+1}️⃣ {p}</span>)}
+                </>)}
                 {injuries.map(i=><span key={i} style={{fontSize:10,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:8,padding:"4px 10px",color:"#ef4444",fontWeight:600}}>🩹 {i}</span>)}
                 {brands.map(b=><span key={b} style={{fontSize:10,background:"rgba(156,39,176,0.1)",border:"1px solid rgba(156,39,176,0.25)",borderRadius:8,padding:"4px 10px",color:"#CE93D8",fontWeight:600}}>🏷 {b}</span>)}
               </div>
@@ -2814,11 +3155,18 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         } else {
           lines.push(`Pas de style déclaré — on se base sur les priorités et le profil physique.`);
         }
-        if(priorities.length>0) lines.push(`Priorités : ${priorities.map((p,i)=>`${i+1}. ${p}`).join(", ")}. La 1ère priorité pèse plus dans le scoring.`);
+        if(isExpertA && profile.expertToucher) {
+          const toucherLabels = {sec:"Sec & Direct",medium:"Medium",souple:"Souple & Enveloppant"};
+          const reactLabels = {explosive:"Explosive",progressive:"Progressive"};
+          const poidsLabels = {lourd:"Lourd & Stable",equilibre:"Équilibré",leger:"Léger & Vif"};
+          const formeLabels = {diamant:"Diamant",goutte:"Goutte d'eau",ronde:"Ronde",indifferent:"Indifférent"};
+          lines.push(`⚡ Mode Pro — Toucher ${toucherLabels[profile.expertToucher]||""}, Réactivité ${reactLabels[profile.expertReactivite]||""}, Poids ${poidsLabels[profile.expertPoids]||""}, Forme ${formeLabels[profile.expertForme]||""}.`);
+          lines.push(`Matching par propriétés physiques : mousse, surface, balance, poids.`);
+        } else if(priorities.length>0) lines.push(`Priorités : ${priorities.map((p,i)=>`${i+1}. ${p}`).join(", ")}. La 1ère priorité pèse plus dans le scoring.`);
         if(injuries.length>0) lines.push(`⚠ Attention ${injuries.join(", ")} — le confort sera un critère non négociable.`);
         if(isJuniorA&&!isPepiteA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
         if(isPepiteA) lines.push(`🌟 Jeune Pépite : raquettes junior + adultes légères ≤350g.`);
-        if(isExpertA) lines.push(`⚡ Mode Expert : les priorités dominent le scoring.`);
+        if(isExpertA && !profile.expertToucher) lines.push(`⚡ Mode Expert : les priorités dominent le scoring.`);
         lines.push(`Calcul en cours sur ${RACKETS_DB.length} raquettes...`);
         lines.push(`Résultats prêts.`);
 
@@ -3266,7 +3614,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
 
         {!suggestResults&&!loading&&<div>
-          <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px",lineHeight:1.4}}>Recherche des raquettes les plus adaptées à ton profil : <span style={{color:"#f97316",fontWeight:600}}>⭐ Coups de cœur</span> (meilleures correspondances) et <span style={{color:"#fbbf24",fontWeight:600}}>⚡ Alternatives Priorité</span> (orientées {profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean).join(', ')||"tes priorités"}). Coche celles qui t'intéressent puis valide en un clic.</p>
+          <p style={{fontSize:10,color:"#64748b",margin:"0 0 10px",lineHeight:1.4}}>Recherche des raquettes les plus adaptées à ton profil : <span style={{color:"#f97316",fontWeight:600}}>⭐ Coups de cœur</span> (meilleures correspondances) et <span style={{color:"#fbbf24",fontWeight:600}}>⚡ Alternatives {profile.expertToucher?"Sensations":"Priorité"}</span> (orientées {profile.expertToucher?`toucher ${profile.expertToucher}, réactivité ${profile.expertReactivite||"explosive"}`:profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean).join(', ')||"tes priorités"}). Coche celles qui t'intéressent puis valide en un clic.</p>
           <button onClick={suggestRackets} style={S.btnGreen}>🔍 Lancer la recherche</button>
         </div>}
         {loadMsg&&<div style={{fontSize:11,color:"#f97316",marginTop:10,display:"flex",alignItems:"center",gap:6}}>
@@ -3287,6 +3635,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const prioAlts = hasCategories ? prios : [];
             const others = hasCategories ? suggestResults.filter(s=>s.category!=="heart"&&s.category!=="priority") : suggestResults.slice(4);
             const prioLabels = profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const isExpertFeelS = !!profile.expertToucher;
             return <>
               {topPicks.length>0&&<>
                 <p style={{fontSize:11,color:"#f97316",fontWeight:700,marginBottom:6}}>⭐ Coups de cœur — meilleures correspondances :</p>
@@ -3296,7 +3645,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 })}
               </>}
               {prioAlts.length>0&&<>
-                <p style={{fontSize:11,color:"#fbbf24",fontWeight:700,marginBottom:4,marginTop:14}}>⚡ Alternatives Priorité — {prioLabels.join(', ')} :</p>
+                <p style={{fontSize:11,color:"#fbbf24",fontWeight:700,marginBottom:4,marginTop:14}}>⚡ Alternatives {isExpertFeelS?"Sensations":"Priorité"} — {isExpertFeelS?`toucher ${profile.expertToucher}`:prioLabels.join(', ')} :</p>
                 <p style={{fontSize:9,color:"#64748b",marginBottom:6}}>Raquettes orientées vers tes priorités, confort parfois limité — à tester avant d'acheter.</p>
                 {prioAlts.map(s=>{
                   const ri = suggestResults.indexOf(s);
@@ -3458,7 +3807,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {icon:"👤",label:"Identité"},
             {icon:"🎾",label:"Jeu"},
             {icon:"🩹",label:"Corps"},
-            {icon:"🎯",label:"Priorités"},
+            {icon:"🎯",label:detectPlayerMode(profile)==="expert"?"Sensations":"Priorités"},
           ];
           return <div style={{marginBottom:18}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",position:"relative",padding:"0 4px"}}>
@@ -3628,8 +3977,45 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <input value={profile.injuryExtra} onChange={e=>setProfile(p=>({...p,injuryExtra:e.target.value}))} placeholder="Ex: Tendinite chronique, post-opération épaule..." style={{...S.input,fontSize:11}}/>
         </div>}
 
-        {/* STEP 3: Priorités + Marques */}
+        {/* STEP 3: Priorités / Expert Feel + Marques */}
         {wizardStep===3&&<div style={{animation:"fadeIn 0.3s ease"}}>
+          {detectPlayerMode(profile)==="expert" ? (<>
+          <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>🎾 Tes sensations raquette</div>
+          <p style={{fontSize:11,color:"#a855f7",margin:"0 0 14px",lineHeight:1.5,fontWeight:600}}>⚡ Mode Pro — matching par propriétés physiques</p>
+
+          {/* Toucher */}
+          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>🤚 Toucher</div>
+          <div style={{display:"flex",gap:6,marginBottom:10}}>
+            {[{v:"sec",l:"Sec"},{v:"medium",l:"Medium"},{v:"souple",l:"Souple"}].map(o=>{
+              const sel=profile.expertToucher===o.v;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertToucher:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",border:`1.5px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,color:sel?"#c084fc":"#94a3b8",transition:"all 0.2s"}}>{o.l}</button>;
+            })}
+          </div>
+          {/* Réactivité */}
+          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>⚡ Réactivité</div>
+          <div style={{display:"flex",gap:6,marginBottom:10}}>
+            {[{v:"explosive",l:"Explosive"},{v:"progressive",l:"Progressive"}].map(o=>{
+              const sel=profile.expertReactivite===o.v;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertReactivite:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",border:`1.5px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,color:sel?"#c084fc":"#94a3b8",transition:"all 0.2s"}}>{o.l}</button>;
+            })}
+          </div>
+          {/* Poids */}
+          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>⚖️ Poids en main</div>
+          <div style={{display:"flex",gap:6,marginBottom:10}}>
+            {[{v:"lourd",l:"Lourd"},{v:"equilibre",l:"Équilibré"},{v:"leger",l:"Léger"}].map(o=>{
+              const sel=profile.expertPoids===o.v;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertPoids:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",border:`1.5px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,color:sel?"#c084fc":"#94a3b8",transition:"all 0.2s"}}>{o.l}</button>;
+            })}
+          </div>
+          {/* Forme */}
+          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>🔷 Forme</div>
+          <div style={{display:"flex",gap:6,marginBottom:14}}>
+            {[{v:"diamant",l:"Diamant"},{v:"goutte",l:"Goutte"},{v:"ronde",l:"Ronde"},{v:"indifferent",l:"Indiff."}].map(o=>{
+              const sel=profile.expertForme===o.v;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertForme:o.v}))} style={{flex:1,padding:"8px 4px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:10,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",border:`1.5px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,color:sel?"#c084fc":"#94a3b8",transition:"all 0.2s"}}>{o.l}</button>;
+            })}
+          </div>
+          </>) : (<>
           <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>🎯 Qu'est-ce que tu cherches ?</div>
           <p style={{fontSize:11,color:"#64748b",margin:"0 0 14px",lineHeight:1.5}}>Ces critères pondèrent le score global. Les suggestions seront triées en fonction de tes priorités.</p>
           
@@ -3649,6 +4035,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             })}
           </div>
           <input value={profile.priorityExtra} onChange={e=>setProfile(p=>({...p,priorityExtra:e.target.value}))} placeholder="Ex: Budget max 200€, raquette pas trop lourde..." style={{...S.input,fontSize:11,marginBottom:16}}/>
+          </>)}
 
           <div style={{fontSize:11,fontWeight:700,color:"#9C27B0",marginBottom:6}}>🏷 Marques préférées <span style={{fontWeight:400,color:"#64748b"}}>(optionnel — vide = toutes)</span></div>
           <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
@@ -3799,16 +4186,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ))}
       </div>
 
-      {tab==="radar"&&<div style={{...S.card,padding:20,position:"relative",overflow:"hidden"}}>
+      {tab==="radar"&&<div style={{...S.card,padding:"16px 12px",position:"relative",overflow:"hidden"}}>
         <style>{`
           @keyframes racketFadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
           }
+          @media (max-width: 700px) {
+            .pa-radar-layout { flex-direction: column !important; min-height: auto !important; }
+            .pa-radar-showcase { display: none !important; }
+            .pa-radar-chart { min-height: 340px !important; width: 100% !important; flex: none !important; }
+          }
         `}</style>
-        <div style={{display:"flex",alignItems:"center",gap:0,minHeight:400}}>
+        <div className="pa-radar-layout" style={{display:"flex",alignItems:"center",gap:0,minHeight:400}}>
           {/* LEFT — Racket showcase image */}
-          <div style={{width:280,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:400}}>
+          <div className="pa-radar-showcase" style={{width:280,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:400}}>
             {(()=>{
               const hr = hoveredRacket ? selRackets.find(r=>r.id===hoveredRacket) : null;
               if(!hr || !hr.imageUrl) return <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",opacity:0.3}}>
@@ -3840,11 +4232,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           {/* RIGHT — Radar chart (takes remaining space) */}
-          <div style={{flex:1,minWidth:0,position:"relative"}}>
+          <div className="pa-radar-chart" style={{flex:1,minWidth:0,position:"relative"}}>
             <ResponsiveContainer width="100%" height={400}>
-              <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="75%">
+              <RadarChart data={radarData} cx="50%" cy="48%" outerRadius="68%">
                 <PolarGrid stroke="rgba(255,255,255,0.12)" strokeDasharray="3 3" gridType="polygon"/>
-                <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:11,fontWeight:600,fontFamily:"Inter"}}/>
+                <PolarAngleAxis dataKey="attribute" tick={{fill:"#94a3b8",fontSize:10,fontWeight:600,fontFamily:"Inter"}}/>
                 <PolarRadiusAxis angle={90} domain={[0,10]} tick={{fill:"#64748b",fontSize:9,fontWeight:500}} tickCount={6} axisLine={false}/>
                 {/* Perfect 10/10 reference hexagon */}
                 <Radar name="— 10/10 —" dataKey="— 10/10 —" stroke="rgba(255,255,255,0.25)" fill="none"
@@ -3859,7 +4251,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     strokeOpacity={isHovered ? 1 : anyHovered ? 0.3 : 1}
                   />);
                 })}
-                <Legend wrapperStyle={{fontSize:10,color:"#94a3b8",paddingTop:10,fontFamily:"Inter"}}/>
+                <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{fontSize:9,color:"#94a3b8",paddingTop:6,fontFamily:"Inter",lineHeight:"18px"}}/>
               </RadarChart>
             </ResponsiveContainer>
             {/* Legend hint for the reference hexagon */}
