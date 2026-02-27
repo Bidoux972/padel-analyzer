@@ -62860,8 +62860,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setAdminEditRacket({ _isNew: true, year: 2026, category: "intermediaire", shape: "Diamant", scores: {}, is_active: true }), style: { padding: "8px 14px", background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 8, color: "#c084fc", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }, children: "\u2795 Nouvelle raquette" }),
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => {
-                const json = prompt("Coller le JSON des raquettes \xE0 importer:");
-                if (json) handleImportJSON(json);
+                const inp = document.createElement("input");
+                inp.type = "file";
+                inp.accept = ".json,application/json";
+                inp.onchange = (ev) => {
+                  const file = ev.target.files[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = (e) => handleImportJSON(e.target.result);
+                  reader.readAsText(file);
+                };
+                inp.click();
               }, style: { padding: "8px 14px", background: "rgba(76,175,80,0.1)", border: "1px solid rgba(76,175,80,0.25)", borderRadius: 8, color: "#4CAF50", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }, children: "\u{1F4E5} Import JSON" })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 11, color: "#64748b", marginBottom: 10 }, children: [
