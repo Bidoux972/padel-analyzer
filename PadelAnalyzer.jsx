@@ -180,6 +180,10 @@ async function sbRpc(fnName, params) {
 
 async function checkIsAdmin(familyCode) {
   try {
+    // Check groups table first
+    const groups = await sbGet('groups', `family_code=eq.${familyCode}&select=role&limit=1`);
+    if (groups.length && groups[0].role === 'admin') return true;
+    // Fallback: check families table (legacy)
     const result = await sbRpc('is_family_admin', { p_family_code: familyCode });
     return result === true;
   } catch { return false; }
@@ -1395,14 +1399,14 @@ export default function PadelAnalyzer() {
   useEffect(()=>{
     if (!familyCode) return;
     setCloudStatus("loading");
+    // Toujours vider les profils locaux d'abord pour éviter les fuites entre groupes
+    setSavedProfiles([]);
     Promise.all([
       cloudLoadProfiles(familyCode),
       cloudLoadAllRackets()
     ]).then(([cloudProfiles, cloudRackets]) => {
-      if (cloudProfiles.length > 0) {
-        setSavedProfiles(cloudProfiles);
-        saveProfilesList(cloudProfiles);
-      }
+      setSavedProfiles(cloudProfiles);
+      saveProfilesList(cloudProfiles);
       // Merge cloud rackets that aren't in static RACKETS_DB into localStorage extras
       if (cloudRackets.length > 0) {
         try {
@@ -1453,6 +1457,12 @@ export default function PadelAnalyzer() {
     setGroupNameState("");
     setGroupNameLS("");
     setCloudStatus("");
+    setCloudLoginName("");
+    setCloudLoginPassword("");
+    setCloudLoginRole("famille");
+    setCloudError("");
+    setSavedProfiles([]);
+    saveProfilesList([]);
     setScreen("login");
   };
 
@@ -2306,7 +2316,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </svg>
         </div>
         <h1 style={{fontFamily:"'Outfit'",fontSize:32,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 6px",letterSpacing:"-0.03em",textAlign:"center"}}>PADEL ANALYZER</h1>
-        <p style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>
+        {groupName&&familyCode!=="LOCAL"?<p style={{color:"#f97316",fontSize:14,margin:"0 0 8px",fontWeight:700,textAlign:"center",fontFamily:"'Outfit'"}}>
+          {groupRole==="admin"?"👑 Salut Boss":groupRole==="vendeur"?`🏪 Espace ${groupName}`:`👋 Bienvenue ${groupName}`}
+        </p>:<p style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>}
         <p style={{color:"#475569",fontSize:11,margin:"0 0 36px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {totalDBCount}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
 
         {/* Saved profiles — Carousel */}
