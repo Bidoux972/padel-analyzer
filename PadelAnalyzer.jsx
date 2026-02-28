@@ -1013,6 +1013,120 @@ function computeForYou(scores, profile, racket) {
   return "partial";
 }
 
+// === DYNAMIC TARGET PROFILE ===
+function generateDynamicTargetProfile(racket, profile, globalScore) {
+  if (!racket?.scores || !profile?.level) return null;
+  const sc = racket.scores;
+  const gs = globalScore || computeGlobalScore(sc, profile, racket);
+  const pct = (gs * 10).toFixed(1);
+  const verdict = computeForYou(sc, profile, racket);
+  const name = profile._name || "Joueur";
+  const isFemme = (profile.genre || "").toLowerCase() === "femme";
+  const prioTags = profile.priorityTags || [];
+  const styleTags = profile.styleTags || [];
+  const injTags = (profile.injuryTags || []).filter(t => t !== "aucune");
+  const rWeight = parseRacketWeight(racket.weight);
+  const gab = computeGabaritIndex(profile);
+  const idealW = idealRacketWeight(profile, gab);
+  const shape = (racket.shape || "").toLowerCase();
+
+  // Priority labels
+  const prioMap = { puissance: "Puissance", controle: "Contrôle", confort: "Confort", spin: "Spin", legerete: "Maniabilité", protection: "Confort", polyvalence: null, reprise: "Tolérance" };
+  const prioAttrs = prioTags.map(t => prioMap[t]).filter(Boolean);
+
+  // Find strengths: racket scores that match player priorities
+  const strengths = prioAttrs.filter(a => (sc[a] || 0) >= 8).map(a => `${a} à ${sc[a]}`);
+  // Find weaknesses: racket scores below 7 on priority attrs
+  const weaknesses = prioAttrs.filter(a => (sc[a] || 0) < 7).map(a => `${a} (${sc[a]})`);
+
+  // All scores sorted
+  const sorted = ATTRS.map(a => ({ name: a, val: sc[a] || 0 })).sort((a, b) => b.val - a.val);
+  const top2 = sorted.slice(0, 2);
+  const low1 = sorted[sorted.length - 1];
+
+  // Build paragraphs
+  const parts = [];
+
+  // Opening — match score
+  if (verdict === "recommended") {
+    parts.push(`**${name}**, cette raquette correspond à **${pct}%** de ton profil — c'est un excellent match.`);
+  } else if (verdict === "partial") {
+    parts.push(`**${name}**, cette raquette atteint **${pct}%** de compatibilité — jouable mais pas optimale pour ton profil.`);
+  } else {
+    parts.push(`**${name}**, avec **${pct}%** de compatibilité, cette raquette n'est pas adaptée à ton profil.`);
+  }
+
+  // Strengths vs priorities
+  if (strengths.length >= 2) {
+    parts.push(`Elle excelle sur tes priorités : ${strengths.join(' et ')}.`);
+  } else if (strengths.length === 1) {
+    parts.push(`Elle répond bien à ta priorité ${strengths[0]}.`);
+  } else if (prioAttrs.length > 0) {
+    parts.push(`Ses points forts (${top2.map(a => `${a.name} ${a.val}`).join(', ')}) ne correspondent pas directement à tes priorités.`);
+  }
+
+  // Shape fit
+  const hand = profile.hand || "Droitier";
+  const side = profile.side || "Droite";
+  const isAttacker = (hand === "Droitier" && side === "Gauche") || (hand === "Gaucher" && side === "Droite");
+  if (isAttacker && shape.includes("diamant")) {
+    parts.push(`Sa forme diamant est taillée pour ton jeu d'attaquant côté ${side.toLowerCase()}.`);
+  } else if (!isAttacker && shape.includes("ronde")) {
+    parts.push(`Sa forme ronde convient à ton jeu de construction côté ${side.toLowerCase()}.`);
+  } else if (isAttacker && shape.includes("ronde")) {
+    parts.push(`Attention : sa forme ronde ne favorise pas l'attaque — un diamant ou goutte d'eau serait plus adapté à ton côté ${side.toLowerCase()}.`);
+  }
+
+  // Weight fit
+  if (rWeight && idealW) {
+    const diff = rWeight - idealW;
+    if (diff > 15) {
+      parts.push(`À ${rWeight}g, elle est ${Math.round(diff)}g au-dessus de ton poids idéal — tu pourrais sentir la fatigue en fin de match.`);
+    } else if (diff < -15) {
+      parts.push(`À ${rWeight}g, elle est légère pour ton gabarit — maniabilité au top, mais tu perdras un peu en puissance.`);
+    }
+  }
+
+  // Injuries
+  const ARM_INJURIES = ["dos", "poignet", "coude", "epaule"];
+  const injLabels = { dos: "dos", poignet: "poignet", coude: "coude", epaule: "épaule", genou: "genou", cheville: "cheville" };
+  if (injTags.some(t => ARM_INJURIES.includes(t))) {
+    const comfort = sc.Confort || 0;
+    const tolerance = sc["Tolérance"] || 0;
+    const injNames = injTags.filter(t => ARM_INJURIES.includes(t)).map(t => injLabels[t] || t).join('/');
+    if (comfort >= 8 && tolerance >= 8) {
+      parts.push(`Avec ta fragilité au ${injNames}, le confort (${comfort}) et la tolérance (${tolerance}) de cette raquette sont rassurants.`);
+    } else if (comfort < 7) {
+      parts.push(`⚠️ Attention ${injNames} : le confort à ${comfort}/10 peut être insuffisant pour toi. Privilégie une raquette avec confort ≥ 8.`);
+    }
+  }
+
+  // WomanLine bonus
+  if (isFemme && racket.womanLine) {
+    parts.push(`Version femme avec grip et poids adaptés à ta morphologie.`);
+  } else if (isFemme && rWeight && rWeight > 365) {
+    parts.push(`Modèle mixte à ${rWeight}g — vérifie le grip et le poids en main, une version Woman existe peut-être.`);
+  }
+
+  // Style synergy
+  if (styleTags.includes("veloce") && (sc["Maniabilité"] || 0) >= 8.5) {
+    parts.push(`Sa maniabilité (${sc["Maniabilité"]}) colle à ton jeu véloce.`);
+  }
+  if (styleTags.includes("endurant") && (sc.Confort || 0) >= 8.5) {
+    parts.push(`Son confort (${sc.Confort}) supporte tes longs échanges.`);
+  }
+  if (styleTags.includes("defensif") && (sc["Tolérance"] || 0) >= 8.5) {
+    parts.push(`Sa tolérance (${sc["Tolérance"]}) pardonne les frappes décentrées en défense.`);
+  }
+
+  // Weak points warning
+  if (weaknesses.length > 0 && verdict === "partial") {
+    parts.push(`Points faibles pour toi : ${weaknesses.join(', ')}.`);
+  }
+
+  return parts.join(' ');
+}
+
 function TagGroup({tags, selected, onToggle, color="#f97316"}) {
   return (
     <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:6,paddingLeft:13}}>
@@ -3306,11 +3420,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <p style={{fontSize:12,color:"#e2e8f0",lineHeight:1.8,margin:0,fontStyle:"italic"}}>{r.editorial}</p>
             </div>}
 
-            {/* Target profile */}
-            {r.targetProfile&&<div style={{padding:"10px 14px",background:"rgba(76,175,80,0.05)",borderRadius:12,border:"1px solid rgba(76,175,80,0.12)",marginBottom:12}}>
-              <div style={{fontSize:8,color:"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}}>{"🎯 CETTE RAQUETTE S\u2019ADRESSE \u00C0"}</div>
-              <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0}}>{r.targetProfile}</p>
-            </div>}
+            {/* Target profile (dynamic when profile active) */}
+            {(()=>{
+              const dynText = profileName ? generateDynamicTargetProfile(r, {...profile, _name: profileName}) : null;
+              const text = dynText || r.targetProfile;
+              if (!text) return null;
+              const isDyn = !!dynText;
+              return <div style={{padding:"10px 14px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:12,border:`1px solid ${isDyn?"rgba(249,115,22,0.12)":"rgba(76,175,80,0.12)"}`,marginBottom:12}}>
+                <div style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}}>{isDyn?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 CETTE RAQUETTE S\u2019ADRESSE \u00C0"}</div>
+                <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#f1f5f9">$1</strong>')}}/>
+              </div>;
+            })()}
 
             {/* Scores — 2 rows of 3 */}
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5,marginBottom:12}}>
@@ -3772,11 +3892,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <p className="sheet-editorial" style={{fontSize:13,color:"#cbd5e1",lineHeight:1.9,margin:0,fontStyle:"italic"}}>{r.editorial}</p>
           </div>}
 
-          {/* ===== TARGET PROFILE ===== */}
-          {r.targetProfile&&<div style={{padding:"14px 18px",background:"rgba(76,175,80,0.04)",borderRadius:16,border:"1px solid rgba(76,175,80,0.1)",marginBottom:14}}>
-            <div style={{fontSize:9,color:"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>🎯 PROFIL CIBLE</div>
-            <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}}>{r.targetProfile}</p>
-          </div>}
+          {/* ===== TARGET PROFILE (dynamic when profile active) ===== */}
+          {(()=>{
+            const dynText = profileName ? generateDynamicTargetProfile(r, {...profile, _name: profileName}) : null;
+            const text = dynText || r.targetProfile;
+            if (!text) return null;
+            const isDynamic = !!dynText;
+            return <div style={{padding:"14px 18px",background:isDynamic?"rgba(249,115,22,0.04)":"rgba(76,175,80,0.04)",borderRadius:16,border:`1px solid ${isDynamic?"rgba(249,115,22,0.12)":"rgba(76,175,80,0.1)"}`,marginBottom:14}}>
+              <div style={{fontSize:9,color:isDynamic?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>{isDynamic?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 PROFIL CIBLE"}</div>
+              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#f1f5f9">$1</strong>')}}/>
+            </div>;
+          })()}
 
           {/* ===== SPECS TABLE ===== */}
           <div className="sheet-section" style={{padding:"14px 18px",marginBottom:14,background:"rgba(255,255,255,0.02)",borderRadius:16,border:"1px solid rgba(255,255,255,0.06)"}}>
@@ -4942,10 +5068,18 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{dbMatch.editorial}</p>
                   </div>}
 
-                  {dbMatch.targetProfile&&<div style={{padding:"8px 12px",background:"rgba(76,175,80,0.05)",borderRadius:10,border:"1px solid rgba(76,175,80,0.1)",marginBottom:8}}>
-                    <span style={{fontSize:8,color:"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>🎯 S'adresse à : </span>
-                    <span style={{fontSize:10,color:"#94a3b8"}}>{dbMatch.targetProfile}</span>
-                  </div>}
+                  {(()=>{
+                    const dynText = profileName ? generateDynamicTargetProfile(dbMatch, {...profile, _name: profileName}) : null;
+                    const text = dynText || dbMatch.targetProfile;
+                    if (!text) return null;
+                    const isDyn = !!dynText;
+                    // In compact view, show only first 2 sentences
+                    const shortText = isDyn ? text.split('. ').slice(0, 2).join('. ') + '.' : text;
+                    return <div style={{padding:"8px 12px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:10,border:`1px solid ${isDyn?"rgba(249,115,22,0.1)":"rgba(76,175,80,0.1)"}`,marginBottom:8}}>
+                      <span style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>{isDyn?`🎯 Pour ${profileName} : `:"🎯 S'adresse à : "}</span>
+                      <span style={{fontSize:10,color:"#94a3b8"}} dangerouslySetInnerHTML={{__html: shortText.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#cbd5e1">$1</strong>')}}/>
+                    </div>;
+                  })()}
 
                   {dbMatch.techHighlights&&dbMatch.techHighlights.length>0&&<div style={{marginBottom:8}}>
                     {dbMatch.techHighlights.slice(0,3).map((h,hi)=>(
