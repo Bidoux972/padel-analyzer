@@ -1379,6 +1379,7 @@ export default function PadelAnalyzer() {
   const [cloudLoginMode, setCloudLoginMode] = useState("join"); // "join" | "create"
   const [cloudLoginRole, setCloudLoginRole] = useState("famille"); // "vendeur" | "famille"
   const [cloudError, setCloudError] = useState("");
+  const [swUpdateReady, setSwUpdateReady] = useState(!!window.__SW_UPDATE_READY);
 
   // ============ ADMIN STATE ============
   const [isAdmin, setIsAdmin] = useState(false);
@@ -1462,6 +1463,21 @@ export default function PadelAnalyzer() {
       events.forEach(e => window.removeEventListener(e, resetTimer));
     };
   }, [groupRole, screen]);
+
+  // ============ SW UPDATE LISTENER ============
+  useEffect(() => {
+    const handler = () => setSwUpdateReady(true);
+    window.addEventListener('sw-update-ready', handler);
+    return () => window.removeEventListener('sw-update-ready', handler);
+  }, []);
+
+  // Auto-reload when reaching login screen with pending update
+  useEffect(() => {
+    if (screen === 'login' && swUpdateReady) {
+      console.log('[SW] Login screen + update ready → reloading');
+      window.location.reload();
+    }
+  }, [screen, swUpdateReady]);
 
   // Cloud save helper
   const cloudSyncProfile = useCallback(async (name, profileData, locked) => {
@@ -2249,6 +2265,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         tr.pa-row { transition: background 0.15s ease; }
         tr.pa-row:hover { background: rgba(255,255,255,0.04) !important; }
       `}</style>
+
+      {/* ============================================================ */}
+      {/* SW UPDATE BANNER */}
+      {/* ============================================================ */}
+      {swUpdateReady && screen !== 'login' && <div style={{position:"fixed",top:0,left:0,right:0,zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",gap:10,padding:"8px 16px",background:"linear-gradient(135deg,#1e3a5f,#0f172a)",borderBottom:"1px solid rgba(249,115,22,0.3)",animation:"fadeIn 0.3s ease"}}>
+        <span style={{fontSize:12,color:"#94a3b8"}}>🔄 Mise à jour disponible</span>
+        <button onClick={()=>window.location.reload()} style={{padding:"4px 14px",borderRadius:8,fontSize:11,fontWeight:700,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.4)",color:"#f97316",cursor:"pointer",fontFamily:"'Inter'"}}>Mettre à jour</button>
+      </div>}
 
       {/* ============================================================ */}
       {/* LOGIN / CLOUD SCREEN */}

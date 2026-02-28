@@ -25,20 +25,31 @@ tr.pa-row{transition:background .15s ease}tr.pa-row:hover{background:rgba(255,25
 </head>
 <body>
 <div id="root"></div>
-<script src="/bundle.js?v=12.0.0"></script>
+<script src="/bundle.js?v=12.1.0"></script>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
     navigator.serviceWorker.register('/sw.js').then(reg=>{
+      // Check for updates every 5 minutes
+      setInterval(()=>reg.update(),5*60*1000);
       reg.addEventListener('updatefound',()=>{
         const nw=reg.installing;
         nw.addEventListener('statechange',()=>{
           if(nw.state==='installed'&&navigator.serviceWorker.controller){
-            console.log('[SW] Nouvelle version disponible');
+            console.log('[SW] Nouvelle version prête');
+            window.__SW_UPDATE_READY=true;
+            window.dispatchEvent(new Event('sw-update-ready'));
           }
         });
       });
     }).catch(e=>console.warn('[SW] Erreur:',e));
+    navigator.serviceWorker.addEventListener('message',e=>{
+      if(e.data?.type==='SW_UPDATED'){
+        console.log('[SW] Mise à jour v'+e.data.version);
+        window.__SW_UPDATE_READY=true;
+        window.dispatchEvent(new Event('sw-update-ready'));
+      }
+    });
   });
 }
 </script>
