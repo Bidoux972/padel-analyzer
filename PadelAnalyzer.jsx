@@ -1304,17 +1304,26 @@ export default function PadelAnalyzer() {
   // Compteur dynamique = total unique (embedded + extras dédupliqués par ID)
   const totalDBCount = useMemo(() => getMergedDB().length, [localDBCount]);
   const [screen, setScreen] = useState(()=>{
-    // Vendeur sessions don't survive browser restart
+    // Check session freshness for vendeur/admin
     const role = getGroupRole();
-    if (role === 'vendeur' && !sessionStorage.getItem('padel_session_alive')) {
-      // Browser was closed and reopened → clear vendeur session
+    const lastActive = parseInt(localStorage.getItem('padel_last_active') || '0');
+    const idleMs = Date.now() - lastActive;
+    const MAX_IDLE = { vendeur: 5 * 60 * 1000, admin: 30 * 60 * 1000 }; // 5min / 30min
+    if (role === 'vendeur' && idleMs > MAX_IDLE.vendeur) {
       localStorage.removeItem('padel_group_role');
       localStorage.removeItem('padel_group_name');
       localStorage.removeItem('padel_family_code');
       localStorage.removeItem('savedProfiles');
       return "login";
     }
-    sessionStorage.setItem('padel_session_alive', '1');
+    if (role === 'admin' && idleMs > MAX_IDLE.admin) {
+      localStorage.removeItem('padel_group_role');
+      localStorage.removeItem('padel_group_name');
+      localStorage.removeItem('padel_family_code');
+      localStorage.removeItem('savedProfiles');
+      return "login";
+    }
+    localStorage.setItem('padel_last_active', String(Date.now()));
     if (!getFamilyCode()) return "login";
     const p = loadSavedProfile();
     return (p._name) ? "home" : "home";
@@ -1461,6 +1470,7 @@ export default function PadelAnalyzer() {
         saveProfilesList([]);
         setProfile({...INITIAL_PROFILE});
         setProfileName("");
+        localStorage.removeItem('padel_last_active');
         setScreen("login");
         setAdminMsg("⏱ Session expirée — inactivité");
         setTimeout(() => setAdminMsg(""), 4000);
@@ -1473,6 +1483,18 @@ export default function PadelAnalyzer() {
       if (timer) clearTimeout(timer);
       events.forEach(e => window.removeEventListener(e, resetTimer));
     };
+  }, [groupRole, screen]);
+
+  // ============ SESSION HEARTBEAT (vendeur/admin) ============
+  useEffect(() => {
+    if (screen === 'login' || (groupRole !== 'vendeur' && groupRole !== 'admin')) return;
+    const tick = () => localStorage.setItem('padel_last_active', String(Date.now()));
+    tick();
+    const interval = setInterval(tick, 30 * 1000); // every 30s
+    // Also tick when tab regains focus (prevents false expiry from tab switching)
+    const onVisible = () => { if (document.visibilityState === 'visible') tick(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => { clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
   }, [groupRole, screen]);
 
   // ============ SW UPDATE LISTENER ============
@@ -1519,6 +1541,7 @@ export default function PadelAnalyzer() {
     setCloudError("");
     setSavedProfiles([]);
     saveProfilesList([]);
+    localStorage.removeItem('padel_last_active');
     setScreen("login");
   };
 
