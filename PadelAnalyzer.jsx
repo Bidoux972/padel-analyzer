@@ -1348,8 +1348,11 @@ export default function PadelAnalyzer() {
   const [adminRacketSearch, setAdminRacketSearch] = useState("");
   const [adminRacketFilter, setAdminRacketFilter] = useState("all");
   const [adminEditRacket, setAdminEditRacket] = useState(null);
+  const [adminViewProfile, setAdminViewProfile] = useState(null);
+  const [adminEditProfile, setAdminEditProfile] = useState(null);
   const [adminLoading, setAdminLoading] = useState(false);
   const [adminMsg, setAdminMsg] = useState("");
+  const adminFileInputRef = useRef(null);
 
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
   useEffect(()=>{
@@ -2607,18 +2610,32 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     {adminFamilyProfiles.map(p=>{
                       const d = p.data||{};
                       return (
-                        <div key={p.id} style={{padding:"10px 0",borderBottom:"1px solid rgba(255,255,255,0.03)",display:"flex",alignItems:"center",gap:12}}>
-                          <div style={{width:32,height:32,borderRadius:10,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,color:"#f97316",flexShrink:0}}>
-                            {(p.name||"?").charAt(0).toUpperCase()}
-                          </div>
-                          <div style={{flex:1}}>
-                            <div style={{fontSize:13,fontWeight:600,color:"#e2e8f0"}}>{p.name} {p.locked&&"🔒"}</div>
-                            <div style={{fontSize:10,color:"#64748b"}}>
-                              {d.level||"—"} · {d.hand||"—"} · Côté {d.side||"—"}
-                              {d.styleTags&&d.styleTags.length>0&&<span> · {d.styleTags.slice(0,3).join(", ")}</span>}
+                        <div key={p.id} style={{padding:"10px 0",borderBottom:"1px solid rgba(255,255,255,0.03)"}}>
+                          <div style={{display:"flex",alignItems:"center",gap:12}}>
+                            <div style={{width:32,height:32,borderRadius:10,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,color:"#f97316",flexShrink:0}}>
+                              {(p.name||"?").charAt(0).toUpperCase()}
                             </div>
+                            <div style={{flex:1}}>
+                              <div style={{fontSize:13,fontWeight:600,color:"#e2e8f0"}}>{p.name} {p.locked&&"🔒"}</div>
+                              <div style={{fontSize:10,color:"#64748b"}}>
+                                {d.level||"—"} · {d.hand||"—"} · Côté {d.side||"—"}
+                                {d.styleTags&&d.styleTags.length>0&&<span> · {d.styleTags.slice(0,3).join(", ")}</span>}
+                              </div>
+                            </div>
+                            <div style={{display:"flex",gap:4,flexShrink:0}}>
+                              <button onClick={()=>setAdminViewProfile(p)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Voir détails">👁</button>
+                              <button onClick={async()=>{
+                                if(!confirm(`Supprimer le profil "${p.name}" de la famille ${fam.code} ?`)) return;
+                                try {
+                                  await cloudDeleteProfile(fam.code, p.name);
+                                  setAdminMsg(`✅ Profil "${p.name}" supprimé`);
+                                  const profiles = await adminLoadFamilyProfiles(familyCode, fam.code);
+                                  setAdminFamilyProfiles(profiles||[]);
+                                } catch(e) { setAdminMsg("Erreur: "+e.message); }
+                              }} style={{padding:"4px 8px",background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:6,color:"#ef4444",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Supprimer">🗑</button>
+                            </div>
+                            <div style={{fontSize:9,color:"#475569"}}>{p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):""}</div>
                           </div>
-                          <div style={{fontSize:9,color:"#475569"}}>{p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):""}</div>
                         </div>
                       );
                     })}
@@ -2637,10 +2654,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <option value="all">Toutes marques</option>
                 {brands.map(b=><option key={b} value={b}>{b}</option>)}
               </select>
-              <button onClick={()=>{
-                const json = prompt("Coller le JSON des raquettes à importer:");
-                if(json) handleImportJSON(json);
-              }} style={{padding:"8px 14px",background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:8,color:"#4CAF50",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>📥 Import JSON</button>
+              <input type="file" accept=".json" ref={adminFileInputRef} style={{display:"none"}} onChange={e=>{
+                const file = e.target.files[0];
+                if(!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => { handleImportJSON(ev.target.result); };
+                reader.readAsText(file);
+                e.target.value = "";
+              }}/>
+              <button onClick={()=>adminFileInputRef.current?.click()} style={{padding:"8px 14px",background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:8,color:"#4CAF50",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>📥 Import JSON</button>
+              <button onClick={()=>setAdminEditRacket({id:"",name:"",shortName:"",brand:"",shape:"Ronde",weight:"",balance:"Moyen",surface:"",core:"",antivib:"—",price:"",player:"—",imageUrl:"",year:2025,category:"intermediaire",scores:{Puissance:5,Contrôle:5,Confort:5,Spin:5,Maniabilité:5,Tolérance:5},verdict:"",editorial:"",techHighlights:[],targetProfile:"",junior:false,womanLine:false,proPlayerInfo:null,_isNew:true})} style={{padding:"8px 14px",background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.25)",borderRadius:8,color:"#c084fc",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>➕ Nouvelle raquette</button>
             </div>
 
             <div style={{fontSize:11,color:"#64748b",marginBottom:10}}>{filteredRackets.length} raquette(s) affichée(s) sur {allRackets.length}</div>
@@ -2657,6 +2680,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <div style={{fontSize:9,color:"#64748b",flexShrink:0}}>{r.price||"—"}</div>
                   <div style={{display:"flex",gap:4,flexShrink:0}}>
                     <button onClick={()=>openRacketSheet(r,"admin")} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Voir fiche">📋</button>
+                    <button onClick={()=>setAdminEditRacket({...r,scores:{...r.scores},techHighlights:[...(r.techHighlights||[]).map(h=>({...h}))],proPlayerInfo:r.proPlayerInfo?{...r.proPlayerInfo}:null,_isNew:false})} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Éditer">✏️</button>
                     <button onClick={()=>handleToggleRacket(r.id)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Activer/Désactiver">
                       {r.is_active===false?"🔴":"🟢"}
                     </button>
@@ -2734,6 +2758,239 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
             </div>}
           </div>}
+
+          {/* ====== MODAL: VIEW PROFILE DETAIL ====== */}
+          {adminViewProfile&&(()=>{
+            const p = adminViewProfile;
+            const d = p.data||{};
+            const priorities = d.priorities||{};
+            const prioLabels = {power:"Puissance",control:"Contrôle",comfort:"Confort",spin:"Spin",maneuverability:"Maniabilité",tolerance:"Tolérance"};
+            return <div onClick={()=>setAdminViewProfile(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:3000,animation:"fadeIn 0.2s ease"}}>
+              <div onClick={e=>e.stopPropagation()} style={{background:"#111827",border:"1px solid rgba(168,85,247,0.25)",borderRadius:20,padding:"24px 22px",maxWidth:440,width:"92%",maxHeight:"85vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,0.6)"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10}}>
+                    <div style={{width:40,height:40,borderRadius:12,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,fontWeight:700,color:"#f97316"}}>{(p.name||"?")[0].toUpperCase()}</div>
+                    <div>
+                      <div style={{fontSize:16,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'"}}>{p.name} {p.locked&&"🔒"}</div>
+                      <div style={{fontSize:10,color:"#64748b"}}>Famille: {p.family_code}</div>
+                    </div>
+                  </div>
+                  <button onClick={()=>setAdminViewProfile(null)} style={{background:"none",border:"none",color:"#64748b",fontSize:20,cursor:"pointer"}}>✕</button>
+                </div>
+
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
+                  {[
+                    {label:"Niveau",value:d.level||"—"},
+                    {label:"Main",value:d.hand||"—"},
+                    {label:"Côté",value:d.side||"—"},
+                    {label:"Fréquence",value:d.frequency||"—"},
+                    {label:"Physique",value:d.physique||"—"},
+                    {label:"Budget",value:d.budget||"—"},
+                  ].map(item=>(
+                    <div key={item.label} style={{padding:"8px 10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:8}}>
+                      <div style={{fontSize:8,color:"#64748b",textTransform:"uppercase",fontWeight:600,letterSpacing:"0.05em"}}>{item.label}</div>
+                      <div style={{fontSize:12,color:"#e2e8f0",fontWeight:600,marginTop:2}}>{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {d.styleTags&&d.styleTags.length>0&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:6}}>Style de jeu</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {d.styleTags.map(t=><span key={t} style={{padding:"3px 10px",borderRadius:8,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",color:"#f97316",fontSize:10,fontWeight:600}}>{t}</span>)}
+                  </div>
+                </div>}
+
+                {Object.keys(priorities).length>0&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:6}}>Priorités</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                    {Object.entries(priorities).sort((a,b)=>b[1]-a[1]).map(([k,v])=>(
+                      <div key={k} style={{display:"flex",alignItems:"center",gap:8}}>
+                        <span style={{fontSize:10,color:"#94a3b8",width:80,flexShrink:0}}>{prioLabels[k]||k}</span>
+                        <div style={{flex:1,height:6,background:"rgba(255,255,255,0.05)",borderRadius:3,overflow:"hidden"}}>
+                          <div style={{width:`${v*10}%`,height:"100%",background:v>=8?"#22c55e":v>=5?"#f59e0b":"#ef4444",borderRadius:3}}/>
+                        </div>
+                        <span style={{fontSize:10,color:"#e2e8f0",fontWeight:600,width:20,textAlign:"right"}}>{v}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>}
+
+                {d.injuries&&d.injuries.length>0&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:4}}>Blessures / Sensibilités</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {d.injuries.map(inj=><span key={inj} style={{padding:"3px 8px",borderRadius:6,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.15)",color:"#f87171",fontSize:9,fontWeight:600}}>{inj}</span>)}
+                  </div>
+                </div>}
+
+                <div style={{fontSize:8,color:"#475569",textAlign:"center",marginTop:12}}>
+                  Créé le {p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):"—"} · Modifié le {p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):"—"}
+                </div>
+              </div>
+            </div>;
+          })()}
+
+          {/* ====== MODAL: EDIT / CREATE RACKET FORM ====== */}
+          {adminEditRacket&&(()=>{
+            const r = adminEditRacket;
+            const setR = (field, val) => setAdminEditRacket(prev => ({...prev, [field]: val}));
+            const setScore = (key, val) => setAdminEditRacket(prev => ({...prev, scores: {...prev.scores, [key]: parseFloat(val)||0}}));
+            const addTH = () => setAdminEditRacket(prev => ({...prev, techHighlights: [...(prev.techHighlights||[]), {label:"",value:"",detail:""}]}));
+            const updateTH = (idx, field, val) => setAdminEditRacket(prev => {
+              const ths = [...(prev.techHighlights||[])];
+              ths[idx] = {...ths[idx], [field]: val};
+              return {...prev, techHighlights: ths};
+            });
+            const removeTH = (idx) => setAdminEditRacket(prev => ({...prev, techHighlights: (prev.techHighlights||[]).filter((_,i)=>i!==idx)}));
+
+            const inputSt = {width:"100%",padding:"8px 10px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none",boxSizing:"border-box"};
+            const labelSt = {fontSize:9,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:3,display:"block"};
+            const selectSt = {...inputSt, appearance:"auto"};
+
+            const handleSave = () => {
+              if(!r.id || !r.name || !r.brand) { setAdminMsg("⚠️ ID, Nom et Marque sont obligatoires"); return; }
+              const dbRacket = {
+                id: r.id, name: r.name, short_name: r.shortName||"",
+                brand: r.brand, shape: r.shape, weight: r.weight, balance: r.balance,
+                surface: r.surface, core: r.core, antivib: r.antivib, price: r.price,
+                player: r.player, image_url: r.imageUrl, year: r.year,
+                category: r.category, scores: r.scores, verdict: r.verdict,
+                editorial: r.editorial, tech_highlights: r.techHighlights,
+                target_profile: r.targetProfile,
+                junior: r.junior||false, woman_line: r.womanLine||false,
+                pro_player_info: r.proPlayerInfo,
+                is_active: true
+              };
+              handleSaveRacket(dbRacket);
+            };
+
+            return <div onClick={()=>setAdminEditRacket(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:3000,animation:"fadeIn 0.2s ease"}}>
+              <div onClick={e=>e.stopPropagation()} style={{background:"#111827",border:"1px solid rgba(168,85,247,0.25)",borderRadius:20,padding:"22px 20px",maxWidth:560,width:"94%",maxHeight:"88vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,0.6)"}}>
+                {/* Header */}
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+                  <h3 style={{fontFamily:"'Outfit'",fontSize:17,fontWeight:800,color:"#c084fc",margin:0}}>{r._isNew?"➕ Nouvelle raquette":"✏️ Éditer raquette"}</h3>
+                  <button onClick={()=>setAdminEditRacket(null)} style={{background:"none",border:"none",color:"#64748b",fontSize:20,cursor:"pointer"}}>✕</button>
+                </div>
+
+                {/* Identité */}
+                <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.05em"}}>Identité</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
+                  <div><label style={labelSt}>ID *</label><input value={r.id} onChange={e=>setR("id",e.target.value)} placeholder="marque-modele-annee" style={inputSt} disabled={!r._isNew}/></div>
+                  <div><label style={labelSt}>Nom complet *</label><input value={r.name} onChange={e=>setR("name",e.target.value)} placeholder="Bullpadel Vertex 04 2025" style={inputSt}/></div>
+                  <div><label style={labelSt}>Nom court</label><input value={r.shortName||""} onChange={e=>setR("shortName",e.target.value)} placeholder="Vertex 04" style={inputSt}/></div>
+                  <div><label style={labelSt}>Marque *</label><input value={r.brand} onChange={e=>setR("brand",e.target.value)} placeholder="Bullpadel" style={inputSt}/></div>
+                  <div><label style={labelSt}>Année</label><input type="number" value={r.year||2025} onChange={e=>setR("year",parseInt(e.target.value)||2025)} style={inputSt}/></div>
+                  <div><label style={labelSt}>Catégorie</label>
+                    <select value={r.category} onChange={e=>setR("category",e.target.value)} style={selectSt}>
+                      <option value="debutant">Débutant</option>
+                      <option value="intermediaire">Intermédiaire</option>
+                      <option value="avance">Avancé</option>
+                      <option value="expert">Expert</option>
+                      <option value="junior">Junior</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Specs techniques */}
+                <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.05em"}}>Spécifications</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
+                  <div><label style={labelSt}>Forme</label>
+                    <select value={r.shape} onChange={e=>setR("shape",e.target.value)} style={selectSt}>
+                      <option value="Ronde">Ronde</option>
+                      <option value="Diamant">Diamant</option>
+                      <option value="Goutte d'eau">Goutte d'eau</option>
+                      <option value="Hybride">Hybride</option>
+                    </select>
+                  </div>
+                  <div><label style={labelSt}>Poids</label><input value={r.weight} onChange={e=>setR("weight",e.target.value)} placeholder="360-370g" style={inputSt}/></div>
+                  <div><label style={labelSt}>Balance</label>
+                    <select value={r.balance} onChange={e=>setR("balance",e.target.value)} style={selectSt}>
+                      <option value="Bas">Bas</option>
+                      <option value="Moyen">Moyen</option>
+                      <option value="Haut">Haut</option>
+                    </select>
+                  </div>
+                  <div><label style={labelSt}>Surface</label><input value={r.surface} onChange={e=>setR("surface",e.target.value)} placeholder="Carbon 3K" style={inputSt}/></div>
+                  <div><label style={labelSt}>Noyau</label><input value={r.core} onChange={e=>setR("core",e.target.value)} placeholder="HR3 Core" style={inputSt}/></div>
+                  <div><label style={labelSt}>Anti-vib</label><input value={r.antivib||""} onChange={e=>setR("antivib",e.target.value)} placeholder="CTS" style={inputSt}/></div>
+                  <div><label style={labelSt}>Prix</label><input value={r.price} onChange={e=>setR("price",e.target.value)} placeholder="180-250€" style={inputSt}/></div>
+                  <div><label style={labelSt}>Joueur pro</label><input value={r.player||""} onChange={e=>setR("player",e.target.value)} placeholder="Lebron" style={inputSt}/></div>
+                  <div><label style={labelSt}>Image URL</label><input value={r.imageUrl||""} onChange={e=>setR("imageUrl",e.target.value)} placeholder="https://..." style={inputSt}/></div>
+                </div>
+
+                {/* Flags */}
+                <div style={{display:"flex",gap:16,marginBottom:14}}>
+                  <label style={{display:"flex",alignItems:"center",gap:6,fontSize:11,color:"#94a3b8",cursor:"pointer"}}>
+                    <input type="checkbox" checked={r.junior||false} onChange={e=>setR("junior",e.target.checked)}/> Junior
+                  </label>
+                  <label style={{display:"flex",alignItems:"center",gap:6,fontSize:11,color:"#94a3b8",cursor:"pointer"}}>
+                    <input type="checkbox" checked={r.womanLine||false} onChange={e=>setR("womanLine",e.target.checked)}/> Ligne femme
+                  </label>
+                </div>
+
+                {/* Scores */}
+                <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.05em"}}>Scores /10</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
+                  {["Puissance","Contrôle","Confort","Spin","Maniabilité","Tolérance"].map(attr=>(
+                    <div key={attr}>
+                      <label style={labelSt}>{attr}</label>
+                      <div style={{display:"flex",alignItems:"center",gap:6}}>
+                        <input type="range" min="0" max="10" step="0.1" value={r.scores[attr]||5} onChange={e=>setScore(attr,e.target.value)} style={{flex:1,accentColor:"#f97316"}}/>
+                        <span style={{fontSize:12,fontWeight:700,color:"#f97316",fontFamily:"'Outfit'",width:28,textAlign:"right"}}>{(r.scores[attr]||5).toFixed(1)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Verdict + Editorial */}
+                <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.05em"}}>Contenu éditorial</div>
+                <div style={{marginBottom:10}}>
+                  <label style={labelSt}>Verdict (résumé court)</label>
+                  <textarea value={r.verdict||""} onChange={e=>setR("verdict",e.target.value)} rows={2} placeholder="Résumé en 1-2 phrases..." style={{...inputSt,resize:"vertical"}}/>
+                </div>
+                <div style={{marginBottom:10}}>
+                  <label style={labelSt}>Éditorial (texte détaillé)</label>
+                  <textarea value={r.editorial||""} onChange={e=>setR("editorial",e.target.value)} rows={4} placeholder="Analyse détaillée style magazine..." style={{...inputSt,resize:"vertical"}}/>
+                </div>
+                <div style={{marginBottom:14}}>
+                  <label style={labelSt}>Profil cible</label>
+                  <textarea value={r.targetProfile||""} onChange={e=>setR("targetProfile",e.target.value)} rows={2} placeholder="Cette raquette s'adresse à..." style={{...inputSt,resize:"vertical"}}/>
+                </div>
+
+                {/* Pro Player Info */}
+                <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.05em"}}>Joueur Pro associé</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
+                  <div><label style={labelSt}>Nom joueur</label><input value={r.proPlayerInfo?.name||""} onChange={e=>setR("proPlayerInfo",{...(r.proPlayerInfo||{}),name:e.target.value||undefined})} placeholder="Agustin Tapia" style={inputSt}/></div>
+                  <div><label style={labelSt}>Classement</label><input value={r.proPlayerInfo?.rank||""} onChange={e=>setR("proPlayerInfo",{...(r.proPlayerInfo||{}),rank:e.target.value||undefined})} placeholder="#1 WPT" style={inputSt}/></div>
+                </div>
+
+                {/* Tech Highlights */}
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                  <div style={{fontSize:10,fontWeight:700,color:"#c084fc",textTransform:"uppercase",letterSpacing:"0.05em"}}>Tech Highlights</div>
+                  <button onClick={addTH} style={{padding:"3px 10px",background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.2)",borderRadius:6,color:"#4CAF50",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>+ Ajouter</button>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+                  {(r.techHighlights||[]).map((th,idx)=>(
+                    <div key={idx} style={{padding:"10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:10}}>
+                      <div style={{display:"flex",gap:6,marginBottom:6}}>
+                        <div style={{flex:1}}><input value={th.label} onChange={e=>updateTH(idx,"label",e.target.value)} placeholder="Label (ex: Surface)" style={{...inputSt,fontSize:10}}/></div>
+                        <div style={{flex:1}}><input value={th.value} onChange={e=>updateTH(idx,"value",e.target.value)} placeholder="Valeur (ex: Carbon 18K)" style={{...inputSt,fontSize:10}}/></div>
+                        <button onClick={()=>removeTH(idx)} style={{padding:"4px 8px",background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:6,color:"#ef4444",fontSize:10,cursor:"pointer"}}>✕</button>
+                      </div>
+                      <input value={th.detail||""} onChange={e=>updateTH(idx,"detail",e.target.value)} placeholder="Détail technique..." style={{...inputSt,fontSize:10}}/>
+                    </div>
+                  ))}
+                  {(!r.techHighlights||r.techHighlights.length===0)&&<p style={{fontSize:10,color:"#475569",textAlign:"center",margin:"4px 0"}}>Aucun tech highlight. Cliquez + pour ajouter.</p>}
+                </div>
+
+                {/* Actions */}
+                <div style={{display:"flex",gap:10}}>
+                  <button onClick={()=>setAdminEditRacket(null)} style={{flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#94a3b8"}}>Annuler</button>
+                  <button onClick={handleSave} style={{flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'",background:"rgba(168,85,247,0.15)",border:"1px solid rgba(168,85,247,0.4)",color:"#c084fc"}}>💾 {r._isNew?"Créer":"Sauvegarder"}</button>
+                </div>
+              </div>
+            </div>;
+          })()}
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:24}}>
