@@ -1621,7 +1621,7 @@ export default function PadelAnalyzer() {
     return () => window.removeEventListener('sw-update-ready', handler);
   }, []);
 
-  // Auto-reload when reaching login screen with pending update
+  // Auto-reload when reaching login screen with pending update (NEVER during wizard/analyzing)
   useEffect(() => {
     if (screen === 'login' && swUpdateReady) {
       console.log('[SW] Login screen + update ready → reloading');
@@ -4334,8 +4334,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             )}
           </div>
 
-          {/* Home link */}
-          <button onClick={()=>setScreen("home")} style={{position:"fixed",bottom:20,left:"50%",transform:"translateX(-50%)",background:"none",border:"none",color:"#334155",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
+          {/* Home link — positioned in flow, not fixed (avoids overlap with Suivant) */}
+          <button onClick={()=>setScreen("home")} style={{marginTop:32,background:"none",border:"none",color:"#334155",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
             ← Retour à l'accueil
           </button>
         </div>

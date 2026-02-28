@@ -1,4 +1,4 @@
-const CACHE_VERSION = 12;
+const CACHE_VERSION = 13;
 const CACHE_NAME = 'padel-analyzer-v' + CACHE_VERSION;
 const ASSETS_TO_CACHE = [
   '/',
@@ -17,30 +17,21 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate: delete ALL old caches, claim clients, force reload if migrating
+// Activate: delete ALL old caches, claim clients, notify update
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
       const oldKeys = keys.filter(k => k !== CACHE_NAME);
-      const isLegacyMigration = oldKeys.some(k => k === 'padel-analyzer-v1'); // from old SW without message listener
       return Promise.all(oldKeys.map(k => {
         console.log('[SW] Deleting old cache:', k);
         return caches.delete(k);
-      })).then(() => isLegacyMigration);
-    }).then((isLegacyMigration) => {
+      }));
+    }).then(() => {
       return self.clients.claim().then(() => {
-        if (isLegacyMigration) {
-          // Force reload all tabs — old pages don't have the message listener
-          console.log('[SW] Migration detected — forcing reload of all clients');
-          self.clients.matchAll({type: 'window'}).then(clients => {
-            clients.forEach(client => client.navigate(client.url));
-          });
-        } else {
-          // Normal update — notify via message (app handles it gracefully)
-          self.clients.matchAll().then(clients => {
-            clients.forEach(client => client.postMessage({ type: 'SW_UPDATED', version: CACHE_VERSION }));
-          });
-        }
+        // Always use message approach — never force-reload (could interrupt wizard/session)
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => client.postMessage({ type: 'SW_UPDATED', version: CACHE_VERSION }));
+        });
       });
     })
   );

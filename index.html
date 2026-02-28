@@ -25,7 +25,7 @@ tr.pa-row{transition:background .15s ease}tr.pa-row:hover{background:rgba(255,25
 </head>
 <body>
 <div id="root"></div>
-<script src="/bundle.js?v=12.1.0"></script>
+<script src="/bundle.js?v=12.2.0"></script>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -49,6 +49,12 @@ if('serviceWorker' in navigator){
         window.__SW_UPDATE_READY=true;
         window.dispatchEvent(new Event('sw-update-ready'));
       }
+    });
+    // Prevent automatic page reload on controller change — let the app decide when
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      console.log('[SW] Controller changed — update will apply on next login');
+      window.__SW_UPDATE_READY=true;
+      window.dispatchEvent(new Event('sw-update-ready'));
     });
   });
 }
