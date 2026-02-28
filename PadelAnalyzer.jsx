@@ -1307,6 +1307,7 @@ export default function PadelAnalyzer() {
 
   // ============ BROWSER BACK BUTTON SUPPORT ============
   const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home" };
+  const cameFromAdminRef = useRef(false);
 
   // Open a full racket sheet from any screen
   const openRacketSheet = useCallback((racket, fromScreen) => {
@@ -2703,7 +2704,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                             </div>
                             <div style={{display:"flex",gap:4,flexShrink:0}}>
                               <button onClick={()=>setAdminViewProfile(p)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Coup d'œil">👁</button>
-                              <button onClick={()=>{setProfile({...INITIAL_PROFILE,...(p.data||{})});setProfileName(p.name);setScreen("dashboard");}} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Entrer dans le profil">✏️</button>
+                              <button onClick={()=>{cameFromAdminRef.current=true;setProfile({...INITIAL_PROFILE,...(p.data||{})});setProfileName(p.name);setScreen("dashboard");}} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Entrer dans le profil">✏️</button>
                               <button onClick={async()=>{
                                 if(!confirm(`Supprimer le profil "${p.name}" de la famille ${fam.code} ?`)) return;
                                 try {
@@ -4515,7 +4516,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               </div>
               <div style={{display:"flex",gap:6,flexShrink:0}}>
-                <button onClick={()=>{setScreen("home");}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title="Changer de profil">👥</button>
+                <button onClick={()=>{if(cameFromAdminRef.current){cameFromAdminRef.current=false;setScreen("admin");}else{setScreen("home");}}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title={cameFromAdminRef.current?"Retour admin":"Changer de profil"}>{cameFromAdminRef.current?"🔙":"👥"}</button>
                 <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title="Déconnexion">⏻</button>
               </div>
             </div>
