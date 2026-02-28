@@ -2623,7 +2623,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                               </div>
                             </div>
                             <div style={{display:"flex",gap:4,flexShrink:0}}>
-                              <button onClick={()=>setAdminViewProfile(p)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Voir détails">👁</button>
+                              <button onClick={()=>setAdminViewProfile(p)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Visualiser">👁</button>
+                              <button onClick={()=>setAdminEditProfile({...p, _editData:{...(p.data||{}), styleTags:[...(p.data?.styleTags||[])], injuryTags:[...(p.data?.injuryTags||[])], priorityTags:[...(p.data?.priorityTags||[])], brandTags:[...(p.data?.brandTags||[])]}, _familyCode:fam.code})} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Éditer">✏️</button>
                               <button onClick={async()=>{
                                 if(!confirm(`Supprimer le profil "${p.name}" de la famille ${fam.code} ?`)) return;
                                 try {
@@ -2920,6 +2921,204 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
                 <div style={{fontSize:8,color:"#475569",textAlign:"center",marginTop:14}}>
                   Créé le {p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):"—"} · Modifié le {p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):"—"}
+                </div>
+              </div>
+            </div>;
+          })()}
+
+          {/* ====== MODAL: EDIT PROFILE FORM ====== */}
+          {adminEditProfile&&(()=>{
+            const ep = adminEditProfile;
+            const d = ep._editData;
+            const setD = (field, val) => setAdminEditProfile(prev => ({...prev, _editData:{...prev._editData, [field]:val}}));
+
+            const toggleTag = (field, id) => {
+              setAdminEditProfile(prev => {
+                const arr = [...(prev._editData[field]||[])];
+                const idx = arr.indexOf(id);
+                if(idx>=0) arr.splice(idx,1); else arr.push(id);
+                return {...prev, _editData:{...prev._editData, [field]:arr}};
+              });
+            };
+
+            const movePriority = (idx, dir) => {
+              setAdminEditProfile(prev => {
+                const arr = [...(prev._editData.priorityTags||[])];
+                const newIdx = idx+dir;
+                if(newIdx<0||newIdx>=arr.length) return prev;
+                [arr[idx], arr[newIdx]] = [arr[newIdx], arr[idx]];
+                return {...prev, _editData:{...prev._editData, priorityTags:arr}};
+              });
+            };
+
+            const handleSaveProfile = async () => {
+              try {
+                setAdminLoading(true);
+                await cloudSaveProfile(ep._familyCode, ep.name, d, ep.locked||false);
+                setAdminMsg(`✅ Profil "${ep.name}" sauvegardé`);
+                setAdminEditProfile(null);
+                // Refresh profiles list
+                const profiles = await adminLoadFamilyProfiles(familyCode, ep._familyCode);
+                setAdminFamilyProfiles(profiles||[]);
+              } catch(e) { setAdminMsg("Erreur: "+e.message); }
+              setAdminLoading(false);
+            };
+
+            const inputSt = {width:"100%",padding:"8px 10px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none",boxSizing:"border-box"};
+            const labelSt = {fontSize:9,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:3,display:"block"};
+            const selectSt = {...inputSt, appearance:"auto"};
+            const sectionSt = {fontSize:10,fontWeight:700,color:"#f97316",marginBottom:8,marginTop:16,textTransform:"uppercase",letterSpacing:"0.05em"};
+
+            const TagToggle = ({tags, field, colors}) => {
+              const c = colors||{on:"#f97316",bg:"rgba(249,115,22,0.12)",border:"#f97316"};
+              const selected = d[field]||[];
+              return <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                {tags.map(t=>{
+                  const active = selected.includes(t.id);
+                  return <button key={t.id} type="button" onClick={()=>toggleTag(field,t.id)} style={{
+                    padding:"5px 12px",borderRadius:8,fontSize:10,fontWeight:active?700:500,cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s",
+                    background:active?c.bg:"rgba(255,255,255,0.03)",
+                    border:`1px solid ${active?c.border:"rgba(255,255,255,0.1)"}`,
+                    color:active?c.on:"#64748b",
+                  }}>{t.label}</button>;
+                })}
+              </div>;
+            };
+
+            return <div onClick={()=>setAdminEditProfile(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:3000,animation:"fadeIn 0.2s ease"}}>
+              <div onClick={e=>e.stopPropagation()} style={{background:"#111827",border:"1px solid rgba(249,115,22,0.25)",borderRadius:20,padding:"22px 20px",maxWidth:560,width:"94%",maxHeight:"88vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,0.6)"}}>
+                {/* Header */}
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10}}>
+                    <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"2px solid rgba(249,115,22,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,fontWeight:700,color:"#f97316"}}>{(ep.name||"?")[0].toUpperCase()}</div>
+                    <div>
+                      <h3 style={{fontFamily:"'Outfit'",fontSize:17,fontWeight:800,color:"#f97316",margin:0}}>✏️ Éditer · {ep.name}</h3>
+                      <div style={{fontSize:10,color:"#64748b"}}>Famille: {ep._familyCode}</div>
+                    </div>
+                  </div>
+                  <button onClick={()=>setAdminEditProfile(null)} style={{background:"none",border:"none",color:"#64748b",fontSize:20,cursor:"pointer"}}>✕</button>
+                </div>
+
+                {/* === IDENTITÉ === */}
+                <div style={sectionSt}>👤 Identité</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:4}}>
+                  <div><label style={labelSt}>Niveau</label>
+                    <select value={d.level||"Intermédiaire"} onChange={e=>setD("level",e.target.value)} style={selectSt}>
+                      <option>Débutant</option><option>Intermédiaire</option><option>Avancé</option><option>Expert</option>
+                    </select>
+                  </div>
+                  <div><label style={labelSt}>Main</label>
+                    <select value={d.hand||"Droitier"} onChange={e=>setD("hand",e.target.value)} style={selectSt}>
+                      <option>Droitier</option><option>Gaucher</option>
+                    </select>
+                  </div>
+                  <div><label style={labelSt}>Côté</label>
+                    <select value={d.side||"Droite"} onChange={e=>setD("side",e.target.value)} style={selectSt}>
+                      <option>Droite</option><option>Gauche</option><option>Les deux</option>
+                    </select>
+                  </div>
+                  <div><label style={labelSt}>Genre</label>
+                    <select value={d.genre||"Homme"} onChange={e=>setD("genre",e.target.value)} style={selectSt}>
+                      <option>Homme</option><option>Femme</option>
+                    </select>
+                  </div>
+                  <div><label style={labelSt}>Fréquence</label>
+                    <select value={d.frequency||""} onChange={e=>setD("frequency",e.target.value)} style={selectSt}>
+                      <option value="Occasionnel (1-2x/mois)">Occasionnel (1-2x/mois)</option>
+                      <option value="Régulier (1-2x/semaine)">Régulier (1-2x/semaine)</option>
+                      <option value="Assidu (3-4x/semaine)">Assidu (3-4x/semaine)</option>
+                      <option value="Intensif (5+/semaine)">Intensif (5+/semaine)</option>
+                    </select>
+                  </div>
+                  <div><label style={labelSt}>Compétition</label>
+                    <select value={d.competition?"Oui":"Non"} onChange={e=>setD("competition",e.target.value==="Oui")} style={selectSt}>
+                      <option>Non</option><option>Oui</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* === PHYSIQUE === */}
+                <div style={sectionSt}>💪 Physique</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:4}}>
+                  <div><label style={labelSt}>Âge</label><input type="number" value={d.age||""} onChange={e=>setD("age",e.target.value)} placeholder="30" style={inputSt}/></div>
+                  <div><label style={labelSt}>Taille (cm)</label><input type="number" value={d.height||""} onChange={e=>setD("height",e.target.value)} placeholder="175" style={inputSt}/></div>
+                  <div><label style={labelSt}>Poids (kg)</label><input type="number" value={d.weight||""} onChange={e=>setD("weight",e.target.value)} placeholder="75" style={inputSt}/></div>
+                </div>
+                <div style={{marginBottom:4}}>
+                  <label style={labelSt}>Fitness</label>
+                  <div style={{display:"flex",gap:6}}>
+                    {FITNESS_OPTIONS.map(fo=>{
+                      const active = d.fitness===fo.value;
+                      return <button key={fo.value} type="button" onClick={()=>setD("fitness",fo.value)} style={{
+                        flex:1,padding:"8px 6px",borderRadius:8,cursor:"pointer",fontFamily:"inherit",textAlign:"center",transition:"all 0.15s",
+                        background:active?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                        border:`1px solid ${active?"#f97316":"rgba(255,255,255,0.1)"}`,color:active?"#f97316":"#64748b",
+                      }}><div style={{fontSize:16}}>{fo.icon}</div><div style={{fontSize:9,fontWeight:active?700:500,marginTop:2}}>{fo.label}</div></button>;
+                    })}
+                  </div>
+                </div>
+
+                {/* === STYLE DE JEU === */}
+                <div style={sectionSt}>🎯 Style de jeu</div>
+                <TagToggle tags={STYLE_TAGS} field="styleTags"/>
+
+                {/* === BLESSURES === */}
+                <div style={sectionSt}>🩹 Blessures / Sensibilités</div>
+                <TagToggle tags={INJURY_TAGS} field="injuryTags" colors={{on:"#ef4444",bg:"rgba(239,68,68,0.12)",border:"#ef4444"}}/>
+
+                {/* === PRIORITÉS === */}
+                <div style={sectionSt}>⚡ Priorités (cliquer pour ajouter, flèches pour ordonner)</div>
+                <div style={{marginBottom:4}}>
+                  <TagToggle tags={PRIORITY_TAGS} field="priorityTags" colors={{on:"#fbbf24",bg:"rgba(251,191,36,0.12)",border:"#fbbf24"}}/>
+                  {(d.priorityTags||[]).length>0&&<div style={{marginTop:8,display:"flex",flexDirection:"column",gap:3}}>
+                    <div style={{fontSize:8,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:2}}>Ordre :</div>
+                    {(d.priorityTags||[]).map((id,idx)=>{
+                      const tag = PRIORITY_TAGS.find(t=>t.id===id);
+                      return <div key={id} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 8px",background:"rgba(251,191,36,0.06)",border:"1px solid rgba(251,191,36,0.15)",borderRadius:6}}>
+                        <span style={{fontSize:12,fontWeight:800,color:"#fbbf24",fontFamily:"'Outfit'",width:16,textAlign:"center"}}>{idx+1}</span>
+                        <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600,flex:1}}>{tag?.label||id}</span>
+                        <button type="button" onClick={()=>movePriority(idx,-1)} disabled={idx===0} style={{background:"none",border:"none",color:idx===0?"#334155":"#94a3b8",cursor:idx===0?"default":"pointer",fontSize:12,padding:"0 2px"}}>▲</button>
+                        <button type="button" onClick={()=>movePriority(idx,1)} disabled={idx===(d.priorityTags||[]).length-1} style={{background:"none",border:"none",color:idx===(d.priorityTags||[]).length-1?"#334155":"#94a3b8",cursor:idx===(d.priorityTags||[]).length-1?"default":"pointer",fontSize:12,padding:"0 2px"}}>▼</button>
+                      </div>;
+                    })}
+                  </div>}
+                </div>
+
+                {/* === MARQUES === */}
+                <div style={sectionSt}>🏷 Marques préférées</div>
+                <TagToggle tags={BRAND_TAGS} field="brandTags" colors={{on:"#c084fc",bg:"rgba(168,85,247,0.12)",border:"#a855f7"}}/>
+
+                {/* === PRÉFÉRENCES EXPERT === */}
+                {(d.level==="Expert"||d.level==="Avancé")&&<>
+                  <div style={sectionSt}>🎓 Préférences Expert</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                    <div><label style={labelSt}>Toucher</label>
+                      <select value={d.expertToucher||""} onChange={e=>setD("expertToucher",e.target.value)} style={selectSt}>
+                        <option value="">Non précisé</option><option value="sec">Sec</option><option value="medium">Medium</option><option value="souple">Souple</option>
+                      </select>
+                    </div>
+                    <div><label style={labelSt}>Réactivité</label>
+                      <select value={d.expertReactivite||""} onChange={e=>setD("expertReactivite",e.target.value)} style={selectSt}>
+                        <option value="">Non précisé</option><option value="explosive">Explosive</option><option value="progressive">Progressive</option>
+                      </select>
+                    </div>
+                    <div><label style={labelSt}>Poids préféré</label>
+                      <select value={d.expertPoids||""} onChange={e=>setD("expertPoids",e.target.value)} style={selectSt}>
+                        <option value="">Non précisé</option><option value="lourd">Lourd</option><option value="equilibre">Équilibré</option><option value="leger">Léger</option>
+                      </select>
+                    </div>
+                    <div><label style={labelSt}>Forme préférée</label>
+                      <select value={d.expertForme||""} onChange={e=>setD("expertForme",e.target.value)} style={selectSt}>
+                        <option value="">Indifférent</option><option value="diamant">Diamant</option><option value="goutte">Goutte d'eau</option><option value="ronde">Ronde</option>
+                      </select>
+                    </div>
+                  </div>
+                </>}
+
+                {/* === ACTIONS === */}
+                <div style={{display:"flex",gap:10,marginTop:20}}>
+                  <button onClick={()=>setAdminEditProfile(null)} style={{flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"#94a3b8"}}>Annuler</button>
+                  <button onClick={handleSaveProfile} style={{flex:1,padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.4)",color:"#f97316"}}>💾 Sauvegarder</button>
                 </div>
               </div>
             </div>;
