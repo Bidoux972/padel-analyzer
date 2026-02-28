@@ -1423,18 +1423,13 @@ export default function PadelAnalyzer() {
     const lastActive = parseInt(localStorage.getItem('padel_last_active') || '0');
     const idleMs = Date.now() - lastActive;
     const MAX_IDLE = { vendeur: 5 * 60 * 1000, admin: 30 * 60 * 1000 }; // 5min / 30min
-    if (role === 'vendeur' && idleMs > MAX_IDLE.vendeur) {
+    if ((role === 'vendeur' && idleMs > MAX_IDLE.vendeur) ||
+        (role === 'admin' && idleMs > MAX_IDLE.admin)) {
+      // Clear session credentials only — cloud data survives
       localStorage.removeItem('padel_group_role');
       localStorage.removeItem('padel_group_name');
       localStorage.removeItem('padel_family_code');
-      localStorage.removeItem('savedProfiles');
-      return "login";
-    }
-    if (role === 'admin' && idleMs > MAX_IDLE.admin) {
-      localStorage.removeItem('padel_group_role');
-      localStorage.removeItem('padel_group_name');
-      localStorage.removeItem('padel_family_code');
-      localStorage.removeItem('savedProfiles');
+      localStorage.removeItem('padel_last_active');
       return "login";
     }
     localStorage.setItem('padel_last_active', String(Date.now()));
@@ -1577,14 +1572,22 @@ export default function PadelAnalyzer() {
     const resetTimer = () => {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
+        // Clear session state but DON'T destroy cloud data
         setCloudLoginName("");
         setCloudLoginPassword("");
         setCloudError("");
-        setSavedProfiles([]);
-        saveProfilesList([]);
+        setSavedProfiles([]); // clear React state only
         setProfile({...INITIAL_PROFILE});
         setProfileName("");
         localStorage.removeItem('padel_last_active');
+        // Reset familyCode so cloud sync re-triggers on next login
+        setFamilyCode("");
+        setFamilyCodeLS("");
+        setGroupRole("famille");
+        setGroupRoleLS("");
+        setGroupNameState("");
+        setGroupNameLS("");
+        setCloudStatus("");
         setScreen("login");
         setAdminMsg("⏱ Session expirée — inactivité");
         setTimeout(() => setAdminMsg(""), 4000);
