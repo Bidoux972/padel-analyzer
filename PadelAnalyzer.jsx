@@ -67,12 +67,45 @@ async function sbPatch(table, query, data) {
 // ==================== SUPABASE HELPERS ====================
 function getFamilyCode() { return localStorage.getItem('padel_family_code') || ''; }
 function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', code); }
+function getGroupRole() { return localStorage.getItem('padel_group_role') || 'famille'; }
+function setGroupRoleLS(role) { localStorage.setItem('padel_group_role', role); }
+function getGroupName() { return localStorage.getItem('padel_group_name') || ''; }
+function setGroupNameLS(name) { localStorage.setItem('padel_group_name', name); }
 
 function generateFamilyCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
   for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
   return code;
+}
+
+// Simple hash (SHA-256 via SubtleCrypto)
+async function hashPassword(pwd) {
+  const data = new TextEncoder().encode(pwd);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function groupLogin(name, password) {
+  const data = await sbGet('groups', `name=eq.${encodeURIComponent(name)}&limit=1`);
+  if (!data.length) return { error: "Groupe introuvable" };
+  const group = data[0];
+  const hash = await hashPassword(password);
+  if (hash !== group.password_hash) return { error: "Mot de passe incorrect" };
+  return { ok: true, family_code: group.family_code, role: group.role, name: group.name };
+}
+
+async function groupCreate(name, password, role) {
+  // Vérifier si le nom existe
+  const exists = await sbGet('groups', `name=eq.${encodeURIComponent(name)}&limit=1`);
+  if (exists.length) return { error: "Ce nom de groupe existe déjà" };
+  const hash = await hashPassword(password);
+  const family_code = generateFamilyCode();
+  // Créer le groupe
+  await sbPost('groups', { name, password_hash: hash, role: role || 'famille', family_code });
+  // Créer aussi dans families pour compatibilité
+  try { await registerFamily(family_code, null); } catch(e) { /* peut déjà exister */ }
+  return { ok: true, family_code, role, name };
 }
 
 async function registerFamily(code, adminPin) {
@@ -1333,9 +1366,13 @@ export default function PadelAnalyzer() {
 
   // ============ CLOUD SYNC STATE ============
   const [familyCode, setFamilyCode] = useState(()=>getFamilyCode());
+  const [groupRole, setGroupRole] = useState(()=>getGroupRole());
+  const [groupName, setGroupNameState] = useState(()=>getGroupName());
   const [cloudStatus, setCloudStatus] = useState(""); // "", "loading", "synced", "error"
-  const [cloudLoginInput, setCloudLoginInput] = useState("");
+  const [cloudLoginName, setCloudLoginName] = useState("");
+  const [cloudLoginPassword, setCloudLoginPassword] = useState("");
   const [cloudLoginMode, setCloudLoginMode] = useState("join"); // "join" | "create"
+  const [cloudLoginRole, setCloudLoginRole] = useState("famille"); // "vendeur" | "famille"
   const [cloudError, setCloudError] = useState("");
 
   // ============ ADMIN STATE ============
@@ -1410,26 +1447,35 @@ export default function PadelAnalyzer() {
   const handleCloudLogout = () => {
     setFamilyCode("");
     setFamilyCodeLS("");
+    setGroupRole("famille");
+    setGroupRoleLS("");
+    setGroupNameState("");
+    setGroupNameLS("");
     setCloudStatus("");
     setScreen("login");
   };
 
-  // Cloud login
+  // Cloud login via groups
   const handleCloudJoin = async () => {
-    const code = cloudLoginInput.trim().toUpperCase();
-    if (code.length < 4) { setCloudError("Code trop court"); return; }
+    const name = cloudLoginName.trim();
+    const pwd = cloudLoginPassword.trim();
+    if (!name) { setCloudError("Entre un nom de groupe"); return; }
+    if (pwd.length < 4) { setCloudError("Mot de passe trop court (4 car. min)"); return; }
     setCloudError("");
     try {
+      let result;
       if (cloudLoginMode === "join") {
-        const exists = await checkFamilyExists(code);
-        if (!exists) { setCloudError("Code introuvable"); return; }
+        result = await groupLogin(name, pwd);
       } else {
-        const exists = await checkFamilyExists(code);
-        if (exists) { setCloudError("Ce code existe déjà"); return; }
-        await registerFamily(code, null);
+        result = await groupCreate(name, pwd, cloudLoginRole);
       }
-      setFamilyCodeLS(code);
-      setFamilyCode(code);
+      if (result.error) { setCloudError(result.error); return; }
+      setFamilyCodeLS(result.family_code);
+      setFamilyCode(result.family_code);
+      setGroupRoleLS(result.role);
+      setGroupRole(result.role);
+      setGroupNameLS(result.name);
+      setGroupNameState(result.name);
       setScreen("home");
     } catch(e) { setCloudError(e.message); }
   };
@@ -2175,30 +2221,64 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <p style={{color:"#64748b",fontSize:12,margin:"0 0 32px",textAlign:"center"}}>Ton conseiller raquette intelligent</p>
         
         <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:24,width:"100%",maxWidth:380}}>
+          {/* Mode toggle */}
           <div style={{display:"flex",gap:8,marginBottom:20}}>
-            <button onClick={()=>setCloudLoginMode("join")} style={{flex:1,padding:"10px",borderRadius:10,border:cloudLoginMode==="join"?"1px solid #f97316":"1px solid rgba(255,255,255,0.1)",background:cloudLoginMode==="join"?"rgba(249,115,22,0.15)":"transparent",color:cloudLoginMode==="join"?"#f97316":"#64748b",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Rejoindre</button>
-            <button onClick={()=>setCloudLoginMode("create")} style={{flex:1,padding:"10px",borderRadius:10,border:cloudLoginMode==="create"?"1px solid #f97316":"1px solid rgba(255,255,255,0.1)",background:cloudLoginMode==="create"?"rgba(249,115,22,0.15)":"transparent",color:cloudLoginMode==="create"?"#f97316":"#64748b",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Créer un code</button>
+            <button onClick={()=>{setCloudLoginMode("join");setCloudError("");}} style={{flex:1,padding:"10px",borderRadius:10,border:cloudLoginMode==="join"?"1px solid #f97316":"1px solid rgba(255,255,255,0.1)",background:cloudLoginMode==="join"?"rgba(249,115,22,0.15)":"transparent",color:cloudLoginMode==="join"?"#f97316":"#64748b",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Se connecter</button>
+            <button onClick={()=>{setCloudLoginMode("create");setCloudError("");}} style={{flex:1,padding:"10px",borderRadius:10,border:cloudLoginMode==="create"?"1px solid #f97316":"1px solid rgba(255,255,255,0.1)",background:cloudLoginMode==="create"?"rgba(249,115,22,0.15)":"transparent",color:cloudLoginMode==="create"?"#f97316":"#64748b",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Créer un compte</button>
           </div>
           
-          <p style={{fontSize:11,color:"#94a3b8",margin:"0 0 12px",lineHeight:1.5}}>
-            {cloudLoginMode==="join"?"Entre le code famille pour synchroniser tes profils sur tous tes appareils.":"Crée un nouveau code famille pour partager tes profils."}
+          <p style={{fontSize:11,color:"#94a3b8",margin:"0 0 16px",lineHeight:1.5}}>
+            {cloudLoginMode==="join"
+              ?"Connecte-toi avec ton nom de groupe et ton mot de passe."
+              :"Crée ton espace pour sauvegarder et synchroniser tes profils."}
           </p>
           
-          <input type="text" value={cloudLoginInput} onChange={e=>setCloudLoginInput(e.target.value.toUpperCase())} 
-            placeholder={cloudLoginMode==="join"?"Code famille (ex: FPQCNW)":"Ton nouveau code (6 car.)"}
-            style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:16,fontFamily:"'Outfit'",fontWeight:700,textAlign:"center",letterSpacing:"0.15em",outline:"none",boxSizing:"border-box"}}
-            onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}
-            maxLength={8} />
+          {/* Nom du groupe */}
+          <div style={{marginBottom:12}}>
+            <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Nom du groupe</label>
+            <input type="text" value={cloudLoginName} onChange={e=>setCloudLoginName(e.target.value)} 
+              placeholder={cloudLoginMode==="join"?"Ex: Famille Dupont":"Choisis un nom de groupe"}
+              style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
+              onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
+          </div>
           
-          {cloudLoginMode==="create"&&<button onClick={()=>setCloudLoginInput(generateFamilyCode())} style={{marginTop:8,padding:"6px 14px",background:"rgba(99,102,241,0.1)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:8,color:"#a5b4fc",fontSize:11,cursor:"pointer",fontFamily:"inherit",width:"100%"}}>🎲 Générer un code aléatoire</button>}
+          {/* Mot de passe */}
+          <div style={{marginBottom:cloudLoginMode==="create"?12:0}}>
+            <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Mot de passe</label>
+            <input type="password" value={cloudLoginPassword} onChange={e=>setCloudLoginPassword(e.target.value)} 
+              placeholder="••••••"
+              style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
+              onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
+          </div>
           
-          {cloudError&&<p style={{color:"#ef4444",fontSize:11,marginTop:8,textAlign:"center"}}>{cloudError}</p>}
+          {/* Rôle (création uniquement) */}
+          {cloudLoginMode==="create"&&<div style={{marginBottom:0}}>
+            <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6,display:"block"}}>Type de compte</label>
+            <div style={{display:"flex",gap:8}}>
+              {[
+                {value:"famille",label:"👨‍👩‍👧 Famille",desc:"Usage personnel"},
+                {value:"vendeur",label:"🏪 Vendeur",desc:"Portefeuille clients"},
+              ].map(opt=>(
+                <button key={opt.value} onClick={()=>setCloudLoginRole(opt.value)} style={{
+                  flex:1,padding:"10px 8px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",textAlign:"center",transition:"all 0.15s",
+                  background:cloudLoginRole===opt.value?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
+                  border:`1px solid ${cloudLoginRole===opt.value?"#f97316":"rgba(255,255,255,0.08)"}`,
+                  color:cloudLoginRole===opt.value?"#f97316":"#64748b",
+                }}>
+                  <div style={{fontSize:13,fontWeight:700}}>{opt.label}</div>
+                  <div style={{fontSize:9,marginTop:2,opacity:0.7}}>{opt.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>}
+          
+          {cloudError&&<p style={{color:"#ef4444",fontSize:11,marginTop:10,textAlign:"center"}}>{cloudError}</p>}
           
           <button onClick={handleCloudJoin} style={{marginTop:16,width:"100%",padding:"14px",background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"1px solid rgba(249,115,22,0.4)",borderRadius:14,color:"#f97316",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit'",letterSpacing:"-0.01em"}}>
-            {cloudLoginMode==="join"?"☁️ Se connecter":"☁️ Créer"}
+            {cloudLoginMode==="join"?"☁️ Se connecter":"☁️ Créer mon espace"}
           </button>
           
-          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setScreen("home");}} style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:"1px solid rgba(255,255,255,0.08)",borderRadius:10,color:"#475569",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
+          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("home");}} style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:"1px solid rgba(255,255,255,0.08)",borderRadius:10,color:"#475569",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
             Continuer en local (sans synchronisation)
           </button>
         </div>
