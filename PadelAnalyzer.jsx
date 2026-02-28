@@ -2763,67 +2763,162 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {adminViewProfile&&(()=>{
             const p = adminViewProfile;
             const d = p.data||{};
-            const priorities = d.priorities||{};
-            const prioLabels = {power:"Puissance",control:"Contrôle",comfort:"Confort",spin:"Spin",maneuverability:"Maniabilité",tolerance:"Tolérance"};
+            const styles = (d.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const injuries = (d.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const priorities = (d.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const hand = d.hand||"Droitier";
+            const side = d.side||"Droite";
+            const isFemme = (d.genre||"Homme")==="Femme";
+            const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
+            const role = side==="Les deux" ? (isFemme?"Polyvalente":"Polyvalent") : isAttacker ? (isFemme?"Attaquante":"Attaquant") : (isFemme?"Constructrice":"Constructeur");
+            const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0",Expert:"#9C27B0"};
+
+            // Compute Top 3 for this profile
+            const age = Number(d.age)||0;
+            const ht = Number(d.height)||0;
+            const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
+            let pool = isJunior 
+              ? getMergedDB().filter(r=>r.category==='junior')
+              : (()=>{
+                  const lvl = d.level||'Débutant';
+                  const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
+                  return getMergedDB().filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
+                })();
+            const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, d, r)})).filter(r=>r._gs>0);
+            scored.sort((a,b)=>b._gs-a._gs);
+            const top3 = scored.slice(0, 3);
+            const medals = ["🥇","🥈","🥉"];
+
             return <div onClick={()=>setAdminViewProfile(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:3000,animation:"fadeIn 0.2s ease"}}>
-              <div onClick={e=>e.stopPropagation()} style={{background:"#111827",border:"1px solid rgba(168,85,247,0.25)",borderRadius:20,padding:"24px 22px",maxWidth:440,width:"92%",maxHeight:"85vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,0.6)"}}>
+              <div onClick={e=>e.stopPropagation()} style={{background:"#111827",border:"1px solid rgba(168,85,247,0.25)",borderRadius:20,padding:"24px 22px",maxWidth:520,width:"94%",maxHeight:"88vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,0.6)"}}>
+                {/* Header */}
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
                   <div style={{display:"flex",alignItems:"center",gap:10}}>
-                    <div style={{width:40,height:40,borderRadius:12,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,fontWeight:700,color:"#f97316"}}>{(p.name||"?")[0].toUpperCase()}</div>
+                    <div style={{width:44,height:44,borderRadius:14,background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"2px solid rgba(249,115,22,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,fontWeight:700,color:"#f97316"}}>{(p.name||"?")[0].toUpperCase()}</div>
                     <div>
-                      <div style={{fontSize:16,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'"}}>{p.name} {p.locked&&"🔒"}</div>
-                      <div style={{fontSize:10,color:"#64748b"}}>Famille: {p.family_code}</div>
+                      <div style={{fontSize:17,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'"}}>{p.name} {p.locked&&"🔒"}</div>
+                      <div style={{display:"flex",alignItems:"center",gap:6,marginTop:2}}>
+                        <span style={{fontSize:10,fontWeight:700,color:levelColors[d.level]||"#64748b",background:`${levelColors[d.level]||"#64748b"}18`,padding:"2px 8px",borderRadius:6}}>{d.level||"—"}</span>
+                        <span style={{fontSize:10,color:"#94a3b8"}}>{role}</span>
+                        <span style={{fontSize:10,color:"#64748b"}}>· {p.family_code}</span>
+                      </div>
                     </div>
                   </div>
                   <button onClick={()=>setAdminViewProfile(null)} style={{background:"none",border:"none",color:"#64748b",fontSize:20,cursor:"pointer"}}>✕</button>
                 </div>
 
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
+                {/* Infos joueur */}
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:14}}>
                   {[
-                    {label:"Niveau",value:d.level||"—"},
-                    {label:"Main",value:d.hand||"—"},
-                    {label:"Côté",value:d.side||"—"},
-                    {label:"Fréquence",value:d.frequency||"—"},
-                    {label:"Physique",value:d.physique||"—"},
-                    {label:"Budget",value:d.budget||"—"},
+                    {label:"Main",value:hand,icon:"✋"},
+                    {label:"Côté",value:side,icon:"📐"},
+                    {label:"Fréquence",value:d.frequency||"—",icon:"📅"},
+                    {label:"Genre",value:d.genre||"Homme",icon:isFemme?"♀":"♂"},
+                    {label:"Fitness",value:d.fitness||"actif",icon:"💪"},
+                    {label:"Compétition",value:d.competition?"Oui":"Non",icon:"🏆"},
                   ].map(item=>(
-                    <div key={item.label} style={{padding:"8px 10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:8}}>
-                      <div style={{fontSize:8,color:"#64748b",textTransform:"uppercase",fontWeight:600,letterSpacing:"0.05em"}}>{item.label}</div>
-                      <div style={{fontSize:12,color:"#e2e8f0",fontWeight:600,marginTop:2}}>{item.value}</div>
+                    <div key={item.label} style={{padding:"7px 8px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:8,textAlign:"center"}}>
+                      <div style={{fontSize:14}}>{item.icon}</div>
+                      <div style={{fontSize:11,color:"#e2e8f0",fontWeight:600,marginTop:1}}>{item.value}</div>
+                      <div style={{fontSize:7,color:"#64748b",textTransform:"uppercase",fontWeight:600,letterSpacing:"0.04em",marginTop:1}}>{item.label}</div>
                     </div>
                   ))}
                 </div>
 
-                {d.styleTags&&d.styleTags.length>0&&<div style={{marginBottom:12}}>
-                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:6}}>Style de jeu</div>
+                {/* Physique */}
+                {(d.age||d.height||d.weight)&&<div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+                  {d.age&&<span style={{padding:"4px 10px",borderRadius:8,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.15)",color:"#a5b4fc",fontSize:10,fontWeight:600}}>{d.age} ans</span>}
+                  {d.height&&<span style={{padding:"4px 10px",borderRadius:8,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.15)",color:"#a5b4fc",fontSize:10,fontWeight:600}}>{d.height} cm</span>}
+                  {d.weight&&<span style={{padding:"4px 10px",borderRadius:8,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.15)",color:"#a5b4fc",fontSize:10,fontWeight:600}}>{d.weight} kg</span>}
+                </div>}
+
+                {/* Style de jeu */}
+                {styles.length>0&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:5}}>🎯 Style de jeu</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                    {d.styleTags.map(t=><span key={t} style={{padding:"3px 10px",borderRadius:8,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",color:"#f97316",fontSize:10,fontWeight:600}}>{t}</span>)}
+                    {styles.map(t=><span key={t} style={{padding:"3px 10px",borderRadius:8,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",color:"#f97316",fontSize:10,fontWeight:600}}>{t}</span>)}
                   </div>
                 </div>}
 
-                {Object.keys(priorities).length>0&&<div style={{marginBottom:12}}>
-                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:6}}>Priorités</div>
+                {/* Priorités */}
+                {priorities.length>0&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:5}}>⚡ Priorités (ordre d'importance)</div>
                   <div style={{display:"flex",flexDirection:"column",gap:3}}>
-                    {Object.entries(priorities).sort((a,b)=>b[1]-a[1]).map(([k,v])=>(
-                      <div key={k} style={{display:"flex",alignItems:"center",gap:8}}>
-                        <span style={{fontSize:10,color:"#94a3b8",width:80,flexShrink:0}}>{prioLabels[k]||k}</span>
-                        <div style={{flex:1,height:6,background:"rgba(255,255,255,0.05)",borderRadius:3,overflow:"hidden"}}>
-                          <div style={{width:`${v*10}%`,height:"100%",background:v>=8?"#22c55e":v>=5?"#f59e0b":"#ef4444",borderRadius:3}}/>
+                    {priorities.map((pr,i)=>(
+                      <div key={pr} style={{display:"flex",alignItems:"center",gap:8}}>
+                        <span style={{fontSize:11,fontWeight:800,color:i===0?"#f97316":i===1?"#f59e0b":"#94a3b8",width:16,textAlign:"center",fontFamily:"'Outfit'"}}>{i+1}</span>
+                        <div style={{flex:1,height:8,background:"rgba(255,255,255,0.05)",borderRadius:4,overflow:"hidden"}}>
+                          <div style={{width:`${100-i*20}%`,height:"100%",background:i===0?"linear-gradient(90deg,#f97316,#ef4444)":i===1?"linear-gradient(90deg,#f59e0b,#f97316)":"linear-gradient(90deg,#64748b,#94a3b8)",borderRadius:4,transition:"width 0.5s ease"}}/>
                         </div>
-                        <span style={{fontSize:10,color:"#e2e8f0",fontWeight:600,width:20,textAlign:"right"}}>{v}</span>
+                        <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600,width:100}}>{pr}</span>
                       </div>
                     ))}
                   </div>
                 </div>}
 
-                {d.injuries&&d.injuries.length>0&&<div style={{marginBottom:12}}>
-                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:4}}>Blessures / Sensibilités</div>
+                {/* Blessures */}
+                {injuries.length>0&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:5}}>🩹 Blessures / Sensibilités</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                    {d.injuries.map(inj=><span key={inj} style={{padding:"3px 8px",borderRadius:6,background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.15)",color:"#f87171",fontSize:9,fontWeight:600}}>{inj}</span>)}
+                    {injuries.map(inj=><span key={inj} style={{padding:"3px 10px",borderRadius:8,background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.15)",color:"#f87171",fontSize:10,fontWeight:600}}>⚠ {inj}</span>)}
                   </div>
                 </div>}
 
-                <div style={{fontSize:8,color:"#475569",textAlign:"center",marginTop:12}}>
+                {/* Marques préférées */}
+                {(d.brandTags||[]).length>0&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:5}}>🏷 Marques préférées</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {d.brandTags.map(b=><span key={b} style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600,textTransform:"capitalize"}}>{b}</span>)}
+                  </div>
+                </div>}
+
+                {/* Expert preferences */}
+                {d.expertToucher&&<div style={{marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:5}}>🎓 Préférences Expert</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {d.expertToucher&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Toucher: {d.expertToucher}</span>}
+                    {d.expertReactivite&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Réactivité: {d.expertReactivite}</span>}
+                    {d.expertPoids&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Poids: {d.expertPoids}</span>}
+                    {d.expertForme&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Forme: {d.expertForme}</span>}
+                  </div>
+                </div>}
+
+                {/* ====== TOP 3 RAQUETTES RECOMMANDÉES ====== */}
+                <div style={{marginTop:16,padding:"14px",background:"rgba(249,115,22,0.04)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:14}}>
+                  <div style={{fontSize:11,fontWeight:800,color:"#f97316",fontFamily:"'Outfit'",textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:10}}>🏆 Top 3 Recommandé · {scored.length} raquettes analysées</div>
+                  {top3.length===0&&<p style={{fontSize:11,color:"#475569",margin:0}}>Aucune raquette compatible trouvée.</p>}
+                  <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                    {top3.map((r,i)=>{
+                      const sc = r.scores||{};
+                      const best2 = ATTRS.filter(a=>sc[a]).sort((a,b)=>(sc[b]||0)-(sc[a]||0)).slice(0,2);
+                      const pct = (r._gs*10).toFixed(1);
+                      const fyRaw = computeForYou(r.scores, d, r);
+                      const fyConf = fyRaw==="recommended"?{text:"RECOMMANDÉ",bg:"#1B5E20",border:"#4CAF50",color:"#4CAF50"}:fyRaw==="partial"?{text:"JOUABLE",bg:"#E65100",border:"#FF9800",color:"#FF9800"}:{text:"DÉCONSEILLÉ",bg:"#7f1d1d",border:"#E53935",color:"#E53935"};
+                      return (
+                        <div key={r.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:"rgba(255,255,255,0.03)",border:`1px solid ${i===0?"rgba(249,115,22,0.25)":"rgba(255,255,255,0.06)"}`,borderRadius:12}}>
+                          <div style={{fontSize:20,flexShrink:0}}>{medals[i]}</div>
+                          {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:40,height:40,objectFit:"contain",borderRadius:8,background:"rgba(255,255,255,0.05)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+                              <span style={{fontSize:12,fontWeight:700,color:"#f1f5f9",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.shortName||r.name}</span>
+                              <span style={{fontSize:8,fontWeight:700,color:fyConf.color,background:`${fyConf.bg}`,padding:"1px 6px",borderRadius:4,border:`1px solid ${fyConf.border}`}}>{fyConf.text}</span>
+                            </div>
+                            <div style={{fontSize:9,color:"#64748b",marginTop:2}}>{r.brand} · {r.shape} · {r.weight} · {r.price||"—"}</div>
+                            <div style={{fontSize:9,color:"#94a3b8",marginTop:2}}>
+                              {best2.map(a=>`${a}: ${sc[a]}`).join(" · ")}
+                            </div>
+                          </div>
+                          <div style={{textAlign:"center",flexShrink:0}}>
+                            <div style={{fontSize:18,fontWeight:800,color:i===0?"#f97316":"#a5b4fc",fontFamily:"'Outfit'"}}>{pct}%</div>
+                            <div style={{fontSize:7,color:"#64748b"}}>match</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div style={{fontSize:8,color:"#475569",textAlign:"center",marginTop:14}}>
                   Créé le {p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):"—"} · Modifié le {p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):"—"}
                 </div>
               </div>
