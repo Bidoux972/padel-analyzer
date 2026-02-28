@@ -2010,12 +2010,12 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     if (isFemaleProfile) {
       const wlScored = scored.filter(r=>r.womanLine);
       const nonWl = scored.filter(r=>!r.womanLine);
-      const wlCount = Math.min(wlScored.length, 3); // up to 3 womanLine
-      const nonWlCount = 5 - wlCount;
+      const wlCount = Math.min(wlScored.length, 5); // up to 5 womanLine
+      const nonWlCount = 12 - wlCount;
       heart = [...wlScored.slice(0, wlCount), ...nonWl.slice(0, nonWlCount)];
       heart.sort((a,b)=>b._globalScore - a._globalScore);
     } else {
-      heart = scored.slice(0, 5);
+      heart = scored.slice(0, 12);
     }
     const heartIds = new Set(heart.map(r=>r.id));
     
@@ -2028,7 +2028,7 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
         return avgB-avgA;
       });
     }
-    const priority = prioPool.slice(0, 3);
+    const priority = prioPool.slice(0, 4);
     
     return { heart, priority, totalPool: pool.length };
   }
@@ -3859,9 +3859,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const stepContent = [
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>👤</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Comment tu t'appelles ?</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Le nom de ton profil joueur.</p>
-            <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Ex: Bidou, Manon, Noah..."
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{groupRole==="vendeur"?"Prénom du joueur":"Comment tu t'appelles ?"}</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>{groupRole==="vendeur"?"Le prénom ou pseudo du client.":"Le nom de ton profil joueur."}</p>
+            <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder={groupRole==="vendeur"?"Ex: Manon, Noah...":"Ex: Bidou, Manon, Noah..."}
               onKeyDown={e=>{if(e.key==="Enter"&&canNext)nextStep();}}
               autoFocus style={{width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,background:"rgba(255,255,255,0.05)",border:"2px solid rgba(249,115,22,0.3)",color:"#f1f5f9",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
           </div>,
@@ -3911,7 +3911,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const expertBlocked = !expertAllowed;
             return <div style={{textAlign:"center"}}>
               <div style={{fontSize:40,marginBottom:16}}>🏆</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Quel est ton niveau ?</h2>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{groupRole==="vendeur"?"Quel est son niveau ?":"Quel est ton niveau ?"}</h2>
               <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ça détermine la gamme de raquettes qu'on va te proposer.</p>
               <CardSelect options={levelOptions} value={profile.level} onChange={v=>{setProfile(p=>({...p,level:v}));setTimeout(nextStep,300);}}/>
               {expertBlocked&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>💡 Le niveau Expert nécessite une condition physique Athlétique</div>}
@@ -3954,7 +3954,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:40,marginBottom:16}}>🎾</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Comment tu joues ?</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{groupRole==="vendeur"?"Comment joue-t-il/elle ?":"Comment tu joues ?"}</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Sélectionne tout ce qui te correspond. Ça influence le scoring.</p>
             <TagSelect tags={STYLE_TAGS} field="styleTags"/>
           </div>,
@@ -3970,7 +3970,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {isExpertMode ? (<>
             <div style={{fontSize:40,marginBottom:16}}>🎾</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Tes sensations raquette</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>À ton niveau, c'est le ressenti qui guide. Dis-nous ce que tu cherches.</p>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>{groupRole==="vendeur"?"À ce niveau, le ressenti guide. Quelles sont ses préférences ?":"À ton niveau, c'est le ressenti qui guide. Dis-nous ce que tu cherches."}</p>
             <p style={{fontSize:11,color:"#a855f7",margin:"0 0 22px",fontWeight:600}}>⚡ Mode Pro — matching par propriétés physiques</p>
 
             <div style={{display:"flex",flexDirection:"column",gap:20,maxWidth:460,margin:"0 auto",textAlign:"left"}}>
@@ -4171,8 +4171,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div style={{width:"100%",maxWidth:480}}>
             <div style={{textAlign:"center",marginBottom:24}}>
               <div style={{fontSize:48,marginBottom:12}}>🎾</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>C'est bien toi ?</h2>
-              <p style={{fontSize:13,color:"#64748b",margin:0}}>Vérifie ton profil avant de lancer l'analyse.</p>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Profil à valider":"C'est bien toi ?"}</h2>
+              <p style={{fontSize:13,color:"#64748b",margin:0}}>{groupRole==="vendeur"?"Vérifiez le profil avant de lancer l'analyse.":"Vérifie ton profil avant de lancer l'analyse."}</p>
             </div>
 
             <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:"24px 22px",marginBottom:24}}>
@@ -4224,7 +4224,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 ✏️ Modifier
               </button>
               <button onClick={()=>{
-                if(!profileName.trim()){alert("Donne un nom à ton profil");return;}
+                if(!profileName.trim()){alert(groupRole==="vendeur"?"Entrez le prénom du joueur":"Donne un nom à ton profil");return;}
                 const list = saveNamedProfile(profileName.trim(), profile);
                 setSavedProfiles(list);
                 cloudSyncProfile(profileName.trim(), profile, false);
@@ -4956,7 +4956,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* STEP 0: Identité */}
         {wizardStep===0&&<div style={{animation:"fadeIn 0.3s ease"}}>
           <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>👤 Qui es-tu ?</div>
-          <p style={{fontSize:11,color:"#64748b",margin:"0 0 14px",lineHeight:1.5}}>Ces infos permettent d'adapter les recommandations à ton gabarit et ton niveau.</p>
+          <p style={{fontSize:11,color:"#64748b",margin:"0 0 14px",lineHeight:1.5}}>{groupRole==="vendeur"?"Ces infos permettent d'adapter les recommandations au gabarit et au niveau du joueur.":"Ces infos permettent d'adapter les recommandations à ton gabarit et ton niveau."}</p>
           
           <div style={{marginBottom:12}}>
             <label style={S.label}>Nom du profil</label>
@@ -5178,7 +5178,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             ← Précédent
           </button>}
           {wizardStep<3&&<button onClick={()=>{
-            if(wizardStep===0&&!profileName.trim()){alert("Donne un nom à ton profil pour continuer");return;}
+            if(wizardStep===0&&!profileName.trim()){alert(groupRole==="vendeur"?"Entrez le prénom du joueur":"Donne un nom à ton profil pour continuer");return;}
             setWizardStep(s=>s+1);
           }} style={{
             flex:2,padding:"12px 0",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
@@ -5188,7 +5188,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             Suivant →
           </button>}
           {wizardStep===3&&<button onClick={()=>{
-            if(!profileName.trim()){alert("Retourne à l'étape 1 pour nommer ton profil");return;}
+            if(!profileName.trim()){alert(groupRole==="vendeur"?"Retournez à l'étape 1 pour entrer le prénom":"Retourne à l'étape 1 pour nommer ton profil");return;}
             const list = saveNamedProfile(profileName.trim(), profile);
             setSavedProfiles(list);
             cloudSyncProfile(profileName.trim(), profile, false);
