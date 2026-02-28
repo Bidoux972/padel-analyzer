@@ -1348,6 +1348,7 @@ export default function PadelAnalyzer() {
   const [adminRacketSearch, setAdminRacketSearch] = useState("");
   const [adminRacketFilter, setAdminRacketFilter] = useState("all");
   const [adminEditRacket, setAdminEditRacket] = useState(null);
+  const [adminViewProfile, setAdminViewProfile] = useState(null);
   const [adminLoading, setAdminLoading] = useState(false);
   const [adminMsg, setAdminMsg] = useState("");
   const adminFileInputRef = useRef(null);
@@ -2621,8 +2622,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                               </div>
                             </div>
                             <div style={{display:"flex",gap:4,flexShrink:0}}>
-                              <button onClick={()=>{setProfile({...INITIAL_PROFILE,...(p.data||{})});setProfileName(p.name);setScreen("dashboard");}} style={{padding:"4px 8px",background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:6,color:"#f97316",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Visualiser le dashboard">👁</button>
-                              <button onClick={()=>{setProfile({...INITIAL_PROFILE,...(p.data||{})});setProfileName(p.name);setWizardStep(0);setScreen("wizard");}} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Éditer le profil">✏️</button>
+                              <button onClick={()=>setAdminViewProfile(p)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Coup d'œil">👁</button>
+                              <button onClick={()=>{setProfile({...INITIAL_PROFILE,...(p.data||{})});setProfileName(p.name);setScreen("dashboard");}} style={{padding:"4px 8px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:6,color:"#c084fc",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Entrer dans le profil">✏️</button>
                               <button onClick={async()=>{
                                 if(!confirm(`Supprimer le profil "${p.name}" de la famille ${fam.code} ?`)) return;
                                 try {
@@ -2758,6 +2759,101 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>}
           </div>}
 
+
+          {/* ====== MODAL: COUP D'ŒIL PROFIL ====== */}
+          {adminViewProfile&&(()=>{
+            const p = adminViewProfile;
+            const d = p.data||{};
+            const styles = (d.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const injuries = (d.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const priorities = (d.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const brands = (d.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+            const hand = d.hand||"Droitier";
+            const side = d.side||"Droite";
+            const isFemme = (d.genre||"Homme")==="Femme";
+            const isAttacker = (hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
+            const role = side==="Les deux" ? (isFemme?"Polyvalente":"Polyvalent") : isAttacker ? (isFemme?"Attaquante":"Attaquant") : (isFemme?"Constructrice":"Constructeur");
+
+            return <div onClick={()=>setAdminViewProfile(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:3000,animation:"fadeIn 0.2s ease"}}>
+              <div onClick={e=>e.stopPropagation()} style={{background:"#111827",border:"1px solid rgba(255,255,255,0.12)",borderRadius:20,padding:"24px 22px",maxWidth:420,width:"92%",maxHeight:"85vh",overflowY:"auto",boxShadow:"0 24px 64px rgba(0,0,0,0.6)"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10}}>
+                    <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"2px solid rgba(249,115,22,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,fontWeight:700,color:"#f97316"}}>{(p.name||"?")[0].toUpperCase()}</div>
+                    <div>
+                      <div style={{fontSize:16,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'"}}>{p.name} {p.locked&&"🔒"}</div>
+                      <div style={{fontSize:10,color:"#64748b"}}>Famille: {p.family_code} · {role}</div>
+                    </div>
+                  </div>
+                  <button onClick={()=>setAdminViewProfile(null)} style={{background:"none",border:"none",color:"#64748b",fontSize:20,cursor:"pointer"}}>✕</button>
+                </div>
+
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
+                  {[
+                    {label:"Niveau",value:d.level||"—"},
+                    {label:"Main",value:hand},
+                    {label:"Côté",value:side},
+                    {label:"Genre",value:d.genre||"Homme"},
+                    {label:"Fréquence",value:d.frequency||"—"},
+                    {label:"Compétition",value:d.competition?"Oui":"Non"},
+                    {label:"Fitness",value:d.fitness||"—"},
+                  ].map(item=>(
+                    <div key={item.label} style={{padding:"8px 10px",background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:8}}>
+                      <div style={{fontSize:8,color:"#64748b",textTransform:"uppercase",fontWeight:600,letterSpacing:"0.05em"}}>{item.label}</div>
+                      <div style={{fontSize:12,color:"#e2e8f0",fontWeight:600,marginTop:2}}>{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {(d.age||d.height||d.weight)&&<div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
+                  {d.age&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.15)",color:"#a5b4fc",fontSize:10,fontWeight:600}}>{d.age} ans</span>}
+                  {d.height&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.15)",color:"#a5b4fc",fontSize:10,fontWeight:600}}>{d.height} cm</span>}
+                  {d.weight&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.15)",color:"#a5b4fc",fontSize:10,fontWeight:600}}>{d.weight} kg</span>}
+                </div>}
+
+                {styles.length>0&&<div style={{marginBottom:10}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:4}}>Style de jeu</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {styles.map(t=><span key={t} style={{padding:"3px 10px",borderRadius:8,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",color:"#f97316",fontSize:10,fontWeight:600}}>{t}</span>)}
+                  </div>
+                </div>}
+
+                {priorities.length>0&&<div style={{marginBottom:10}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:4}}>Priorités</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {priorities.map((pr,i)=><span key={pr} style={{padding:"3px 10px",borderRadius:8,background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.15)",color:"#fbbf24",fontSize:10,fontWeight:600}}>{i+1}. {pr}</span>)}
+                  </div>
+                </div>}
+
+                {injuries.length>0&&<div style={{marginBottom:10}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:4}}>Blessures</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {injuries.map(inj=><span key={inj} style={{padding:"3px 10px",borderRadius:8,background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.15)",color:"#f87171",fontSize:10,fontWeight:600}}>{inj}</span>)}
+                  </div>
+                </div>}
+
+                {brands.length>0&&<div style={{marginBottom:10}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:4}}>Marques préférées</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {brands.map(b=><span key={b} style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>{b}</span>)}
+                  </div>
+                </div>}
+
+                {d.expertToucher&&<div style={{marginBottom:10}}>
+                  <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",marginBottom:4}}>Préférences Expert</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {d.expertToucher&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Toucher: {d.expertToucher}</span>}
+                    {d.expertReactivite&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Réactivité: {d.expertReactivite}</span>}
+                    {d.expertPoids&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Poids: {d.expertPoids}</span>}
+                    {d.expertForme&&<span style={{padding:"3px 10px",borderRadius:8,background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.15)",color:"#c084fc",fontSize:10,fontWeight:600}}>Forme: {d.expertForme}</span>}
+                  </div>
+                </div>}
+
+                <div style={{fontSize:8,color:"#475569",textAlign:"center",marginTop:12}}>
+                  Créé le {p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):"—"} · Modifié le {p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):"—"}
+                </div>
+              </div>
+            </div>;
+          })()}
 
           {/* ====== MODAL: EDIT / CREATE RACKET FORM ====== */}
           {adminEditRacket&&(()=>{
