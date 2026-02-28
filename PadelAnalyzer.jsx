@@ -136,6 +136,46 @@ async function cloudSetAdminPin(familyCode, pin) {
   return sbPatch('families', `code=eq.${familyCode}`, { admin_pin: pin });
 }
 
+// ==================== ADMIN RPC HELPERS ====================
+async function sbRpc(fnName, params) {
+  const r = await fetch(`${SB_URL.replace('/rest/v1','/rest/v1/rpc')}/${fnName}`, {
+    method: "POST", headers: SB_HEADERS, body: JSON.stringify(params)
+  });
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
+  return r.json();
+}
+
+async function checkIsAdmin(familyCode) {
+  try {
+    const result = await sbRpc('is_family_admin', { p_family_code: familyCode });
+    return result === true;
+  } catch { return false; }
+}
+
+async function adminListFamilies(familyCode) {
+  return sbRpc('admin_list_families', { p_family_code: familyCode });
+}
+
+async function adminLoadFamilyProfiles(familyCode, targetCode) {
+  return sbRpc('admin_load_family_profiles', { p_family_code: familyCode, p_target_code: targetCode });
+}
+
+async function adminUpsertRacket(familyCode, racket) {
+  return sbRpc('admin_upsert_racket', { p_family_code: familyCode, p_racket: racket });
+}
+
+async function adminToggleRacket(familyCode, racketId) {
+  return sbRpc('admin_toggle_racket', { p_family_code: familyCode, p_racket_id: racketId });
+}
+
+async function adminDeleteRacket(familyCode, racketId) {
+  return sbRpc('admin_delete_racket', { p_family_code: familyCode, p_racket_id: racketId });
+}
+
+async function adminGetStats(familyCode) {
+  return sbRpc('admin_get_stats', { p_family_code: familyCode });
+}
+
 // Load ALL rackets from Supabase rackets table (admin imports go here)
 async function cloudLoadAllRackets() {
   const data = await sbGet('rackets', 'select=*&limit=500');
@@ -1233,7 +1273,7 @@ export default function PadelAnalyzer() {
   });
 
   // ============ BROWSER BACK BUTTON SUPPORT ============
-  const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home" };
+  const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home" };
 
   // Open a full racket sheet from any screen
   const openRacketSheet = useCallback((racket, fromScreen) => {
@@ -1298,6 +1338,19 @@ export default function PadelAnalyzer() {
   const [cloudLoginMode, setCloudLoginMode] = useState("join"); // "join" | "create"
   const [cloudError, setCloudError] = useState("");
 
+  // ============ ADMIN STATE ============
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminTab, setAdminTab] = useState("families");
+  const [adminFamilies, setAdminFamilies] = useState([]);
+  const [adminExpandedFamily, setAdminExpandedFamily] = useState(null);
+  const [adminFamilyProfiles, setAdminFamilyProfiles] = useState([]);
+  const [adminStats, setAdminStats] = useState(null);
+  const [adminRacketSearch, setAdminRacketSearch] = useState("");
+  const [adminRacketFilter, setAdminRacketFilter] = useState("all");
+  const [adminEditRacket, setAdminEditRacket] = useState(null);
+  const [adminLoading, setAdminLoading] = useState(false);
+  const [adminMsg, setAdminMsg] = useState("");
+
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
   useEffect(()=>{
     if (!familyCode) return;
@@ -1326,6 +1379,11 @@ export default function PadelAnalyzer() {
         } catch(e) { console.warn('[Cloud] Rackets merge failed:', e.message); }
       }
       setCloudStatus("synced");
+      // Check admin status
+      checkIsAdmin(familyCode).then(admin => {
+        setIsAdmin(admin);
+        if (admin) console.log("[Admin] ✅ Mode admin activé");
+      });
     }).catch(err => {
       console.warn("[Cloud] Load error:", err.message);
       setCloudStatus("error");
@@ -2388,12 +2446,302 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {cloudStatus==="synced"?"☁️ Synchronisé":"☁️ Cloud"} · <span style={{fontFamily:"'Outfit'",fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
           </span>
           <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"3px 8px",color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}}>⏻</button>
+          {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
         </div>}
 
         <div style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
           <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V12 · {totalDBCount} raquettes · Scoring hybride calibré
         </div>
       </div>}
+
+      {/* ============================================================ */}
+      {/* ADMIN SCREEN */}
+      {/* ============================================================ */}
+      {screen==="admin"&&(()=>{
+        const loadFamilies = async () => {
+          setAdminLoading(true);
+          try {
+            const data = await adminListFamilies(familyCode);
+            setAdminFamilies(data||[]);
+          } catch(e) { setAdminMsg("Erreur: "+e.message); }
+          setAdminLoading(false);
+        };
+        const loadStats = async () => {
+          setAdminLoading(true);
+          try {
+            const data = await adminGetStats(familyCode);
+            setAdminStats(data);
+          } catch(e) { setAdminMsg("Erreur: "+e.message); }
+          setAdminLoading(false);
+        };
+        const expandFamily = async (code) => {
+          if (adminExpandedFamily === code) { setAdminExpandedFamily(null); return; }
+          setAdminExpandedFamily(code);
+          try {
+            const profiles = await adminLoadFamilyProfiles(familyCode, code);
+            setAdminFamilyProfiles(profiles||[]);
+          } catch(e) { setAdminFamilyProfiles([]); }
+        };
+        const handleToggleRacket = async (id) => {
+          try {
+            const newState = await adminToggleRacket(familyCode, id);
+            setAdminMsg(`Raquette ${id}: ${newState ? "activée" : "désactivée"}`);
+          } catch(e) { setAdminMsg("Erreur: "+e.message); }
+        };
+        const handleSaveRacket = async (racket) => {
+          setAdminLoading(true);
+          try {
+            await adminUpsertRacket(familyCode, racket);
+            setAdminMsg("✅ Raquette sauvegardée: " + racket.name);
+            setAdminEditRacket(null);
+          } catch(e) { setAdminMsg("Erreur: "+e.message); }
+          setAdminLoading(false);
+        };
+        const handleImportJSON = async (jsonStr) => {
+          try {
+            const arr = JSON.parse(jsonStr);
+            if (!Array.isArray(arr)) throw new Error("Le JSON doit être un tableau");
+            setAdminLoading(true);
+            let ok = 0, fail = 0;
+            for (const r of arr) {
+              try {
+                const dbRacket = {
+                  id: r.id, name: r.name, short_name: r.shortName||r.short_name,
+                  brand: r.brand, shape: r.shape, weight: r.weight, balance: r.balance,
+                  surface: r.surface, core: r.core, antivib: r.antivib, price: r.price,
+                  player: r.player, image_url: r.imageUrl||r.image_url, year: r.year,
+                  category: r.category, scores: r.scores, verdict: r.verdict,
+                  editorial: r.editorial, tech_highlights: r.techHighlights||r.tech_highlights,
+                  target_profile: r.targetProfile||r.target_profile,
+                  junior: r.junior||false, woman_line: r.womanLine||r.woman_line||false,
+                  description: r.description, pro_player_info: r.proPlayerInfo||r.pro_player_info,
+                  is_active: true
+                };
+                await adminUpsertRacket(familyCode, dbRacket);
+                ok++;
+              } catch { fail++; }
+            }
+            setAdminMsg(`✅ Import: ${ok} OK, ${fail} erreurs sur ${arr.length}`);
+          } catch(e) { setAdminMsg("Erreur JSON: "+e.message); }
+          setAdminLoading(false);
+        };
+
+        // Auto-load on tab change
+        if (adminTab === "families" && adminFamilies.length === 0 && !adminLoading) loadFamilies();
+        if (adminTab === "stats" && !adminStats && !adminLoading) loadStats();
+
+        // Filtered rackets for admin view
+        const allRackets = getMergedDB();
+        const filteredRackets = allRackets.filter(r => {
+          if (adminRacketSearch && !r.name.toLowerCase().includes(adminRacketSearch.toLowerCase()) && !r.brand.toLowerCase().includes(adminRacketSearch.toLowerCase())) return false;
+          if (adminRacketFilter !== "all" && r.brand !== adminRacketFilter) return false;
+          return true;
+        });
+        const brands = [...new Set(allRackets.map(r=>r.brand))].sort();
+
+        const tabStyle = (active) => ({
+          padding:"10px 20px", fontSize:12, fontWeight:active?700:500,
+          color: active?"#c084fc":"#64748b", background: active?"rgba(168,85,247,0.12)":"transparent",
+          border: active?"1px solid rgba(168,85,247,0.3)":"1px solid rgba(255,255,255,0.08)",
+          borderRadius:10, cursor:"pointer", fontFamily:"'Inter',sans-serif", transition:"all 0.2s"
+        });
+
+        return (
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"20px 16px",animation:"fadeIn 0.4s ease"}}>
+          {/* Header */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+            <div style={{display:"flex",alignItems:"center",gap:12}}>
+              <button onClick={()=>setScreen("home")} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"6px 12px",color:"#64748b",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>← Accueil</button>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#a855f7,#6366f1)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0}}>⚙️ Dashboard Admin</h2>
+            </div>
+            <span style={{fontSize:10,color:"#64748b"}}>{familyCode} · {allRackets.length} raquettes</span>
+          </div>
+
+          {/* Tabs */}
+          <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
+            <button onClick={()=>setAdminTab("families")} style={tabStyle(adminTab==="families")}>👥 Familles & Profils</button>
+            <button onClick={()=>setAdminTab("rackets")} style={tabStyle(adminTab==="rackets")}>🏓 Raquettes</button>
+            <button onClick={()=>{setAdminTab("stats");setAdminStats(null);}} style={tabStyle(adminTab==="stats")}>📊 Statistiques</button>
+          </div>
+
+          {/* Status message */}
+          {adminMsg&&<div style={{padding:"10px 14px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:10,marginBottom:16,fontSize:11,color:"#c084fc",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <span>{adminMsg}</span>
+            <button onClick={()=>setAdminMsg("")} style={{background:"none",border:"none",color:"#c084fc",cursor:"pointer",fontSize:14}}>✕</button>
+          </div>}
+
+          {adminLoading&&<div style={{textAlign:"center",padding:20,color:"#64748b",fontSize:12}}>⏳ Chargement...</div>}
+
+          {/* ====== TAB: FAMILIES ====== */}
+          {adminTab==="families"&&!adminLoading&&<div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+              <span style={{fontSize:12,color:"#94a3b8",fontWeight:600}}>{adminFamilies.length} famille(s)</span>
+              <button onClick={()=>{setAdminFamilies([]);}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"4px 10px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit"}}>🔄 Rafraîchir</button>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {adminFamilies.map(fam=>(
+                <div key={fam.code} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,overflow:"hidden"}}>
+                  <button onClick={()=>expandFamily(fam.code)} style={{width:"100%",padding:"14px 18px",background:"none",border:"none",cursor:"pointer",textAlign:"left",display:"flex",alignItems:"center",gap:14,fontFamily:"inherit"}}>
+                    <div style={{width:40,height:40,borderRadius:12,background:fam.is_admin?"linear-gradient(135deg,rgba(168,85,247,0.3),rgba(99,102,241,0.2))":"rgba(255,255,255,0.05)",border:fam.is_admin?"1px solid rgba(168,85,247,0.4)":"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>
+                      {fam.is_admin?"👑":"👤"}
+                    </div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{display:"flex",alignItems:"center",gap:8}}>
+                        <span style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'",letterSpacing:"0.08em"}}>{fam.code}</span>
+                        {fam.is_admin&&<span style={{fontSize:8,fontWeight:700,color:"#c084fc",background:"rgba(168,85,247,0.15)",padding:"2px 8px",borderRadius:6,textTransform:"uppercase"}}>Admin</span>}
+                      </div>
+                      <div style={{fontSize:10,color:"#64748b",marginTop:2}}>
+                        {fam.profile_count||0} profil(s)
+                        {fam.profile_names&&fam.profile_names.length>0&&<span> · {fam.profile_names.join(", ")}</span>}
+                      </div>
+                      <div style={{fontSize:9,color:"#475569",marginTop:2}}>
+                        {fam.last_activity ? `Dernière activité: ${new Date(fam.last_activity).toLocaleDateString('fr-FR')} ${new Date(fam.last_activity).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}` : "Aucune activité"}
+                      </div>
+                    </div>
+                    <span style={{color:"#64748b",fontSize:16,transition:"transform 0.2s",transform:adminExpandedFamily===fam.code?"rotate(90deg)":"rotate(0)"}}>{adminExpandedFamily===fam.code?"▾":"▸"}</span>
+                  </button>
+
+                  {/* Expanded: profiles detail */}
+                  {adminExpandedFamily===fam.code&&<div style={{padding:"0 18px 14px",borderTop:"1px solid rgba(255,255,255,0.05)"}}>
+                    {adminFamilyProfiles.length===0&&<p style={{fontSize:11,color:"#475569",margin:"10px 0"}}>Aucun profil</p>}
+                    {adminFamilyProfiles.map(p=>{
+                      const d = p.data||{};
+                      return (
+                        <div key={p.id} style={{padding:"10px 0",borderBottom:"1px solid rgba(255,255,255,0.03)",display:"flex",alignItems:"center",gap:12}}>
+                          <div style={{width:32,height:32,borderRadius:10,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,color:"#f97316",flexShrink:0}}>
+                            {(p.name||"?").charAt(0).toUpperCase()}
+                          </div>
+                          <div style={{flex:1}}>
+                            <div style={{fontSize:13,fontWeight:600,color:"#e2e8f0"}}>{p.name} {p.locked&&"🔒"}</div>
+                            <div style={{fontSize:10,color:"#64748b"}}>
+                              {d.level||"—"} · {d.hand||"—"} · Côté {d.side||"—"}
+                              {d.styleTags&&d.styleTags.length>0&&<span> · {d.styleTags.slice(0,3).join(", ")}</span>}
+                            </div>
+                          </div>
+                          <div style={{fontSize:9,color:"#475569"}}>{p.updated_at?new Date(p.updated_at).toLocaleDateString('fr-FR'):""}</div>
+                        </div>
+                      );
+                    })}
+                  </div>}
+                </div>
+              ))}
+            </div>
+          </div>}
+
+          {/* ====== TAB: RACKETS ====== */}
+          {adminTab==="rackets"&&!adminLoading&&<div>
+            {/* Search + Filter bar */}
+            <div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap"}}>
+              <input value={adminRacketSearch} onChange={e=>setAdminRacketSearch(e.target.value)} placeholder="Rechercher nom ou marque…" style={{flex:"1 1 200px",padding:"8px 12px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none"}}/>
+              <select value={adminRacketFilter} onChange={e=>setAdminRacketFilter(e.target.value)} style={{padding:"8px 12px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#e2e8f0",fontSize:11,fontFamily:"inherit",outline:"none"}}>
+                <option value="all">Toutes marques</option>
+                {brands.map(b=><option key={b} value={b}>{b}</option>)}
+              </select>
+              <button onClick={()=>{
+                const json = prompt("Coller le JSON des raquettes à importer:");
+                if(json) handleImportJSON(json);
+              }} style={{padding:"8px 14px",background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:8,color:"#4CAF50",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>📥 Import JSON</button>
+            </div>
+
+            <div style={{fontSize:11,color:"#64748b",marginBottom:10}}>{filteredRackets.length} raquette(s) affichée(s) sur {allRackets.length}</div>
+
+            {/* Rackets table */}
+            <div style={{display:"flex",flexDirection:"column",gap:4}}>
+              {filteredRackets.slice(0,50).map(r=>(
+                <div key={r.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:10,fontSize:11}}>
+                  {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:36,height:36,objectFit:"contain",borderRadius:6,background:"rgba(255,255,255,0.05)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontWeight:600,color:"#e2e8f0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
+                    <div style={{fontSize:9,color:"#64748b"}}>{r.brand} · {r.shape} · {r.category} · {r.year}</div>
+                  </div>
+                  <div style={{fontSize:9,color:"#64748b",flexShrink:0}}>{r.price||"—"}</div>
+                  <div style={{display:"flex",gap:4,flexShrink:0}}>
+                    <button onClick={()=>openRacketSheet(r,"admin")} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Voir fiche">📋</button>
+                    <button onClick={()=>handleToggleRacket(r.id)} style={{padding:"4px 8px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}} title="Activer/Désactiver">
+                      {r.is_active===false?"🔴":"🟢"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {filteredRackets.length>50&&<p style={{fontSize:10,color:"#475569",textAlign:"center",marginTop:8}}>Affichage limité à 50 — affinez votre recherche</p>}
+            </div>
+          </div>}
+
+          {/* ====== TAB: STATS ====== */}
+          {adminTab==="stats"&&!adminLoading&&adminStats&&<div>
+            {/* KPI cards */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:10,marginBottom:20}}>
+              {[
+                {label:"Familles",value:adminStats.total_families,icon:"👥",color:"#a855f7"},
+                {label:"Profils",value:adminStats.total_profiles,icon:"👤",color:"#6366f1"},
+                {label:"Raquettes actives",value:adminStats.active_rackets,icon:"🏓",color:"#f97316"},
+                {label:"Marques",value:adminStats.brands,icon:"🏷️",color:"#22c55e"},
+              ].map(kpi=>(
+                <div key={kpi.label} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"16px",textAlign:"center"}}>
+                  <div style={{fontSize:24}}>{kpi.icon}</div>
+                  <div style={{fontSize:28,fontWeight:800,color:kpi.color,fontFamily:"'Outfit'",margin:"4px 0"}}>{kpi.value}</div>
+                  <div style={{fontSize:10,color:"#64748b",fontWeight:500}}>{kpi.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* By category */}
+            {adminStats.by_category&&<div style={{marginBottom:20}}>
+              <h3 style={{fontSize:13,fontWeight:700,color:"#94a3b8",marginBottom:10}}>Répartition par catégorie</h3>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                {Object.entries(adminStats.by_category).sort((a,b)=>b[1]-a[1]).map(([cat,count])=>{
+                  const catColors = {debutant:"#22c55e",intermediaire:"#f59e0b",avance:"#ef4444",expert:"#a855f7",junior:"#3b82f6"};
+                  return (
+                    <div key={cat} style={{padding:"10px 16px",background:`${catColors[cat]||"#64748b"}12`,border:`1px solid ${catColors[cat]||"#64748b"}30`,borderRadius:10,textAlign:"center"}}>
+                      <div style={{fontSize:20,fontWeight:800,color:catColors[cat]||"#64748b",fontFamily:"'Outfit'"}}>{count}</div>
+                      <div style={{fontSize:10,color:"#94a3b8",textTransform:"capitalize"}}>{cat}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>}
+
+            {/* By brand */}
+            {adminStats.by_brand&&<div style={{marginBottom:20}}>
+              <h3 style={{fontSize:13,fontWeight:700,color:"#94a3b8",marginBottom:10}}>Raquettes par marque</h3>
+              <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                {Object.entries(adminStats.by_brand).sort((a,b)=>b[1]-a[1]).map(([brand,count])=>{
+                  const maxCount = Math.max(...Object.values(adminStats.by_brand));
+                  return (
+                    <div key={brand} style={{display:"flex",alignItems:"center",gap:10}}>
+                      <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600,width:100,flexShrink:0}}>{brand}</span>
+                      <div style={{flex:1,height:20,background:"rgba(255,255,255,0.03)",borderRadius:6,overflow:"hidden"}}>
+                        <div style={{width:`${(count/maxCount)*100}%`,height:"100%",background:"linear-gradient(90deg,rgba(168,85,247,0.3),rgba(99,102,241,0.3))",borderRadius:6,transition:"width 0.5s ease"}}/>
+                      </div>
+                      <span style={{fontSize:11,color:"#94a3b8",fontWeight:600,width:30,textAlign:"right"}}>{count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>}
+
+            {/* Recent families */}
+            {adminStats.recent_families&&<div>
+              <h3 style={{fontSize:13,fontWeight:700,color:"#94a3b8",marginBottom:10}}>10 dernières familles actives</h3>
+              <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                {adminStats.recent_families.map((f,i)=>(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:8,fontSize:11}}>
+                    <span style={{fontFamily:"'Outfit'",fontWeight:700,color:"#e2e8f0",letterSpacing:"0.06em"}}>{f.code}</span>
+                    <span style={{color:"#64748b"}}>{f.profiles} profil(s)</span>
+                    <span style={{fontSize:9,color:"#475569",marginLeft:"auto"}}>{f.last_activity?new Date(f.last_activity).toLocaleDateString('fr-FR'):""}</span>
+                  </div>
+                ))}
+              </div>
+            </div>}
+          </div>}
+
+          {/* Footer */}
+          <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:24}}>
+            <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> Admin Dashboard · {allRackets.length} raquettes
+          </div>
+        </div>
+        );
+      })()}
 
       {/* ============================================================ */}
       {/* MAGAZINE SCREEN — Full-page premium Tendances */}
