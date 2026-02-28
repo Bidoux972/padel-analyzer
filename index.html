@@ -25,6 +25,22 @@ tr.pa-row{transition:background .15s ease}tr.pa-row:hover{background:rgba(255,25
 </head>
 <body>
 <div id="root"></div>
-<script src="/bundle.js?v=10.7.0"></script>
+<script src="/bundle.js?v=12.0.0"></script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js').then(reg=>{
+      reg.addEventListener('updatefound',()=>{
+        const nw=reg.installing;
+        nw.addEventListener('statechange',()=>{
+          if(nw.state==='installed'&&navigator.serviceWorker.controller){
+            console.log('[SW] Nouvelle version disponible');
+          }
+        });
+      });
+    }).catch(e=>console.warn('[SW] Erreur:',e));
+  });
+}
+</script>
 </body>
 </html>

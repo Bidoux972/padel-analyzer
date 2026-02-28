@@ -1,9 +1,24 @@
 {
   "name": "Padel Analyzer",
   "short_name": "PadelApp",
+  "description": "Recommandation de raquettes de padel",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#080c14",
-  "theme_color": "#f97316",
-  "icons": []
+  "theme_color": "#080c14",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23f97316'/%3E%3Cellipse cx='256' cy='205' rx='113' ry='138' stroke='%23fff' stroke-width='23' fill='none'/%3E%3Cline x1='256' y1='343' x2='256' y2='440' stroke='%23fff' stroke-width='28' stroke-linecap='round'/%3E%3Ccircle cx='384' cy='370' r='41' fill='%23fff' opacity='0.85'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23f97316'/%3E%3Cellipse cx='96' cy='77' rx='42' ry='52' stroke='%23fff' stroke-width='9' fill='none'/%3E%3Cline x1='96' y1='129' x2='96' y2='165' stroke='%23fff' stroke-width='11' stroke-linecap='round'/%3E%3Ccircle cx='144' cy='138' r='15' fill='%23fff' opacity='0.85'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
