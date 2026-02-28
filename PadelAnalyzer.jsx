@@ -1434,6 +1434,35 @@ export default function PadelAnalyzer() {
     });
   }, [familyCode]);
 
+  // ============ INACTIVITY TIMER (Vendeur/Tablette mode) ============
+  useEffect(() => {
+    if (groupRole !== 'vendeur' || screen === 'login') return;
+    const TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+    let timer = null;
+    const resetTimer = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        setCloudLoginName("");
+        setCloudLoginPassword("");
+        setCloudError("");
+        setSavedProfiles([]);
+        saveProfilesList([]);
+        setProfile({...INITIAL_PROFILE});
+        setProfileName("");
+        setScreen("login");
+        setAdminMsg("⏱ Session expirée — inactivité");
+        setTimeout(() => setAdminMsg(""), 4000);
+      }, TIMEOUT_MS);
+    };
+    const events = ['mousedown','mousemove','keydown','touchstart','scroll'];
+    events.forEach(e => window.addEventListener(e, resetTimer, {passive:true}));
+    resetTimer();
+    return () => {
+      if (timer) clearTimeout(timer);
+      events.forEach(e => window.removeEventListener(e, resetTimer));
+    };
+  }, [groupRole, screen]);
+
   // Cloud save helper
   const cloudSyncProfile = useCallback(async (name, profileData, locked) => {
     if (!familyCode) return;
@@ -2238,6 +2267,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <button onClick={()=>{setCloudLoginMode("create");setCloudError("");}} style={{flex:1,padding:"10px",borderRadius:10,border:cloudLoginMode==="create"?"1px solid #f97316":"1px solid rgba(255,255,255,0.1)",background:cloudLoginMode==="create"?"rgba(249,115,22,0.15)":"transparent",color:cloudLoginMode==="create"?"#f97316":"#64748b",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Créer un compte</button>
           </div>
           
+          {adminMsg&&<div style={{padding:"10px 14px",background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.25)",borderRadius:10,marginBottom:12,fontSize:12,color:"#f97316",textAlign:"center",fontWeight:600,animation:"fadeIn 0.3s ease"}}>{adminMsg}</div>}
+          
           <p style={{fontSize:11,color:"#94a3b8",margin:"0 0 16px",lineHeight:1.5}}>
             {cloudLoginMode==="join"
               ?"Connecte-toi avec ton nom de groupe et ton mot de passe."
@@ -2247,7 +2278,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Nom du groupe */}
           <div style={{marginBottom:12}}>
             <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Nom du groupe</label>
-            <input type="text" value={cloudLoginName} onChange={e=>setCloudLoginName(e.target.value)} 
+            <input type="text" value={cloudLoginName} onChange={e=>setCloudLoginName(e.target.value)} autoComplete="off"
               placeholder={cloudLoginMode==="join"?"Ex: Famille Dupont":"Choisis un nom de groupe"}
               style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
               onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
@@ -2256,7 +2287,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Mot de passe */}
           <div style={{marginBottom:cloudLoginMode==="create"?12:0}}>
             <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Mot de passe</label>
-            <input type="password" value={cloudLoginPassword} onChange={e=>setCloudLoginPassword(e.target.value)} 
+            <input type="password" value={cloudLoginPassword} onChange={e=>setCloudLoginPassword(e.target.value)} autoComplete="off"
               placeholder="••••••"
               style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
               onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
