@@ -17,20 +17,31 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate: delete ALL old caches, claim clients, notify them to reload
+// Activate: delete ALL old caches, claim clients, force reload if migrating
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => {
+    caches.keys().then(keys => {
+      const oldKeys = keys.filter(k => k !== CACHE_NAME);
+      const isLegacyMigration = oldKeys.some(k => k === 'padel-analyzer-v1'); // from old SW without message listener
+      return Promise.all(oldKeys.map(k => {
         console.log('[SW] Deleting old cache:', k);
         return caches.delete(k);
-      }))
-    ).then(() => {
-      // Notify all clients that a new version is available
-      self.clients.matchAll().then(clients => {
-        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED', version: CACHE_VERSION }));
+      })).then(() => isLegacyMigration);
+    }).then((isLegacyMigration) => {
+      return self.clients.claim().then(() => {
+        if (isLegacyMigration) {
+          // Force reload all tabs — old pages don't have the message listener
+          console.log('[SW] Migration detected — forcing reload of all clients');
+          self.clients.matchAll({type: 'window'}).then(clients => {
+            clients.forEach(client => client.navigate(client.url));
+          });
+        } else {
+          // Normal update — notify via message (app handles it gracefully)
+          self.clients.matchAll().then(clients => {
+            clients.forEach(client => client.postMessage({ type: 'SW_UPDATED', version: CACHE_VERSION }));
+          });
+        }
       });
-      return self.clients.claim();
     })
   );
 });

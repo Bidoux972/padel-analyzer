@@ -1304,6 +1304,17 @@ export default function PadelAnalyzer() {
   // Compteur dynamique = total unique (embedded + extras dédupliqués par ID)
   const totalDBCount = useMemo(() => getMergedDB().length, [localDBCount]);
   const [screen, setScreen] = useState(()=>{
+    // Vendeur sessions don't survive browser restart
+    const role = getGroupRole();
+    if (role === 'vendeur' && !sessionStorage.getItem('padel_session_alive')) {
+      // Browser was closed and reopened → clear vendeur session
+      localStorage.removeItem('padel_group_role');
+      localStorage.removeItem('padel_group_name');
+      localStorage.removeItem('padel_family_code');
+      localStorage.removeItem('savedProfiles');
+      return "login";
+    }
+    sessionStorage.setItem('padel_session_alive', '1');
     if (!getFamilyCode()) return "login";
     const p = loadSavedProfile();
     return (p._name) ? "home" : "home";
@@ -2302,7 +2313,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Nom du groupe */}
           <div style={{marginBottom:12}}>
             <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Nom du groupe</label>
-            <input type="text" value={cloudLoginName} onChange={e=>setCloudLoginName(e.target.value)} autoComplete="off"
+            <input type="text" value={cloudLoginName} onChange={e=>setCloudLoginName(e.target.value)} autoComplete="one-time-code" name="padel_grp_x"
+              readOnly onFocus={e=>e.target.removeAttribute('readOnly')}
               placeholder={cloudLoginMode==="join"?"Ex: Famille Dupont":"Choisis un nom de groupe"}
               style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
               onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
@@ -2311,7 +2323,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Mot de passe */}
           <div style={{marginBottom:cloudLoginMode==="create"?12:0}}>
             <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Mot de passe</label>
-            <input type="password" value={cloudLoginPassword} onChange={e=>setCloudLoginPassword(e.target.value)} autoComplete="off"
+            <input type="password" value={cloudLoginPassword} onChange={e=>setCloudLoginPassword(e.target.value)} autoComplete="new-password" name="padel_pwd_x"
+              readOnly onFocus={e=>e.target.removeAttribute('readOnly')}
               placeholder="••••••"
               style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
               onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
