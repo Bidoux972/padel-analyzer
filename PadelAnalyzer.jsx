@@ -5,6 +5,734 @@ import {
 } from "recharts";
 import RACKETS_DB from "./rackets-db.json";
 
+// ═══════════════════════════════════════════════════════════
+// MAGAZINE / CATALOGUE / FICHE RAQUETTE (inline)
+// ═══════════════════════════════════════════════════════════
+
+// ─── FOREST SANTÉ THEME ─────────────────────────────────────
+const T = {
+  bg:       "#0B0E0D",
+  card:     "#131614",
+  surface:  "#1B1F1C",
+  border:   "#272C28",
+  accent:   "#E8622A",
+  accentSoft: "rgba(232,98,42,0.12)",
+  accentGlow: "rgba(232,98,42,0.25)",
+  gold:     "#D4A856",
+  goldSoft: "rgba(212,168,86,0.12)",
+  cream:    "#FAF7F2",
+  white:    "#F2F0ED",
+  gray1:    "#B8B5AF",
+  gray2:    "#7A776F",
+  gray3:    "#4A4843",
+  gray4:    "#2A2A2F",
+  green:    "#3DB06B",
+  greenSoft:"rgba(61,176,107,0.12)",
+  purple:   "#a855f7",
+  purpleSoft:"rgba(168,85,247,0.08)",
+};
+
+const F = {
+  editorial: "'Cormorant Garamond', Georgia, serif",
+  body:      "'DM Sans', 'Inter', -apple-system, sans-serif",
+  mono:      "'JetBrains Mono', 'Outfit', monospace",
+  legacy:    "'Outfit', 'Inter', sans-serif",
+};
+
+const FONT_LINK = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap";
+
+const CAT_LABELS = {debutant:"Débutant",intermediaire:"Intermédiaire",avance:"Avancé",expert:"Expert"};
+const catColor = c => c==="expert"?"#f97316":c==="avance"?"#a855f7":c==="intermediaire"?"#3b82f6":"#22c55e";
+
+// ─── SVG RADAR ──────────────────────────────────────────────
+function SvgRadar({ scores, size = 200, color = T.accent }) {
+  const cx = size/2, cy = size/2, r = size * 0.38;
+  const pt = (i, v) => {
+    const angle = (Math.PI * 2 * i) / 6 - Math.PI / 2;
+    const dist = (v / 10) * r;
+    return [cx + dist * Math.cos(angle), cy + dist * Math.sin(angle)];
+  };
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {[2,4,6,8,10].map(lv => (
+        <polygon key={lv} points={ATTRS.map((_,i) => pt(i,lv).join(",")).join(" ")}
+          fill="none" stroke={T.border} strokeWidth={lv===10?1.5:0.5} opacity={0.6}/>
+      ))}
+      {ATTRS.map((_,i) => { const [x,y] = pt(i,10); return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke={T.border} strokeWidth={0.5} opacity={0.4}/>; })}
+      <polygon points={ATTRS.map((k,i) => pt(i,scores[k]||0).join(",")).join(" ")}
+        fill={`${color}20`} stroke={color} strokeWidth={2}/>
+      {ATTRS.map((k,i) => { const [x,y] = pt(i,scores[k]||0); return <circle key={i} cx={x} cy={y} r={3} fill={color}/>; })}
+      {ATTRS.map((k,i) => {
+        const [x,y] = pt(i, 12.5);
+        const anchor = x < cx-10 ? "end" : x > cx+10 ? "start" : "middle";
+        return (<g key={k}>
+          <text x={x} y={y} textAnchor={anchor} dominantBaseline="middle"
+            style={{fontSize:9,fontFamily:F.body,fontWeight:600,fill:T.gray1}}>{k.slice(0,4).toUpperCase()}</text>
+          <text x={x} y={y+12} textAnchor={anchor} dominantBaseline="middle"
+            style={{fontSize:10,fontFamily:F.mono,fontWeight:700,fill:T.white}}>{(scores[k]||0).toFixed(1)}</text>
+        </g>);
+      })}
+    </svg>
+  );
+}
+
+// ─── SCORE BAR ──────────────────────────────────────────────
+function ScoreBar({ label, value }) {
+  const pct = (value / 10) * 100;
+  const col = value >= 9 ? T.accent : value >= 8 ? T.gold : T.gray2;
+  return (
+    <div style={{marginBottom:10}}>
+      <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+        <span style={{fontFamily:F.body,fontSize:11,color:T.gray1,fontWeight:500}}>{label}</span>
+        <span style={{fontFamily:F.mono,fontSize:11,color:T.white,fontWeight:700}}>{value.toFixed(1)}</span>
+      </div>
+      <div style={{height:4,borderRadius:2,background:T.border}}>
+        <div style={{width:`${pct}%`,height:"100%",borderRadius:2,background:col,transition:"width 0.8s ease"}}/>
+      </div>
+    </div>
+  );
+}
+
+// ─── RACKET IMAGE ───────────────────────────────────────────
+function RacketImg({ src, alt, style, fallbackSize = 48 }) {
+  const [err, setErr] = useState(false);
+  if (!src || err) return (
+    <div style={{width:fallbackSize,height:fallbackSize,borderRadius:"50%",background:T.accentSoft,
+      border:`1px dashed ${T.accent}40`,display:"flex",alignItems:"center",justifyContent:"center",
+      fontSize:fallbackSize*0.4,...(style||{})}}>🏸</div>
+  );
+  return <img src={src} alt={alt||""} style={style} onError={()=>setErr(true)}/>;
+}
+
+// ─── FONT LOADER ────────────────────────────────────────────
+function FontLoader() {
+  return <link href={FONT_LINK} rel="stylesheet"/>;
+}
+
+// ═════════════════════════════════════════════════════════════
+// MAGAZINE SCREEN
+// ═════════════════════════════════════════════════════════════
+function MagazineScreen({ ctx }) {
+  const {
+    magCat, setMagCat, magYear, setMagYear, magDetail, setMagDetail, magSlide, setMagSlide,
+    getTopByCategory, MAGAZINE_CATEGORIES, openRacketSheet, setScreen, totalDBCount, getMergedDB,
+  } = ctx;
+
+  const catIdx = MAGAZINE_CATEGORIES.findIndex(c => c.id === magCat);
+  const catInfo = MAGAZINE_CATEGORIES[catIdx];
+  const top5 = getTopByCategory(magCat, magYear);
+  const prevCat = () => { const i = (catIdx-1+MAGAZINE_CATEGORIES.length)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null); setMagSlide(0); };
+  const nextCat = () => { const i = (catIdx+1)%MAGAZINE_CATEGORIES.length; setMagCat(MAGAZINE_CATEGORIES[i].id); setMagDetail(null); setMagSlide(0); };
+  const currentR = top5[magSlide] || top5[0];
+
+  // Detail view for a racket in the magazine
+  if (magDetail) {
+    const r = magDetail;
+    const sc = r.scores||{};
+    const avg = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
+    return (
+      <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 16px"}}>
+        <FontLoader/>
+        <div style={{display:"flex",alignItems:"center",padding:"14px 0"}}>
+          <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Magazine</button>
+        </div>
+        {/* Hero image */}
+        <div style={{height:240,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",marginBottom:16}}>
+          <div style={{position:"absolute",top:"40%",left:"50%",transform:"translate(-50%,-50%)",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${T.accent}12 0%, transparent 70%)`}}/>
+          <RacketImg src={r.imageUrl} alt={r.name} style={{height:200,objectFit:"contain",position:"relative",filter:"drop-shadow(0 12px 32px rgba(0,0,0,0.5))"}} fallbackSize={120}/>
+        </div>
+        {/* Info */}
+        <div style={{display:"flex",gap:6,marginBottom:8}}>
+          <span style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.1em",textTransform:"uppercase",background:T.accentSoft,padding:"3px 10px",borderRadius:4}}>{r.brand}</span>
+          <span style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:catColor(r.category),letterSpacing:"0.1em",textTransform:"uppercase",background:`${catColor(r.category)}12`,padding:"3px 10px",borderRadius:4}}>{CAT_LABELS[r.category]||r.category}</span>
+        </div>
+        <h2 style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:T.white,lineHeight:1.05,margin:"0 0 6px"}}>{r.name}</h2>
+        <div style={{fontFamily:F.body,fontSize:12,color:T.gray2,marginBottom:12}}>{r.shape} · {r.weight} · {r.price}</div>
+        {r.proPlayerInfo?.name&&<div style={{display:"flex",gap:10,alignItems:"center",padding:"12px 14px",borderRadius:12,background:T.goldSoft,border:`1px solid ${T.gold}30`,marginBottom:20}}>
+          <span style={{fontSize:18}}>🎾</span>
+          <div>
+            <div style={{fontFamily:F.body,fontSize:13,fontWeight:700,color:T.gold}}>{r.proPlayerInfo.name}</div>
+            {r.proPlayerInfo.context&&<div style={{fontFamily:F.body,fontSize:11,color:T.gray1,lineHeight:1.3}}>{r.proPlayerInfo.context}</div>}
+          </div>
+        </div>}
+        {/* Score + Radar */}
+        <div style={{display:"flex",gap:16,alignItems:"center",padding:"16px 0",borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`,marginBottom:20}}>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontFamily:F.mono,fontSize:36,fontWeight:700,color:T.accent,lineHeight:1}}>{avg.toFixed(1)}</div>
+            <div style={{fontFamily:F.mono,fontSize:9,color:T.gray2,letterSpacing:"0.08em",marginTop:4}}>SCORE</div>
+          </div>
+          <div style={{flex:1}}><SvgRadar scores={sc} size={170}/></div>
+        </div>
+        {r.verdict&&<div style={{marginBottom:20}}>
+          <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.15em",marginBottom:8}}>VERDICT</div>
+          <p style={{fontFamily:F.editorial,fontSize:20,fontStyle:"italic",color:T.cream,lineHeight:1.4,margin:0}}>"{r.verdict}"</p>
+        </div>}
+        {r.editorial&&<div style={{marginBottom:20}}>
+          <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.gray2,letterSpacing:"0.15em",marginBottom:8}}>ANALYSE</div>
+          <p style={{fontFamily:F.body,fontSize:14,color:T.gray1,lineHeight:1.7,margin:0}}>{r.editorial}</p>
+        </div>}
+        <div style={{textAlign:"center",padding:"16px 0 40px"}}>
+          <button onClick={()=>openRacketSheet(r,"magazine")} style={{padding:"14px 40px",borderRadius:60,border:"none",background:T.accent,color:"#fff",fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${T.accentGlow}`,width:"100%",maxWidth:320}}>
+            Voir la fiche technique complète →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Main magazine view
+  return (
+    <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
+      <FontLoader/>
+
+      {/* Header */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px"}}>
+        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Accueil</button>
+        <span style={{fontFamily:F.mono,fontSize:10,color:T.gray2,letterSpacing:"0.08em"}}>{totalDBCount} PALAS</span>
+      </div>
+
+      {/* Title */}
+      <div style={{textAlign:"center",marginBottom:20,padding:"0 8px"}}>
+        <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:8}}>
+          TENDANCES & MAGAZINE
+        </div>
+        <h1 style={{fontFamily:F.editorial,fontSize:38,fontWeight:700,color:T.white,margin:"0 0 4px",letterSpacing:"-0.02em",lineHeight:1.05}}>
+          {catInfo?.label || "Magazine"}
+        </h1>
+        <p style={{fontFamily:F.body,fontSize:12,color:T.gray2,margin:0}}>{catInfo?.desc}</p>
+      </div>
+
+      {/* Category nav */}
+      <div style={{display:"flex",gap:6,overflowX:"auto",padding:"0 4px 16px",scrollbarWidth:"none"}}>
+        {MAGAZINE_CATEGORIES.map((c,i) => (
+          <button key={c.id} onClick={()=>{setMagCat(c.id);setMagDetail(null);setMagSlide(0);}} style={{
+            padding:"8px 16px",borderRadius:60,border:"none",whiteSpace:"nowrap",
+            background:magCat===c.id?T.accent:T.surface,
+            color:magCat===c.id?"#fff":T.gray1,
+            fontFamily:F.body,fontSize:11,fontWeight:600,cursor:"pointer",
+            transition:"all 0.2s",flexShrink:0,
+          }}>
+            {c.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Year toggle */}
+      <div style={{display:"flex",gap:4,justifyContent:"center",marginBottom:20}}>
+        {[2026,2025,null].map(y => (
+          <button key={y||"all"} onClick={()=>{setMagYear(y);setMagSlide(0);setMagDetail(null);}} style={{
+            padding:"6px 14px",borderRadius:8,border:`1px solid ${magYear===y?T.accent+"40":T.border}`,
+            background:magYear===y?T.accentSoft:"transparent",
+            color:magYear===y?T.accent:T.gray2,
+            fontFamily:F.mono,fontSize:10,fontWeight:700,cursor:"pointer",
+          }}>
+            {y||"Toutes"}
+          </button>
+        ))}
+      </div>
+
+      {/* Top 5 list */}
+      {top5.length === 0 ? (
+        <div style={{textAlign:"center",padding:"40px 0",color:T.gray2}}>
+          <div style={{fontSize:32,marginBottom:8}}>🏸</div>
+          <p style={{fontSize:13}}>Aucune raquette dans cette catégorie</p>
+        </div>
+      ) : (
+        <div style={{padding:"0 4px"}}>
+          {/* Featured #1 */}
+          {top5[0] && (()=>{
+            const r = top5[0];
+            const sc = r.scores||{};
+            return (
+              <div onClick={()=>setMagDetail(r)} style={{
+                position:"relative",overflow:"hidden",borderRadius:20,marginBottom:16,cursor:"pointer",
+                background:`linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`,
+                border:`1px solid ${T.border}`,padding:"24px 20px",
+              }}>
+                {/* Background ghost image */}
+                {r.imageUrl&&<div style={{position:"absolute",top:0,right:-20,bottom:0,width:"50%",opacity:0.08,
+                  backgroundImage:`url(${r.imageUrl})`,backgroundSize:"contain",backgroundRepeat:"no-repeat",backgroundPosition:"center right"}}/>}
+                <div style={{position:"relative",zIndex:2}}>
+                  <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.gold,letterSpacing:"0.12em",marginBottom:10}}>
+                    🏆 N°1 · {catInfo?.label}
+                  </div>
+                  <h2 style={{fontFamily:F.editorial,fontSize:30,fontWeight:700,fontStyle:"italic",color:T.white,lineHeight:1.05,margin:"0 0 6px"}}>
+                    {r.shortName||r.name}
+                  </h2>
+                  <div style={{fontFamily:F.body,fontSize:12,color:T.gray2,marginBottom:4}}>{r.brand} · {r.shape} · {r.price}</div>
+                  {r.proPlayerInfo?.name&&<div style={{fontFamily:F.body,fontSize:11,color:T.gold,marginBottom:12}}>
+                    🎾 {r.proPlayerInfo.name}
+                  </div>}
+                  {r.verdict&&<p style={{fontFamily:F.editorial,fontSize:16,fontStyle:"italic",color:T.cream,lineHeight:1.4,margin:"0 0 14px",maxWidth:340}}>
+                    "{(r.verdict||"").slice(0,100)}{(r.verdict||"").length>100?"...":""}"
+                  </p>}
+                  <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                    {ATTRS.slice(0,4).map(a=>{
+                      const v = sc[a]||0;
+                      return <span key={a} style={{fontFamily:F.mono,fontSize:9,fontWeight:700,
+                        color:v>=9?T.accent:v>=8?T.gold:T.gray1,
+                        background:v>=9?T.accentSoft:v>=8?T.goldSoft:`${T.gray2}18`,
+                        padding:"3px 8px",borderRadius:4}}>{a.slice(0,3).toUpperCase()} {v.toFixed(1)}</span>;
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Rest of top 5 */}
+          {top5.slice(1).map((r, i) => {
+            const sc = r.scores||{};
+            const sortAttr = catInfo?.attr;
+            const sortVal = r._sortScore || (sortAttr ? sc[sortAttr] : 0);
+            return (
+              <div key={r.id||r.name} onClick={()=>setMagDetail(r)} style={{
+                display:"flex",gap:14,padding:"14px 8px",cursor:"pointer",
+                borderBottom:i < top5.length-2 ? `1px solid ${T.border}` : "none",
+                alignItems:"center",transition:"background 0.2s",
+              }}>
+                <div style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:T.gray3,width:28,textAlign:"center",flexShrink:0}}>
+                  {i+2}
+                </div>
+                <div style={{width:56,height:56,borderRadius:12,background:T.card,border:`1px solid ${T.border}`,
+                  display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden"}}>
+                  <RacketImg src={r.imageUrl} alt="" style={{height:48,objectFit:"contain"}} fallbackSize={36}/>
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontFamily:F.body,fontSize:10,color:T.accent,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>{r.brand}</div>
+                  <div style={{fontFamily:F.body,fontSize:14,color:T.white,fontWeight:600,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
+                  <div style={{fontFamily:F.body,fontSize:11,color:T.gray2,marginTop:2}}>{r.shape} · {r.price}</div>
+                </div>
+                <div style={{textAlign:"right",flexShrink:0}}>
+                  <div style={{fontFamily:F.mono,fontSize:18,fontWeight:700,color:sortVal>=9?T.accent:sortVal>=8?T.gold:T.gray1}}>{typeof sortVal==="number"?sortVal.toFixed(1):sortVal}</div>
+                  {r.proPlayerInfo?.name&&<div style={{fontFamily:F.mono,fontSize:8,color:T.gold,marginTop:2}}>🎾 {r.proPlayerInfo.name.split(" ").pop()}</div>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* CTA Catalogue */}
+      <div style={{margin:"28px 4px 40px",padding:"28px 20px",borderRadius:20,textAlign:"center",cursor:"pointer",
+        background:`linear-gradient(135deg, ${T.accent}15, ${T.card})`,border:`1px solid ${T.accent}25`,
+      }} onClick={()=>setScreen("catalog")}>
+        <div style={{fontFamily:F.mono,fontSize:9,color:T.accent,letterSpacing:"0.15em",marginBottom:6}}>CATALOGUE COMPLET</div>
+        <div style={{fontFamily:F.editorial,fontSize:28,color:T.white,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
+        <div style={{fontFamily:F.body,fontSize:13,color:T.gray2}}>Rechercher, filtrer, comparer →</div>
+      </div>
+    </div>
+  );
+}
+
+
+// ═════════════════════════════════════════════════════════════
+// CATALOG SCREEN
+// ═════════════════════════════════════════════════════════════
+function CatalogScreen({ ctx }) {
+  const {
+    catalogSearch, setCatalogSearch, catFilters, setCatFilters, toggleCatFilter, resetCatFilters,
+    getMergedDB, openRacketSheet, setScreen, totalDBCount,
+  } = ctx;
+
+  const allDB = getMergedDB();
+  const term = catalogSearch.toLowerCase().trim();
+  const allBrands = [...new Set(allDB.map(r=>r.brand))].sort();
+  const allCats = ["debutant","intermediaire","avance","expert"];
+  const allShapes = [...new Set(allDB.map(r=>r.shape).filter(Boolean))].sort();
+  const allYears = [...new Set(allDB.map(r=>r.year).filter(Boolean))].sort((a,b)=>b-a);
+  const PRICE_RANGES = [{label:"< 100€",max:100},{label:"< 200€",max:200},{label:"< 300€",max:300},{label:"Tous",max:0}];
+  const parsePrice = (p) => { if(!p) return 0; const m=String(p).match(/(\d+)/); return m?Number(m[1]):0; };
+
+  const {brands:fBrands, cats:fCats, shapes:fShapes, years:fYears, priceMax:fPrice} = catFilters;
+  const activeCount = fBrands.length + fCats.length + fShapes.length + fYears.length + (fPrice>0?1:0);
+
+  const filtered = allDB.filter(r => {
+    if (term && !((r.name||"").toLowerCase().includes(term) || (r.brand||"").toLowerCase().includes(term) || (r.shortName||"").toLowerCase().includes(term))) return false;
+    if (fBrands.length>0 && !fBrands.includes(r.brand)) return false;
+    if (fCats.length>0 && !fCats.includes(r.category)) return false;
+    if (fShapes.length>0 && !fShapes.includes(r.shape)) return false;
+    if (fYears.length>0 && !fYears.includes(r.year)) return false;
+    if (fPrice>0 && parsePrice(r.price)>fPrice) return false;
+    return true;
+  });
+
+  const byBrand = {};
+  filtered.forEach(r => { if(!byBrand[r.brand]) byBrand[r.brand]=[]; byBrand[r.brand].push(r); });
+  Object.values(byBrand).forEach(arr => arr.sort((a,b) => (b.year||0)-(a.year||0) || a.name.localeCompare(b.name)));
+  const sortedBrands = Object.keys(byBrand).sort();
+
+  const avgScore = (r) => {
+    const sc = r.scores||{};
+    const vals = ATTRS.map(a=>sc[a]||0);
+    return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : "—";
+  };
+
+  const chipSt = (active, color=T.accent) => ({
+    padding:"5px 13px",borderRadius:20,fontSize:10,fontWeight:active?700:500,cursor:"pointer",
+    background:active?`${color}15`:T.card,
+    border:`1px solid ${active?color+"40":T.border}`,
+    color:active?color:T.gray1,transition:"all 0.15s",fontFamily:F.body,whiteSpace:"nowrap",
+  });
+
+  const [showFilters, setShowFilters] = useState(true);
+
+  return (
+    <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:600,margin:"0 auto",padding:"0 12px",background:T.bg}}>
+      <FontLoader/>
+      {/* Header */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px",position:"sticky",top:0,zIndex:50,background:T.bg}}>
+        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Accueil</button>
+        <span style={{fontFamily:F.mono,fontSize:10,color:T.gray2}}>{filtered.length} / {allDB.length}</span>
+      </div>
+
+      {/* Title */}
+      <div style={{textAlign:"center",marginBottom:14}}>
+        <h1 style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:T.white,margin:"0 0 4px"}}>Catalogue</h1>
+        <p style={{fontFamily:F.body,fontSize:11,color:T.gray2,margin:0}}>{totalDBCount} raquettes · {allBrands.length} marques</p>
+      </div>
+
+      {/* Search bar */}
+      <div style={{position:"relative",marginBottom:12,padding:"0 4px"}}>
+        <span style={{position:"absolute",left:18,top:"50%",transform:"translateY(-50%)",fontSize:14,opacity:0.4}}>🔎</span>
+        <input type="text" value={catalogSearch} onChange={e=>setCatalogSearch(e.target.value)}
+          placeholder="Rechercher une raquette, une marque..."
+          style={{width:"100%",padding:"13px 14px 13px 42px",borderRadius:14,border:`1px solid ${T.border}`,
+            background:T.card,color:T.white,fontSize:13,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}/>
+        {catalogSearch&&<button onClick={()=>setCatalogSearch("")} style={{position:"absolute",right:16,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.gray2,fontSize:16,cursor:"pointer"}}>✕</button>}
+      </div>
+
+      {/* Filter toggle */}
+      <div style={{padding:"0 4px",marginBottom:10}}>
+        <button onClick={()=>setShowFilters(!showFilters)} style={{
+          background:"none",border:"none",color:T.accent,fontSize:11,cursor:"pointer",fontFamily:F.body,fontWeight:600,
+          display:"flex",alignItems:"center",gap:4,
+        }}>
+          {showFilters?"▾":"▸"} Filtres {activeCount>0?`(${activeCount})`:""}
+        </button>
+      </div>
+
+      {/* Filters */}
+      {showFilters&&<div style={{marginBottom:14,background:T.card,borderRadius:16,border:`1px solid ${T.border}`,padding:"12px 14px",margin:"0 4px 14px"}}>
+        {/* Niveau */}
+        <div style={{marginBottom:10}}>
+          <div style={{fontSize:9,color:T.gray2,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Niveau</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+            {allCats.map(c=>(<button key={c} onClick={()=>toggleCatFilter("cats",c)} style={chipSt(fCats.includes(c), catColor(c))}>{CAT_LABELS[c]}</button>))}
+          </div>
+        </div>
+        {/* Marque */}
+        <div style={{marginBottom:10}}>
+          <div style={{fontSize:9,color:T.gray2,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Marque</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+            {allBrands.map(b=>(<button key={b} onClick={()=>toggleCatFilter("brands",b)} style={chipSt(fBrands.includes(b), "#CE93D8")}>{b}</button>))}
+          </div>
+        </div>
+        {/* Forme */}
+        <div style={{marginBottom:10}}>
+          <div style={{fontSize:9,color:T.gray2,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Forme</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+            {allShapes.map(s=>(<button key={s} onClick={()=>toggleCatFilter("shapes",s)} style={chipSt(fShapes.includes(s), "#60a5fa")}>{s}</button>))}
+          </div>
+        </div>
+        {/* Année + Prix */}
+        <div style={{display:"flex",gap:16}}>
+          <div style={{flex:1}}>
+            <div style={{fontSize:9,color:T.gray2,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Année</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+              {allYears.map(y=>(<button key={y} onClick={()=>toggleCatFilter("years",y)} style={chipSt(fYears.includes(y))}>{y}</button>))}
+            </div>
+          </div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:9,color:T.gray2,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Budget max</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+              {PRICE_RANGES.map(p=>(<button key={p.max} onClick={()=>setCatFilters(f=>({...f,priceMax:f.priceMax===p.max?0:p.max}))} style={chipSt(fPrice===p.max&&p.max>0, T.green)}>{p.label}</button>))}
+            </div>
+          </div>
+        </div>
+        {activeCount>0&&<div style={{textAlign:"center",marginTop:10}}>
+          <button onClick={()=>{resetCatFilters();setCatalogSearch("");}} style={{background:"none",border:"none",color:"#ef4444",fontSize:10,cursor:"pointer",fontFamily:F.body,fontWeight:600}}>✕ Réinitialiser ({activeCount})</button>
+        </div>}
+      </div>}
+
+      {/* Results by brand */}
+      <div style={{flex:1,overflowY:"auto",paddingBottom:40}}>
+        {!filtered.length&&<div style={{textAlign:"center",padding:"40px 0",color:T.gray2}}>
+          <div style={{fontSize:32,marginBottom:8}}>🔍</div>
+          <p style={{fontSize:13}}>Aucune raquette trouvée</p>
+        </div>}
+        {sortedBrands.map(brand=>(
+          <div key={brand} style={{marginBottom:20,padding:"0 4px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+              <span style={{fontFamily:F.editorial,fontSize:18,fontWeight:700,color:T.white}}>{brand}</span>
+              <span style={{fontFamily:F.mono,fontSize:9,color:T.gray2,background:T.surface,borderRadius:10,padding:"2px 8px"}}>{byBrand[brand].length}</span>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(155px, 1fr))",gap:10}}>
+              {byBrand[brand].map(r=>(
+                <button key={r.id||r.name} onClick={()=>openRacketSheet(r,"catalog")} style={{
+                  padding:0,borderRadius:16,cursor:"pointer",textAlign:"center",overflow:"hidden",
+                  background:T.card,border:`1px solid ${T.border}`,transition:"all 0.2s",display:"flex",flexDirection:"column",
+                }}>
+                  {/* Image area */}
+                  <div style={{height:100,display:"flex",alignItems:"center",justifyContent:"center",padding:"8px 0",
+                    background:`linear-gradient(180deg, ${T.surface} 0%, ${T.card} 100%)`}}>
+                    <RacketImg src={r.imageUrl} alt={r.name} style={{height:80,objectFit:"contain",filter:"drop-shadow(0 4px 8px rgba(0,0,0,0.3))"}} fallbackSize={40}/>
+                  </div>
+                  <div style={{padding:"10px 10px 14px",flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                    <div style={{fontSize:10,fontWeight:700,color:T.white,fontFamily:F.body,lineHeight:1.3}}>{r.shortName||r.name}</div>
+                    <div style={{display:"flex",alignItems:"center",gap:3}}>
+                      <span style={{fontSize:16,fontWeight:800,color:T.accent,fontFamily:F.mono}}>{avgScore(r)}</span>
+                      <span style={{fontSize:8,color:T.gray2}}>/10</span>
+                    </div>
+                    <div style={{display:"flex",gap:3,flexWrap:"wrap",justifyContent:"center"}}>
+                      <span style={{fontSize:8,padding:"2px 6px",borderRadius:6,background:`${catColor(r.category)}12`,color:catColor(r.category),fontWeight:600}}>{CAT_LABELS[r.category]||r.category}</span>
+                      <span style={{fontSize:8,padding:"2px 6px",borderRadius:6,background:T.surface,color:T.gray2}}>{r.year}</span>
+                    </div>
+                    {/* Mini score bars */}
+                    <div style={{display:"flex",gap:3,width:"100%",marginTop:4}}>
+                      {["Puissance","Contrôle","Spin"].map(k=>{
+                        const v = (r.scores||{})[k]||0;
+                        return <div key={k} style={{flex:1,height:3,borderRadius:2,background:T.border,overflow:"hidden"}}>
+                          <div style={{width:`${(v/10)*100}%`,height:"100%",borderRadius:2,background:v>=9?T.accent:v>=8?T.gold:T.gray2}}/>
+                        </div>;
+                      })}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+// ═════════════════════════════════════════════════════════════
+// RACKET SHEET SCREEN
+// ═════════════════════════════════════════════════════════════
+function RacketSheetScreen({ ctx }) {
+  const {
+    racketSheet, setRacketSheet, racketSheetFrom, setScreen,
+    profileName, profile, generateDynamicTargetProfile,
+  } = ctx;
+
+  const r = racketSheet;
+  if (!r) return null;
+
+  const sc = r.scores||{};
+  const ths = r.techHighlights||[];
+  const leftThs = ths.filter((_,i)=>i%2===0);
+  const rightThs = ths.filter((_,i)=>i%2===1);
+  const avgScore = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
+  const cc = catColor(r.category);
+  const catLabel = CAT_LABELS[r.category]||r.category;
+
+  const handleBack = () => { setRacketSheet(null); setScreen(racketSheetFrom || "home"); };
+
+  const handleShare = () => {
+    const printDiv = document.getElementById('racket-sheet-print');
+    if (!printDiv) return;
+    const printWin = window.open('','','width=800,height=1100');
+    printWin.document.write(`<!DOCTYPE html><html><head><title>${r.name} — PadelAnalyzer</title>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <style>
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { font-family:'DM Sans','Inter',sans-serif; background:#0B0E0D; color:#F2F0ED; padding:24px; max-width:700px; margin:0 auto; }
+        .fs-hero img { width:160px; height:160px; object-fit:contain; }
+        .fs-title { font-size:28px; font-weight:700; color:#F2F0ED; font-family:'Cormorant Garamond',serif; }
+        .fs-sub { font-size:12px; color:#7A776F; margin-top:4px; }
+        .fs-score { font-size:52px; font-weight:700; color:#E8622A; text-align:center; margin:10px 0; font-family:'JetBrains Mono',monospace; }
+        .fs-section { margin:16px 0; padding:14px 18px; background:#131614; border-radius:14px; border:1px solid #272C28; }
+        .fs-section-title { font-size:9px; color:#E8622A; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+        .fs-editorial { font-size:13px; line-height:1.8; color:#B8B5AF; font-style:italic; }
+        .fs-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+        .fs-score-cell { text-align:center; padding:8px; border-radius:10px; background:#1B1F1C; border:1px solid #272C28; }
+        .fs-score-val { font-size:22px; font-weight:700; font-family:'JetBrains Mono',monospace; }
+        .fs-score-label { font-size:8px; color:#7A776F; margin-top:2px; }
+        .fs-specs { display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; font-size:11px; }
+        .fs-spec-label { color:#7A776F; }
+        .fs-spec-val { color:#F2F0ED; font-weight:600; }
+        .fs-footer { text-align:center; margin-top:24px; font-size:9px; color:#4A4843; }
+        @media print { body { background:white; color:#1a1a1a; } .fs-title,.fs-score-val,.fs-spec-val { color:#1a1a1a; } .fs-sub,.fs-spec-label,.fs-score-label { color:#666; } .fs-editorial { color:#333; } .fs-section { border-color:#ddd; background:#f9f9f9; } }
+      </style>
+    </head><body>${printDiv.innerHTML}
+      <div class="fs-footer">PadelAnalyzer · padelanalyzer.fr · Padel Center & Santé · ${new Date().toLocaleDateString('fr-FR')}</div>
+    </body></html>`);
+    printWin.document.close();
+    setTimeout(()=>printWin.print(), 500);
+  };
+
+  return (
+    <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 16px",background:T.bg}}>
+      <FontLoader/>
+
+      {/* Header */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 8px",zIndex:10}}>
+        <button onClick={handleBack} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Retour</button>
+        <button onClick={handleShare} style={{padding:"6px 14px",borderRadius:10,cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:F.legacy,
+          background:T.accentSoft,border:`1px solid ${T.accent}40`,color:T.accent}}>📄 PDF</button>
+      </div>
+
+      {/* PRINTABLE CONTENT */}
+      <div id="racket-sheet-print">
+
+      {/* Hero Image */}
+      <div style={{textAlign:"center",position:"relative",marginBottom:8}}>
+        <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:200,height:200,borderRadius:"50%",
+          background:`radial-gradient(circle, ${T.accent}10 0%, transparent 70%)`,pointerEvents:"none"}}/>
+        <RacketImg src={r.imageUrl} alt={r.name} style={{width:180,height:180,objectFit:"contain",position:"relative",zIndex:1,
+          filter:"drop-shadow(0 12px 32px rgba(0,0,0,0.5))"}} fallbackSize={120}/>
+        {/* Score badge */}
+        <div style={{display:"inline-flex",alignItems:"baseline",gap:2,marginTop:12,padding:"6px 24px",borderRadius:20,
+          background:"rgba(11,14,13,0.9)",border:`2px solid ${T.accent}50`,backdropFilter:"blur(8px)",position:"relative",zIndex:2}}>
+          <span style={{fontSize:36,fontWeight:700,color:T.accent,fontFamily:F.mono}}>{avgScore.toFixed(1)}</span>
+          <span style={{fontSize:12,color:T.gray2}}>/10</span>
+        </div>
+      </div>
+
+      {/* Name + Meta */}
+      <div style={{textAlign:"center",marginBottom:14}}>
+        <h1 className="fs-title" style={{fontFamily:F.editorial,fontSize:28,fontWeight:700,color:T.white,margin:"0 0 4px",letterSpacing:"-0.02em"}}>{r.name}</h1>
+        <p className="fs-sub" style={{fontSize:12,color:T.gray2,margin:"0 0 8px"}}>{r.brand} · {r.shape} · {r.weight} · {r.year}</p>
+        <div style={{display:"flex",gap:6,justifyContent:"center",flexWrap:"wrap"}}>
+          <span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:`${cc}15`,border:`1px solid ${cc}30`,color:cc,fontWeight:700}}>{catLabel}</span>
+          {r.price&&r.price!=="—"&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:T.surface,border:`1px solid ${T.border}`,color:T.gray1,fontWeight:600}}>💰 {r.price}</span>}
+          {r.junior&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",color:"#3b82f6",fontWeight:600}}>👦 Junior</span>}
+          {r.womanLine&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(236,72,153,0.1)",border:"1px solid rgba(236,72,153,0.2)",color:"#ec4899",fontWeight:600}}>♀ Ligne femme</span>}
+        </div>
+      </div>
+
+      {/* Pro Player */}
+      {r.proPlayerInfo?.name&&<div style={{textAlign:"center",marginBottom:14}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"10px 18px",borderRadius:14,background:T.goldSoft,border:`1px solid ${T.gold}25`}}>
+          <span style={{fontSize:18}}>🎾</span>
+          <div style={{textAlign:"left"}}>
+            <div style={{fontSize:13,fontWeight:700,color:T.gold,fontFamily:F.body}}>{r.proPlayerInfo.name}</div>
+            {r.proPlayerInfo.context&&<div style={{fontSize:10,color:T.gray1,marginTop:1,lineHeight:1.4,maxWidth:280}}>{r.proPlayerInfo.context}</div>}
+            {r.proPlayerInfo.rank&&<div style={{fontSize:9,color:T.gold,marginTop:1}}>Classement: {r.proPlayerInfo.rank}</div>}
+          </div>
+        </div>
+      </div>}
+
+      {/* Scores Radar */}
+      <div className="fs-section" style={{background:T.card,borderRadius:16,border:`1px solid ${T.border}`,padding:"14px 8px 8px",marginBottom:14}}>
+        <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",textAlign:"center",marginBottom:6}}>📊 PROFIL DE PERFORMANCE</div>
+        <div style={{display:"flex",justifyContent:"center"}}>
+          <SvgRadar scores={sc} size={220}/>
+        </div>
+        {/* Score grid */}
+        <div className="fs-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5,marginTop:4}}>
+          {ATTRS.map(a=>{
+            const val = sc[a]||0;
+            const best = Math.max(...ATTRS.map(a2=>sc[a2]||0));
+            const isBest = val===best && val>0;
+            return <div key={a} className="fs-score-cell" style={{textAlign:"center",padding:"8px 4px",borderRadius:10,
+              background:isBest?T.accentSoft:T.surface,border:`1px solid ${isBest?T.accent+"30":T.border}`}}>
+              <div className="fs-score-val" style={{fontSize:22,fontWeight:700,color:val>=8?T.green:val>=6?T.white:T.accent,fontFamily:F.mono}}>{val}</div>
+              <div className="fs-score-label" style={{fontSize:8,color:isBest?T.accent:T.gray2,fontWeight:isBest?700:500,marginTop:1}}>{a}</div>
+            </div>;
+          })}
+        </div>
+      </div>
+
+      {/* Tech Highlights */}
+      {ths.length>0&&<div style={{marginBottom:14}}>
+        <div style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",textAlign:"center",marginBottom:10}}>🔬 TECHNOLOGIES</div>
+        <div style={{display:"flex",alignItems:"stretch",gap:0,position:"relative"}}>
+          <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingRight:6}}>
+            {leftThs.map((h,i)=>(
+              <div key={i} style={{padding:"10px",borderRadius:12,textAlign:"right",background:T.card,border:`1px solid ${T.accent}18`,borderRight:`3px solid ${T.accent}50`}}>
+                <div style={{fontSize:11,color:T.white,fontWeight:700,fontFamily:F.body}}>{h.value}</div>
+                <div style={{fontSize:8,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:2}}>{h.label}</div>
+                <p style={{fontSize:9,color:T.gray2,margin:"4px 0 0",lineHeight:1.5}}>{h.detail}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{width:2,background:`linear-gradient(to bottom, transparent, ${T.accent}30, transparent)`,margin:"0 4px",flexShrink:0}}/>
+          <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingLeft:6}}>
+            {rightThs.map((h,i)=>(
+              <div key={i} style={{padding:"10px",borderRadius:12,textAlign:"left",background:T.card,border:`1px solid ${T.accent}18`,borderLeft:`3px solid ${T.accent}50`}}>
+                <div style={{fontSize:11,color:T.white,fontWeight:700,fontFamily:F.body}}>{h.value}</div>
+                <div style={{fontSize:8,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:2}}>{h.label}</div>
+                <p style={{fontSize:9,color:T.gray2,margin:"4px 0 0",lineHeight:1.5}}>{h.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>}
+
+      {/* Verdict */}
+      {r.verdict&&r.verdict!=="—"&&r.verdict!=="Analyse non disponible"&&
+        <div className="fs-section" style={{padding:"14px 18px",marginBottom:14,
+          background:`linear-gradient(135deg, ${T.accent}08, ${T.card})`,borderRadius:16,border:`1px solid ${T.accent}18`}}>
+          <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>⚖️ VERDICT</div>
+          <p style={{fontFamily:F.editorial,fontSize:18,fontStyle:"italic",color:T.cream,lineHeight:1.6,margin:0}}>{r.verdict}</p>
+        </div>
+      }
+
+      {/* Editorial */}
+      {r.editorial&&
+        <div className="fs-section" style={{position:"relative",padding:"18px 20px 18px 32px",marginBottom:14,background:T.card,borderRadius:16,border:`1px solid ${T.border}`}}>
+          <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>📝 ANALYSE ÉDITORIALE</div>
+          <div style={{position:"absolute",top:28,left:12,fontSize:40,color:`${T.accent}18`,fontFamily:"Georgia",lineHeight:1}}>"</div>
+          <p className="fs-editorial" style={{fontFamily:F.body,fontSize:13,color:T.gray1,lineHeight:1.9,margin:0,fontStyle:"italic"}}>{r.editorial}</p>
+        </div>
+      }
+
+      {/* Target Profile */}
+      {(()=>{
+        const dynText = profileName && generateDynamicTargetProfile ? generateDynamicTargetProfile(r, {...(profile||{}), _name: profileName}) : null;
+        const text = dynText || r.targetProfile;
+        if (!text) return null;
+        const isDynamic = !!dynText;
+        return <div style={{padding:"14px 18px",background:isDynamic?T.accentSoft:T.greenSoft,borderRadius:16,
+          border:`1px solid ${isDynamic?T.accent+"20":T.green+"20"}`,marginBottom:14}}>
+          <div style={{fontSize:9,color:isDynamic?T.accent:T.green,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>
+            {isDynamic?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 PROFIL CIBLE"}
+          </div>
+          <p style={{fontSize:12,color:T.gray1,lineHeight:1.7,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${T.white}">$1</strong>`)}}/>
+        </div>;
+      })()}
+
+      {/* Specs Table */}
+      <div className="fs-section" style={{padding:"14px 18px",marginBottom:14,background:T.card,borderRadius:16,border:`1px solid ${T.border}`}}>
+        <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:10}}>📋 CARACTÉRISTIQUES</div>
+        <div className="fs-specs" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px 20px"}}>
+          {[["Forme",r.shape],["Poids",r.weight],["Équilibre",r.balance],["Surface",r.surface],["Noyau",r.core],["Anti-vibration",r.antivib],["Joueur",r.player],["Année",r.year]]
+            .filter(([,v])=>v&&v!=="—"&&v!==undefined).map(([label,val])=>(
+              <div key={label} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${T.border}`}}>
+                <span className="fs-spec-label" style={{fontSize:11,color:T.gray2}}>{label}</span>
+                <span className="fs-spec-val" style={{fontSize:11,color:T.white,fontWeight:600,textAlign:"right"}}>{val}</span>
+              </div>
+          ))}
+        </div>
+      </div>
+
+      </div>{/* end print zone */}
+
+      {/* CTA */}
+      <div style={{textAlign:"center",padding:"8px 0 16px"}}>
+        <button style={{padding:"14px 40px",borderRadius:60,border:"none",background:T.accent,color:"#fff",
+          fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${T.accentGlow}`,
+          width:"100%",maxWidth:320}}>
+          🏓 Essayer en magasin
+        </button>
+        <div style={{fontFamily:F.body,fontSize:10,color:T.gray2,marginTop:8}}>Disponible au Padel Center & Santé</div>
+      </div>
+
+      {/* Footer */}
+      <div style={{textAlign:"center",padding:"12px 0 30px"}}>
+        <div style={{fontSize:8,color:T.gray3,letterSpacing:"0.05em"}}>
+          <span style={{fontFamily:F.legacy,fontWeight:600}}>PADEL ANALYZER</span> · padelanalyzer.fr
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 // Merged DB: RACKETS_DB + extras, dédupliqué par ID (extras override static)
 function getMergedDB() {
   let extra = [];

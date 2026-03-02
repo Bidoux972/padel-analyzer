@@ -63,18 +63,18 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Local racket images: cache-first (static assets)
-  if (url.pathname.startsWith('/images/rackets/')) {
+  // Images from padelful: stale-while-revalidate
+  if (url.hostname.includes('padelful.com')) {
     event.respondWith(
       caches.match(event.request).then(cached => {
-        if (cached) return cached;
-        return fetch(event.request).then(response => {
+        const fetchPromise = fetch(event.request).then(response => {
           if (response.ok) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
           }
           return response;
-        });
+        }).catch(() => cached);
+        return cached || fetchPromise;
       })
     );
     return;
