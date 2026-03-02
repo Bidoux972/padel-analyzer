@@ -4603,9 +4603,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px"}} className="pa-screen-up">
           <div style={{width:"100%",maxWidth:480}}>
             <div style={{textAlign:"center",marginBottom:24}}>
-              <div style={{fontSize:48,marginBottom:12}}>🎾</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Profil à valider":"C'est bien toi ?"}</h2>
-              <p style={{fontSize:13,color:"#64748b",margin:0}}>{groupRole==="vendeur"?"Vérifiez le profil avant de lancer l'analyse.":"Vérifie ton profil avant de lancer l'analyse."}</p>
+              <div style={{fontSize:48,marginBottom:12}}>✅</div>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Profil prêt à analyser":"Ton profil est prêt"}</h2>
+              <p style={{fontSize:13,color:"#64748b",margin:0}}>{groupRole==="vendeur"?"Dernière vérification avant de lancer le matching.":"Un dernier coup d'œil, puis on lance le matching sur "+totalDBCount+" raquettes."}</p>
             </div>
 
             <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:"24px 22px",marginBottom:24}}>
@@ -4694,17 +4694,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         // Build analysis lines (different from pertinence!)
         const lines = [];
-        lines.push(`Analyse du profil de ${profileName}...`);
+        lines.push(`Matching en cours pour ${profileName}…`);
         if(age) lines.push(`${age} ans, ${role.toLowerCase()} côté ${side.toLowerCase()}${profile.competition?" en compétition":""}.`);
         if(styles.length>0) {
           const defStyles = styles.filter(s=>["Défensif / Mur","Endurant","Contre-attaquant"].includes(s));
           const atkStyles = styles.filter(s=>["Offensif","Puissant / Frappeur"].includes(s));
-          if(defStyles.length>0&&atkStyles.length>0) lines.push(`Profil mixte : ${atkStyles.join(", ")} mais aussi ${defStyles.join(", ")}. Le système doit trouver le bon équilibre.`);
-          else if(atkStyles.length>0) lines.push(`Orientation offensive claire : ${atkStyles.join(", ")}. On cherche de la puissance et du rendement.`);
-          else if(defStyles.length>0) lines.push(`Jeu patient et solide : ${defStyles.join(", ")}. Le contrôle et la tolérance seront clés.`);
-          else lines.push(`Style ${styles.slice(0,3).join(", ")} — profil technique qui demande un bon équilibre des attributs.`);
+          if(defStyles.length>0&&atkStyles.length>0) lines.push(`Profil hybride détecté : ${atkStyles.join(", ")} + ${defStyles.join(", ")}. L'algo cherche le compromis idéal.`);
+          else if(atkStyles.length>0) lines.push(`Profil offensif : ${atkStyles.join(", ")}. On cible puissance et rendement.`);
+          else if(defStyles.length>0) lines.push(`Profil défensif : ${defStyles.join(", ")}. Contrôle et tolérance en priorité.`);
+          else lines.push(`Style ${styles.slice(0,3).join(", ")} — profil technique, on équilibre les 6 critères.`);
         } else {
-          lines.push(`Pas de style déclaré — on se base sur les priorités et le profil physique.`);
+          lines.push(`Pas de style déclaré — matching basé sur tes priorités et ton physique.`);
         }
         if(isExpertA && profile.expertToucher) {
           const toucherLabels = {sec:"Sec & Direct",medium:"Medium",souple:"Souple & Enveloppant"};
@@ -4712,14 +4712,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           const poidsLabels = {lourd:"Lourd & Stable",equilibre:"Équilibré",leger:"Léger & Vif"};
           const formeLabels = {diamant:"Diamant",goutte:"Goutte d'eau",ronde:"Ronde",indifferent:"Indifférent"};
           lines.push(`⚡ Mode Pro — Toucher ${toucherLabels[profile.expertToucher]||""}, Réactivité ${reactLabels[profile.expertReactivite]||""}, Poids ${poidsLabels[profile.expertPoids]||""}, Forme ${formeLabels[profile.expertForme]||""}.`);
-          lines.push(`Matching par propriétés physiques : mousse, surface, balance, poids.`);
-        } else if(priorities.length>0) lines.push(`Priorités : ${priorities.map((p,i)=>`${i+1}. ${p}`).join(", ")}. La 1ère priorité pèse plus dans le scoring.`);
-        if(injuries.length>0) lines.push(`⚠ Attention ${injuries.join(", ")} — le confort sera un critère non négociable.`);
-        if(isJuniorA&&!isPepiteA) lines.push(`Profil junior : raquettes légères et tolérantes en priorité.`);
-        if(isPepiteA) lines.push(`🌟 Jeune Pépite : raquettes junior + adultes légères ≤350g.`);
+          lines.push(`Scoring par propriétés physiques : mousse, surface, balance, poids.`);
+        } else if(priorities.length>0) lines.push(`Tes priorités : ${priorities.map((p,i)=>`${i+1}. ${p}`).join(", ")}. Le poids décroît dans le scoring.`);
+        if(injuries.length>0) lines.push(`⚠ ${injuries.join(", ")} — le Confort devient un critère non négociable.`);
+        if(isJuniorA&&!isPepiteA) lines.push(`Profil junior → filtrage sur les raquettes légères et tolérantes.`);
+        if(isPepiteA) lines.push(`🌟 Jeune Pépite → scan élargi : junior + adultes légères ≤350g.`);
         if(isExpertA && !profile.expertToucher) lines.push(`⚡ Mode Expert : les priorités dominent le scoring.`);
-        lines.push(`Calcul en cours sur ${totalDBCount} raquettes...`);
-        lines.push(`Résultats prêts.`);
+        lines.push(`Scoring de ${totalDBCount} raquettes en cours…`);
+        lines.push(`Ton Top 3 est prêt.`);
 
         return (
         <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",animation:"fadeIn 0.4s ease"}}>
@@ -4762,13 +4762,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
             {/* Auto-transition to reveal */}
             <div style={{animation:`analyzeLineIn 0.5s ease ${lines.length*800+200}ms both`,textAlign:"center",marginTop:24}}>
-              <button onClick={()=>setScreen("reveal")} style={{
+              <button onClick={()=>setScreen("reveal")} className="pa-cta" style={{
                 padding:"14px 36px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
                 background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",
-                border:"1.5px solid rgba(249,115,22,0.5)",color:"#f97316",transition:"all 0.3s",
+                border:"1.5px solid rgba(249,115,22,0.5)",color:"#f97316",
                 boxShadow:"0 4px 20px rgba(249,115,22,0.25)",
               }}>
-                🏆 Découvrir mes résultats
+                Découvrir mon Top 3 →
               </button>
             </div>
           </div>
@@ -4799,13 +4799,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           const sc = r.scores||{};
           const best2 = ATTRS.filter(a=>sc[a]).sort((a,b)=>(sc[b]||0)-(sc[a]||0)).slice(0,2);
           const pct = (r._gs*10).toFixed(1);
-          if(rank===0) return `Ta meilleure option à ${pct}%. ${best2.length>=2?`Elle excelle en ${best2[0]} (${sc[best2[0]]}) et ${best2[1]} (${sc[best2[1]]}).`:""}${prioLabels.length?` Pile sur tes priorités ${prioLabels.join(" et ")}.`:""}`;
-          if(rank===1) return `Alternative solide à ${pct}%. ${best2.length>=2?`Point fort : ${best2[0]} à ${sc[best2[0]]}.`:""} Un profil complémentaire au n°1.`;
-          return `3ᵉ option à ${pct}%. ${best2.length>=2?`Intéressante pour son ${best2[0]} (${sc[best2[0]]}).`:""} À tester si les deux premières ne conviennent pas.`;
+          if(rank===0) return `Match à ${pct}% avec ton profil.${best2.length>=2?` Points forts : ${best2[0]} (${sc[best2[0]]}), ${best2[1]} (${sc[best2[1]]}).`:""}${prioLabels.length?` Répond à tes priorités : ${prioLabels.join(", ")}.`:""}`;
+          if(rank===1) return `Alternative à ${pct}%.${best2.length>=2?` Se distingue par son ${best2[0]} (${sc[best2[0]]}).`:""} Profil complémentaire au n°1.`;
+          return `3ᵉ option à ${pct}%.${best2.length>=2?` Intéressante pour son ${best2[0]} (${sc[best2[0]]}).`:""} À considérer si les deux premières ne sont pas dispo.`;
         };
 
         const medals = ["🥇","🥈","🥉"];
-        const rankLabels = ["MEILLEUR CHOIX","2ᵉ CHOIX","3ᵉ CHOIX"];
+        const rankLabels = ["LA PALA IDÉALE","ALTERNATIVE","3ᵉ OPTION"];
         const rankColors = ["#f97316","#94a3b8","#cd7f32"];
 
         const r = top3[revealIdx];
@@ -4830,7 +4830,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Title */}
           <div style={{textAlign:"center",marginBottom:20}}>
-            <div style={{fontSize:16,color:"#f97316",fontWeight:800,fontFamily:"'Outfit'",letterSpacing:"0.04em",textTransform:"uppercase"}}>🏆 Top 3 de {profileName}</div>
+            <div style={{fontSize:16,color:"#f97316",fontWeight:800,fontFamily:"'Outfit'",letterSpacing:"0.04em",textTransform:"uppercase"}}>Résultats de {profileName}</div>
           </div>
 
           {/* Card container with arrows */}
@@ -4902,11 +4902,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           {/* CTA */}
-          <button onClick={()=>setScreen("dashboard")} style={{
+          <button onClick={()=>setScreen("dashboard")} className="pa-ghost" style={{
             marginTop:20,padding:"12px 32px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-            background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",color:"#94a3b8",transition:"all 0.3s",
+            background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",color:"#94a3b8",
           }}>
-            Voir l'analyse complète →
+            Explorer l'analyse complète →
           </button>
         </div>
         );
@@ -5005,7 +5005,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{flex:"0 0 400px",display:"flex",flexDirection:"column",gap:12}}>
               {/* Radar */}
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"14px 12px",flex:1,animation:"fadeIn 0.4s ease"}}>
-                <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginBottom:4,marginTop:0}}>📊 Raquette idéale pour {profileName}</p>
+                <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginBottom:4,marginTop:0}}>Profil idéal de {profileName}</p>
                 <ResponsiveContainer width="100%" height={195}>
                   <RadarChart data={idealRadar} margin={{top:10,right:34,bottom:8,left:34}}>
                     <PolarGrid stroke="rgba(255,255,255,0.08)"/>
@@ -5034,8 +5034,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
             {/* RIGHT COLUMN — Top 3 + Explanation */}
             <div style={{flex:1,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"18px 20px",animation:"fadeIn 0.5s ease",display:"flex",flexDirection:"column"}}>
-              <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginTop:0,marginBottom:4}}>🏆 Top 3 absolu pour {profileName}</p>
-              <p style={{fontSize:10,color:"#475569",textAlign:"center",margin:"0 0 14px",lineHeight:1.4}}>Sur {scored.length} raquettes compatibles{brandPref.length>0?<span> · Toutes marques confondues</span>:""}</p>
+              <p style={{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginTop:0,marginBottom:4}}>Top 3 pour {profileName}</p>
+              <p style={{fontSize:10,color:"#475569",textAlign:"center",margin:"0 0 14px",lineHeight:1.4}}>Classement sur {scored.length} raquettes compatibles{brandPref.length>0?<span> · toutes marques</span>:""}</p>
               <div style={{display:"flex",flexDirection:"column",gap:10,flex:1}}>
                 {top3.map((r, i)=>{
                   const fy = fyConfig2[r._fy]||fyConfig2.partial;
@@ -5062,8 +5062,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
               {/* Explanation — compact */}
               <div style={{marginTop:12,padding:"10px 14px",background:"rgba(99,102,241,0.04)",border:"1px solid rgba(99,102,241,0.1)",borderRadius:12}}>
-                <p style={{fontSize:10,color:"#a5b4fc",margin:"0 0 3px",fontWeight:600}}>💡 Comment lire ce classement ?</p>
-                <p style={{fontSize:10,color:"#64748b",margin:0,lineHeight:1.6}}>Calculé sur {totalDBCount} raquettes en croisant profil, style et priorités. Lance l'analyse détaillée pour les scores par critère, radars comparatifs et l'Arène.</p>
+                <p style={{fontSize:10,color:"#a5b4fc",margin:"0 0 3px",fontWeight:600}}>💡 Comment ça marche ?</p>
+                <p style={{fontSize:10,color:"#64748b",margin:0,lineHeight:1.6}}>Chaque raquette est scorée sur 6 critères pondérés par ton profil. Clique sur une raquette pour voir sa fiche complète, ou lance l'analyse détaillée ci-dessous.</p>
               </div>
             </div>
           </div>
