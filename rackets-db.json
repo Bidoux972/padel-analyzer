@@ -10208,10 +10208,31 @@
       "Tolérance": 6.4,
       "Maniabilité": 6.0
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "L'arme d'Arturo Coello, n°1 mondial. Diamant pur puissance avec Power Foam densifié et Auxetic 2.0. La plus puissante du catalogue Head 2025. Pour experts offensifs au bras solide.",
+    "editorial": "La Coello Pro 2025 remplace l'Extreme Pro et devient la pala signature du n°1 mondial. Power Foam nouvelle densité, cadre Full Carbon redessiné pour une rigidité supérieure, surface Extreme Spin pour l'accroche. C'est la raquette la plus lourde et la plus puissante du catalogue Head 2025. Le toucher est sec, la sortie de balle explosive, le pardon quasi inexistant. Une pala qui récompense la technique et punit l'approximation — exactement comme son joueur.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon Hybrid + Extreme Spin",
+        "detail": "Surface texturée 3D — accroche et spin sur chaque frappe"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam HD",
+        "detail": "Mousse haute densité — sortie de balle explosive, toucher sec"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Auxetic 2.0",
+        "detail": "Fibres auxétiques dans le pont et le manche — retour d'information optimisé"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Sweet spot haut — puissance maximale sur smash et vibora"
+      }
+    ],
+    "targetProfile": "Joueurs expert offensifs côté gauche. La pala du smasheur qui veut la puissance brute d'Arturo Coello. Bras solide exigé.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -10243,10 +10264,31 @@
       "Spin": 7.5,
       "Tolérance": 7.7
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "Version accessible de la gamme Coello. Fibre de verre et Power Foam en diamant pour la puissance avec plus de tolérance. L'entrée dans l'univers Coello.",
+    "editorial": "La Coello Team 2025 est le diamant accessible de la gamme Coello. Là où la Pro est intransigeante, la Team pardonne grâce à sa face fibre de verre et son équilibre moyen. Le Power Foam reste au cœur pour la réactivité, l'Auxetic 2.0 pour le confort vibratoire. C'est la porte d'entrée idéale pour les joueurs intermédiaires qui veulent goûter à l'ADN offensif Head sans se brûler.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Face souple — plus de tolérance que le carbone de la Pro"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive Head — bon retour d'énergie"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Auxetic 2.0",
+        "detail": "Confort vibratoire hérité de la gamme pro"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Puissance orientée tête — smash facilité"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires offensifs. La Coello pour progresser vers la puissance sans sacrifier la tolérance.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10275,10 +10317,26 @@
       "Spin": 5.5,
       "Tolérance": 8.5
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "Junior de la gamme Coello. Goutte d'eau ultra-légère en fibre de verre pour les jeunes joueurs. Le design Coello pour les champions en herbe.",
+    "editorial": "La Coello Junior 2025 est la pala pensée pour les jeunes joueurs qui veulent jouer comme leur idole Arturo Coello. Goutte d'eau en fibre de verre et EVA standard — construction légère et confortable adaptée aux mains d'enfant. Le format réduit et le poids plume garantissent une maniabilité totale. C'est l'initiation au padel avec le design et les couleurs du n°1 mondial.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Face douce — confort et tolérance pour les juniors"
+      },
+      {
+        "label": "Noyau",
+        "value": "Standard EVA",
+        "detail": "Mousse classique — confort d'apprentissage"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Sweet spot centré — polyvalence pour apprendre"
+      }
+    ],
+    "targetProfile": "Juniors. La raquette Coello pour les jeunes joueurs qui veulent le design du n°1 mondial.",
     "junior": true,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10307,10 +10365,31 @@
       "Spin": 8.1,
       "Tolérance": 6.9
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La Coello allégée (-15g) avec Carbon Hybrid et Auxetic 2.0. Diamant puissant mais plus maniable que la Pro. Le compromis attaque/maniabilité de la gamme.",
+    "editorial": "La Coello Motion 2025 est la version allégée de la Pro — même ADN offensif, 15 grammes en moins. Carbon Hybrid sur les faces pour le toucher, Power Foam pour la réactivité, Auxetic 2.0 pour les sensations. L'équilibre mi-haut donne un diamant maniable qui conserve une vraie puissance au smash. Là où la Pro est un marteau, la Motion est un sabre — plus rapide, plus agile, presque aussi tranchante.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon Hybrid",
+        "detail": "Carbone/fibre de verre — rigidité contrôlée pour le toucher"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive — bonne sortie de balle"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Auxetic 2.0",
+        "detail": "Retour d'information précis — sensations nettes"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Puissance en tête avec maniabilité améliorée"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs cherchant la puissance Coello avec plus de maniabilité. Le diamant agile de la gamme.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10339,10 +10418,31 @@
       "Spin": 6.9,
       "Tolérance": 8.8
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La débutante de la gamme Coello. Goutte d'eau confortable avec Innegra anti-vibrations. Le design Coello pour les premiers pas sur le court.",
+    "editorial": "La Coello Vibe 2025 est l'entrée de gamme Coello pour les débutants. Fibre de verre et Power Foam en goutte d'eau — la formule du confort et de la tolérance. L'ajout d'Innegra dans la construction absorbe les vibrations pour protéger le bras. Sweet spot généreux, sensation médium-souple, pardon sur les frappes décentrées. C'est la pala pour découvrir le padel avec le style Coello sans aucune exigence technique.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Face flexible — douceur et tolérance maximale"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive — bon retour sans effort"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Innegra",
+        "detail": "Fibre absorbante — protection du bras pour les débutants"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Sweet spot généreux — pardonne les approximations"
+      }
+    ],
+    "targetProfile": "Débutants. La Coello pour apprendre le padel avec confort et style.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10371,10 +10471,31 @@
       "Spin": 8.4,
       "Tolérance": 6.0
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "Le diamant offensif de Kuikma by Decathlon. TeXtreme Carbon 18K, Dual Foam et Shock Block à 180€. La puissance pro au prix Decathlon.",
+    "editorial": "La Power Pro 2025 est le fer de lance offensif de Kuikma, développée avec Maxi Sánchez. Diamant en TeXtreme Carbon 18K et Dual Foam double densité — la même base technologique que des palas à 300€+. Le Shock Block réduit les vibrations de 38% (certifié Testea). Le cadre Air Foam Frame à double tube carbone renforce la rigidité. C'est la raquette la plus exigeante de la gamme Kuikma — puissante au smash, implacable en volée, mais elle demande de la technique. À 180€, elle casse les codes du haut de gamme.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme Carbon 18K",
+        "detail": "Carbone aérospatial — rigidité et légèreté pour la puissance"
+      },
+      {
+        "label": "Noyau",
+        "value": "Dual Foam",
+        "detail": "EVA double densité — puissance haute intensité, contrôle au toucher"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Shock Block",
+        "detail": "Insert élastomère — réduit les vibrations de 38%"
+      },
+      {
+        "label": "Cadre",
+        "value": "Air Foam Frame",
+        "detail": "Double tube carbone + mousse EVA — rigidité et durabilité"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs. Le diamant Decathlon pour smasher fort à prix imbattable. Bras armé requis.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10403,10 +10524,31 @@
       "Spin": 7.8,
       "Tolérance": 8.8
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "Élue meilleure raquette de contrôle 2025 par Testea. Ronde en TeXtreme Carbon 18K avec Shock Block. Le contrôle pro chez Decathlon à 180€.",
+    "editorial": "La Control Pro 2025 est la raquette de contrôle de référence Kuikma — élue meilleure raquette contrôle 2025 aux Testea Best Padel Awards. Ronde en TeXtreme Carbon 18K et Dual Foam, c'est la plus rigide de la gamme Pro, avec un sweet spot élargi par un motif de perçage spécifique. Maniabilité exceptionnelle en défense, stabilité en volée, réactivité en contre. Elle pardonne plus que la Power grâce à sa forme ronde. Le Shock Block protège le bras. À 180€, elle rivalise avec des références contrôle deux fois plus chères.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme Carbon 18K",
+        "detail": "Carbone haute technologie — précision et stabilité"
+      },
+      {
+        "label": "Noyau",
+        "value": "Dual Foam",
+        "detail": "EVA double densité — contrôle fin au toucher, punch en attaque"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Shock Block",
+        "detail": "Insert élastomère — -38% de vibrations, confort du bras"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot centré XXL — tolérance et précision maximales"
+      }
+    ],
+    "targetProfile": "Joueurs avancés défensifs et constructeurs. La meilleure raquette contrôle 2025 au prix Decathlon.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10435,10 +10577,26 @@
       "Spin": 6.0,
       "Tolérance": 9.2
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "L'initiation Kuikma à 35€. Ronde ultra-légère en fibre de verre et Soft EVA. Le padel accessible pour tout le monde.",
+    "editorial": "La PR Open 2025 est la pala la plus accessible du catalogue Kuikma. Fibre de verre et Soft EVA en ronde — la construction la plus tolérante et confortable qui soit. Ultra-légère, elle ne demande aucun effort et pardonne tout. À 35€, c'est l'entrée la plus économique dans le padel chez Decathlon. Pas de technologie avancée ici, juste l'essentiel pour taper ses premières balles sans se ruiner.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Face douce — le plus accessible Kuikma"
+      },
+      {
+        "label": "Noyau",
+        "value": "Soft EVA",
+        "detail": "Mousse très souple — confort absolu pour débuter"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Tolérance maximale — impossible de mal frapper"
+      }
+    ],
+    "targetProfile": "Débutants et primo-accédants. Le padel pour 35€ chez Decathlon. Aucune exigence technique.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10467,10 +10625,31 @@
       "Spin": 6.0,
       "Tolérance": 9.2
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde intermédiaire Kuikma avec insert métal. Fibre de verre + métal pour un confort premium et une tolérance XXL à 99€.",
+    "editorial": "La Control Metal 2025 est la ronde intermédiaire de la gamme Kuikma. La face en fibre de verre + métal donne un toucher unique — plus solide que le fibre de verre pur, plus confortable que le carbone. Soft EVA au cœur pour le confort, insert élastomère anti-vibrations. Le sweet spot est le plus généreux de la gamme. C'est la pala du joueur intermédiaire qui veut du contrôle et de la tolérance sans compromis, à un prix Decathlon imbattable.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre + Métal",
+        "detail": "Construction hybride — solidité et toucher unique"
+      },
+      {
+        "label": "Noyau",
+        "value": "Soft EVA",
+        "detail": "Mousse souple — confort premium pour le bras"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Insert élastomère",
+        "detail": "Réduction des vibrations pour le confort"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot XXL — tolérance maximale"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires défensifs et constructeurs. Le contrôle Kuikma confortable et tolérant à 99€.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10499,10 +10678,31 @@
       "Spin": 7.7,
       "Tolérance": 7.7
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La polyvalente haut de gamme Kuikma. Goutte d'eau en TeXtreme Carbon 18K avec Shock Block. La synthèse parfaite attaque/contrôle à 180€.",
+    "editorial": "La Hybrid Pro 2025 est le juste milieu de la gamme Pro Kuikma. Goutte d'eau en TeXtreme Carbon 18K et Dual Foam — même base technologique que la Power et la Control, mais dans un format polyvalent. L'équilibre moyen et la forme goutte d'eau offrent une maniabilité étonnante avec une réserve d'accélération constante. Sweet spot généreux, Shock Block pour le confort. C'est la pala qui fait tout bien — attaque, défense, transitions — sans exceller dans un extrême. Pour le joueur qui ne veut pas choisir.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme Carbon 18K",
+        "detail": "Carbone haute technologie — polyvalence et réactivité"
+      },
+      {
+        "label": "Noyau",
+        "value": "Dual Foam",
+        "detail": "EVA double densité — puissance dosée et contrôle fin"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Shock Block",
+        "detail": "Insert élastomère — -38% vibrations pour le bras"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Sweet spot centré-haut — la polyvalence par excellence"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents. La Kuikma Pro qui fait tout à 180€. Testée par Coki Nieto.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -10534,10 +10734,31 @@
       "Spin": 6.0,
       "Tolérance": 8.5
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La polyvalente intermédiaire Kuikma. Goutte d'eau fibre de verre + métal avec Soft EVA. Confort et polyvalence à 99€.",
+    "editorial": "La Hybrid Metal 2025 est la goutte d'eau intermédiaire de Kuikma. Face fibre de verre + métal pour un toucher solide et confortable, Soft EVA au cœur pour l'absorption. Insert élastomère anti-vibrations pour protéger le bras. L'équilibre moyen donne une polyvalence naturelle — efficace en défense comme en attaque modérée. C'est le couteau suisse Kuikma pour le joueur intermédiaire qui veut progresser en douceur.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre + Métal",
+        "detail": "Hybride — solidité et confort au toucher"
+      },
+      {
+        "label": "Noyau",
+        "value": "Soft EVA",
+        "detail": "Mousse souple — confort prioritaire"
+      },
+      {
+        "label": "Anti-vib",
+        "value": "Insert élastomère",
+        "detail": "Protection du bras sur les frappes répétées"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Polyvalence — bon compromis puissance/contrôle"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires polyvalents. La goutte d'eau Kuikma confortable pour progresser à 99€.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10566,10 +10787,31 @@
       "Spin": 8.0,
       "Tolérance": 8.8
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde expert Wilson de Momo González. Control Foam+ double densité, carbone 3K et ExactTouch. Contrôle chirurgical avec toucher premium.",
+    "editorial": "La Endure Pro V1 2026 est la pala signature de Momo González et le fer de lance contrôle de Wilson. Ronde avec un équilibre moyen-haut inhabituel — elle combine le sweet spot large d'une ronde avec un surplus de puissance en tête. Le carbone 3K sur les faces donne un toucher ferme et réactif, le Control Foam+ double densité offre précision au filet et punch au smash. La géométrie Y-Beam du pont améliore l'aérodynamisme. ExactTouch pour le spin et la connexion à la balle. C'est une ronde de compétition — celle qui ne sacrifie rien.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 3K + ExactTouch",
+        "detail": "Face rigide texturée — spin et contrôle directionnel"
+      },
+      {
+        "label": "Noyau",
+        "value": "Control Foam+",
+        "detail": "Double densité — toucher précis et réponse ferme"
+      },
+      {
+        "label": "Pont",
+        "value": "Y-Beam",
+        "detail": "Géométrie aérodynamique — maniabilité optimisée"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot large — consistance sous pression"
+      }
+    ],
+    "targetProfile": "Joueurs expert défensifs et tactiques. La ronde Wilson pour construire les points comme Momo González.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -10601,10 +10843,31 @@
       "Spin": 7.5,
       "Tolérance": 9.2
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde contrôle avancée de Wilson. UD Carbon et Control Foam+ avec Y-Beam. Précision et tolérance pour le jeu tactique.",
+    "editorial": "La Endure V1 2026 est la ronde contrôle de la gamme Wilson. Carbone unidirectionnel (UD) sur les faces — plus souple que le 3K de la Pro, pour un toucher plus doux et une zone de frappe encore plus tolérante. Control Foam+ pour la précision, Y-Beam pour l'aérodynamisme, ExactTouch pour le spin. L'équilibre bas donne une maniabilité de premier ordre. C'est la pala du joueur avancé qui construit chaque point avec intelligence — défense solide, volées précises, zéro cadeau à l'adversaire.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "UD Carbon + ExactTouch",
+        "detail": "Carbone unidirectionnel — souplesse et tolérance accrues"
+      },
+      {
+        "label": "Noyau",
+        "value": "Control Foam+",
+        "detail": "Double densité — toucher connecté à chaque impact"
+      },
+      {
+        "label": "Pont",
+        "value": "Y-Beam",
+        "detail": "Aérodynamisme — transitions rapides défense/attaque"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot XXL — consistance et pardon"
+      }
+    ],
+    "targetProfile": "Joueurs avancés tactiques et défensifs. La ronde Wilson pour la précision et la construction de points.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10633,10 +10896,31 @@
       "Spin": 8.5,
       "Tolérance": 6.0
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "Le diamant offensif de Wilson signé Javi Garrido. Carbone 15K, Power Foam HD et Spin² pour puissance explosive et spin agressif. La plus puissante Wilson.",
+    "editorial": "La Defy Pro V1 2025 inaugure la nouvelle gamme offensive Wilson, développée avec Javi Garrido. Diamant en carbone 15K — la face la plus rigide de la gamme, pour un transfert d'énergie maximal. Power Foam HD au cœur pour la puissance brute, surface Spin² pour l'accroche. L'innovation Duo Grid alterne gros trous en haut (puissance) et petits en bas (contrôle/spin). L'Aeroexact Design fluidifie le mouvement dans l'air. Le design noir et or est la signature de cette nouvelle ère Wilson offensive. Une pala de smasheur pur.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 15K + Spin²",
+        "detail": "Face ultra-rigide texturée — puissance et effet maximum"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam HD",
+        "detail": "Mousse haute densité — sortie de balle explosive"
+      },
+      {
+        "label": "Aéro",
+        "value": "Aeroexact Design + I-Beam",
+        "detail": "Aérodynamisme optimisé — vitesse de swing accrue"
+      },
+      {
+        "label": "Perçage",
+        "value": "Duo Grid Pattern",
+        "detail": "Gros trous haut (puissance) / petits bas (spin/contrôle)"
+      }
+    ],
+    "targetProfile": "Joueurs expert offensifs. Le diamant Wilson de Javi Garrido pour les smasheurs qui veulent tout casser.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -10668,10 +10952,31 @@
       "Spin": 8.0,
       "Tolérance": 6.0
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "Le diamant offensif Wilson accessible. Carbone 3K et Power Foam avec Spin² et Duo Grid. La puissance Defy pour les joueurs avancés.",
+    "editorial": "La Defy V1 2025 est le diamant offensif accessible de la gamme Wilson. Carbone 3K sur les faces (vs 15K sur la Pro) — un cran plus souple pour plus de tolérance tout en conservant une vraie puissance. Power Foam au cœur, surface Spin² pour l'accroche, Duo Grid pour l'optimisation du sweet spot. L'I-Beam et l'Aeroexact Design assurent la maniabilité malgré l'équilibre en tête. C'est la Defy pour le joueur avancé qui veut de la puissance offensive sans l'exigence technique extrême de la Pro.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 3K + Spin²",
+        "detail": "Face carbone texturée — puissance et spin"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive — bonne sortie de balle"
+      },
+      {
+        "label": "Aéro",
+        "value": "Aeroexact + I-Beam",
+        "detail": "Aérodynamisme et stabilité de frappe"
+      },
+      {
+        "label": "Perçage",
+        "value": "Duo Grid Pattern",
+        "detail": "Optimisation puissance/contrôle par zones"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs. Le diamant Wilson puissant et plus tolérant que la Defy Pro.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10700,10 +11005,31 @@
       "Spin": 7.5,
       "Tolérance": 7.1
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La Defy allégée avec fibres Comfort Flex. Diamant accessible avec plus de confort et de maniabilité. La puissance Wilson sans l'exigence physique.",
+    "editorial": "La Defy LS V1 2025 est la version light de la gamme Defy. Les fibres Comfort Flex remplacent le carbone des modèles supérieurs — plus de souplesse, plus de confort, moins d'exigence sur le bras. Power Foam au cœur pour conserver la réactivité, I-Beam pour la stabilité. Le poids réduit et l'équilibre moyen-haut donnent un diamant maniable qui reste orienté puissance. C'est la Defy pour le joueur avancé qui veut attaquer sans subir la rigidité du carbone pur.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Comfort Flex Fibres",
+        "detail": "Fibres souples — confort et tolérance vs carbone"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive — maintien de la puissance"
+      },
+      {
+        "label": "Aéro",
+        "value": "I-Beam",
+        "detail": "Stabilité de frappe et aérodynamisme"
+      },
+      {
+        "label": "Forme",
+        "value": "Diamant",
+        "detail": "Puissance en tête — version allégée et accessible"
+      }
+    ],
+    "targetProfile": "Joueurs avancés cherchant puissance et confort. La Defy douce pour attaquer sans fatiguer le bras.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null
@@ -10732,10 +11058,31 @@
       "Spin": 7.0,
       "Tolérance": 9.1
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde légère Wilson 2026. Carbon Flex et Control Foam avec Y-Beam. Maniabilité maximale pour le contrôle en douceur.",
+    "editorial": "La Endure LS V1 2026 est la version light de la gamme Endure. Carbon Flex sur les faces — plus souple que le UD Carbon de la V1 standard, pour un toucher doux et une zone de frappe très tolérante. Control Foam (simple densité) au cœur, Y-Beam pour l'aérodynamisme. Le poids réduit et l'équilibre bas donnent la raquette la plus maniable de la collection Wilson 2026. C'est la ronde parfaite pour les joueurs intermédiaires, les femmes ou les joueurs souffrant du bras qui cherchent confort et précision sans effort.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon Flex + ExactTouch",
+        "detail": "Face souple texturée — confort et spin"
+      },
+      {
+        "label": "Noyau",
+        "value": "Control Foam",
+        "detail": "Mousse simple — absorption des chocs, douceur"
+      },
+      {
+        "label": "Pont",
+        "value": "Y-Beam",
+        "detail": "Aérodynamisme — la plus maniable de la gamme"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot XXL — tolérance et contrôle sans effort"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires, femmes, joueurs sensibles du bras. La ronde Wilson légère pour le confort absolu.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null

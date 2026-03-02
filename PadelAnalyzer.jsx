@@ -6,9 +6,16 @@ import {
 import RACKETS_DB from "./rackets-db.json";
 
 // Merged DB: RACKETS_DB + extras, dédupliqué par ID (extras override static)
+// Production logger — silent in prod, verbose in dev
+const __DEV = process.env.NODE_ENV !== 'production';
+const _log = __DEV ? console.log.bind(console) : () => {};
+const _warn = __DEV ? console.warn.bind(console) : () => {};
 function getMergedDB() {
+  // Cache: invalidated when localStorage extras change
+  const extraRaw = localStorage.getItem('padel_db_extra') || '[]';
+  if (getMergedDB._cache && getMergedDB._cacheKey === extraRaw) return getMergedDB._cache;
   let extra = [];
-  try { extra = JSON.parse(localStorage.getItem('padel_db_extra') || '[]'); } catch {}
+  try { extra = JSON.parse(extraRaw); } catch {}
   if (!Array.isArray(extra)) extra = [];
   const extraMap = new Map();
   extra.forEach(r => extraMap.set(r.id, r));
@@ -29,7 +36,10 @@ function getMergedDB() {
   });
   // Add extras that don't exist in static DB (new imports)
   extra.forEach(r => { if (!map.has(r.id)) map.set(r.id, r); });
-  return [...map.values()];
+  const result = [...map.values()];
+  getMergedDB._cache = result;
+  getMergedDB._cacheKey = extraRaw;
+  return result;
 }
 
 // ==================== SUPABASE REST API (no SDK needed) ====================
@@ -65,8 +75,10 @@ async function sbPatch(table, query, data) {
 }
 
 // ==================== SUPABASE HELPERS ====================
-function getFamilyCode() { return localStorage.getItem('padel_family_code') || ''; }
-function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', code); }
+// Sanitize familyCode: only alphanumeric, max 10 chars
+function sanitizeCode(code) { return String(code || '').replace(/[^A-Za-z0-9]/g, '').slice(0, 10); }
+function getFamilyCode() { return sanitizeCode(localStorage.getItem('padel_family_code') || ''); }
+function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', sanitizeCode(code)); }
 function getGroupRole() { return localStorage.getItem('padel_group_role') || 'famille'; }
 function setGroupRoleLS(role) { localStorage.setItem('padel_group_role', role); }
 function getGroupName() { return localStorage.getItem('padel_group_name') || ''; }
@@ -380,6 +392,17 @@ const ATTRS = ["Puissance","Contrôle","Confort","Spin","Maniabilité","Toléran
 // Image URL helper — passthrough, no proxy needed (browser loads directly)
 function proxyImg(url) {
   return url || null;
+}
+
+// Safe bold text rendering — replaces dangerouslySetInnerHTML for **bold** markdown
+function safeBold(text, boldColor) {
+  if (!text) return null;
+  const parts = String(text).split(/\*\*([^*]+)\*\*/g);
+  return parts.map((part, i) => 
+    i % 2 === 1 
+      ? React.createElement('strong', { key: i, style: { color: boldColor || '#f1f5f9' } }, part)
+      : part
+  );
 }
 const COLORS_POOL = ["#E53935","#FF9800","#E91E63","#4CAF50","#009688","#2196F3","#1565C0","#9C27B0","#00BCD4","#FF5722","#8BC34A","#795548","#607D8B","#D4E157","#F06292","#4DD0E1","#FFB74D","#AED581","#BA68C8","#4FC3F7"];
 const explanations = {
@@ -1495,6 +1518,9 @@ export default function PadelAnalyzer() {
   const [racketSheet, setRacketSheet] = useState(null); // full racket sheet view
   const [racketSheetFrom, setRacketSheetFrom] = useState("home"); // screen to return to
   const [catalogSearch, setCatalogSearch] = useState(""); // catalog search term
+  const [catFilters, setCatFilters] = useState({ brands:[], cats:[], shapes:[], years:[], priceMax:0 }); // 0 = no limit
+  const toggleCatFilter = (key, val) => setCatFilters(f => ({...f, [key]: f[key].includes(val) ? f[key].filter(v=>v!==val) : [...f[key], val]}));
+  const resetCatFilters = () => setCatFilters({ brands:[], cats:[], shapes:[], years:[], priceMax:0 });
   const [magSlide, setMagSlide] = useState(0); // current slide index in top5
   const [addDetail, setAddDetail] = useState(null); // index of expanded search result
 
@@ -1548,18 +1574,18 @@ export default function PadelAnalyzer() {
           if (extras.length > 0) {
             localStorage.setItem('padel_db_extra', JSON.stringify(extras));
             setLocalDBCount(extras.length);
-            console.log(`[Cloud] Loaded ${extras.length} extra rackets from Supabase (${cloudRackets.length} total in cloud, ${RACKETS_DB.length} static)`);
+            _log(`[Cloud] Loaded ${extras.length} extra rackets from Supabase (${cloudRackets.length} total in cloud, ${RACKETS_DB.length} static)`);
           }
-        } catch(e) { console.warn('[Cloud] Rackets merge failed:', e.message); }
+        } catch(e) { _warn('[Cloud] Rackets merge failed:', e.message); }
       }
       setCloudStatus("synced");
       // Check admin status
       checkIsAdmin(familyCode).then(admin => {
         setIsAdmin(admin);
-        if (admin) console.log("[Admin] ✅ Mode admin activé");
+        if (admin) _log("[Admin] ✅ Mode admin activé");
       });
     }).catch(err => {
-      console.warn("[Cloud] Load error:", err.message);
+      _warn("[Cloud] Load error:", err.message);
       setCloudStatus("error");
     });
   }, [familyCode]);
@@ -1614,6 +1640,38 @@ export default function PadelAnalyzer() {
     return () => { clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
   }, [groupRole, screen]);
 
+  // ============ LOCALSTORAGE CACHE CLEANUP ============
+  useEffect(() => {
+    try {
+      const MAX_CACHE_AGE = 30 * 24 * 60 * 60 * 1000; // 30 days
+      const MAX_CACHE_ENTRIES = 100;
+      const cacheKeys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('padel_score_')) cacheKeys.push(key);
+      }
+      // Remove expired entries
+      let removed = 0;
+      for (const key of cacheKeys) {
+        try {
+          const raw = JSON.parse(localStorage.getItem(key));
+          if (!raw?.ts || Date.now() - raw.ts > MAX_CACHE_AGE) { localStorage.removeItem(key); removed++; }
+        } catch { localStorage.removeItem(key); removed++; }
+      }
+      // If still too many, remove oldest
+      if (cacheKeys.length - removed > MAX_CACHE_ENTRIES) {
+        const remaining = cacheKeys
+          .filter(k => localStorage.getItem(k))
+          .map(k => { try { return { k, ts: JSON.parse(localStorage.getItem(k))?.ts || 0 }; } catch { return { k, ts: 0 }; } })
+          .sort((a, b) => a.ts - b.ts);
+        const toRemove = remaining.slice(0, remaining.length - MAX_CACHE_ENTRIES);
+        toRemove.forEach(({ k }) => localStorage.removeItem(k));
+        removed += toRemove.length;
+      }
+      if (removed > 0) _log(`[Cache] Cleaned ${removed} expired score entries`);
+    } catch {}
+  }, []);
+
   // ============ SW UPDATE LISTENER ============
   useEffect(() => {
     const handler = () => setSwUpdateReady(true);
@@ -1624,7 +1682,7 @@ export default function PadelAnalyzer() {
   // Auto-reload when reaching login screen with pending update (NEVER during wizard/analyzing)
   useEffect(() => {
     if (screen === 'login' && swUpdateReady) {
-      console.log('[SW] Login screen + update ready → reloading');
+      _log('[SW] Login screen + update ready → reloading');
       window.location.reload();
     }
   }, [screen, swUpdateReady]);
@@ -1633,14 +1691,14 @@ export default function PadelAnalyzer() {
   const cloudSyncProfile = useCallback(async (name, profileData, locked) => {
     if (!familyCode) return;
     try { await cloudSaveProfile(familyCode, name, profileData, locked); } 
-    catch(e) { console.warn("[Cloud] Save:", e.message); }
+    catch(e) { _warn("[Cloud] Save:", e.message); }
   }, [familyCode]);
 
   // Cloud delete helper
   const cloudDeleteProfileFn = useCallback(async (name) => {
     if (!familyCode) return;
     try { await cloudDeleteProfile(familyCode, name); } 
-    catch(e) { console.warn("[Cloud] Delete:", e.message); }
+    catch(e) { _warn("[Cloud] Delete:", e.message); }
   }, [familyCode]);
 
   // Cloud logout
@@ -1667,7 +1725,7 @@ export default function PadelAnalyzer() {
     const name = cloudLoginName.trim();
     const pwd = cloudLoginPassword.trim();
     if (!name) { setCloudError("Entre un nom de groupe"); return; }
-    if (pwd.length < 4) { setCloudError("Mot de passe trop court (4 car. min)"); return; }
+    if (pwd.length < 8) { setCloudError("Mot de passe trop court (8 car. min)"); return; }
     setCloudError("");
     try {
       let result;
@@ -1814,7 +1872,7 @@ export default function PadelAnalyzer() {
         clearTimeout(timeout);
         if ((r.status===529 || r.status===429) && attempt<retries) {
           const waitSec = r.status===429 ? 30+attempt*15 : 8+attempt*4;
-          console.warn(`[API] ${r.status} rate limited, retry ${attempt+1}/${retries} in ${waitSec}s...`);
+          _warn(`[API] ${r.status} rate limited, retry ${attempt+1}/${retries} in ${waitSec}s...`);
           setLoadMsg?.(`⏳ Limite API atteinte — pause ${waitSec}s avant de reprendre (${attempt+1}/${retries})...`);
           await new Promise(ok=>setTimeout(ok,waitSec*1000));
           continue;
@@ -1831,7 +1889,7 @@ export default function PadelAnalyzer() {
         if (e.name==="AbortError") throw new Error("Timeout — la requête a pris trop de temps (>120s). Réessaie.");
         if (attempt<retries && (e.message?.includes("529")||e.message?.includes("429")||e.message?.includes("Overloaded")||e.message?.includes("rate_limit"))) {
           const waitSec = 30+attempt*15;
-          console.warn(`[API] Retry ${attempt+1}/${retries} after error:`, e.message);
+          _warn(`[API] Retry ${attempt+1}/${retries} after error:`, e.message);
           await new Promise(ok=>setTimeout(ok,waitSec*1000));
           continue;
         }
@@ -1945,10 +2003,10 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
       });
       localStorage.setItem('padel_db_extra', JSON.stringify(extra));
       setLocalDBCount(extra.length);
-      console.log(`[DB+] Saved ${racket.name} to local DB supplement (total: ${extra.length})`);
+      _log(`[DB+] Saved ${racket.name} to local DB supplement (total: ${extra.length})`);
       // Sync to cloud
-      if (familyCode) cloudSaveExtraRackets(familyCode, extra).catch(e => console.warn('[Cloud] Extra sync:', e.message));
-    } catch(e) { console.warn('[DB+] Save failed:', e.message); }
+      if (familyCode) cloudSaveExtraRackets(familyCode, extra).catch(e => _warn('[Cloud] Extra sync:', e.message));
+    } catch(e) { _warn('[DB+] Save failed:', e.message); }
   }
 
   function exportLocalDB() {
@@ -2003,14 +2061,14 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
     // Check cache first
     const cached = getCachedScore(name, brand);
     if (cached) {
-      console.log(`[Cache] Hit for ${name} — using cached scores`);
+      _log(`[Cache] Hit for ${name} — using cached scores`);
       return { ...cached, color: assignedColor, id: cached.id + '-' + Date.now() };
     }
     
     // Check DB second (embedded + local supplement)
     const dbResult = loadRacketFromDB(name, brand, assignedColor);
     if (dbResult) {
-      console.log(`[DB] Found ${name} in database — no API call needed`);
+      _log(`[DB] Found ${name} in database — no API call needed`);
       setCachedScore(name, brand, dbResult);
       return dbResult;
     }
@@ -2070,15 +2128,15 @@ Return JSON: {"scores":{"Puissance":X,"Contrôle":X,"Confort":X,"Spin":X,"Maniab
 No markdown, no backticks.`}], {systemPrompt: SCORING_SYSTEM_PROMPT});
     let analysis;
     try { analysis = parseJ(scoreTxt); } catch(e1) {
-      console.warn(`[Score] Parse failed for ${specs.name}, retrying...`, e1.message);
+      _warn(`[Score] Parse failed for ${specs.name}, retrying...`, e1.message);
       try {
         const retry = await callAI([{role:"user",content:`Score this padel racket's INTRINSIC properties. Specs: ${specs.name}, ${specs.shape}, ${specs.weight}, ${specs.balance}, ${specs.surface}, ${specs.core}.
 Return ONLY valid JSON: {"scores":{"Puissance":7,"Contrôle":7,"Confort":7,"Spin":7,"Maniabilité":7,"Tolérance":7},"verdict":"French text describing the racket"}
 No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PROMPT, maxTokens:600});
         analysis = parseJ(retry);
-        console.log(`[Score] Retry succeeded for ${specs.name}`);
+        _log(`[Score] Retry succeeded for ${specs.name}`);
       } catch(e2) {
-        console.warn(`[Score] Retry also failed for ${specs.name}:`, e2.message);
+        _warn(`[Score] Retry also failed for ${specs.name}:`, e2.message);
         analysis = { scores:{}, verdict:"Scoring automatique indisponible — clique 🔄 pour réessayer.", forYou:"partial", _incomplete:true };
       }
     }
@@ -2210,12 +2268,12 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     const prioLabels = profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
     const isExpertFeel = !!profile.expertToucher;
     const feelDesc = isExpertFeel ? `PRO FEEL PREFERENCES: Toucher=${profile.expertToucher}, Réactivité=${profile.expertReactivite||"explosive"}, Poids=${profile.expertPoids||"equilibre"}, Forme=${profile.expertForme||"indifferent"}` : "";
-    console.log("[Suggest] Starting. Existing:", existingNames, "Brands:", brandPref, "Priorities:", isExpertFeel ? feelDesc : prioLabels);
+    _log("[Suggest] Starting. Existing:", existingNames, "Brands:", brandPref, "Priorities:", isExpertFeel ? feelDesc : prioLabels);
     
     try {
       // Phase 1: Try DB first
       const dbMatch = matchFromDB(profile, existingNames);
-      console.log("[DB] Pool:", dbMatch.totalPool, "Heart:", dbMatch.heart.length, "Priority:", dbMatch.priority.length);
+      _log("[DB] Pool:", dbMatch.totalPool, "Heart:", dbMatch.heart.length, "Priority:", dbMatch.priority.length);
       
       if (dbMatch.heart.length + dbMatch.priority.length >= 6) {
         // Enough results from DB — format as suggestions
@@ -2223,7 +2281,7 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
           ...dbMatch.heart.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"heart", description:r.verdict, _fromDB:true})),
           ...dbMatch.priority.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"priority", description:r.verdict, _fromDB:true})),
         ];
-        console.log("[DB] Sufficient results:", results.length, "— skipping web search");
+        _log("[DB] Sufficient results:", results.length, "— skipping web search");
         setSuggestResults(results);
         setLoadMsg("✅ " + results.length + " raquettes trouvées instantanément !");
         setTimeout(()=>setLoadMsg(""),2500);
@@ -2232,7 +2290,7 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       }
       
       // Phase 2: Not enough from DB — use web search
-      console.log("[DB] Only", dbMatch.heart.length + dbMatch.priority.length, "results — falling back to web search");
+      _log("[DB] Only", dbMatch.heart.length + dbMatch.priority.length, "results — falling back to web search");
       setLoadMsg("🌐 Recherche web complémentaire...");
       const startTime = Date.now();
       const timer = setInterval(()=>{
@@ -2279,7 +2337,7 @@ ${(()=>{
 Return ONLY a JSON array, no markdown: [{"name":"...","brand":"...","shape":"...","weight":"...","price":"...","category":"heart","description":"..."}]`}], {webSearch:true, maxTokens:2500});
         const res = parseJ(txt);
         if(!Array.isArray(res)||!res.length) throw new Error("Aucune suggestion trouvée");
-        console.log("[WebSearch] Got results:", res.length, res.map(r=>`${r.category}:${r.name}`));
+        _log("[WebSearch] Got results:", res.length, res.map(r=>`${r.category}:${r.name}`));
         const filtered = res.filter(s => !existingNames.some(n => 
           n.toLowerCase().includes(s.name?.toLowerCase()?.slice(0,15)) || 
           s.name?.toLowerCase()?.includes(n.toLowerCase().slice(0,15))
@@ -2330,7 +2388,7 @@ Return ONLY a JSON array, no markdown: [{"name":"...","brand":"...","shape":"...
           // Direct from database — instant, no API call
           newR = loadRacketFromDB(sug.name, sug.brand, color);
           if (!newR) throw new Error("Raquette introuvable dans la base");
-          console.log(`[DB] Loaded ${sug.name} directly — no API call`);
+          _log(`[DB] Loaded ${sug.name} directly — no API call`);
         } else {
           // Web search result — needs API scoring
           newR = await fetchAndScoreRacket(sug.name, sug.brand, color);
@@ -2729,7 +2787,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </button>
 
           {/* CATALOGUE CTA */}
-          <button onClick={()=>{setCatalogSearch("");setScreen("catalog");}} style={{
+          <button onClick={()=>{setCatalogSearch("");resetCatFilters();setScreen("catalog");}} style={{
             width:"100%",padding:"20px 24px",borderRadius:20,cursor:"pointer",marginTop:12,
             background:"linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(249,115,22,0.04) 100%)",
             border:"1px solid rgba(34,197,94,0.15)",transition:"all 0.3s",
@@ -3431,7 +3489,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const isDyn = !!dynText;
               return <div style={{padding:"10px 14px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:12,border:`1px solid ${isDyn?"rgba(249,115,22,0.12)":"rgba(76,175,80,0.12)"}`,marginBottom:12}}>
                 <div style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}}>{isDyn?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 CETTE RAQUETTE S\u2019ADRESSE \u00C0"}</div>
-                <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#f1f5f9">$1</strong>')}}/>
+                <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0}}>{safeBold(text, "#f1f5f9")}</p>
               </div>;
             })()}
 
@@ -3598,19 +3656,29 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const allDB = getMergedDB();
         const term = catalogSearch.toLowerCase().trim();
         
-        // Get unique brands sorted
+        // Get unique values sorted
         const allBrands = [...new Set(allDB.map(r=>r.brand))].sort();
         const allCats = ["debutant","intermediaire","avance","expert"];
         const catLabels = {debutant:"Débutant",intermediaire:"Intermédiaire",avance:"Avancé",expert:"Expert"};
+        const allShapes = [...new Set(allDB.map(r=>r.shape).filter(Boolean))].sort();
+        const allYears = [...new Set(allDB.map(r=>r.year).filter(Boolean))].sort((a,b)=>b-a);
+        const PRICE_RANGES = [{label:"< 100€",max:100},{label:"< 200€",max:200},{label:"< 300€",max:300},{label:"Tous",max:0}];
+        
+        // Parse price helper
+        const parsePrice = (p) => { if(!p) return 0; const m=String(p).match(/(\d+)/); return m?Number(m[1]):0; };
         
         // Filter
+        const {brands:fBrands, cats:fCats, shapes:fShapes, years:fYears, priceMax:fPrice} = catFilters;
+        const hasFilters = fBrands.length>0 || fCats.length>0 || fShapes.length>0 || fYears.length>0 || fPrice>0 || term;
+        
         const filtered = allDB.filter(r => {
-          if (!term) return true;
-          return (r.name||"").toLowerCase().includes(term) 
-            || (r.brand||"").toLowerCase().includes(term) 
-            || (r.shortName||"").toLowerCase().includes(term)
-            || (r.category||"").toLowerCase().includes(term)
-            || String(r.year||"").includes(term);
+          if (term && !((r.name||"").toLowerCase().includes(term) || (r.brand||"").toLowerCase().includes(term) || (r.shortName||"").toLowerCase().includes(term))) return false;
+          if (fBrands.length>0 && !fBrands.includes(r.brand)) return false;
+          if (fCats.length>0 && !fCats.includes(r.category)) return false;
+          if (fShapes.length>0 && !fShapes.includes(r.shape)) return false;
+          if (fYears.length>0 && !fYears.includes(r.year)) return false;
+          if (fPrice>0 && parsePrice(r.price)>fPrice) return false;
+          return true;
         });
         
         // Group by brand
@@ -3626,6 +3694,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         };
         
         const catColor = (c) => c==="expert"?"#f97316":c==="avance"?"#a855f7":c==="intermediaire"?"#3b82f6":"#22c55e";
+        
+        // Filter chip style helper
+        const chipSt = (active, color="#f97316") => ({
+          padding:"4px 12px",borderRadius:16,fontSize:10,fontWeight:active?700:500,cursor:"pointer",
+          background:active?`${color}15`:"rgba(255,255,255,0.03)",
+          border:`1px solid ${active?color+"40":"rgba(255,255,255,0.08)"}`,
+          color:active?color:"#64748b",transition:"all 0.15s",fontFamily:"'Inter'",whiteSpace:"nowrap",
+        });
+        
+        const activeCount = fBrands.length + fCats.length + fShapes.length + fYears.length + (fPrice>0?1:0);
 
         return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:"'Inter',sans-serif",animation:"fadeIn 0.3s ease",maxWidth:600,margin:"0 auto",padding:"0 12px"}}>
           {/* Header */}
@@ -3641,35 +3719,74 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
           
           {/* Search bar */}
-          <div style={{position:"relative",marginBottom:16}}>
+          <div style={{position:"relative",marginBottom:12}}>
             <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",fontSize:14,opacity:0.4}}>🔎</span>
             <input 
               type="text" value={catalogSearch} 
               onChange={e=>setCatalogSearch(e.target.value)}
-              placeholder="Nom, marque, année, niveau..."
+              placeholder="Rechercher par nom..."
               style={{width:"100%",padding:"12px 14px 12px 40px",borderRadius:14,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.04)",color:"#e2e8f0",fontSize:13,fontFamily:"inherit",outline:"none",boxSizing:"border-box"}}
             />
             {catalogSearch&&<button onClick={()=>setCatalogSearch("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#64748b",fontSize:16,cursor:"pointer"}}>✕</button>}
           </div>
           
-          {/* Quick filter chips */}
-          <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16,justifyContent:"center"}}>
-            {["2026","2025"].map(y=>(
-              <button key={y} onClick={()=>setCatalogSearch(catalogSearch===y?"":y)} style={{
-                padding:"5px 14px",borderRadius:20,fontSize:10,fontWeight:catalogSearch===y?700:500,cursor:"pointer",
-                background:catalogSearch===y?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.04)",
-                border:`1px solid ${catalogSearch===y?"rgba(249,115,22,0.3)":"rgba(255,255,255,0.08)"}`,
-                color:catalogSearch===y?"#f97316":"#94a3b8",transition:"all 0.2s",fontFamily:"'Inter'",
-              }}>{y}</button>
-            ))}
-            {allCats.map(c=>(
-              <button key={c} onClick={()=>setCatalogSearch(catalogSearch===c?"":c)} style={{
-                padding:"5px 14px",borderRadius:20,fontSize:10,fontWeight:catalogSearch===c?700:500,cursor:"pointer",
-                background:catalogSearch===c?`${catColor(c)}15`:"rgba(255,255,255,0.04)",
-                border:`1px solid ${catalogSearch===c?catColor(c)+"40":"rgba(255,255,255,0.08)"}`,
-                color:catalogSearch===c?catColor(c):"#94a3b8",transition:"all 0.2s",fontFamily:"'Inter'",
-              }}>{catLabels[c]}</button>
-            ))}
+          {/* ===== FILTER SECTION ===== */}
+          <div style={{marginBottom:16,background:"rgba(255,255,255,0.02)",borderRadius:14,border:"1px solid rgba(255,255,255,0.06)",padding:"10px 12px"}}>
+            
+            {/* Niveau */}
+            <div style={{marginBottom:10}}>
+              <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Niveau</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                {allCats.map(c=>(
+                  <button key={c} onClick={()=>toggleCatFilter("cats",c)} style={chipSt(fCats.includes(c), catColor(c))}>{catLabels[c]}</button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Marque */}
+            <div style={{marginBottom:10}}>
+              <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Marque</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                {allBrands.map(b=>(
+                  <button key={b} onClick={()=>toggleCatFilter("brands",b)} style={chipSt(fBrands.includes(b), "#CE93D8")}>{b}</button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Forme */}
+            <div style={{marginBottom:10}}>
+              <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Forme</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                {allShapes.map(s=>(
+                  <button key={s} onClick={()=>toggleCatFilter("shapes",s)} style={chipSt(fShapes.includes(s), "#60a5fa")}>{s}</button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Année + Prix — side by side */}
+            <div style={{display:"flex",gap:16}}>
+              <div style={{flex:1}}>
+                <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Année</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                  {allYears.map(y=>(
+                    <button key={y} onClick={()=>toggleCatFilter("years",y)} style={chipSt(fYears.includes(y))}>{y}</button>
+                  ))}
+                </div>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Budget max</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                  {PRICE_RANGES.map(p=>(
+                    <button key={p.max} onClick={()=>setCatFilters(f=>({...f,priceMax:f.priceMax===p.max?0:p.max}))} style={chipSt(fPrice===p.max&&p.max>0, "#22c55e")}>{p.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Reset */}
+            {activeCount>0&&<div style={{textAlign:"center",marginTop:10}}>
+              <button onClick={()=>{resetCatFilters();setCatalogSearch("");}} style={{background:"none",border:"none",color:"#ef4444",fontSize:10,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>✕ Réinitialiser les filtres ({activeCount})</button>
+            </div>}
           </div>
           
           {/* Results by brand */}
@@ -3903,7 +4020,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const isDynamic = !!dynText;
             return <div style={{padding:"14px 18px",background:isDynamic?"rgba(249,115,22,0.04)":"rgba(76,175,80,0.04)",borderRadius:16,border:`1px solid ${isDynamic?"rgba(249,115,22,0.12)":"rgba(76,175,80,0.1)"}`,marginBottom:14}}>
               <div style={{fontSize:9,color:isDynamic?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>{isDynamic?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 PROFIL CIBLE"}</div>
-              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#f1f5f9">$1</strong>')}}/>
+              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}}>{safeBold(text, "#f1f5f9")}</p>
             </div>;
           })()}
 
@@ -5080,7 +5197,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const shortText = isDyn ? text.split('. ').slice(0, 2).join('. ') + '.' : text;
                     return <div style={{padding:"8px 12px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:10,border:`1px solid ${isDyn?"rgba(249,115,22,0.1)":"rgba(76,175,80,0.1)"}`,marginBottom:8}}>
                       <span style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>{isDyn?`🎯 Pour ${profileName} : `:"🎯 S'adresse à : "}</span>
-                      <span style={{fontSize:10,color:"#94a3b8"}} dangerouslySetInnerHTML={{__html: shortText.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#cbd5e1">$1</strong>')}}/>
+                      <span style={{fontSize:10,color:"#94a3b8"}}>{safeBold(shortText, "#cbd5e1")}</span>
                     </div>;
                   })()}
 
