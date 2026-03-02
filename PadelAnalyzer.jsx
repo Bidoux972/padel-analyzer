@@ -3111,22 +3111,71 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"/>
       <style>{`
         @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInScale { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
         @keyframes slideIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes subtlePulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+        @keyframes glowPulse { 0%,100% { box-shadow: 0 0 12px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 24px rgba(249,115,22,0.3); } }
+
+        /* Screen entrance variants */
+        .pa-screen-fade { animation: fadeInScale 0.4s cubic-bezier(.22,1,.36,1); }
+        .pa-screen-up { animation: fadeInUp 0.45s cubic-bezier(.22,1,.36,1); }
+
+        /* Cards */
         .pa-card { transition: all 0.25s cubic-bezier(.4,0,.2,1); }
-        .pa-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-        .pa-carousel::-webkit-scrollbar { display: none; }
+        .pa-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.35); }
+        .pa-card:active { transform: translateY(-1px) scale(0.99); }
+
+        /* Tags */
         .pa-tag { transition: all 0.15s cubic-bezier(.4,0,.2,1); }
-        .pa-tag:active { transform: scale(0.94); }
+        .pa-tag:hover { filter: brightness(1.15); }
+        .pa-tag:active { transform: scale(0.92); }
+
+        /* CTA buttons */
+        .pa-cta { transition: all 0.2s cubic-bezier(.4,0,.2,1); }
+        .pa-cta:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(249,115,22,0.25); }
+        .pa-cta:active { transform: translateY(1px) scale(0.98); filter: brightness(0.95); }
+
+        /* Ghost buttons */
+        .pa-ghost { transition: all 0.2s ease; }
+        .pa-ghost:hover { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.2) !important; }
+        .pa-ghost:active { transform: scale(0.97); }
+
+        /* Tabs */
         .pa-tab { position: relative; transition: all 0.2s ease; }
+        .pa-tab:hover { color: #f1f5f9 !important; }
         .pa-tab::after { content: ''; position: absolute; bottom: -1px; left: 50%; width: 0; height: 2px; background: #f97316; border-radius: 1px; transition: all 0.25s cubic-bezier(.4,0,.2,1); transform: translateX(-50%); }
         .pa-tab-active::after { width: 60%; }
+
         .pa-badge { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .pa-score-cell { position: relative; }
         .pa-score-cell::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); height: 3px; border-radius: 2px; opacity: 0.15; }
         .pa-section { border-left: 3px solid; padding-left: 10px; margin-top: 14px; margin-bottom: 4px; }
         tr.pa-row { transition: background 0.15s ease; }
         tr.pa-row:hover { background: rgba(255,255,255,0.04) !important; }
+        .pa-carousel::-webkit-scrollbar { display: none; }
+
+        /* Staggered children — apply pa-stagger to parent */
+        .pa-stagger > * { opacity: 0; animation: fadeInUp 0.35s cubic-bezier(.22,1,.36,1) forwards; }
+        .pa-stagger > *:nth-child(1) { animation-delay: 0ms; }
+        .pa-stagger > *:nth-child(2) { animation-delay: 60ms; }
+        .pa-stagger > *:nth-child(3) { animation-delay: 120ms; }
+        .pa-stagger > *:nth-child(4) { animation-delay: 180ms; }
+        .pa-stagger > *:nth-child(5) { animation-delay: 240ms; }
+        .pa-stagger > *:nth-child(6) { animation-delay: 300ms; }
+        .pa-stagger > *:nth-child(7) { animation-delay: 360ms; }
+        .pa-stagger > *:nth-child(8) { animation-delay: 420ms; }
+        .pa-stagger > *:nth-child(n+9) { animation-delay: 480ms; }
+
+        /* Input focus glow */
+        input:focus, select:focus { border-color: rgba(249,115,22,0.5) !important; box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+
+        /* Modal overlay */
+        .pa-overlay { animation: fadeIn 0.2s ease; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
       `}</style>
 
       {/* ============================================================ */}
@@ -3213,11 +3262,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           
           {cloudError&&<p style={{color:"#ef4444",fontSize:11,marginTop:10,textAlign:"center"}}>{cloudError}</p>}
           
-          <button onClick={handleCloudJoin} style={{marginTop:18,width:"100%",padding:"15px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:14,color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:F.legacy,letterSpacing:"-0.01em",boxShadow:`0 6px 24px ${T.accentGlow}`,transition:"all 0.3s ease"}}>
+          <button onClick={handleCloudJoin} className="pa-cta" style={{marginTop:18,width:"100%",padding:"15px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:14,color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:F.legacy,letterSpacing:"-0.01em",boxShadow:`0 6px 24px ${T.accentGlow}`}}>
             {cloudLoginMode==="join"?"Se connecter":"Créer mon espace"}
           </button>
           
-          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("home");}} style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:10,color:T.gray2,fontSize:11,cursor:"pointer",fontFamily:F.body,transition:"all 0.2s"}}>
+          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("home");}} className="pa-ghost" style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:10,color:T.gray2,fontSize:11,cursor:"pointer",fontFamily:F.body}}>
             Continuer sans compte
           </button>
         </div>
@@ -3420,10 +3469,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         })()}
 
         {/* New profile button */}
-        <button onClick={createNewProfile} style={{
+        <button onClick={createNewProfile} className="pa-cta" style={{
           padding:"15px 28px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,
           border:"none",borderRadius:14,color:"#fff",fontSize:14,fontWeight:700,
-          cursor:"pointer",fontFamily:F.body,transition:"all 0.2s ease",letterSpacing:"-0.01em",
+          cursor:"pointer",fontFamily:F.body,letterSpacing:"-0.01em",
           width:"100%",maxWidth:400,boxShadow:`0 6px 24px ${T.accentGlow}`,position:"relative",zIndex:1,
         }}>
           + Nouveau profil
@@ -3436,11 +3485,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* ============================================================ */}
         {/* MAGAZINE CTA */}
         {/* ============================================================ */}
-        <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1}}>
-          <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} style={{
+        <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1}} className="pa-stagger">
+          <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} className="pa-card" style={{
             width:"100%",padding:"22px 24px",borderRadius:20,cursor:"pointer",
             background:`linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`,
-            border:`1px solid ${T.gold}40`,transition:"all 0.3s",position:"relative",overflow:"hidden",
+            border:`1px solid ${T.gold}40`,position:"relative",overflow:"hidden",
             boxShadow:`0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 ${T.gold}15`,
           }}>
             {/* Gold top accent */}
@@ -3455,10 +3504,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </button>
 
           {/* CATALOGUE CTA */}
-          <button onClick={()=>{setCatalogSearch("");resetCatFilters();setScreen("catalog");}} style={{
+          <button onClick={()=>{setCatalogSearch("");resetCatFilters();setScreen("catalog");}} className="pa-card" style={{
             width:"100%",padding:"22px 24px",borderRadius:20,cursor:"pointer",marginTop:12,
             background:`linear-gradient(135deg, ${T.card} 0%, rgba(61,176,107,0.06) 100%)`,
-            border:`1px solid ${T.green}25`,transition:"all 0.3s",
+            border:`1px solid ${T.green}25`,
           }}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
@@ -3576,7 +3625,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         });
 
         return (
-        <div style={{maxWidth:1020,margin:"0 auto",padding:"20px 16px",animation:"fadeIn 0.4s ease"}}>
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"20px 16px"}} className="pa-screen-fade">
           {/* Header */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
             <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -4455,7 +4504,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         ];
 
         return (
-        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px",animation:"fadeIn 0.3s ease"}}>
+        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px"}} className="pa-screen-up">
           <style>{`
             @keyframes wizardSlideIn { 0% { opacity:0; transform:translateY(24px) scale(0.98); } 100% { opacity:1; transform:translateY(0) scale(1); } }
             @keyframes wizardSlideOut { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-40px); } }
@@ -4512,11 +4561,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const label = wizardStep===TOTAL_STEPS-1 ? "Voir mon profil →" : (canNext ? (nextLabels[wizardStep]||"Suivant →") : "Suivant →");
             const isLast = wizardStep===TOTAL_STEPS-1;
             return <div style={{marginTop:32,display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
-              <button onClick={isLast?goRecap:nextStep} disabled={!canNext} style={{
+              <button onClick={isLast?goRecap:nextStep} disabled={!canNext} className={canNext?"pa-cta":""} style={{
                 padding:"15px 44px",borderRadius:14,fontSize:15,fontWeight:800,cursor:canNext?"pointer":"not-allowed",fontFamily:"'Outfit',sans-serif",
                 background:canNext?(isLast?"linear-gradient(135deg,rgba(76,175,80,0.3),rgba(76,175,80,0.15))":"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))"):"rgba(255,255,255,0.03)",
                 border:`1.5px solid ${canNext?(isLast?"rgba(76,175,80,0.5)":"rgba(249,115,22,0.4)"):"rgba(255,255,255,0.06)"}`,
-                color:canNext?(isLast?"#4CAF50":"#f97316"):"#334155",transition:"all 0.3s ease",
+                color:canNext?(isLast?"#4CAF50":"#f97316"):"#334155",
                 opacity:canNext?1:0.5,
                 boxShadow:canNext?`0 4px 16px ${isLast?"rgba(76,175,80,0.2)":"rgba(249,115,22,0.15)"}`:"none",
                 minWidth:200,
@@ -4551,7 +4600,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Expert:"#9C27B0"};
 
         return (
-        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px",animation:"fadeIn 0.5s ease"}}>
+        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px"}} className="pa-screen-up">
           <div style={{width:"100%",maxWidth:480}}>
             <div style={{textAlign:"center",marginBottom:24}}>
               <div style={{fontSize:48,marginBottom:12}}>🎾</div>
@@ -4614,11 +4663,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 cloudSyncProfile(profileName.trim(), profile, false);
                 setScreen("analyzing");
                 setRevealIdx(0);
-              }} style={{
+              }} className="pa-cta" style={{
                 flex:2,padding:"14px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
                 background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))",
                 border:"1.5px solid rgba(249,115,22,0.4)",color:"#f97316",
-                boxShadow:"0 4px 20px rgba(249,115,22,0.2)",transition:"all 0.3s ease",
+                boxShadow:"0 4px 20px rgba(249,115,22,0.2)",
               }}>
                 🚀 Lancer l'analyse
               </button>
@@ -4766,7 +4815,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:{text:"—",color:"#64748b"};
 
         return (
-        <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",overflow:"hidden"}}>
+        <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",overflow:"hidden"}} className="pa-screen-fade">
           <style>{`
             @keyframes revealCardIn { from { opacity:0; transform:scale(0.9) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
             @keyframes revealPulse { 0%,100% { box-shadow: 0 0 30px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 50px rgba(249,115,22,0.35); } }
@@ -4909,7 +4958,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const fyConfig2 = {recommended:{text:"RECOMMANDÉ",bg:"#1B5E20",border:"#4CAF50",color:"#4CAF50"},partial:{text:"JOUABLE",bg:"#E65100",border:"#FF9800",color:"#FF9800"},no:{text:"DÉCONSEILLÉ",bg:"#B71C1C",border:"#E53935",color:"#E53935"}};
 
         return (
-        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",animation:"fadeIn 0.5s ease"}}>
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px"}} className="pa-screen-fade">
           {/* Header — compact inline */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:18}}>
             <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
