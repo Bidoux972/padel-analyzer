@@ -1,4 +1,4 @@
-const CACHE_VERSION = 14;
+const CACHE_VERSION = 15;
 const CACHE_NAME = 'padel-analyzer-v' + CACHE_VERSION;
 const ASSETS_TO_CACHE = [
   '/',
@@ -6,6 +6,7 @@ const ASSETS_TO_CACHE = [
   '/bundle.js',
   '/manifest.json',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap',
+  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap',
 ];
 
 // Install: cache core assets, skip waiting immediately

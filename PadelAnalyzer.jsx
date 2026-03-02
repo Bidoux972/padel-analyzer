@@ -3140,14 +3140,22 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* ============================================================ */}
       {/* LOGIN / CLOUD SCREEN */}
       {/* ============================================================ */}
-      {screen==="login"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"80vh",animation:"fadeIn 0.5s ease",padding:"0 16px"}}>
-        <div style={{width:80,height:80,borderRadius:20,background:"linear-gradient(135deg,#f97316,#ef4444)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:24}}>
-          <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.5" fill="none"/><line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/><circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/></svg>
+      {screen==="login"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",animation:"fadeIn 0.6s ease",padding:"0 20px",background:`radial-gradient(ellipse at 50% 20%, ${T.surface} 0%, ${T.bg} 55%, #080c14 100%)`,position:"relative",overflow:"hidden"}}>
+        <FontLoader/>
+        {/* Decorative glow */}
+        <div style={{position:"absolute",top:"-15%",left:"50%",transform:"translateX(-50%)",width:"140%",height:"50%",background:`radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 70%)`,opacity:0.3,pointerEvents:"none"}}/>
+        <div style={{position:"absolute",top:"10%",right:"-5%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.4,pointerEvents:"none"}}/>
+        {/* Logo */}
+        <div style={{width:88,height:88,borderRadius:22,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:20,boxShadow:`0 12px 40px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,position:"relative",zIndex:1}}>
+          <svg width="48" height="48" viewBox="0 0 44 44" fill="none"><ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.5" fill="none"/><line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/><circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/></svg>
         </div>
-        <h1 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px",letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
-        <p style={{color:"#64748b",fontSize:12,margin:"0 0 32px",textAlign:"center"}}>Ton conseiller raquette intelligent</p>
+        <h1 style={{fontFamily:F.editorial,fontSize:34,fontWeight:700,color:T.cream,margin:"0 0 4px",letterSpacing:"0.02em",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
+        <p style={{fontFamily:F.editorial,fontSize:15,color:T.gold,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"0.03em",position:"relative",zIndex:1}}>Padel Center & Santé</p>
+        <p style={{color:T.gray2,fontSize:11,margin:"0 0 32px",textAlign:"center",fontFamily:F.body,letterSpacing:"0.04em",textTransform:"uppercase",fontWeight:500,position:"relative",zIndex:1}}>Trouve ta pala · Élève ton jeu</p>
         
-        <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:24,width:"100%",maxWidth:380}}>
+        <div style={{background:`linear-gradient(180deg, ${T.card} 0%, rgba(11,14,13,0.95) 100%)`,border:`1px solid ${T.border}`,borderRadius:22,padding:"28px 24px 24px",width:"100%",maxWidth:380,position:"relative",zIndex:1,boxShadow:"0 20px 60px rgba(0,0,0,0.4)",overflow:"hidden"}}>
+          {/* Gold accent line */}
+          <div style={{position:"absolute",top:0,left:"20%",right:"20%",height:2,background:`linear-gradient(90deg, transparent, ${T.gold}, transparent)`,borderRadius:1}}/>
           {/* Mode toggle */}
           <div style={{display:"flex",gap:8,marginBottom:20}}>
             <button onClick={()=>{setCloudLoginMode("join");setCloudError("");}} style={{flex:1,padding:"10px",borderRadius:10,border:cloudLoginMode==="join"?"1px solid #f97316":"1px solid rgba(255,255,255,0.1)",background:cloudLoginMode==="join"?"rgba(249,115,22,0.15)":"transparent",color:cloudLoginMode==="join"?"#f97316":"#64748b",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Se connecter</button>
@@ -3156,7 +3164,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           
           {adminMsg&&<div style={{padding:"10px 14px",background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.25)",borderRadius:10,marginBottom:12,fontSize:12,color:"#f97316",textAlign:"center",fontWeight:600,animation:"fadeIn 0.3s ease"}}>{adminMsg}</div>}
           
-          <p style={{fontSize:11,color:"#94a3b8",margin:"0 0 16px",lineHeight:1.5}}>
+          <p style={{fontSize:11,color:T.gray1,margin:"0 0 16px",lineHeight:1.5,fontFamily:F.body}}>
             {cloudLoginMode==="join"
               ?"Connecte-toi avec ton nom de groupe et ton mot de passe."
               :"Crée ton espace pour sauvegarder et synchroniser tes profils."}
@@ -3205,27 +3213,30 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           
           {cloudError&&<p style={{color:"#ef4444",fontSize:11,marginTop:10,textAlign:"center"}}>{cloudError}</p>}
           
-          <button onClick={handleCloudJoin} style={{marginTop:16,width:"100%",padding:"14px",background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",border:"1px solid rgba(249,115,22,0.4)",borderRadius:14,color:"#f97316",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit'",letterSpacing:"-0.01em"}}>
-            {cloudLoginMode==="join"?"☁️ Se connecter":"☁️ Créer mon espace"}
+          <button onClick={handleCloudJoin} style={{marginTop:18,width:"100%",padding:"15px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:14,color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:F.legacy,letterSpacing:"-0.01em",boxShadow:`0 6px 24px ${T.accentGlow}`,transition:"all 0.3s ease"}}>
+            {cloudLoginMode==="join"?"Se connecter":"Créer mon espace"}
           </button>
           
-          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("home");}} style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:"1px solid rgba(255,255,255,0.08)",borderRadius:10,color:"#475569",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
-            Continuer en local (sans synchronisation)
+          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("home");}} style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:10,color:T.gray2,fontSize:11,cursor:"pointer",fontFamily:F.body,transition:"all 0.2s"}}>
+            Continuer sans compte
           </button>
         </div>
         
-        <p style={{fontSize:8,color:"#334155",marginTop:32,letterSpacing:"0.05em"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V13 · {totalDBCount} raquettes
+        <p style={{fontSize:8,color:T.gray3,marginTop:32,letterSpacing:"0.06em",position:"relative",zIndex:1,fontFamily:F.body}}>
+          <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · {totalDBCount} raquettes · Martinique
         </p>
       </div>}
 
       {/* ============================================================ */}
       {/* HOME SCREEN */}
       {/* ============================================================ */}
-      {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"80vh",animation:"fadeIn 0.5s ease",padding:"0 16px"}}>
+      {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"20px 16px",background:`radial-gradient(ellipse at 50% 10%, ${T.surface} 0%, ${T.bg} 50%, #080c14 100%)`,position:"relative",overflow:"hidden"}}>
+        <FontLoader/>
+        {/* Subtle top glow */}
+        <div style={{position:"absolute",top:"-10%",left:"50%",transform:"translateX(-50%)",width:"120%",height:"40%",background:`radial-gradient(ellipse, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.25,pointerEvents:"none"}}/>
         {/* Big logo */}
-        <div style={{marginBottom:24,animation:"fadeIn 0.6s ease"}}>
-          <svg width="80" height="80" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.35))"}}>
+        <div style={{marginBottom:16,position:"relative",zIndex:1}}>
+          <svg width="72" height="72" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:`drop-shadow(0 8px 28px ${T.accentGlow})`}}>
             <defs><linearGradient id="logoGradHome" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
             <rect width="44" height="44" rx="10" fill="url(#logoGradHome)"/>
             <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
@@ -3235,11 +3246,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
           </svg>
         </div>
-        <h1 style={{fontFamily:"'Outfit'",fontSize:32,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 6px",letterSpacing:"-0.03em",textAlign:"center"}}>PADEL ANALYZER</h1>
-        {groupName&&familyCode!=="LOCAL"?<p style={{color:"#f97316",fontSize:14,margin:"0 0 8px",fontWeight:700,textAlign:"center",fontFamily:"'Outfit'"}}>
-          {groupRole==="admin"?"👑 Salut Boss":groupRole==="vendeur"?`🏪 Espace ${groupName}`:`👋 Bienvenue ${groupName}`}
-        </p>:<p style={{color:"#64748b",fontSize:13,margin:"0 0 8px",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:500,textAlign:"center"}}>Ton conseiller raquette intelligent</p>}
-        <p style={{color:"#475569",fontSize:11,margin:"0 0 36px",textAlign:"center",maxWidth:340,lineHeight:1.5}}>Analyse ton profil, explore {totalDBCount}+ raquettes, trouve la pala parfaite pour ton jeu.</p>
+        <h1 style={{fontFamily:F.editorial,fontSize:30,fontWeight:700,color:T.cream,margin:"0 0 4px",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
+        {groupName&&familyCode!=="LOCAL"?<p style={{color:T.gold,fontSize:14,margin:"0 0 6px",fontWeight:600,textAlign:"center",fontFamily:F.editorial,fontStyle:"italic",position:"relative",zIndex:1}}>
+          {groupRole==="admin"?"👑 Salut Boss":groupRole==="vendeur"?`Espace ${groupName}`:`Bienvenue, ${groupName}`}
+        </p>:<p style={{fontFamily:F.editorial,fontSize:14,color:T.gold,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>Padel Center & Santé</p>}
+        <p style={{color:T.gray2,fontSize:11,margin:"0 0 32px",textAlign:"center",maxWidth:340,lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>{totalDBCount} raquettes analysées · Scoring calibré · Recommandation personnalisée</p>
 
         {/* Saved profiles — Carousel */}
         {savedProfiles.length>0&&(()=>{
@@ -3268,7 +3279,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           };
           return (
           <div style={{width:"100%",maxWidth:560,marginBottom:24}}>
-            <p style={{fontSize:10,color:"#94a3b8",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:12,textAlign:"center"}}>👤 Mes profils <span style={{color:"#64748b",fontWeight:400}}>({savedProfiles.length})</span></p>
+            <p style={{fontSize:10,color:T.gray1,fontWeight:600,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:12,textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>Mes profils <span style={{color:T.gray2,fontWeight:400}}>({savedProfiles.length})</span></p>
 
             {/* Search bar — shows when 4+ profiles */}
             {savedProfiles.length>=4&&<div style={{display:"flex",justifyContent:"center",marginBottom:12}}>
@@ -3410,48 +3421,51 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         {/* New profile button */}
         <button onClick={createNewProfile} style={{
-          padding:"14px 28px",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",
-          border:"1px solid rgba(249,115,22,0.35)",borderRadius:14,color:"#f97316",fontSize:14,fontWeight:700,
-          cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s ease",letterSpacing:"-0.01em",
-          width:"100%",maxWidth:400,
+          padding:"15px 28px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,
+          border:"none",borderRadius:14,color:"#fff",fontSize:14,fontWeight:700,
+          cursor:"pointer",fontFamily:F.body,transition:"all 0.2s ease",letterSpacing:"-0.01em",
+          width:"100%",maxWidth:400,boxShadow:`0 6px 24px ${T.accentGlow}`,position:"relative",zIndex:1,
         }}>
           + Nouveau profil
         </button>
 
-        {savedProfiles.length===0&&<p style={{fontSize:11,color:"#475569",marginTop:12,textAlign:"center",lineHeight:1.5}}>
-          Crée ton premier profil pour commencer l'analyse
+        {savedProfiles.length===0&&<p style={{fontSize:11,color:T.gray2,marginTop:12,textAlign:"center",lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>
+          Crée ton premier profil pour démarrer l'analyse
         </p>}
 
         {/* ============================================================ */}
         {/* MAGAZINE CTA */}
         {/* ============================================================ */}
-        <div style={{marginTop:40,width:"100%",maxWidth:500}}>
+        <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1}}>
           <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} style={{
-            width:"100%",padding:"20px 24px",borderRadius:20,cursor:"pointer",
-            background:"linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(168,85,247,0.06) 100%)",
-            border:"1px solid rgba(249,115,22,0.2)",transition:"all 0.3s",position:"relative",overflow:"hidden",
+            width:"100%",padding:"22px 24px",borderRadius:20,cursor:"pointer",
+            background:`linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`,
+            border:`1px solid ${T.gold}40`,transition:"all 0.3s",position:"relative",overflow:"hidden",
+            boxShadow:`0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 ${T.gold}15`,
           }}>
+            {/* Gold top accent */}
+            <div style={{position:"absolute",top:0,left:"15%",right:"15%",height:1,background:`linear-gradient(90deg, transparent, ${T.gold}80, transparent)`}}/>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
-                <div style={{fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>📰 Tendances &amp; Magazine</div>
-                <div style={{fontSize:11,color:"#94a3b8",marginTop:4}}>Top raquettes, fiches techniques, articles</div>
+                <div style={{fontSize:16,fontWeight:700,fontFamily:F.editorial,color:T.cream,letterSpacing:"0.01em"}}>Tendances & Magazine</div>
+                <div style={{fontSize:11,color:T.gray1,marginTop:4,fontFamily:F.body}}>Top raquettes · Fiches techniques · Analyses éditoriales</div>
               </div>
-              <span style={{fontSize:24,color:"#f97316"}}>→</span>
+              <span style={{fontSize:20,color:T.gold,fontFamily:F.editorial}}>→</span>
             </div>
           </button>
 
           {/* CATALOGUE CTA */}
           <button onClick={()=>{setCatalogSearch("");resetCatFilters();setScreen("catalog");}} style={{
-            width:"100%",padding:"20px 24px",borderRadius:20,cursor:"pointer",marginTop:12,
-            background:"linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(249,115,22,0.04) 100%)",
-            border:"1px solid rgba(34,197,94,0.15)",transition:"all 0.3s",
+            width:"100%",padding:"22px 24px",borderRadius:20,cursor:"pointer",marginTop:12,
+            background:`linear-gradient(135deg, ${T.card} 0%, rgba(61,176,107,0.06) 100%)`,
+            border:`1px solid ${T.green}25`,transition:"all 0.3s",
           }}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div style={{textAlign:"left"}}>
-                <div style={{fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:"#f1f5f9",letterSpacing:"-0.02em"}}>🔍 Catalogue · {totalDBCount} raquettes</div>
-                <div style={{fontSize:11,color:"#94a3b8",marginTop:4}}>Rechercher, explorer, comparer toutes les palas</div>
+                <div style={{fontSize:16,fontWeight:700,fontFamily:F.editorial,color:T.cream,letterSpacing:"0.01em"}}>Catalogue · {totalDBCount} raquettes</div>
+                <div style={{fontSize:11,color:T.gray1,marginTop:4,fontFamily:F.body}}>Rechercher, filtrer, comparer toutes les palas</div>
               </div>
-              <span style={{fontSize:24,color:"#22c55e"}}>→</span>
+              <span style={{fontSize:20,color:T.green,fontFamily:F.editorial}}>→</span>
             </div>
           </button>
         </div>
@@ -3464,8 +3478,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
         </div>}
 
-        <div style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:"#334155",letterSpacing:"0.05em",textAlign:"center"}}>
-          <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V13 · {totalDBCount} raquettes · Scoring hybride calibré
+        <div style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",position:"relative",zIndex:1,fontFamily:F.body}}>
+          <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · {totalDBCount} raquettes · Scoring hybride calibré
         </div>
       </div>}
 
