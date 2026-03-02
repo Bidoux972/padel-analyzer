@@ -6,16 +6,9 @@ import {
 import RACKETS_DB from "./rackets-db.json";
 
 // Merged DB: RACKETS_DB + extras, dédupliqué par ID (extras override static)
-// Production logger — silent in prod, verbose in dev
-const __DEV = process.env.NODE_ENV !== 'production';
-const _log = __DEV ? console.log.bind(console) : () => {};
-const _warn = __DEV ? console.warn.bind(console) : () => {};
 function getMergedDB() {
-  // Cache: invalidated when localStorage extras change
-  const extraRaw = localStorage.getItem('padel_db_extra') || '[]';
-  if (getMergedDB._cache && getMergedDB._cacheKey === extraRaw) return getMergedDB._cache;
   let extra = [];
-  try { extra = JSON.parse(extraRaw); } catch {}
+  try { extra = JSON.parse(localStorage.getItem('padel_db_extra') || '[]'); } catch {}
   if (!Array.isArray(extra)) extra = [];
   const extraMap = new Map();
   extra.forEach(r => extraMap.set(r.id, r));
@@ -36,10 +29,7 @@ function getMergedDB() {
   });
   // Add extras that don't exist in static DB (new imports)
   extra.forEach(r => { if (!map.has(r.id)) map.set(r.id, r); });
-  const result = [...map.values()];
-  getMergedDB._cache = result;
-  getMergedDB._cacheKey = extraRaw;
-  return result;
+  return [...map.values()];
 }
 
 // ==================== SUPABASE REST API (no SDK needed) ====================
@@ -47,6 +37,7 @@ const SB_URL = "https://nvomaxjyhuemdfvhzcbf.supabase.co/rest/v1";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b21heGp5aHVlbWRmdmh6Y2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwOTI3NjEsImV4cCI6MjA4NzY2ODc2MX0.2vQyuT6rPTeGzMp244L9n0OzBwOnW3WTviC3RKxrp8U";
 const SB_HEADERS = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json", "Prefer": "return=representation" };
 
+// [DEAD CODE] REST helpers — plus utilisés depuis migration RPC. Conservés pour référence.
 async function sbGet(table, query) {
   const r = await fetch(`${SB_URL}/${table}?${query}`, { headers: SB_HEADERS });
   if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message || r.statusText); }
@@ -75,15 +66,14 @@ async function sbPatch(table, query, data) {
 }
 
 // ==================== SUPABASE HELPERS ====================
-// Sanitize familyCode: only alphanumeric, max 10 chars
-function sanitizeCode(code) { return String(code || '').replace(/[^A-Za-z0-9]/g, '').slice(0, 10); }
-function getFamilyCode() { return sanitizeCode(localStorage.getItem('padel_family_code') || ''); }
-function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', sanitizeCode(code)); }
+function getFamilyCode() { return localStorage.getItem('padel_family_code') || ''; }
+function setFamilyCodeLS(code) { localStorage.setItem('padel_family_code', code); }
 function getGroupRole() { return localStorage.getItem('padel_group_role') || 'famille'; }
 function setGroupRoleLS(role) { localStorage.setItem('padel_group_role', role); }
 function getGroupName() { return localStorage.getItem('padel_group_name') || ''; }
 function setGroupNameLS(name) { localStorage.setItem('padel_group_name', name); }
 
+// [DEAD CODE] Plus utilisé — family_code généré côté serveur par group_create RPC
 function generateFamilyCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
@@ -91,7 +81,7 @@ function generateFamilyCode() {
   return code;
 }
 
-// Simple hash (SHA-256 via SubtleCrypto)
+// [DEAD CODE] Plus utilisé — hachage bcrypt côté serveur via pgcrypto
 async function hashPassword(pwd) {
   const data = new TextEncoder().encode(pwd);
   const buf = await crypto.subtle.digest('SHA-256', data);
@@ -99,39 +89,26 @@ async function hashPassword(pwd) {
 }
 
 async function groupLogin(name, password) {
-  const data = await sbGet('groups', `name=eq.${encodeURIComponent(name)}&limit=1`);
-  if (!data.length) return { error: "Groupe introuvable" };
-  const group = data[0];
-  const hash = await hashPassword(password);
-  if (hash !== group.password_hash) return { error: "Mot de passe incorrect" };
-  return { ok: true, family_code: group.family_code, role: group.role, name: group.name };
+  return sbRpc('group_login', { p_name: name, p_password: password });
 }
 
 async function groupCreate(name, password, role) {
-  // Vérifier si le nom existe
-  const exists = await sbGet('groups', `name=eq.${encodeURIComponent(name)}&limit=1`);
-  if (exists.length) return { error: "Ce nom de groupe existe déjà" };
-  const hash = await hashPassword(password);
-  const family_code = generateFamilyCode();
-  // Créer le groupe
-  await sbPost('groups', { name, password_hash: hash, role: role || 'famille', family_code });
-  // Créer aussi dans families pour compatibilité
-  try { await registerFamily(family_code, null); } catch(e) { /* peut déjà exister */ }
-  return { ok: true, family_code, role, name };
+  return sbRpc('group_create', { p_name: name, p_password: password, p_role: role || 'famille' });
 }
 
 async function registerFamily(code, adminPin) {
-  return sbPost('families', { code, admin_pin: adminPin || null });
+  return sbRpc('ensure_family', { p_code: code, p_admin_pin: adminPin || null });
 }
 
 async function checkFamilyExists(code) {
-  const data = await sbGet('families', `code=eq.${code}&limit=1`);
-  return data.length ? data[0] : null;
+  // Uses ensure_family which does INSERT ... ON CONFLICT DO NOTHING
+  // If we just need to check existence, load_profiles will return [] for non-existent codes
+  try { await sbRpc('ensure_family', { p_code: code }); return true; } catch { return null; }
 }
 
 async function cloudLoadProfiles(familyCode) {
-  const data = await sbGet('profiles', `family_code=eq.${familyCode}&order=created_at`);
-  return (data || []).map(row => ({
+  const data = await sbRpc('load_profiles', { p_family_code: familyCode });
+  return (Array.isArray(data) ? data : []).map(row => ({
     name: row.name,
     profile: row.data || {},
     savedAt: new Date(row.updated_at).getTime(),
@@ -141,44 +118,40 @@ async function cloudLoadProfiles(familyCode) {
 }
 
 async function cloudSaveProfile(familyCode, name, profileData, locked) {
-  return sbUpsert('profiles', {
-    family_code: familyCode, name, data: profileData, locked: locked || false, updated_at: new Date().toISOString()
-  }, 'family_code,name');
+  return sbRpc('save_profile', {
+    p_family_code: familyCode, p_name: name, p_data: profileData, p_locked: locked || false
+  });
 }
 
 async function cloudDeleteProfile(familyCode, name) {
-  return sbDelete('profiles', `family_code=eq.${familyCode}&name=eq.${encodeURIComponent(name)}`);
+  return sbRpc('delete_profile', { p_family_code: familyCode, p_name: name });
 }
 
 async function cloudLoadSavedRackets(familyCode) {
-  const data = await sbGet('saved_rackets', `family_code=eq.${familyCode}&limit=1`);
-  return data.length ? (data[0].data || []) : [];
+  const data = await sbRpc('load_saved_rackets', { p_family_code: familyCode });
+  return Array.isArray(data) ? data : [];
 }
 
 async function cloudSaveSavedRackets(familyCode, rackets) {
-  return sbUpsert('saved_rackets', {
-    family_code: familyCode, data: rackets, updated_at: new Date().toISOString()
-  }, 'family_code');
+  return sbRpc('save_saved_rackets', { p_family_code: familyCode, p_data: rackets });
 }
 
 async function cloudLoadExtraRackets(familyCode) {
-  const data = await sbGet('extra_rackets', `family_code=eq.${familyCode}&limit=1`);
-  return data.length ? (data[0].data || []) : [];
+  const data = await sbRpc('load_extra_rackets', { p_family_code: familyCode });
+  return Array.isArray(data) ? data : [];
 }
 
 async function cloudSaveExtraRackets(familyCode, extras) {
-  return sbUpsert('extra_rackets', {
-    family_code: familyCode, data: extras, updated_at: new Date().toISOString()
-  }, 'family_code');
+  return sbRpc('save_extra_rackets', { p_family_code: familyCode, p_data: extras });
 }
 
 async function cloudGetAdminPin(familyCode) {
-  const data = await sbGet('families', `code=eq.${familyCode}&select=admin_pin&limit=1`);
-  return data.length ? (data[0].admin_pin || '') : '';
+  const pin = await sbRpc('get_admin_pin', { p_family_code: familyCode });
+  return pin || '';
 }
 
 async function cloudSetAdminPin(familyCode, pin) {
-  return sbPatch('families', `code=eq.${familyCode}`, { admin_pin: pin });
+  return sbRpc('set_admin_pin', { p_family_code: familyCode, p_pin: pin });
 }
 
 // ==================== ADMIN RPC HELPERS ====================
@@ -192,11 +165,7 @@ async function sbRpc(fnName, params) {
 
 async function checkIsAdmin(familyCode) {
   try {
-    // Check groups table first
-    const groups = await sbGet('groups', `family_code=eq.${familyCode}&select=role&limit=1`);
-    if (groups.length && groups[0].role === 'admin') return true;
-    // Fallback: check families table (legacy)
-    const result = await sbRpc('is_family_admin', { p_family_code: familyCode });
+    const result = await sbRpc('check_is_admin', { p_family_code: familyCode });
     return result === true;
   } catch { return false; }
 }
@@ -227,8 +196,8 @@ async function adminGetStats(familyCode) {
 
 // Load ALL rackets from Supabase rackets table (admin imports go here)
 async function cloudLoadAllRackets() {
-  const data = await sbGet('rackets', 'select=*&limit=500');
-  return data || [];
+  const data = await sbRpc('load_all_rackets', {});
+  return Array.isArray(data) ? data : [];
 }
 
 const LEVEL_OPTIONS = [
@@ -392,17 +361,6 @@ const ATTRS = ["Puissance","Contrôle","Confort","Spin","Maniabilité","Toléran
 // Image URL helper — passthrough, no proxy needed (browser loads directly)
 function proxyImg(url) {
   return url || null;
-}
-
-// Safe bold text rendering — replaces dangerouslySetInnerHTML for **bold** markdown
-function safeBold(text, boldColor) {
-  if (!text) return null;
-  const parts = String(text).split(/\*\*([^*]+)\*\*/g);
-  return parts.map((part, i) => 
-    i % 2 === 1 
-      ? React.createElement('strong', { key: i, style: { color: boldColor || '#f1f5f9' } }, part)
-      : part
-  );
 }
 const COLORS_POOL = ["#E53935","#FF9800","#E91E63","#4CAF50","#009688","#2196F3","#1565C0","#9C27B0","#00BCD4","#FF5722","#8BC34A","#795548","#607D8B","#D4E157","#F06292","#4DD0E1","#FFB74D","#AED581","#BA68C8","#4FC3F7"];
 const explanations = {
@@ -1574,18 +1532,18 @@ export default function PadelAnalyzer() {
           if (extras.length > 0) {
             localStorage.setItem('padel_db_extra', JSON.stringify(extras));
             setLocalDBCount(extras.length);
-            _log(`[Cloud] Loaded ${extras.length} extra rackets from Supabase (${cloudRackets.length} total in cloud, ${RACKETS_DB.length} static)`);
+            console.log(`[Cloud] Loaded ${extras.length} extra rackets from Supabase (${cloudRackets.length} total in cloud, ${RACKETS_DB.length} static)`);
           }
-        } catch(e) { _warn('[Cloud] Rackets merge failed:', e.message); }
+        } catch(e) { console.warn('[Cloud] Rackets merge failed:', e.message); }
       }
       setCloudStatus("synced");
       // Check admin status
       checkIsAdmin(familyCode).then(admin => {
         setIsAdmin(admin);
-        if (admin) _log("[Admin] ✅ Mode admin activé");
+        if (admin) console.log("[Admin] ✅ Mode admin activé");
       });
     }).catch(err => {
-      _warn("[Cloud] Load error:", err.message);
+      console.warn("[Cloud] Load error:", err.message);
       setCloudStatus("error");
     });
   }, [familyCode]);
@@ -1640,38 +1598,6 @@ export default function PadelAnalyzer() {
     return () => { clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
   }, [groupRole, screen]);
 
-  // ============ LOCALSTORAGE CACHE CLEANUP ============
-  useEffect(() => {
-    try {
-      const MAX_CACHE_AGE = 30 * 24 * 60 * 60 * 1000; // 30 days
-      const MAX_CACHE_ENTRIES = 100;
-      const cacheKeys = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('padel_score_')) cacheKeys.push(key);
-      }
-      // Remove expired entries
-      let removed = 0;
-      for (const key of cacheKeys) {
-        try {
-          const raw = JSON.parse(localStorage.getItem(key));
-          if (!raw?.ts || Date.now() - raw.ts > MAX_CACHE_AGE) { localStorage.removeItem(key); removed++; }
-        } catch { localStorage.removeItem(key); removed++; }
-      }
-      // If still too many, remove oldest
-      if (cacheKeys.length - removed > MAX_CACHE_ENTRIES) {
-        const remaining = cacheKeys
-          .filter(k => localStorage.getItem(k))
-          .map(k => { try { return { k, ts: JSON.parse(localStorage.getItem(k))?.ts || 0 }; } catch { return { k, ts: 0 }; } })
-          .sort((a, b) => a.ts - b.ts);
-        const toRemove = remaining.slice(0, remaining.length - MAX_CACHE_ENTRIES);
-        toRemove.forEach(({ k }) => localStorage.removeItem(k));
-        removed += toRemove.length;
-      }
-      if (removed > 0) _log(`[Cache] Cleaned ${removed} expired score entries`);
-    } catch {}
-  }, []);
-
   // ============ SW UPDATE LISTENER ============
   useEffect(() => {
     const handler = () => setSwUpdateReady(true);
@@ -1682,7 +1608,7 @@ export default function PadelAnalyzer() {
   // Auto-reload when reaching login screen with pending update (NEVER during wizard/analyzing)
   useEffect(() => {
     if (screen === 'login' && swUpdateReady) {
-      _log('[SW] Login screen + update ready → reloading');
+      console.log('[SW] Login screen + update ready → reloading');
       window.location.reload();
     }
   }, [screen, swUpdateReady]);
@@ -1691,14 +1617,14 @@ export default function PadelAnalyzer() {
   const cloudSyncProfile = useCallback(async (name, profileData, locked) => {
     if (!familyCode) return;
     try { await cloudSaveProfile(familyCode, name, profileData, locked); } 
-    catch(e) { _warn("[Cloud] Save:", e.message); }
+    catch(e) { console.warn("[Cloud] Save:", e.message); }
   }, [familyCode]);
 
   // Cloud delete helper
   const cloudDeleteProfileFn = useCallback(async (name) => {
     if (!familyCode) return;
     try { await cloudDeleteProfile(familyCode, name); } 
-    catch(e) { _warn("[Cloud] Delete:", e.message); }
+    catch(e) { console.warn("[Cloud] Delete:", e.message); }
   }, [familyCode]);
 
   // Cloud logout
@@ -1725,7 +1651,7 @@ export default function PadelAnalyzer() {
     const name = cloudLoginName.trim();
     const pwd = cloudLoginPassword.trim();
     if (!name) { setCloudError("Entre un nom de groupe"); return; }
-    if (pwd.length < 8) { setCloudError("Mot de passe trop court (8 car. min)"); return; }
+    if (pwd.length < 4) { setCloudError("Mot de passe trop court (4 car. min)"); return; }
     setCloudError("");
     try {
       let result;
@@ -1872,7 +1798,7 @@ export default function PadelAnalyzer() {
         clearTimeout(timeout);
         if ((r.status===529 || r.status===429) && attempt<retries) {
           const waitSec = r.status===429 ? 30+attempt*15 : 8+attempt*4;
-          _warn(`[API] ${r.status} rate limited, retry ${attempt+1}/${retries} in ${waitSec}s...`);
+          console.warn(`[API] ${r.status} rate limited, retry ${attempt+1}/${retries} in ${waitSec}s...`);
           setLoadMsg?.(`⏳ Limite API atteinte — pause ${waitSec}s avant de reprendre (${attempt+1}/${retries})...`);
           await new Promise(ok=>setTimeout(ok,waitSec*1000));
           continue;
@@ -1889,7 +1815,7 @@ export default function PadelAnalyzer() {
         if (e.name==="AbortError") throw new Error("Timeout — la requête a pris trop de temps (>120s). Réessaie.");
         if (attempt<retries && (e.message?.includes("529")||e.message?.includes("429")||e.message?.includes("Overloaded")||e.message?.includes("rate_limit"))) {
           const waitSec = 30+attempt*15;
-          _warn(`[API] Retry ${attempt+1}/${retries} after error:`, e.message);
+          console.warn(`[API] Retry ${attempt+1}/${retries} after error:`, e.message);
           await new Promise(ok=>setTimeout(ok,waitSec*1000));
           continue;
         }
@@ -2003,10 +1929,10 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
       });
       localStorage.setItem('padel_db_extra', JSON.stringify(extra));
       setLocalDBCount(extra.length);
-      _log(`[DB+] Saved ${racket.name} to local DB supplement (total: ${extra.length})`);
+      console.log(`[DB+] Saved ${racket.name} to local DB supplement (total: ${extra.length})`);
       // Sync to cloud
-      if (familyCode) cloudSaveExtraRackets(familyCode, extra).catch(e => _warn('[Cloud] Extra sync:', e.message));
-    } catch(e) { _warn('[DB+] Save failed:', e.message); }
+      if (familyCode) cloudSaveExtraRackets(familyCode, extra).catch(e => console.warn('[Cloud] Extra sync:', e.message));
+    } catch(e) { console.warn('[DB+] Save failed:', e.message); }
   }
 
   function exportLocalDB() {
@@ -2061,14 +1987,14 @@ Return ONLY a JSON array: [{"name":"...","brand":"...","shape":"...","weight":".
     // Check cache first
     const cached = getCachedScore(name, brand);
     if (cached) {
-      _log(`[Cache] Hit for ${name} — using cached scores`);
+      console.log(`[Cache] Hit for ${name} — using cached scores`);
       return { ...cached, color: assignedColor, id: cached.id + '-' + Date.now() };
     }
     
     // Check DB second (embedded + local supplement)
     const dbResult = loadRacketFromDB(name, brand, assignedColor);
     if (dbResult) {
-      _log(`[DB] Found ${name} in database — no API call needed`);
+      console.log(`[DB] Found ${name} in database — no API call needed`);
       setCachedScore(name, brand, dbResult);
       return dbResult;
     }
@@ -2128,15 +2054,15 @@ Return JSON: {"scores":{"Puissance":X,"Contrôle":X,"Confort":X,"Spin":X,"Maniab
 No markdown, no backticks.`}], {systemPrompt: SCORING_SYSTEM_PROMPT});
     let analysis;
     try { analysis = parseJ(scoreTxt); } catch(e1) {
-      _warn(`[Score] Parse failed for ${specs.name}, retrying...`, e1.message);
+      console.warn(`[Score] Parse failed for ${specs.name}, retrying...`, e1.message);
       try {
         const retry = await callAI([{role:"user",content:`Score this padel racket's INTRINSIC properties. Specs: ${specs.name}, ${specs.shape}, ${specs.weight}, ${specs.balance}, ${specs.surface}, ${specs.core}.
 Return ONLY valid JSON: {"scores":{"Puissance":7,"Contrôle":7,"Confort":7,"Spin":7,"Maniabilité":7,"Tolérance":7},"verdict":"French text describing the racket"}
 No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PROMPT, maxTokens:600});
         analysis = parseJ(retry);
-        _log(`[Score] Retry succeeded for ${specs.name}`);
+        console.log(`[Score] Retry succeeded for ${specs.name}`);
       } catch(e2) {
-        _warn(`[Score] Retry also failed for ${specs.name}:`, e2.message);
+        console.warn(`[Score] Retry also failed for ${specs.name}:`, e2.message);
         analysis = { scores:{}, verdict:"Scoring automatique indisponible — clique 🔄 pour réessayer.", forYou:"partial", _incomplete:true };
       }
     }
@@ -2268,12 +2194,12 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
     const prioLabels = profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
     const isExpertFeel = !!profile.expertToucher;
     const feelDesc = isExpertFeel ? `PRO FEEL PREFERENCES: Toucher=${profile.expertToucher}, Réactivité=${profile.expertReactivite||"explosive"}, Poids=${profile.expertPoids||"equilibre"}, Forme=${profile.expertForme||"indifferent"}` : "";
-    _log("[Suggest] Starting. Existing:", existingNames, "Brands:", brandPref, "Priorities:", isExpertFeel ? feelDesc : prioLabels);
+    console.log("[Suggest] Starting. Existing:", existingNames, "Brands:", brandPref, "Priorities:", isExpertFeel ? feelDesc : prioLabels);
     
     try {
       // Phase 1: Try DB first
       const dbMatch = matchFromDB(profile, existingNames);
-      _log("[DB] Pool:", dbMatch.totalPool, "Heart:", dbMatch.heart.length, "Priority:", dbMatch.priority.length);
+      console.log("[DB] Pool:", dbMatch.totalPool, "Heart:", dbMatch.heart.length, "Priority:", dbMatch.priority.length);
       
       if (dbMatch.heart.length + dbMatch.priority.length >= 6) {
         // Enough results from DB — format as suggestions
@@ -2281,7 +2207,7 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
           ...dbMatch.heart.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"heart", description:r.verdict, _fromDB:true})),
           ...dbMatch.priority.map(r=>({name:r.name, brand:r.brand, shape:r.shape, weight:r.weight, price:r.price, category:"priority", description:r.verdict, _fromDB:true})),
         ];
-        _log("[DB] Sufficient results:", results.length, "— skipping web search");
+        console.log("[DB] Sufficient results:", results.length, "— skipping web search");
         setSuggestResults(results);
         setLoadMsg("✅ " + results.length + " raquettes trouvées instantanément !");
         setTimeout(()=>setLoadMsg(""),2500);
@@ -2290,7 +2216,7 @@ No markdown, no backticks, no explanation.`}], {systemPrompt: SCORING_SYSTEM_PRO
       }
       
       // Phase 2: Not enough from DB — use web search
-      _log("[DB] Only", dbMatch.heart.length + dbMatch.priority.length, "results — falling back to web search");
+      console.log("[DB] Only", dbMatch.heart.length + dbMatch.priority.length, "results — falling back to web search");
       setLoadMsg("🌐 Recherche web complémentaire...");
       const startTime = Date.now();
       const timer = setInterval(()=>{
@@ -2337,7 +2263,7 @@ ${(()=>{
 Return ONLY a JSON array, no markdown: [{"name":"...","brand":"...","shape":"...","weight":"...","price":"...","category":"heart","description":"..."}]`}], {webSearch:true, maxTokens:2500});
         const res = parseJ(txt);
         if(!Array.isArray(res)||!res.length) throw new Error("Aucune suggestion trouvée");
-        _log("[WebSearch] Got results:", res.length, res.map(r=>`${r.category}:${r.name}`));
+        console.log("[WebSearch] Got results:", res.length, res.map(r=>`${r.category}:${r.name}`));
         const filtered = res.filter(s => !existingNames.some(n => 
           n.toLowerCase().includes(s.name?.toLowerCase()?.slice(0,15)) || 
           s.name?.toLowerCase()?.includes(n.toLowerCase().slice(0,15))
@@ -2388,7 +2314,7 @@ Return ONLY a JSON array, no markdown: [{"name":"...","brand":"...","shape":"...
           // Direct from database — instant, no API call
           newR = loadRacketFromDB(sug.name, sug.brand, color);
           if (!newR) throw new Error("Raquette introuvable dans la base");
-          _log(`[DB] Loaded ${sug.name} directly — no API call`);
+          console.log(`[DB] Loaded ${sug.name} directly — no API call`);
         } else {
           // Web search result — needs API scoring
           newR = await fetchAndScoreRacket(sug.name, sug.brand, color);
@@ -3489,7 +3415,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const isDyn = !!dynText;
               return <div style={{padding:"10px 14px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:12,border:`1px solid ${isDyn?"rgba(249,115,22,0.12)":"rgba(76,175,80,0.12)"}`,marginBottom:12}}>
                 <div style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}}>{isDyn?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 CETTE RAQUETTE S\u2019ADRESSE \u00C0"}</div>
-                <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0}}>{safeBold(text, "#f1f5f9")}</p>
+                <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#f1f5f9">$1</strong>')}}/>
               </div>;
             })()}
 
@@ -4020,7 +3946,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const isDynamic = !!dynText;
             return <div style={{padding:"14px 18px",background:isDynamic?"rgba(249,115,22,0.04)":"rgba(76,175,80,0.04)",borderRadius:16,border:`1px solid ${isDynamic?"rgba(249,115,22,0.12)":"rgba(76,175,80,0.1)"}`,marginBottom:14}}>
               <div style={{fontSize:9,color:isDynamic?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>{isDynamic?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 PROFIL CIBLE"}</div>
-              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}}>{safeBold(text, "#f1f5f9")}</p>
+              <p style={{fontSize:12,color:"#cbd5e1",lineHeight:1.7,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#f1f5f9">$1</strong>')}}/>
             </div>;
           })()}
 
@@ -5197,7 +5123,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const shortText = isDyn ? text.split('. ').slice(0, 2).join('. ') + '.' : text;
                     return <div style={{padding:"8px 12px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:10,border:`1px solid ${isDyn?"rgba(249,115,22,0.1)":"rgba(76,175,80,0.1)"}`,marginBottom:8}}>
                       <span style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>{isDyn?`🎯 Pour ${profileName} : `:"🎯 S'adresse à : "}</span>
-                      <span style={{fontSize:10,color:"#94a3b8"}}>{safeBold(shortText, "#cbd5e1")}</span>
+                      <span style={{fontSize:10,color:"#94a3b8"}} dangerouslySetInnerHTML={{__html: shortText.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#cbd5e1">$1</strong>')}}/>
                     </div>;
                   })()}
 
