@@ -4182,18 +4182,18 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         const stepContent = [
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>👤</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{groupRole==="vendeur"?"Prénom du joueur":"Comment tu t'appelles ?"}</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>{groupRole==="vendeur"?"Le prénom ou pseudo du client.":"Le nom de ton profil joueur."}</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>👋</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Prénom du joueur":"Salut ! C'est quoi ton prénom ?"}</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>{groupRole==="vendeur"?"Le prénom ou pseudo du client.":"On va trouver LA raquette faite pour toi."}</p>
             <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder={groupRole==="vendeur"?"Ex: Manon, Noah...":"Ex: Bidou, Manon, Noah..."}
               onKeyDown={e=>{if(e.key==="Enter"&&canNext)nextStep();}}
               autoFocus style={{width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,background:"rgba(255,255,255,0.05)",border:"2px solid rgba(249,115,22,0.3)",color:"#f1f5f9",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>{isFemme?"👩":"👨"}</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Tu es…</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Les recommandations s'adaptent au genre (gammes, poids, confort).</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>{isFemme?"👩":"👨"}</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Tu es…</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>On adapte les gammes, le poids cible et les modèles WomanLine.</p>
             <CardSelect options={[
               {value:"Homme",label:"Homme",icon:"♂️",desc:"Gammes standard"},
               {value:"Femme",label:"Femme",icon:"♀️",desc:"Gammes adaptées + WomanLine"},
@@ -4201,9 +4201,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>📏</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton gabarit</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Pour adapter le poids et le type de raquette {g("idéal","idéale")}.</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>📐</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Ton gabarit</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Le poids {g("idéal","idéale")} de ta raquette dépend directement de ton physique.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto"}}>
               {[{key:"age",label:"Âge",ph:"30",unit:"ans"},{key:"height",label:"Taille",ph:"170",unit:"cm"},{key:"weight",label:"Poids",ph:"70",unit:"kg"}].map(f=>
                 <div key={f.key} style={{textAlign:"center"}}>
@@ -4214,13 +4214,22 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               )}
             </div>
-            {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
+            {isJuniorW&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:600,maxWidth:400,margin:"16px auto 0",animation:"fadeIn 0.3s ease"}}>🧒 Profil junior détecté — recommandations adaptées</div>}
+            {!isJuniorW&&Number(profile.age)>0&&Number(profile.weight)>0&&(()=>{
+              const w = Number(profile.weight), a = Number(profile.age);
+              const isFW = (profile.genre||"Homme")==="Femme";
+              const msg = w<55&&isFW ? "Gabarit léger → raquettes <350g pour un max de maniabilité."
+                : w>90&&!isFW ? "Gabarit costaud → tu peux encaisser du poids, on ouvrira les gammes lourdes."
+                : a>50 ? "La souplesse et le confort seront des critères importants pour ton profil."
+                : "Gabarit noté — on calibre le poids cible de ta raquette.";
+              return <div style={{background:"rgba(59,130,246,0.06)",border:"1px solid rgba(59,130,246,0.15)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#3b82f6",fontWeight:600,maxWidth:400,margin:"16px auto 0",animation:"fadeIn 0.3s ease",textAlign:"center"}}>📊 {msg}</div>;
+            })()}
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>💪</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{g("Ta condition physique","Ta condition physique")}</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Influence la tolérance au poids et les recommandations avancées.</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>💪</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>En quelle forme ?</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ça débloque les gammes avancées et calibre la tolérance au poids.</p>
             <CardSelect columns={1} options={FITNESS_OPTIONS.map(o=>({value:o.value,label:o.label,icon:o.icon,desc:o.desc}))} value={profile.fitness||"actif"} onChange={v=>{
               setProfile(p=>{
                 const updated = {...p, fitness:v};
@@ -4234,9 +4243,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ()=>{
             const expertBlocked = !expertAllowed;
             return <div style={{textAlign:"center"}}>
-              <div style={{fontSize:40,marginBottom:16}}>🏆</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{groupRole==="vendeur"?"Quel est son niveau ?":"Quel est ton niveau ?"}</h2>
-              <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ça détermine la gamme de raquettes qu'on va te proposer.</p>
+              <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🏆</div>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Quel est son niveau ?":"Ton niveau de jeu"}</h2>
+              <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>On sélectionne les gammes de raquettes adaptées à ton expérience.</p>
               <CardSelect options={levelOptions} value={profile.level} onChange={v=>{setProfile(p=>({...p,level:v}));setTimeout(nextStep,300);}}/>
               {expertBlocked&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>💡 Le niveau Expert nécessite une condition physique Athlétique</div>}
               {isPepiteMode&&<div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#60a5fa",fontWeight:700,maxWidth:400,margin:"16px auto 0"}}>🌟 Jeune Pépite détecté{g("","e")} — accès aux raquettes adultes légères !</div>}
@@ -4251,9 +4260,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const role=s==="Les deux"?g("Polyvalent","Polyvalente"):atk?g("Attaquant","Attaquante")+" (coup droit au centre)":g("Constructeur","Constructrice")+" (revers au centre)";
             const roleColor=atk?"#f97316":cst?"#6366f1":"#94a3b8";
             return <div style={{textAlign:"center"}}>
-              <div style={{fontSize:40,marginBottom:16}}>🤚</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ta prise de jeu</h2>
-              <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Main + côté = on détecte ton rôle sur le terrain.</p>
+              <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🤚</div>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Ton placement</h2>
+              <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Main dominante + côté du terrain = ton rôle de jeu.</p>
               <div style={{maxWidth:400,margin:"0 auto"}}>
                 <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Main dominante</label>
                 <CardSelect columns={2} options={HAND_OPTIONS.map(o=>({value:o,label:o,icon:o==="Droitier"?"🫲":"🫱"}))} value={profile.hand} onChange={v=>setProfile(p=>({...p,hand:v}))}/>
@@ -4266,9 +4275,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           },
 
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>📅</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton rythme de jeu</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Fréquence et compétition influencent la durabilité requise.</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🔥</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Tu joues combien ?</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Plus tu joues, plus la durabilité et le confort comptent.</p>
             <CardSelect options={FREQ_OPTIONS.map(o=>({value:o.value,label:o.label,desc:o.desc,icon:{Occasionnel:"🌙",Régulier:"☀️",Assidu:"🔥",Intensif:"⚡"}[o.label]}))} value={profile.frequency} onChange={v=>setProfile(p=>({...p,frequency:v}))}/>
             <div style={{marginTop:24,maxWidth:460,margin:"24px auto 0"}}>
               <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:10}}>Tu fais de la compétition ?</label>
@@ -4277,23 +4286,49 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>🎾</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>{groupRole==="vendeur"?"Comment joue-t-il/elle ?":"Comment tu joues ?"}</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Sélectionne tout ce qui te correspond. Ça influence le scoring.</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>⚔️</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Comment joue-t-il/elle ?":"Ton ADN de joueur"}</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Sélectionne tout ce qui te correspond — ça pèse dans le scoring.</p>
             <TagSelect tags={STYLE_TAGS} field="styleTags"/>
+            {(()=>{
+              const tags = profile.styleTags||[];
+              if(tags.length===0) return null;
+              const hasAtk = tags.some(t=>["offensif","puissant"].includes(t));
+              const hasDef = tags.some(t=>["defensif","contre","endurant"].includes(t));
+              const hasTech = tags.some(t=>["technique","tactique"].includes(t));
+              const msg = hasAtk&&hasDef ? "Profil hybride — on cherchera l'équilibre puissance/contrôle."
+                : hasAtk ? "Orientation offensive → on va chercher du punch et du rendement."
+                : hasDef ? "Jeu solide et patient → contrôle et tolérance en priorité."
+                : hasTech ? "Jeu technique → précision et toucher de balle au programme."
+                : "Bon mix — l'algo va croiser tes styles pour scorer.";
+              return <div style={{marginTop:16,padding:"10px 16px",borderRadius:10,background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",fontSize:11,color:"#f97316",fontWeight:600,maxWidth:460,margin:"16px auto 0",animation:"fadeIn 0.4s ease",textAlign:"center"}}>{msg}</div>;
+            })()}
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>🩹</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Ton corps</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Les blessures boostent le critère Confort dans les recommandations.</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🛡️</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Protège ton corps</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Chaque zone sensible booste le Confort dans nos recommandations.</p>
             <TagSelect tags={INJURY_TAGS} field="injuryTags" colors={{on:"#ef4444",bg:"rgba(239,68,68,0.12)",border:"#ef4444"}}/>
+            {(()=>{
+              const tags = (profile.injuryTags||[]).filter(t=>t!=="aucune");
+              if(tags.length===0) return null;
+              const hasBras = tags.some(t=>["poignet","coude","epaule"].includes(t));
+              const hasDos = tags.includes("dos");
+              const hasJambes = tags.some(t=>["genou","cheville","mollet","hanche","achille"].includes(t));
+              const msg = hasBras&&hasDos ? "Bras + dos sensibles — le Confort sera un critère non négociable."
+                : hasBras ? "Zone bras fragile → on élimine les raquettes rigides qui transmettent les vibrations."
+                : hasDos ? "Dos sensible → les raquettes souples avec anti-vibrations seront favorisées."
+                : hasJambes ? "Les jambes ne changent pas la raquette, mais un modèle léger réduira la fatigue."
+                : "On ajuste le scoring pour protéger tes zones sensibles.";
+              return <div style={{marginTop:16,padding:"10px 16px",borderRadius:10,background:"rgba(239,68,68,0.06)",border:"1px solid rgba(239,68,68,0.15)",fontSize:11,color:"#ef4444",fontWeight:600,maxWidth:460,margin:"16px auto 0",animation:"fadeIn 0.4s ease",textAlign:"center"}}>🛡️ {msg}</div>;
+            })()}
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
             {isExpertMode ? (<>
-            <div style={{fontSize:40,marginBottom:16}}>🎾</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Tes sensations raquette</h2>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>⚡</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Tes sensations raquette</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>{groupRole==="vendeur"?"À ce niveau, le ressenti guide. Quelles sont ses préférences ?":"À ton niveau, c'est le ressenti qui guide. Dis-nous ce que tu cherches."}</p>
             <p style={{fontSize:11,color:"#a855f7",margin:"0 0 22px",fontWeight:600}}>⚡ Mode Pro — matching par propriétés physiques</p>
 
@@ -4371,9 +4406,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
             </div>
             </>) : (<>
-            <div style={{fontSize:40,marginBottom:16}}>🎯</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Qu'est-ce que tu cherches ?</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>Clique dans l'ordre d'importance — la 1ère priorité pèse plus.</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🎯</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Ce qui compte pour toi</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>Clique dans l'ordre d'importance — la 1ère pèse le plus lourd.</p>
             <p style={{fontSize:11,color:"#475569",margin:"0 0 22px"}}>1️⃣ = priorité forte · 2️⃣ = importante · 3️⃣+ = secondaire</p>
             <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",maxWidth:460,margin:"0 auto"}}>
               {PRIORITY_TAGS.map(t=>{
@@ -4412,9 +4447,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:40,marginBottom:16}}>🏷</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:26,fontWeight:800,color:"#f1f5f9",margin:"0 0 8px"}}>Marques préférées</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Optionnel — laisse vide pour voir toutes les marques.</p>
+            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🏷️</div>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Des marques préférées ?</h2>
+            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Optionnel — laisse vide pour explorer tout le catalogue.</p>
             <TagSelect tags={BRAND_TAGS} field="brandTags" colors={{on:"#CE93D8",bg:"rgba(156,39,176,0.12)",border:"#9C27B0"}}/>
           </div>,
         ];
@@ -4422,19 +4457,44 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         return (
         <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"20px 16px",animation:"fadeIn 0.3s ease"}}>
           <style>{`
-            @keyframes wizardSlideIn { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:translateX(0); } }
+            @keyframes wizardSlideIn { 0% { opacity:0; transform:translateY(24px) scale(0.98); } 100% { opacity:1; transform:translateY(0) scale(1); } }
             @keyframes wizardSlideOut { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-40px); } }
+            @keyframes wizardEmojiBounce { 0% { transform:scale(0.3) rotate(-10deg); opacity:0; } 50% { transform:scale(1.15) rotate(3deg); } 100% { transform:scale(1) rotate(0deg); opacity:1; } }
           `}</style>
 
-          {/* Progress bar */}
-          <div style={{position:"fixed",top:0,left:0,right:0,height:4,background:"rgba(255,255,255,0.06)",zIndex:10}}>
-            <div style={{height:"100%",background:"linear-gradient(90deg,#f97316,#ef4444)",borderRadius:"0 2px 2px 0",transition:"width 0.5s cubic-bezier(.4,0,.2,1)",width:`${progress*100}%`}}/>
-          </div>
-
-          {/* Step counter */}
-          <div style={{position:"fixed",top:16,right:20,fontSize:11,color:"#475569",fontWeight:600,zIndex:10}}>
-            {wizardStep+1}/{TOTAL_STEPS}
-          </div>
+          {/* Progress header — phase label + animated bar */}
+          {(()=>{
+            const phases = [
+              {steps:[0,1],label:"IDENTITÉ",icon:"👤",color:"#f97316"},
+              {steps:[2,3],label:"PHYSIQUE",icon:"📏",color:"#3b82f6"},
+              {steps:[4,5],label:"TECHNIQUE",icon:"🏆",color:"#a855f7"},
+              {steps:[6],label:"RYTHME",icon:"📅",color:"#22c55e"},
+              {steps:[7,8],label:"STYLE & CORPS",icon:"🎾",color:"#ef4444"},
+              {steps:[9,10],label:"PRIORITÉS",icon:"🎯",color:"#fbbf24"},
+            ];
+            const phase = phases.find(p=>p.steps.includes(wizardStep))||phases[0];
+            const phaseIdx = phases.indexOf(phase);
+            return <div style={{position:"fixed",top:0,left:0,right:0,zIndex:10,padding:"0"}}>
+              {/* Bar */}
+              <div style={{height:3,background:"rgba(255,255,255,0.06)"}}>
+                <div style={{height:"100%",background:`linear-gradient(90deg,${phase.color},${phase.color}aa)`,borderRadius:"0 2px 2px 0",transition:"width 0.6s cubic-bezier(.4,0,.2,1)",width:`${progress*100}%`}}/>
+              </div>
+              {/* Phase label row */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",padding:"10px 16px 6px",gap:6}}>
+                <span style={{fontSize:10,color:phase.color,fontWeight:700,letterSpacing:"0.08em",fontFamily:"'Outfit',sans-serif",animation:"fadeIn 0.3s ease"}}>{phase.icon} {phase.label}</span>
+                <span style={{fontSize:9,color:"#475569",fontWeight:500}}>·</span>
+                <span style={{fontSize:9,color:"#475569",fontWeight:500}}>{wizardStep+1}/{TOTAL_STEPS}</span>
+              </div>
+              {/* Phase dots */}
+              <div style={{display:"flex",justifyContent:"center",gap:4,paddingBottom:8}}>
+                {phases.map((p,i)=><div key={i} style={{
+                  width:i===phaseIdx?16:6,height:4,borderRadius:2,
+                  background:i<phaseIdx?p.color:i===phaseIdx?phase.color:"rgba(255,255,255,0.08)",
+                  opacity:i<=phaseIdx?1:0.4,transition:"all 0.4s cubic-bezier(.4,0,.2,1)",
+                }}/>)}
+              </div>
+            </div>;
+          })()}
 
           {/* Back button */}
           {wizardStep>0&&<button onClick={prevStep} style={{position:"fixed",top:14,left:16,background:"none",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,padding:"6px 14px",color:"#94a3b8",fontSize:11,cursor:"pointer",fontFamily:"inherit",zIndex:10}}>
@@ -4442,32 +4502,32 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </button>}
 
           {/* Content */}
-          <div key={wizardStep} style={{width:"100%",maxWidth:540,animation:"wizardSlideIn 0.4s ease"}}>
+          <div key={wizardStep} style={{width:"100%",maxWidth:540,animation:"wizardSlideIn 0.45s cubic-bezier(.22,1,.36,1)"}}>
             {stepContent[wizardStep]()}
           </div>
 
           {/* Navigation */}
-          <div style={{marginTop:36,display:"flex",gap:12,alignItems:"center"}}>
-            {wizardStep===TOTAL_STEPS-1 ? (
-              <button onClick={goRecap} style={{
-                padding:"14px 40px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-                background:"linear-gradient(135deg,rgba(76,175,80,0.25),rgba(76,175,80,0.12))",
-                border:"1.5px solid rgba(76,175,80,0.4)",color:"#4CAF50",transition:"all 0.3s ease",
-              }}>
-                Voir le récap →
-              </button>
-            ) : (
-              <button onClick={nextStep} disabled={!canNext} style={{
-                padding:"14px 40px",borderRadius:14,fontSize:15,fontWeight:800,cursor:canNext?"pointer":"not-allowed",fontFamily:"'Outfit',sans-serif",
-                background:canNext?"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))":"rgba(255,255,255,0.03)",
-                border:`1.5px solid ${canNext?"rgba(249,115,22,0.4)":"rgba(255,255,255,0.06)"}`,
-                color:canNext?"#f97316":"#334155",transition:"all 0.3s ease",
+          {(()=>{
+            const nextLabels = ["C'est parti →","Gabarit →","Condition physique →","Niveau →","Placement →","Rythme de jeu →","Style de jeu →","Blessures →","Priorités →","Presque fini →","Voir le récap →"];
+            const label = wizardStep===TOTAL_STEPS-1 ? "Voir mon profil →" : (canNext ? (nextLabels[wizardStep]||"Suivant →") : "Suivant →");
+            const isLast = wizardStep===TOTAL_STEPS-1;
+            return <div style={{marginTop:32,display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
+              <button onClick={isLast?goRecap:nextStep} disabled={!canNext} style={{
+                padding:"15px 44px",borderRadius:14,fontSize:15,fontWeight:800,cursor:canNext?"pointer":"not-allowed",fontFamily:"'Outfit',sans-serif",
+                background:canNext?(isLast?"linear-gradient(135deg,rgba(76,175,80,0.3),rgba(76,175,80,0.15))":"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))"):"rgba(255,255,255,0.03)",
+                border:`1.5px solid ${canNext?(isLast?"rgba(76,175,80,0.5)":"rgba(249,115,22,0.4)"):"rgba(255,255,255,0.06)"}`,
+                color:canNext?(isLast?"#4CAF50":"#f97316"):"#334155",transition:"all 0.3s ease",
                 opacity:canNext?1:0.5,
+                boxShadow:canNext?`0 4px 16px ${isLast?"rgba(76,175,80,0.2)":"rgba(249,115,22,0.15)"}`:"none",
+                minWidth:200,
               }}>
-                Suivant →
+                {label}
               </button>
-            )}
-          </div>
+              {wizardStep>0&&wizardStep<TOTAL_STEPS-1&&canNext&&<button onClick={goRecap} style={{background:"none",border:"none",color:"#475569",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"4px 8px",transition:"color 0.2s"}} onMouseEnter={e=>e.currentTarget.style.color="#94a3b8"} onMouseLeave={e=>e.currentTarget.style.color="#475569"}>
+                Aller directement au récap ↗
+              </button>}
+            </div>;
+          })()}
 
           {/* Home link — positioned in flow, not fixed (avoids overlap with Suivant) */}
           <button onClick={()=>setScreen("home")} style={{marginTop:32,background:"none",border:"none",color:"#334155",fontSize:10,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
