@@ -2472,36 +2472,51 @@ export default function PadelAnalyzer() {
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
   useEffect(()=>{ try { localStorage.setItem('padel_profile', JSON.stringify({...profile, _name: profileName})); } catch{} }, [profile, profileName]);
 
-  // ─── MANEGE — simple sweep ───
-  const manegeTimer = useRef(null);
+  // ─── MANÈGE — IntersectionObserver + fallback ───
   useEffect(()=>{
     if(screen!=="home" || savedProfiles.length<=1 || carouselPlayed.current) return;
-    if(manegeTimer.current) clearTimeout(manegeTimer.current);
-    manegeTimer.current = setTimeout(()=>{
-      if(carouselPlayed.current) return;
-      const el = carouselRef.current;
-      if(!el) return;
-      const cards = Array.from(el.children).filter(c => c.tagName === 'BUTTON');
+    const el = carouselRef.current;
+    if(!el) return;
+    const CARD_W = 210, GAP = 14;
+    let launched = false;
+    const launchManege = ()=>{
+      if(launched || carouselPlayed.current) return;
+      const el2 = carouselRef.current;
+      if(!el2) return;
+      const cards = Array.from(el2.children).filter(c => c.tagName === 'BUTTON');
       if(cards.length <= 1) return;
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      if(maxScroll <= 0) return;
+      const oneLoopWidth = cards.length * (CARD_W + GAP);
+      if(oneLoopWidth <= 0) return;
+      launched = true;
       carouselPlayed.current = true;
-      el.style.scrollSnapType = 'none';
-      el.style.scrollBehavior = 'auto';
-      const duration = 3000;
+      const clones = [];
+      const endSpacer = el2.lastElementChild;
+      for(let loop = 0; loop < 3; loop++) {
+        cards.forEach(card => {
+          const clone = card.cloneNode(true);
+          clone.setAttribute('data-clone','true');
+          clone.style.pointerEvents = 'none';
+          clone.style.opacity = '0.7';
+          el2.insertBefore(clone, endSpacer);
+          clones.push(clone);
+        });
+      }
+      el2.style.scrollSnapType = 'none';
+      const totalDistance = oneLoopWidth * 3;
+      const duration = 3500;
       let startTime = null;
       let cancelled = false;
+      const easeOut = t => 1 - Math.pow(1 - t, 4);
       const animate = (ts) => {
         if(cancelled) return;
         if(!startTime) startTime = ts;
-        const t = Math.min((ts - startTime) / duration, 1);
-        const sweeps = 2.5;
-        const wave = Math.abs(((t * sweeps * 2) % 2) - 1);
-        const fadeOut = t > 0.8 ? 1 - ((t - 0.8) / 0.2) : 1;
-        el.scrollLeft = wave * maxScroll * fadeOut;
-        if(t >= 1) {
-          el.scrollLeft = 0;
-          el.style.scrollSnapType = 'x mandatory';
+        const elapsed = ts - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        el2.scrollLeft = easeOut(progress) * totalDistance;
+        if(progress >= 1) {
+          clones.forEach(c => c.remove());
+          el2.style.scrollSnapType = 'x mandatory';
+          el2.scrollLeft = 0;
           setActiveProfileIdx(0);
           return;
         }
@@ -2510,14 +2525,28 @@ export default function PadelAnalyzer() {
       requestAnimationFrame(animate);
       const cancel = () => {
         cancelled = true;
-        el.style.scrollSnapType = 'x mandatory';
-        el.removeEventListener('touchstart', cancel);
-        el.removeEventListener('mousedown', cancel);
+        clones.forEach(c => c.remove());
+        el2.style.scrollSnapType = 'x mandatory';
+        el2.removeEventListener('touchstart',cancel);
+        el2.removeEventListener('mousedown',cancel);
       };
-      el.addEventListener('touchstart', cancel, {once:true});
-      el.addEventListener('mousedown', cancel, {once:true});
-    }, 1500);
-    return () => { if(manegeTimer.current) clearTimeout(manegeTimer.current); };
+      el2.addEventListener('touchstart', cancel, {once:true});
+      el2.addEventListener('mousedown', cancel, {once:true});
+    };
+    // Method 1: IntersectionObserver
+    let obs = null;
+    try {
+      obs = new IntersectionObserver((entries)=>{
+        if(entries[0].isIntersecting && !launched) {
+          obs.disconnect();
+          setTimeout(launchManege, 500);
+        }
+      }, {threshold: 0});
+      obs.observe(el);
+    } catch(e) {}
+    // Method 2: Fallback — guaranteed after 3s
+    const fallback = setTimeout(()=>{ if(!launched) launchManege(); }, 3000);
+    return ()=>{ if(obs) obs.disconnect(); clearTimeout(fallback); };
   }, [screen, savedProfiles.length]);
 
   const toggleRacket = (id) => {
@@ -3329,7 +3358,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* Logo — large, animated entrance */}
         <div style={{animation:"splashLogoIn 0.8s cubic-bezier(.34,1.56,.64,1)",position:"relative",zIndex:1}}>
           <div style={{width:110,height:110,borderRadius:30,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 20px 60px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"splashFloat 4s ease-in-out 2s infinite"}}>
-            <PalaIcon size={64}/>
+            <div style={{transform:"rotate(20deg)"}}><PalaIcon size={64}/></div>
           </div>
         </div>
 
@@ -3394,7 +3423,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={{position:"absolute",top:"10%",right:"-5%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.4,pointerEvents:"none"}}/>
         {/* Logo */}
         <div style={{width:88,height:88,borderRadius:22,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:20,boxShadow:`0 12px 40px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,position:"relative",zIndex:1}}>
-          <PalaIcon size={48}/>
+          <div style={{transform:"rotate(20deg)"}}><PalaIcon size={48}/></div>
         </div>
         <h1 style={{fontFamily:F.editorial,fontSize:34,fontWeight:700,color:T.cream,margin:"0 0 4px",letterSpacing:"0.02em",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
         <p style={{fontFamily:F.editorial,fontSize:15,color:T.gold,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"0.03em",position:"relative",zIndex:1}}>Padel Center & Santé</p>
@@ -3500,7 +3529,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Logo */}
           <div style={{width:100,height:100,borderRadius:26,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 16px 60px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"welcomeLogoIn 0.7s cubic-bezier(.34,1.56,.64,1)",position:"relative",zIndex:1}}>
-            <PalaIcon size={56}/>
+            <div style={{transform:"rotate(20deg)"}}><PalaIcon size={56}/></div>
           </div>
 
           {/* Greeting */}
