@@ -2169,8 +2169,16 @@ export default function PadelAnalyzer() {
       isPopStateRef.current = false;
       return;
     }
-    if (screen !== "analyzing") {
+    if (screen !== "analyzing" && screen !== "welcome") {
       window.history.pushState({ screen }, "", "");
+    }
+  }, [screen]);
+
+  // Welcome screen auto-transition
+  useEffect(() => {
+    if (screen === "welcome") {
+      const t = setTimeout(() => setScreen("home"), 3500);
+      return () => clearTimeout(t);
     }
   }, [screen]);
 
@@ -2395,7 +2403,7 @@ export default function PadelAnalyzer() {
       setGroupRole(result.role);
       setGroupNameLS(result.name);
       setGroupNameState(result.name);
-      setScreen("home");
+      setScreen("welcome");
     } catch(e) { setCloudError(e.message); }
   };
 
@@ -3266,7 +3274,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {cloudLoginMode==="join"?"Se connecter":"Créer mon espace"}
           </button>
           
-          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("home");}} className="pa-ghost" style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:10,color:T.gray2,fontSize:11,cursor:"pointer",fontFamily:F.body}}>
+          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("welcome");}} className="pa-ghost" style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:10,color:T.gray2,fontSize:11,cursor:"pointer",fontFamily:F.body}}>
             Continuer sans compte
           </button>
         </div>
@@ -3277,8 +3285,74 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>}
 
       {/* ============================================================ */}
-      {/* HOME SCREEN */}
+      {/* WELCOME SCREEN — Animated transition after login */}
       {/* ============================================================ */}
+      {screen==="welcome"&&(()=>{
+        const isLocal = familyCode==="LOCAL";
+        const name = groupName || "Joueur";
+        const roleGreeting = groupRole==="admin"
+          ? {emoji:"👑",line1:"Salut Boss.",line2:`L'espace admin de ${name} est prêt.`}
+          : groupRole==="vendeur"
+          ? {emoji:"🏪",line1:`Bienvenue ${name}.`,line2:"L'outil de recommandation est chargé."}
+          : isLocal
+          ? {emoji:"🎾",line1:"Bienvenue sur Padel Analyzer.",line2:"Prêt à trouver ta pala idéale."}
+          : {emoji:"👋",line1:`Salut ${name} !`,line2:"Tes profils sont synchronisés."};
+
+        return (
+        <div style={{position:"fixed",inset:0,background:T.bg,zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",overflow:"hidden"}}>
+          <FontLoader/>
+          <style>{`
+            @keyframes welcomeLogoIn { 0% { opacity:0; transform:scale(0.5) rotate(-8deg); } 60% { transform:scale(1.08) rotate(2deg); } 100% { opacity:1; transform:scale(1) rotate(0); } }
+            @keyframes welcomeTextIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes welcomeGlow { 0%,100% { opacity:0.3; transform:scale(1); } 50% { opacity:0.6; transform:scale(1.15); } }
+            @keyframes welcomeBarFill { from { width:0%; } to { width:100%; } }
+            @keyframes welcomeCountUp { from { opacity:0; } to { opacity:1; } }
+          `}</style>
+
+          {/* Background glows */}
+          <div style={{position:"absolute",top:"20%",left:"50%",transform:"translate(-50%,-50%)",width:400,height:400,borderRadius:"50%",background:`radial-gradient(circle, ${T.accentGlow} 0%, transparent 70%)`,animation:"welcomeGlow 3s ease-in-out infinite",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",bottom:"20%",right:"10%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.3,pointerEvents:"none"}}/>
+
+          {/* Logo */}
+          <div style={{width:100,height:100,borderRadius:26,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 16px 60px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"welcomeLogoIn 0.7s cubic-bezier(.34,1.56,.64,1)",position:"relative",zIndex:1}}>
+            <svg width="56" height="56" viewBox="0 0 44 44" fill="none"><ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.5" fill="none"/><line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/><circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/></svg>
+          </div>
+
+          {/* Greeting */}
+          <div style={{fontSize:44,marginTop:28,animation:"welcomeTextIn 0.5s ease 0.3s both"}}>{roleGreeting.emoji}</div>
+          <h1 style={{fontFamily:F.editorial,fontSize:28,fontWeight:700,color:T.cream,margin:"12px 0 0",letterSpacing:"0.01em",textAlign:"center",animation:"welcomeTextIn 0.5s ease 0.5s both",position:"relative",zIndex:1}}>{roleGreeting.line1}</h1>
+          <p style={{fontFamily:F.body,fontSize:14,color:T.gray1,margin:"8px 0 0",textAlign:"center",animation:"welcomeTextIn 0.5s ease 0.7s both",position:"relative",zIndex:1}}>{roleGreeting.line2}</p>
+
+          {/* Stats tease */}
+          <div style={{display:"flex",gap:24,marginTop:32,animation:"welcomeTextIn 0.5s ease 1s both",position:"relative",zIndex:1}}>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:28,fontWeight:800,color:T.accent,fontFamily:F.legacy}}>{totalDBCount}</div>
+              <div style={{fontSize:9,color:T.gray2,textTransform:"uppercase",letterSpacing:"0.06em",fontFamily:F.body,marginTop:2}}>raquettes</div>
+            </div>
+            <div style={{width:1,background:T.border}}/>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:28,fontWeight:800,color:T.green,fontFamily:F.legacy}}>6</div>
+              <div style={{fontSize:9,color:T.gray2,textTransform:"uppercase",letterSpacing:"0.06em",fontFamily:F.body,marginTop:2}}>critères</div>
+            </div>
+            <div style={{width:1,background:T.border}}/>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:28,fontWeight:800,color:T.gold,fontFamily:F.legacy}}>{savedProfiles.length||"∞"}</div>
+              <div style={{fontSize:9,color:T.gray2,textTransform:"uppercase",letterSpacing:"0.06em",fontFamily:F.body,marginTop:2}}>profils</div>
+            </div>
+          </div>
+
+          {/* Loading bar */}
+          <div style={{marginTop:36,width:200,height:3,background:"rgba(255,255,255,0.06)",borderRadius:2,overflow:"hidden",animation:"welcomeTextIn 0.3s ease 1.2s both",position:"relative",zIndex:1}}>
+            <div style={{height:"100%",background:`linear-gradient(90deg,${T.accent},${T.gold})`,borderRadius:2,animation:"welcomeBarFill 2s cubic-bezier(.4,0,.2,1) 1.3s both"}}/>
+          </div>
+
+          {/* Auto-skip after bar fills */}
+          <button onClick={()=>setScreen("home")} style={{marginTop:24,background:"none",border:"none",color:T.gray3,fontSize:10,cursor:"pointer",fontFamily:F.body,animation:"welcomeTextIn 0.3s ease 2.5s both",padding:"6px 16px",position:"relative",zIndex:1}}>
+            Passer →
+          </button>
+        </div>
+        );
+      })()}
       {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"20px 16px",background:`radial-gradient(ellipse at 50% 10%, ${T.surface} 0%, ${T.bg} 50%, #080c14 100%)`,position:"relative",overflow:"hidden"}}>
         <FontLoader/>
         {/* Subtle top glow */}
@@ -3296,10 +3370,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </svg>
         </div>
         <h1 style={{fontFamily:F.editorial,fontSize:30,fontWeight:700,color:T.cream,margin:"0 0 4px",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
-        {groupName&&familyCode!=="LOCAL"?<p style={{color:T.gold,fontSize:14,margin:"0 0 6px",fontWeight:600,textAlign:"center",fontFamily:F.editorial,fontStyle:"italic",position:"relative",zIndex:1}}>
-          {groupRole==="admin"?"👑 Salut Boss":groupRole==="vendeur"?`Espace ${groupName}`:`Bienvenue, ${groupName}`}
-        </p>:<p style={{fontFamily:F.editorial,fontSize:14,color:T.gold,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>Padel Center & Santé</p>}
-        <p style={{color:T.gray2,fontSize:11,margin:"0 0 32px",textAlign:"center",maxWidth:340,lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>{totalDBCount} raquettes analysées · Scoring calibré · Recommandation personnalisée</p>
+        {groupName&&familyCode!=="LOCAL"?<>
+          <p style={{color:T.gold,fontSize:15,margin:"0 0 2px",fontWeight:600,textAlign:"center",fontFamily:F.editorial,fontStyle:"italic",position:"relative",zIndex:1}}>
+            {groupRole==="admin"?`${groupName}`
+              :groupRole==="vendeur"?`Espace vendeur`
+              :`Bienvenue ${groupName}`}
+          </p>
+          <p style={{color:T.gray1,fontSize:11,margin:"0 0 28px",textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>
+            {groupRole==="admin"?`Administration · ${savedProfiles.length} profil${savedProfiles.length>1?"s":""} · ${totalDBCount} raquettes`
+              :groupRole==="vendeur"?`Outil de recommandation · ${totalDBCount} raquettes en base`
+              :`${savedProfiles.length} profil${savedProfiles.length>1?"s":""} enregistré${savedProfiles.length>1?"s":""} · ${totalDBCount} raquettes`}
+          </p>
+        </>:<>
+          <p style={{fontFamily:F.editorial,fontSize:15,color:T.gold,margin:"0 0 2px",fontStyle:"italic",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>Padel Center & Santé</p>
+          <p style={{color:T.gray2,fontSize:11,margin:"0 0 28px",textAlign:"center",maxWidth:340,lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>Trouve ta pala idéale parmi {totalDBCount} raquettes analysées</p>
+        </>}
 
         {/* Saved profiles — Carousel */}
         {savedProfiles.length>0&&(()=>{
@@ -3483,38 +3568,63 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </p>}
 
         {/* ============================================================ */}
-        {/* MAGAZINE CTA */}
+        {/* CONTENT CTAs — Magazine + Catalogue */}
         {/* ============================================================ */}
-        <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1}} className="pa-stagger">
+        <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1,display:"flex",flexDirection:"column",gap:14}} className="pa-stagger">
+
+          {/* MAGAZINE — Hero card */}
           <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} className="pa-card" style={{
-            width:"100%",padding:"22px 24px",borderRadius:20,cursor:"pointer",
-            background:`linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`,
-            border:`1px solid ${T.gold}40`,position:"relative",overflow:"hidden",
-            boxShadow:`0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 ${T.gold}15`,
+            width:"100%",borderRadius:22,cursor:"pointer",position:"relative",overflow:"hidden",
+            background:`linear-gradient(160deg, ${T.card} 0%, rgba(212,168,86,0.08) 50%, ${T.surface} 100%)`,
+            border:`1px solid ${T.gold}35`,padding:0,textAlign:"left",
+            boxShadow:`0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 ${T.gold}15`,
           }}>
-            {/* Gold top accent */}
-            <div style={{position:"absolute",top:0,left:"15%",right:"15%",height:1,background:`linear-gradient(90deg, transparent, ${T.gold}80, transparent)`}}/>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-              <div style={{textAlign:"left"}}>
-                <div style={{fontSize:16,fontWeight:700,fontFamily:F.editorial,color:T.cream,letterSpacing:"0.01em"}}>Tendances & Magazine</div>
-                <div style={{fontSize:11,color:T.gray1,marginTop:4,fontFamily:F.body}}>Top raquettes · Fiches techniques · Analyses éditoriales</div>
+            {/* Gold accent line */}
+            <div style={{position:"absolute",top:0,left:"10%",right:"10%",height:2,background:`linear-gradient(90deg, transparent, ${T.gold}80, transparent)`,borderRadius:1}}/>
+            {/* Glow */}
+            <div style={{position:"absolute",top:"-30%",right:"-10%",width:180,height:180,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.4,pointerEvents:"none"}}/>
+            
+            <div style={{padding:"24px 24px 20px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                <span style={{fontSize:9,fontWeight:700,color:"#0B0E0D",background:T.gold,padding:"3px 10px",borderRadius:6,textTransform:"uppercase",letterSpacing:"0.06em",fontFamily:F.body}}>2026</span>
+                <span style={{fontSize:9,fontWeight:600,color:T.gold,letterSpacing:"0.06em",textTransform:"uppercase",fontFamily:F.body}}>Magazine Padel</span>
               </div>
-              <span style={{fontSize:20,color:T.gold,fontFamily:F.editorial}}>→</span>
+              <div style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,lineHeight:1.25,marginBottom:8}}>Tendances, analyses<br/>& fiches techniques</div>
+              <div style={{fontSize:12,color:T.gray1,fontFamily:F.body,lineHeight:1.5,marginBottom:14}}>Les meilleures raquettes classées par catégorie. Top Puissance, Contrôle, Polyvalence…</div>
+              {/* Category pills */}
+              <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                {["Puissance","Contrôle","Confort","Polyvalence"].map(c=><span key={c} style={{fontSize:9,fontWeight:600,padding:"4px 10px",borderRadius:8,background:`${T.gold}12`,border:`1px solid ${T.gold}25`,color:T.gold,fontFamily:F.body}}>{c}</span>)}
+              </div>
+            </div>
+            {/* Bottom bar */}
+            <div style={{padding:"12px 24px",borderTop:`1px solid ${T.gold}15`,display:"flex",alignItems:"center",justifyContent:"space-between",background:`${T.gold}06`}}>
+              <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Explorer le magazine</span>
+              <span style={{fontSize:18,color:T.gold}}>→</span>
             </div>
           </button>
 
-          {/* CATALOGUE CTA */}
+          {/* CATALOGUE — Data-driven card */}
           <button onClick={()=>{setCatalogSearch("");resetCatFilters();setScreen("catalog");}} className="pa-card" style={{
-            width:"100%",padding:"22px 24px",borderRadius:20,cursor:"pointer",marginTop:12,
-            background:`linear-gradient(135deg, ${T.card} 0%, rgba(61,176,107,0.06) 100%)`,
-            border:`1px solid ${T.green}25`,
+            width:"100%",borderRadius:22,cursor:"pointer",position:"relative",overflow:"hidden",
+            background:`linear-gradient(160deg, ${T.card} 0%, rgba(61,176,107,0.06) 50%, ${T.surface} 100%)`,
+            border:`1px solid ${T.green}25`,padding:0,textAlign:"left",
+            boxShadow:"0 8px 28px rgba(0,0,0,0.25)",
           }}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-              <div style={{textAlign:"left"}}>
-                <div style={{fontSize:16,fontWeight:700,fontFamily:F.editorial,color:T.cream,letterSpacing:"0.01em"}}>Catalogue · {totalDBCount} raquettes</div>
-                <div style={{fontSize:11,color:T.gray1,marginTop:4,fontFamily:F.body}}>Rechercher, filtrer, comparer toutes les palas</div>
+            <div style={{padding:"22px 24px 18px",display:"flex",alignItems:"center",gap:18}}>
+              {/* Big number */}
+              <div style={{flexShrink:0,textAlign:"center",minWidth:80}}>
+                <div style={{fontSize:38,fontWeight:900,color:T.green,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{totalDBCount}</div>
+                <div style={{fontSize:8,color:T.gray2,textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:F.body,marginTop:2}}>raquettes</div>
               </div>
-              <span style={{fontSize:20,color:T.green,fontFamily:F.editorial}}>→</span>
+              <div style={{flex:1}}>
+                <div style={{fontFamily:F.editorial,fontSize:18,fontWeight:700,color:T.cream,lineHeight:1.3,marginBottom:4}}>Catalogue complet</div>
+                <div style={{fontSize:11,color:T.gray1,fontFamily:F.body,lineHeight:1.5}}>Recherche, filtres avancés, fiches détaillées. Toutes marques, toutes gammes.</div>
+              </div>
+            </div>
+            {/* Bottom bar */}
+            <div style={{padding:"10px 24px",borderTop:`1px solid ${T.green}15`,display:"flex",alignItems:"center",justifyContent:"space-between",background:`${T.green}06`}}>
+              <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Parcourir le catalogue</span>
+              <span style={{fontSize:18,color:T.green}}>→</span>
             </div>
           </button>
         </div>
@@ -4727,41 +4837,64 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             @keyframes analyzeLineIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
             @keyframes analyzePulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
             @keyframes analyzeSpinner { to { transform:rotate(360deg); } }
+            @keyframes analyzeRing1 { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
+            @keyframes analyzeRing2 { 0% { transform:rotate(0deg); } 100% { transform:rotate(-360deg); } }
+            @keyframes analyzeGlow { 0%,100% { opacity:0.2; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.2); } }
+            @keyframes analyzeScoreCount { from { opacity:0; transform:scale(0.5); } to { opacity:1; transform:scale(1); } }
           `}</style>
 
-          {/* Logo */}
-          <svg width="48" height="48" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginBottom:24,filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.4))"}}>
-            <defs><linearGradient id="logoAnalyze" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-            <rect width="44" height="44" rx="10" fill="url(#logoAnalyze)"/>
-            <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
-          </svg>
+          {/* Background glow */}
+          <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:500,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)",animation:"analyzeGlow 3s ease-in-out infinite",pointerEvents:"none"}}/>
+
+          {/* Animated rings + Logo */}
+          <div style={{position:"relative",width:120,height:120,marginBottom:28}}>
+            {/* Outer ring */}
+            <div style={{position:"absolute",inset:-12,borderRadius:"50%",border:"1.5px solid transparent",borderTopColor:"rgba(249,115,22,0.5)",borderRightColor:"rgba(249,115,22,0.2)",animation:"analyzeRing1 3s linear infinite"}}/>
+            {/* Mid ring */}
+            <div style={{position:"absolute",inset:-4,borderRadius:"50%",border:"1px solid transparent",borderBottomColor:"rgba(239,68,68,0.4)",borderLeftColor:"rgba(239,68,68,0.15)",animation:"analyzeRing2 2s linear infinite"}}/>
+            {/* Inner ring - dashed */}
+            <div style={{position:"absolute",inset:4,borderRadius:"50%",border:"1px dashed rgba(249,115,22,0.15)",animation:"analyzeRing1 8s linear infinite"}}/>
+            {/* Logo center */}
+            <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <svg width="52" height="52" viewBox="0 0 44 44" fill="none" style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.4))"}}>
+                <defs><linearGradient id="logoAnalyze" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+                <rect width="44" height="44" rx="10" fill="url(#logoAnalyze)"/>
+                <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
+                <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+                <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
+              </svg>
+            </div>
+          </div>
+
+          {/* Profile name — hero */}
+          <div style={{fontSize:10,fontWeight:700,color:"#f97316",letterSpacing:"0.1em",textTransform:"uppercase",fontFamily:"'Outfit',sans-serif",marginBottom:4,animation:"analyzeLineIn 0.4s ease both"}}>MATCHING EN COURS</div>
+          <div style={{fontSize:22,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif",marginBottom:20,animation:"analyzeLineIn 0.4s ease 0.2s both"}}>{profileName}</div>
 
           <div style={{maxWidth:480,width:"100%"}}>
-            {lines.map((line,i)=>{
-              const isLast = i===lines.length-1;
-              const delay = i * 800;
-              const totalDuration = lines.length * 800 + 600;
+            {lines.slice(1).map((line,i)=>{
+              const isLast = i===lines.length-2;
+              const delay = (i+1) * 700;
               return <div key={i} style={{
-                fontSize: i===0 ? 18 : isLast ? 15 : 13,
-                fontWeight: i===0 ? 800 : isLast ? 700 : 500,
-                color: i===0 ? "#f1f5f9" : isLast ? "#f97316" : "#94a3b8",
-                fontFamily: i===0||isLast ? "'Outfit',sans-serif" : "'Inter',sans-serif",
-                marginBottom: i===0 ? 20 : 10,
+                fontSize: isLast ? 14 : 12,
+                fontWeight: isLast ? 700 : 500,
+                color: isLast ? "#f97316" : "#64748b",
+                fontFamily: isLast ? "'Outfit',sans-serif" : "'Inter',sans-serif",
+                marginBottom: 8,
                 textAlign: "center",
-                animation: `analyzeLineIn 0.5s ease ${delay}ms both`,
+                animation: `analyzeLineIn 0.4s ease ${delay}ms both`,
                 lineHeight: 1.6,
+                padding: isLast ? "8px 0 0" : 0,
+                borderTop: isLast ? "1px solid rgba(249,115,22,0.15)" : "none",
               }}>{line}</div>;
             })}
 
             {/* Spinner while lines appear */}
-            <div style={{display:"flex",justifyContent:"center",marginTop:20,animation:`analyzeLineIn 0.4s ease ${(lines.length-2)*800}ms both`}}>
-              <div style={{width:28,height:28,border:"3px solid rgba(249,115,22,0.2)",borderTopColor:"#f97316",borderRadius:"50%",animation:"analyzeSpinner 0.8s linear infinite"}}/>
+            <div style={{display:"flex",justifyContent:"center",marginTop:16,animation:`analyzeLineIn 0.4s ease ${(lines.length-2)*700}ms both`}}>
+              <div style={{width:24,height:24,border:"2.5px solid rgba(249,115,22,0.15)",borderTopColor:"#f97316",borderRadius:"50%",animation:"analyzeSpinner 0.7s linear infinite"}}/>
             </div>
 
-            {/* Auto-transition to reveal */}
-            <div style={{animation:`analyzeLineIn 0.5s ease ${lines.length*800+200}ms both`,textAlign:"center",marginTop:24}}>
+            {/* CTA button */}
+            <div style={{animation:`analyzeLineIn 0.5s ease ${lines.length*700+200}ms both`,textAlign:"center",marginTop:20}}>
               <button onClick={()=>setScreen("reveal")} className="pa-cta" style={{
                 padding:"14px 36px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
                 background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",
