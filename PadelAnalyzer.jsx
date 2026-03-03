@@ -2472,41 +2472,35 @@ export default function PadelAnalyzer() {
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
   useEffect(()=>{ try { localStorage.setItem('padel_profile', JSON.stringify({...profile, _name: profileName})); } catch{} }, [profile, profileName]);
 
-  // ─── MANÈGE — IntersectionObserver + fallback ───
+  // ─── MANEGE — roulette merry-go-round ───
+  const manegeTimer = useRef(null);
   useEffect(()=>{
-    console.log("[MANEGE] screen="+screen+" profiles="+savedProfiles.length+" played="+carouselPlayed.current);
     if(screen!=="home" || savedProfiles.length<=1 || carouselPlayed.current) return;
-    const el = carouselRef.current;
-    console.log("[MANEGE] ref=", el ? "OK" : "NULL");
-    if(!el) return;
-    const CARD_W = 210, GAP = 14;
-    let launched = false;
-    const launchManege = ()=>{
-      console.log("[MANEGE] launch! launched="+launched);
-      if(launched || carouselPlayed.current) return;
-      const el2 = carouselRef.current;
-      if(!el2) return;
-      const cards = Array.from(el2.children).filter(c => c.tagName === 'BUTTON');
+    if(manegeTimer.current) clearTimeout(manegeTimer.current);
+    manegeTimer.current = setTimeout(()=>{
+      if(carouselPlayed.current) return;
+      const el = carouselRef.current;
+      if(!el) return;
+      const CARD_W = 210, GAP = 14;
+      const cards = Array.from(el.children).filter(c => c.tagName === 'BUTTON');
       if(cards.length <= 1) return;
       const oneLoopWidth = cards.length * (CARD_W + GAP);
       if(oneLoopWidth <= 0) return;
-      launched = true;
       carouselPlayed.current = true;
       const clones = [];
-      const endSpacer = el2.lastElementChild;
-      for(let loop = 0; loop < 3; loop++) {
+      const endSpacer = el.lastElementChild;
+      for(let loop = 0; loop < 4; loop++) {
         cards.forEach(card => {
           const clone = card.cloneNode(true);
-          clone.setAttribute('data-clone','true');
           clone.style.pointerEvents = 'none';
-          clone.style.opacity = '0.7';
-          el2.insertBefore(clone, endSpacer);
+          el.insertBefore(clone, endSpacer);
           clones.push(clone);
         });
       }
-      el2.style.scrollSnapType = 'none';
-      const totalDistance = oneLoopWidth * 3;
-      const duration = 3500;
+      el.style.scrollSnapType = 'none';
+      el.style.scrollBehavior = 'auto';
+      const totalDistance = oneLoopWidth * 4;
+      const duration = 4000;
       let startTime = null;
       let cancelled = false;
       const easeOut = t => 1 - Math.pow(1 - t, 4);
@@ -2515,41 +2509,28 @@ export default function PadelAnalyzer() {
         if(!startTime) startTime = ts;
         const elapsed = ts - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        el2.scrollLeft = easeOut(progress) * totalDistance;
-        if(progress >= 1) {
-          clones.forEach(c => c.remove());
-          el2.style.scrollSnapType = 'x mandatory';
-          el2.scrollLeft = 0;
-          setActiveProfileIdx(0);
+        el.scrollLeft = easeOut(progress) * totalDistance;
+        if(progress < 1) {
+          requestAnimationFrame(animate);
           return;
         }
-        requestAnimationFrame(animate);
+        clones.forEach(c => c.remove());
+        el.style.scrollSnapType = 'x mandatory';
+        el.scrollLeft = 0;
+        setActiveProfileIdx(0);
       };
       requestAnimationFrame(animate);
       const cancel = () => {
         cancelled = true;
         clones.forEach(c => c.remove());
-        el2.style.scrollSnapType = 'x mandatory';
-        el2.removeEventListener('touchstart',cancel);
-        el2.removeEventListener('mousedown',cancel);
+        el.style.scrollSnapType = 'x mandatory';
+        el.removeEventListener('touchstart', cancel);
+        el.removeEventListener('mousedown', cancel);
       };
-      el2.addEventListener('touchstart', cancel, {once:true});
-      el2.addEventListener('mousedown', cancel, {once:true});
-    };
-    // Method 1: IntersectionObserver
-    let obs = null;
-    try {
-      obs = new IntersectionObserver((entries)=>{
-        if(entries[0].isIntersecting && !launched) {
-          obs.disconnect();
-          setTimeout(launchManege, 500);
-        }
-      }, {threshold: 0});
-      obs.observe(el);
-    } catch(e) {}
-    // Method 2: Fallback — guaranteed after 3s
-    const fallback = setTimeout(()=>{ if(!launched) launchManege(); }, 3000);
-    return ()=>{ if(obs) obs.disconnect(); clearTimeout(fallback); };
+      el.addEventListener('touchstart', cancel, {once:true});
+      el.addEventListener('mousedown', cancel, {once:true});
+    }, 1500);
+    return () => { if(manegeTimer.current) clearTimeout(manegeTimer.current); };
   }, [screen, savedProfiles.length]);
 
   const toggleRacket = (id) => {
