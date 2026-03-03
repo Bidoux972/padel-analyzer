@@ -3834,27 +3834,20 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* Background glows */}
         <div style={{position:"absolute",top:"10%",left:"50%",transform:"translateX(-50%)",width:600,height:600,borderRadius:"50%",background:`radial-gradient(circle, ${T.accentGlow} 0%, transparent 60%)`,animation:"kioskGlow 4s ease-in-out infinite",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"15%",right:"10%",width:300,height:300,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.3,animation:"kioskGlow 5s ease-in-out 1s infinite",pointerEvents:"none"}}/>
-        {/* Logo floating — triple-tap to exit kiosk */}
-        <div onClick={(e)=>{
+        {/* Staff exit — discreet bottom-right */}
+        <button onClick={(e)=>{
           e.stopPropagation();
-          const now = Date.now();
-          const taps = window._kioskTaps || [];
-          taps.push(now);
-          // Keep only taps within last 1.5 seconds
-          const recent = taps.filter(t => now - t < 1500);
-          window._kioskTaps = recent;
-          if (recent.length >= 5) {
-            window._kioskTaps = [];
-            setKioskIdle(false);
-            setFamilyCode("");
-            setFamilyCodeLS("");
-            setGroupRole("famille");
-            setGroupRoleLS("");
-            setGroupNameState("");
-            setGroupNameLS("");
-            setScreen("login");
-          }
-        }} style={{width:130,height:130,borderRadius:34,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 24px 80px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"kioskFloat 6s ease-in-out infinite",cursor:"pointer"}}>
+          setKioskIdle(false);
+          setFamilyCode("");
+          setFamilyCodeLS("");
+          setGroupRole("famille");
+          setGroupRoleLS("");
+          setGroupNameState("");
+          setGroupNameLS("");
+          setScreen("login");
+        }} style={{position:"absolute",bottom:16,right:16,background:"none",border:"none",color:"rgba(255,255,255,0.08)",fontSize:14,cursor:"pointer",padding:"8px 12px",zIndex:10,transition:"color 0.3s"}} onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.35)"} onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.08)"} title="Mode staff">🔐</button>
+        {/* Logo floating */}
+        <div style={{width:130,height:130,borderRadius:34,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 24px 80px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"kioskFloat 6s ease-in-out infinite"}}>
           <div style={{transform:"rotate(20deg)"}}><PalaIcon size={72}/></div>
         </div>
         {/* Brand */}
@@ -4195,26 +4188,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
         </div>}
 
-        <div onClick={()=>{
-          if (!isKiosk) return;
-          const now = Date.now();
-          const taps = window._kioskHomeTaps || [];
-          taps.push(now);
-          const recent = taps.filter(t => now - t < 1500);
-          window._kioskHomeTaps = recent;
-          if (recent.length >= 5) {
-            window._kioskHomeTaps = [];
-            setFamilyCode("");
-            setFamilyCodeLS("");
-            setGroupRole("famille");
-            setGroupRoleLS("");
-            setGroupNameState("");
-            setGroupNameLS("");
-            setScreen("login");
-          }
-        }} style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",position:"relative",zIndex:1,fontFamily:F.body,cursor:isKiosk?"pointer":"default"}}>
+        <div style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",position:"relative",zIndex:1,fontFamily:F.body}}>
           <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · {totalDBCount} raquettes · Scoring hybride calibré
         </div>
+
+        {/* Staff exit for kiosk mode */}
+        {isKiosk && <button onClick={()=>{
+          setFamilyCode("");
+          setFamilyCodeLS("");
+          setGroupRole("famille");
+          setGroupRoleLS("");
+          setGroupNameState("");
+          setGroupNameLS("");
+          setKioskIdle(false);
+          setScreen("login");
+        }} style={{position:"fixed",bottom:12,right:12,background:"none",border:"none",color:"rgba(255,255,255,0.08)",fontSize:14,cursor:"pointer",padding:"8px 12px",zIndex:10,transition:"color 0.3s"}} onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.35)"} onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.08)"} title="Mode staff">🔐</button>}
       </div>}
 
       {/* ============================================================ */}
