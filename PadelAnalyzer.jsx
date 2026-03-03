@@ -2474,12 +2474,15 @@ export default function PadelAnalyzer() {
 
   // ─── MANÈGE — IntersectionObserver + fallback ───
   useEffect(()=>{
+    console.log("[MANEGE] screen="+screen+" profiles="+savedProfiles.length+" played="+carouselPlayed.current);
     if(screen!=="home" || savedProfiles.length<=1 || carouselPlayed.current) return;
     const el = carouselRef.current;
+    console.log("[MANEGE] ref=", el ? "OK" : "NULL");
     if(!el) return;
     const CARD_W = 210, GAP = 14;
     let launched = false;
     const launchManege = ()=>{
+      console.log("[MANEGE] launch! launched="+launched);
       if(launched || carouselPlayed.current) return;
       const el2 = carouselRef.current;
       if(!el2) return;
