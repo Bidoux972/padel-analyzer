@@ -2432,6 +2432,10 @@ export default function PadelAnalyzer() {
   const [adminMsg, setAdminMsg] = useState("");
   const adminFileInputRef = useRef(null);
 
+  // ============ KIOSK MODE ============
+  const [kioskIdle, setKioskIdle] = useState(false); // attract screen
+  const isKiosk = familyCode === "LOCAL";
+
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
   useEffect(()=>{
     if (!familyCode) return;
@@ -2510,6 +2514,41 @@ export default function PadelAnalyzer() {
       events.forEach(e => window.removeEventListener(e, resetTimer));
     };
   }, [groupRole, screen]);
+
+  // ============ KIOSK INACTIVITY (LOCAL mode — 2 min → attract screen) ============
+  useEffect(() => {
+    if (!isKiosk || screen === 'login' || screen === 'splash') return;
+    // If already on attract screen, no timer needed
+    if (kioskIdle) return;
+    const KIOSK_TIMEOUT = 2 * 60 * 1000; // 2 minutes
+    let timer = null;
+    const resetTimer = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        // Clear kiosk session
+        setProfile({...INITIAL_PROFILE});
+        setProfileName("");
+        setSavedProfiles([]);
+        setRackets([]);
+        setSelected([]);
+        setSuggestions(null);
+        setSuggestResults(null);
+        setWizardStep(0);
+        setRevealIdx(0);
+        // Remove LOCAL storage items
+        ['padel_profiles','padel_profile','padel_profileName','padel_rackets','padel_selected','padel_screen'].forEach(k => localStorage.removeItem(k));
+        setKioskIdle(true);
+        setScreen("home");
+      }, KIOSK_TIMEOUT);
+    };
+    const events = ['mousedown','mousemove','keydown','touchstart','scroll'];
+    events.forEach(e => window.addEventListener(e, resetTimer, {passive:true}));
+    resetTimer();
+    return () => {
+      if (timer) clearTimeout(timer);
+      events.forEach(e => window.removeEventListener(e, resetTimer));
+    };
+  }, [isKiosk, screen, kioskIdle]);
 
   // ============ SESSION HEARTBEAT (vendeur/admin) ============
   useEffect(() => {
@@ -3601,9 +3640,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {cloudLoginMode==="join"?"Se connecter":"Créer mon compte"}
           </button>
           
-          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("welcome");}} className="pa-ghost" style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:10,color:T.gray2,fontSize:11,cursor:"pointer",fontFamily:F.body}}>
-            Continuer sans compte
+          <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setKioskIdle(false);setScreen("welcome");}} className="pa-cta" style={{marginTop:12,width:"100%",padding:"14px 10px",background:"linear-gradient(135deg, rgba(124,58,237,0.12), rgba(168,85,247,0.08))",border:"1px solid rgba(124,58,237,0.35)",borderRadius:14,color:"#c4b5fd",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:F.body,display:"flex",alignItems:"center",justifyContent:"center",gap:10}}>
+            <span style={{fontSize:18}}>🏓</span>
+            <span>Essayer librement</span>
           </button>
+          <p style={{fontSize:9,color:T.gray3,textAlign:"center",marginTop:6}}>Sans compte · Résultats instantanés</p>
         </div>
         
         <p style={{fontSize:8,color:T.gray3,marginTop:32,letterSpacing:"0.06em",position:"relative",zIndex:1,fontFamily:F.body}}>
@@ -3680,6 +3721,44 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
         );
       })()}
+      {/* ============================================================ */}
+      {/* KIOSK ATTRACT SCREEN — idle loop animation */}
+      {/* ============================================================ */}
+      {screen==="home"&&isKiosk&&kioskIdle&&<div onClick={()=>setKioskIdle(false)} style={{position:"fixed",inset:0,background:T.bg,zIndex:1001,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",overflow:"hidden",cursor:"pointer"}}>
+        <FontLoader/>
+        <style>{`
+          @keyframes kioskFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-12px) rotate(2deg); } 75% { transform: translateY(4px) rotate(-1deg); } }
+          @keyframes kioskPulse { 0%,100% { opacity:0.6; transform:scale(1); } 50% { opacity:1; transform:scale(1.05); } }
+          @keyframes kioskGlow { 0%,100% { opacity:0.2; } 50% { opacity:0.5; } }
+          @keyframes kioskSlideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        `}</style>
+        {/* Background glows */}
+        <div style={{position:"absolute",top:"10%",left:"50%",transform:"translateX(-50%)",width:600,height:600,borderRadius:"50%",background:`radial-gradient(circle, ${T.accentGlow} 0%, transparent 60%)`,animation:"kioskGlow 4s ease-in-out infinite",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",bottom:"15%",right:"10%",width:300,height:300,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.3,animation:"kioskGlow 5s ease-in-out 1s infinite",pointerEvents:"none"}}/>
+        {/* Logo floating */}
+        <div style={{width:130,height:130,borderRadius:34,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 24px 80px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"kioskFloat 6s ease-in-out infinite"}}>
+          <div style={{transform:"rotate(20deg)"}}><PalaIcon size={72}/></div>
+        </div>
+        {/* Brand */}
+        <h1 style={{fontFamily:F.editorial,fontSize:42,fontWeight:700,color:T.cream,margin:"28px 0 0",letterSpacing:"0.02em",textAlign:"center"}}>PADEL ANALYZER</h1>
+        <p style={{fontFamily:F.editorial,fontSize:17,color:T.gold,margin:"6px 0 0",fontStyle:"italic"}}>Padel Center & Santé</p>
+        {/* Decorative line */}
+        <div style={{height:1,width:100,background:`linear-gradient(90deg, transparent, ${T.gold}, transparent)`,margin:"24px 0"}}/>
+        {/* CTA pulsing */}
+        <div style={{animation:"kioskPulse 2.5s ease-in-out infinite"}}>
+          <div style={{padding:"20px 48px",borderRadius:20,background:`linear-gradient(135deg,${T.accent},#d4541e)`,color:"#fff",fontSize:20,fontWeight:800,fontFamily:F.body,boxShadow:`0 12px 48px ${T.accentGlow}`,textAlign:"center",letterSpacing:"-0.01em"}}>
+            Touchez pour commencer
+          </div>
+        </div>
+        {/* Info */}
+        <p style={{fontSize:13,color:T.gray1,marginTop:20,textAlign:"center",fontFamily:F.body}}>
+          Trouvez votre raquette idéale parmi {totalDBCount} modèles
+        </p>
+        <p style={{fontSize:9,color:T.gray3,marginTop:28,textAlign:"center",fontFamily:F.body}}>
+          Gratuit · Sans inscription · Résultats en 2 minutes
+        </p>
+      </div>}
+
       {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"20px 16px",background:`radial-gradient(ellipse at 50% 10%, ${T.surface} 0%, ${T.bg} 50%, #080c14 100%)`,position:"relative",overflow:"hidden"}}>
         <FontLoader/>
         {/* Subtle top glow */}
@@ -3705,8 +3784,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <p style={{color:T.gray2,fontSize:11,margin:"0 0 28px",textAlign:"center",maxWidth:340,lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>Trouve ta pala idéale parmi {totalDBCount} raquettes analysées</p>
         </>}
 
-        {/* Saved profiles — Carousel */}
-        {savedProfiles.length>0&&(()=>{
+        {/* Saved profiles — Carousel (NOT shown in kiosk mode) */}
+        {!isKiosk&&savedProfiles.length>0&&(()=>{
           const profileSearch = profileSearchTerm;
           const filtered = savedProfiles.filter(sp=>!profileSearch||sp.name.toLowerCase().includes(profileSearch.toLowerCase()));
           const CARD_W = 210;
@@ -3883,6 +3962,26 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>);
         })()}
 
+        {/* Kiosk mode — big CTA */}
+        {isKiosk ? <div style={{width:"100%",maxWidth:400,position:"relative",zIndex:1,textAlign:"center"}}>
+          <button onClick={createNewProfile} className="pa-cta" style={{
+            padding:"20px 28px",
+            background:"linear-gradient(135deg,#f97316,#d4541e,#f59e0b,#f97316)",
+            backgroundSize:"300% 300%",
+            border:"none",borderRadius:18,color:"#fff",fontSize:18,fontWeight:800,
+            cursor:"pointer",fontFamily:F.body,letterSpacing:"-0.01em",
+            width:"100%",position:"relative",zIndex:1,
+            animation:"pulseGlow 2.5s ease-in-out infinite, shimmerGrad 4s ease-in-out infinite",
+            boxShadow:`0 8px 40px ${T.accentGlow}`,
+          }}>
+            🏓 C'est parti !
+          </button>
+          <p style={{fontSize:12,color:T.gray1,marginTop:12,lineHeight:1.5,fontFamily:F.body}}>
+            Réponds à quelques questions, découvre les raquettes faites pour toi
+          </p>
+        </div>
+
+        : <>
         {/* New profile button */}
         <button onClick={createNewProfile} className="pa-cta" style={{
           padding:"15px 28px",
@@ -3899,6 +3998,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {savedProfiles.length===0&&<p style={{fontSize:11,color:T.gray2,marginTop:12,textAlign:"center",lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>
           Crée ton premier profil pour démarrer l'analyse
         </p>}
+        </>}
 
         {/* ============================================================ */}
         {/* CONTENT CTAs — Magazine + Catalogue */}
@@ -5588,6 +5688,23 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{fontSize:9,color:"#64748b",fontWeight:400,marginTop:3}}>Affiner les résultats</div>
             </button>
           </div>
+
+          {/* ===== KIOSK MODE — QR code + actions ===== */}
+          {isKiosk && top3.length > 0 && <div style={{background:"linear-gradient(135deg, rgba(124,58,237,0.08), rgba(168,85,247,0.04))",border:"1px solid rgba(124,58,237,0.25)",borderRadius:18,padding:"24px 20px",marginTop:20,textAlign:"center",animation:"fadeIn 0.5s ease"}}>
+            <div style={{fontSize:14,fontWeight:700,color:"#c4b5fd",marginBottom:6,fontFamily:F.body||"'Inter',sans-serif"}}>📱 Retrouvez vos résultats</div>
+            <p style={{fontSize:11,color:"#94a3b8",margin:"0 0 16px",lineHeight:1.5}}>Scannez ce QR code pour retrouver vos recommandations sur votre téléphone</p>
+            <div style={{display:"inline-block",background:"#fff",borderRadius:12,padding:12,boxShadow:"0 4px 24px rgba(0,0,0,0.3)"}}>
+              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`https://padelanalyzer.fr/?top=${top3.map(r=>r.id).join(',')}&p=${encodeURIComponent(profileName)}`)}`} alt="QR Code" style={{width:180,height:180,display:"block"}} onError={e=>{e.target.style.display="none";}}/>
+            </div>
+            <div style={{marginTop:16,display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+              <button onClick={()=>{setKioskIdle(false);createNewProfile();}} className="pa-cta" style={{padding:"12px 24px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:`0 4px 16px ${T.accentGlow}`}}>
+                🔄 Nouveau test
+              </button>
+              <button onClick={()=>{setScreen("login");setFamilyCode("");setFamilyCodeLS("");}} className="pa-ghost" style={{padding:"12px 24px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:12,color:"#c4b5fd",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
+                💾 Créer un compte
+              </button>
+            </div>
+          </div>}
 
           {/* Footer */}
           <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
