@@ -2333,7 +2333,7 @@ export default function PadelAnalyzer() {
   });
 
   // ============ BROWSER BACK BUTTON SUPPORT ============
-  const SCREEN_BACK = { splash:null, home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home", welcome:null };
+  const SCREEN_BACK = { splash:null, home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home", welcome:null, sharedResults:"splash" };
   const cameFromAdminRef = useRef(false);
 
   // Open a full racket sheet from any screen
@@ -2366,6 +2366,31 @@ export default function PadelAnalyzer() {
       return () => clearTimeout(t);
     }
   }, [screen]);
+
+  // ============ QR CODE LANDING — Read URL params ============
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const topIds = params.get('top');
+      const pName = params.get('p');
+      if (!topIds) return;
+      const ids = topIds.split(',').filter(Boolean);
+      if (ids.length === 0) return;
+      // Lookup rackets in merged DB
+      const allDB = getMergedDB();
+      const found = ids.map(id => allDB.find(r => r.id === id)).filter(Boolean);
+      if (found.length === 0) return;
+      // Score them for display
+      const scored = found.map(r => ({
+        ...r,
+        _gs: r.scores ? Math.max(...Object.values(r.scores)) / 10 : 0.7,
+      }));
+      setSharedResults({ rackets: scored, profileName: pName || 'Visiteur' });
+      setScreen('sharedResults');
+      // Clean URL without reload
+      window.history.replaceState({}, '', window.location.pathname);
+    } catch(e) { console.warn('[QR] URL parse error:', e.message); }
+  }, []);
 
   // Listen for browser back/forward
   useEffect(() => {
@@ -2435,6 +2460,9 @@ export default function PadelAnalyzer() {
   // ============ KIOSK MODE ============
   const [kioskIdle, setKioskIdle] = useState(false); // attract screen
   const isKiosk = familyCode === "LOCAL";
+
+  // ============ SHARED RESULTS (QR code landing) ============
+  const [sharedResults, setSharedResults] = useState(null); // {rackets:[], profileName:""}
 
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
   useEffect(()=>{
@@ -3722,6 +3750,77 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         );
       })()}
       {/* ============================================================ */}
+      {/* SHARED RESULTS — QR code landing page */}
+      {/* ============================================================ */}
+      {screen==="sharedResults"&&sharedResults&&(()=>{
+        const {rackets: shRackets, profileName: shName} = sharedResults;
+        const medals = ["🥇","🥈","🥉","4️⃣","5️⃣"];
+        const allDB = getMergedDB();
+        return (
+        <div style={{minHeight:"100dvh",background:T.bg,padding:"24px 16px",display:"flex",flexDirection:"column",alignItems:"center"}} className="pa-screen-fade">
+          <FontLoader/>
+          {/* Header */}
+          <div style={{width:72,height:72,borderRadius:20,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16,boxShadow:`0 12px 40px ${T.accentGlow}`}}>
+            <div style={{transform:"rotate(20deg)"}}><PalaIcon size={40}/></div>
+          </div>
+          <h1 style={{fontFamily:F.editorial,fontSize:26,fontWeight:700,color:T.cream,margin:"0 0 4px",textAlign:"center"}}>Vos recommandations</h1>
+          <p style={{fontFamily:F.editorial,fontSize:14,color:T.gold,margin:"0 0 4px",fontStyle:"italic"}}>Padel Center & Santé</p>
+          <p style={{fontSize:12,color:T.gray1,margin:"0 0 24px",fontFamily:F.body}}>Profil : <strong style={{color:T.cream}}>{shName}</strong></p>
+
+          {/* Racket cards */}
+          <div style={{width:"100%",maxWidth:440,display:"flex",flexDirection:"column",gap:14}}>
+            {shRackets.map((r, i) => {
+              const sc = r.scores || {};
+              const ATTRS = ['Puissance','Contrôle','Confort','Spin','Maniabilité','Tolérance'];
+              return (
+              <div key={r.id} style={{background:T.card,border:`1px solid ${i===0?'rgba(249,115,22,0.4)':T.border}`,borderRadius:18,padding:"18px 16px",display:"flex",gap:14,alignItems:"flex-start",animation:`fadeInUp 0.4s ease ${i*0.15}s both`}} onClick={()=>openRacketSheet(r,'sharedResults')}>
+                {/* Medal + image */}
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,flexShrink:0}}>
+                  <span style={{fontSize:28}}>{medals[i]||"⭐"}</span>
+                  {r.imageUrl ? <img src={r.imageUrl} alt={r.name} style={{width:70,height:70,objectFit:"contain",borderRadius:8}} onError={e=>{e.target.style.display="none";}}/> : <div style={{width:70,height:70,borderRadius:8,background:T.surface,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:800,color:T.accent}}>{(r.brand||"?")[0]}</div>}
+                </div>
+                {/* Info */}
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:700,color:T.cream,fontFamily:F.body,lineHeight:1.3}}>{r.name}</div>
+                  <div style={{fontSize:10,color:T.gray2,marginTop:2}}>{r.brand} · {r.shape}{r.price ? ` · ${r.price}€` : ''}</div>
+                  {/* Score bars */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:4,marginTop:8}}>
+                    {ATTRS.map(a => {
+                      const v = sc[a]||0;
+                      return <div key={a} style={{display:"flex",alignItems:"center",gap:4}}>
+                        <span style={{fontSize:7,color:T.gray2,width:22,textAlign:"right"}}>{a.slice(0,3).toUpperCase()}</span>
+                        <div style={{flex:1,height:4,background:"rgba(255,255,255,0.06)",borderRadius:2,overflow:"hidden"}}>
+                          <div style={{height:"100%",width:`${v*10}%`,background:v>=8?T.green:v>=6?T.accent:"#ef4444",borderRadius:2}}/>
+                        </div>
+                        <span style={{fontSize:8,color:T.gray1,fontWeight:600,width:14}}>{v}</span>
+                      </div>;
+                    })}
+                  </div>
+                  <div style={{fontSize:10,color:T.accent,fontWeight:600,marginTop:8,cursor:"pointer"}}>Voir la fiche complète →</div>
+                </div>
+              </div>
+            );})}
+          </div>
+
+          {/* CTAs */}
+          <div style={{marginTop:28,display:"flex",gap:12,flexWrap:"wrap",justifyContent:"center"}}>
+            <button onClick={()=>{setSharedResults(null);setScreen("splash");}} className="pa-cta" style={{padding:"14px 28px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:14,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:F.body,boxShadow:`0 6px 24px ${T.accentGlow}`}}>
+              🏓 Faire mon propre test
+            </button>
+            <button onClick={()=>{setCatalogSearch("");resetCatFilters();setSharedResults(null);setScreen("catalog");}} className="pa-ghost" style={{padding:"14px 28px",background:"rgba(255,255,255,0.04)",border:`1px solid ${T.border}`,borderRadius:14,color:T.gray1,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:F.body}}>
+              📚 Explorer le catalogue
+            </button>
+          </div>
+
+          {/* Footer */}
+          <p style={{fontSize:8,color:T.gray3,marginTop:32,textAlign:"center",fontFamily:F.body}}>
+            <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · {allDB.length} raquettes · padelanalyzer.fr
+          </p>
+        </div>
+        );
+      })()}
+
+      {/* ============================================================ */}
       {/* KIOSK ATTRACT SCREEN — idle loop animation */}
       {/* ============================================================ */}
       {screen==="home"&&isKiosk&&kioskIdle&&<div onClick={()=>setKioskIdle(false)} style={{position:"fixed",inset:0,background:T.bg,zIndex:1001,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",overflow:"hidden",cursor:"pointer"}}>
@@ -3735,8 +3834,27 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* Background glows */}
         <div style={{position:"absolute",top:"10%",left:"50%",transform:"translateX(-50%)",width:600,height:600,borderRadius:"50%",background:`radial-gradient(circle, ${T.accentGlow} 0%, transparent 60%)`,animation:"kioskGlow 4s ease-in-out infinite",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"15%",right:"10%",width:300,height:300,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.3,animation:"kioskGlow 5s ease-in-out 1s infinite",pointerEvents:"none"}}/>
-        {/* Logo floating */}
-        <div style={{width:130,height:130,borderRadius:34,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 24px 80px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"kioskFloat 6s ease-in-out infinite"}}>
+        {/* Logo floating — triple-tap to exit kiosk */}
+        <div onClick={(e)=>{
+          e.stopPropagation();
+          const now = Date.now();
+          const taps = window._kioskTaps || [];
+          taps.push(now);
+          // Keep only taps within last 1.5 seconds
+          const recent = taps.filter(t => now - t < 1500);
+          window._kioskTaps = recent;
+          if (recent.length >= 5) {
+            window._kioskTaps = [];
+            setKioskIdle(false);
+            setFamilyCode("");
+            setFamilyCodeLS("");
+            setGroupRole("famille");
+            setGroupRoleLS("");
+            setGroupNameState("");
+            setGroupNameLS("");
+            setScreen("login");
+          }
+        }} style={{width:130,height:130,borderRadius:34,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 24px 80px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"kioskFloat 6s ease-in-out infinite",cursor:"pointer"}}>
           <div style={{transform:"rotate(20deg)"}}><PalaIcon size={72}/></div>
         </div>
         {/* Brand */}
@@ -4077,7 +4195,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
         </div>}
 
-        <div style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",position:"relative",zIndex:1,fontFamily:F.body}}>
+        <div onClick={()=>{
+          if (!isKiosk) return;
+          const now = Date.now();
+          const taps = window._kioskHomeTaps || [];
+          taps.push(now);
+          const recent = taps.filter(t => now - t < 1500);
+          window._kioskHomeTaps = recent;
+          if (recent.length >= 5) {
+            window._kioskHomeTaps = [];
+            setFamilyCode("");
+            setFamilyCodeLS("");
+            setGroupRole("famille");
+            setGroupRoleLS("");
+            setGroupNameState("");
+            setGroupNameLS("");
+            setScreen("login");
+          }
+        }} style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",position:"relative",zIndex:1,fontFamily:F.body,cursor:isKiosk?"pointer":"default"}}>
           <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · {totalDBCount} raquettes · Scoring hybride calibré
         </div>
       </div>}
