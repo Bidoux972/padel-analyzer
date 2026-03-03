@@ -97,9 +97,15 @@ function ScoreBar({ label, value }) {
 function RacketImg({ src, alt, style, fallbackSize = 48 }) {
   const [err, setErr] = useState(false);
   if (!src || err) return (
-    <div style={{width:fallbackSize,height:fallbackSize,borderRadius:"50%",background:T.accentSoft,
-      border:`1px dashed ${T.accent}40`,display:"flex",alignItems:"center",justifyContent:"center",
-      fontSize:fallbackSize*0.4,...(style||{})}}>🏸</div>
+    <div style={{width:fallbackSize,height:fallbackSize,borderRadius:16,background:`linear-gradient(135deg, ${T.accentSoft}, rgba(249,115,22,0.08))`,
+      border:`1px dashed ${T.accent}30`,display:"flex",alignItems:"center",justifyContent:"center",
+      ...(style||{})}}>
+      <svg width={fallbackSize*0.55} height={fallbackSize*0.55} viewBox="0 0 50 88" fill="none">
+        <path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke={T.accent} strokeWidth="2" fill="none" opacity="0.4" strokeLinejoin="round"/>
+        <path d="M22 53 L25 58 L28 53Z" stroke={T.accent} strokeWidth="0.8" fill="none" opacity="0.2" strokeLinejoin="round"/>
+        {[[18,11],[25,10],[32,11],[12,18],[25,18],[38,18],[10,25],[25,25],[40,25],[12,32],[25,32],[38,32],[22,39],[28,39],[25,45]].map(([cx,cy],i)=><circle key={i} cx={cx} cy={cy} r="1.3" fill={T.accent} opacity="0.2"/>)}
+      </svg>
+    </div>
   );
   return <img src={src} alt={alt||""} style={style} onError={()=>setErr(true)}/>;
 }
@@ -107,6 +113,33 @@ function RacketImg({ src, alt, style, fallbackSize = 48 }) {
 // ─── FONT LOADER ────────────────────────────────────────────
 function FontLoader() {
   return <link href={FONT_LINK} rel="stylesheet"/>;
+}
+
+// ─── PALA ICON ──────────────────────────────────────────────
+function PalaIcon({size=44, color="#fff"}) {
+  return <svg width={size} height={size} viewBox="0 0 50 88" fill="none">
+    <path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke={color} strokeWidth="2.2" fill="none" strokeLinejoin="round"/>
+    <path d="M22 53 L25 58 L28 53Z" stroke={color} strokeWidth="1" fill="none" opacity="0.35" strokeLinejoin="round"/>
+    {[[18,11],[25,10],[32,11],[12,18],[19,18],[25,18],[31,18],[38,18],[10,25],[17,25],[25,25],[33,25],[40,25],[12,32],[19,32],[25,32],[31,32],[38,32],[15,39],[22,39],[28,39],[35,39],[19,45],[25,45],[31,45]].map(([cx,cy],i)=><circle key={i} cx={cx} cy={cy} r="1.5" fill={color} opacity="0.25"/>)}
+    {[0,3.5,7,10.5,14,17.5].map((dy,i)=><line key={i} x1="21.8" y1={62+dy} x2="28.2" y2={61+dy} stroke={color} strokeWidth="0.4" opacity="0.13"/>)}
+    <line x1="21" y1="80.5" x2="29" y2="80.5" stroke={color} strokeWidth="2.5" strokeLinecap="round" opacity="0.35"/>
+  </svg>;
+}
+function PalaLogo({size=44, gid="lg"}) {
+  const s = size; const v = 50;
+  return <svg width={s} height={s} viewBox={`0 0 ${v} ${v}`} fill="none">
+    <defs><linearGradient id={gid} x1="0" y1="0" x2={v} y2={v}><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+    <rect width={v} height={v} rx="11" fill={`url(#${gid})`}/>
+    <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)">
+      <path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="3.2" fill="none" strokeLinejoin="round"/>
+      <path d="M22 53 L25 58 L28 53Z" stroke="#fff" strokeWidth="1.4" fill="none" opacity="0.3" strokeLinejoin="round"/>
+      {[[18,11],[25,10],[32,11],[12,18],[19,18],[25,18],[31,18],[38,18],[10,25],[17,25],[25,25],[33,25],[40,25],[12,32],[19,32],[25,32],[31,32],[38,32],[15,39],[22,39],[28,39],[35,39],[19,45],[25,45],[31,45]].map(([cx,cy],i)=><circle key={i} cx={cx} cy={cy} r="2" fill="#fff" opacity="0.2"/>)}
+      <line x1="21" y1="80.5" x2="29" y2="80.5" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" opacity="0.35"/>
+    </g></g>
+    <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
+    <path d="M41.1 6.9 Q43 8.3, 44.9 6.9" stroke="rgba(249,115,22,0.45)" strokeWidth="0.4" fill="none"/>
+    <path d="M41.1 9.1 Q43 7.7, 44.9 9.1" stroke="rgba(249,115,22,0.45)" strokeWidth="0.4" fill="none"/>
+  </svg>;
 }
 
 // ═════════════════════════════════════════════════════════════
@@ -234,7 +267,7 @@ function MagazineScreen({ ctx }) {
       {/* Top 5 list */}
       {top5.length === 0 ? (
         <div style={{textAlign:"center",padding:"40px 0",color:T.gray2}}>
-          <div style={{fontSize:32,marginBottom:8}}>🏸</div>
+          <div style={{fontSize:32,marginBottom:8}}>🏓</div>
           <p style={{fontSize:13}}>Aucune raquette dans cette catégorie</p>
         </div>
       ) : (
@@ -683,7 +716,8 @@ function RacketSheetScreen({ ctx }) {
 
       {/* Target Profile */}
       {(()=>{
-        const dynText = profileName && generateDynamicTargetProfile ? generateDynamicTargetProfile(r, {...(profile||{}), _name: profileName}) : null;
+        const fromProfile = racketSheetFrom==="dashboard"||racketSheetFrom==="app"||racketSheetFrom==="admin";
+        const dynText = fromProfile && profileName && generateDynamicTargetProfile ? generateDynamicTargetProfile(r, {...(profile||{}), _name: profileName}) : null;
         const text = dynText || r.targetProfile;
         if (!text) return null;
         const isDynamic = !!dynText;
@@ -820,8 +854,8 @@ async function groupLogin(name, password) {
   return sbRpc('group_login', { p_name: name, p_password: password });
 }
 
-async function groupCreate(name, password, role) {
-  return sbRpc('group_create', { p_name: name, p_password: password, p_role: role || 'famille' });
+async function groupCreate(name, password, role, email) {
+  return sbRpc('group_create', { p_name: name, p_password: password, p_role: role || 'famille', p_email: email || '' });
 }
 
 async function registerFamily(code, adminPin) {
@@ -920,6 +954,14 @@ async function adminDeleteRacket(familyCode, racketId) {
 
 async function adminGetStats(familyCode) {
   return sbRpc('admin_get_stats', { p_family_code: familyCode });
+}
+
+async function adminChangeRole(familyCode, targetCode, newRole) {
+  return sbRpc('admin_change_role', { p_family_code: familyCode, p_target_code: targetCode, p_new_role: newRole });
+}
+
+async function updateGroupEmail(familyCode, email) {
+  return sbRpc('update_group_email', { p_family_code: familyCode, p_email: email });
 }
 
 // Load ALL rackets from Supabase rackets table (admin imports go here)
@@ -1731,6 +1773,19 @@ function generateDynamicTargetProfile(racket, profile, globalScore) {
   const verdict = computeForYou(sc, profile, racket);
   const name = profile._name || "Joueur";
   const isFemme = (profile.genre || "").toLowerCase() === "femme";
+  const isMale = !isFemme;
+
+  // Hard filter: score = 0 → explain why and stop
+  if (gs === 0 || gs < 0.01) {
+    const isJuniorRacket = racket?.junior || racket?.category === "junior";
+    const mode = detectPlayerMode(profile);
+    if (isMale && racket?.womanLine) return `**${name}**, cette raquette est une version WomanLine — elle n'est pas dans tes gammes.`;
+    if ((mode === "normal" || mode === "expert") && isJuniorRacket) return `**${name}**, c'est une raquette junior — elle n'est pas compatible avec ton profil adulte.`;
+    if (mode === "junior" && !isJuniorRacket) return `**${name}**, cette raquette adulte n'est pas adaptée à ton gabarit junior.`;
+    if (mode === "expert" && (racket?.category === "debutant" || racket?.category === "intermediaire")) return `**${name}**, cette gamme ${racket.category} n'est pas compatible avec ton niveau Expert.`;
+    return `**${name}**, cette raquette n'est pas compatible avec ton profil.`;
+  }
+
   const prioTags = profile.priorityTags || [];
   const styleTags = profile.styleTags || [];
   const injTags = (profile.injuryTags || []).filter(t => t !== "aucune");
@@ -2120,6 +2175,7 @@ export default function PadelAnalyzer() {
   const [profileSearchTerm, setProfileSearchTerm] = useState("");
   const [activeProfileIdx, setActiveProfileIdx] = useState(0);
   const carouselRef = useRef(null);
+  const carouselPlayed = useRef(false);
   const [hoveredRacket, setHoveredRacket] = useState(null);
   const [localDBCount, setLocalDBCount] = useState(()=>{
     try { return JSON.parse(localStorage.getItem('padel_db_extra')||'[]').length; } catch{ return 0; }
@@ -2139,16 +2195,16 @@ export default function PadelAnalyzer() {
       localStorage.removeItem('padel_group_name');
       localStorage.removeItem('padel_family_code');
       localStorage.removeItem('padel_last_active');
-      return "login";
+      return "splash";
     }
     localStorage.setItem('padel_last_active', String(Date.now()));
-    if (!getFamilyCode()) return "login";
+    if (!getFamilyCode()) return "splash";
     const p = loadSavedProfile();
     return (p._name) ? "home" : "home";
   });
 
   // ============ BROWSER BACK BUTTON SUPPORT ============
-  const SCREEN_BACK = { home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home" };
+  const SCREEN_BACK = { splash:null, home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home", welcome:null };
   const cameFromAdminRef = useRef(false);
 
   // Open a full racket sheet from any screen
@@ -2169,7 +2225,7 @@ export default function PadelAnalyzer() {
       isPopStateRef.current = false;
       return;
     }
-    if (screen !== "analyzing" && screen !== "welcome") {
+    if (screen !== "analyzing" && screen !== "welcome" && screen !== "splash") {
       window.history.pushState({ screen }, "", "");
     }
   }, [screen]);
@@ -2225,8 +2281,10 @@ export default function PadelAnalyzer() {
   const [cloudStatus, setCloudStatus] = useState(""); // "", "loading", "synced", "error"
   const [cloudLoginName, setCloudLoginName] = useState("");
   const [cloudLoginPassword, setCloudLoginPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [cloudLoginMode, setCloudLoginMode] = useState("join"); // "join" | "create"
-  const [cloudLoginRole, setCloudLoginRole] = useState("famille"); // "vendeur" | "famille"
+  const [cloudLoginEmail, setCloudLoginEmail] = useState("");
+  const [groupEmail, setGroupEmail] = useState(""); // email du compte connecté
   const [cloudError, setCloudError] = useState("");
   const [swUpdateReady, setSwUpdateReady] = useState(!!window.__SW_UPDATE_READY);
 
@@ -2296,6 +2354,8 @@ export default function PadelAnalyzer() {
         setCloudLoginName("");
         setCloudLoginPassword("");
         setCloudError("");
+        setCloudLoginEmail("");
+        setGroupEmail("");
         setSavedProfiles([]); // clear React state only
         setProfile({...INITIAL_PROFILE});
         setProfileName("");
@@ -2374,7 +2434,7 @@ export default function PadelAnalyzer() {
     setCloudStatus("");
     setCloudLoginName("");
     setCloudLoginPassword("");
-    setCloudLoginRole("famille");
+    setCloudLoginEmail("");
     setCloudError("");
     setSavedProfiles([]);
     saveProfilesList([]);
@@ -2386,7 +2446,7 @@ export default function PadelAnalyzer() {
   const handleCloudJoin = async () => {
     const name = cloudLoginName.trim();
     const pwd = cloudLoginPassword.trim();
-    if (!name) { setCloudError("Entre un nom de groupe"); return; }
+    if (!name) { setCloudError("Entre un pseudo"); return; }
     if (pwd.length < 4) { setCloudError("Mot de passe trop court (4 car. min)"); return; }
     setCloudError("");
     try {
@@ -2394,7 +2454,7 @@ export default function PadelAnalyzer() {
       if (cloudLoginMode === "join") {
         result = await groupLogin(name, pwd);
       } else {
-        result = await groupCreate(name, pwd, cloudLoginRole);
+        result = await groupCreate(name, pwd, 'famille', cloudLoginEmail.trim());
       }
       if (result.error) { setCloudError(result.error); return; }
       setFamilyCodeLS(result.family_code);
@@ -2403,6 +2463,7 @@ export default function PadelAnalyzer() {
       setGroupRole(result.role);
       setGroupNameLS(result.name);
       setGroupNameState(result.name);
+      setGroupEmail(result.email || "");
       setScreen("welcome");
     } catch(e) { setCloudError(e.message); }
   };
@@ -2410,6 +2471,54 @@ export default function PadelAnalyzer() {
   // Auto-save rackets and profile to localStorage
   useEffect(()=>{ saveRackets(rackets); }, [rackets]);
   useEffect(()=>{ try { localStorage.setItem('padel_profile', JSON.stringify({...profile, _name: profileName})); } catch{} }, [profile, profileName]);
+
+  // ─── MANEGE — simple sweep ───
+  const manegeTimer = useRef(null);
+  useEffect(()=>{
+    if(screen!=="home" || savedProfiles.length<=1 || carouselPlayed.current) return;
+    if(manegeTimer.current) clearTimeout(manegeTimer.current);
+    manegeTimer.current = setTimeout(()=>{
+      if(carouselPlayed.current) return;
+      const el = carouselRef.current;
+      if(!el) return;
+      const cards = Array.from(el.children).filter(c => c.tagName === 'BUTTON');
+      if(cards.length <= 1) return;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if(maxScroll <= 0) return;
+      carouselPlayed.current = true;
+      el.style.scrollSnapType = 'none';
+      el.style.scrollBehavior = 'auto';
+      const duration = 3000;
+      let startTime = null;
+      let cancelled = false;
+      const animate = (ts) => {
+        if(cancelled) return;
+        if(!startTime) startTime = ts;
+        const t = Math.min((ts - startTime) / duration, 1);
+        const sweeps = 2.5;
+        const wave = Math.abs(((t * sweeps * 2) % 2) - 1);
+        const fadeOut = t > 0.8 ? 1 - ((t - 0.8) / 0.2) : 1;
+        el.scrollLeft = wave * maxScroll * fadeOut;
+        if(t >= 1) {
+          el.scrollLeft = 0;
+          el.style.scrollSnapType = 'x mandatory';
+          setActiveProfileIdx(0);
+          return;
+        }
+        requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+      const cancel = () => {
+        cancelled = true;
+        el.style.scrollSnapType = 'x mandatory';
+        el.removeEventListener('touchstart', cancel);
+        el.removeEventListener('mousedown', cancel);
+      };
+      el.addEventListener('touchstart', cancel, {once:true});
+      el.addEventListener('mousedown', cancel, {once:true});
+    }, 1500);
+    return () => { if(manegeTimer.current) clearTimeout(manegeTimer.current); };
+  }, [screen, savedProfiles.length]);
 
   const toggleRacket = (id) => {
     setSelected(p => p.includes(id) ? (p.length>1?p.filter(r=>r!==id):p) : p.length<4?[...p,id]:p);
@@ -3125,6 +3234,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         @keyframes subtlePulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
         @keyframes glowPulse { 0%,100% { box-shadow: 0 0 12px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 24px rgba(249,115,22,0.3); } }
+        @keyframes ctaBreath { 0%,100% { box-shadow: 0 6px 24px rgba(232,98,42,0.25), 0 0 0 0 rgba(232,98,42,0); } 50% { box-shadow: 0 8px 32px rgba(232,98,42,0.4), 0 0 0 8px rgba(232,98,42,0.08); } }
 
         /* Screen entrance variants */
         .pa-screen-fade { animation: fadeInScale 0.4s cubic-bezier(.22,1,.36,1); }
@@ -3144,6 +3254,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         .pa-cta { transition: all 0.2s cubic-bezier(.4,0,.2,1); }
         .pa-cta:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(249,115,22,0.25); }
         .pa-cta:active { transform: translateY(1px) scale(0.98); filter: brightness(0.95); }
+        @keyframes pulseGlow { 0%,100%{box-shadow:0 6px 24px rgba(249,115,22,0.25)} 50%{box-shadow:0 6px 36px rgba(249,115,22,0.55), 0 0 60px rgba(249,115,22,0.15)} }
+        @keyframes shimmerGrad { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
         /* Ghost buttons */
         .pa-ghost { transition: all 0.2s ease; }
@@ -3195,6 +3307,84 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       </div>}
 
       {/* ============================================================ */}
+      {/* ============================================================ */}
+      {/* SPLASH SCREEN — Landing / Presentation */}
+      {/* ============================================================ */}
+      {screen==="splash"&&<div style={{position:"fixed",inset:0,background:T.bg,zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 20px",overflow:"hidden"}}>
+        <FontLoader/>
+        <style>{`
+          @keyframes splashLogoIn { 0% { opacity:0; transform:scale(0.3) rotate(-12deg); } 50% { transform:scale(1.1) rotate(3deg); } 100% { opacity:1; transform:scale(1) rotate(0); } }
+          @keyframes splashTextIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+          @keyframes splashGlow { 0%,100% { opacity:0.15; transform:scale(1); } 50% { opacity:0.4; transform:scale(1.1); } }
+          @keyframes splashLine { from { width:0; } to { width:80px; } }
+          @keyframes splashFeatureIn { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:translateX(0); } }
+          @keyframes splashCTAIn { 0% { opacity:0; transform:scale(0.9) translateY(10px); } 100% { opacity:1; transform:scale(1) translateY(0); } }
+          @keyframes splashFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+        `}</style>
+
+        {/* Background effects */}
+        <div style={{position:"absolute",top:"15%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:500,borderRadius:"50%",background:`radial-gradient(circle, ${T.accentGlow} 0%, transparent 60%)`,animation:"splashGlow 4s ease-in-out infinite",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",bottom:"15%",left:"20%",width:300,height:300,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.2,pointerEvents:"none"}}/>
+
+        {/* Logo — large, animated entrance */}
+        <div style={{animation:"splashLogoIn 0.8s cubic-bezier(.34,1.56,.64,1)",position:"relative",zIndex:1}}>
+          <div style={{width:110,height:110,borderRadius:30,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 20px 60px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"splashFloat 4s ease-in-out 2s infinite"}}>
+            <PalaIcon size={64}/>
+          </div>
+        </div>
+
+        {/* Brand */}
+        <h1 style={{fontFamily:F.editorial,fontSize:36,fontWeight:700,color:T.cream,margin:"24px 0 0",letterSpacing:"0.02em",textAlign:"center",animation:"splashTextIn 0.6s ease 0.3s both",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
+        <p style={{fontFamily:F.editorial,fontSize:15,color:T.gold,margin:"4px 0 0",fontStyle:"italic",animation:"splashTextIn 0.5s ease 0.5s both",position:"relative",zIndex:1}}>Padel Center & Santé</p>
+
+        {/* Decorative line */}
+        <div style={{height:1,background:`linear-gradient(90deg, transparent, ${T.gold}, transparent)`,margin:"20px 0",animation:"splashLine 0.8s ease 0.8s both",position:"relative",zIndex:1}}/>
+
+        {/* Tagline */}
+        <p style={{fontFamily:F.body,fontSize:18,color:T.cream,fontWeight:600,textAlign:"center",margin:"0 0 8px",animation:"splashTextIn 0.5s ease 1s both",position:"relative",zIndex:1}}>
+          Trouve ta pala idéale.
+        </p>
+        <p style={{fontFamily:F.body,fontSize:13,color:T.gray1,textAlign:"center",margin:"0 0 28px",maxWidth:320,lineHeight:1.6,animation:"splashTextIn 0.5s ease 1.2s both",position:"relative",zIndex:1}}>
+          L'algorithme qui analyse ton profil et te recommande les meilleures raquettes parmi {totalDBCount}.
+        </p>
+
+        {/* Features — 3 cards en cascade */}
+        <div style={{display:"flex",flexDirection:"column",gap:10,width:"100%",maxWidth:340,position:"relative",zIndex:1}}>
+          {[
+            {icon:"🎯",title:"Scoring sur 6 critères",desc:"Puissance, Contrôle, Confort, Spin, Maniabilité, Tolérance"},
+            {icon:"🧬",title:"Matching personnalisé",desc:"Ton gabarit, ton style, tes priorités, tes blessures"},
+            {icon:"📊",title:`${totalDBCount} raquettes en base`,desc:"Fiches complètes, verdicts, analyses éditoriales"},
+          ].map((f,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:14,padding:"12px 16px",borderRadius:14,
+              background:`rgba(255,255,255,0.03)`,border:`1px solid ${T.border}`,
+              animation:`splashFeatureIn 0.5s ease ${1.4+i*0.2}s both`}}>
+              <div style={{fontSize:22,flexShrink:0}}>{f.icon}</div>
+              <div>
+                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>{f.title}</div>
+                <div style={{fontSize:10,color:T.gray2,fontFamily:F.body,marginTop:1}}>{f.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <button onClick={()=>setScreen("login")} className="pa-cta" style={{
+          marginTop:32,padding:"16px 48px",borderRadius:16,border:"none",fontSize:16,fontWeight:800,cursor:"pointer",
+          fontFamily:F.legacy,letterSpacing:"-0.01em",
+          background:`linear-gradient(135deg,${T.accent},#d4541e)`,color:"#fff",
+          boxShadow:`0 8px 32px ${T.accentGlow}`,
+          animation:"splashCTAIn 0.6s ease 2.2s both",position:"relative",zIndex:1,
+        }}>
+          Commencer →
+        </button>
+
+        {/* Footer */}
+        <p style={{fontSize:9,color:T.gray3,marginTop:24,textAlign:"center",animation:"splashTextIn 0.4s ease 2.5s both",position:"relative",zIndex:1}}>
+          <span style={{fontFamily:F.legacy,fontWeight:600}}>PADEL ANALYZER</span> · {totalDBCount} raquettes · Martinique
+        </p>
+      </div>}
+
+      {/* ============================================================ */}
       {/* LOGIN / CLOUD SCREEN */}
       {/* ============================================================ */}
       {screen==="login"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",animation:"fadeIn 0.6s ease",padding:"0 20px",background:`radial-gradient(ellipse at 50% 20%, ${T.surface} 0%, ${T.bg} 55%, #080c14 100%)`,position:"relative",overflow:"hidden"}}>
@@ -3204,7 +3394,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={{position:"absolute",top:"10%",right:"-5%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.4,pointerEvents:"none"}}/>
         {/* Logo */}
         <div style={{width:88,height:88,borderRadius:22,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:20,boxShadow:`0 12px 40px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,position:"relative",zIndex:1}}>
-          <svg width="48" height="48" viewBox="0 0 44 44" fill="none"><ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.5" fill="none"/><line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/><circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/></svg>
+          <PalaIcon size={48}/>
         </div>
         <h1 style={{fontFamily:F.editorial,fontSize:34,fontWeight:700,color:T.cream,margin:"0 0 4px",letterSpacing:"0.02em",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
         <p style={{fontFamily:F.editorial,fontSize:15,color:T.gold,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"0.03em",position:"relative",zIndex:1}}>Padel Center & Santé</p>
@@ -3223,16 +3413,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           
           <p style={{fontSize:11,color:T.gray1,margin:"0 0 16px",lineHeight:1.5,fontFamily:F.body}}>
             {cloudLoginMode==="join"
-              ?"Connecte-toi avec ton nom de groupe et ton mot de passe."
-              :"Crée ton espace pour sauvegarder et synchroniser tes profils."}
+              ?"Connecte-toi avec ton pseudo et ton mot de passe."
+              :"Crée ton compte pour sauvegarder et retrouver tes profils."}
           </p>
           
           {/* Nom du groupe */}
           <div style={{marginBottom:12}}>
-            <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Nom du groupe</label>
+            <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Pseudo</label>
             <input type="text" value={cloudLoginName} onChange={e=>setCloudLoginName(e.target.value)} autoComplete="one-time-code" name="padel_grp_x"
               readOnly onFocus={e=>e.target.removeAttribute('readOnly')}
-              placeholder={cloudLoginMode==="join"?"Ex: Famille Dupont":"Choisis un nom de groupe"}
+              placeholder={cloudLoginMode==="join"?"Ton pseudo":"Choisis un pseudo"}
               style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
               onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
           </div>
@@ -3240,38 +3430,33 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Mot de passe */}
           <div style={{marginBottom:cloudLoginMode==="create"?12:0}}>
             <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Mot de passe</label>
-            <input type="password" value={cloudLoginPassword} onChange={e=>setCloudLoginPassword(e.target.value)} autoComplete="new-password" name="padel_pwd_x"
-              readOnly onFocus={e=>e.target.removeAttribute('readOnly')}
-              placeholder="••••••"
-              style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
-              onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
+            <div style={{position:"relative"}}>
+              <input type={showPassword?"text":"password"} value={cloudLoginPassword} onChange={e=>setCloudLoginPassword(e.target.value)} autoComplete="new-password" name="padel_pwd_x"
+                readOnly onFocus={e=>e.target.removeAttribute('readOnly')}
+                placeholder="••••••"
+                style={{width:"100%",padding:"12px 14px",paddingRight:44,background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
+                onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
+              <button type="button" onClick={()=>setShowPassword(p=>!p)} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:"4px 6px",color:showPassword?"#f97316":"#475569",fontSize:16,display:"flex",alignItems:"center",justifyContent:"center",transition:"color 0.2s"}} title={showPassword?"Masquer":"Afficher"}>
+                {showPassword
+                  ?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  :<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>}
+              </button>
+            </div>
           </div>
           
-          {/* Rôle (création uniquement) */}
+          {/* Email (création uniquement) */}
           {cloudLoginMode==="create"&&<div style={{marginBottom:0}}>
-            <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6,display:"block"}}>Type de compte</label>
-            <div style={{display:"flex",gap:8}}>
-              {[
-                {value:"famille",label:"👨‍👩‍👧 Famille",desc:"Usage personnel"},
-                {value:"vendeur",label:"🏪 Vendeur",desc:"Portefeuille clients"},
-              ].map(opt=>(
-                <button key={opt.value} onClick={()=>setCloudLoginRole(opt.value)} style={{
-                  flex:1,padding:"10px 8px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",textAlign:"center",transition:"all 0.15s",
-                  background:cloudLoginRole===opt.value?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
-                  border:`1px solid ${cloudLoginRole===opt.value?"#f97316":"rgba(255,255,255,0.08)"}`,
-                  color:cloudLoginRole===opt.value?"#f97316":"#64748b",
-                }}>
-                  <div style={{fontSize:13,fontWeight:700}}>{opt.label}</div>
-                  <div style={{fontSize:9,marginTop:2,opacity:0.7}}>{opt.desc}</div>
-                </button>
-              ))}
-            </div>
+            <label style={{fontSize:9,color:"#64748b",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:4,display:"block"}}>Email <span style={{fontWeight:400,textTransform:"none",letterSpacing:0}}>(pour recevoir vos résultats)</span></label>
+            <input type="email" value={cloudLoginEmail} onChange={e=>setCloudLoginEmail(e.target.value)}
+              placeholder="exemple@email.com"
+              style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#f1f5f9",fontSize:14,fontFamily:"'Inter'",fontWeight:600,outline:"none",boxSizing:"border-box"}}
+              onKeyDown={e=>e.key==="Enter"&&handleCloudJoin()}/>
           </div>}
           
           {cloudError&&<p style={{color:"#ef4444",fontSize:11,marginTop:10,textAlign:"center"}}>{cloudError}</p>}
           
           <button onClick={handleCloudJoin} className="pa-cta" style={{marginTop:18,width:"100%",padding:"15px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:14,color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:F.legacy,letterSpacing:"-0.01em",boxShadow:`0 6px 24px ${T.accentGlow}`}}>
-            {cloudLoginMode==="join"?"Se connecter":"Créer mon espace"}
+            {cloudLoginMode==="join"?"Se connecter":"Créer mon compte"}
           </button>
           
           <button onClick={()=>{setFamilyCodeLS("LOCAL");setFamilyCode("LOCAL");setGroupRoleLS("famille");setGroupRole("famille");setScreen("welcome");}} className="pa-ghost" style={{marginTop:12,width:"100%",padding:"10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:10,color:T.gray2,fontSize:11,cursor:"pointer",fontFamily:F.body}}>
@@ -3291,7 +3476,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const isLocal = familyCode==="LOCAL";
         const name = groupName || "Joueur";
         const roleGreeting = groupRole==="admin"
-          ? {emoji:"👑",line1:"Salut Boss.",line2:`L'espace admin de ${name} est prêt.`}
+          ? {emoji:"👑",line1:"Mode Administrateur.",line2:`${savedProfiles.length} profil${savedProfiles.length>1?"s":""} · ${totalDBCount} raquettes en base.`}
           : groupRole==="vendeur"
           ? {emoji:"🏪",line1:`Bienvenue ${name}.`,line2:"L'outil de recommandation est chargé."}
           : isLocal
@@ -3315,7 +3500,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Logo */}
           <div style={{width:100,height:100,borderRadius:26,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 16px 60px ${T.accentGlow}, 0 0 0 1px ${T.accent}30`,animation:"welcomeLogoIn 0.7s cubic-bezier(.34,1.56,.64,1)",position:"relative",zIndex:1}}>
-            <svg width="56" height="56" viewBox="0 0 44 44" fill="none"><ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.5" fill="none"/><line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/><circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/></svg>
+            <PalaIcon size={56}/>
           </div>
 
           {/* Greeting */}
@@ -3359,15 +3544,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={{position:"absolute",top:"-10%",left:"50%",transform:"translateX(-50%)",width:"120%",height:"40%",background:`radial-gradient(ellipse, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.25,pointerEvents:"none"}}/>
         {/* Big logo */}
         <div style={{marginBottom:16,position:"relative",zIndex:1}}>
-          <svg width="72" height="72" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{filter:`drop-shadow(0 8px 28px ${T.accentGlow})`}}>
-            <defs><linearGradient id="logoGradHome" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-            <rect width="44" height="44" rx="10" fill="url(#logoGradHome)"/>
-            <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-            <line x1="22" y1="10" x2="22" y2="26" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
-            <line x1="14" y1="18" x2="30" y2="18" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
-            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
-          </svg>
+          <div style={{filter:`drop-shadow(0 8px 28px ${T.accentGlow})`}}><PalaLogo size={72} gid="lgHome"/></div>
         </div>
         <h1 style={{fontFamily:F.editorial,fontSize:30,fontWeight:700,color:T.cream,margin:"0 0 4px",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
         {groupName&&familyCode!=="LOCAL"?<>
@@ -3413,6 +3590,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           };
           return (
           <div style={{width:"100%",maxWidth:560,marginBottom:24}}>
+            {/* Email banner for accounts without email */}
+            {familyCode && familyCode!=="LOCAL" && !groupEmail && <div style={{margin:"0 0 16px",padding:"10px 14px",background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:12,display:"flex",alignItems:"center",gap:10,animation:"fadeIn 0.4s ease"}}>
+              <span style={{fontSize:16,flexShrink:0}}>📧</span>
+              <div style={{flex:1}}>
+                <input type="email" value={cloudLoginEmail} onChange={e=>setCloudLoginEmail(e.target.value)} placeholder="Votre email pour recevoir vos résultats"
+                  style={{width:"100%",padding:"6px 10px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#f1f5f9",fontSize:12,fontFamily:"'Inter'",outline:"none",boxSizing:"border-box"}}
+                  onKeyDown={e=>{if(e.key==="Enter"&&cloudLoginEmail.trim()){updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}}}/>
+              </div>
+              <button onClick={()=>{if(!cloudLoginEmail.trim())return;updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}} style={{padding:"6px 12px",background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",borderRadius:8,color:"#f97316",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>OK</button>
+            </div>}
+
             <p style={{fontSize:10,color:T.gray1,fontWeight:600,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:12,textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>Mes profils <span style={{color:T.gray2,fontWeight:400}}>({savedProfiles.length})</span></p>
 
             {/* Search bar — shows when 4+ profiles */}
@@ -3555,10 +3743,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         {/* New profile button */}
         <button onClick={createNewProfile} className="pa-cta" style={{
-          padding:"15px 28px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,
+          padding:"15px 28px",
+          background: savedProfiles.length===0 ? "linear-gradient(135deg,#f97316,#d4541e,#f59e0b,#f97316)" : `linear-gradient(135deg,${T.accent},#d4541e)`,
+          backgroundSize: savedProfiles.length===0 ? "300% 300%" : "100% 100%",
           border:"none",borderRadius:14,color:"#fff",fontSize:14,fontWeight:700,
           cursor:"pointer",fontFamily:F.body,letterSpacing:"-0.01em",
-          width:"100%",maxWidth:400,boxShadow:`0 6px 24px ${T.accentGlow}`,position:"relative",zIndex:1,
+          width:"100%",maxWidth:400,position:"relative",zIndex:1,
+          ...(savedProfiles.length===0 ? {animation:"pulseGlow 2.5s ease-in-out infinite, shimmerGrad 4s ease-in-out infinite",boxShadow:`0 6px 36px ${T.accentGlow}`} : {boxShadow:`0 6px 24px ${T.accentGlow}`}),
         }}>
           + Nouveau profil
         </button>
@@ -3747,7 +3938,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Tabs */}
           <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
-            <button onClick={()=>setAdminTab("families")} style={tabStyle(adminTab==="families")}>👥 Familles & Profils</button>
+            <button onClick={()=>setAdminTab("families")} style={tabStyle(adminTab==="families")}>👥 Comptes & Profils</button>
             <button onClick={()=>setAdminTab("rackets")} style={tabStyle(adminTab==="rackets")}>🏓 Raquettes</button>
             <button onClick={()=>{setAdminTab("stats");setAdminStats(null);}} style={tabStyle(adminTab==="stats")}>📊 Statistiques</button>
           </div>
@@ -3763,20 +3954,20 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ====== TAB: FAMILIES ====== */}
           {adminTab==="families"&&!adminLoading&&<div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-              <span style={{fontSize:12,color:"#94a3b8",fontWeight:600}}>{adminFamilies.length} famille(s)</span>
+              <span style={{fontSize:12,color:"#94a3b8",fontWeight:600}}>{adminFamilies.length} compte(s)</span>
               <button onClick={()=>{setAdminFamilies([]);}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"4px 10px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit"}}>🔄 Rafraîchir</button>
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {adminFamilies.map(fam=>(
                 <div key={fam.code} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,overflow:"hidden"}}>
                   <button onClick={()=>expandFamily(fam.code)} style={{width:"100%",padding:"14px 18px",background:"none",border:"none",cursor:"pointer",textAlign:"left",display:"flex",alignItems:"center",gap:14,fontFamily:"inherit"}}>
-                    <div style={{width:40,height:40,borderRadius:12,background:fam.is_admin?"linear-gradient(135deg,rgba(168,85,247,0.3),rgba(99,102,241,0.2))":"rgba(255,255,255,0.05)",border:fam.is_admin?"1px solid rgba(168,85,247,0.4)":"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>
-                      {fam.is_admin?"👑":"👤"}
+                    <div style={{width:40,height:40,borderRadius:12,background:(fam.role||"famille")==="admin"?"linear-gradient(135deg,rgba(168,85,247,0.3),rgba(99,102,241,0.2))":(fam.role||"famille")==="vendeur"?"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(234,88,12,0.2))":"rgba(255,255,255,0.05)",border:(fam.role||"famille")==="admin"?"1px solid rgba(168,85,247,0.4)":(fam.role||"famille")==="vendeur"?"1px solid rgba(249,115,22,0.4)":"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>
+                      {(fam.role||"famille")==="admin"?"👑":(fam.role||"famille")==="vendeur"?"🏪":"👤"}
                     </div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{display:"flex",alignItems:"center",gap:8}}>
                         <span style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit'",letterSpacing:"0.08em"}}>{fam.code}</span>
-                        {fam.is_admin&&<span style={{fontSize:8,fontWeight:700,color:"#c084fc",background:"rgba(168,85,247,0.15)",padding:"2px 8px",borderRadius:6,textTransform:"uppercase"}}>Admin</span>}
+                        {(fam.role&&fam.role!=="famille")&&<span style={{fontSize:8,fontWeight:700,color:fam.role==="admin"?"#c084fc":"#f97316",background:fam.role==="admin"?"rgba(168,85,247,0.15)":"rgba(249,115,22,0.15)",padding:"2px 8px",borderRadius:6,textTransform:"uppercase"}}>{fam.role==="admin"?"Admin":"Vendeur"}</span>}
                       </div>
                       <div style={{fontSize:10,color:"#64748b",marginTop:2}}>
                         {fam.profile_count||0} profil(s)
@@ -3791,6 +3982,29 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
                   {/* Expanded: profiles detail */}
                   {adminExpandedFamily===fam.code&&<div style={{padding:"0 18px 14px",borderTop:"1px solid rgba(255,255,255,0.05)"}}>
+                    {/* Role management */}
+                    <div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 0",marginBottom:8,borderBottom:"1px solid rgba(255,255,255,0.03)"}}>
+                      <span style={{fontSize:10,color:"#64748b",fontWeight:600}}>Rôle :</span>
+                      {["famille","vendeur","admin"].map(r=>(
+                        <button key={r} onClick={async()=>{
+                          if((fam.role||"famille")===r) return;
+                          if(r==="admin"&&!confirm("Promouvoir en Admin ?")) return;
+                          try {
+                            await adminChangeRole(familyCode, fam.code, r);
+                            setAdminMsg(`✅ ${fam.code} → ${r==="famille"?"Joueur":r==="vendeur"?"Vendeur":"Admin"}`);
+                            setAdminFamilies(prev=>prev.map(f=>f.code===fam.code?{...f,role:r}:f));
+                          } catch(e){ setAdminMsg("Erreur: "+e.message); }
+                        }} style={{
+                          padding:"4px 10px",borderRadius:6,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s",
+                          background:(fam.role||"famille")===r?(r==="admin"?"rgba(168,85,247,0.2)":r==="vendeur"?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.08)"):"transparent",
+                          border:`1px solid ${(fam.role||"famille")===r?(r==="admin"?"rgba(168,85,247,0.5)":r==="vendeur"?"rgba(249,115,22,0.5)":"rgba(255,255,255,0.15)"):"rgba(255,255,255,0.08)"}`,
+                          color:(fam.role||"famille")===r?(r==="admin"?"#c084fc":r==="vendeur"?"#f97316":"#94a3b8"):"#475569",
+                        }}>
+                          {r==="famille"?"👤 Joueur":r==="vendeur"?"🏪 Vendeur":"👑 Admin"}
+                        </button>
+                      ))}
+                      {fam.email&&<span style={{marginLeft:"auto",fontSize:9,color:"#64748b"}}>📧 {fam.email}</span>}
+                    </div>
                     {adminFamilyProfiles.length===0&&<p style={{fontSize:11,color:"#475569",margin:"10px 0"}}>Aucun profil</p>}
                     {adminFamilyProfiles.map(p=>{
                       const d = p.data||{};
@@ -4856,13 +5070,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{position:"absolute",inset:4,borderRadius:"50%",border:"1px dashed rgba(249,115,22,0.15)",animation:"analyzeRing1 8s linear infinite"}}/>
             {/* Logo center */}
             <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <svg width="52" height="52" viewBox="0 0 44 44" fill="none" style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.4))"}}>
-                <defs><linearGradient id="logoAnalyze" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-                <rect width="44" height="44" rx="10" fill="url(#logoAnalyze)"/>
-                <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-                <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-                <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
-              </svg>
+              <div style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.4))"}}><PalaLogo size={52} gid="lgAnalyze"/></div>
             </div>
           </div>
 
@@ -5094,13 +5302,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px"}} className="pa-screen-fade">
           {/* Header — compact inline */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:18}}>
-            <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
-              <defs><linearGradient id="logoGradDash" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-              <rect width="44" height="44" rx="10" fill="url(#logoGradDash)"/>
-              <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-              <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-              <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
-            </svg>
+            <div style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}><PalaLogo size={32} gid="lgDash"/></div>
             <h1 style={{fontFamily:"'Outfit'",fontSize:24,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0}}>PADEL ANALYZER</h1>
           </div>
 
@@ -5252,14 +5454,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {screen==="app"&&<>
       <div style={{textAlign:"center",marginBottom:28,paddingBottom:20,borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:10,marginBottom:6}}>
-          <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
-            <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="44" y2="44"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
-            <rect width="44" height="44" rx="10" fill="url(#logoGrad)"/>
-            <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-            <line x1="22" y1="10" x2="22" y2="26" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
-            <line x1="14" y1="18" x2="30" y2="18" stroke="#fff" strokeWidth="1.2" opacity="0.4"/>
-            <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-            <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.85"/>
+          <svg width="32" height="32" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,filter:"drop-shadow(0 4px 12px rgba(249,115,22,0.3))"}}>
+            <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stopColor="#f97316"/><stop offset="100%" stopColor="#ef4444"/></linearGradient></defs>
+            <rect width="50" height="50" rx="11" fill="url(#logoGrad)"/>
+            <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="3.2" fill="none"/><path d="M22 53 L25 58 L28 53Z" stroke="#fff" strokeWidth="1.4" fill="none" opacity="0.3"/><circle cx="18" cy="11" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="10" r="2" fill="#fff" opacity="0.2"/><circle cx="32" cy="11" r="2" fill="#fff" opacity="0.2"/><circle cx="12" cy="18" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="18" r="2" fill="#fff" opacity="0.2"/><circle cx="38" cy="18" r="2" fill="#fff" opacity="0.2"/><circle cx="10" cy="25" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="25" r="2" fill="#fff" opacity="0.2"/><circle cx="40" cy="25" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="32" r="2" fill="#fff" opacity="0.2"/><circle cx="22" cy="39" r="2" fill="#fff" opacity="0.2"/><circle cx="28" cy="39" r="2" fill="#fff" opacity="0.2"/></g></g>
+            <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
           </svg>
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
@@ -6101,13 +6300,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div className="print-header" style={{display:"none",marginBottom:14}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",borderBottom:"3px solid #f97316",paddingBottom:10}}>
               <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
-                  <rect width="44" height="44" rx="10" fill="#f97316"/>
-                  <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.2" fill="none"/>
-                  <line x1="22" y1="10" x2="22" y2="26" stroke="#fff" strokeWidth="1.2" opacity="0.5"/>
-                  <line x1="14" y1="18" x2="30" y2="18" stroke="#fff" strokeWidth="1.2" opacity="0.5"/>
-                  <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-                  <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
+                <svg width="44" height="44" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
+                  <rect width="50" height="50" rx="11" fill="#f97316"/>
+                  <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="3.2" fill="none"/><circle cx="25" cy="10" r="2" fill="#fff" opacity="0.25"/><circle cx="25" cy="18" r="2" fill="#fff" opacity="0.25"/><circle cx="25" cy="25" r="2" fill="#fff" opacity="0.25"/><circle cx="12" cy="18" r="2" fill="#fff" opacity="0.25"/><circle cx="38" cy="18" r="2" fill="#fff" opacity="0.25"/></g></g>
+                  <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
                 <div>
                   <div style={{fontSize:18,fontWeight:800,color:"#f97316",fontFamily:"'Outfit'",letterSpacing:"-0.01em"}}>PADEL ANALYZER</div>
@@ -6555,11 +6751,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div className="print-footer-wrap print-header" style={{display:"none",marginTop:16,borderTop:"2px solid #e5e7eb",paddingTop:8}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
-                <svg width="18" height="18" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="44" height="44" rx="10" fill="#f97316"/>
-                  <ellipse cx="22" cy="18" rx="10" ry="12" stroke="#fff" strokeWidth="2.5" fill="none"/>
-                  <line x1="22" y1="30" x2="22" y2="38" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
-                  <circle cx="33" cy="32" r="3.5" fill="#fff" opacity="0.9"/>
+                <svg width="18" height="18" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="50" height="50" rx="11" fill="#f97316"/>
+                  <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="4" fill="none"/></g></g>
+                  <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
                 <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V13 · Scoring hybride calibré</span>
               </div>
