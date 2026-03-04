@@ -2487,10 +2487,8 @@ export default function PadelAnalyzer() {
   const [scanResult, setScanResult] = useState(null); // {vision:{...}, matches:[{racket,score},...], bestScore}
   const [scanError, setScanError] = useState("");
   const scanFileRef = useRef(null);
-  const [scanAdded, setScanAdded] = useState(new Set()); // IDs of rackets added from scan
   const [scanPreview, setScanPreview] = useState(null); // {file, url} for image preview
   const [scanPreviewFile, setScanPreviewFile] = useState(null); // raw File object
-  const [scanToast, setScanToast] = useState(null); // {name, pert} — toast after adding racket
 
   // ============ SCAN VISUEL — Functions ============
   const compressImage = useCallback((file) => {
@@ -2606,7 +2604,6 @@ export default function PadelAnalyzer() {
     if (!file) return;
     setScanError("");
     setScanResult(null);
-    setScanAdded(new Set());
 
     // Step 1: Compress
     setScanStatus("compressing");
@@ -2646,22 +2643,6 @@ export default function PadelAnalyzer() {
     setScanResult({ vision, matches, bestScore });
     setScanStatus("done");
   }, [compressImage, fuzzyMatchRacket]);
-
-  const addScanRacket = useCallback((r) => {
-    if (!r || !r.id) return;
-    const gs = profileName ? computeGlobalScore(r.scores, profile, r) : 0;
-    const alreadyIn = rackets.some(x => x.id === r.id);
-    if (!alreadyIn) {
-      const newR = { ...r, color: getNextColor(rackets), _gs: gs };
-      setRackets(p => [...p, newR]);
-      setSelected(p => p.length < 4 ? [...p, newR.id] : p);
-    }
-    setScanAdded(s => new Set(s).add(r.id));
-    // Toast
-    const pct = gs > 0 ? (gs * 10).toFixed(0) + "%" : null;
-    setScanToast({ name: r.shortName || r.name, pert: pct, alreadyIn });
-    setTimeout(() => setScanToast(null), 4000);
-  }, [rackets, profile, profileName]);
 
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
   useEffect(()=>{
@@ -4315,7 +4296,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* ============================================================ */}
         {/* SCAN VISUEL — Quick access button */}
         {/* ============================================================ */}
-        <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanAdded(new Set());setScreen("scan");}} className="pa-card" style={{
+        <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScreen("scan");}} className="pa-card" style={{
           marginTop:20,width:"100%",maxWidth:400,borderRadius:16,cursor:"pointer",position:"relative",overflow:"hidden",
           background:`linear-gradient(135deg, rgba(232,98,42,0.08) 0%, rgba(212,168,86,0.06) 100%)`,
           border:`1px solid ${T.accent}30`,padding:"16px 20px",textAlign:"left",
@@ -5076,7 +5057,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
             <div style={{padding:"12px 16px",display:"flex",gap:10,justifyContent:"center"}}>
               <button onClick={()=>{setScanPreview(null);setScanPreviewFile(null);}} style={{flex:1,padding:"12px",background:"rgba(255,255,255,0.04)",border:`1px solid ${T.border}`,borderRadius:12,color:T.gray1,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F.body}}>✕ Annuler</button>
-              <button onClick={()=>{if(scanPreviewFile){handleScan(scanPreviewFile);setScanPreview(null);setScanPreviewFile(null);}}} className="pa-cta" style={{flex:2,padding:"12px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:F.body,boxShadow:`0 4px 16px ${T.accentGlow}`}}>🔍 Lancer le scan</button>
+              <button onClick={()=>{if(scanPreviewFile){handleScan(scanPreviewFile);}}} className="pa-cta" style={{flex:2,padding:"12px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:F.body,boxShadow:`0 4px 16px ${T.accentGlow}`}}>🔍 Lancer le scan</button>
             </div>
           </div>
           :<button onClick={()=>scanFileRef.current?.click()} className="pa-cta" style={{
@@ -5110,188 +5091,255 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
         </div>}
 
-        {/* Scanning animation */}
-        {(scanStatus==="compressing"||scanStatus==="scanning"||scanStatus==="matching")&&<div style={{width:"100%",maxWidth:400,textAlign:"center",padding:"40px 20px"}}>
-          <div style={{width:80,height:80,margin:"0 auto 20px",borderRadius:"50%",background:`linear-gradient(135deg,${T.accent}20,${T.gold}20)`,border:`2px solid ${T.accent}40`,display:"flex",alignItems:"center",justifyContent:"center",animation:"pulse 1.5s ease-in-out infinite"}}>
-            <span style={{fontSize:36}}>{scanStatus==="compressing"?"🔄":scanStatus==="scanning"?"🔍":"🎯"}</span>
+        {/* ═══ PHOTO HUD — Scan in progress ═══ */}
+        {(scanStatus==="compressing"||scanStatus==="scanning"||scanStatus==="matching")&&<div style={{width:"100%",maxWidth:440,position:"relative"}}>
+          <style>{`
+            @keyframes hudScanLine{0%{top:0%}100%{top:95%}}
+            @keyframes hudPulseRing{0%{transform:scale(0.9);opacity:0.6}50%{transform:scale(1.05);opacity:1}100%{transform:scale(0.9);opacity:0.6}}
+            @keyframes hudTextGlitch{0%{opacity:1}45%{opacity:1}46%{opacity:0.3}48%{opacity:1}100%{opacity:1}}
+            @keyframes hudCorner{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+          `}</style>
+          {/* Photo container with HUD overlay */}
+          <div style={{position:"relative",borderRadius:20,overflow:"hidden",aspectRatio:"3/4",maxHeight:420,background:"#000"}}>
+            {/* The actual photo */}
+            {scanPreview&&<img src={scanPreview} alt="" style={{width:"100%",height:"100%",objectFit:"cover",opacity:0.85,filter:"brightness(0.8) contrast(1.1)"}}/>}
+            {/* Green scan line */}
+            <div style={{position:"absolute",left:0,right:0,height:2,background:`linear-gradient(90deg, transparent, ${T.green}, ${T.green}, transparent)`,boxShadow:`0 0 20px ${T.green}80, 0 0 60px ${T.green}40`,animation:"hudScanLine 2s ease-in-out infinite",zIndex:3}}/>
+            {/* Corner brackets */}
+            {[[0,0],[1,0],[0,1],[1,1]].map(([x,y],i)=><div key={i} style={{
+              position:"absolute",[y?"bottom":"top"]:8,[x?"right":"left"]:8,width:28,height:28,zIndex:4,
+              borderTop:!y?`2px solid ${T.green}`:"none",borderBottom:y?`2px solid ${T.green}`:"none",
+              borderLeft:!x?`2px solid ${T.green}`:"none",borderRight:x?`2px solid ${T.green}`:"none",
+              animation:`hudCorner 0.3s ease ${0.1*i}s both`,
+            }}/>)}
+            {/* Center targeting circle */}
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:80,height:80,borderRadius:"50%",border:`1.5px solid ${T.green}60`,animation:"hudPulseRing 1.5s ease-in-out infinite",zIndex:3}}/>
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:6,height:6,borderRadius:"50%",background:T.green,zIndex:3}}/>
+            {/* Crosshairs */}
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:120,height:1,background:`${T.green}30`,zIndex:3}}/>
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:1,height:120,background:`${T.green}30`,zIndex:3}}/>
+            {/* HUD text overlay */}
+            <div style={{position:"absolute",top:16,left:16,zIndex:4}}>
+              <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.1em",animation:"hudTextGlitch 2s infinite",textShadow:`0 0 8px ${T.green}80`}}>
+                {scanStatus==="compressing"?"COMPRESSION...":scanStatus==="scanning"?"ANALYSE IA EN COURS...":"MATCHING BASE DE DONNÉES..."}
+              </div>
+              <div style={{fontFamily:F.mono,fontSize:8,color:`${T.green}80`,marginTop:4}}>
+                {scanStatus==="compressing"?"800px · JPEG 85%":scanStatus==="scanning"?"CLAUDE VISION · SONNET":`${totalDBCount} RAQUETTES · FUZZY MATCH`}
+              </div>
+            </div>
+            <div style={{position:"absolute",bottom:16,right:16,zIndex:4}}>
+              <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.1em",textShadow:`0 0 8px ${T.green}80`}}>
+                PADEL ANALYZER
+              </div>
+            </div>
+            {/* Bottom progress */}
+            <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:"rgba(0,0,0,0.5)",zIndex:4}}>
+              <div style={{height:"100%",background:T.green,boxShadow:`0 0 10px ${T.green}`,transition:"width 0.8s ease",
+                width:scanStatus==="compressing"?"25%":scanStatus==="scanning"?"65%":"92%"}}/>
+            </div>
           </div>
-          <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:T.cream,marginBottom:8}}>
-            {scanStatus==="compressing"?"Préparation…":scanStatus==="scanning"?"Analyse en cours…":"Recherche dans la base…"}
-          </div>
-          <div style={{fontFamily:F.body,fontSize:12,color:T.gray2}}>
-            {scanStatus==="compressing"?"Compression de l'image":scanStatus==="scanning"?"Notre IA examine la raquette":"Matching contre "+totalDBCount+" raquettes"}
-          </div>
-          {/* Progress bar */}
-          <div style={{marginTop:20,height:3,borderRadius:2,background:T.border,overflow:"hidden"}}>
-            <div style={{height:"100%",borderRadius:2,background:`linear-gradient(90deg,${T.accent},${T.gold})`,animation:"scanProgress 3s ease-in-out",width:scanStatus==="compressing"?"30%":scanStatus==="scanning"?"70%":"95%",transition:"width 0.5s ease"}}/>
-          </div>
-          <style>{`@keyframes scanProgress{from{width:0%}}`}</style>
         </div>}
 
-        {/* Results */}
-        {scanStatus==="done"&&scanResult&&<div style={{width:"100%",maxWidth:440}}>
-          {/* Vision identification summary */}
-          <div style={{padding:"16px",background:`${T.card}`,border:`1px solid ${T.border}`,borderRadius:14,marginBottom:16}}>
-            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-              <span style={{fontSize:14}}>🤖</span>
-              <span style={{fontFamily:F.body,fontSize:11,fontWeight:600,color:T.gray1}}>Identification IA</span>
-              {scanResult.vision.confidence&&<span style={{marginLeft:"auto",fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:6,
-                background:scanResult.vision.confidence>=70?T.greenSoft:scanResult.vision.confidence>=40?"rgba(251,191,36,0.12)":"rgba(239,68,68,0.1)",
-                color:scanResult.vision.confidence>=70?T.green:scanResult.vision.confidence>=40?"#fbbf24":"#f87171",
-                fontFamily:F.mono,
-              }}>{scanResult.vision.confidence}%</span>}
-            </div>
-            <div style={{fontFamily:F.editorial,fontSize:18,fontWeight:700,color:T.cream}}>
-              {scanResult.vision.brand} {scanResult.vision.model} {scanResult.vision.variant||""}
-            </div>
-            {scanResult.vision.year&&<span style={{fontSize:10,fontWeight:600,color:T.gold,fontFamily:F.body}}>{scanResult.vision.year}</span>}
-            {scanResult.vision.shape&&<span style={{fontSize:10,color:T.gray2,fontFamily:F.body,marginLeft:8}}>· {scanResult.vision.shape}</span>}
-          </div>
+        {/* ═══ VERDICT SCREEN ═══ */}
+        {scanStatus==="done"&&scanResult&&(()=>{
+          const bestMatch = scanResult.matches.length > 0 ? scanResult.matches[0] : null;
+          const r = bestMatch ? bestMatch.racket : null;
+          const hasProfil = !!profileName;
+          const pert = (hasProfil && r) ? computeGlobalScore(r.scores, profile, r) : 0;
+          const pertPct = pert > 0 ? (pert * 10).toFixed(0) : 0;
 
-          {/* Match results */}
-          {scanResult.matches.length>0?<>
-            {/* Best match — direct if high confidence */}
-            {scanResult.bestScore>=70?<>
-              <div style={{fontSize:10,fontWeight:600,color:T.green,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:8,fontFamily:F.body,textAlign:"center"}}>✅ Raquette trouvée !</div>
-              {(()=>{
-                const m = scanResult.matches[0];
-                const r = m.racket;
-                const pert = profileName ? computeGlobalScore(r.scores, profile, r) : null;
-                return <div onClick={()=>openRacketSheet(r,"scan")} role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter")openRacketSheet(r,"scan");}} style={{
-                  width:"100%",borderRadius:18,cursor:"pointer",overflow:"hidden",
-                  background:`linear-gradient(160deg, ${T.card} 0%, rgba(61,176,107,0.06) 100%)`,
-                  border:`1px solid ${T.green}40`,textAlign:"left",
-                  boxShadow:`0 8px 28px rgba(0,0,0,0.3)`,transition:"all 0.25s cubic-bezier(.4,0,.2,1)",
-                }}>
-                  <div style={{padding:"18px 18px 14px",display:"flex",gap:14,alignItems:"center"}}>
-                    <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} fallbackSize={56} style={{width:56,height:56,borderRadius:10,objectFit:"contain",background:T.surface}}/>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontFamily:F.editorial,fontSize:16,fontWeight:700,color:T.cream,marginBottom:2}}>{r.name}</div>
-                      <div style={{fontSize:10,color:T.gray1,fontFamily:F.body}}>{r.brand} · {r.shape} · {r.year}</div>
-                      <div style={{fontSize:10,color:T.gray2,fontFamily:F.body,marginTop:3}}>{r.price}</div>
-                      {pert!==null&&pert>0&&<div style={{marginTop:5,display:"inline-flex",alignItems:"center",gap:4,padding:"3px 8px",borderRadius:6,background:pert>=7?"rgba(249,115,22,0.12)":pert>=5?"rgba(251,191,36,0.12)":"rgba(239,68,68,0.08)",border:`1px solid ${pert>=7?"rgba(249,115,22,0.3)":pert>=5?"rgba(251,191,36,0.3)":"rgba(239,68,68,0.2)"}`}}>
-                        <span style={{fontSize:9,fontWeight:800,color:pert>=7?T.accent:pert>=5?"#fbbf24":"#f87171",fontFamily:F.mono}}>{(pert*10).toFixed(0)}%</span>
-                        <span style={{fontSize:8,color:T.gray1}}>pertinence {profileName}</span>
-                      </div>}
+          // Build ranking: top 5 from profile + insert scanned racket
+          let ranking = [];
+          if (hasProfil && r) {
+            const allDB = getMergedDB();
+            const scored = allDB.map(dbr => ({ ...dbr, _pert: computeGlobalScore(dbr.scores, profile, dbr) }))
+              .filter(dbr => dbr._pert > 0)
+              .sort((a, b) => b._pert - a._pert)
+              .slice(0, 5);
+            // Insert scanned racket
+            const scannedEntry = { ...r, _pert: pert, _scanned: true };
+            const alreadyIn = scored.some(s => s.id === r.id);
+            if (!alreadyIn) {
+              scored.push(scannedEntry);
+              scored.sort((a, b) => b._pert - a._pert);
+            } else {
+              scored.forEach(s => { if (s.id === r.id) s._scanned = true; });
+            }
+            ranking = scored.slice(0, 6); // Show up to 6 to always include scanned
+          }
+
+          const scannedRank = ranking.findIndex(s => s._scanned) + 1;
+          const pertCol = pert >= 7 ? T.green : pert >= 5 ? T.gold : "#f87171";
+          const pertLabel = pert >= 8 ? "Excellente" : pert >= 6.5 ? "Très bonne" : pert >= 5 ? "Correcte" : pert >= 3 ? "Moyenne" : "Faible";
+
+          // Dynamic verdict text
+          let verdictText = "";
+          if (hasProfil && r) {
+            const betterCount = ranking.filter(s => !s._scanned && s._pert > pert).length;
+            if (pert >= 8) verdictText = `Coup de cœur. Cette raquette est taillée pour ton jeu, ${profileName}. Fonce.`;
+            else if (pert >= 6.5) verdictText = betterCount === 0 ? `Top choix ! Rien dans notre base ne te correspond mieux.` : `Très bon choix. ${betterCount === 1 ? "Une seule raquette" : betterCount + " raquettes"} te correspond${betterCount === 1 ? "" : "ent"} légèrement mieux.`;
+            else if (pert >= 5) verdictText = `Compatible avec ton profil mais ${betterCount} raquette${betterCount > 1 ? "s" : ""} dans nos recommandations ${betterCount > 1 ? "sont" : "est"} plus adapté${betterCount > 1 ? "es" : "e"}.`;
+            else verdictText = `Cette raquette n'est pas idéale pour ton profil. On t'a trouvé bien mieux.`;
+          }
+
+          return <div style={{width:"100%",maxWidth:460,animation:"fadeInScale 0.5s cubic-bezier(.22,1,.36,1)"}}>
+            <style>{`
+              @keyframes pertPulse{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+              @keyframes rankSlide{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+              @keyframes verdictFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+              @keyframes hudRevealName{from{opacity:0;transform:translateY(8px);filter:blur(6px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+              @keyframes hudFlicker{0%{opacity:0}10%{opacity:1}12%{opacity:0.3}14%{opacity:1}100%{opacity:1}}
+              @keyframes hudGlowPulse{0%,100%{box-shadow:0 0 20px rgba(61,176,107,0.3)}50%{box-shadow:0 0 40px rgba(61,176,107,0.6)}}
+            `}</style>
+
+            {/* ═══ PHOTO HERO — Reveal ═══ */}
+            <div style={{position:"relative",borderRadius:20,overflow:"hidden",marginBottom:20}}>
+              {/* Photo background */}
+              {scanPreview&&<div style={{position:"relative",aspectRatio:"3/4",maxHeight:320,overflow:"hidden"}}>
+                <img src={scanPreview} alt="" style={{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(0.5) contrast(1.15) saturate(0.9)"}}/>
+                {/* Dark gradient overlay */}
+                <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 40%, rgba(11,14,13,0.85) 75%, rgba(11,14,13,1) 100%)"}}/>
+                {/* Corner brackets — sci-fi HUD */}
+                {[[0,0],[1,0],[0,1],[1,1]].map(([x,y],i)=><div key={i} style={{
+                  position:"absolute",[y?"bottom":"top"]:10,[x?"right":"left"]:10,width:20,height:20,zIndex:2,
+                  borderTop:!y?`1.5px solid ${T.green}90`:"none",borderBottom:y?`1.5px solid ${T.green}90`:"none",
+                  borderLeft:!x?`1.5px solid ${T.green}90`:"none",borderRight:x?`1.5px solid ${T.green}90`:"none",
+                  animation:`hudFlicker 0.5s ease ${0.1*i}s both`,
+                }}/>)}
+                {/* TOP LEFT — scan status */}
+                <div style={{position:"absolute",top:14,left:14,zIndex:3,animation:"hudFlicker 0.5s ease 0.2s both"}}>
+                  <div style={{fontFamily:F.mono,fontSize:8,color:T.green,letterSpacing:"0.12em",textShadow:`0 0 6px ${T.green}60`}}>IDENTIFIÉ ✓</div>
+                </div>
+                {/* TOP RIGHT — confidence */}
+                {scanResult.vision.confidence&&<div style={{position:"absolute",top:14,right:14,zIndex:3,animation:"hudFlicker 0.5s ease 0.3s both"}}>
+                  <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.08em",textShadow:`0 0 6px ${T.green}60`}}>CONF. {scanResult.vision.confidence}%</div>
+                </div>}
+                {/* BOTTOM — racket name revealed */}
+                <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 18px 16px",zIndex:3}}>
+                  {r?<>
+                    <div style={{fontFamily:F.editorial,fontSize:26,fontWeight:700,color:"#fff",lineHeight:1.15,animation:"hudRevealName 0.6s ease 0.3s both",textShadow:"0 2px 12px rgba(0,0,0,0.8)"}}>{r.name}</div>
+                    <div style={{fontSize:11,color:T.gray1,fontFamily:F.body,marginTop:4,animation:"hudRevealName 0.6s ease 0.5s both"}}>{r.brand} · {r.shape} · {r.year}{r.price&&r.price!=="—"?` · ${r.price}`:""}</div>
+                  </>:<>
+                    <div style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:"#fff",animation:"hudRevealName 0.6s ease 0.3s both"}}>
+                      {scanResult.vision.brand} {scanResult.vision.model} {scanResult.vision.variant||""}
                     </div>
-                    <div style={{textAlign:"center",flexShrink:0}}>
-                      <div style={{fontSize:20,fontWeight:900,color:T.green,fontFamily:F.mono}}>{m.score}%</div>
-                      <div style={{fontSize:8,color:T.gray2,textTransform:"uppercase"}}>match</div>
-                    </div>
-                  </div>
-                  <div style={{padding:"10px 18px",borderTop:`1px solid ${T.green}15`,background:`${T.green}06`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Voir la fiche complète</span>
-                    <span style={{fontSize:16,color:T.green}}>→</span>
-                  </div>
-                  {/* Add to collection button */}
-                  <div onClick={e=>e.stopPropagation()} style={{padding:"8px 18px",borderTop:`1px solid ${T.border}`,display:"flex",justifyContent:"center"}}>
-                    {scanAdded.has(r.id)||rackets.some(x=>x.id===r.id)
-                      ?<span style={{fontSize:11,color:T.green,fontWeight:600,fontFamily:F.body}}>✓ Ajoutée à mes raquettes</span>
-                      :<button onClick={e=>{e.stopPropagation();addScanRacket(r);}} style={{padding:"8px 20px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:10,color:T.accent,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:F.body,transition:"all 0.2s"}}>+ Ajouter à mes raquettes</button>
-                    }
-                  </div>
-                </div>;
-              })()}
-            </>:<>
-              {/* Low confidence — show top 3 */}
-              <div style={{fontSize:10,fontWeight:600,color:"#fbbf24",textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:12,fontFamily:F.body,textAlign:"center"}}>🔎 Plusieurs correspondances possibles</div>
-              <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                {scanResult.matches.map((m,i)=>{
-                  const r = m.racket;
-                  const pert = profileName ? computeGlobalScore(r.scores, profile, r) : null;
-                  const added = scanAdded.has(r.id)||rackets.some(x=>x.id===r.id);
-                  return <div key={r.id} style={{
-                    width:"100%",borderRadius:14,overflow:"hidden",
-                    background:T.card,border:`1px solid ${i===0?T.accent+"40":T.border}`,
+                    <div style={{fontSize:11,color:T.gray1,fontFamily:F.body,marginTop:4,animation:"hudRevealName 0.6s ease 0.5s both"}}>Raquette non trouvée dans notre base</div>
+                  </>}
+                </div>
+              </div>}
+              {/* Fallback if no preview */}
+              {!scanPreview&&r&&<div style={{padding:"24px",textAlign:"center",background:T.card}}>
+                <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} fallbackSize={80} style={{width:80,height:80,objectFit:"contain",borderRadius:14,margin:"0 auto 10px",display:"block"}}/>
+                <div style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream}}>{r.name}</div>
+                <div style={{fontSize:11,color:T.gray2,fontFamily:F.body,marginTop:4}}>{r.brand} · {r.shape} · {r.year}</div>
+              </div>}
+            </div>
+
+            {/* ══════ WITH PROFILE — VERDICT ══════ */}
+            {hasProfil&&r&&pert>0?<>
+              {/* Big pertinence score */}
+              <div style={{textAlign:"center",margin:"20px 0 16px",animation:"pertPulse 0.6s cubic-bezier(.22,1,.36,1) 0.2s both"}}>
+                <div style={{display:"inline-flex",flexDirection:"column",alignItems:"center",padding:"24px 40px",borderRadius:24,
+                  background:`linear-gradient(160deg, ${pertCol}15, ${pertCol}08)`,
+                  border:`2px solid ${pertCol}40`,
+                  boxShadow:`0 12px 48px ${pertCol}20, inset 0 1px 0 ${pertCol}15`}}>
+                  <div style={{fontFamily:F.mono,fontSize:56,fontWeight:900,color:pertCol,lineHeight:1,letterSpacing:"-0.04em"}}>{pertPct}<span style={{fontSize:24}}>%</span></div>
+                  <div style={{fontSize:12,fontWeight:700,color:pertCol,textTransform:"uppercase",letterSpacing:"0.1em",marginTop:4}}>{pertLabel} compatibilité</div>
+                  <div style={{fontSize:11,color:T.gray1,marginTop:2}}>pour {profileName}</div>
+                </div>
+              </div>
+
+              {/* Ranking */}
+              {ranking.length>0&&<div style={{marginBottom:16}}>
+                <div style={{fontSize:9,fontWeight:700,color:T.gray2,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:10,textAlign:"center"}}>Classement pour ton profil</div>
+                {ranking.map((s,i)=>{
+                  const isScanned = s._scanned;
+                  const p = (s._pert * 10).toFixed(0);
+                  const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+                  return <div key={s.id} style={{
+                    display:"flex",alignItems:"center",gap:10,padding:"8px 12px",marginBottom:4,borderRadius:12,
+                    background:isScanned?`${T.accent}15`:i<3?`${T.gold}08`:"transparent",
+                    border:isScanned?`2px solid ${T.accent}50`:`1px solid ${isScanned?T.accent:i<3?T.gold+"20":T.border}`,
+                    animation:`rankSlide 0.3s ease ${0.3+i*0.08}s both`,
+                    transition:"all 0.2s",
                   }}>
-                    <div onClick={()=>openRacketSheet(r,"scan")} style={{
-                      padding:"14px 16px",textAlign:"left",display:"flex",gap:12,alignItems:"center",cursor:"pointer",
-                    }}>
-                      <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} fallbackSize={40} style={{width:40,height:40,borderRadius:8,objectFit:"contain",background:T.surface}}/>
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontFamily:F.body,fontSize:13,fontWeight:700,color:T.cream}}>{i===0?"🥇 ":i===1?"🥈 ":"🥉 "}{r.name}</div>
-                        <div style={{fontSize:10,color:T.gray1,fontFamily:F.body}}>{r.brand} · {r.shape} · {r.year} · {r.price}</div>
-                        {pert!==null&&pert>0&&<div style={{fontSize:9,color:pert>=7?T.accent:pert>=5?"#fbbf24":"#f87171",fontFamily:F.mono,marginTop:2}}>{(pert*10).toFixed(0)}% pertinence {profileName}</div>}
+                    <span style={{fontSize:i<3?16:12,width:24,textAlign:"center",flexShrink:0}}>{medal||(i+1)+"."}</span>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:12,fontWeight:isScanned?800:600,color:isScanned?T.accent:T.cream,fontFamily:F.body,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                        {isScanned?"📷 ":""}{s.shortName||s.name}
                       </div>
-                      <div style={{fontSize:14,fontWeight:800,color:i===0?T.accent:T.gray1,fontFamily:F.mono,flexShrink:0}}>{m.score}%</div>
                     </div>
-                    <div style={{padding:"6px 16px 8px",borderTop:`1px solid ${T.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                      {added
-                        ?<span style={{fontSize:10,color:T.green,fontWeight:600,fontFamily:F.body}}>✓ Ajoutée</span>
-                        :<button onClick={()=>addScanRacket(r)} style={{padding:"5px 14px",background:T.accentSoft,border:`1px solid ${T.accent}30`,borderRadius:8,color:T.accent,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:F.body}}>+ Ajouter</button>
-                      }
-                      <span onClick={()=>openRacketSheet(r,"scan")} style={{fontSize:10,color:T.gray2,cursor:"pointer",fontFamily:F.body}}>Voir fiche →</span>
-                    </div>
+                    <div style={{fontSize:14,fontWeight:800,color:isScanned?T.accent:i===0?T.gold:T.gray1,fontFamily:F.mono,flexShrink:0}}>{p}%</div>
                   </div>;
                 })}
-              </div>
-            </>}
+              </div>}
 
-            {/* Other matches if high confidence */}
-            {scanResult.bestScore>=70&&scanResult.matches.length>1&&<div style={{marginTop:16}}>
-              <div style={{fontSize:10,color:T.gray2,fontFamily:F.body,marginBottom:8,textAlign:"center"}}>Autres correspondances possibles</div>
-              {scanResult.matches.slice(1).map(m=>{
-                const r = m.racket;
-                return <button key={r.id} onClick={()=>openRacketSheet(r,"scan")} style={{
-                  width:"100%",padding:"10px 14px",background:"rgba(255,255,255,0.02)",border:`1px solid ${T.border}`,
-                  borderRadius:10,cursor:"pointer",display:"flex",alignItems:"center",gap:10,marginBottom:6,textAlign:"left",
-                }}>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:12,fontWeight:600,color:T.gray1,fontFamily:F.body}}>{r.name}</div>
-                    <div style={{fontSize:10,color:T.gray2,fontFamily:F.body}}>{r.brand} · {r.year}</div>
-                  </div>
-                  <span style={{fontSize:11,fontWeight:700,color:T.gray2,fontFamily:F.mono}}>{m.score}%</span>
-                </button>;
-              })}
+              {/* Verdict text */}
+              <div style={{padding:"16px",background:`linear-gradient(135deg, ${T.card}, ${T.surface})`,border:`1px solid ${T.border}`,borderRadius:16,marginBottom:16,animation:"verdictFade 0.4s ease 0.8s both"}}>
+                <div style={{fontSize:9,fontWeight:700,color:T.gold,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>💬 Verdict</div>
+                <p style={{fontFamily:F.editorial,fontSize:15,color:T.cream,lineHeight:1.7,margin:0,fontStyle:"italic"}}>{verdictText}</p>
+              </div>
+
+              {/* Fiche link */}
+              <div onClick={()=>openRacketSheet(r,"scan")} style={{
+                padding:"12px 16px",background:T.accentSoft,border:`1px solid ${T.accent}30`,borderRadius:12,
+                display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",marginBottom:10,
+              }}>
+                <span style={{fontSize:12,fontWeight:600,color:T.accent,fontFamily:F.body}}>Voir la fiche technique complète</span>
+                <span style={{color:T.accent}}>→</span>
+              </div>
+            </>
+
+            /* ══════ WITHOUT PROFILE ══════ */
+            :r?<>
+              <div style={{padding:"20px",background:`linear-gradient(160deg, ${T.card}, ${T.surface})`,border:`1px solid ${T.border}`,borderRadius:20,marginBottom:16,textAlign:"center"}}>
+                {/* Quick scores */}
+                <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:16,flexWrap:"wrap"}}>
+                  {ATTRS.slice(0,4).map(a=><div key={a} style={{padding:"6px 10px",borderRadius:10,background:T.surface,border:`1px solid ${T.border}`,textAlign:"center",minWidth:60}}>
+                    <div style={{fontSize:16,fontWeight:800,color:T.accent,fontFamily:F.mono}}>{(r.scores?.[a]||0).toFixed(1)}</div>
+                    <div style={{fontSize:8,color:T.gray2,textTransform:"uppercase"}}>{a.slice(0,5)}</div>
+                  </div>)}
+                </div>
+                {r.verdict&&<p style={{fontFamily:F.editorial,fontSize:14,color:T.gray1,lineHeight:1.7,margin:"0 0 16px",fontStyle:"italic"}}>« {r.verdict} »</p>}
+                <div style={{padding:"14px",background:`${T.accent}12`,border:`1px solid ${T.accent}30`,borderRadius:14}}>
+                  <div style={{fontSize:18,marginBottom:6}}>🎯</div>
+                  <div style={{fontFamily:F.body,fontSize:13,fontWeight:700,color:T.accent}}>Crée ton profil en 2 min</div>
+                  <div style={{fontFamily:F.body,fontSize:11,color:T.gray1,marginTop:2,marginBottom:10}}>pour savoir si cette raquette te correspond</div>
+                  <button onClick={()=>{setScreen("wizard");}} className="pa-cta" style={{
+                    padding:"10px 24px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:10,
+                    color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:F.body,
+                  }}>Créer mon profil</button>
+                </div>
+              </div>
+              <div onClick={()=>openRacketSheet(r,"scan")} style={{
+                padding:"12px 16px",background:T.accentSoft,border:`1px solid ${T.accent}30`,borderRadius:12,
+                display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",marginBottom:10,
+              }}>
+                <span style={{fontSize:12,fontWeight:600,color:T.accent,fontFamily:F.body}}>Voir la fiche complète</span>
+                <span style={{color:T.accent}}>→</span>
+              </div>
+            </>
+
+            /* ══════ NO MATCH ══════ */
+            :<div style={{padding:"24px",background:T.card,border:`1px solid ${T.border}`,borderRadius:16,textAlign:"center",marginBottom:16}}>
+              <div style={{fontFamily:F.body,fontSize:13,color:T.gray1,lineHeight:1.6}}>
+                Raquette non trouvée dans notre base de {totalDBCount} modèles.
+              </div>
+              <button onClick={()=>{setCatalogSearch(scanResult.vision.brand||"");resetCatFilters();setScreen("catalog");}} style={{
+                marginTop:12,padding:"10px 20px",background:T.accentSoft,border:`1px solid ${T.accent}30`,borderRadius:10,
+                color:T.accent,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:F.body,
+              }}>🔎 Chercher dans le catalogue</button>
             </div>}
-          </>:<>
-            {/* No matches */}
-            <div style={{textAlign:"center",padding:"24px 16px",background:T.card,border:`1px solid ${T.border}`,borderRadius:14}}>
-              <span style={{fontSize:36,display:"block",marginBottom:12}}>😕</span>
-              <div style={{fontFamily:F.editorial,fontSize:18,fontWeight:700,color:T.cream,marginBottom:6}}>Raquette non reconnue</div>
-              <div style={{fontFamily:F.body,fontSize:12,color:T.gray2,lineHeight:1.5,marginBottom:16}}>
-                Cette raquette ne figure pas dans notre base de {totalDBCount} modèles, ou la photo ne permet pas une identification fiable.
-              </div>
-              <button onClick={()=>{setCatalogSearch(scanResult.vision.brand||"");resetCatFilters();setScreen("catalog");}} className="pa-cta" style={{
-                padding:"12px 24px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:12,
-                color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:F.body,
-              }}>🔎 Rechercher dans le catalogue</button>
-            </div>
-          </>}
 
-          {/* Scan again button */}
-          <div style={{marginTop:20,textAlign:"center"}}>
-            <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanPreview(null);setScanPreviewFile(null);setScanAdded(new Set());}} className="pa-ghost" style={{
-              padding:"12px 24px",background:"rgba(255,255,255,0.04)",border:`1px solid ${T.border}`,borderRadius:12,
-              color:T.gray1,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:F.body,
-            }}>📷 Scanner une autre raquette</button>
-          </div>
-        </div>}
-
-        {/* Toast notification */}
-        {scanToast&&<div style={{
-          position:"fixed",bottom:24,left:"50%",transform:"translateX(-50%)",zIndex:100,
-          padding:"14px 20px",borderRadius:16,
-          background:`linear-gradient(135deg, ${T.card}f0, ${T.surface}f0)`,
-          border:`1px solid ${T.green}50`,
-          backdropFilter:"blur(12px)",boxShadow:`0 12px 40px rgba(0,0,0,0.5), 0 0 20px ${T.green}20`,
-          display:"flex",alignItems:"center",gap:12,maxWidth:380,width:"90%",
-          animation:"fadeInUp 0.35s cubic-bezier(.22,1,.36,1)",
-        }}>
-          <div style={{width:36,height:36,borderRadius:10,background:T.greenSoft,border:`1px solid ${T.green}30`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <span style={{fontSize:18}}>{scanToast.alreadyIn?"📋":"✅"}</span>
-          </div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontFamily:F.body,fontSize:12,fontWeight:700,color:T.cream}}>
-              {scanToast.alreadyIn?`${scanToast.name} déjà dans le comparateur`:`${scanToast.name} ajoutée !`}
+            {/* Scan again */}
+            <div style={{textAlign:"center",marginTop:4}}>
+              <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanPreview(null);setScanPreviewFile(null);}} style={{
+                padding:"10px 20px",background:"none",border:`1px solid ${T.border}`,borderRadius:10,
+                color:T.gray2,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:F.body,
+              }}>📷 Scanner une autre raquette</button>
             </div>
-            {scanToast.pert&&!scanToast.alreadyIn&&<div style={{fontSize:10,color:T.gray1,fontFamily:F.body,marginTop:1}}>Pertinence : {scanToast.pert}</div>}
-          </div>
-          {!scanToast.alreadyIn&&<button onClick={()=>{setScanToast(null);setScreen("app");}} style={{
-            padding:"6px 12px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:8,
-            color:T.accent,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:F.body,flexShrink:0,whiteSpace:"nowrap",
-          }}>Comparateur →</button>}
-        </div>}
+          </div>;
+        })()}
 
         <div style={{marginTop:"auto",paddingTop:32,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",fontFamily:F.body}}>
           <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · Scan visuel · ~0.006€/scan
