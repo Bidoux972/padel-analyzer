@@ -2490,6 +2490,7 @@ export default function PadelAnalyzer() {
   const [scanAdded, setScanAdded] = useState(new Set()); // IDs of rackets added from scan
   const [scanPreview, setScanPreview] = useState(null); // {file, url} for image preview
   const [scanPreviewFile, setScanPreviewFile] = useState(null); // raw File object
+  const [scanToast, setScanToast] = useState(null); // {name, pert} — toast after adding racket
 
   // ============ SCAN VISUEL — Functions ============
   const compressImage = useCallback((file) => {
@@ -2648,15 +2649,18 @@ export default function PadelAnalyzer() {
 
   const addScanRacket = useCallback((r) => {
     if (!r || !r.id) return;
-    if (rackets.some(x => x.id === r.id)) {
-      setScanAdded(s => new Set(s).add(r.id));
-      return; // already in collection
-    }
     const gs = profileName ? computeGlobalScore(r.scores, profile, r) : 0;
-    const newR = { ...r, color: getNextColor(rackets), _gs: gs };
-    setRackets(p => [...p, newR]);
-    setSelected(p => p.length < 4 ? [...p, newR.id] : p);
+    const alreadyIn = rackets.some(x => x.id === r.id);
+    if (!alreadyIn) {
+      const newR = { ...r, color: getNextColor(rackets), _gs: gs };
+      setRackets(p => [...p, newR]);
+      setSelected(p => p.length < 4 ? [...p, newR.id] : p);
+    }
     setScanAdded(s => new Set(s).add(r.id));
+    // Toast
+    const pct = gs > 0 ? (gs * 10).toFixed(0) + "%" : null;
+    setScanToast({ name: r.shortName || r.name, pert: pct, alreadyIn });
+    setTimeout(() => setScanToast(null), 4000);
   }, [rackets, profile, profileName]);
 
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
@@ -5264,7 +5268,31 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
         </div>}
 
-        {/* Footer */}
+        {/* Toast notification */}
+        {scanToast&&<div style={{
+          position:"fixed",bottom:24,left:"50%",transform:"translateX(-50%)",zIndex:100,
+          padding:"14px 20px",borderRadius:16,
+          background:`linear-gradient(135deg, ${T.card}f0, ${T.surface}f0)`,
+          border:`1px solid ${T.green}50`,
+          backdropFilter:"blur(12px)",boxShadow:`0 12px 40px rgba(0,0,0,0.5), 0 0 20px ${T.green}20`,
+          display:"flex",alignItems:"center",gap:12,maxWidth:380,width:"90%",
+          animation:"fadeInUp 0.35s cubic-bezier(.22,1,.36,1)",
+        }}>
+          <div style={{width:36,height:36,borderRadius:10,background:T.greenSoft,border:`1px solid ${T.green}30`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <span style={{fontSize:18}}>{scanToast.alreadyIn?"📋":"✅"}</span>
+          </div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontFamily:F.body,fontSize:12,fontWeight:700,color:T.cream}}>
+              {scanToast.alreadyIn?`${scanToast.name} déjà dans le comparateur`:`${scanToast.name} ajoutée !`}
+            </div>
+            {scanToast.pert&&!scanToast.alreadyIn&&<div style={{fontSize:10,color:T.gray1,fontFamily:F.body,marginTop:1}}>Pertinence : {scanToast.pert}</div>}
+          </div>
+          {!scanToast.alreadyIn&&<button onClick={()=>{setScanToast(null);setScreen("app");}} style={{
+            padding:"6px 12px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:8,
+            color:T.accent,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:F.body,flexShrink:0,whiteSpace:"nowrap",
+          }}>Comparateur →</button>}
+        </div>}
+
         <div style={{marginTop:"auto",paddingTop:32,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",fontFamily:F.body}}>
           <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · Scan visuel · ~0.006€/scan
         </div>
