@@ -12,7 +12,7 @@
     "antivib": "—",
     "price": "200-270€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-multiweight-ctrl-3-4-2025-alex-ruiz.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-ctrl-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -66,7 +66,7 @@
     "antivib": "—",
     "price": "62-85€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-junior-3-4-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -115,7 +115,7 @@
     "antivib": "—",
     "price": "70-100€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-light-3-4-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-light-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -164,7 +164,7 @@
     "antivib": "—",
     "price": "150-200€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-multiweight-2023.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-multiweight-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -218,7 +218,7 @@
     "antivib": "—",
     "price": "180-250€",
     "player": "Ale Galán",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-3-4-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -267,7 +267,7 @@
     "antivib": "—",
     "price": "280-380€",
     "player": "Ale Galán",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-3-4-hrd-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-hrd-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -321,7 +321,7 @@
     "antivib": "—",
     "price": "89-115€",
     "player": "Ale Galán",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-youth-3-4-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-youth-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -586,7 +586,7 @@
     "antivib": "—",
     "price": "100-115€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-arrow-hit-junior-pink-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-arrow-hit-jr-pink-2026.png",
     "year": 2026,
     "category": "junior",
     "scores": {
@@ -634,7 +634,7 @@
     "antivib": true,
     "price": "260-320€",
     "player": "Avancé offensif rapide",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-cross-it-light-2026-martita-ortega.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-cross-it-light-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -884,7 +884,7 @@
     "antivib": false,
     "price": "300-380€",
     "player": "Expert offensif customisable",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-2026-ale-galan.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1115,7 +1115,7 @@
     "antivib": false,
     "price": "320-400€",
     "player": "Ale Galán",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-hrd-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-hrd-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -1375,7 +1375,7 @@
     "antivib": "—",
     "price": "90-100€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-alioth-mini-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-alioth-mini-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -1424,7 +1424,7 @@
     "antivib": "—",
     "price": "140-150€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-alioth-pro-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-alioth-pro-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -1473,7 +1473,7 @@
     "antivib": "—",
     "price": "60-80€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-contact-2023.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-contact-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -1674,7 +1674,7 @@
     "antivib": "Vibrasorb",
     "price": "250-320€",
     "player": "Juan Lebrón",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-viper-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-viper-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -1722,7 +1722,7 @@
     "antivib": true,
     "price": "220-280€",
     "player": "Intermédiaire-Avancé polyvalent",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-veron-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-veron-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
@@ -1771,7 +1771,7 @@
     "antivib": true,
     "price": "250-310€",
     "player": "Avancé offensif rapide",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-viper-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-viper-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -1831,7 +1831,7 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Intermédiaire-Avancé contrôle",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-counter-veron-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-counter-veron-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
@@ -1880,7 +1880,7 @@
     "antivib": true,
     "price": "230-290€",
     "player": "Avancé défensif-contre",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-counter-viper-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-counter-viper-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -1941,7 +1941,7 @@
     "antivib": "Vibrabsorb",
     "price": "250-310€",
     "player": null,
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-veron-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-veron-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -1995,7 +1995,7 @@
     "antivib": "Vibrabsorb",
     "price": "300-370€",
     "player": null,
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-viper-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-viper-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -2048,7 +2048,7 @@
     "antivib": true,
     "price": "280-340€",
     "player": "Avancé offensif polyvalent",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-veron-3-0-2026-juan-lebron.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-veron-3-0-juan-lebr-n-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2151,7 +2151,7 @@
     "antivib": true,
     "price": "350-400€",
     "player": "Expert puissance max",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-viper-3-0-2026-juan-lebron.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-viper-3-0-juan-lebr-n-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -2206,7 +2206,7 @@
     "antivib": "Vibrabsorb",
     "price": "320-390€",
     "player": "Juan Lebrón",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-viper-soft-3-0-2026-juan-lebron.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-viper-soft-3.0-lebron-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -2367,7 +2367,7 @@
     "antivib": "Vibradrive",
     "price": "160-210€",
     "player": "Paquito Navarro",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-03-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-03-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -2465,7 +2465,7 @@
     "antivib": "—",
     "price": "58-95€",
     "player": "Paquito Navarro",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -2563,7 +2563,7 @@
     "antivib": "Vibradrive",
     "price": "180-240€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-03-2023.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-03-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -2612,7 +2612,7 @@
     "antivib": "Vibradrive",
     "price": "250-350€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-04-2025-juan-tello.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-04-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -2710,7 +2710,7 @@
     "antivib": "—",
     "price": "75-109€",
     "player": "Juan Tello",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -2758,7 +2758,7 @@
     "antivib": true,
     "price": "200-260€",
     "player": "Avancé léger / femmes",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-flow-legend-2026-alejandra-salazar.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-flow-legend-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -2812,7 +2812,7 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert puissance pure",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-04-2026-paquito-navarro.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-04-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -2976,7 +2976,7 @@
     "antivib": "Ease Vibe",
     "price": "300-380€",
     "player": "Juan Martín Díaz",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-icon-2026-juan-martin-diaz.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-icon-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3038,7 +3038,7 @@
     "antivib": true,
     "price": "280-350€",
     "player": "Avancé-Expert contrôle",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-neuron-02-2026-fede-chingotto.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-neuron-02-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -3155,7 +3155,7 @@
     "antivib": true,
     "price": "300-380€",
     "player": "Expert polyvalent offensif",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-05-2026-juan-tello.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-05-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3210,7 +3210,7 @@
     "antivib": "Ease Vibe + Vibradrive",
     "price": "300-380€",
     "player": "Paquito Navarro",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-05-geo-2026-pablo-cardona.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-05-geo-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3326,7 +3326,7 @@
     "antivib": false,
     "price": "320-400€",
     "player": "Expert puissance explosive",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-xplo-2026-martin-di-nenno.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-xplo-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -3430,7 +3430,7 @@
     "antivib": "—",
     "price": "200-280€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-conqueror-10-0-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-conqueror-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -3484,7 +3484,7 @@
     "antivib": "—",
     "price": "40-55€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-explorer-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3533,7 +3533,7 @@
     "antivib": "—",
     "price": "120-160€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-legend-4-0.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-legend-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -3582,7 +3582,7 @@
     "antivib": "—",
     "price": "45-65€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-galactica-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-galactica-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -3680,7 +3680,7 @@
     "antivib": "—",
     "price": "55-75€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-rocket-ultra-yellow-2023.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-rocket-ultra-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -3737,7 +3737,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.1
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-lite-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-lite-26.png",
     "verdict": "Diamant légère qui privilégie la maniabilité sans sacrifier la frappe. Bon compromis pour attaquants qui veulent rester mobiles.",
     "price": "170-230€",
     "editorial": "La FX Lite 2026 est l'outsider de Dunlop — la marque historique du tennis qui s'impose progressivement en padel. Le carbone 12K offre une rigidité de bon niveau, et le noyau Soft EVA mise tout sur le confort et la maniabilité. C'est une pala honnête, bien construite, sans prétention marketing exagérée. Dunlop vise les joueurs avancés qui veulent du matériel fiable sans payer le prix des technologies propriétaires des leaders.",
@@ -3796,7 +3796,7 @@
       "Maniabilité": 7.6,
       "Tolérance": 7.7
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-pro-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-pro-26.png",
     "verdict": "Arme offensive pure, balance haute et carbone 12K pour des smashes dévastateurs. Réservée aux bras solides et aux frappes engagées.",
     "price": "200-260€",
     "editorial": "La FX Pro 2026 est le haut de gamme Dunlop — la preuve que la marque historique du tennis prend le padel au sérieux. Carbone 12K et Pro EVA en diamant. Construction soignée sans technologies propriétaires complexes, mais des matériaux de qualité et un équilibre bien calibré. Dunlop vise les joueurs experts qui veulent de la performance fiable sans le marketing des grandes marques de padel.",
@@ -3844,7 +3844,7 @@
       "Maniabilité": 7.9,
       "Tolérance": 7.7
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-team-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-team-26.png",
     "verdict": "Entrée de gamme diamant accessible avec puissance contrôlée. Bonne option pour progresser vers un jeu plus offensif sans se ruiner.",
     "price": "130-180€",
     "editorial": "La FX Team 2026 est la nouvelle intermédiaire de Dunlop. Carbone Premium et Pro EVA en diamant — Dunlop monte en gamme. Plus offensive que la Galactica avec une forme diamant et des matériaux supérieurs. C'est la preuve que Dunlop investit sérieusement dans le padel.",
@@ -4031,7 +4031,7 @@
     "antivib": "Innegra",
     "price": "120-140€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -4080,7 +4080,7 @@
     "antivib": "Auxetic 2.0",
     "price": "130-170€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-motion-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-motion-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -4178,7 +4178,7 @@
     "antivib": "Auxetic 2.0 + Innegra",
     "price": "200-260€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-pro-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -4339,7 +4339,7 @@
     "antivib": "Graphene 360+",
     "price": "100-140€",
     "player": null,
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-gravity-team-light-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-gravity-team-light-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -4437,7 +4437,7 @@
     "antivib": "Innegra",
     "price": "65-105€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -4797,7 +4797,7 @@
     "antivib": "Auxetic 2.0 + Soft Cap+",
     "price": "350-400€",
     "player": "Arturo Coello",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-pro-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-pro-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -4908,7 +4908,7 @@
     "antivib": true,
     "price": "120-160€",
     "player": "Débutant-Intermédiaire",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-vibe-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-vibe-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
@@ -5012,7 +5012,7 @@
     "antivib": "Graphene 360+",
     "price": "70-100€",
     "player": null,
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-evo-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-evo-extreme-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
@@ -5422,7 +5422,7 @@
     "antivib": true,
     "price": "100-140€",
     "player": "Débutant",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-gravity-team-light-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-gravity-team-light-2026.png",
     "year": 2026,
     "category": "debutant",
     "scores": {
@@ -5738,7 +5738,7 @@
     "antivib": true,
     "price": "160-210€",
     "player": "Intermédiaire confort",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-one-x-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-one-x-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
@@ -6082,7 +6082,7 @@
     "antivib": "—",
     "price": "60-70€",
     "player": "Agustín Tapia",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-genius-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-genius-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -6229,7 +6229,7 @@
     "antivib": "—",
     "price": "50-75€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ml10-pro-cup-beginner-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ml10-beginner-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -6278,7 +6278,7 @@
     "antivib": "—",
     "price": "50-70€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ml10-pro-cup-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ml10-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -6376,7 +6376,7 @@
     "antivib": "Pulse System",
     "price": "280-350€",
     "player": "Agustín Tapia",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-luxury-genius-12k-alum-xtrem-2026-agustin-tapia.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-luxury-genius-12k-xtrem-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -6439,7 +6439,7 @@
     "antivib": "Pulse System",
     "price": "250-310€",
     "player": "Agustín Tapia",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-genius-12k-alum-xtrem-lite-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-luxury-genius-12k-xtrem-lite-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -6501,7 +6501,7 @@
     "antivib": true,
     "price": "350-420€",
     "player": "Expert polyvalent",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-luxury-genius-18k-alum-2026-agustin-tapia.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-luxury-genius-18k-alum-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -6565,7 +6565,7 @@
     "antivib": "Pulse System",
     "price": "300-370€",
     "player": "Agustín Tapia",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-genius-attack-12k-alum-xtrem-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-luxury-attack-12k-xtrem-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -6619,7 +6619,7 @@
     "antivib": "Pulse System",
     "price": "220-280€",
     "player": null,
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ventus-hybrid-12k-lite-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ventus-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -6673,7 +6673,7 @@
     "antivib": "—",
     "price": "60-70€",
     "player": "Franco Stupaczuk",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-electra-st3-junior-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-electra-st3-jr-2024.png",
     "year": 2024,
     "category": "junior",
     "scores": {
@@ -6771,7 +6771,7 @@
     "antivib": "—",
     "price": "280-360€",
     "player": "Franco Stupaczuk",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-black-carbon-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-black-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -6820,7 +6820,7 @@
     "antivib": "—",
     "price": "150-200€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-revolution-fucsia.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-revolution-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -6869,7 +6869,7 @@
     "antivib": "—",
     "price": "220-300€",
     "player": "Franco Stupaczuk",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-xtrem-carbon-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-xtrem-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -6918,7 +6918,7 @@
     "antivib": "—",
     "price": "50-65€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-optimus-5.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-optimus-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -6975,7 +6975,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-elite-6-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-elite-26.png",
     "verdict": "Goutte confortable et maniable, idéale pour monter en niveau en douceur. Polyvalente sans être exceptionnelle dans un domaine.",
     "price": "180-230€",
     "editorial": "La Diablo Elite 2026 est la nouvelle intermédiaire premium de Siux. Carbone 3K et EVA en goutte d'eau — une montée en gamme par rapport à la Revolution. Le 3K apporte plus de réactivité et de toucher que le carbone standard. C'est le tremplin vers les versions Pro en TeXtreme.",
@@ -7023,7 +7023,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.8
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-pro-night-blue-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-pro-26.png",
     "verdict": "Polyvalente haut de gamme avec un équilibre rare entre puissance et contrôle. Son confort et son spin en font une valeur sûre pour joueurs complets.",
     "price": "300-350€",
     "player": "Martin Di Nenno / Federico Libaak",
@@ -7086,7 +7086,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-electra-pro-fire-red-2026-franco-stupackzuk.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-electra-pro-26.png",
     "verdict": "Puissance explosive en goutte d'eau — un profil rare. Le TeXtreme 18K frappe fort tout en gardant du contrôle. Pour attaquants techniques.",
     "price": "300-350€",
     "player": "Franco Stupaczuk",
@@ -7149,7 +7149,7 @@
       "Maniabilité": 7.6,
       "Tolérance": 7.3
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-fenix-pro-black-2026-leo-ausburger.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-fenix-pro-26.png",
     "verdict": "Canon offensif sans concession : 9.5 en puissance mais confort et tolérance sacrifiés. Pour experts qui finissent les points au filet.",
     "price": "300-350€",
     "player": "Benjamin Augsburger",
@@ -7198,7 +7198,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.8
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-pegasus-elite-4-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-pegasus-elite-26.png",
     "verdict": "Goutte polyvalente et confortable à prix contenu. Profil équilibré sans pic — rassurante pour intermédiaires qui cherchent de la régularité.",
     "price": "180-230€",
     "editorial": "La Pegasus Elite 2026 est la polyvalente intermédiaire de Siux. Même construction que la Diablo Elite — carbone 3K et EVA en goutte d'eau — mais avec un positionnement plus polyvalent. La Pegasus est la gamme équilibrée de Siux, le Diablo étant plus offensif. Pour les joueurs intermédiaires qui ne veulent pas choisir entre attaque et défense.",
@@ -7246,7 +7246,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-pegasus-pro-storm-grey-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-pegasus-pro-26.png",
     "verdict": "Montée en gamme avec TeXtreme 18K : plus de puissance et de spin que l'Elite. Pour avancés qui veulent du mordant sans perdre en précision.",
     "price": "300-350€",
     "editorial": "La Pegasus Pro 2026 est la polyvalente haut de gamme de Siux. TeXtreme 18K et EVA standard en goutte d'eau. Même surface que la Diablo Pro et la Fenix Pro, mais un noyau neutre qui laisse la pala s'exprimer naturellement. C'est le TeXtreme pour les joueurs polyvalents qui veulent la technologie premium sans s'enfermer dans un style de jeu.",
@@ -7294,7 +7294,7 @@
       "Maniabilité": 8.7,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-valkiria-pro-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-valkiria-pro-26.png",
     "verdict": "Polyvalente signature Araujo, poids contenu pour une maniabilité supérieure. Excellent ratio puissance/contrôle, accessible aux gabarits légers.",
     "price": "280-350€",
     "player": "Delfina Araujo",
@@ -7433,7 +7433,7 @@
     "antivib": "—",
     "price": "140-180€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-metheora-warrior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-metheora-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -7539,7 +7539,7 @@
       "Maniabilité": 7.9,
       "Tolérance": 8.1
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/star-vie-black-titan-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-black-titan-26.png",
     "verdict": "Flagship hybride avec carbone 24K et système Dynamic Star. Puissance expert avec un contrôle surprenant pour ce niveau de frappe.",
     "price": "240-300€",
     "editorial": "Le Black Titan 2026 est le haut de gamme absolu de StarVie. Carbone 24K Master — le plus dense du catalogue — avec noyau H-EVA Power en forme hybride. C'est la pala la plus ambitieuse de StarVie, qui rivalise techniquement avec les grandes marques. Le carbone 24K offre une puissance rare, la forme hybride une polyvalence bienvenue. Pour les connaisseurs qui cherchent l'alternative premium.",
@@ -7587,7 +7587,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.8
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/star-vie-raptor-2026-plus.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-raptor-26.png",
     "verdict": "Goutte all-court renouvelée : spin et contrôle en vedette avec un confort correct. Polyvalente fiable pour joueurs avancés complets.",
     "price": "200-260€",
     "editorial": "Le Raptor 2026 est le prédateur de StarVie — la marque madrilène qui monte en gamme année après année. Le carbone 3D, procédé de moulage tridimensionnel exclusif, crée une surface aux propriétés inhabituelles : plus réactive dans l'axe de la frappe, plus tolérante en latéral. Le noyau M-EVA Balance porte bien son nom : une densité intermédiaire qui ne sacrifie ni la puissance ni le confort. StarVie vise le zéro défaut.",
@@ -7641,7 +7641,7 @@
       "Maniabilité": 7.9,
       "Tolérance": 8.1
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/star-vie-triton-balance-2026-plus.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-triton-balance-26.png",
     "verdict": "Diamant tempérée — plus souple que la Power avec un meilleur équilibre puissance/contrôle. Bon compromis pour attaquants qui veulent de la marge.",
     "price": "200-260€",
     "editorial": "Le Triton Balance 2026 est la diamant équilibrée de StarVie. Carbone 18K Hybrid — mélange de fibres pour un flex contrôlé — avec noyau M-EVA Balance en diamant. Le nom dit tout : c'est une diamant qui cherche l'équilibre plutôt que l'extrémisme. Puissance mesurée, tolérance acceptable, prix compétitif.",
@@ -7689,7 +7689,7 @@
       "Maniabilité": 7.6,
       "Tolérance": 7.3
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/star-vie-triton-power-2026-plus.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-triton-power-26.png",
     "verdict": "Diamant brutale : 9.5 en puissance, carbone 18K hybride. Réservée aux experts physiques qui assument un jeu 100% offensif.",
     "price": "220-280€",
     "editorial": "Le Triton Power 2026 est la version radicale du Triton. Même carbone 18K Hybrid mais avec noyau H-EVA Power — la mousse la plus dure de StarVie. La différence avec le Balance est nette : plus de sortie de balle, moins de confort. C'est le Triton pour les compétiteurs qui veulent de la puissance StarVie au maximum.",
@@ -7729,7 +7729,7 @@
     "antivib": "—",
     "price": "140-180€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-bourne-carbon-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-bourne-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -7778,7 +7778,7 @@
     "antivib": "—",
     "price": "55-75€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-canas-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-canas-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -7876,7 +7876,7 @@
     "antivib": "—",
     "price": "220-290€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lethal-weapon-carbon-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-carbon-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -7933,7 +7933,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-bourne-carbon-ti-2023.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-bourne-carbon-ti-26.png",
     "verdict": "Hybride offensive avec grip long 14.5cm. Bonne puissance avec suffisamment de contrôle pour construire avant de conclure.",
     "price": "180-250€",
     "editorial": "La Bourne Carbon Ti 2026 est la version signature de la gamme Varlion. Même alliage carbone-titane que la LW Ti, mais en forme hybride pour plus de polyvalence. Le Pro-Touch EVA offre le toucher distinctif Varlion. C'est la pala complète de Varlion — la technologie titane dans un format polyvalent adapté à tous les styles.",
@@ -7981,7 +7981,7 @@
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-8-8-orquidea-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-orquidea-26.png",
     "verdict": "Ronde ultra-confortable et tolérante, parfaite pour débuter. Sweet spot généreux, poids plume — zéro stress sur le bras.",
     "price": "60-100€",
     "editorial": "La LW Orquídea 2026 est la nouvelle débutante Varlion. Fibre de verre et Soft EVA en ronde. Construction légère (LW = Light Weight) pour la maniabilité. L'Orquídea est positionnée pour les femmes mais convient à tous les débutants légers.",
@@ -8029,7 +8029,7 @@
       "Maniabilité": 8.7,
       "Tolérance": 9.2
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-carbon-ti-2023.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-carbon-ti-26.png",
     "verdict": "Ronde de précision chirurgicale : contrôle à 9 et tolérance à 8.5. Le choix des tacticiens et constructeurs de points patients.",
     "price": "180-250€",
     "editorial": "La LW Carbon Ti 2026 est la pépite cachée de Varlion — la marque espagnole qui refuse de suivre les tendances. L'alliage carbone-titane sur la surface est unique sur le marché : le titane ajoute une dureté que le carbone seul ne peut atteindre, pour un 'pop' sonore distinctif à chaque frappe. Le noyau Pro-Touch EVA, développé en interne, offre un toucher particulier que les fidèles de Varlion ne trouvent nulle part ailleurs.",
@@ -8080,7 +8080,7 @@
     "antivib": "—",
     "price": "50-70€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/vermont-origin-junior-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/vermont-origin-jr-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -8129,7 +8129,7 @@
     "antivib": "—",
     "price": "30-40€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-minions-junior-face-2024.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-minions-jr-face-2024.png",
     "year": 2024,
     "category": "junior",
     "scores": {
@@ -8178,7 +8178,7 @@
     "antivib": "—",
     "price": "300-380€",
     "player": "Fernando Belasteguín",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-elite-pro-v2-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-elite-pro-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -8227,7 +8227,7 @@
     "antivib": "—",
     "price": "250-330€",
     "player": "Fernando Belasteguín",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-elite-v2.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-elite-v2-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -8325,7 +8325,7 @@
     "antivib": "—",
     "price": "79-102€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-junior-v2.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-jr-v2.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -8431,7 +8431,7 @@
       "Maniabilité": 9.1,
       "Tolérance": 9.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-accent-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-accent-26.png",
     "verdict": "Porte d'entrée Wilson : légère, confortable, très tolérante. Idéale pour découvrir le padel sans se soucier de la technique.",
     "price": "60-100€",
     "editorial": "L'Accent 2026 est la pala la plus accessible de Wilson. Fibre de verre et Soft EVA en ronde. Construction simple, prix d'appel, qualité Wilson. C'est la pala pour tester le padel avec une marque de confiance.",
@@ -8479,7 +8479,7 @@
       "Maniabilité": 9.1,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-ls-v3-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-lt-v3-26.png",
     "verdict": "Version allégée de la Bela : maniabilité boostée à 8.5 tout en gardant le spin. Parfaite pour progresser avec le confort en plus.",
     "price": "180-250€",
     "player": "Fernando Belasteguín",
@@ -8528,7 +8528,7 @@
       "Maniabilité": 7.6,
       "Tolérance": 8.1
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-pro-v3-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-pro-v3-26.png",
     "verdict": "Diamant signature Bela, carbone 24K et construction tubulaire. Puissance maximale pour experts — exige un bon niveau technique.",
     "price": "220-300€",
     "player": "Fernando Belasteguín",
@@ -8577,7 +8577,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.5
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-v3-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-v3-26.png",
     "verdict": "Co-design Bela en goutte versatile : spin à 8 et bon équilibre global. Polyvalente fiable qui s'adapte à tous les styles de jeu.",
     "price": "200-280€",
     "player": "Fernando Belasteguín",
@@ -8640,7 +8640,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.8
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-pro-v2-oro.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-pro-v2-26.png",
     "verdict": "Toucher doux et dwell time long pour un contrôle précis. Excellente en défense et en construction — la patte du tacticien.",
     "price": "200-280€",
     "editorial": "La Blade Pro V2 2026 est la polyvalente avancée de Wilson — la pala qui fait tout bien sans se spécialiser. Carbone standard et Soft EVA en goutte d'eau pour le confort et la maniabilité. C'est la Wilson pour les joueurs techniques qui veulent du toucher et de la finesse plutôt que de la puissance brute.",
@@ -8688,7 +8688,7 @@
       "Maniabilité": 8.7,
       "Tolérance": 9.2
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-team-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-team-26.png",
     "verdict": "Goutte douce et tolérante pour intermédiaires. Sweet spot généreux, bon confort — transition idéale vers un jeu plus technique.",
     "price": "100-150€",
     "editorial": "La Blade Team 2026 est l'intermédiaire de la gamme Blade. Fibre de verre et Soft EVA en goutte d'eau. Construction souple et confortable, orientée toucher. C'est la Wilson pour les joueurs intermédiaires techniques qui veulent sentir la balle plutôt que la frapper.",
@@ -8736,7 +8736,7 @@
       "Maniabilité": 8.7,
       "Tolérance": 8.8
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-pro-staff-v2-azul.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-prostaff-v2-26.png",
     "verdict": "Ronde contrôle pur : réponse nette et précision chirurgicale. Pour constructeurs patients qui placent chaque balle avec intention.",
     "price": "200-280€",
     "editorial": "La Pro Staff V2 2026 est l'icône de Wilson portée en padel — la même philosophie de contrôle que la légendaire raquette de tennis. Carbone standard et Dense EVA en forme ronde. La Dense EVA offre une mousse ferme mais pas dure — plus de répondant que le Soft EVA, moins brutal que le Hard EVA. C'est la ronde pour les puristes du contrôle qui veulent du caractère dans leur pala.",
@@ -8784,7 +8784,7 @@
       "Maniabilité": 7.6,
       "Tolérance": 7.7
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-pro-v2.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-pro-v2-26.png",
     "verdict": "Diamant explosive à 9.5 en puissance avec sweet spot élargi. Finisseur agressif — demande du physique et de la précision.",
     "price": "220-300€",
     "editorial": "L'Ultra Pro V2 2026 est la pala de puissance de Wilson. Double Carbon Wall 2.0 — un double mur de carbone — avec noyau Pro EVA en diamant. Le Double Carbon Wall est exclusif à Wilson : deux couches de carbone avec un espace intermédiaire qui amplifie l'énergie de retour. C'est la technologie la plus distinctive de Wilson, et elle est spectaculaire en puissance.",
@@ -8837,7 +8837,7 @@
       "Maniabilité": 8.3,
       "Tolérance": 8.1
     },
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-team-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-team-26.png",
     "verdict": "Diamant accessible avec sweet spot large Infinity Edge. Bonne porte d'entrée vers le jeu offensif sans trop de risque.",
     "price": "120-170€",
     "editorial": "L'Ultra Team 2026 est l'intermédiaire de la gamme puissance Wilson. Hybride fibre de verre/carbone et EVA en diamant. C'est l'initiation à la puissance Wilson — forme diamant et matériaux accessibles pour développer un jeu offensif. Le premier pas vers l'Ultra Pro et son Double Carbon Wall.",
@@ -8877,7 +8877,7 @@
     "antivib": "Ease Vibe",
     "price": "280-350€",
     "player": "Delfi Brea",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-04-woman-2025-delfi-brea.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-04-woman-2025.png",
     "year": 2025,
     "category": "avance",
     "womanLine": true,
@@ -8931,7 +8931,7 @@
     "antivib": "Vibradrive",
     "price": "250-320€",
     "player": "Gemma Triay",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-elite-woman-2025-gemma-triay.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-elite-woman-2025.png",
     "year": 2025,
     "category": "avance",
     "womanLine": true,
@@ -8985,7 +8985,7 @@
     "antivib": "Vibradrive + Hesacore",
     "price": "280-340€",
     "player": "Fede Chingotto",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-neuron-2025-fede-chingotto.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-neuron-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9039,7 +9039,7 @@
     "antivib": "Ease Vibe + CurvAktiv",
     "price": "300-380€",
     "player": "Delfi Brea",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-05-woman-2026-delfi-brea.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-05-woman-2026.png",
     "year": 2026,
     "category": "avance",
     "womanLine": true,
@@ -9093,7 +9093,7 @@
     "antivib": "Ease Vibe",
     "price": "260-340€",
     "player": "Gemma Triay",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-elite-woman-2026-gemma-triay.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-elite-woman-2026.png",
     "year": 2026,
     "category": "avance",
     "womanLine": true,
@@ -9147,7 +9147,7 @@
     "antivib": "Pulse System + Custom Grip",
     "price": "200-280€",
     "player": "Aranzazu Osoro",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-vk10-quantum-3k-2025-aranzazu-osoro.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-vk10-quantum-3k-2025.png",
     "year": 2025,
     "category": "avance",
     "womanLine": true,
@@ -9201,7 +9201,7 @@
     "antivib": "Pulse System + Custom Grip",
     "price": "250-330€",
     "player": "Leo Augsburger",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-la10-quantum-12k-2025-leo-augsburger.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-la10-quantum-12k-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -9255,7 +9255,7 @@
     "antivib": "Pulse System + Custom Grip",
     "price": "230-310€",
     "player": "Tino Libaak",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-tl10-quantum-12k-2025-tino-libaak.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-tl10-quantum-12k-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9309,7 +9309,7 @@
     "antivib": "Vibrasorb System",
     "price": "120-180€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-stima-spirit.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-stima-spirit-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "womanLine": true,
@@ -9363,7 +9363,7 @@
     "antivib": "Vibrasorb System",
     "price": "120-180€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-dyna-spirit.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-dyna-spirit-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "womanLine": true,
@@ -9417,7 +9417,7 @@
     "antivib": "Vibrasorb System",
     "price": "150-200€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-vertuo.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-vertuo-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -9471,7 +9471,7 @@
     "antivib": "Vibrasorb System",
     "price": "140-190€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-vertuo.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-vertuo-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -9633,7 +9633,7 @@
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "200-280€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/pro-kennex-kinetic-legend-pro-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/prokennex-kinetic-legend-pro.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9687,7 +9687,7 @@
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "220-300€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/pro-kennex-kinetic-focus-pro-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/prokennex-kinetic-focus-pro.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9741,7 +9741,7 @@
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "230-310€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/pro-kennex-kinetic-black-ace-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/prokennex-kinetic-black-ace.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -9795,7 +9795,7 @@
     "antivib": "Shock Absorption System",
     "price": "250-350€",
     "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/royal-padel-m27-polyethylene-2025.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/royal-padel-m27-poly-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -10046,7 +10046,7 @@
       }
     ],
     "targetProfile": "Joueur polyvalent intermédiaire-avancé cherchant vitesse et contrôle. Bon pour joueur de droite qui veut un all-round aérodynamique.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/oxdog-hyper-pro-plus-2-0-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/oxdog-hyper-pro-2-0-2026.png",
     "shortName": "Hyper Pro 2.0 2026",
     "ean": null,
     "availability": "available",
@@ -10154,7 +10154,7 @@
       }
     ],
     "targetProfile": "Joueur offensif intermédiaire qui veut du diamant sans l'exigence du Pro+. Bon premier diamant pour joueurs en progression.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/oxdog-ultimate-tour-x-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/oxdog-ultimate-tour-2026.png",
     "shortName": "Ultimate Tour X 2026",
     "ean": null,
     "availability": "available",
@@ -10208,7 +10208,7 @@
       }
     ],
     "targetProfile": "Joueur avancé technique cherchant spin maximal depuis une forme ronde. Pour Bea González fans et joueurs qui veulent contrôle + attaque aérienne.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/star-vie-kenta-eternal-pro-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-kenta-eternal-pro-2026.png",
     "shortName": "Kenta Eternal Pro 2026",
     "ean": null,
     "availability": "available",
@@ -10262,7 +10262,7 @@
       }
     ],
     "targetProfile": "Joueur cherchant confort maximal dans une marque premium. Excellent choix santé pour joueurs sensibles du bras ou en reprise.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/star-vie-astrum-eris-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-astrum-2026.png",
     "shortName": "Astrum Eris 2026",
     "ean": null,
     "availability": "available",
@@ -10316,7 +10316,7 @@
       }
     ],
     "targetProfile": "Joueur polyvalent avancé cherchant la ronde la plus complète. Pour ceux qui hésitent entre confort et puissance.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/star-vie-metheora-warrior-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-metheora-warrior-2026.png",
     "shortName": "Metheora Warrior 2026",
     "ean": null,
     "availability": "available",
@@ -10640,7 +10640,7 @@
       }
     ],
     "targetProfile": "Joueur avancé/pro cherchant le top absolu Nox. Fan d'Agustín Tapia. Attaquant-polyvalent voulant personnaliser son équilibre.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-genius-12k-alum-xtrem-2026.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-at10-genius-12k-xtrem-2026.png",
     "shortName": "AT10 Genius 12K Xtrem 2026",
     "ean": null,
     "availability": "available",
@@ -10694,7 +10694,7 @@
       }
     ],
     "targetProfile": "Joueur intermédiaire cherchant polyvalence et confort à prix raisonnable. Le choix sûr Wilson.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-carbon-force-pro.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-carbon-force-pro-2025.png",
     "shortName": "Carbon Force Pro 2025",
     "ean": null,
     "availability": "available",
@@ -10748,7 +10748,7 @@
       }
     ],
     "targetProfile": "Femmes, seniors, débutants avancés cherchant légèreté et confort. Idéal pour la boutique du centre padel.",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-carbon-force-lt.png",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-carbon-force-lt-2025.png",
     "shortName": "Carbon Force LT 2025",
     "ean": null,
     "availability": "available",
@@ -10929,7 +10929,7 @@
     "antivib": "Auxetic 2.0",
     "price": "280-320€",
     "player": "Arturo Coello",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-pro-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -10966,7 +10966,7 @@
     "antivib": "Auxetic 2.0",
     "price": "180-220€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-team-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -11000,7 +11000,7 @@
     "antivib": "",
     "price": "50-70€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-junior-2025.png",
     "year": 2025,
     "category": "junior",
     "scores": {
@@ -11034,7 +11034,7 @@
     "antivib": "Auxetic 2.0",
     "price": "250-290€",
     "player": "Arturo Coello",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-motion-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -11068,7 +11068,7 @@
     "antivib": "Innegra",
     "price": "100-140€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-vibe-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -11102,7 +11102,7 @@
     "antivib": "Shock Block",
     "price": "180€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-power-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -11136,7 +11136,7 @@
     "antivib": "Shock Block",
     "price": "180€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-control-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -11170,7 +11170,7 @@
     "antivib": "",
     "price": "35€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-pr-open-2025.png",
     "year": 2025,
     "category": "debutant",
     "scores": {
@@ -11204,7 +11204,7 @@
     "antivib": "Insert élastomère",
     "price": "99€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-control-metal-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -11238,7 +11238,7 @@
     "antivib": "Shock Block",
     "price": "180€",
     "player": "Coki Nieto",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-hybrid-pro-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -11275,7 +11275,7 @@
     "antivib": "Insert élastomère",
     "price": "99€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-hybrid-metal-2025.png",
     "year": 2025,
     "category": "intermediaire",
     "scores": {
@@ -11309,7 +11309,7 @@
     "antivib": "Y-Beam",
     "price": "320-390€",
     "player": "Momo González",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-endure-pro-v1-2026.png",
     "year": 2026,
     "category": "expert",
     "scores": {
@@ -11346,7 +11346,7 @@
     "antivib": "Y-Beam",
     "price": "260-320€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-endure-v1-2026.png",
     "year": 2026,
     "category": "avance",
     "scores": {
@@ -11380,7 +11380,7 @@
     "antivib": "I-Beam",
     "price": "300-360€",
     "player": "Javi Garrido",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-defy-pro-v1-2025.png",
     "year": 2025,
     "category": "expert",
     "scores": {
@@ -11417,7 +11417,7 @@
     "antivib": "I-Beam",
     "price": "240-300€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-defy-v1-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -11451,7 +11451,7 @@
     "antivib": "I-Beam",
     "price": "200-250€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-defy-ls-v1-2025.png",
     "year": 2025,
     "category": "avance",
     "scores": {
@@ -11485,7 +11485,7 @@
     "antivib": "Y-Beam",
     "price": "200-250€",
     "player": "",
-    "imageUrl": "",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-endure-ls-v1-2026.png",
     "year": 2026,
     "category": "intermediaire",
     "scores": {
