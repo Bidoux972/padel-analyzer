@@ -2487,6 +2487,9 @@ export default function PadelAnalyzer() {
   const [scanResult, setScanResult] = useState(null); // {vision:{...}, matches:[{racket,score},...], bestScore}
   const [scanError, setScanError] = useState("");
   const scanFileRef = useRef(null);
+  const [scanAdded, setScanAdded] = useState(new Set()); // IDs of rackets added from scan
+  const [scanPreview, setScanPreview] = useState(null); // {file, url} for image preview
+  const [scanPreviewFile, setScanPreviewFile] = useState(null); // raw File object
 
   // ============ SCAN VISUEL — Functions ============
   const compressImage = useCallback((file) => {
@@ -2602,6 +2605,7 @@ export default function PadelAnalyzer() {
     if (!file) return;
     setScanError("");
     setScanResult(null);
+    setScanAdded(new Set());
 
     // Step 1: Compress
     setScanStatus("compressing");
@@ -2641,6 +2645,19 @@ export default function PadelAnalyzer() {
     setScanResult({ vision, matches, bestScore });
     setScanStatus("done");
   }, [compressImage, fuzzyMatchRacket]);
+
+  const addScanRacket = useCallback((r) => {
+    if (!r || !r.id) return;
+    if (rackets.some(x => x.id === r.id)) {
+      setScanAdded(s => new Set(s).add(r.id));
+      return; // already in collection
+    }
+    const gs = profileName ? computeGlobalScore(r.scores, profile, r) : 0;
+    const newR = { ...r, color: getNextColor(rackets), _gs: gs };
+    setRackets(p => [...p, newR]);
+    setSelected(p => p.length < 4 ? [...p, newR.id] : p);
+    setScanAdded(s => new Set(s).add(r.id));
+  }, [rackets, profile, profileName]);
 
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
   useEffect(()=>{
@@ -4294,7 +4311,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* ============================================================ */}
         {/* SCAN VISUEL — Quick access button */}
         {/* ============================================================ */}
-        <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScreen("scan");}} className="pa-card" style={{
+        <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanAdded(new Set());setScreen("scan");}} className="pa-card" style={{
           marginTop:20,width:"100%",maxWidth:400,borderRadius:16,cursor:"pointer",position:"relative",overflow:"hidden",
           background:`linear-gradient(135deg, rgba(232,98,42,0.08) 0%, rgba(212,168,86,0.06) 100%)`,
           border:`1px solid ${T.accent}30`,padding:"16px 20px",textAlign:"left",
@@ -5041,12 +5058,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {(scanStatus==="idle"||scanStatus==="error")&&<div style={{width:"100%",maxWidth:400}}>
           <input ref={scanFileRef} type="file" accept="image/*" capture="environment" style={{display:"none"}} onChange={e=>{
             const f = e.target.files?.[0];
-            if(f) handleScan(f);
+            if(f){
+              setScanPreview(URL.createObjectURL(f));
+              setScanPreviewFile(f);
+            }
             e.target.value = "";
           }}/>
 
-          {/* Main upload button */}
-          <button onClick={()=>scanFileRef.current?.click()} className="pa-cta" style={{
+          {/* Main upload / preview */}
+          {scanPreview?<div style={{width:"100%",borderRadius:20,overflow:"hidden",background:T.card,border:`1px solid ${T.accent}40`}}>
+            <div style={{position:"relative",display:"flex",justifyContent:"center",padding:16,background:T.surface}}>
+              <img src={scanPreview} alt="Preview" style={{maxWidth:"100%",maxHeight:280,borderRadius:12,objectFit:"contain"}}/>
+            </div>
+            <div style={{padding:"12px 16px",display:"flex",gap:10,justifyContent:"center"}}>
+              <button onClick={()=>{setScanPreview(null);setScanPreviewFile(null);}} style={{flex:1,padding:"12px",background:"rgba(255,255,255,0.04)",border:`1px solid ${T.border}`,borderRadius:12,color:T.gray1,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F.body}}>✕ Annuler</button>
+              <button onClick={()=>{if(scanPreviewFile){handleScan(scanPreviewFile);setScanPreview(null);setScanPreviewFile(null);}}} className="pa-cta" style={{flex:2,padding:"12px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:F.body,boxShadow:`0 4px 16px ${T.accentGlow}`}}>🔍 Lancer le scan</button>
+            </div>
+          </div>
+          :<button onClick={()=>scanFileRef.current?.click()} className="pa-cta" style={{
             width:"100%",padding:"28px 20px",borderRadius:20,cursor:"pointer",
             background:`linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`,
             border:`2px dashed ${T.accent}50`,display:"flex",flexDirection:"column",alignItems:"center",gap:12,
@@ -5057,7 +5086,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
             <div style={{fontFamily:F.body,fontSize:15,fontWeight:700,color:T.cream}}>Choisir une photo</div>
             <div style={{fontFamily:F.body,fontSize:11,color:T.gray2}}>Appareil photo ou galerie</div>
-          </button>
+          </button>}
 
           {/* Error display */}
           {scanStatus==="error"&&scanError&&<div style={{marginTop:16,padding:"12px 16px",background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:12,color:"#fca5a5",fontSize:12,fontFamily:F.body,textAlign:"center"}}>
@@ -5150,6 +5179,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Voir la fiche complète</span>
                     <span style={{fontSize:16,color:T.green}}>→</span>
                   </div>
+                  {/* Add to collection button */}
+                  <div onClick={e=>e.stopPropagation()} style={{padding:"8px 18px",borderTop:`1px solid ${T.border}`,display:"flex",justifyContent:"center"}}>
+                    {scanAdded.has(r.id)||rackets.some(x=>x.id===r.id)
+                      ?<span style={{fontSize:11,color:T.green,fontWeight:600,fontFamily:F.body}}>✓ Ajoutée à mes raquettes</span>
+                      :<button onClick={e=>{e.stopPropagation();addScanRacket(r);}} style={{padding:"8px 20px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:10,color:T.accent,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:F.body,transition:"all 0.2s"}}>+ Ajouter à mes raquettes</button>
+                    }
+                  </div>
                 </div>;
               })()}
             </>:<>
@@ -5159,19 +5195,30 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 {scanResult.matches.map((m,i)=>{
                   const r = m.racket;
                   const pert = profileName ? computeGlobalScore(r.scores, profile, r) : null;
-                  return <button key={r.id} onClick={()=>openRacketSheet(r,"scan")} className="pa-card" style={{
-                    width:"100%",borderRadius:14,cursor:"pointer",overflow:"hidden",
+                  const added = scanAdded.has(r.id)||rackets.some(x=>x.id===r.id);
+                  return <div key={r.id} style={{
+                    width:"100%",borderRadius:14,overflow:"hidden",
                     background:T.card,border:`1px solid ${i===0?T.accent+"40":T.border}`,
-                    padding:"14px 16px",textAlign:"left",display:"flex",gap:12,alignItems:"center",
                   }}>
-                    <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} fallbackSize={40} style={{width:40,height:40,borderRadius:8,objectFit:"contain",background:T.surface}}/>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontFamily:F.body,fontSize:13,fontWeight:700,color:T.cream}}>{i===0?"🥇 ":i===1?"🥈 ":"🥉 "}{r.name}</div>
-                      <div style={{fontSize:10,color:T.gray1,fontFamily:F.body}}>{r.brand} · {r.shape} · {r.year} · {r.price}</div>
-                      {pert!==null&&pert>0&&<div style={{fontSize:9,color:pert>=7?T.accent:pert>=5?"#fbbf24":"#f87171",fontFamily:F.mono,marginTop:2}}>{(pert*10).toFixed(0)}% pertinence {profileName}</div>}
+                    <div onClick={()=>openRacketSheet(r,"scan")} style={{
+                      padding:"14px 16px",textAlign:"left",display:"flex",gap:12,alignItems:"center",cursor:"pointer",
+                    }}>
+                      <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} fallbackSize={40} style={{width:40,height:40,borderRadius:8,objectFit:"contain",background:T.surface}}/>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontFamily:F.body,fontSize:13,fontWeight:700,color:T.cream}}>{i===0?"🥇 ":i===1?"🥈 ":"🥉 "}{r.name}</div>
+                        <div style={{fontSize:10,color:T.gray1,fontFamily:F.body}}>{r.brand} · {r.shape} · {r.year} · {r.price}</div>
+                        {pert!==null&&pert>0&&<div style={{fontSize:9,color:pert>=7?T.accent:pert>=5?"#fbbf24":"#f87171",fontFamily:F.mono,marginTop:2}}>{(pert*10).toFixed(0)}% pertinence {profileName}</div>}
+                      </div>
+                      <div style={{fontSize:14,fontWeight:800,color:i===0?T.accent:T.gray1,fontFamily:F.mono,flexShrink:0}}>{m.score}%</div>
                     </div>
-                    <div style={{fontSize:14,fontWeight:800,color:i===0?T.accent:T.gray1,fontFamily:F.mono,flexShrink:0}}>{m.score}%</div>
-                  </button>;
+                    <div style={{padding:"6px 16px 8px",borderTop:`1px solid ${T.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      {added
+                        ?<span style={{fontSize:10,color:T.green,fontWeight:600,fontFamily:F.body}}>✓ Ajoutée</span>
+                        :<button onClick={()=>addScanRacket(r)} style={{padding:"5px 14px",background:T.accentSoft,border:`1px solid ${T.accent}30`,borderRadius:8,color:T.accent,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:F.body}}>+ Ajouter</button>
+                      }
+                      <span onClick={()=>openRacketSheet(r,"scan")} style={{fontSize:10,color:T.gray2,cursor:"pointer",fontFamily:F.body}}>Voir fiche →</span>
+                    </div>
+                  </div>;
                 })}
               </div>
             </>}
@@ -5210,7 +5257,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Scan again button */}
           <div style={{marginTop:20,textAlign:"center"}}>
-            <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");}} className="pa-ghost" style={{
+            <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanPreview(null);setScanPreviewFile(null);setScanAdded(new Set());}} className="pa-ghost" style={{
               padding:"12px 24px",background:"rgba(255,255,255,0.04)",border:`1px solid ${T.border}`,borderRadius:12,
               color:T.gray1,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:F.body,
             }}>📷 Scanner une autre raquette</button>
