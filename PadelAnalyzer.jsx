@@ -4077,10 +4077,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <span style={{fontSize:16,flexShrink:0}}>📧</span>
               <div style={{flex:1}}>
                 <input type="email" value={cloudLoginEmail} onChange={e=>setCloudLoginEmail(e.target.value)} placeholder="Votre email pour recevoir vos résultats"
-                  style={{width:"100%",padding:"6px 10px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#f1f5f9",fontSize:12,fontFamily:"'Inter'",outline:"none",boxSizing:"border-box"}}
+                  style={{width:"100%",padding:"6px 10px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:8,color:T.white,fontSize:12,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
                   onKeyDown={e=>{if(e.key==="Enter"&&cloudLoginEmail.trim()){updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}}}/>
               </div>
-              <button onClick={()=>{if(!cloudLoginEmail.trim())return;updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}} style={{padding:"6px 12px",background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",borderRadius:8,color:"#f97316",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>OK</button>
+              <button onClick={()=>{if(!cloudLoginEmail.trim())return;updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}} style={{padding:"6px 12px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:8,color:T.accent,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:F.body,flexShrink:0}}>OK</button>
             </div>}
 
             <p style={{fontSize:10,color:T.gray1,fontWeight:600,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:12,textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>Mes profils <span style={{color:T.gray2,fontWeight:400}}>({savedProfiles.length})</span></p>
@@ -4091,10 +4091,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <input
                   type="text" placeholder="Rechercher un profil…" value={profileSearch}
                   onChange={e=>{setProfileSearchTerm(e.target.value);setActiveProfileIdx(0);}}
-                  style={{width:"100%",padding:"8px 12px 8px 32px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,color:"#e2e8f0",fontSize:12,fontFamily:"'Inter',sans-serif",outline:"none",boxSizing:"border-box"}}
+                  style={{width:"100%",padding:"8px 12px 8px 32px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:10,color:T.white,fontSize:12,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
                 />
-                <span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:13,color:"#64748b",pointerEvents:"none"}}>🔍</span>
-                {profileSearch&&<button onClick={()=>{setProfileSearchTerm("");setActiveProfileIdx(0);}} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"#64748b",fontSize:14,cursor:"pointer",padding:2}}>✕</button>}
+                <span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:13,color:T.gray2,pointerEvents:"none"}}>🔍</span>
+                {profileSearch&&<button onClick={()=>{setProfileSearchTerm("");setActiveProfileIdx(0);}} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.gray2,fontSize:14,cursor:"pointer",padding:2}}>✕</button>}
               </div>
             </div>}
 
@@ -4102,11 +4102,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{position:"relative",display:"flex",alignItems:"center",gap:4}}>
               {/* Left arrow */}
               {filtered.length>1&&<button onClick={()=>scrollDir("left")} aria-label="Précédent" style={{
-                width:36,height:36,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.06)",
-                color:"#e2e8f0",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
-                fontFamily:"'Inter',sans-serif",transition:"all 0.2s",backdropFilter:"blur(8px)",
-              }} onMouseEnter={e=>{e.currentTarget.style.background="rgba(249,115,22,0.15)";e.currentTarget.style.borderColor="rgba(249,115,22,0.4)";}}
-                 onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.06)";e.currentTarget.style.borderColor="rgba(255,255,255,0.12)";}}>‹</button>}
+                width:36,height:36,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
+                color:T.white,fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+                fontFamily:F.body,transition:"all 0.2s",backdropFilter:"blur(8px)",
+              }} onMouseEnter={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=`${T.accent}60`;}}
+                 onMouseLeave={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=T.border;}}>‹</button>}
 
               {/* Scrollable track */}
               <div ref={carouselRef} className="pa-carousel" onScroll={handleScroll} style={{
@@ -4130,15 +4130,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                         setPinInput("");setPinError("");setPasswordModal({mode:'unlock',profileName:sp.name,onSuccess:()=>{selectHomeProfile(sp);setPasswordModal(null);}});
                       } else { selectHomeProfile(sp); }
                     }} style={{
-                      background: isActive ? "rgba(249,115,22,0.08)" : "rgba(255,255,255,0.03)",
-                      border: isActive ? "1px solid rgba(249,115,22,0.35)" : "1px solid rgba(255,255,255,0.08)",
-                      borderRadius:18,padding:"22px 16px 16px",cursor:"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
+                      background: isActive ? T.accentSoft : `${T.card}cc`,
+                      border: isActive ? `1px solid ${T.accent}50` : `1px solid ${T.border}`,
+                      borderRadius:18,padding:"22px 16px 16px",cursor:"pointer",textAlign:"center",fontFamily:F.body,
                       minWidth:CARD_W,maxWidth:CARD_W,flexShrink:0,scrollSnapAlign:"center",
                       display:"flex",flexDirection:"column",alignItems:"center",gap:8,position:"relative",
                       transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
                       transform: isActive ? "scale(1.03)" : "scale(0.97)",
                       opacity: isActive ? 1 : 0.7,
-                      boxShadow: isActive ? "0 4px 20px rgba(249,115,22,0.15)" : "none",
+                      boxShadow: isActive ? `0 8px 32px ${T.accentGlow}, inset 0 1px 0 ${T.gold}15` : "none",
                     }}>
                       {/* Lock toggle (top-left) */}
                       <div onClick={e=>{e.stopPropagation();
@@ -4151,8 +4151,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                         }
                       }} style={{
                         position:"absolute",top:6,left:6,width:22,height:22,borderRadius:"50%",
-                        background:sp.locked?"rgba(99,102,241,0.15)":"rgba(255,255,255,0.05)",
-                        border:`1px solid ${sp.locked?"rgba(99,102,241,0.3)":"rgba(255,255,255,0.1)"}`,
+                        background:sp.locked?"rgba(99,102,241,0.15)":T.accentSoft,
+                        border:`1px solid ${sp.locked?"rgba(99,102,241,0.3)":T.border}`,
                         display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,
                         color:sp.locked?"#a5b4fc":"#475569",
                         cursor:"pointer",opacity:sp.locked?0.9:0.4,transition:"all 0.2s",zIndex:2,
@@ -4170,25 +4170,25 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       {/* Avatar */}
                       <div style={{width:56,height:56,borderRadius:16,
                         background: isActive 
-                          ? "linear-gradient(135deg,rgba(249,115,22,0.35),rgba(239,68,68,0.25))" 
-                          : "linear-gradient(135deg,rgba(249,115,22,0.18),rgba(239,68,68,0.12))",
-                        border: isActive ? "2px solid rgba(249,115,22,0.5)" : "1px solid rgba(249,115,22,0.2)",
+                          ? `linear-gradient(135deg,${T.accent}55,${T.gold}40)` 
+                          : `linear-gradient(135deg,${T.accent}30,${T.gold}20)`,
+                        border: isActive ? `2px solid ${T.accent}70` : `1px solid ${T.accent}30`,
                         display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,fontWeight:700,
-                        color: isActive ? "#f97316" : "#94a3b8",flexShrink:0,transition:"all 0.3s"}}>
+                        color: isActive ? T.accent : T.gray2,flexShrink:0,transition:"all 0.3s"}}>
                         {sp.name.charAt(0).toUpperCase()}
                       </div>
                       {/* Name */}
-                      <div style={{fontSize:15,fontWeight:700,color: isActive ? "#f1f5f9" : "#cbd5e1",lineHeight:1.2,transition:"color 0.3s"}}>{sp.name}</div>
+                      <div style={{fontSize:15,fontWeight:700,color: isActive ? T.cream : T.gray1,lineHeight:1.2,transition:"color 0.3s",fontFamily:F.editorial}}>{sp.name}</div>
                       {/* Level badge */}
-                      {p.level&&<div style={{fontSize:9,fontWeight:600,color:levelColors[p.level]||"#64748b",background:`${levelColors[p.level]||"#64748b"}18`,padding:"2px 10px",borderRadius:10,letterSpacing:"0.03em",textTransform:"uppercase"}}>{p.level}{isJunior?" · Junior":""}</div>}
+                      {p.level&&<div style={{fontSize:9,fontWeight:600,color:levelColors[p.level]||T.gray2,background:`${levelColors[p.level]||T.gray2}18`,padding:"2px 10px",borderRadius:10,letterSpacing:"0.03em",textTransform:"uppercase",fontFamily:F.body}}>{p.level}{isJunior?" · Junior":""}</div>}
                       {/* Desc */}
-                      {desc&&<div style={{fontSize:10,color:"#64748b",lineHeight:1.3}}>{desc}</div>}
+                      {desc&&<div style={{fontSize:10,color:T.gray2,lineHeight:1.3,fontFamily:F.body}}>{desc}</div>}
                       {/* Styles */}
-                      {stylesStr&&<div style={{fontSize:9,color:"#94a3b8",fontStyle:"italic"}}>{stylesStr}</div>}
+                      {stylesStr&&<div style={{fontSize:9,color:T.gray2,fontStyle:"italic",fontFamily:F.body}}>{stylesStr}</div>}
                       {/* Injuries */}
                       {injuries.length>0&&<div style={{fontSize:9,color:"#ef4444",opacity:0.8}}>🩹 {injuries.join(", ")}</div>}
                       {/* CTA */}
-                      <div style={{marginTop:6,fontSize:10,color: sp.locked ? "#a5b4fc" : isActive ? "#f97316" : "#64748b",fontWeight:600,letterSpacing:"0.04em",textTransform:"uppercase",transition:"color 0.3s"}}>
+                      <div style={{marginTop:6,fontSize:10,color: sp.locked ? "#a5b4fc" : isActive ? T.accent : T.gray2,fontWeight:600,letterSpacing:"0.04em",textTransform:"uppercase",transition:"color 0.3s",fontFamily:F.body}}>
                         {sp.locked ? "🔒 Protégé" : isActive ? "▶ Ouvrir" : "Ouvrir →"}
                       </div>
                     </button>
@@ -4200,26 +4200,26 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               {/* Right arrow */}
               {filtered.length>1&&<button onClick={()=>scrollDir("right")} aria-label="Suivant" style={{
-                width:36,height:36,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",background:"rgba(255,255,255,0.06)",
-                color:"#e2e8f0",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
-                fontFamily:"'Inter',sans-serif",transition:"all 0.2s",backdropFilter:"blur(8px)",
-              }} onMouseEnter={e=>{e.currentTarget.style.background="rgba(249,115,22,0.15)";e.currentTarget.style.borderColor="rgba(249,115,22,0.4)";}}
-                 onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.06)";e.currentTarget.style.borderColor="rgba(255,255,255,0.12)";}}>›</button>}
+                width:36,height:36,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
+                color:T.white,fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+                fontFamily:F.body,transition:"all 0.2s",backdropFilter:"blur(8px)",
+              }} onMouseEnter={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=`${T.accent}60`;}}
+                 onMouseLeave={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=T.border;}}>›</button>}
             </div>
 
             {/* Dot indicators — clickable */}
             {filtered.length>1&&<div style={{display:"flex",justifyContent:"center",gap:7,marginTop:10}}>
               {filtered.map((_,i)=><button key={i} onClick={()=>scrollToIdx(i)} aria-label={`Profil ${i+1}`} style={{
                 width: i===activeProfileIdx ? 18 : 7,height:7,borderRadius:4,border:"none",cursor:"pointer",padding:0,
-                background: i===activeProfileIdx ? "#f97316" : "rgba(255,255,255,0.15)",
+                background: i===activeProfileIdx ? T.accent : `${T.gray3}`,
                 transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
               }}/>)}
             </div>}
 
             {/* Keyboard hint */}
-            {filtered.length>1&&<p style={{fontSize:8,color:"#334155",textAlign:"center",marginTop:6,letterSpacing:"0.04em"}}>← → Flèches ou swipe pour naviguer</p>}
+            {filtered.length>1&&<p style={{fontSize:8,color:T.gray3,textAlign:"center",marginTop:6,letterSpacing:"0.04em",fontFamily:F.body}}>← → Flèches ou swipe pour naviguer</p>}
 
-            {profileSearch&&filtered.length===0&&<p style={{fontSize:11,color:"#64748b",textAlign:"center",marginTop:8}}>Aucun profil trouvé pour "{profileSearch}"</p>}
+            {profileSearch&&filtered.length===0&&<p style={{fontSize:11,color:T.gray2,textAlign:"center",marginTop:8,fontFamily:F.body}}>Aucun profil trouvé pour "{profileSearch}"</p>}
           </div>);
         })()}
 
@@ -4227,7 +4227,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {isKiosk ? <div style={{width:"100%",maxWidth:400,position:"relative",zIndex:1,textAlign:"center"}}>
           <button onClick={createNewProfile} className="pa-cta" style={{
             padding:"20px 28px",
-            background:"linear-gradient(135deg,#f97316,#d4541e,#f59e0b,#f97316)",
+            background:`linear-gradient(135deg,${T.accent},#d4541e,${T.gold},${T.accent})`,
             backgroundSize:"300% 300%",
             border:"none",borderRadius:18,color:"#fff",fontSize:18,fontWeight:800,
             cursor:"pointer",fontFamily:F.body,letterSpacing:"-0.01em",
@@ -4246,7 +4246,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* New profile button */}
         <button onClick={createNewProfile} className="pa-cta" style={{
           padding:"15px 28px",
-          background: savedProfiles.length===0 ? "linear-gradient(135deg,#f97316,#d4541e,#f59e0b,#f97316)" : `linear-gradient(135deg,${T.accent},#d4541e)`,
+          background: savedProfiles.length===0 ? `linear-gradient(135deg,${T.accent},#d4541e,${T.gold},${T.accent})` : `linear-gradient(135deg,${T.accent},#d4541e)`,
           backgroundSize: savedProfiles.length===0 ? "300% 300%" : "100% 100%",
           border:"none",borderRadius:14,color:"#fff",fontSize:14,fontWeight:700,
           cursor:"pointer",fontFamily:F.body,letterSpacing:"-0.01em",
@@ -4351,10 +4351,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
 
         {familyCode && familyCode !== "LOCAL" && <div style={{marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-          <span style={{fontSize:10,color:cloudStatus==="synced"?"#4ade80":cloudStatus==="loading"?"#fbbf24":"#64748b"}}>
-            {cloudStatus==="synced"?"☁️ Synchronisé":"☁️ Cloud"} · <span style={{fontFamily:"'Outfit'",fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
+          <span style={{fontSize:10,color:cloudStatus==="synced"?"#4ade80":cloudStatus==="loading"?"#fbbf24":T.gray2}}>
+            {cloudStatus==="synced"?"☁️ Synchronisé":"☁️ Cloud"} · <span style={{fontFamily:F.legacy,fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
           </span>
-          <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid rgba(255,255,255,0.12)",borderRadius:6,padding:"3px 8px",color:"#94a3b8",fontSize:10,cursor:"pointer",fontFamily:"inherit"}} title="Déconnexion cloud">⏻</button>
+          <button onClick={handleCloudLogout} style={{background:"none",border:`1px solid ${T.border}`,borderRadius:6,padding:"3px 8px",color:T.gray2,fontSize:10,cursor:"pointer",fontFamily:F.body}} title="Déconnexion cloud">⏻</button>
           {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
         </div>}
 
