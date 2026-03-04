@@ -11,7 +11,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "200-270€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-ctrl-2025.png",
     "year": 2025,
     "category": "avance",
@@ -65,7 +65,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "62-85€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -114,7 +114,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "70-100€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-light-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -163,7 +163,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "150-200€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-adipower-multiweight-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -369,7 +369,7 @@
     "core": "EVA Soft Performance",
     "antivib": "IBS (Intelligent Balance System)",
     "price": "250-310€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-arrow-hit-2026.png",
     "year": 2026,
     "category": "avance",
@@ -477,7 +477,7 @@
     "core": "EVA Soft Performance",
     "antivib": "IBS + MPS ribs",
     "price": "250-310€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-arrow-hit-ctrl-2026.png",
     "year": 2026,
     "category": "avance",
@@ -531,7 +531,7 @@
     "core": "EVA Performance",
     "antivib": "IBS + MPS ribs",
     "price": "280-350€",
-    "player": null,
+    "player": "Expert",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-arrow-hit-carbon-ctrl-2026.png",
     "year": 2026,
     "category": "expert",
@@ -585,7 +585,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "100-115€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-arrow-hit-jr-pink-2026.png",
     "year": 2026,
     "category": "junior",
@@ -737,7 +737,7 @@
     "core": "EVA Soft Performance",
     "antivib": "Dynamic Air Flow",
     "price": "150-200€",
-    "player": null,
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-cross-it-team-light-2026.png",
     "year": 2026,
     "category": "intermediaire",
@@ -786,7 +786,7 @@
     "core": "EVA Soft Performance",
     "antivib": "Standard",
     "price": "50-80€",
-    "player": null,
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-drive-black-2026.png",
     "year": 2026,
     "category": "debutant",
@@ -835,7 +835,7 @@
     "core": "EVA Soft",
     "antivib": "Standard",
     "price": "40-70€",
-    "player": null,
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-match-light-2026.png",
     "year": 2026,
     "category": "debutant",
@@ -1055,7 +1055,7 @@
     "core": "EVA Soft Performance",
     "antivib": "Weight & Balance System",
     "price": "320-390€",
-    "player": null,
+    "player": "Expert",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/adidas-metalbone-carbon-ctrl-2026.png",
     "year": 2026,
     "category": "expert",
@@ -1325,7 +1325,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "170-220€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-viper-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -1374,7 +1374,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "90-100€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-alioth-mini-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -1423,7 +1423,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "140-150€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-alioth-pro-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -1472,7 +1472,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "60-80€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-contact-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -1521,7 +1521,7 @@
     "core": "Standard EVA",
     "antivib": "Vibrasorb",
     "price": "150-200€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-counter-viper-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -1570,7 +1570,7 @@
     "core": "Hard EVA",
     "antivib": "—",
     "price": "300-400€",
-    "player": "—",
+    "player": "Expert",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-rebel-2025.png",
     "year": 2025,
     "category": "expert",
@@ -1624,7 +1624,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "70-90€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-revenge-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -1940,7 +1940,7 @@
     "core": "X-EVA",
     "antivib": "Vibrabsorb",
     "price": "250-310€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-veron-2026.png",
     "year": 2026,
     "category": "avance",
@@ -1994,7 +1994,7 @@
     "core": "EVA + Carbon Power Layer",
     "antivib": "Vibrabsorb",
     "price": "300-370€",
-    "player": null,
+    "player": "Expert",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-viper-2026.png",
     "year": 2026,
     "category": "expert",
@@ -2268,7 +2268,7 @@
     "core": "Hard EVA",
     "antivib": "Vibradrive",
     "price": "200-280€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-04-2024.png",
     "year": 2024,
     "category": "avance",
@@ -2317,7 +2317,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "50-70€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-flow-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -2513,7 +2513,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "55-65€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-indiga-boy-2025.png",
     "year": 2025,
     "category": "junior",
@@ -2562,7 +2562,7 @@
     "core": "Standard EVA",
     "antivib": "Vibradrive",
     "price": "180-240€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-03-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -2611,7 +2611,7 @@
     "core": "Hard EVA",
     "antivib": "Vibradrive",
     "price": "250-350€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-vertex-04-2025.png",
     "year": 2025,
     "category": "avance",
@@ -2866,7 +2866,7 @@
     "core": "MultiEVA Soft",
     "antivib": "Ease Vibe",
     "price": "200-260€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-04-comfort-2026.png",
     "year": 2026,
     "category": "avance",
@@ -2915,7 +2915,7 @@
     "core": "MultiEVA",
     "antivib": "Ease Vibe + Total Channel",
     "price": "260-330€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/bullpadel-hack-04-hybrid-2026.png",
     "year": 2026,
     "category": "avance",
@@ -3429,7 +3429,7 @@
     "core": "EVA Power",
     "antivib": "—",
     "price": "200-280€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-conqueror-2025.png",
     "year": 2025,
     "category": "avance",
@@ -3483,7 +3483,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "40-55€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-junior-2025.png",
     "year": 2025,
     "category": "junior",
@@ -3532,7 +3532,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "120-160€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/drop-shot-legend-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -3581,7 +3581,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "45-65€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-galactica-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -3630,7 +3630,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "130-170€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-galactica-pro-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -3679,7 +3679,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "55-75€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-rocket-ultra-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -3717,7 +3717,7 @@
     "womanLine": false
   },
   {
-    "id": "dunlop-fx-lite-26",
+    "id": "dunlop-fx-lite-2026",
     "brand": "Dunlop",
     "name": "Dunlop FX Lite 2026",
     "shortName": "FX Lite 26",
@@ -3773,10 +3773,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Avancé"
   },
   {
-    "id": "dunlop-fx-pro-26",
+    "id": "dunlop-fx-pro-2026",
     "brand": "Dunlop",
     "name": "Dunlop FX Pro 2026",
     "shortName": "FX Pro 26",
@@ -3821,10 +3822,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Expert"
   },
   {
-    "id": "dunlop-fx-team-26",
+    "id": "dunlop-fx-team-2026",
     "brand": "Dunlop",
     "name": "Dunlop FX Team 2026",
     "shortName": "FX Team 26",
@@ -3869,7 +3871,8 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Intermédiaire"
   },
   {
     "id": "head-extreme-pro-2024",
@@ -3883,7 +3886,7 @@
     "core": "Power foam",
     "antivib": "Auxetic + Innegra",
     "price": "180-250€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-pro-2024.png",
     "year": 2024,
     "category": "avance",
@@ -3932,7 +3935,7 @@
     "core": "Soft EVA",
     "antivib": "Innegra",
     "price": "60-70€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-monster-kids-2024.png",
     "year": 2024,
     "category": "junior",
@@ -3981,7 +3984,7 @@
     "core": "Comfort foam",
     "antivib": "Innegra",
     "price": "80-120€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-motion-2024.png",
     "year": 2024,
     "category": "debutant",
@@ -4030,7 +4033,7 @@
     "core": "Soft EVA",
     "antivib": "Innegra",
     "price": "120-140€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -4079,7 +4082,7 @@
     "core": "Comfort foam",
     "antivib": "Auxetic 2.0",
     "price": "130-170€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-motion-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -4128,7 +4131,7 @@
     "core": "Comfort foam",
     "antivib": "Auxetic 2.0",
     "price": "100-140€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-one-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -4177,7 +4180,7 @@
     "core": "Power foam",
     "antivib": "Auxetic 2.0 + Innegra",
     "price": "200-260€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-pro-2025.png",
     "year": 2025,
     "category": "avance",
@@ -4338,7 +4341,7 @@
     "core": "Control Foam",
     "antivib": "Graphene 360+",
     "price": "100-140€",
-    "player": null,
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-gravity-team-light-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -4387,7 +4390,7 @@
     "core": "Soft EVA",
     "antivib": "Innegra",
     "price": "107-165€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-one-ultralight-2025.png",
     "year": 2025,
     "category": "junior",
@@ -4436,7 +4439,7 @@
     "core": "Soft EVA",
     "antivib": "Innegra",
     "price": "65-105€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -4534,7 +4537,7 @@
     "core": "Power Foam",
     "antivib": "DAMP+ + Auxetic 2.0",
     "price": "280-340€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-one-x-2025.png",
     "year": 2025,
     "category": "avance",
@@ -4594,7 +4597,7 @@
     "core": "Mousse Dure/Rigide",
     "antivib": "Innegra",
     "price": "180-230€",
-    "player": "—",
+    "player": "Expert",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-pro-2025.png",
     "year": 2025,
     "category": "expert",
@@ -4644,7 +4647,7 @@
     "core": "Power Foam",
     "antivib": "Auxetic 2.0",
     "price": "140-180€",
-    "player": null,
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-team-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -4957,7 +4960,7 @@
     "core": "Power Foam",
     "antivib": "Auxetic 2.0",
     "price": "250-300€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-elite-ltd-2026.png",
     "year": 2026,
     "category": "avance",
@@ -5011,7 +5014,7 @@
     "core": "EVA Soft",
     "antivib": "Graphene 360+",
     "price": "70-100€",
-    "player": null,
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-evo-extreme-2026.png",
     "year": 2026,
     "category": "debutant",
@@ -5163,7 +5166,7 @@
     "core": "Power Foam",
     "antivib": "Auxetic + Soft Cap",
     "price": "280-350€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-extreme-pro-2026.png",
     "year": 2026,
     "category": "avance",
@@ -5787,7 +5790,7 @@
     "core": "Standard EVA",
     "antivib": "Innegra",
     "price": "250-310€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-speed-pro-2026.png",
     "year": 2026,
     "category": "avance",
@@ -5885,7 +5888,7 @@
     "core": "EVA Soft",
     "antivib": "Graphene 360+",
     "price": "70-100€",
-    "player": null,
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-vibe-2026.png",
     "year": 2026,
     "category": "debutant",
@@ -6228,7 +6231,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "50-75€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ml10-beginner-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -6277,7 +6280,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "50-70€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ml10-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -6326,7 +6329,7 @@
     "core": "Hard EVA",
     "antivib": "—",
     "price": "250-330€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-nerbo-wpt-2025.png",
     "year": 2025,
     "category": "avance",
@@ -6618,7 +6621,7 @@
     "core": "EVA HR3",
     "antivib": "Pulse System",
     "price": "220-280€",
-    "player": null,
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/nox-ventus-2026.png",
     "year": 2026,
     "category": "avance",
@@ -6721,7 +6724,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "53-75€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-beat-junior-2025.png",
     "year": 2025,
     "category": "junior",
@@ -6819,7 +6822,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "150-200€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-revolution-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -6917,7 +6920,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "50-65€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-optimus-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -6955,7 +6958,7 @@
     "womanLine": false
   },
   {
-    "id": "siux-diablo-elite-26",
+    "id": "siux-diablo-elite-2026",
     "brand": "Siux",
     "name": "Siux Diablo Elite 6 2026",
     "shortName": "Diablo Elite 6 26",
@@ -7000,10 +7003,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Intermédiaire"
   },
   {
-    "id": "siux-diablo-pro-26",
+    "id": "siux-diablo-pro-2026",
     "brand": "Siux",
     "name": "Siux Diablo Pro 2026",
     "shortName": "Diablo Pro 26",
@@ -7066,7 +7070,7 @@
     "womanLine": false
   },
   {
-    "id": "siux-electra-pro-26",
+    "id": "siux-electra-pro-2026",
     "brand": "Siux",
     "name": "Siux Electra Pro 2026",
     "shortName": "Electra Pro 26",
@@ -7129,7 +7133,7 @@
     "womanLine": false
   },
   {
-    "id": "siux-fenix-pro-26",
+    "id": "siux-fenix-pro-2026",
     "brand": "Siux",
     "name": "Siux Fenix Pro 2026",
     "shortName": "Fenix Pro 26",
@@ -7178,7 +7182,7 @@
     "womanLine": false
   },
   {
-    "id": "siux-pegasus-elite-26",
+    "id": "siux-pegasus-elite-2026",
     "brand": "Siux",
     "name": "Siux Pegasus Elite 4 2026",
     "shortName": "Pegasus Elite 4 26",
@@ -7223,10 +7227,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Intermédiaire"
   },
   {
-    "id": "siux-pegasus-pro-26",
+    "id": "siux-pegasus-pro-2026",
     "brand": "Siux",
     "name": "Siux Pegasus Pro 2026",
     "shortName": "Pegasus Pro 26",
@@ -7271,10 +7276,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Avancé"
   },
   {
-    "id": "siux-valkiria-pro-26",
+    "id": "siux-valkiria-pro-2026",
     "brand": "Siux",
     "name": "Siux Valkiria Pro 2026",
     "shortName": "Valkiria Pro 26",
@@ -7334,7 +7340,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "80-90€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-junior-2025.png",
     "year": 2025,
     "category": "junior",
@@ -7383,7 +7389,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "250-320€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-metheora-galaxy-2025.png",
     "year": 2025,
     "category": "avance",
@@ -7432,7 +7438,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "140-180€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-metheora-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -7481,7 +7487,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "60-80€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-raptor-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -7519,7 +7525,7 @@
     "womanLine": false
   },
   {
-    "id": "starvie-black-titan-26",
+    "id": "starvie-black-titan-2026",
     "brand": "Starvie",
     "name": "StarVie Black Titan 2026",
     "shortName": "Black Titan 26",
@@ -7564,10 +7570,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Expert"
   },
   {
-    "id": "starvie-raptor-26",
+    "id": "starvie-raptor-2026",
     "brand": "Starvie",
     "name": "StarVie Raptor 2026",
     "shortName": "Raptor 26",
@@ -7618,10 +7625,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Avancé"
   },
   {
-    "id": "starvie-triton-balance-26",
+    "id": "starvie-triton-balance-2026",
     "brand": "Starvie",
     "name": "StarVie Triton Balance 2026",
     "shortName": "Triton Balance 26",
@@ -7666,10 +7674,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Avancé"
   },
   {
-    "id": "starvie-triton-power-26",
+    "id": "starvie-triton-power-2026",
     "brand": "Starvie",
     "name": "StarVie Triton Power 2026",
     "shortName": "Triton Power 26",
@@ -7714,7 +7723,8 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Expert"
   },
   {
     "id": "varlion-bourne-2025",
@@ -7728,7 +7738,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "140-180€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-bourne-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -7777,7 +7787,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "55-75€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-canas-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -7826,7 +7836,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "60-80€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-canas-w-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -7875,7 +7885,7 @@
     "core": "Standard EVA",
     "antivib": "—",
     "price": "220-290€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-carbon-2025.png",
     "year": 2025,
     "category": "avance",
@@ -7913,7 +7923,7 @@
     "womanLine": false
   },
   {
-    "id": "varlion-bourne-carbon-ti-26",
+    "id": "varlion-bourne-carbon-ti-2026",
     "brand": "Varlion",
     "name": "Varlion Bourne Carbon Ti 2026",
     "shortName": "Bourne C.Ti 26",
@@ -7958,10 +7968,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Avancé"
   },
   {
-    "id": "varlion-lw-orquidea-26",
+    "id": "varlion-lw-orquidea-2026",
     "brand": "Varlion",
     "name": "Varlion LW 8.8 Orquidea 2026",
     "shortName": "LW Orquidea 26",
@@ -8006,10 +8017,11 @@
     "womanLine": true,
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "player": "Débutant"
   },
   {
-    "id": "varlion-lw-carbon-ti-26",
+    "id": "varlion-lw-carbon-ti-2026",
     "brand": "Varlion",
     "name": "Varlion LW Carbon Ti 2026",
     "shortName": "LW Carbon Ti 26",
@@ -8065,7 +8077,8 @@
     "womanLine": true,
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "player": "Avancé"
   },
   {
     "id": "vermont-origin-jr-2025",
@@ -8079,7 +8092,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "50-70€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/vermont-origin-jr-2025.png",
     "year": 2025,
     "category": "junior",
@@ -8128,7 +8141,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "30-40€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-minions-jr-face-2024.png",
     "year": 2024,
     "category": "junior",
@@ -8313,7 +8326,7 @@
     "womanLine": false
   },
   {
-    "id": "wilson-blade-jr-v2",
+    "id": "wilson-blade-jr-v2-2025",
     "name": "Wilson Blade Junior V2 2025",
     "shortName": "Blade Jr V2 25",
     "brand": "Wilson",
@@ -8324,7 +8337,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "79-102€",
-    "player": "—",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-jr-v2.png",
     "year": 2025,
     "category": "junior",
@@ -8373,7 +8386,7 @@
     "core": "Soft EVA",
     "antivib": "—",
     "price": "60-85€",
-    "player": "—",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-v2-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -8411,7 +8424,7 @@
     "womanLine": false
   },
   {
-    "id": "wilson-accent-26",
+    "id": "wilson-accent-2026",
     "brand": "Wilson",
     "name": "Wilson Accent 2026",
     "shortName": "Accent 26",
@@ -8456,10 +8469,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Débutant"
   },
   {
-    "id": "wilson-bela-lt-v3-26",
+    "id": "wilson-bela-lt-v3-2026",
     "brand": "Wilson",
     "name": "Wilson Bela LT V3 2026",
     "shortName": "Bela LT V3 26",
@@ -8508,7 +8522,7 @@
     "womanLine": false
   },
   {
-    "id": "wilson-bela-pro-v3-26",
+    "id": "wilson-bela-pro-v3-2026",
     "brand": "Wilson",
     "name": "Wilson Bela Pro V3 2026",
     "shortName": "Bela Pro V3 26",
@@ -8557,7 +8571,7 @@
     "womanLine": false
   },
   {
-    "id": "wilson-bela-v3-26",
+    "id": "wilson-bela-v3-2026",
     "brand": "Wilson",
     "name": "Wilson Bela V3 2026",
     "shortName": "Bela V3 26",
@@ -8620,7 +8634,7 @@
     "womanLine": false
   },
   {
-    "id": "wilson-blade-pro-v2-26",
+    "id": "wilson-blade-pro-v2-2026",
     "brand": "Wilson",
     "name": "Wilson Blade Pro V2 2026",
     "shortName": "Blade Pro V2 26",
@@ -8665,10 +8679,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Avancé"
   },
   {
-    "id": "wilson-blade-team-26",
+    "id": "wilson-blade-team-2026",
     "brand": "Wilson",
     "name": "Wilson Blade Team 2026",
     "shortName": "Blade Team 26",
@@ -8713,10 +8728,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Intermédiaire"
   },
   {
-    "id": "wilson-prostaff-v2-26",
+    "id": "wilson-prostaff-v2-2026",
     "brand": "Wilson",
     "name": "Wilson Pro Staff V2 2026",
     "shortName": "Pro Staff V2 26",
@@ -8761,10 +8777,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Avancé"
   },
   {
-    "id": "wilson-ultra-pro-v2-26",
+    "id": "wilson-ultra-pro-v2-2026",
     "brand": "Wilson",
     "name": "Wilson Ultra Pro V2 2026",
     "shortName": "Ultra Pro V2 26",
@@ -8814,10 +8831,11 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Expert"
   },
   {
-    "id": "wilson-ultra-team-26",
+    "id": "wilson-ultra-team-2026",
     "brand": "Wilson",
     "name": "Wilson Ultra Team 2026",
     "shortName": "Ultra Team 26",
@@ -8862,7 +8880,8 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "player": "Intermédiaire"
   },
   {
     "id": "bullpadel-vertex-04-woman-2025",
@@ -9308,7 +9327,7 @@
     "core": "Black EVA Soft",
     "antivib": "Vibrasorb System",
     "price": "120-180€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-stima-spirit-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -9362,7 +9381,7 @@
     "core": "Black EVA Soft",
     "antivib": "Vibrasorb System",
     "price": "120-180€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-dyna-spirit-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -9416,7 +9435,7 @@
     "core": "EVA Soft",
     "antivib": "Vibrasorb System",
     "price": "150-200€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-vertuo-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -9470,7 +9489,7 @@
     "core": "Black EVA Soft",
     "antivib": "Vibrasorb System",
     "price": "140-190€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-vertuo-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -9524,7 +9543,7 @@
     "core": "Black EVA Soft",
     "antivib": "Vibrasorb System",
     "price": "150-200€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-vertuo-2026.png",
     "year": 2026,
     "category": "intermediaire",
@@ -9578,7 +9597,7 @@
     "core": "Black EVA",
     "antivib": "Vibrasorb System",
     "price": "160-210€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-technical-vertuo-2026.png",
     "year": 2026,
     "category": "intermediaire",
@@ -9621,7 +9640,7 @@
     "womanLine": false
   },
   {
-    "id": "prokennex-kinetic-legend-pro",
+    "id": "prokennex-kinetic-legend-pro-2025",
     "name": "Pro Kennex Kinetic Legend Pro 2025",
     "shortName": "Kinetic Legend Pro 25",
     "brand": "Pro Kennex",
@@ -9632,7 +9651,7 @@
     "core": "EVA Soft",
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "200-280€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/prokennex-kinetic-legend-pro.png",
     "year": 2025,
     "category": "avance",
@@ -9675,7 +9694,7 @@
     "womanLine": false
   },
   {
-    "id": "prokennex-kinetic-focus-pro",
+    "id": "prokennex-kinetic-focus-pro-2025",
     "name": "Pro Kennex Kinetic Focus Pro 2025",
     "shortName": "Kinetic Focus Pro 25",
     "brand": "Pro Kennex",
@@ -9686,7 +9705,7 @@
     "core": "EVA Soft",
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "220-300€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/prokennex-kinetic-focus-pro.png",
     "year": 2025,
     "category": "avance",
@@ -9729,7 +9748,7 @@
     "womanLine": false
   },
   {
-    "id": "prokennex-kinetic-black-ace",
+    "id": "prokennex-kinetic-black-ace-2025",
     "name": "Pro Kennex Kinetic Black Ace 2025",
     "shortName": "Kinetic Black Ace 25",
     "brand": "Pro Kennex",
@@ -9740,7 +9759,7 @@
     "core": "EVA Soft",
     "antivib": "Kinetic System + Kinetic Damping Chamber",
     "price": "230-310€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/prokennex-kinetic-black-ace.png",
     "year": 2025,
     "category": "avance",
@@ -9794,7 +9813,7 @@
     "core": "Polyethylene Soft",
     "antivib": "Shock Absorption System",
     "price": "250-350€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/royal-padel-m27-poly-2025.png",
     "year": 2025,
     "category": "avance",
@@ -9848,7 +9867,7 @@
     "core": "Polyethylene Soft",
     "antivib": "Shock Absorption System",
     "price": "230-320€",
-    "player": "—",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/royal-padel-m27-light-2025.png",
     "year": 2025,
     "category": "avance",
@@ -9902,7 +9921,7 @@
     "core": "Polyethylene Soft",
     "antivib": "Shock Absorption System",
     "price": "180-260€",
-    "player": "—",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/royal-padel-whip-extreme-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -9957,7 +9976,7 @@
     "core": "EVA Hard",
     "antivib": "Vibradamp (4 silicones sous le grip) + PowerRibs",
     "price": "200-280€",
-    "player": "",
+    "player": "Avancé",
     "womanLine": false,
     "scores": {
       "Puissance": 9.3,
@@ -10011,7 +10030,7 @@
     "core": "EVA Medium+",
     "antivib": "Vibradamp 4 silicones + PowerRibs + Side Ports",
     "price": "200-320€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
       "Puissance": 8.3,
@@ -10065,7 +10084,7 @@
     "core": "EVA Medium+",
     "antivib": "Vibradamp 3 couches + PowerRibs",
     "price": "180-250€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
       "Puissance": 7.3,
@@ -10119,7 +10138,7 @@
     "core": "EVA Medium",
     "antivib": "Vibradamp + PowerRibs + RBS",
     "price": "180-250€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
       "Puissance": 8.5,
@@ -10281,7 +10300,7 @@
     "core": "EVA Soft V30",
     "antivib": "EVA Soft + structure 3K",
     "price": "240-300€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
       "Puissance": 6.8,
@@ -10335,7 +10354,7 @@
     "core": "Hypersoft EVA (dur)",
     "antivib": "Wings Diffuser + Adhesive Bumper Prisma",
     "price": "280-350€",
-    "player": "",
+    "player": "Avancé",
     "womanLine": false,
     "scores": {
       "Puissance": 8,
@@ -10389,7 +10408,7 @@
     "core": "Softcolor EVA (moyen)",
     "antivib": "Wings Diffuser + ErgoSlice texture",
     "price": "260-320€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": true,
     "scores": {
       "Puissance": 6.5,
@@ -10659,7 +10678,7 @@
     "core": "EVA Soft",
     "antivib": "EVA Soft + Detachable Wrist Strap",
     "price": "120-180€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
       "Puissance": 7,
@@ -10713,7 +10732,7 @@
     "core": "EVA Soft",
     "antivib": "EVA Soft + lightweight design",
     "price": "80-130€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": true,
     "scores": {
       "Puissance": 7,
@@ -10767,7 +10786,7 @@
     "core": "Black EVA",
     "antivib": "Vibrasorb System (SMAC) + 3D Spin",
     "price": "200-280€",
-    "player": "",
+    "player": "Avancé",
     "womanLine": false,
     "scores": {
       "Puissance": 8.6,
@@ -10821,7 +10840,7 @@
     "core": "Black EVA",
     "antivib": "Vibrasorb System (SMAC)",
     "price": "180-240€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
       "Puissance": 7,
@@ -10875,7 +10894,7 @@
     "core": "X-EVA (basse densité)",
     "antivib": "Vibrasorb System (SMAC) + X-EVA Soft",
     "price": "180-240€",
-    "player": "",
+    "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
       "Puissance": 6.5,
@@ -10940,10 +10959,26 @@
       "Tolérance": 6.4,
       "Maniabilité": 6
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La signature d'Arturo Coello, n°1 mondial. Diamant carbone hybride à balance haute — puissance maximale avec un spin mordant. Construction exigeante : réservée aux joueurs experts capables de gérer l'inertie et le manque de tolérance.",
+    "editorial": "La Head Coello Pro 2025 est la première raquette signature du prodige Arturo Coello. Surface Carbon Hybrid et mousse Power Foam en format diamant — un profil résolument offensif taillé pour la frappe lourde. La balance haute à 272mm génère un bras de levier considérable en smash et par 3. Le Power Foam apporte une sortie de balle sèche sans compromis. C'est une raquette qui ne pardonne rien sur les frappes décentrées mais qui récompense la technique pure par une puissance dévastatrice.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon Hybrid",
+        "detail": "Carbone hybride pour rigidité et sortie de balle explosive"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive orientée puissance"
+      },
+      {
+        "label": "Joueur pro",
+        "value": "Arturo Coello #1",
+        "detail": "Modèle signature du numéro 1 mondial"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs. La pala du n°1 mondial pour ceux qui cherchent la puissance brute et maîtrisent leur placement de balle.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -10965,7 +11000,7 @@
     "core": "Power Foam",
     "antivib": "Auxetic 2.0",
     "price": "180-220€",
-    "player": "",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-team-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -10977,10 +11012,26 @@
       "Spin": 7.5,
       "Tolérance": 7.7
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La Coello accessible. Diamant fibre de verre avec un équilibre plus centré — garde l'ADN offensif de la gamme tout en restant jouable pour les intermédiaires. Bon rapport qualité-prix pour découvrir la signature Coello.",
+    "editorial": "La Head Coello Team 2025 est la porte d'entrée de la gamme Coello. Fibre de verre et Power Foam en diamant — les matériaux adoucissent le caractère par rapport à la Pro tout en conservant la forme offensive. L'équilibre moyen à 265mm la rend plus maniable et tolérante. C'est la Coello pour le joueur intermédiaire qui veut de la puissance sans se faire punir à chaque frappe décentrée. Le prix contenu en fait une excellente option progression.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Fibre de verre pour un toucher plus souple et tolérant"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Même mousse que la Pro pour garder du punch"
+      },
+      {
+        "label": "Format",
+        "value": "Diamant accessible",
+        "detail": "Balance moyenne — puissance avec maniabilité"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires offensifs. La gamme Coello sans l'exigence technique de la Pro — idéale pour progresser vers l'attaque.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -10999,7 +11050,7 @@
     "core": "Standard EVA",
     "antivib": "",
     "price": "50-70€",
-    "player": "",
+    "player": "Junior",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-junior-2025.png",
     "year": 2025,
     "category": "junior",
@@ -11011,10 +11062,26 @@
       "Spin": 5.5,
       "Tolérance": 8.5
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La Coello pour les jeunes. Goutte d'eau légère en fibre de verre, ultra-maniable et confortable. Le format junior adapté aux enfants qui veulent jouer avec la raquette de leur idole.",
+    "editorial": "La Head Coello Junior 2025 est la version enfant de la gamme Coello. Forme goutte d'eau en fibre de verre et EVA standard — construction légère (300-330g) et tolérante adaptée aux jeunes joueurs. La balance basse à 255mm facilite les gestes et les réflexes au filet. Le design reprend les codes visuels de la gamme Coello adulte. C'est une raquette d'apprentissage solide avec un prix très doux.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Fibre de verre souple pour le confort des jeunes joueurs"
+      },
+      {
+        "label": "Poids",
+        "value": "300-330g",
+        "detail": "Ultra-léger adapté aux enfants"
+      },
+      {
+        "label": "Gamme",
+        "value": "Coello Junior",
+        "detail": "Design signature Coello en version enfant"
+      }
+    ],
+    "targetProfile": "Juniors. La raquette Head pour les enfants fans d'Arturo Coello qui découvrent le padel.",
     "junior": true,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11045,10 +11112,26 @@
       "Spin": 8.1,
       "Tolérance": 6.9
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "Le compromis Coello haut de gamme. Diamant carbone hybride avec un équilibre mi-haut — presque autant de puissance que la Pro mais plus de contrôle. Pour les joueurs avancés offensifs qui veulent un poil de sécurité.",
+    "editorial": "La Head Coello Motion 2025 se place entre la Pro et la Team dans la hiérarchie Coello. Surface Carbon Hybrid et Power Foam en diamant — les mêmes matériaux que la Pro, mais avec une balance légèrement plus basse à 268mm. Ce décalage subtil améliore la maniabilité et le contrôle sans sacrifier l'essentiel de la puissance. C'est la Coello pour le joueur avancé qui veut frapper fort tout en gardant une marge de sécurité sur les frappes moins propres.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon Hybrid",
+        "detail": "Carbone hybride — même technologie que la Pro"
+      },
+      {
+        "label": "Balance",
+        "value": "268mm Mi-Haute",
+        "detail": "Légèrement plus basse que la Pro pour plus de contrôle"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive pour une sortie de balle puissante"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs. Le meilleur compromis puissance-contrôle de la gamme Coello.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11067,7 +11150,7 @@
     "core": "Power Foam",
     "antivib": "Innegra",
     "price": "100-140€",
-    "player": "",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/head-coello-vibe-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -11079,10 +11162,26 @@
       "Spin": 6.9,
       "Tolérance": 8.8
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La Coello pour débuter. Goutte d'eau en fibre de verre, confortable et tolérante. La pala parfaite pour les nouveaux joueurs qui veulent un produit Head signé Coello sans se ruiner.",
+    "editorial": "La Head Coello Vibe 2025 est la Coello d'initiation. Forme goutte d'eau en fibre de verre et Power Foam — un mix classique qui privilégie le confort et la tolérance avant tout. L'équilibre moyen à 260mm offre une prise en main naturelle. Le sweet spot généreux pardonne les approximations. À moins de 140€, c'est une excellente porte d'entrée dans le padel avec le design de la gamme Coello.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Fibre de verre douce pour un maximum de tolérance"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse confortable avec un bon retour de balle"
+      },
+      {
+        "label": "Prix",
+        "value": "100-140€",
+        "detail": "Entrée de gamme Head premium"
+      }
+    ],
+    "targetProfile": "Débutants. La Head Coello pour découvrir le padel avec style et confort à petit prix.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11101,7 +11200,7 @@
     "core": "Dual Foam",
     "antivib": "Shock Block",
     "price": "180€",
-    "player": "",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-power-pro-2025.png",
     "year": 2025,
     "category": "avance",
@@ -11113,10 +11212,26 @@
       "Spin": 8.4,
       "Tolérance": 6
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La bombe Decathlon. Diamant carbone 18K balance haute — puissance pure à 180€, un rapport qualité-prix imbattable. Dure et exigeante, mais pour le prix d'une intermédiaire concurrente.",
+    "editorial": "La Kuikma Power Pro 2025 est le fer de lance offensif de la gamme Decathlon. Surface TeXtreme Carbon 18K et Dual Foam en diamant — des matériaux premium à un prix défiant toute concurrence. La balance haute et le poids de 370-380g génèrent une inertie considérable en frappe haute. Le Dual Foam offre une sortie de balle sèche et directe. C'est la raquette la plus puissante disponible à ce niveau de prix — mais aussi la plus exigeante.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme Carbon 18K",
+        "detail": "Carbone haut de gamme habituellement réservé aux modèles 300€+"
+      },
+      {
+        "label": "Noyau",
+        "value": "Dual Foam",
+        "detail": "Double densité pour puissance et feedback"
+      },
+      {
+        "label": "Prix",
+        "value": "180€",
+        "detail": "Rapport qualité-prix exceptionnel"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs avec un budget maîtrisé. La puissance premium à prix Decathlon.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11135,7 +11250,7 @@
     "core": "Dual Foam",
     "antivib": "Shock Block",
     "price": "180€",
-    "player": "",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-control-pro-2025.png",
     "year": 2025,
     "category": "avance",
@@ -11147,10 +11262,26 @@
       "Spin": 7.8,
       "Tolérance": 8.8
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde carbone Decathlon. TeXtreme 18K en forme ronde — contrôle chirurgical avec un sweet spot immense. Le meilleur rapport qualité-prix du marché pour les défenseurs et joueurs techniques.",
+    "editorial": "La Kuikma Control Pro 2025 est la ronde premium de Decathlon. TeXtreme Carbon 18K et Dual Foam en ronde — une combinaison de matériaux habituellement réservée aux raquettes à 300€+. La balance basse et le format rond créent un contrôle de balle exceptionnel avec une tolérance remarquable. La maniabilité à 9.1 est l'une des meilleures de la base. À 180€, c'est objectivement l'une des meilleures offres du marché.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme Carbon 18K",
+        "detail": "Carbone 18K pour rigidité et précision"
+      },
+      {
+        "label": "Forme",
+        "value": "Ronde",
+        "detail": "Sweet spot centré maximal pour le contrôle"
+      },
+      {
+        "label": "Maniabilité",
+        "value": "9.1/10",
+        "detail": "Parmi les plus maniables de la catégorie avancée"
+      }
+    ],
+    "targetProfile": "Joueurs avancés défensifs ou polyvalents. Le carbone premium en ronde à prix Decathlon — difficile de trouver mieux pour le prix.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11169,7 +11300,7 @@
     "core": "Soft EVA",
     "antivib": "",
     "price": "35€",
-    "player": "",
+    "player": "Débutant",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-pr-open-2025.png",
     "year": 2025,
     "category": "debutant",
@@ -11181,10 +11312,26 @@
       "Spin": 6,
       "Tolérance": 9.2
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "L'ultra-accessible Decathlon. Ronde fibre de verre à 35€ — impossible de trouver moins cher pour débuter. Légère, tolérante, sans prétention. La pala pour essayer le padel sans investir.",
+    "editorial": "La Kuikma PR Open 2025 est la raquette d'initiation absolue de Decathlon. Fibre de verre et Soft EVA en ronde — les matériaux les plus doux et tolérants du marché. À 35€, c'est le prix d'entrée le plus bas pour une raquette de padel décente. La tolérance à 9.2 pardonne tout. Idéale pour les premiers cours ou pour prêter aux amis qui veulent essayer.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre",
+        "detail": "Maximum de souplesse et de tolérance"
+      },
+      {
+        "label": "Prix",
+        "value": "35€",
+        "detail": "Le prix d'entrée le plus bas du marché"
+      },
+      {
+        "label": "Tolérance",
+        "value": "9.2/10",
+        "detail": "Pardonne toutes les approximations"
+      }
+    ],
+    "targetProfile": "Grands débutants. La pala Decathlon pour découvrir le padel à prix symbolique.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11203,7 +11350,7 @@
     "core": "Soft EVA",
     "antivib": "Insert élastomère",
     "price": "99€",
-    "player": "",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-control-metal-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -11215,10 +11362,26 @@
       "Spin": 6,
       "Tolérance": 9.2
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde métal Decathlon pour progresser. Fibre de verre renforcée métal en ronde — plus de rigidité que la PR Open, plus de confort que la Control Pro. Le juste milieu intermédiaire à 99€.",
+    "editorial": "La Kuikma Control Metal 2025 est la ronde intermédiaire de Decathlon. Fibre de verre renforcée métal et Soft EVA en ronde — un mix qui apporte plus de rigidité que la fibre pure sans la dureté du carbone. Le contrôle à 8.6 et la tolérance à 9.2 en font une pala très sécurisante. À 99€, c'est le choix évident pour le joueur intermédiaire défensif ou polyvalent qui ne veut pas investir dans le carbone.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre + Metal",
+        "detail": "Renfort métal pour plus de rigidité qu'une fibre classique"
+      },
+      {
+        "label": "Noyau",
+        "value": "Soft EVA",
+        "detail": "Mousse souple pour un toucher confortable"
+      },
+      {
+        "label": "Tolérance",
+        "value": "9.2/10",
+        "detail": "Aussi tolérante qu'une raquette débutant"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires défensifs ou polyvalents. La progression naturelle après une raquette débutant, à prix raisonnable.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11249,10 +11412,26 @@
       "Spin": 7.7,
       "Tolérance": 7.7
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La polyvalente carbone Decathlon, signée Coki Nieto. Goutte d'eau TeXtreme 18K — l'équilibre parfait entre puissance et contrôle à 180€. La pala qui fait tout bien sans rien sacrifier.",
+    "editorial": "La Kuikma Hybrid Pro 2025 est la goutte d'eau premium de Decathlon, modèle signature de Coki Nieto (#7 mondial). TeXtreme Carbon 18K et Dual Foam — mêmes matériaux que la Power Pro et la Control Pro mais en format goutte d'eau. Le résultat est un profil remarquablement équilibré : 8.5 en puissance, 8.2 en contrôle, 8.2 en maniabilité. C'est la pala du joueur avancé qui refuse de choisir entre attaque et défense.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "TeXtreme Carbon 18K",
+        "detail": "Carbone haut de gamme pour rigidité et réactivité"
+      },
+      {
+        "label": "Joueur pro",
+        "value": "Coki Nieto #7",
+        "detail": "Modèle signature du 7ème mondial"
+      },
+      {
+        "label": "Équilibre",
+        "value": "Polyvalent pur",
+        "detail": "Scores homogènes autour de 8/10 sur tous les axes"
+      }
+    ],
+    "targetProfile": "Joueurs avancés polyvalents. La goutte d'eau carbone premium Decathlon pour ceux qui veulent tout faire bien.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -11274,7 +11453,7 @@
     "core": "Soft EVA",
     "antivib": "Insert élastomère",
     "price": "99€",
-    "player": "",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/kuikma-hybrid-metal-2025.png",
     "year": 2025,
     "category": "intermediaire",
@@ -11286,10 +11465,26 @@
       "Spin": 6,
       "Tolérance": 8.5
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La goutte d'eau intermédiaire Decathlon. Fibre de verre métal en goutte — polyvalente, confortable, tolérante. Le choix rationnel à 99€ pour le joueur qui progresse.",
+    "editorial": "La Kuikma Hybrid Metal 2025 est la goutte d'eau intermédiaire de Decathlon. Fibre de verre renforcée métal et Soft EVA — même philosophie que la Control Metal mais en format goutte d'eau pour un peu plus de puissance. L'équilibre moyen offre une polyvalence naturelle. Le confort à 8.5 et la tolérance à 8.5 sécurisent le joueur en progression. À 99€, c'est une valeur sûre pour l'intermédiaire qui veut une pala polyvalente sans se poser de questions.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Fibre de Verre + Metal",
+        "detail": "Renfort métal pour plus de réactivité"
+      },
+      {
+        "label": "Forme",
+        "value": "Goutte d'eau",
+        "detail": "Compromis naturel puissance-contrôle"
+      },
+      {
+        "label": "Confort",
+        "value": "8.5/10",
+        "detail": "Mousse Soft EVA pour un toucher agréable"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires polyvalents. La goutte d'eau métal Decathlon — confortable, polyvalente, abordable.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11320,10 +11515,26 @@
       "Spin": 8,
       "Tolérance": 8.8
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde premium Wilson 2026, signée Momo González. Carbone 3K + ExactTouch en ronde — contrôle de haute précision avec une tolérance remarquable. La pala du défenseur expert qui veut aussi passer en attaque.",
+    "editorial": "La Wilson Endure Pro V1 2026 est le haut de gamme défensif de Wilson, modèle signature de Momo González. Surface Carbone 3K avec la technologie ExactTouch exclusive Wilson et mousse Control Foam+ en ronde. L'ExactTouch apporte un feedback tactile unique sur chaque frappe. L'équilibre moyenne-haute inhabituel pour une ronde donne un surplus de puissance en smash sans sacrifier le contrôle. Le contrôle à 9.5 avec une tolérance à 8.8 en fait l'une des raquettes les plus sûres au niveau expert.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 3K + ExactTouch",
+        "detail": "Technologie exclusive Wilson pour un feedback tactile unique"
+      },
+      {
+        "label": "Noyau",
+        "value": "Control Foam+",
+        "detail": "Mousse premium orientée contrôle"
+      },
+      {
+        "label": "Joueur pro",
+        "value": "Momo González",
+        "detail": "Modèle signature du maître défenseur"
+      }
+    ],
+    "targetProfile": "Joueurs experts défensifs ou polyvalents. La Wilson premium pour le contrôle chirurgical avec un potentiel offensif.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -11345,7 +11556,7 @@
     "core": "Control Foam+",
     "antivib": "Y-Beam",
     "price": "260-320€",
-    "player": "",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-endure-v1-2026.png",
     "year": 2026,
     "category": "avance",
@@ -11357,10 +11568,26 @@
       "Spin": 7.5,
       "Tolérance": 9.2
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde Wilson accessible. UD Carbon + ExactTouch en ronde balance basse — contrôle maximal (9.5) et tolérance exceptionnelle (9.2). La pala la plus sûre de la gamme Wilson 2026.",
+    "editorial": "La Wilson Endure V1 2026 est la ronde avancée de la nouvelle gamme Wilson. UD Carbon avec ExactTouch et Control Foam+ en ronde — une construction qui privilégie le contrôle et le confort avant tout. La balance basse génère une maniabilité de 8.2 remarquable pour une raquette carbone. La tolérance à 9.2 est quasi au niveau d'une raquette débutant. C'est la Wilson pour le joueur avancé défensif qui veut zéro risque et un placement de balle millimétré.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "UD Carbon + ExactTouch",
+        "detail": "Carbone unidirectionnel pour précision et feedback"
+      },
+      {
+        "label": "Tolérance",
+        "value": "9.2/10",
+        "detail": "Parmi les plus tolérantes en catégorie avancée"
+      },
+      {
+        "label": "Contrôle",
+        "value": "9.5/10",
+        "detail": "Score maximal de contrôle"
+      }
+    ],
+    "targetProfile": "Joueurs avancés défensifs ou en transition vers l'expert. La ronde Wilson ultra-sûre pour le jeu de placement.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11391,10 +11618,26 @@
       "Spin": 8.5,
       "Tolérance": 6
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "L'arme offensive Wilson, signée Javi Garrido. Diamant carbone 15K balance haute — puissance et spin extrêmes. Construction sans concession : experts confirmés uniquement.",
+    "editorial": "La Wilson Defy Pro V1 2025 est le fer de lance offensif Wilson, modèle signature de Javi Garrido. Carbone 15K avec la surface texturée Spin² et mousse Power Foam HD en diamant. C'est une machine de guerre : puissance à 9.5, spin à 8.5, mais confort à 6 et tolérance à 6. La balance haute maximise l'inertie en smash. Le Spin² accroche la balle pour des effets dévastateurs. Exige une technique irréprochable — elle punit sévèrement les frappes approximatives.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 15K + Spin²",
+        "detail": "Carbone haute densité avec texture spin intégrée"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam HD",
+        "detail": "Mousse haute densité pour sortie de balle explosive"
+      },
+      {
+        "label": "Joueur pro",
+        "value": "Javi Garrido #12",
+        "detail": "Modèle signature de l'attaquant gauche"
+      }
+    ],
+    "targetProfile": "Joueurs experts offensifs. La Wilson pour les attaquants purs qui veulent puissance et spin sans compromis.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": {
@@ -11416,7 +11659,7 @@
     "core": "Power Foam",
     "antivib": "I-Beam",
     "price": "240-300€",
-    "player": "",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-defy-v1-2025.png",
     "year": 2025,
     "category": "avance",
@@ -11428,10 +11671,26 @@
       "Spin": 8,
       "Tolérance": 6
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La diamant offensive Wilson un cran sous la Pro. Carbone 3K + Spin² balance haute — presque autant de puissance que la Defy Pro mais un poil plus accessible. Pour les joueurs avancés qui veulent attaquer fort.",
+    "editorial": "La Wilson Defy V1 2025 est la diamant avancée de la gamme Wilson. Carbone 3K avec Spin² et Power Foam — un cran en dessous de la Pro en termes de matériaux (3K vs 15K) mais le même ADN offensif. La puissance à 8.9 reste très élevée. La balance haute et le format diamant favorisent la frappe descendante. Le Spin² apporte de l'accroche pour les effets. C'est la Defy pour le joueur avancé offensif qui n'a pas encore le niveau technique de la Pro.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbone 3K + Spin²",
+        "detail": "Carbone avec texture spin pour les effets"
+      },
+      {
+        "label": "Noyau",
+        "value": "Power Foam",
+        "detail": "Mousse réactive pour la puissance"
+      },
+      {
+        "label": "Balance",
+        "value": "Haute",
+        "detail": "Optimisée pour le smash et la frappe descendante"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs. La diamant Wilson offensive accessible — puissance et spin à prix contenu.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11450,7 +11709,7 @@
     "core": "Power Foam",
     "antivib": "I-Beam",
     "price": "200-250€",
-    "player": "",
+    "player": "Avancé",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-defy-ls-v1-2025.png",
     "year": 2025,
     "category": "avance",
@@ -11462,10 +11721,26 @@
       "Spin": 7.5,
       "Tolérance": 7.1
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La diamant Wilson allégée. Comfort Flex en diamant — garde le potentiel offensif de la gamme Defy avec plus de maniabilité et de confort. Le compromis puissance-confort intelligent.",
+    "editorial": "La Wilson Defy LS V1 2025 est la version allégée de la gamme Defy. Comfort Flex Fibres et Power Foam en diamant — la fibre de verre remplace le carbone pour un toucher plus souple et confortable. Le poids réduit (350-360g) et la balance moyenne-haute offrent un bon compromis entre puissance et maniabilité. Le confort remonte à 8 (vs 6 sur la Defy Pro). C'est la Defy pour ceux qui veulent le format diamant offensif sans la rudesse du carbone pur.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Comfort Flex Fibres",
+        "detail": "Fibres souples pour confort et tolérance"
+      },
+      {
+        "label": "Poids",
+        "value": "350-360g",
+        "detail": "Version Light de la gamme Defy"
+      },
+      {
+        "label": "Confort",
+        "value": "8/10",
+        "detail": "Nettement plus confortable que la Defy Pro (6/10)"
+      }
+    ],
+    "targetProfile": "Joueurs avancés offensifs avec sensibilité au bras. La diamant Wilson confortable pour attaquer sans se faire mal.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
@@ -11484,7 +11759,7 @@
     "core": "Control Foam",
     "antivib": "Y-Beam",
     "price": "200-250€",
-    "player": "",
+    "player": "Intermédiaire",
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-endure-ls-v1-2026.png",
     "year": 2026,
     "category": "intermediaire",
@@ -11496,10 +11771,26 @@
       "Spin": 7,
       "Tolérance": 9.1
     },
-    "verdict": "",
-    "editorial": "",
-    "techHighlights": [],
-    "targetProfile": "",
+    "verdict": "La ronde Wilson la plus légère et maniable. Carbon Flex en ronde balance basse — confort (9.1), maniabilité (9.5) et tolérance (9.1) au sommet. La pala la plus facile à jouer de la gamme Wilson 2026.",
+    "editorial": "La Wilson Endure LS V1 2026 est la version allégée de la gamme Endure. Carbon Flex avec ExactTouch et Control Foam en ronde — la formule la plus confortable et maniable de Wilson. À 350-360g avec balance basse, c'est un plume en main. La maniabilité à 9.5 est la plus haute de toute la gamme Wilson. Le confort à 9.1 et la tolérance à 9.1 sécurisent chaque frappe. C'est la raquette de transition idéale pour le joueur intermédiaire qui passe au carbone.",
+    "techHighlights": [
+      {
+        "label": "Surface",
+        "value": "Carbon Flex + ExactTouch",
+        "detail": "Carbone souple avec feedback tactile Wilson"
+      },
+      {
+        "label": "Maniabilité",
+        "value": "9.5/10",
+        "detail": "La plus maniable de toute la gamme Wilson"
+      },
+      {
+        "label": "Poids",
+        "value": "350-360g",
+        "detail": "Version Light ultra-maniable"
+      }
+    ],
+    "targetProfile": "Joueurs intermédiaires défensifs ou polyvalents. La Wilson la plus légère et la plus facile pour passer au carbone en douceur.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
