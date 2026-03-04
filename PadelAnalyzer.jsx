@@ -2472,25 +2472,27 @@ export default function PadelAnalyzer() {
     setSavedProfiles([]);
     Promise.all([
       cloudLoadProfiles(familyCode),
-      cloudLoadAllRackets()
-    ]).then(([cloudProfiles, cloudRackets]) => {
+      cloudLoadExtraRackets(familyCode)
+    ]).then(([cloudProfiles, cloudExtras]) => {
       setSavedProfiles(cloudProfiles);
       saveProfilesList(cloudProfiles);
-      // Merge cloud rackets that aren't in static RACKETS_DB into localStorage extras
-      if (cloudRackets.length > 0) {
-        try {
-          const staticIds = new Set(RACKETS_DB.map(r => r.id));
-          const staticNames = new Set(RACKETS_DB.map(r => r.name.toLowerCase()));
-          const extras = cloudRackets.filter(r => 
-            r.id && !staticIds.has(r.id) && !staticNames.has((r.name||'').toLowerCase())
-          );
-          if (extras.length > 0) {
-            localStorage.setItem('padel_db_extra', JSON.stringify(extras));
-            setLocalDBCount(extras.length);
-            console.log(`[Cloud] Loaded ${extras.length} extra rackets from Supabase (${cloudRackets.length} total in cloud, ${RACKETS_DB.length} static)`);
-          }
-        } catch(e) { console.warn('[Cloud] Rackets merge failed:', e.message); }
-      }
+      // Sync cloud extras (admin imports only) — static DB is the sole source of truth for catalog
+      try {
+        const staticIds = new Set(RACKETS_DB.map(r => r.id));
+        const staticNames = new Set(RACKETS_DB.map(r => r.name.toLowerCase()));
+        // Filter out any extras that now exist in static DB (were imported then added to catalog)
+        const extras = (Array.isArray(cloudExtras) ? cloudExtras : []).filter(r =>
+          r.id && !staticIds.has(r.id) && !staticNames.has((r.name||'').toLowerCase())
+        );
+        if (extras.length > 0) {
+          localStorage.setItem('padel_db_extra', JSON.stringify(extras));
+          setLocalDBCount(extras.length);
+          console.log(`[Cloud] Loaded ${extras.length} extra rackets for family ${familyCode}`);
+        } else {
+          localStorage.removeItem('padel_db_extra');
+          setLocalDBCount(0);
+        }
+      } catch(e) { console.warn('[Cloud] Rackets merge failed:', e.message); }
       setCloudStatus("synced");
       // Check admin status
       checkIsAdmin(familyCode).then(admin => {
