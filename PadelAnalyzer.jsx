@@ -2505,43 +2505,53 @@ export default function PadelAnalyzer() {
 
   const fuzzyMatchRacket = useCallback((vision) => {
     const allDB = getMergedDB();
-    if (!vision || !vision.brand) return [];
+    if (!vision) return [];
 
     const normalize = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").trim();
     const tokenSet = (s) => new Set(normalize(s).split(/\s+/).filter(Boolean));
 
-    const vBrand = normalize(vision.brand);
-    const vModel = normalize(vision.model || "");
-    const vVariant = normalize(vision.variant || "");
-    const vFull = normalize(`${vision.model || ""} ${vision.variant || ""}`);
+    const vBrand = normalize(vision.brand || "");
+    const vModel = normalize(`${vision.model || ""} ${vision.variant || ""}`);
     const vYear = vision.year || 0;
     const vShape = normalize(vision.shape || "");
-    const vTokens = tokenSet(`${vision.model || ""} ${vision.variant || ""}`);
+    const vTokens = tokenSet(`${vision.brand || ""} ${vision.model || ""} ${vision.variant || ""}`);
+    const vModelTokens = tokenSet(`${vision.model || ""} ${vision.variant || ""}`);
+    const vText = normalize(vision.visible_text || "");
 
     const scored = allDB.map(r => {
       let score = 0;
-
-      // Brand match (filter) — must match or very close
       const rBrand = normalize(r.brand);
-      if (rBrand !== vBrand) {
-        // Allow partial brand match (e.g., "bullpadel" vs "bull padel")
-        if (!rBrand.includes(vBrand) && !vBrand.includes(rBrand)) return null;
-        score += 10; // partial brand
-      } else {
-        score += 25; // exact brand
+      const rName = normalize(r.name);
+      const rShort = normalize(r.shortName || "");
+      const rTokens = tokenSet(`${r.name} ${r.shortName || ""}`);
+
+      // Brand match (bonus, NOT a filter)
+      if (vBrand) {
+        if (rBrand === vBrand) score += 20;
+        else if (rBrand.includes(vBrand) || vBrand.includes(rBrand)) score += 10;
+        // No penalty if brand doesn't match — Vision often gets brand wrong
       }
 
-      // Model fuzzy match (token set ratio)
-      const rTokens = tokenSet(`${r.name} ${r.shortName || ""}`);
-      let common = 0;
-      vTokens.forEach(t => { if ([...rTokens].some(rt => rt.includes(t) || t.includes(rt))) common++; });
-      const tokenScore = vTokens.size > 0 ? (common / vTokens.size) : 0;
-      score += tokenScore * 50; // up to 50 points for model match
+      // Model fuzzy match (token overlap — most important signal)
+      let modelHits = 0;
+      vModelTokens.forEach(t => {
+        if (t.length < 2) return; // skip tiny tokens
+        if ([...rTokens].some(rt => rt.includes(t) || t.includes(rt))) modelHits++;
+      });
+      const modelScore = vModelTokens.size > 0 ? (modelHits / vModelTokens.size) : 0;
+      score += modelScore * 50;
+
+      // Also check visible_text against racket name (OCR often more reliable than Vision reasoning)
+      if (vText) {
+        let textHits = 0;
+        rTokens.forEach(rt => { if (rt.length >= 3 && vText.includes(rt)) textHits++; });
+        score += Math.min(textHits * 5, 15);
+      }
 
       // Year bonus
       if (vYear && r.year) {
-        if (r.year === vYear) score += 15;
-        else if (Math.abs(r.year - vYear) === 1) score += 5;
+        if (r.year === vYear) score += 10;
+        else if (Math.abs(r.year - vYear) <= 1) score += 3;
       }
 
       // Shape validation
@@ -2549,23 +2559,21 @@ export default function PadelAnalyzer() {
         const rShape = normalize(r.shape);
         if (rShape === vShape || rShape.includes(vShape) || vShape.includes(rShape)) {
           score += 5;
-        } else {
-          score -= 10; // penalty for shape mismatch
         }
       }
 
-      // Pro player bonus (visible text might contain player name)
-      if (r.proPlayerInfo?.name && vision.visible_text) {
+      // Pro player bonus
+      if (r.proPlayerInfo?.name && (vText || vModel)) {
         const playerNorm = normalize(r.proPlayerInfo.name);
-        const textNorm = normalize(vision.visible_text);
-        if (textNorm.includes(playerNorm)) score += 10;
+        if (vText.includes(playerNorm) || vModel.includes(playerNorm)) score += 10;
       }
 
       return { racket: r, score: Math.max(0, Math.min(100, score)) };
-    }).filter(Boolean);
+    });
 
     scored.sort((a, b) => b.score - a.score);
-    return scored.slice(0, 3);
+    // Only return matches with meaningful score
+    return scored.filter(s => s.score >= 20).slice(0, 3);
   }, []);
 
   const handleScan = useCallback(async (file) => {
@@ -5094,11 +5102,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 const m = scanResult.matches[0];
                 const r = m.racket;
                 const pert = profileName ? computeGlobalScore(r.scores, profile, r) : null;
-                return <button onClick={()=>openRacketSheet(r,"scan")} className="pa-card" style={{
+                return <div onClick={()=>openRacketSheet(r,"scan")} role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter")openRacketSheet(r,"scan");}} style={{
                   width:"100%",borderRadius:18,cursor:"pointer",overflow:"hidden",
                   background:`linear-gradient(160deg, ${T.card} 0%, rgba(61,176,107,0.06) 100%)`,
-                  border:`1px solid ${T.green}40`,padding:0,textAlign:"left",
-                  boxShadow:`0 8px 28px rgba(0,0,0,0.3)`,
+                  border:`1px solid ${T.green}40`,textAlign:"left",
+                  boxShadow:`0 8px 28px rgba(0,0,0,0.3)`,transition:"all 0.25s cubic-bezier(.4,0,.2,1)",
                 }}>
                   <div style={{padding:"18px 18px 14px",display:"flex",gap:14,alignItems:"center"}}>
                     <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} fallbackSize={56} style={{width:56,height:56,borderRadius:10,objectFit:"contain",background:T.surface}}/>
@@ -5120,7 +5128,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Voir la fiche complète</span>
                     <span style={{fontSize:16,color:T.green}}>→</span>
                   </div>
-                </button>;
+                </div>;
               })()}
             </>:<>
               {/* Low confidence — show top 3 */}
