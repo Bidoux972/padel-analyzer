@@ -2528,76 +2528,66 @@ export default function PadelAnalyzer() {
     if (!vision) return [];
 
     const normalize = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").trim();
-    const tokenSet = (s) => new Set(normalize(s).split(/\s+/).filter(Boolean));
+    const tokenSet = (s) => new Set(normalize(s).split(/\s+/).filter(t => t.length >= 2));
 
+    // === ALL available tokens from Vision (merge everything) ===
+    const allVisionText = `${vision.brand||""} ${vision.model||""} ${vision.variant||""} ${vision.visible_text||""}`;
+    const vAllTokens = tokenSet(allVisionText);
+    const vTextTokens = tokenSet(vision.visible_text || "");
     const vBrand = normalize(vision.brand || "");
-    const vModel = normalize(`${vision.model || ""} ${vision.variant || ""}`);
     const vYear = vision.year || 0;
     const vShape = normalize(vision.shape || "");
-    const vTokens = tokenSet(`${vision.brand || ""} ${vision.model || ""} ${vision.variant || ""}`);
-    const vModelTokens = tokenSet(`${vision.model || ""} ${vision.variant || ""}`);
-    const vText = normalize(vision.visible_text || "");
 
     const scored = allDB.map(r => {
-      let score = 0;
+      // Build racket token set: brand + name + shortName
+      const rFull = `${r.brand} ${r.name} ${r.shortName || ""}`;
+      const rTokens = tokenSet(rFull);
       const rBrand = normalize(r.brand);
-      const rName = normalize(r.name);
-      const rShort = normalize(r.shortName || "");
-      const rTokens = tokenSet(`${r.name} ${r.shortName || ""}`);
 
-      // Brand match (bonus, NOT a filter)
-      if (vBrand) {
-        if (rBrand === vBrand) score += 20;
-        else if (rBrand.includes(vBrand) || vBrand.includes(rBrand)) score += 10;
-        // No penalty if brand doesn't match — Vision often gets brand wrong
-      }
-
-      // Model fuzzy match (token overlap — most important signal)
-      let modelHits = 0;
-      vModelTokens.forEach(t => {
-        if (t.length < 2) return; // skip tiny tokens
-        if ([...rTokens].some(rt => rt.includes(t) || t.includes(rt))) modelHits++;
-      });
-      const modelScore = vModelTokens.size > 0 ? (modelHits / vModelTokens.size) : 0;
-      score += modelScore * 50;
-
-      // Also check visible_text against racket name (OCR often more reliable than Vision reasoning)
-      if (vText) {
+      // === PRIMARY: visible_text tokens against racket name (most reliable) ===
+      let textScore = 0;
+      if (vTextTokens.size > 0) {
         let textHits = 0;
-        rTokens.forEach(rt => { if (rt.length >= 3 && vText.includes(rt)) textHits++; });
-        score += Math.min(textHits * 5, 15);
+        vTextTokens.forEach(vt => {
+          if ([...rTokens].some(rt => rt.includes(vt) || vt.includes(rt))) textHits++;
+        });
+        textScore = (textHits / vTextTokens.size) * 60; // Up to 60 points
       }
 
-      // Year bonus (small — Vision often gets year wrong or null)
+      // === SECONDARY: all Vision tokens (brand+model+variant+text) against racket ===
+      let tokenScore = 0;
+      if (vAllTokens.size > 0) {
+        let allHits = 0;
+        vAllTokens.forEach(vt => {
+          if ([...rTokens].some(rt => rt.includes(vt) || vt.includes(rt))) allHits++;
+        });
+        tokenScore = (allHits / vAllTokens.size) * 25; // Up to 25 points
+      }
+
+      // === BONUS: year + shape ===
+      let bonus = 0;
       if (vYear && r.year) {
-        if (r.year === vYear) score += 5;
-        else if (Math.abs(r.year - vYear) <= 1) score += 2;
+        if (r.year === vYear) bonus += 5;
+        else if (Math.abs(r.year - vYear) <= 1) bonus += 2;
       }
-      // If Vision returned no year, prefer newest version
-      if (!vYear && r.year) {
-        score += Math.min((r.year - 2023) * 0.5, 2); // slight recency bonus
-      }
-
-      // Shape validation
+      if (!vYear && r.year) bonus += Math.min((r.year - 2023) * 0.5, 1.5);
       if (vShape && r.shape) {
         const rShape = normalize(r.shape);
-        if (rShape === vShape || rShape.includes(vShape) || vShape.includes(rShape)) {
-          score += 5;
-        }
+        if (rShape === vShape || rShape.includes(vShape) || vShape.includes(rShape)) bonus += 5;
       }
 
-      // Pro player bonus
-      if (r.proPlayerInfo?.name && (vText || vModel)) {
+      // === BONUS: pro player name in visible_text ===
+      if (r.proPlayerInfo?.name && (vision.visible_text || "")) {
         const playerNorm = normalize(r.proPlayerInfo.name);
-        if (vText.includes(playerNorm) || vModel.includes(playerNorm)) score += 10;
+        if (normalize(vision.visible_text).includes(playerNorm)) bonus += 10;
       }
 
-      return { racket: r, score: Math.max(0, Math.min(100, score)) };
+      const total = Math.max(0, Math.min(100, textScore + tokenScore + bonus));
+      return { racket: r, score: Math.round(total * 10) / 10 };
     });
 
     scored.sort((a, b) => b.score - a.score);
-    // Only return matches with meaningful score
-    return scored.filter(s => s.score >= 20).slice(0, 3);
+    return scored.filter(s => s.score >= 25).slice(0, 3);
   }, []);
 
   const handleScan = useCallback(async (file) => {
