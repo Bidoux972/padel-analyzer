@@ -4275,8 +4275,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <span style={{fontSize:22}}>📷</span>
           </div>
           <div style={{flex:1}}>
-            <div style={{fontFamily:F.body,fontSize:14,fontWeight:700,color:T.cream,marginBottom:2}}>Scanner une raquette</div>
-            <div style={{fontFamily:F.body,fontSize:11,color:T.gray1,lineHeight:1.4}}>Photo → identification instantanée</div>
+            <div style={{fontFamily:F.body,fontSize:14,fontWeight:700,color:T.cream,marginBottom:2}}>{profileName?"📷 Scanner & comparer":"Scanner une raquette"}</div>
+            <div style={{fontFamily:F.body,fontSize:11,color:T.gray1,lineHeight:1.4}}>{profileName?`Photo → pertinence pour ${profileName}`:"Photo → identification instantanée"}</div>
           </div>
           <span style={{fontSize:16,color:T.accent}}>→</span>
         </button>
@@ -5001,7 +5001,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={{textAlign:"center",marginBottom:28,maxWidth:400}}>
           <h2 style={{fontFamily:F.editorial,fontSize:26,fontWeight:700,color:T.cream,margin:"0 0 6px"}}>📷 Scanner une raquette</h2>
           <p style={{fontFamily:F.body,fontSize:12,color:T.gray1,lineHeight:1.5,margin:0}}>
-            Prends en photo une raquette de padel et notre IA l'identifie instantanément parmi {totalDBCount} modèles.
+            {profileName
+              ? `Prends en photo une raquette — on te dit si elle correspond au profil de ${profileName}.`
+              : `Prends en photo une raquette de padel et notre IA l'identifie instantanément parmi ${totalDBCount} modèles.`}
           </p>
         </div>
 
@@ -5091,6 +5093,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               {(()=>{
                 const m = scanResult.matches[0];
                 const r = m.racket;
+                const pert = profileName ? computeGlobalScore(r.scores, profile, r) : null;
                 return <button onClick={()=>openRacketSheet(r,"scan")} className="pa-card" style={{
                   width:"100%",borderRadius:18,cursor:"pointer",overflow:"hidden",
                   background:`linear-gradient(160deg, ${T.card} 0%, rgba(61,176,107,0.06) 100%)`,
@@ -5103,6 +5106,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       <div style={{fontFamily:F.editorial,fontSize:16,fontWeight:700,color:T.cream,marginBottom:2}}>{r.name}</div>
                       <div style={{fontSize:10,color:T.gray1,fontFamily:F.body}}>{r.brand} · {r.shape} · {r.year}</div>
                       <div style={{fontSize:10,color:T.gray2,fontFamily:F.body,marginTop:3}}>{r.price}</div>
+                      {pert!==null&&pert>0&&<div style={{marginTop:5,display:"inline-flex",alignItems:"center",gap:4,padding:"3px 8px",borderRadius:6,background:pert>=7?"rgba(249,115,22,0.12)":pert>=5?"rgba(251,191,36,0.12)":"rgba(239,68,68,0.08)",border:`1px solid ${pert>=7?"rgba(249,115,22,0.3)":pert>=5?"rgba(251,191,36,0.3)":"rgba(239,68,68,0.2)"}`}}>
+                        <span style={{fontSize:9,fontWeight:800,color:pert>=7?T.accent:pert>=5?"#fbbf24":"#f87171",fontFamily:F.mono}}>{(pert*10).toFixed(0)}%</span>
+                        <span style={{fontSize:8,color:T.gray1}}>pertinence {profileName}</span>
+                      </div>}
                     </div>
                     <div style={{textAlign:"center",flexShrink:0}}>
                       <div style={{fontSize:20,fontWeight:900,color:T.green,fontFamily:F.mono}}>{m.score}%</div>
@@ -5121,6 +5128,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{display:"flex",flexDirection:"column",gap:10}}>
                 {scanResult.matches.map((m,i)=>{
                   const r = m.racket;
+                  const pert = profileName ? computeGlobalScore(r.scores, profile, r) : null;
                   return <button key={r.id} onClick={()=>openRacketSheet(r,"scan")} className="pa-card" style={{
                     width:"100%",borderRadius:14,cursor:"pointer",overflow:"hidden",
                     background:T.card,border:`1px solid ${i===0?T.accent+"40":T.border}`,
@@ -5130,6 +5138,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontFamily:F.body,fontSize:13,fontWeight:700,color:T.cream}}>{i===0?"🥇 ":i===1?"🥈 ":"🥉 "}{r.name}</div>
                       <div style={{fontSize:10,color:T.gray1,fontFamily:F.body}}>{r.brand} · {r.shape} · {r.year} · {r.price}</div>
+                      {pert!==null&&pert>0&&<div style={{fontSize:9,color:pert>=7?T.accent:pert>=5?"#fbbf24":"#f87171",fontFamily:F.mono,marginTop:2}}>{(pert*10).toFixed(0)}% pertinence {profileName}</div>}
                     </div>
                     <div style={{fontSize:14,fontWeight:800,color:i===0?T.accent:T.gray1,fontFamily:F.mono,flexShrink:0}}>{m.score}%</div>
                   </button>;
