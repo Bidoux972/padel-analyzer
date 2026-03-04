@@ -766,6 +766,24 @@ function RacketSheetScreen({ ctx }) {
         </div>
       </div>
 
+      {/* Scan Pertinence Badge — when opened from scan with active profile */}
+      {racketSheetFrom==="scan"&&profileName&&(()=>{
+        const pert = computeGlobalScore(r.scores, profile, r);
+        if (!pert || pert <= 0) return null;
+        const pct = (pert * 10).toFixed(0);
+        const col = pert >= 7 ? T.accent : pert >= 5 ? "#fbbf24" : "#f87171";
+        const bg = pert >= 7 ? T.accentSoft : pert >= 5 ? "rgba(251,191,36,0.12)" : "rgba(239,68,68,0.08)";
+        return <div style={{textAlign:"center",marginBottom:14}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:10,padding:"10px 20px",borderRadius:16,background:bg,border:`1px solid ${col}40`}}>
+            <span style={{fontSize:28,fontWeight:800,color:col,fontFamily:F.mono}}>{pct}%</span>
+            <div style={{textAlign:"left"}}>
+              <div style={{fontSize:11,fontWeight:700,color:col}}>Pertinence pour {profileName}</div>
+              <div style={{fontSize:9,color:T.gray2}}>{pert>=7?"Excellente compatibilité":pert>=5?"Compatibilité correcte":"Peu adapté à votre profil"}</div>
+            </div>
+          </div>
+        </div>;
+      })()}
+
       {/* Pro Player */}
       {r.proPlayerInfo?.name&&<div style={{textAlign:"center",marginBottom:14}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"10px 18px",borderRadius:14,background:T.goldSoft,border:`1px solid ${T.gold}25`}}>
@@ -845,7 +863,7 @@ function RacketSheetScreen({ ctx }) {
 
       {/* Target Profile */}
       {(()=>{
-        const fromProfile = racketSheetFrom==="dashboard"||racketSheetFrom==="app"||racketSheetFrom==="admin";
+        const fromProfile = racketSheetFrom==="dashboard"||racketSheetFrom==="app"||racketSheetFrom==="admin"||racketSheetFrom==="scan";
         const dynText = fromProfile && profileName && generateDynamicTargetProfile ? generateDynamicTargetProfile(r, {...(profile||{}), _name: profileName}) : null;
         const text = dynText || r.targetProfile;
         if (!text) return null;
@@ -2548,10 +2566,14 @@ export default function PadelAnalyzer() {
         score += Math.min(textHits * 5, 15);
       }
 
-      // Year bonus
+      // Year bonus (small — Vision often gets year wrong or null)
       if (vYear && r.year) {
-        if (r.year === vYear) score += 10;
-        else if (Math.abs(r.year - vYear) <= 1) score += 3;
+        if (r.year === vYear) score += 5;
+        else if (Math.abs(r.year - vYear) <= 1) score += 2;
+      }
+      // If Vision returned no year, prefer newest version
+      if (!vYear && r.year) {
+        score += Math.min((r.year - 2023) * 0.5, 2); // slight recency bonus
       }
 
       // Shape validation
