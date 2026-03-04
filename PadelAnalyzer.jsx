@@ -4186,7 +4186,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <span style={{fontSize:10,color:cloudStatus==="synced"?"#4ade80":cloudStatus==="loading"?"#fbbf24":"#64748b"}}>
             {cloudStatus==="synced"?"☁️ Synchronisé":"☁️ Cloud"} · <span style={{fontFamily:"'Outfit'",fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
           </span>
-          <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"3px 8px",color:"#64748b",fontSize:9,cursor:"pointer",fontFamily:"inherit"}}>⏻</button>
+          <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid rgba(255,255,255,0.12)",borderRadius:6,padding:"3px 8px",color:"#94a3b8",fontSize:10,cursor:"pointer",fontFamily:"inherit"}} title="Déconnexion cloud">⏻</button>
           {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
         </div>}
 
@@ -5701,8 +5701,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               </div>
               <div style={{display:"flex",gap:6,flexShrink:0}}>
-                <button onClick={()=>{if(cameFromAdminRef.current){cameFromAdminRef.current=false;setScreen("admin");}else{setScreen("home");}}} style={{background:"none",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,padding:"5px 8px",color:"#64748b",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title={cameFromAdminRef.current?"Retour admin":"Changer de profil"}>{cameFromAdminRef.current?"🔙":"👥"}</button>
-                <button onClick={disconnect} style={{background:"rgba(239,68,68,0.06)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:8,padding:"5px 10px",color:"#f87171",fontSize:11,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}} title="Déconnexion" className="pa-ghost"><span style={{fontSize:13}}>⏻</span> Déco</button>
+                <button onClick={()=>{if(cameFromAdminRef.current){cameFromAdminRef.current=false;setScreen("admin");}else{setScreen("home");}}} style={{background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.15)",borderRadius:8,padding:"5px 10px",color:"#a5b4fc",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}} title={cameFromAdminRef.current?"Retour admin":"Changer de profil"}>{cameFromAdminRef.current?"🔙":"👥"} <span style={{fontSize:9,fontWeight:600}}>{cameFromAdminRef.current?"Admin":"Profils"}</span></button>
+                <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,padding:"5px 8px",color:"#94a3b8",fontSize:11,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}} title="Déconnexion">⏻</button>
               </div>
             </div>
           </div>
@@ -5864,7 +5864,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <button onClick={goToDashboard} style={{background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:20,padding:"4px 10px",color:"#f97316",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
             <span style={{fontSize:11}}>🏠</span> Dashboard
           </button>
-          <button onClick={disconnect} style={{background:"rgba(239,68,68,0.06)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:20,padding:"4px 10px",color:"#f87171",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}} className="pa-ghost">
+          <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(255,255,255,0.12)",borderRadius:20,padding:"4px 10px",color:"#94a3b8",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
             <span style={{fontSize:12}}>⏻</span> Déconnexion
           </button>
         </div>}
