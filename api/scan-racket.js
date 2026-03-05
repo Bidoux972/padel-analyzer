@@ -37,23 +37,18 @@ module.exports = async function handler(req, res) {
               type: 'text',
               text: `Tu es un expert en raquettes de padel. Analyse cette photo et identifie la raquette.
 
-IMPORTANT :
-- Lis attentivement TOUT le texte visible sur la raquette (marque, modèle, signatures). Le champ visible_text est crucial.
-- La marque doit correspondre au texte visible, pas à ton impression visuelle. Si tu lis "HEAD" sur la raquette, la marque est Head, même si le design ressemble à Adidas.
-- Pour l'année : mets null si elle n'est PAS explicitement écrite sur la raquette. Ne devine jamais l'année.
-
 Extrais les informations suivantes :
-- brand : la marque lue sur la raquette (Adidas, Babolat, Bullpadel, Drop Shot, Dunlop, Head, Kuikma, Nox, Oxdog, Pro Kennex, Royal Padel, Siux, Starvie, Varlion, Vermont, Wilson, ou autre)
-- model : le nom du modèle (ex: "Metalbone", "Vertex", "Coello", etc.)
+- brand : la marque (Adidas, Babolat, Bullpadel, Drop Shot, Dunlop, Head, Kuikma, Nox, Oxdog, Pro Kennex, Royal Padel, Siux, Starvie, Varlion, Vermont, Wilson, ou autre)
+- model : le nom du modèle (ex: "Metalbone", "Vertex", "Coello", "Extreme", etc.)
 - variant : la variante si visible (ex: "Motion", "HRD", "CTRL", "Pro", "Light", etc.)
 - year : l'année UNIQUEMENT si écrite sur la raquette, sinon null
 - colors : couleurs dominantes visibles
-- visible_text : TOUT le texte lisible sur la raquette, séparé par des espaces
+- visible_text : retranscris TOUT le texte lisible sur la raquette, chaque mot séparé par un espace
 - shape : forme estimée parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
 - confidence : ton niveau de confiance de 0 à 100
 
 Réponds UNIQUEMENT en JSON valide, sans aucun texte avant ou après. Exemple :
-{"brand":"Head","model":"Coello","variant":"Motion","year":null,"colors":["noir","orange"],"visible_text":"HEAD COELLO MOTION","shape":"Diamant","confidence":85}`,
+{"brand":"Head","model":"Coello","variant":"Motion","year":null,"colors":["noir","orange"],"visible_text":"HEAD COELLO MOTION AUXETIC 2","shape":"Diamant","confidence":85}`,
             },
           ],
         }],
