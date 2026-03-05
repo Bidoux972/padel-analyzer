@@ -2652,7 +2652,7 @@ export default function PadelAnalyzer() {
       });
       const data = await resp.json();
       if (data.error) throw new Error(data.error);
-      if (!data.brand) throw new Error("Identification impossible");
+      if (!data.visible_text) throw new Error("Aucun texte détecté sur l'image");
       vision = data;
     } catch (e) {
       setScanStatus("error");
