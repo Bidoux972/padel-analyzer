@@ -34,7 +34,13 @@ module.exports = async function handler(req, res) {
         }
         const imgBuffer = await imgResp.arrayBuffer();
         const base64 = Buffer.from(imgBuffer).toString('base64');
-        const contentType = imgResp.headers.get('content-type') || 'image/png';
+        // Detect real image format from magic bytes (headers lie)
+        const bytes = new Uint8Array(imgBuffer.slice(0, 16));
+        let contentType = 'image/png'; // default
+        if (bytes[0] === 0xFF && bytes[1] === 0xD8) contentType = 'image/jpeg';
+        else if (bytes[0] === 0x89 && bytes[1] === 0x50) contentType = 'image/png';
+        else if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46) contentType = 'image/webp';
+        else if (bytes[0] === 0x47 && bytes[1] === 0x49) contentType = 'image/gif';
 
         // Call Vision to extract visual signature
         const response = await fetch('https://api.anthropic.com/v1/messages', {
