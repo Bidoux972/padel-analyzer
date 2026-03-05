@@ -35,20 +35,16 @@ module.exports = async function handler(req, res) {
             },
             {
               type: 'text',
-              text: `Tu es un expert en raquettes de padel. Analyse cette photo et identifie la raquette.
+              text: `Tu vois une image d'une raquette de padel. Ne cherche PAS à identifier la marque ou le modèle. Fais uniquement un travail d'OCR et de description visuelle.
 
-Extrais les informations suivantes :
-- brand : la marque (Adidas, Babolat, Bullpadel, Drop Shot, Dunlop, Head, Kuikma, Nox, Oxdog, Pro Kennex, Royal Padel, Siux, Starvie, Varlion, Vermont, Wilson, ou autre)
-- model : le nom du modèle (ex: "Metalbone", "Vertex", "Coello", "Extreme", etc.)
-- variant : la variante si visible (ex: "Motion", "HRD", "CTRL", "Pro", "Light", etc.)
-- year : l'année UNIQUEMENT si écrite sur la raquette, sinon null
-- colors : couleurs dominantes visibles
-- visible_text : retranscris TOUT le texte lisible sur la raquette, chaque mot séparé par un espace
-- shape : forme estimée parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
-- confidence : ton niveau de confiance de 0 à 100
+Extrais :
+- visible_text : TOUS les mots et inscriptions lisibles sur l'objet, séparés par des espaces. Lis chaque mot tel quel, même déformé ou stylisé.
+- colors : les couleurs visibles, dans l'ordre d'importance
+- shape : forme générale parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
+- design_elements : description courte des motifs, logos, textures visibles
 
-Réponds UNIQUEMENT en JSON valide, sans aucun texte avant ou après. Exemple :
-{"brand":"Head","model":"Coello","variant":"Motion","year":null,"colors":["noir","orange"],"visible_text":"HEAD COELLO MOTION AUXETIC 2","shape":"Diamant","confidence":85}`,
+Réponds UNIQUEMENT en JSON valide :
+{"visible_text":"HEAD EXTREME MOTION AUXETIC 2","colors":["noir","jaune","gris"],"shape":"Diamant","design_elements":"logo tête de raquette centré, motif géométrique angulaire jaune"}`,
             },
           ],
         }],
