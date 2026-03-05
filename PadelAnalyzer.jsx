@@ -2504,9 +2504,10 @@ export default function PadelAnalyzer() {
   const [sharedResults, setSharedResults] = useState(null); // {rackets:[], profileName:""}
 
   // ============ SCAN VISUEL STATE ============
-  const [scanStatus, setScanStatus] = useState("idle"); // idle | compressing | scanning | matching | done | error
+  const [scanStatus, setScanStatus] = useState("idle"); // idle | compressing | scanning | matching | locked | confirm | done | error
   const [scanResult, setScanResult] = useState(null); // {vision:{...}, matches:[{racket,score},...], bestScore}
   const [scanError, setScanError] = useState("");
+  const [scanConfirmCandidates, setScanConfirmCandidates] = useState(null); // [{racket,score},...] when ambiguous
   const scanFileRef = useRef(null);
   const [scanPreview, setScanPreview] = useState(null); // {file, url} for image preview
   const [scanPreviewFile, setScanPreviewFile] = useState(null); // raw File object
@@ -2551,12 +2552,11 @@ export default function PadelAnalyzer() {
     const normalize = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").trim();
     const tokenSet = (s) => new Set(normalize(s).split(/\s+/).filter(t => t.length >= 2));
 
-    // === ALL available tokens from Vision (merge everything) ===
-    const allVisionText = `${vision.brand||""} ${vision.model||""} ${vision.variant||""} ${vision.visible_text||""}`;
+    // === ALL available tokens from Vision OCR ===
+    const allVisionText = vision.visible_text || "";
     const vAllTokens = tokenSet(allVisionText);
-    const vTextTokens = tokenSet(vision.visible_text || "");
-    const vBrand = normalize(vision.brand || "");
-    const vYear = vision.year || 0;
+    const vTextTokens = vAllTokens; // In OCR mode, everything is visible_text
+    const vYear = 0; // OCR mode: no year from Vision
     const vShape = normalize(vision.shape || "");
 
     const scored = allDB.map(r => {
@@ -2669,7 +2669,39 @@ export default function PadelAnalyzer() {
     setScanStatus("locked");
     setScanResult({ vision, matches, bestScore });
     await new Promise(ok => setTimeout(ok, 1400));
-    setScanStatus("done");
+
+    // Step 5: Decide — direct verdict or visual confirmation?
+    if (matches.length === 0) {
+      setScanStatus("done");
+    } else if (matches.length === 1) {
+      setScanStatus("done"); // Only one candidate, no ambiguity
+    } else {
+      const gap = matches[0].score - matches[1].score;
+      // Check if top candidates are same model different years
+      const topName = (matches[0].racket.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim();
+      const sameModel = matches.filter(m => (m.racket.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim() === topName);
+
+      if (gap > 15 && sameModel.length <= 1) {
+        setScanStatus("done"); // Clear winner, no year variants
+      } else {
+        // Ambiguous — show visual confirmation
+        // Expand candidates: include year variants of top match
+        const allDB = getMergedDB();
+        const baseName = topName.toLowerCase();
+        const yearVariants = allDB.filter(r =>
+          (r.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim().toLowerCase() === baseName
+        ).map(r => ({
+          racket: r,
+          score: matches.find(m => m.racket.id === r.id)?.score || Math.max(matches[0].score - 5, 20)
+        }));
+        // Merge: year variants + other close matches (deduplicated)
+        const ids = new Set(yearVariants.map(v => v.racket.id));
+        const others = matches.filter(m => !ids.has(m.racket.id)).slice(0, 2);
+        const confirmList = [...yearVariants, ...others].sort((a,b) => b.score - a.score).slice(0, 5);
+        setScanConfirmCandidates(confirmList);
+        setScanStatus("confirm");
+      }
+    }
   }, [compressImage, fuzzyMatchRacket]);
 
   // Cloud sync: load profiles AND extra rackets from Supabase when family code changes
@@ -4324,7 +4356,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* ============================================================ */}
         {/* SCAN VISUEL — Quick access button */}
         {/* ============================================================ */}
-        <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScreen("scan");}} className="pa-card" style={{
+        <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");}} className="pa-card" style={{
           marginTop:20,width:"100%",maxWidth:400,borderRadius:16,cursor:"pointer",position:"relative",overflow:"hidden",
           background:`linear-gradient(135deg, rgba(232,98,42,0.08) 0%, rgba(212,168,86,0.06) 100%)`,
           border:`1px solid ${T.accent}30`,padding:"16px 20px",textAlign:"left",
@@ -5325,6 +5357,51 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
         </div>}
 
+        {/* ═══ VISUAL CONFIRMATION — "C'est laquelle ?" ═══ */}
+        {scanStatus==="confirm"&&scanConfirmCandidates&&<div style={{width:"100%",maxWidth:460,animation:"fadeInScale 0.5s cubic-bezier(.22,1,.36,1)"}}>
+          {/* Photo reminder — small */}
+          {scanPreview&&<div style={{borderRadius:16,overflow:"hidden",marginBottom:16,position:"relative",maxHeight:160}}>
+            <img src={scanPreview} alt="" style={{width:"100%",height:160,objectFit:"cover",filter:"brightness(0.6)"}}/>
+            <div style={{position:"absolute",bottom:10,left:14,zIndex:2}}>
+              <div style={{fontFamily:F.mono,fontSize:9,color:T.green,textShadow:`0 0 6px ${T.green}60`}}>OCR: {(scanResult?.vision?.visible_text||"").slice(0,50)}</div>
+            </div>
+          </div>}
+
+          <div style={{textAlign:"center",marginBottom:16}}>
+            <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:T.cream,marginBottom:4}}>C'est laquelle ?</div>
+            <div style={{fontFamily:F.body,fontSize:11,color:T.gray2}}>On a trouvé plusieurs correspondances. Tape sur ta raquette.</div>
+          </div>
+
+          <div style={{display:"grid",gridTemplateColumns:scanConfirmCandidates.length<=3?"repeat("+scanConfirmCandidates.length+", 1fr)":"repeat(3, 1fr)",gap:10}}>
+            {scanConfirmCandidates.map((c,i) => {
+              const r = c.racket;
+              return <div key={r.id} onClick={()=>{
+                // User confirmed — go to verdict with this specific racket
+                const newMatches = [{racket:r, score:c.score}];
+                setScanResult(prev => ({...prev, matches:newMatches, bestScore:c.score}));
+                setScanConfirmCandidates(null);
+                setScanStatus("done");
+              }} style={{
+                padding:"10px 8px",borderRadius:16,cursor:"pointer",textAlign:"center",
+                background:T.card,border:`1px solid ${i===0?T.accent+"40":T.border}`,
+                transition:"all 0.2s",display:"flex",flexDirection:"column",alignItems:"center",gap:6,
+              }}>
+                <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} fallbackSize={64} style={{width:72,height:72,objectFit:"contain",borderRadius:10,background:T.surface}}/>
+                <div style={{fontFamily:F.body,fontSize:11,fontWeight:700,color:T.cream,lineHeight:1.2}}>{r.shortName||r.name}</div>
+                <div style={{fontSize:9,color:T.gray2}}>{r.year}</div>
+                {r.price&&r.price!=="—"&&<div style={{fontSize:8,color:T.gray2}}>{r.price}</div>}
+              </div>;
+            })}
+          </div>
+
+          <div style={{textAlign:"center",marginTop:16}}>
+            <button onClick={()=>{setScanConfirmCandidates(null);setScanStatus("done");}} style={{
+              padding:"8px 16px",background:"none",border:`1px solid ${T.border}`,borderRadius:8,
+              color:T.gray2,fontSize:10,cursor:"pointer",fontFamily:F.body,
+            }}>Aucune de celles-ci</button>
+          </div>
+        </div>}
+
         {/* ═══ VERDICT SCREEN ═══ */}
         {scanStatus==="done"&&scanResult&&(()=>{
           const bestMatch = scanResult.matches.length > 0 ? scanResult.matches[0] : null;
@@ -5396,8 +5473,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <div style={{fontFamily:F.mono,fontSize:8,color:T.green,letterSpacing:"0.12em",textShadow:`0 0 6px ${T.green}60`}}>IDENTIFIÉ ✓</div>
                 </div>
                 {/* TOP RIGHT — confidence */}
-                {scanResult.vision.confidence&&<div style={{position:"absolute",top:14,right:14,zIndex:3,animation:"hudFlicker 0.5s ease 0.3s both"}}>
-                  <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.08em",textShadow:`0 0 6px ${T.green}60`}}>CONF. {scanResult.vision.confidence}%</div>
+                {scanResult&&scanResult.matches.length>0&&<div style={{position:"absolute",top:14,right:14,zIndex:3,animation:"hudFlicker 0.5s ease 0.3s both"}}>
+                  <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.08em",textShadow:`0 0 6px ${T.green}60`}}>MATCH ✓</div>
                 </div>}
                 {/* BOTTOM — racket name revealed */}
                 <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 18px 16px",zIndex:3}}>
@@ -5406,7 +5483,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <div style={{fontSize:11,color:T.gray1,fontFamily:F.body,marginTop:4,animation:"hudRevealName 0.6s ease 0.5s both"}}>{r.brand} · {r.shape} · {r.year}{r.price&&r.price!=="—"?` · ${r.price}`:""}</div>
                   </>:<>
                     <div style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:"#fff",animation:"hudRevealName 0.6s ease 0.3s both"}}>
-                      {scanResult.vision.brand} {scanResult.vision.model} {scanResult.vision.variant||""}
+                      {(scanResult.vision.visible_text||"Raquette inconnue").split(" ").slice(0,4).join(" ")}
                     </div>
                     <div style={{fontSize:11,color:T.gray1,fontFamily:F.body,marginTop:4,animation:"hudRevealName 0.6s ease 0.5s both"}}>Raquette non trouvée dans notre base</div>
                   </>}
@@ -5510,7 +5587,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{fontFamily:F.body,fontSize:13,color:T.gray1,lineHeight:1.6}}>
                 Raquette non trouvée dans notre base de {totalDBCount} modèles.
               </div>
-              <button onClick={()=>{setCatalogSearch(scanResult.vision.brand||"");resetCatFilters();setScreen("catalog");}} style={{
+              <button onClick={()=>{setCatalogSearch((scanResult.vision.visible_text||"").split(" ")[0]||"");resetCatFilters();setScreen("catalog");}} style={{
                 marginTop:12,padding:"10px 20px",background:T.accentSoft,border:`1px solid ${T.accent}30`,borderRadius:10,
                 color:T.accent,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:F.body,
               }}>🔎 Chercher dans le catalogue</button>
@@ -5518,7 +5595,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
             {/* Scan again */}
             <div style={{textAlign:"center",marginTop:4}}>
-              <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanPreview(null);setScanPreviewFile(null);}} style={{
+              <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanPreview(null);setScanPreviewFile(null);setScanConfirmCandidates(null);}} style={{
                 padding:"10px 20px",background:"none",border:`1px solid ${T.border}`,borderRadius:10,
                 color:T.gray2,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:F.body,
               }}>📷 Scanner une autre raquette</button>
