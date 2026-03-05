@@ -2660,44 +2660,69 @@ export default function PadelAnalyzer() {
       return;
     }
 
-    // Step 3: Fuzzy match against DB
+    // Step 3: Fuzzy match against DB (text-based pre-filter)
     setScanStatus("matching");
-    const matches = fuzzyMatchRacket(vision);
+    const preMatches = fuzzyMatchRacket(vision);
+
+    // Step 4: Visual comparison — send client photo + top candidates to Vision
+    let matches = preMatches;
+    if (preMatches.length > 1) {
+      try {
+        // Expand candidates: include year variants of top match
+        const allDB = getMergedDB();
+        const topName = (preMatches[0].racket.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim().toLowerCase();
+        const yearVariants = allDB.filter(r =>
+          (r.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim().toLowerCase() === topName
+        );
+        // Merge: year variants + other pre-matched, deduplicated, max 5
+        const ids = new Set(yearVariants.map(r => r.id));
+        const others = preMatches.map(m => m.racket).filter(r => !ids.has(r.id)).slice(0, 2);
+        const candidates = [...yearVariants, ...others].slice(0, 5);
+
+        const compResp = await fetch("/api/compare-rackets", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientImage: base64,
+            candidates: candidates.map(r => ({ id: r.id, name: r.name, imageUrl: r.imageUrl })),
+          }),
+        });
+        const compData = await compResp.json();
+
+        if (compData.matchedId && compData.confidence >= 50) {
+          // Visual comparison found a match — promote it to #1
+          const matchedRacket = allDB.find(r => r.id === compData.matchedId);
+          if (matchedRacket) {
+            const newScore = Math.min(95, Math.max(preMatches[0].score, compData.confidence));
+            matches = [
+              { racket: matchedRacket, score: newScore },
+              ...preMatches.filter(m => m.racket.id !== compData.matchedId).slice(0, 2)
+            ];
+          }
+        }
+      } catch (e) {
+        console.warn("[Scan] Visual comparison failed, using text match:", e.message);
+        // Fall back to text-based matches silently
+      }
+    }
+
     const bestScore = matches.length > 0 ? matches[0].score : 0;
 
-    // Step 4: Lock-on moment (dramatic pause)
+    // Step 5: Lock-on moment (dramatic pause)
     setScanStatus("locked");
     setScanResult({ vision, matches, bestScore });
     await new Promise(ok => setTimeout(ok, 1400));
 
-    // Step 5: Decide — direct verdict or visual confirmation?
-    if (matches.length === 0) {
+    // Step 6: Decide — direct verdict or visual confirmation?
+    if (matches.length <= 1) {
       setScanStatus("done");
-    } else if (matches.length === 1) {
-      setScanStatus("done"); // Only one candidate, no ambiguity
     } else {
       const gap = matches[0].score - matches[1].score;
-      // Check if top candidates are same model different years
-      const topName = (matches[0].racket.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim();
-      const sameModel = matches.filter(m => (m.racket.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim() === topName);
-
-      if (gap > 15 && sameModel.length <= 1) {
-        setScanStatus("done"); // Clear winner, no year variants
+      if (gap > 10) {
+        setScanStatus("done"); // Clear winner after visual comparison
       } else {
-        // Ambiguous — show visual confirmation
-        // Expand candidates: include year variants of top match
-        const allDB = getMergedDB();
-        const baseName = topName.toLowerCase();
-        const yearVariants = allDB.filter(r =>
-          (r.name||"").replace(/\s*20(24|25|26)\s*$/, "").trim().toLowerCase() === baseName
-        ).map(r => ({
-          racket: r,
-          score: matches.find(m => m.racket.id === r.id)?.score || Math.max(matches[0].score - 5, 20)
-        }));
-        // Merge: year variants + other close matches (deduplicated)
-        const ids = new Set(yearVariants.map(v => v.racket.id));
-        const others = matches.filter(m => !ids.has(m.racket.id)).slice(0, 2);
-        const confirmList = [...yearVariants, ...others].sort((a,b) => b.score - a.score).slice(0, 5);
+        // Still ambiguous — let client confirm
+        const confirmList = matches.slice(0, 5);
         setScanConfirmCandidates(confirmList);
         setScanStatus("confirm");
       }
