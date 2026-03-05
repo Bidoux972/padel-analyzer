@@ -409,7 +409,45 @@
     "womanLine": true,
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "ARROW-HIT",
+        "adidas",
+        "STRUCTURAL REINFORCEMENT",
+        "DUAL EXOSKELETON"
+      ],
+      "colors": [
+        "noir",
+        "jaune fluo",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "STRUCTURAL REINFORCEMENT",
+        "DUAL EXOSKELETON"
+      ],
+      "design": [
+        "forme diamant/teardrop",
+        "texture carbone visible sur toute la surface",
+        "motif de perforations en damier central (8x8 trous environ)",
+        "perforations circulaires blanches",
+        "bande verticale centrale striée/nervurée",
+        "logo adidas petit en haut",
+        "inscription ARROW-HIT en jaune fluo en bas",
+        "contour jaune fluo sur le cadre",
+        "motif en V inversé au niveau du manche",
+        "grip noir avec points jaunes",
+        "finition brillante/glossy sur le cadre"
+      ],
+      "yearClues": [
+        "inscription DUAL EXOSKELETON visible",
+        "coloris noir et jaune fluo spécifique",
+        "design du logo adidas et placement des textes",
+        "motif de perforation en damier régulier",
+        "bande centrale avec nervures verticales prononcées"
+      ]
+    }
   },
   {
     "name": "Adidas Arrow Hit Attack 2026",
@@ -517,7 +555,36 @@
     "womanLine": true,
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "ADIDAS",
+        "ARROW-HIT",
+        "CTRL",
+        "2026",
+        "ASG SYSTEM"
+      ],
+      "colors": [
+        "noir",
+        "orange",
+        "doré"
+      ],
+      "tech": [
+        "ASG SYSTEM"
+      ],
+      "design": [
+        "logo Adidas triangle doré centré",
+        "motif de perforations en grille régulière",
+        "liseré orange sur le contour",
+        "forme en goutte d'eau",
+        "zone triangulaire dorée/orange au centre",
+        "grip noir avec points orange",
+        "finition carbon texture",
+        "encadrement orange double ligne",
+        "ouverture triangulaire blanche au niveau du manche"
+      ],
+      "yearClues": "inscription '2026' visible en orange sur la face, coloris orange/doré spécifique à cette année, design du logo Adidas triangle avec dégradé doré caractéristique du millésime 2026"
+    }
   },
   {
     "id": "adidas-arrow-hit-carbon-ctrl-2026",
@@ -571,7 +638,45 @@
     "womanLine": true,
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "ARROW-HIT",
+        "CARBON CTRL",
+        "ASG PRO",
+        "adidas",
+        "STRUCTURAL REINFORCEMENT"
+      ],
+      "colors": [
+        "noir",
+        "orange cuivré",
+        "blanc"
+      ],
+      "tech": [
+        "CARBON CTRL",
+        "ARROW-HIT",
+        "ASG PRO",
+        "STRUCTURAL REINFORCEMENT"
+      ],
+      "design": [
+        "logo adidas trois triangles empilés en orange cuivré au centre",
+        "multiples perforations circulaires blanches sur toute la surface",
+        "forme en V inversé argenté/blanc sous le tamis",
+        "liseré orange cuivré sur le contour du cadre",
+        "texture carbone visible noire",
+        "manche noir avec points orange",
+        "motif géométrique en V",
+        "finition mate carbone"
+      ],
+      "yearClues": [
+        "coloris orange cuivré spécifique (vs autres années avec or ou cuivre différent)",
+        "inscription ARROW-HIT et CARBON CTRL positionnées ensemble",
+        "logo ASG PRO présent en haut à gauche",
+        "design du V argenté sous le tamis avec contours orange/noir",
+        "pattern de points orange sur le manche",
+        "mention STRUCTURAL REINFORCEMENT en orange en haut"
+      ]
+    }
   },
   {
     "id": "adidas-arrow-hit-jr-pink-2026",
@@ -723,7 +828,43 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "ADIDAS",
+        "CROSSFITTEAMLIGHT",
+        "symboles pictogrammes bas de raquette"
+      ],
+      "colors": [
+        "argent métallisé",
+        "rouge corail",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "CROSSFITTEAMLIGHT"
+      ],
+      "design": [
+        "logo Adidas trois triangles superposés en relief",
+        "points blancs en relief sur toute la surface",
+        "motif de lignes diagonales striées sur le fond",
+        "trois triangles rouges disposés en pyramide",
+        "contour rouge autour de la raquette",
+        "découpe triangulaire au centre du manche",
+        "manche blanc avec petits points rouges et noirs",
+        "finition métallisée brossée",
+        "bande rouge horizontale sous le logo",
+        "texture perforée avec trous circulaires"
+      ],
+      "yearClues": [
+        "coloris rouge corail spécifique",
+        "design triangulaire pyramidal rouge",
+        "finition argentée métallisée",
+        "nom CROSSFITTEAMLIGHT",
+        "motif de points blancs en relief sur fond strié",
+        "manche blanc avec pattern de points multicolores"
+      ]
+    }
   },
   {
     "id": "adidas-cross-it-team-light-2026",
@@ -772,7 +913,35 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "adidas",
+        "CROSSFIT TEAM LIGHT",
+        "三個條紋標誌"
+      ],
+      "colors": [
+        "gris argenté métallisé",
+        "rouge corail",
+        "blanc"
+      ],
+      "tech": [
+        "CROSSFIT TEAM LIGHT"
+      ],
+      "design": [
+        "trois triangles rouges superposés au centre",
+        "motif de perforations circulaires blanches sur toute la surface",
+        "lignes diagonales striées en relief sur le cadre",
+        "trois bandes Adidas stylisées intégrées au design",
+        "forme triangulaire au bas de la raquette",
+        "finition métallisée brossée",
+        "logo adidas petit en bas",
+        "rangée d'icônes/symboles sur la bande rouge inférieure",
+        "manche blanc avec perforations rouges dispersées",
+        "contour rouge autour du cadre"
+      ],
+      "yearClues": "Design avec trois triangles rouges superposés, finition argentée métallisée avec striures diagonales, perforations circulaires blanches, et palette de couleurs gris-rouge corail spécifique à la version 2026"
+    }
   },
   {
     "id": "adidas-drive-black-2026",
@@ -821,7 +990,44 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "DRIVE",
+        "STRUCTURAL REINFORCEMENT",
+        "adidas",
+        "包茎包"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "STRUCTURAL REINFORCEMENT"
+      ],
+      "design": [
+        "trois bandes verticales blanches centrales caractéristiques d'Adidas",
+        "forme de tête arrondie type diamant",
+        "multiples perforations circulaires blanches disposées symétriquement",
+        "motifs géométriques rouges en forme de chevrons sur les côtés",
+        "triangle rouge inversé à la base de la tête",
+        "insert blanc triangulaire au niveau du cœur",
+        "finition carbone visible (texture striée noire)",
+        "lignes rouges parallèles décoratives",
+        "logo adidas (trois bandes) sur le manche",
+        "manche blanc avec grip blanc",
+        "dragonne noire attachée"
+      ],
+      "yearClues": [
+        "inscription STRUCTURAL REINFORCEMENT sur le cadre supérieur",
+        "design des chevrons rouges spécifique",
+        "coloris noir/rouge/blanc de cette génération",
+        "caractères asiatiques (包茎包) en haut à droite",
+        "style graphique des lignes rouges parallèles près du logo DRIVE"
+      ]
+    }
   },
   {
     "id": "adidas-match-light-2026",
@@ -870,7 +1076,37 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "MATCH",
+        "LIGHT",
+        "adidas"
+      ],
+      "colors": [
+        "noir",
+        "blanc",
+        "turquoise/cyan"
+      ],
+      "tech": [],
+      "design": [
+        "trois bandes verticales blanches centrales",
+        "motifs géométriques turquoise en forme de flèches/chevrons sur les côtés",
+        "texture carbone striée noire",
+        "perforations circulaires blanches réparties symétriquement",
+        "lignes diagonales hachurées turquoise",
+        "forme de tête diamant/larme",
+        "manche blanc avec jonction noire",
+        "4 icônes/logos alignés sous le texte MATCH LIGHT"
+      ],
+      "yearClues": [
+        "design avec motifs turquoise/cyan et flèches angulaires",
+        "présence de 4 icônes sous le nom du modèle",
+        "style graphique moderne avec lignes hachurées",
+        "combinaison noir/blanc/turquoise spécifique",
+        "pattern de perforations en disposition symétrique avec centre à 3 bandes"
+      ]
+    }
   },
   {
     "name": "Adidas Metalbone 2026",
@@ -924,7 +1160,42 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "METALBONE CARBON",
+        "adidas",
+        "CONTROL"
+      ],
+      "colors": [
+        "noir",
+        "blanc",
+        "rouge",
+        "gris"
+      ],
+      "tech": [
+        "METALBONE CARBON",
+        "CONTROL"
+      ],
+      "design": [
+        "motif triangulaire blanc central avec dégradé de points",
+        "texture carbone visible sur toute la surface",
+        "trois triangles superposés formant un logo géométrique",
+        "points blancs disposés en cercle autour du motif central",
+        "manche noir avec détails rouges",
+        "logo adidas avec les trois bandes sur le col de la raquette",
+        "finition carbon apparent",
+        "accents rouges discrets",
+        "forme diamant/goutte d'eau"
+      ],
+      "yearClues": [
+        "inscription CONTROL sous METALBONE CARBON",
+        "motif triangulaire avec dégradé de points blancs-gris spécifique",
+        "coloris noir-blanc-rouge avec accents minimalistes",
+        "disposition particulière des points en cercle",
+        "logo adidas stylisé sur le col"
+      ]
+    }
   },
   {
     "id": "adidas-metalbone-ctrl-2026",
@@ -987,7 +1258,45 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "METALBONE CTRL",
+        "adidas",
+        "金属骨",
+        "METALBONE"
+      ],
+      "colors": [
+        "noir",
+        "blanc",
+        "gris",
+        "orange"
+      ],
+      "tech": [
+        "METALBONE CTRL"
+      ],
+      "design": [
+        "texture carbone visible sur toute la surface",
+        "motif de trous blancs circulaires disposés en diagonale formant un V",
+        "lignes orange horizontales traversant la raquette",
+        "logo adidas (trois bandes) sur le manche",
+        "bordure grise/blanche argentée",
+        "poignée blanche avec motif de petits points orange",
+        "empiècements orange décoratifs sur le col de la raquette",
+        "forme ronde/diamond hybrid",
+        "caractères chinois visibles (金属骨)",
+        "finition mate sur surface carbone",
+        "zone trapézoïdale orange au niveau du sweet spot"
+      ],
+      "yearClues": [
+        "inscription des caractères chinois 金属骨 (Metalbone en chinois)",
+        "lignes orange fines et minimalistes (vs autres années)",
+        "disposition spécifique des trous en pattern diagonal",
+        "coloris blanc/gris argenté du cadre avec accents orange discrets",
+        "texture carbone apparente très marquée",
+        "logo adidas positionné bas sur le manche"
+      ]
+    }
   },
   {
     "name": "Adidas Metalbone Carbon 2026",
@@ -1041,7 +1350,41 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "METALBONE CARBON",
+        "ADIDAS",
+        "adidas"
+      ],
+      "colors": [
+        "noir",
+        "gris argenté",
+        "rouge"
+      ],
+      "tech": [
+        "METALBONE CARBON"
+      ],
+      "design": [
+        "logo Adidas triple bande géométrique gris argenté centré",
+        "motif de perforations circulaires blanches réparties sur toute la surface",
+        "lignes rouges horizontales fines en haut et au milieu de la raquette",
+        "texture carbon visible (effet tissage)",
+        "finition mate sur fond noir",
+        "manche noir avec petits détails rouges",
+        "forme teardrop/diamant",
+        "protecteur transparent sur le cadre",
+        "logo Adidas répété sur le manche",
+        "cordage noir avec wrist strap noir"
+      ],
+      "yearClues": [
+        "inscription 'METALBONE CARBON' en blanc au centre",
+        "design minimaliste avec logo triple bande gris argenté géométrique",
+        "lignes rouges très fines et discrètes",
+        "absence de dégradés de couleurs",
+        "texture carbon apparente sur toute la surface noire"
+      ]
+    }
   },
   {
     "id": "adidas-metalbone-carbon-ctrl-2026",
@@ -1101,7 +1444,39 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "METALBONE CARBON CTRL",
+        "adidas",
+        "三條紋標誌"
+      ],
+      "colors": [
+        "noir",
+        "blanc",
+        "gris",
+        "orange"
+      ],
+      "tech": [
+        "METALBONE CARBON CTRL"
+      ],
+      "design": [
+        "logo adidas trois bandes stylisé en relief argenté au centre",
+        "surface noire texturée avec perforations circulaires",
+        "motif de trous disposés symétriquement sur toute la surface",
+        "forme en losange/diamant du cadre",
+        "bordure blanche/grise contrastante",
+        "liseré orange horizontal sur la partie supérieure",
+        "liseré orange horizontal sur la partie inférieure",
+        "texture carbone visible sur la surface noire",
+        "manche noir avec grip texturé",
+        "logo adidas également présent sur le manche",
+        "cordons de sécurité noir au bas du manche",
+        "finition mate sur la surface de frappe",
+        "points orange décoratifs sous le texte Metalbone"
+      ],
+      "yearClues": "Version 2026 identifiable par le design spécifique des trois bandes adidas en relief argenté, les liserés orange horizontaux, et l'inscription 'METALBONE CARBON CTRL' en blanc sur fond noir texturé carbone"
+    }
   },
   {
     "name": "Adidas Metalbone HRD 2026",
@@ -1213,7 +1588,43 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "METALBONE TEAM",
+        "adidas",
+        "METALBONE"
+      ],
+      "colors": [
+        "noir",
+        "rouge orange",
+        "gris argenté",
+        "blanc"
+      ],
+      "tech": [
+        "METALBONE TEAM"
+      ],
+      "design": [
+        "motif de trois montagnes géométriques argentées au centre",
+        "perforations blanches circulaires réparties sur toute la surface",
+        "logo adidas trois bandes sur les montagnes",
+        "cadre bicolore noir et rouge orange",
+        "quatre icônes/symboles sous le texte METALBONE TEAM",
+        "lignes blanches horizontales de part et d'autre du texte",
+        "manche blanc avec motifs de points rouges",
+        "col noir entre le manche et la tête",
+        "forme en goutte d'eau (teardrop)",
+        "finition mate sur la surface noire"
+      ],
+      "yearClues": [
+        "combinaison noir et rouge orange vif",
+        "motif trois montagnes argentées avec effet texture",
+        "disposition spécifique des perforations blanches",
+        "quatre icônes sous le texte METALBONE TEAM",
+        "design épuré avec contraste noir/argenté/rouge",
+        "manche blanc à pois rouges"
+      ]
+    }
   },
   {
     "name": "Adidas Metalbone Team Light 2026",
@@ -1262,7 +1673,41 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "METALBONE TEAM LIGHT",
+        "adidas",
+        "METALBONE"
+      ],
+      "colors": [
+        "noir",
+        "gris argenté",
+        "orange",
+        "blanc"
+      ],
+      "tech": [
+        "METALBONE"
+      ],
+      "design": [
+        "trois triangles argentés superposés au centre",
+        "motif de perforations circulaires blanches réparties sur toute la surface",
+        "logo adidas (trois bandes triangulaires) en gris métallisé au centre",
+        "finition texturée carbone noir",
+        "détails orange sur le cadre et le manche",
+        "texte orange 'METALBONE TEAM LIGHT' en bas de la raquette",
+        "symboles/icônes en ligne sous le texte",
+        "manche blanc avec points orange",
+        "forme ronde (round shape)",
+        "bandes orange fluo sur les côtés du cadre"
+      ],
+      "yearClues": [
+        "version 2026 identifiable par le design des trois triangles argentés superposés",
+        "coloris noir/gris argenté/orange spécifique à cette génération",
+        "disposition et style du texte 'METALBONE TEAM LIGHT' en orange",
+        "motif de perforations circulaires avec triangles argentés caractéristique de 2026"
+      ]
+    }
   },
   {
     "id": "babolat-technical-viper-2024",
@@ -1311,7 +1756,38 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "TECHNICAL VIPER",
+        "VIPER",
+        "Babolat",
+        "3K",
+        "CARBON",
+        "FIBER"
+      ],
+      "colors": [
+        "bleu marine",
+        "marron/bronze",
+        "rouge",
+        "blanc"
+      ],
+      "tech": [
+        "3K CARBON FIBER"
+      ],
+      "design": [
+        "bandes horizontales marron et bleu marine alternées sur les côtés",
+        "bande centrale verticale marron/bronze avec découpes rectangulaires noires",
+        "perforations rondes blanches réparties sur toute la surface",
+        "logo Babolat en haut à droite",
+        "liserés rouges verticaux encadrant la bande centrale",
+        "trou en forme de goutte/larme à la base du manche",
+        "grip noir avec dragonne attachée",
+        "motif textile/tissage visible dans les zones bleues",
+        "design général rappelant un drapeau ou des rayures"
+      ],
+      "yearClues": "coloris bleu marine et marron/bronze, inscription TECHNICAL VIPER avec logo stylisé, design à bandes horizontales avec bande centrale verticale contrastée, perforations rondes blanches, liserés rouges fins = version 2024"
+    }
   },
   {
     "id": "babolat-air-viper-2025",
@@ -1360,7 +1836,42 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "AIR",
+        "VIPER",
+        "2025"
+      ],
+      "colors": [
+        "bleu électrique",
+        "noir",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "AIR"
+      ],
+      "design": [
+        "motif de trous circulaires blancs dispersés sur toute la surface",
+        "bande centrale verticale grise/blanche avec le nom du modèle",
+        "logo AIR stylisé en blanc sur fond bleu",
+        "fond bleu marbré/texturé avec effets noirs",
+        "traces ou lignes blanches qui traversent le fond bleu",
+        "forme de raquette arrondie type diamant",
+        "protecteur transparent au bas de la raquette",
+        "grip noir",
+        "dragonne bleue Babolat attachée"
+      ],
+      "yearClues": [
+        "inscription '2025' visible sur la raquette",
+        "motif de dispersion des trous blancs spécifique",
+        "design bleu électrique marbré avec traces blanches",
+        "logo AIR dans ce style graphique particulier",
+        "combinaison coloris bleu électrique/noir/blanc caractéristique de cette génération"
+      ]
+    }
   },
   {
     "id": "babolat-alioth-mini-jr-2025",
@@ -1556,7 +2067,50 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "Counter Viper",
+        "VIPER",
+        "3D SPIN",
+        "3K!",
+        "VERON TECH",
+        "HOLES PATTERN",
+        "SWEET SPOT"
+      ],
+      "colors": [
+        "noir",
+        "jaune fluo",
+        "gris argenté",
+        "blanc"
+      ],
+      "tech": [
+        "3D SPIN",
+        "VERON TECH",
+        "HOLES PATTERN",
+        "SWEET SPOT",
+        "3K!"
+      ],
+      "design": [
+        "bande centrale argentée verticale avec logo Babolat",
+        "motifs géométriques jaunes en chevrons/flèches sur les côtés",
+        "multiples trous de perforation visibles sur toute la surface",
+        "design symétrique gauche-droite",
+        "contour jaune fluo",
+        "zone argentée au bas de la raquette",
+        "texture carbone apparente (3K)",
+        "motif hachuré diagonal jaune et noir",
+        "inscription 'Counter Viper' en noir sur bande centrale"
+      ],
+      "yearClues": [
+        "coloris noir et jaune fluo spécifique 2025",
+        "présence du marquage '3K!' en bas à gauche",
+        "design de la bande centrale argentée avec inscription Counter Viper",
+        "motif géométrique en chevrons jaunes particulier à cette version",
+        "combinaison spécifique des technologies 3D SPIN et VERON TECH"
+      ]
+    }
   },
   {
     "id": "babolat-rebel-2025",
@@ -2303,7 +2857,42 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "VERTEX",
+        "Bullpadel",
+        "VERTEX 04",
+        "3T"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "gris carbone",
+        "blanc"
+      ],
+      "tech": [
+        "3T"
+      ],
+      "design": [
+        "motif carbone quadrillé en fond",
+        "logo Vertex rouge en haut avec effet flamme/aile",
+        "large lettre P rouge stylisée au centre",
+        "trois bandes horizontales rouges traversant le P",
+        "perforations blanches régulières sur toute la surface",
+        "grip rouge texturé",
+        "cadre avec finition carbone apparent",
+        "pont noir avec insert rouge central",
+        "forme diamant/round classique"
+      ],
+      "yearClues": [
+        "logo Vertex 04 avec effet flamme/aile rouge distinctif version 2024",
+        "motif P stylisé avec 3 bandes horizontales rouges spécifique à cette édition",
+        "finition carbone quadrillé gris foncé",
+        "inscription 3T visible en bas à droite",
+        "coloris noir/rouge avec contraste blanc des perforations"
+      ]
+    }
   },
   {
     "id": "bullpadel-flow-2025",
@@ -2901,7 +3490,44 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "HACK 04",
+        "COMFORT",
+        "HESACORE"
+      ],
+      "colors": [
+        "gris",
+        "noir",
+        "blanc",
+        "orange/cuivre"
+      ],
+      "tech": [
+        "HACK 04",
+        "COMFORT",
+        "HESACORE"
+      ],
+      "design": [
+        "logo Bullpadel stylisé noir en forme de S ou spirale au centre",
+        "motif de bandes horizontales grises et noires",
+        "nombreux trous circulaires blancs répartis sur toute la surface",
+        "quatre rivets orange/cuivre visibles (deux en haut, deux en bas)",
+        "forme diamant/larme caractéristique",
+        "double ouverture triangulaire dans le cœur de la raquette",
+        "grip noir Hesacore à la base",
+        "finition mate et brillante alternée",
+        "dégradé de gris du clair au foncé"
+      ],
+      "yearClues": [
+        "HACK 04 COMFORT indique version 2026",
+        "rivets orange/cuivre apparents",
+        "design avec bandes horizontales grises et noires",
+        "logo Bullpadel noir central en spirale",
+        "coloris gris dominant avec accents orange"
+      ]
+    }
   },
   {
     "id": "bullpadel-hack-04-hybrid-2026",
@@ -2961,7 +3587,45 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "HACK 04",
+        "HACK04.5",
+        "TS HACK",
+        "OFFICIAL",
+        "GRIP WEIGHT"
+      ],
+      "colors": [
+        "gris",
+        "noir",
+        "blanc",
+        "argent métallisé"
+      ],
+      "tech": [
+        "HACK04.5"
+      ],
+      "design": [
+        "logo Bullpadel stylisé en noir avec effet 3D ondulé",
+        "trois bandes horizontales noires traversant la face",
+        "nombreux trous de perforation blancs répartis sur toute la surface",
+        "motifs géométriques gris clair en arrière-plan",
+        "forme de diamant (diamond shape)",
+        "cadre avec contour noir",
+        "double ouverture triangulaire au niveau du manche",
+        "grip noir avec texture hexagonale",
+        "finish métallisé brillant sur les zones grises"
+      ],
+      "yearClues": [
+        "mention HACK04.5 suggérant une évolution mi-génération",
+        "design épuré gris métallisé et noir",
+        "logo Bullpadel avec effet 3D ondulé moderne",
+        "finition métallisée brillante caractéristique de la génération 2026",
+        "trois bandes noires horizontales distinctives",
+        "typographie moderne du modèle HACK 04"
+      ]
+    }
   },
   {
     "id": "bullpadel-icon-2026",
@@ -3141,7 +3805,45 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "NEURON",
+        "NEURON 2",
+        "Made in Spain",
+        "PUSH"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "gris carbone",
+        "blanc"
+      ],
+      "tech": [
+        "NEURON 2",
+        "PUSH"
+      ],
+      "design": [
+        "motif de points blancs dispersés sur toute la surface",
+        "lignes courbes blanches délimitant des zones",
+        "zones rouges géométriques (triangle en haut à droite, rectangle à droite)",
+        "zones grises carbone aux angles",
+        "texture carbone visible",
+        "logo Bullpadel en blanc en bas",
+        "inscription NEURON en haut avec effet dégradé",
+        "contour noir avec rivets décoratifs",
+        "poignée noire avec grip texturé"
+      ],
+      "yearClues": [
+        "inscription 'NEURON 2' indiquant version 2",
+        "motif spécifique de points blancs dispersés",
+        "combinaison noir/rouge/gris carbone",
+        "zones rouges géométriques positionnées en haut droite et milieu droit",
+        "style graphique moderne avec effet carbone prononcé",
+        "technologie PUSH visible"
+      ]
+    }
   },
   {
     "name": "Bullpadel Vertex 05 2026",
@@ -3312,7 +4014,44 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "Vertex",
+        "VERTEX 05",
+        "Hybrid",
+        "CUSTOM WEIGHT SYSTEM"
+      ],
+      "colors": [
+        "noir",
+        "bleu ciel",
+        "blanc"
+      ],
+      "tech": [
+        "VERTEX 05",
+        "Hybrid",
+        "CUSTOM WEIGHT SYSTEM"
+      ],
+      "design": [
+        "logo P stylisé bleu ciel central très imposant",
+        "motif carbone en damier noir/gris foncé sur toute la surface",
+        "3 bandes horizontales bleues traversant le logo P",
+        "perforations blanches en grille régulière",
+        "protecteur bleu ciel transparent au bas de la raquette",
+        "forme diamant caractéristique",
+        "grip noir tressé",
+        "finition carbone mate visible"
+      ],
+      "yearClues": [
+        "logo P en bleu ciel très épais et moderne",
+        "3 bandes horizontales bleues intégrées au logo",
+        "inscription VERTEX 05 (référence au modèle spécifique)",
+        "coloris bleu ciel vif caractéristique du millésime 2026",
+        "design minimaliste avec logo central dominant",
+        "protecteur transparent bleu ciel moderne"
+      ]
+    }
   },
   {
     "name": "Bullpadel XPLO 2026",
@@ -3415,7 +4154,39 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "XPLO",
+        "THE PADEL PREMIUM"
+      ],
+      "colors": [
+        "noir",
+        "gris anthracite",
+        "blanc",
+        "jaune fluo"
+      ],
+      "tech": [],
+      "design": [
+        "logo Bullpadel stylisé en haut centré",
+        "motif géométrique avec flèche blanche centrale pointant vers la droite",
+        "bandes horizontales blanches traversant la face",
+        "perforation symétrique avec trous blancs",
+        "dégradé de gris du haut vers le bas",
+        "zone brillante/réfléchissante sur le côté droit",
+        "logo Bullpadel répété sur le manche",
+        "point jaune fluo au niveau du col de la raquette",
+        "design moderne et agressif avec contraste noir/blanc"
+      ],
+      "yearClues": [
+        "flèche blanche géométrique centrale dominante",
+        "point jaune fluo distinctif au col",
+        "dégradé gris subtil",
+        "style graphique moderne 2026",
+        "finition brillante sur une moitié de la face"
+      ]
+    }
   },
   {
     "id": "drop-shot-conqueror-2025",
@@ -3665,7 +4436,41 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "GALACTICA",
+        "PRO",
+        "DUNLOP",
+        "12K",
+        "18K",
+        "3K"
+      ],
+      "colors": [
+        "noir",
+        "turquoise/cyan",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "12K",
+        "18K",
+        "3K"
+      ],
+      "design": [
+        "logo Dunlop central en turquoise stylisé forme D avec lignes diagonales",
+        "motif carbone damier/chevron sur toute la surface",
+        "pattern de perforations hexagonales blanches réparties sur toute la face",
+        "finition carbon fiber texture visible",
+        "pont/cadre avec découpes aérodynamiques triangulaires",
+        "petits hexagones décoratifs sur les côtés du cadre",
+        "indicateurs 12K/18K/3K alignés horizontalement en bas de la face",
+        "sangle de poignet noire avec logo Dunlop",
+        "grip noir texturé",
+        "liseré gris/argenté sur le contour"
+      ],
+      "yearClues": "Logo turquoise cyan vif (pas bleu classique), texte 'GALACTICA PRO' en haut, présence des marquages 12K/18K/3K visibles, motif hexagonal perforations, coloris noir/turquoise = version 2025"
+    }
   },
   {
     "id": "dunlop-rocket-ultra-2025",
@@ -3921,7 +4726,48 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "EXTREME",
+        "EXTREME PRO",
+        "AUXETIC",
+        "POWER FOAM",
+        "OPTIMIZED SWEET SPOT",
+        "GRAPHENE 360+"
+      ],
+      "colors": [
+        "noir",
+        "vert kaki/olive",
+        "vert citron/jaune verdâtre",
+        "blanc"
+      ],
+      "tech": [
+        "AUXETIC",
+        "POWER FOAM",
+        "GRAPHENE 360+",
+        "OPTIMIZED SWEET SPOT"
+      ],
+      "design": [
+        "logo HEAD en forme de vague/arc vert citron stylisé et moderne",
+        "motif de perforations circulaires régulières sur toute la surface",
+        "cadre bicolore noir et vert kaki/olive",
+        "transition de couleur dégradée du noir vers le vert sur le cadre",
+        "mot EXTREME inscrit sur le cadre inférieur vert",
+        "manche vert kaki avec inscriptions gravées",
+        "forme en goutte d'eau (teardrop)",
+        "design épuré et minimaliste",
+        "logo Head de taille moyenne centré avec effet brillant/mat"
+      ],
+      "yearClues": [
+        "coloris vert kaki/olive militaire caractéristique de 2024",
+        "logo HEAD en arc vert citron/jaune verdâtre pale (différent du jaune fluo des années précédentes)",
+        "inscription AUXETIC sans le chiffre 2 ou autre version",
+        "palette de couleurs terre/nature (noir + vert militaire)",
+        "style graphique minimaliste et épuré 2024"
+      ]
+    }
   },
   {
     "id": "head-monster-kids-2024",
@@ -4523,7 +5369,37 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "SPEED",
+        "HEAD"
+      ],
+      "colors": [
+        "rose poudré",
+        "gris",
+        "noir"
+      ],
+      "tech": [],
+      "design": [
+        "motif en forme de A ou chevron noir inversé au centre",
+        "surface perforée avec nombreux trous circulaires",
+        "logo HEAD stylisé intégré dans le motif noir en forme de A",
+        "design triangulaire noir dans la partie inférieure du tamis",
+        "finition mate rose/gris",
+        "contour gris métallique",
+        "manche noir avec ouverture trapézoïdale blanche",
+        "distribution symétrique des perforations",
+        "style minimaliste et épuré"
+      ],
+      "yearClues": [
+        "coloris rose poudré/gris caractéristique de la collection 2025",
+        "motif chevron/A noir distinctif de la version 2025",
+        "inscription SPEED en minuscules épurées",
+        "absence de mentions de technologies spécifiques visibles",
+        "design minimaliste moderne typique du millésime 2025"
+      ]
+    }
   },
   {
     "id": "head-speed-one-x-2025",
@@ -4583,7 +5459,34 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "SPEED"
+      ],
+      "colors": [
+        "noir",
+        "gris"
+      ],
+      "tech": [],
+      "design": [
+        "logo Head arc inversé stylisé gris au centre",
+        "surface texturée grain de peau/carbone visible",
+        "design minimaliste monochrome",
+        "pont en forme de V ou diamant ouvert",
+        "finition mate",
+        "point blanc central dans le logo Head",
+        "inscription SPEED en petits caractères sous le logo"
+      ],
+      "yearClues": [
+        "design tout noir avec logo gris sobre",
+        "absence de couleurs vives contrairement aux versions précédentes",
+        "style minimaliste épuré premium",
+        "logo Head simplifié sans texte additionnel visible",
+        "finition mate texturée"
+      ]
+    }
   },
   {
     "id": "head-speed-pro-2025",
@@ -4633,7 +5536,36 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "SPEED",
+        "HEAD"
+      ],
+      "colors": [
+        "noir",
+        "gris métallisé",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo HEAD stylisé en forme de triangle/flèche gris métallisé au centre",
+        "motif de points/perforations blancs disposés en grille sur toute la surface",
+        "design minimaliste et sobre",
+        "logo HEAD intégré dans un motif triangulaire asymétrique",
+        "texture mate noire dominante",
+        "inscription SPEED en lettres capitales grises sous le logo",
+        "forme teardrop classique",
+        "manche noir avec renforts triangulaires à la jonction"
+      ],
+      "yearClues": [
+        "logo HEAD en triangle gris métallisé moderne (différent des versions précédentes)",
+        "coloris noir total sans accents de couleur vive",
+        "typographie SPEED en gris sobre",
+        "design minimaliste épuré caractéristique de la génération 2025",
+        "absence de logos ou inscriptions de technologies visibles sur la face"
+      ]
+    }
   },
   {
     "id": "head-speed-team-2025",
@@ -4682,7 +5614,39 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "SPEED",
+        "SPEED TEAM"
+      ],
+      "colors": [
+        "gris",
+        "noir",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "forme ronde (round)",
+        "perforations nombreuses réparties uniformément sur toute la surface",
+        "motif graphique noir en forme de croissant/arc sur le côté gauche de la face",
+        "logo HEAD stylisé noir intégré dans le design graphique",
+        "inscription SPEED en bas de la face",
+        "cadre gris uniforme",
+        "manche noir avec zone blanche rectangulaire au centre",
+        "design minimaliste épuré",
+        "contraste gris/noir/blanc",
+        "finition mate"
+      ],
+      "yearClues": [
+        "coloris gris dominant sobre",
+        "motif graphique noir asymétrique en arc",
+        "design minimaliste sans couleurs vives",
+        "absence de technologies inscrites visibles (style épuré 2025)",
+        "zone blanche rectangulaire distinctive sur le manche"
+      ]
+    }
   },
   {
     "id": "head-coello-junior-2026",
@@ -5103,7 +6067,39 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "EXTREME",
+        "EXTREME MOTION",
+        "HEAD EXTREME MOTION"
+      ],
+      "colors": [
+        "bleu gris foncé",
+        "jaune pâle/crème",
+        "noir"
+      ],
+      "tech": [],
+      "design": [
+        "motif de perforations circulaires régulières sur toute la surface",
+        "logo HEAD stylisé en forme de goutte/flamme jaune pâle",
+        "logo positionné de manière asymétrique vers la gauche",
+        "design épuré et minimaliste",
+        "forme de raquette arrondie classique type diamant",
+        "pont en Y avec découpes triangulaires",
+        "finition mate sur la surface",
+        "inscription EXTREME en lettres capitales espacées en bas de la raquette",
+        "motif logo simple sans fioritures"
+      ],
+      "yearClues": [
+        "coloris bleu-gris mat sobre avec accent jaune pâle discret",
+        "absence de technologies visibles inscrites (Auxetic, Graphene, etc.)",
+        "design minimaliste et épuré typique des modèles 2026",
+        "logo HEAD stylisé en forme organique jaune pâle",
+        "typographie EXTREME fine et espacée"
+      ]
+    }
   },
   {
     "name": "Head Extreme One 2026",
@@ -5152,7 +6148,35 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "EXTREME",
+        "AUXETIC 2.0"
+      ],
+      "colors": [
+        "bleu marine foncé",
+        "bleu métallique",
+        "gris argenté",
+        "noir"
+      ],
+      "tech": [
+        "AUXETIC 2.0"
+      ],
+      "design": [
+        "grand logo HEAD en forme de spirale ou vague stylisée au centre",
+        "effet dégradé bleu métallique brillant sur le logo",
+        "texture granuleuse ou sablée sur la surface",
+        "point blanc circulaire près du logo",
+        "cadre avec finition mate noire",
+        "zone de frappe bleu foncé uniforme",
+        "pont/manche avec deux découpes triangulaires symétriques blanches/argentées",
+        "design minimaliste et épuré",
+        "logo HEAD en relief ou impression spéciale avec reflets métalliques bleu-argent"
+      ],
+      "yearClues": "Logo HEAD très graphique en spirale avec effet métallique bleu-argent dégradé, mention AUXETIC 2.0 (évolution technologique), design minimaliste avec coloris bleu marine mat et accents métalliques = version 2026"
+    }
   },
   {
     "id": "head-extreme-pro-2026",
@@ -5201,7 +6225,37 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "EXTREME",
+        "HEAD"
+      ],
+      "colors": [
+        "noir",
+        "bleu marine foncé",
+        "jaune pâle/beige",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "motif de perforations en grille régulière sur toute la surface",
+        "logo HEAD stylisé en forme de goutte/flamme inversée en jaune pâle",
+        "logo HEAD asymétrique positionné sur le côté gauche",
+        "cadre avec finition mate",
+        "forme diamant arrondie caractéristique",
+        "pont en Y noir dans le manche",
+        "grip noir texturé",
+        "inscription EXTREME en lettres capitales espacées en bas de la raquette"
+      ],
+      "yearClues": [
+        "coloris bleu marine très foncé presque noir",
+        "logo HEAD en jaune pâle/beige (non jaune fluo vif)",
+        "absence de mentions Auxetic ou autres technologies visibles",
+        "design minimaliste épuré",
+        "positionnement asymétrique du logo en forme de goutte"
+      ]
+    }
   },
   {
     "name": "Head Extreme Team 2026",
@@ -5250,7 +6304,37 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "EXTREME",
+        "TEAM"
+      ],
+      "colors": [
+        "vert citron clair",
+        "bleu marine foncé",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo HEAD central stylisé en relief avec contour bleu marine",
+        "motif de points perforés couvrant toute la surface",
+        "bande diagonale bleu marine partant du bas droit",
+        "forme arrondie en goutte d'eau",
+        "texte EXTREME en gris clair au centre-bas",
+        "pont central avec découpes triangulaires géométriques",
+        "bordure blanc/gris clair",
+        "grip noir avec marquage HEAD"
+      ],
+      "yearClues": [
+        "coloris vert citron clair dominant (nouveau pour 2026)",
+        "absence de marquages technologiques visibles type Auxetic",
+        "design épuré minimaliste",
+        "bande diagonale bleu marine caractéristique de la version Team 2026",
+        "position du texte EXTREME centré en bas"
+      ]
+    }
   },
   {
     "name": "Head Gravity Motion 2026",
@@ -5299,7 +6383,38 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "GRAVITY",
+        "HEAD"
+      ],
+      "colors": [
+        "turquoise menthe",
+        "noir",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "motif en spirale noire sur fond turquoise",
+        "spirale partant du centre vers l'extérieur",
+        "perforations en spirale suivant le motif noir",
+        "logo HEAD stylisé noir en spirale",
+        "texte GRAVITY vertical sur la surface",
+        "manche blanc avec finition grip blanc",
+        "détail orange/corail sur le col de la raquette",
+        "taches blanches type effet granite sur le manche",
+        "forme ronde/diamant classique"
+      ],
+      "yearClues": [
+        "coloris turquoise menthe spécifique",
+        "design spirale noir unique",
+        "absence de mentions technologiques visibles (Auxetic, Graphene)",
+        "style minimaliste épuré",
+        "finition bicolore manche blanc/turquoise",
+        "petit détail orange sur le col"
+      ]
+    }
   },
   {
     "name": "Head Gravity Pro 2026",
@@ -5514,7 +6629,37 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "RADICAL",
+        "HEAD"
+      ],
+      "colors": [
+        "vert foncé",
+        "corail/rouge-orange",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo HEAD en forme de spirale ou courbe épaisse corail",
+        "motif de trous/perforations en disposition triangulaire/pyramidale",
+        "design bicolore asymétrique vert/corail",
+        "zone corail en bas à droite de la face",
+        "manche entièrement corail/rouge-orange",
+        "finition mate sur la surface",
+        "texte RADICAL discret en bas du tamis",
+        "courbe corail qui entoure partiellement le logo HEAD central",
+        "perforations blanches contrastant sur fond vert foncé"
+      ],
+      "yearClues": [
+        "coloris vert foncé + corail spécifique à 2026",
+        "logo HEAD en spirale épaisse corail (nouveau design)",
+        "absence de mentions technologiques visibles (évolution minimaliste)",
+        "design asymétrique moderne avec zone corail en coin inférieur droit",
+        "texte RADICAL discret intégré (non proéminent)"
+      ]
+    }
   },
   {
     "name": "Head Radical Pro 2026",
@@ -5569,7 +6714,37 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "RADICAL",
+        "HEAD",
+        "PRO"
+      ],
+      "colors": [
+        "rouge",
+        "vert foncé",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo en forme de triangle/flèche vert foncé au centre",
+        "motif de perforation avec trous blancs répartis sur toute la surface",
+        "forme de raquette arrondie classique",
+        "handle rouge avec découpes triangulaires",
+        "text 'RADICAL' centré sous le motif triangulaire",
+        "design épuré monochrome rouge dominant",
+        "triangle vert forme un A stylisé",
+        "perforation symétrique autour du motif central"
+      ],
+      "yearClues": [
+        "coloris rouge vif uni avec accent vert",
+        "logo triangulaire vert géométrique simplifié",
+        "absence de technologies inscrites visibles (Graphene, Auxetic)",
+        "design minimaliste moderne",
+        "TEXT 'RADICAL' en lettres capitales fines"
+      ]
+    }
   },
   {
     "name": "Head Radical Team 2026",
@@ -5618,7 +6793,36 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "RADICAL",
+        "HEAD"
+      ],
+      "colors": [
+        "rouge corail",
+        "vert émeraude/turquoise foncé",
+        "noir"
+      ],
+      "tech": [],
+      "design": [
+        "motif diagonal en forme de bande verte traversant la raquette",
+        "logo HEAD stylisé en forme de triangle/flèche intégré dans le design vert",
+        "pattern de trous de perçage en cercles concentriques",
+        "texte RADICAL gravé/imprimé en lettres espacées sur la surface rouge",
+        "deux découpes ovales asymétriques dans le manche",
+        "grip noir avec texture",
+        "design bicolore rouge-vert avec contraste marqué",
+        "finition mate sur les surfaces colorées"
+      ],
+      "yearClues": [
+        "coloris rouge corail et vert émeraude spécifique à 2026",
+        "typographie espacée du mot RADICAL",
+        "design minimaliste sans technologies apparentes inscrites",
+        "forme du logo HEAD triangulaire intégré au design vert",
+        "pattern de perçage concentrique simple"
+      ]
+    }
   },
   {
     "name": "Head Radical Team Light 2026",
@@ -5667,7 +6871,36 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "RADICAL",
+        "TEAM LIGHT",
+        "HEAD"
+      ],
+      "colors": [
+        "vert foncé/teal",
+        "orange corail",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo HEAD stylisé en orange corail formant un arc/courbe caractéristique",
+        "motif de perforations circulaires régulières sur toute la surface",
+        "bande orange corail diagonale partant du bas droit",
+        "découpe triangulaire au niveau du cœur/manche",
+        "finition mate",
+        "texte 'RADICAL TEAM LIGHT' gravé/imprimé en gris discret au centre",
+        "logo HEAD inversé (arc ouvert vers le haut) occupant le tiers supérieur"
+      ],
+      "yearClues": [
+        "combinaison couleur vert teal profond et orange corail",
+        "logo HEAD en arc simple épuré sans fioritures",
+        "typographie minimaliste pour 'RADICAL TEAM LIGHT'",
+        "absence de technologies visibles inscrites (design épuré 2026)",
+        "style minimaliste et moderne"
+      ]
+    }
   },
   {
     "name": "Head Speed Motion 2026",
@@ -5923,7 +7156,36 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "VIBE"
+      ],
+      "colors": [
+        "gris métallisé",
+        "noir",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "motif spiral concentrique de trous sur toute la surface",
+        "disposition des trous en spirale partant du centre",
+        "finition texturée style fibre de carbone visible sur la surface grise",
+        "dégradé du gris clair au centre vers gris foncé sur les bords",
+        "partie noire solide sur le côté droit de la raquette",
+        "logo VIBE vertical sur la partie noire",
+        "forme de raquette arrondie type diamant",
+        "ouverture triangulaire dans le cadre près du manche",
+        "manche noir avec grip texturé"
+      ],
+      "yearClues": [
+        "finition gris métallisé avec effet fibre de carbone apparent",
+        "motif spiral très prononcé et visible",
+        "design bicolore gris-noir asymétrique",
+        "style minimaliste avec uniquement texte VIBE",
+        "absence de logos ou inscriptions multiples"
+      ]
+    }
   },
   {
     "id": "nox-ml10-pro-cup-2024",
@@ -5972,7 +7234,52 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "nox",
+        "LUXURY SERIES",
+        "ML10",
+        "Pro Cup",
+        "CARBON FRAME",
+        "15",
+        "20",
+        "MULTI EVA",
+        "ROUGH SURFACE"
+      ],
+      "colors": [
+        "blanc",
+        "orange fluo",
+        "noir",
+        "rose",
+        "vert clair",
+        "argent"
+      ],
+      "tech": [
+        "CARBON FRAME",
+        "MULTI EVA",
+        "ROUGH SURFACE",
+        "LUXURY SERIES"
+      ],
+      "design": [
+        "motif en X central avec découpes circulaires",
+        "dégradé rose-vert à l'intérieur du X",
+        "contours orange fluo épais",
+        "finition iridescente/holographique sur surface",
+        "points de perçage circulaires uniformes",
+        "bande noire en bas avec détails techniques",
+        "grip noir avec inscriptions nox répétées",
+        "dragonne orange fluo avec logo nox",
+        "logo nox minimaliste en haut"
+      ],
+      "yearClues": [
+        "coloris orange fluo vif (signature 2024)",
+        "dégradé rose-vert holographique",
+        "mention Pro Cup 2024",
+        "design X avec effet iridescent",
+        "nouvelle palette de couleurs pastel combinée au orange"
+      ]
+    }
   },
   {
     "id": "nox-at10-genius-18k-2025",
@@ -6070,7 +7377,55 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "nox",
+        "AT10",
+        "GENIUS",
+        "AT10 GENIUS",
+        "WORLD RACE",
+        "12K",
+        "18K",
+        "CARBON FRAME",
+        "SMARTSTRAP",
+        "ROUGH SURFACE"
+      ],
+      "colors": [
+        "noir",
+        "orange cuivré",
+        "gris anthracite",
+        "rouge"
+      ],
+      "tech": [
+        "12K",
+        "18K",
+        "CARBON FRAME",
+        "SMARTSTRAP",
+        "ROUGH SURFACE",
+        "WORLD RACE"
+      ],
+      "design": [
+        "forme diamant rond",
+        "motif X géométrique central avec lignes orange",
+        "perforations hexagonales nombreuses",
+        "cadre bicolore noir et orange cuivré métallisé",
+        "logo nox orange en haut",
+        "zone orange avec inscriptions techniques au centre-bas",
+        "grip noir avec bandes rouges alternées",
+        "sangle de sécurité noire avec logo nox orange",
+        "finition métallisée brillante sur le cadre orange",
+        "design asymétrique avec texte GENIUS vertical sur le côté"
+      ],
+      "yearClues": [
+        "coloris orange cuivré métallisé",
+        "mention WORLD RACE",
+        "design du motif X avec lignes géométriques oranges",
+        "combinaison 12K et 18K visible",
+        "grip avec alternance noir et rouge vif",
+        "finition métallisée moderne du cadre"
+      ]
+    }
   },
   {
     "id": "nox-at10-genius-jr-2025",
@@ -6168,7 +7523,51 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "nox",
+        "EPIC",
+        "AT10",
+        "LUXURY",
+        "GENIUS",
+        "12K",
+        "CARBON FRAME",
+        "SMART STRAP"
+      ],
+      "colors": [
+        "gris métallisé",
+        "bordeaux",
+        "rouge",
+        "noir"
+      ],
+      "tech": [
+        "12K",
+        "CARBON FRAME",
+        "SMART STRAP"
+      ],
+      "design": [
+        "motif en X double superposé au centre",
+        "forme diamant géométrique",
+        "lignes rouges/bordeaux contourant les X",
+        "perforations nombreuses sur toute la surface",
+        "cadre bicolore gris-bordeaux asymétrique",
+        "logo nox minimaliste en haut",
+        "handle rouge et noir alternés",
+        "dragonne grise avec logo nox rouge",
+        "finition métallisée brillante",
+        "bride de connexion handle en forme de X ajouré"
+      ],
+      "yearClues": [
+        "inscription LUXURY visible sur le cadre",
+        "coloris bordeaux/rouge premium",
+        "motif double X avec contours rouges",
+        "finition gris métallisé brillant",
+        "design bicolore asymétrique du cadre",
+        "handle rouge et noir alterné",
+        "bride X ajourée bordeaux"
+      ]
+    }
   },
   {
     "id": "nox-ml10-pro-cup-2025",
@@ -6217,7 +7616,53 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "nox",
+        "ML10 PRO CUP",
+        "MIGUEL LAMPERTI",
+        "FG III",
+        "FIBERGLASS LAYERS",
+        "HR3",
+        "CORE",
+        "makes you tronx",
+        "PREMIUM BLADE"
+      ],
+      "colors": [
+        "blanc",
+        "doré/gold",
+        "rouge",
+        "noir",
+        "gris"
+      ],
+      "tech": [
+        "FG III FIBERGLASS LAYERS",
+        "HR3 CORE"
+      ],
+      "design": [
+        "motif en X doré central avec perforations",
+        "pattern géométrique en croix",
+        "zones dorées à texture quadrillée",
+        "insertions grises latérales",
+        "nombreux trous de perforation circulaires",
+        "ligne rouge en arc au sommet",
+        "triangles rouges en haut et en bas",
+        "manche noir texturé",
+        "dragonne rouge et blanche",
+        "cadre blanc avec détails rouges",
+        "logo nox minimaliste en haut",
+        "signature Miguel Lamperti"
+      ],
+      "yearClues": [
+        "mention 'PRO CUP' dans le nom",
+        "technologies FG III et HR3 CORE",
+        "coloris blanc-doré-rouge",
+        "design en X doré distinctif",
+        "logo nox style 2025",
+        "dragonne rouge nox"
+      ]
+    }
   },
   {
     "id": "nox-ml10-beginner-2025",
@@ -7375,7 +8820,43 @@
     "junior": true,
     "ean": null,
     "availability": "available",
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "starvie",
+        "PARACELAS",
+        "MADE IN SPAIN",
+        "JUNIOR",
+        "STARVIE"
+      ],
+      "colors": [
+        "rouge vif",
+        "noir",
+        "gris argenté",
+        "blanc"
+      ],
+      "tech": [
+        "PARACELAS"
+      ],
+      "design": [
+        "motif diagonal de lignes rouges parallèles traversant le centre",
+        "logo starvie en blanc stylisé en bas du tamis",
+        "cadre rouge brillant avec finition mate",
+        "pattern de points hexagonaux gris dégradés sur les côtés",
+        "cercles en relief noirs dispersés sur toute la surface",
+        "forme de raquette arrondie classique padel",
+        "grip blanc avec points texturés",
+        "triangle inversé au niveau du manche (design signature)",
+        "combinaison texture lisse noire et perforée grise"
+      ],
+      "yearClues": [
+        "motif diagonal rouge en lignes parallèles spécifique 2025",
+        "pattern hexagonal gris argenté dégradé",
+        "PARACELAS inscrit sur le cadre supérieur",
+        "combinaison couleurs rouge vif/noir/gris argenté",
+        "disposition spécifique des cercles en relief"
+      ]
+    }
   },
   {
     "id": "starvie-metheora-galaxy-2025",
@@ -7522,7 +9003,49 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "STARVIE",
+        "Raptor",
+        "VIRATOR",
+        "EVA",
+        "SOFT 30",
+        "STARVIE",
+        "OCTANE",
+        "CARBON 12K"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "EVA SOFT 30",
+        "CARBON 12K",
+        "OCTANE"
+      ],
+      "design": [
+        "logo étoile blanc centré avec perforations intégrées",
+        "texture carbone visible en damier sur toute la surface",
+        "cadre rouge vif asymétrique",
+        "motif géométrique triangulaire sur le cadre rouge",
+        "perforations circulaires blanches autour du logo étoile",
+        "étoile blanche également sur le manche",
+        "bande EVA SOFT 30 avec fond noir et texte blanc en bas à gauche",
+        "grip noir avec inscriptions blanches",
+        "finition mate/brillante sur carbone"
+      ],
+      "yearClues": [
+        "mention CARBON 12K spécifique",
+        "badge EVA SOFT 30 avec design rectangulaire moderne",
+        "coloris rouge vif et noir avec étoile blanche",
+        "texture carbone damier très visible",
+        "technologie OCTANE inscrite sur le manche",
+        "design épuré avec étoile centrale perforée"
+      ]
+    }
   },
   {
     "id": "starvie-black-titan-2026",
@@ -8323,7 +9846,39 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "BELA",
+        "Wilson",
+        "W"
+      ],
+      "colors": [
+        "rouge métallisé",
+        "noir",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo BELA stylisé central en noir sur fond rouge",
+        "motif de perforation en spirale/cercles concentriques",
+        "trous blancs disposés en pattern circulaire",
+        "cadre rouge brillant avec finition métallisée",
+        "texture gaufrée sur la surface rouge",
+        "manche noir avec grip texturé",
+        "deux découpes triangulaires dans le col de la raquette",
+        "logo Wilson 'W' en bas du cadre",
+        "texte 'BELA' vertical sur le côté gauche du cadre",
+        "design bicolore rouge/noir avec contraste fort"
+      ],
+      "yearClues": [
+        "finition rouge métallisé brillant",
+        "logo BELA en noir mat contrasté",
+        "pattern de perforation spécifique en cercles concentriques",
+        "double découpe triangulaire dans le col",
+        "absence de mentions 'V1' ou technologie spécifique visible = version V2 2025"
+      ]
+    }
   },
   {
     "id": "wilson-blade-jr-v2-2025",
@@ -8421,7 +9976,37 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "WILSON ULTRA II",
+        "W",
+        "ULTRA"
+      ],
+      "colors": [
+        "noir",
+        "bleu clair/menthe",
+        "blanc"
+      ],
+      "tech": [
+        "ULTRA II"
+      ],
+      "design": [
+        "motif central en forme de W stylisé composé de lignes diagonales et points blancs",
+        "logo W Wilson en bas de raquette",
+        "texture carbone visible sur toute la surface noire",
+        "contour bleu clair/menthe en bas de la raquette",
+        "forme arrondie classique",
+        "grip noir avec bandes de texture",
+        "design minimaliste bicolore noir et bleu clair"
+      ],
+      "yearClues": [
+        "mention ULTRA II (version 2)",
+        "coloris bleu clair/menthe distinctif",
+        "motif W central avec lignes diagonales et points",
+        "design épuré minimaliste caractéristique 2025"
+      ]
+    }
   },
   {
     "id": "wilson-accent-2026",
@@ -9583,7 +11168,46 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "Air Vertuo",
+        "VERTUO",
+        "2026",
+        "BLACK CROWN",
+        "HOLES PATTERN",
+        "3D SPIN"
+      ],
+      "colors": [
+        "noir",
+        "bleu clair",
+        "bleu métallique"
+      ],
+      "tech": [
+        "BLACK CROWN",
+        "HOLES PATTERN",
+        "3D SPIN"
+      ],
+      "design": [
+        "bande centrale verticale bleu clair",
+        "deux bandes verticales bleues parallèles",
+        "motif de lignes diagonales fines sur les côtés noirs",
+        "logo Babolat en haut à gauche",
+        "texte 'Air Vertuo' vertical en grandes lettres noires sur bande centrale",
+        "trous de perforation répartis sur toute la surface",
+        "cadre bleu métallique brillant",
+        "manche noir avec grip noir",
+        "dragonne Babolat noire et bleue",
+        "forme ronde/diamant"
+      ],
+      "yearClues": [
+        "inscription '2026' visible sur le côté droit",
+        "coloris bleu clair et bleu métallique spécifiques",
+        "design avec bande centrale verticale claire",
+        "logo et typographie actualisés"
+      ]
+    }
   },
   {
     "id": "babolat-technical-vertuo-2026",
@@ -9637,7 +11261,52 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "FORCE",
+        "VERTUO",
+        "HOLES PATTERN",
+        "CARBON FLEX",
+        "3D SPIN",
+        "SMART BUTTCAP",
+        "VIBRASORB SYSTEM"
+      ],
+      "colors": [
+        "noir",
+        "jaune fluo",
+        "gris métallisé",
+        "blanc"
+      ],
+      "tech": [
+        "CARBON FLEX",
+        "3D SPIN",
+        "VIBRASORB SYSTEM",
+        "SMART BUTTCAP",
+        "HOLES PATTERN"
+      ],
+      "design": [
+        "bande centrale verticale gris métallisé",
+        "deux lignes jaunes fluo parallèles verticales",
+        "motif de trous asymétrique dispersé",
+        "logo FORCE vertical au centre",
+        "VERTUO en diagonal sur la droite en jaune",
+        "contour jaune fluo autour de la raquette",
+        "manche noir texturé",
+        "base du manche jaune fluo",
+        "dragonne Babolat noire et jaune",
+        "typographie moderne et angulaire",
+        "surface carbone visible texturée"
+      ],
+      "yearClues": [
+        "coloris noir et jaune fluo spécifique",
+        "design de la bande centrale gris métallisé",
+        "positionnement diagonal du texte VERTUO",
+        "pattern de trous spécifique dispersé",
+        "typographie et style graphique 2026"
+      ]
+    }
   },
   {
     "id": "prokennex-kinetic-legend-pro-2025",
@@ -9961,7 +11630,53 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "ROYAL PADEL",
+        "WHIP",
+        "Extreme",
+        "Poli Diaz",
+        "REDPRO",
+        "3",
+        "5",
+        "6",
+        "P",
+        "K",
+        "S",
+        "G",
+        "C"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "blanc"
+      ],
+      "tech": [
+        "REDPRO"
+      ],
+      "design": [
+        "logo Royal Padel en haut",
+        "grand motif géométrique rouge en forme de Z ou éclair diagonal",
+        "surface texturée graphite usée",
+        "24 trous de drainage blancs disposés sur toute la surface",
+        "bandes rouges diagonales brushstroke style",
+        "colonne verticale de lettres/chiffres sur le côté gauche (3,5,6,P,K,S,G,C) en cercles rouges",
+        "logo WHIP Extreme en rouge stylisé",
+        "signature Poli Diaz",
+        "manche noir avec grip noir",
+        "cadre avec détails rouges sur les côtés",
+        "finition mate graphite scratché"
+      ],
+      "yearClues": [
+        "design graphite texturé noir avec effet usé/scratché",
+        "motif rouge en forme de Z diagonal brushstroke",
+        "technologie REDPRO visible",
+        "colonne de symboles 3,5,6,P,K,S,G,C sur le côté",
+        "style graphique moderne avec effet peinture rouge éclaboussée",
+        "mention 2025 implicite dans le contexte"
+      ]
+    }
   },
   {
     "id": "oxdog-ultimate-pro-plus-2025",
@@ -10015,7 +11730,42 @@
     "shortName": "Ultimate Pro+ 2025",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "OXDOG",
+        "ULTIMATE PRO+ HES CARBON",
+        "RRP 22/23",
+        "文华三宅平田正刚"
+      ],
+      "colors": [
+        "noir",
+        "rose/magenta",
+        "blanc"
+      ],
+      "tech": [
+        "HES CARBON",
+        "ULTIMATE PRO+"
+      ],
+      "design": [
+        "logo japonais/chinois stylisé rose central en forme de kanji",
+        "surface texturée carbone",
+        "motif de points blancs réguliers perforés sur toute la surface",
+        "trois lignes roses horizontales en haut",
+        "trait vertical rose reliant au logo central",
+        "handle noir avec rainures ergonomiques",
+        "throat avec découpes triangulaires ajourées",
+        "forme ronde/diamant",
+        "lanière de poignet noire avec logo Oxdog"
+      ],
+      "yearClues": [
+        "inscription RRP 22/23 visible en bas de la raquette",
+        "caractères asiatiques roses stylisés comme élément central",
+        "combinaison noir/rose/blanc spécifique à cette version",
+        "mention ULTIMATE PRO+ HES CARBON",
+        "design minimaliste avec logo calligraphique"
+      ]
+    }
   },
   {
     "id": "oxdog-hyper-pro-2-0-2026",
@@ -10447,7 +12197,45 @@
     "shortName": "LW Summum Prisma 2026",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Varlion",
+        "LW",
+        "summum",
+        "SLICE",
+        "DIFFUSER",
+        "AIRFLOW"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "blanc"
+      ],
+      "tech": [
+        "SLICE",
+        "DIFFUSER",
+        "AIRFLOW"
+      ],
+      "design": [
+        "logo Varlion rouge en forme de V stylisé au centre",
+        "finition carbone visible (texture carbone noire)",
+        "multiples perforations circulaires blanches",
+        "4 ouvertures trapézoïdales blanches disposées symétriquement",
+        "cadre noir avec inscription rouge",
+        "manche noir avec grip noir",
+        "logo summum en bas du tamis avec effet dégradé rouge",
+        "design épuré et moderne",
+        "pont/cœur de raquette en forme de triangle avec nervures"
+      ],
+      "yearClues": [
+        "combinaison spécifique noir/rouge avec logo V rouge central",
+        "présence des 3 technologies SLICE, DIFFUSER et AIRFLOW inscrites",
+        "finition carbone apparente sur toute la surface",
+        "design du logo summum en dégradé rouge",
+        "disposition des perforations et ouvertures trapézoïdales caractéristique"
+      ]
+    }
   },
   {
     "id": "kuikma-ms-pro-2025",
@@ -10609,7 +12397,55 @@
     "shortName": "ML10 Pro Cup Silver 2025",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "ML10",
+        "PRO CUP",
+        "nox",
+        "makes you improve",
+        "FG III",
+        "FIBER GLASS",
+        "ROUGH",
+        "MIGUEL LAMPERTI",
+        "CARBON",
+        "DYNAMIC COMPOSITE STRUCTURE",
+        "SMART STRAP"
+      ],
+      "colors": [
+        "argent",
+        "blanc",
+        "gris",
+        "magenta",
+        "noir"
+      ],
+      "tech": [
+        "FG III",
+        "FIBER GLASS",
+        "ROUGH",
+        "DYNAMIC COMPOSITE STRUCTURE"
+      ],
+      "design": [
+        "forme diamant",
+        "double X géométrique central avec triangles aux extrémités",
+        "motif de trous symétriques sur toute la surface",
+        "finition argentée métallisée",
+        "accents magenta/rose sur contours et triangles",
+        "bandes magenta sur le cadre (haut et bas)",
+        "grip noir texturé",
+        "dragonne noire avec logo nox",
+        "triangles avec effet hachuré/quadrillé",
+        "bande noire horizontale au centre avec logos et textes"
+      ],
+      "yearClues": [
+        "coloris argent/blanc avec accents magenta",
+        "mention '2025' implicite dans le contexte",
+        "design épuré avec double X et triangles",
+        "finition Silver spécifique",
+        "logo ML10 Pro Cup en haut",
+        "technologie FG III (3ème génération)"
+      ]
+    }
   },
   {
     "id": "nox-at10-genius-12k-xtrem-2026",
@@ -10825,7 +12661,40 @@
     "shortName": "Technical Veron 2025",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "Technical",
+        "Veron",
+        "3D",
+        "M",
+        "30",
+        "360"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "3D"
+      ],
+      "design": [
+        "bande verticale blanche centrale avec logo Babolat",
+        "motif de circuit imprimé/technologique rouge sur fond noir",
+        "multiples cercles blancs connectés par des lignes rouges",
+        "design électronique/circuiterie stylisée",
+        "logo Babolat en lettres noires épaisses sur bande blanche",
+        "bordure rouge autour de la raquette",
+        "poignée noire avec bracelet de sécurité rouge Babolat",
+        "finition mate/texturée",
+        "chiffres dorés '3D' et 'M' sur les côtés",
+        "marquage '30' et '360' en petit"
+      ],
+      "yearClues": "Design circuit imprimé rouge avec cercles blancs interconnectés, bande blanche centrale large, chiffres dorés '3D' et 'M', marquages '30' et '360' = version 2025"
+    }
   },
   {
     "id": "babolat-air-veron-2025",
@@ -10879,7 +12748,42 @@
     "shortName": "Air Veron 2025",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "AIR",
+        "VERON",
+        "Air Veron"
+      ],
+      "colors": [
+        "bleu électrique",
+        "blanc",
+        "noir",
+        "gris foncé"
+      ],
+      "tech": [
+        "AIR"
+      ],
+      "design": [
+        "motif de points blancs perforés répartis sur toute la surface",
+        "bande verticale centrale blanche avec logo Babolat",
+        "logo AIR stylisé en haut à droite",
+        "texture graphique abstraite en arrière-plan bleu",
+        "forme ronde/ovale classique",
+        "design symétrique avec effets de dispersion",
+        "manche noir mat avec grip noir",
+        "dragonne Babolat noire et bleue",
+        "cadre noir avec finition brillante",
+        "perforations distribuées de manière uniforme"
+      ],
+      "yearClues": [
+        "coloris bleu électrique dominant",
+        "pattern de points blancs sur fond bleu avec texture graphique moderne",
+        "logo AIR positionné en haut à droite",
+        "design 2025 avec nouvelle identité visuelle Air Veron"
+      ]
+    }
   },
   {
     "id": "babolat-counter-veron-2025",
@@ -10933,7 +12837,46 @@
     "shortName": "Counter Veron 2025",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "COUNTER",
+        "VERON",
+        "FUN",
+        "COMFORT",
+        "3D",
+        "12K"
+      ],
+      "colors": [
+        "noir",
+        "jaune fluo",
+        "gris",
+        "blanc"
+      ],
+      "tech": [
+        "3D",
+        "12K"
+      ],
+      "design": [
+        "bande verticale centrale grise avec logo Babolat",
+        "motifs géométriques diagonaux jaunes de chaque côté",
+        "multiples perforations circulaires blanches",
+        "logo FUN COMFORT en haut à droite",
+        "design symétrique bilatéral",
+        "tamis avec texture carbon visible",
+        "protection argentée au niveau du cadre inférieur",
+        "grip noir",
+        "dragonne Babolat noire et jaune"
+      ],
+      "yearClues": [
+        "logo FUN COMFORT présent",
+        "coloris jaune fluo vif avec noir",
+        "motif diagonal hachuré spécifique",
+        "indication 3D et 12K visibles",
+        "design graphique angulaire moderne"
+      ]
+    }
   },
   {
     "id": "head-coello-pro-2025",
@@ -10986,7 +12929,46 @@
       "rank": "#1 mondial"
     },
     "ean": null,
-    "availability": "available"
+    "availability": "available",
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "COELLO",
+        "PRO",
+        "Arturo",
+        "Auxetic 2.0",
+        "OPTIMIZED SWEETSPOT",
+        "SPIN",
+        "POWER"
+      ],
+      "colors": [
+        "noir",
+        "argenté/gris métallique",
+        "rouge bordeaux"
+      ],
+      "tech": [
+        "Auxetic 2.0",
+        "Optimized Sweetspot"
+      ],
+      "design": [
+        "logo HEAD argenté en forme de goutte/larme stylisée occupant le centre",
+        "motif de perforations circulaires couvrant toute la surface",
+        "design minimaliste et épuré",
+        "signature 'Arturo' en rouge bordeaux",
+        "texte 'COELLO PRO' en lettres capitales blanches",
+        "finition mate noire",
+        "logo HEAD argenté brillant contrastant",
+        "grip noir avec texture",
+        "forme goutte d'eau caractéristique du tamis"
+      ],
+      "yearClues": [
+        "mention 'Auxetic 2.0' (évolution de la technologie)",
+        "coloris noir mat avec argenté (différent des versions précédentes plus colorées)",
+        "signature Arturo Coello en rouge bordeaux",
+        "design épuré minimaliste noir et argenté uniquement",
+        "logo HEAD en forme de goutte stylisée argentée"
+      ]
+    }
   },
   {
     "id": "head-coello-team-2025",
@@ -11036,7 +13018,39 @@
     "womanLine": false,
     "proPlayerInfo": null,
     "ean": null,
-    "availability": "available"
+    "availability": "available",
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "COELLO",
+        "TEAM",
+        "COELLO TEAM"
+      ],
+      "colors": [
+        "noir",
+        "blanc",
+        "rouge"
+      ],
+      "tech": [],
+      "design": [
+        "forme de raquette teardrop/diamant",
+        "motif de spirale en points blancs perforés sur la surface de frappe",
+        "spirale concentrique de trous blancs formant un design tourbillonnant",
+        "contour noir mat avec motifs subtils répétés",
+        "logo HEAD stylisé intégré dans la spirale blanche",
+        "grip noir texturé",
+        "finition mate sur le cadre",
+        "perforations suivant un pattern en spirale distinctif",
+        "texte COELLO vertical sur le cadre",
+        "accent rouge minimal"
+      ],
+      "yearClues": [
+        "design de spirale en points blancs caractéristique de la version 2025",
+        "coloris noir mat avec spirale blanche (différent des versions précédentes)",
+        "mention TEAM dans le nom du modèle",
+        "pattern de perforation en spirale unique à cette génération"
+      ]
+    }
   },
   {
     "id": "head-coello-junior-2025",
@@ -11136,7 +13150,52 @@
     "womanLine": false,
     "proPlayerInfo": null,
     "ean": null,
-    "availability": "available"
+    "availability": "available",
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "COELLO",
+        "MOTION",
+        "Arturo",
+        "CARBON FRAME",
+        "LONG HANDLE",
+        "CUSTOM WEIGHT",
+        "POWER FOAM",
+        "OPTIMIZED SWEET SPOT",
+        "AUXETIC 2.0"
+      ],
+      "colors": [
+        "noir",
+        "argenté/gris métallique",
+        "rouge"
+      ],
+      "tech": [
+        "AUXETIC 2.0",
+        "CARBON FRAME",
+        "POWER FOAM",
+        "OPTIMIZED SWEET SPOT",
+        "CUSTOM WEIGHT",
+        "LONG HANDLE"
+      ],
+      "design": [
+        "spirale argentée/grise centrale distinctive",
+        "motif de spirale en relief métallique",
+        "trous de drainage en disposition spiralée",
+        "signature 'Arturo' en rouge cursif",
+        "texte 'COELLO MOTION' sur le cadre",
+        "finition mate noire",
+        "logo HEAD discret",
+        "inscriptions technologiques gravées sur toute la surface",
+        "forme diamant/goutte d'eau classique",
+        "manche noir avec grip strié"
+      ],
+      "yearClues": [
+        "marquage '2025' absent mais AUXETIC 2.0 indique nouvelle génération",
+        "spirale argentée centrale comme élément signature distinctif du modèle 2025",
+        "combinaison noir/argenté/rouge spécifique à cette version",
+        "inscription 'MOTION' au lieu d'autres variantes de la gamme Coello"
+      ]
+    }
   },
   {
     "id": "head-coello-vibe-2025",
@@ -11186,7 +13245,44 @@
     "womanLine": false,
     "proPlayerInfo": null,
     "ean": null,
-    "availability": "available"
+    "availability": "available",
+    "visualSignature": {
+      "texts": [
+        "HEAD",
+        "COELLO",
+        "VIBE",
+        "A",
+        "Arturo C",
+        "HEAD logos (multiples sur le cadre)",
+        "Inscriptions techniques sur le haut du cadre (partiellement visibles)"
+      ],
+      "colors": [
+        "noir",
+        "blanc"
+      ],
+      "tech": [
+        "Mentions techniques sur le cadre supérieur (non entièrement lisibles)"
+      ],
+      "design": [
+        "Logo HEAD en forme de lettre A stylisée très imposante au centre",
+        "Motif de fond noir avec pattern répétitif subtil (Head logos miniatures)",
+        "Perforations rondes blanches disposées en cercles concentriques",
+        "Logo A blanc qui traverse plusieurs rangées de trous",
+        "Signature 'Arturo C' en bas à droite",
+        "Texte 'COELLO VIBE' centré en bas",
+        "Manche noir avec grip texturé",
+        "Design épuré bicolore noir et blanc",
+        "Forme teardrop/diamant classique",
+        "Trou triangulaire à la base du manche"
+      ],
+      "yearClues": [
+        "Mention '2025' dans le contexte fourni",
+        "Design minimaliste noir et blanc (pas de couleurs vives)",
+        "Pattern de fond avec logos HEAD répétés",
+        "Signature Arturo Coello visible",
+        "Version 'VIBE' du modèle Coello"
+      ]
+    }
   },
   {
     "id": "kuikma-power-pro-2025",
