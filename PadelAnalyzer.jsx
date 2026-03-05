@@ -93,6 +93,25 @@ function ScoreBar({ label, value }) {
   );
 }
 
+// ─── COUNT-UP ANIMATION ─────────────────────────────────────
+function CountUp({ target, duration = 1500, suffix = "" }) {
+  const [val, setVal] = useState(0);
+  const started = useRef(false);
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - t0) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setVal(Math.round(eased * target));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [target, duration]);
+  return <>{val}{suffix}</>;
+}
+
 // ─── RACKET IMAGE ───────────────────────────────────────────
 function RacketImg({ src, alt, style, fallbackSize = 48, brand = "" }) {
   const [err, setErr] = useState(false);
@@ -2474,6 +2493,8 @@ export default function PadelAnalyzer() {
   const [adminLoading, setAdminLoading] = useState(false);
   const [adminMsg, setAdminMsg] = useState("");
   const adminFileInputRef = useRef(null);
+  const [sigBatchProgress, setSigBatchProgress] = useState(null); // {done, total, errors, results}
+  const [sigBatchRunning, setSigBatchRunning] = useState(false);
 
   // ============ KIOSK MODE ============
   const [kioskIdle, setKioskIdle] = useState(false); // attract screen
@@ -2582,7 +2603,21 @@ export default function PadelAnalyzer() {
         if (normalize(vision.visible_text).includes(playerNorm)) bonus += 10;
       }
 
-      const total = Math.max(0, Math.min(100, textScore + tokenScore + bonus));
+      // === BONUS: visual signature matching (texts + tech + yearClues) ===
+      let sigScore = 0;
+      if (r.visualSignature && vTextTokens.size > 0) {
+        const sigTexts = (r.visualSignature.texts || []).map(t => normalize(t));
+        const sigTech = (r.visualSignature.tech || []).map(t => normalize(t));
+        const allSigTokens = new Set();
+        [...sigTexts, ...sigTech].forEach(t => t.split(/\s+/).filter(w => w.length >= 2).forEach(w => allSigTokens.add(w)));
+        let sigHits = 0;
+        vTextTokens.forEach(vt => {
+          if ([...allSigTokens].some(st => st.includes(vt) || vt.includes(st))) sigHits++;
+        });
+        sigScore = (sigHits / vTextTokens.size) * 15;
+      }
+
+      const total = Math.max(0, Math.min(100, textScore + tokenScore + bonus + sigScore));
       return { racket: r, score: Math.round(total * 10) / 10 };
     });
 
@@ -2630,7 +2665,10 @@ export default function PadelAnalyzer() {
     const matches = fuzzyMatchRacket(vision);
     const bestScore = matches.length > 0 ? matches[0].score : 0;
 
+    // Step 4: Lock-on moment (dramatic pause)
+    setScanStatus("locked");
     setScanResult({ vision, matches, bestScore });
+    await new Promise(ok => setTimeout(ok, 1400));
     setScanStatus("done");
   }, [compressImage, fuzzyMatchRacket]);
 
@@ -4505,6 +4543,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <button onClick={()=>setAdminTab("families")} style={tabStyle(adminTab==="families")}>👥 Comptes & Profils</button>
             <button onClick={()=>setAdminTab("rackets")} style={tabStyle(adminTab==="rackets")}>🏓 Raquettes</button>
             <button onClick={()=>{setAdminTab("stats");setAdminStats(null);}} style={tabStyle(adminTab==="stats")}>📊 Statistiques</button>
+            <button onClick={()=>setAdminTab("signatures")} style={tabStyle(adminTab==="signatures")}>🔍 Signatures</button>
           </div>
 
           {/* Status message */}
@@ -4720,6 +4759,115 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </div>
                 ))}
               </div>
+            </div>}
+          </div>}
+
+
+          {/* ====== SIGNATURES VISUELLES TAB ====== */}
+          {adminTab==="signatures"&&<div>
+            <div style={{marginBottom:16}}>
+              <h3 style={{fontSize:14,fontWeight:700,color:"#e2e8f0",marginBottom:6}}>🔍 Extraction des signatures visuelles</h3>
+              <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:0}}>
+                Analyse chaque image de raquette dans la base pour extraire les textes, couleurs, technologies et éléments de design distinctifs. Les signatures permettent d'améliorer l'identification au scan.
+              </p>
+            </div>
+
+            {/* DB status */}
+            {(()=>{
+              const allDB = getMergedDB();
+              const withSig = allDB.filter(r => r.visualSignature);
+              const withoutSig = allDB.filter(r => !r.visualSignature && r.imageUrl);
+              return <div style={{display:"flex",gap:10,marginBottom:16,flexWrap:"wrap"}}>
+                <div style={{padding:"12px 16px",background:"rgba(61,176,107,0.08)",border:"1px solid rgba(61,176,107,0.2)",borderRadius:12,textAlign:"center",flex:1,minWidth:100}}>
+                  <div style={{fontSize:24,fontWeight:800,color:"#4ade80",fontFamily:"'Outfit'"}}>{withSig.length}</div>
+                  <div style={{fontSize:9,color:"#94a3b8"}}>avec signature</div>
+                </div>
+                <div style={{padding:"12px 16px",background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:12,textAlign:"center",flex:1,minWidth:100}}>
+                  <div style={{fontSize:24,fontWeight:800,color:"#fbbf24",fontFamily:"'Outfit'"}}>{withoutSig.length}</div>
+                  <div style={{fontSize:9,color:"#94a3b8"}}>sans signature</div>
+                </div>
+                <div style={{padding:"12px 16px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,textAlign:"center",flex:1,minWidth:100}}>
+                  <div style={{fontSize:24,fontWeight:800,color:"#e2e8f0",fontFamily:"'Outfit'"}}>{allDB.length}</div>
+                  <div style={{fontSize:9,color:"#94a3b8"}}>total DB</div>
+                </div>
+              </div>;
+            })()}
+
+            {/* Launch batch */}
+            {!sigBatchRunning&&!sigBatchProgress&&<button onClick={async()=>{
+              const allDB = getMergedDB().filter(r => r.imageUrl && !r.visualSignature);
+              if (allDB.length === 0) { setAdminMsg("Toutes les raquettes ont déjà une signature."); return; }
+              setSigBatchRunning(true);
+              setSigBatchProgress({done:0, total:allDB.length, errors:0, results:[]});
+              const BATCH_SIZE = 5;
+              const allResults = [];
+              let errors = 0;
+              for (let i = 0; i < allDB.length; i += BATCH_SIZE) {
+                const batch = allDB.slice(i, i + BATCH_SIZE).map(r => ({id:r.id, name:r.name, brand:r.brand, year:r.year, imageUrl:r.imageUrl}));
+                try {
+                  const resp = await fetch("/api/batch-signatures", {
+                    method:"POST", headers:{"Content-Type":"application/json"},
+                    body: JSON.stringify({rackets:batch}),
+                  });
+                  const data = await resp.json();
+                  if (data.results) {
+                    allResults.push(...data.results);
+                    errors += data.results.filter(r => r.error).length;
+                  }
+                } catch(e) {
+                  errors += batch.length;
+                  allResults.push(...batch.map(b => ({id:b.id, error:e.message, visualSignature:null})));
+                }
+                setSigBatchProgress({done:Math.min(i+BATCH_SIZE, allDB.length), total:allDB.length, errors, results:allResults});
+              }
+              setSigBatchRunning(false);
+            }} style={{width:"100%",padding:"14px",background:"linear-gradient(135deg,rgba(168,85,247,0.15),rgba(124,58,237,0.1))",border:"1px solid rgba(168,85,247,0.3)",borderRadius:14,color:"#c4b5fd",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:16}}>
+              🚀 Lancer l'extraction ({getMergedDB().filter(r=>r.imageUrl&&!r.visualSignature).length} raquettes)
+            </button>}
+
+            {/* Progress */}
+            {sigBatchProgress&&<div style={{marginBottom:16}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
+                <span style={{fontSize:11,color:"#e2e8f0",fontWeight:600}}>{sigBatchRunning?"Extraction en cours...":"Extraction terminée"}</span>
+                <span style={{fontSize:11,color:"#94a3b8"}}>{sigBatchProgress.done}/{sigBatchProgress.total}</span>
+              </div>
+              <div style={{height:6,borderRadius:3,background:"rgba(255,255,255,0.08)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:3,background:sigBatchRunning?"linear-gradient(90deg,#a855f7,#7c3aed)":"#22c55e",transition:"width 0.5s ease",width:`${(sigBatchProgress.done/sigBatchProgress.total*100)}%`}}/>
+              </div>
+              {sigBatchProgress.errors>0&&<div style={{fontSize:10,color:"#f87171",marginTop:4}}>{sigBatchProgress.errors} erreur(s)</div>}
+
+              {/* Download enriched JSON when done */}
+              {!sigBatchRunning&&sigBatchProgress.results.length>0&&<div style={{marginTop:12}}>
+                <button onClick={()=>{
+                  // Merge signatures into full DB
+                  const allDB = getMergedDB();
+                  const sigMap = new Map();
+                  sigBatchProgress.results.forEach(r => { if (r.visualSignature) sigMap.set(r.id, r.visualSignature); });
+                  const enriched = allDB.map(r => sigMap.has(r.id) ? {...r, visualSignature: sigMap.get(r.id)} : r);
+                  // Download as JSON
+                  const blob = new Blob([JSON.stringify(enriched, null, 2)], {type:"application/json"});
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url; a.download = "rackets-db.json"; a.click();
+                  URL.revokeObjectURL(url);
+                }} style={{width:"100%",padding:"12px",background:"linear-gradient(135deg,rgba(61,176,107,0.15),rgba(34,197,94,0.1))",border:"1px solid rgba(61,176,107,0.3)",borderRadius:12,color:"#4ade80",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>
+                  📥 Télécharger rackets-db.json enrichi ({sigBatchProgress.results.filter(r=>r.visualSignature).length} signatures)
+                </button>
+                <p style={{fontSize:9,color:"#64748b",marginTop:6,textAlign:"center"}}>Pousse ce fichier sur GitHub pour embarquer les signatures dans le bundle</p>
+              </div>}
+            </div>}
+
+            {/* Preview last results */}
+            {sigBatchProgress&&sigBatchProgress.results.length>0&&<div style={{maxHeight:300,overflowY:"auto",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:8}}>
+              <div style={{fontSize:10,color:"#64748b",marginBottom:6}}>Derniers résultats :</div>
+              {sigBatchProgress.results.slice(-10).map(r => <div key={r.id} style={{padding:"6px 8px",marginBottom:4,borderRadius:8,background:r.visualSignature?"rgba(61,176,107,0.06)":"rgba(239,68,68,0.06)",border:`1px solid ${r.visualSignature?"rgba(61,176,107,0.15)":"rgba(239,68,68,0.15)"}`,fontSize:10}}>
+                <div style={{fontWeight:700,color:r.visualSignature?"#4ade80":"#f87171"}}>{r.visualSignature?"✅":"❌"} {r.id}</div>
+                {r.visualSignature&&<div style={{color:"#94a3b8",marginTop:2}}>
+                  Textes: {(r.visualSignature.texts||[]).join(", ").slice(0,80)}
+                  {r.visualSignature.yearClues&&<span style={{color:"#fbbf24"}}> | {r.visualSignature.yearClues.slice(0,60)}</span>}
+                </div>}
+                {r.error&&<div style={{color:"#f87171",marginTop:2}}>{r.error}</div>}
+              </div>)}
             </div>}
           </div>}
 
@@ -5081,51 +5229,98 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
         </div>}
 
-        {/* ═══ PHOTO HUD — Scan in progress ═══ */}
-        {(scanStatus==="compressing"||scanStatus==="scanning"||scanStatus==="matching")&&<div style={{width:"100%",maxWidth:440,position:"relative"}}>
+        {/* ═══ PHOTO HUD — Scan in progress + Lock-on ═══ */}
+        {(scanStatus==="compressing"||scanStatus==="scanning"||scanStatus==="matching"||scanStatus==="locked")&&<div style={{width:"100%",maxWidth:440,position:"relative"}}>
           <style>{`
-            @keyframes hudScanLine{0%{top:0%}100%{top:95%}}
-            @keyframes hudPulseRing{0%{transform:scale(0.9);opacity:0.6}50%{transform:scale(1.05);opacity:1}100%{transform:scale(0.9);opacity:0.6}}
-            @keyframes hudTextGlitch{0%{opacity:1}45%{opacity:1}46%{opacity:0.3}48%{opacity:1}100%{opacity:1}}
-            @keyframes hudCorner{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+            @keyframes hudScanLine{0%{top:5%}100%{top:90%}}
+            @keyframes hudPulseRing{0%{transform:translate(-50%,-50%) scale(0.9);opacity:0.5}50%{transform:translate(-50%,-50%) scale(1.05);opacity:1}100%{transform:translate(-50%,-50%) scale(0.9);opacity:0.5}}
+            @keyframes hudTermLine{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:translateX(0)}}
+            @keyframes hudLockFlash{0%{opacity:0}15%{opacity:0.9}30%{opacity:0}50%{opacity:0.4}70%{opacity:0}100%{opacity:0}}
+            @keyframes hudStamp{0%{transform:translate(-50%,-50%) scale(2.5);opacity:0}30%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(1.05)}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+            @keyframes hudBlink{0%,100%{opacity:1}50%{opacity:0}}
           `}</style>
-          {/* Photo container with HUD overlay */}
           <div style={{position:"relative",borderRadius:20,overflow:"hidden",aspectRatio:"3/4",maxHeight:420,background:"#000"}}>
-            {/* The actual photo */}
-            {scanPreview&&<img src={scanPreview} alt="" style={{width:"100%",height:"100%",objectFit:"cover",opacity:0.85,filter:"brightness(0.8) contrast(1.1)"}}/>}
-            {/* Green scan line */}
-            <div style={{position:"absolute",left:0,right:0,height:2,background:`linear-gradient(90deg, transparent, ${T.green}, ${T.green}, transparent)`,boxShadow:`0 0 20px ${T.green}80, 0 0 60px ${T.green}40`,animation:"hudScanLine 2s ease-in-out infinite",zIndex:3}}/>
-            {/* Corner brackets */}
-            {[[0,0],[1,0],[0,1],[1,1]].map(([x,y],i)=><div key={i} style={{
-              position:"absolute",[y?"bottom":"top"]:8,[x?"right":"left"]:8,width:28,height:28,zIndex:4,
-              borderTop:!y?`2px solid ${T.green}`:"none",borderBottom:y?`2px solid ${T.green}`:"none",
-              borderLeft:!x?`2px solid ${T.green}`:"none",borderRight:x?`2px solid ${T.green}`:"none",
-              animation:`hudCorner 0.3s ease ${0.1*i}s both`,
-            }}/>)}
-            {/* Center targeting circle */}
-            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:80,height:80,borderRadius:"50%",border:`1.5px solid ${T.green}60`,animation:"hudPulseRing 1.5s ease-in-out infinite",zIndex:3}}/>
-            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:6,height:6,borderRadius:"50%",background:T.green,zIndex:3}}/>
-            {/* Crosshairs */}
-            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:120,height:1,background:`${T.green}30`,zIndex:3}}/>
-            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:1,height:120,background:`${T.green}30`,zIndex:3}}/>
-            {/* HUD text overlay */}
-            <div style={{position:"absolute",top:16,left:16,zIndex:4}}>
-              <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.1em",animation:"hudTextGlitch 2s infinite",textShadow:`0 0 8px ${T.green}80`}}>
-                {scanStatus==="compressing"?"COMPRESSION...":scanStatus==="scanning"?"ANALYSE IA EN COURS...":"MATCHING BASE DE DONNÉES..."}
+            {scanPreview&&<img src={scanPreview} alt="" style={{width:"100%",height:"100%",objectFit:"cover",
+              opacity:scanStatus==="locked"?0.7:0.85,
+              filter:scanStatus==="locked"?"brightness(0.6) contrast(1.2)":"brightness(0.8) contrast(1.1)",
+              transition:"all 0.4s ease"}}/>}
+
+            {/* Scan line — faster when matching */}
+            {scanStatus!=="locked"&&<div style={{position:"absolute",left:0,right:0,height:2,
+              background:`linear-gradient(90deg, transparent, ${T.green}, ${T.green}, transparent)`,
+              boxShadow:`0 0 20px ${T.green}80, 0 0 60px ${T.green}40`,
+              animation:`hudScanLine ${scanStatus==="matching"?"1s":"2s"} ease-in-out infinite`,zIndex:3}}/>}
+
+            {/* Corner brackets — TIGHTEN as scan progresses */}
+            {(()=>{
+              const offset = scanStatus==="compressing"?8:scanStatus==="scanning"?20:scanStatus==="matching"?40:60;
+              const sz = scanStatus==="locked"?20:28;
+              const col = scanStatus==="locked"?T.accent:T.green;
+              return [[0,0],[1,0],[0,1],[1,1]].map(([x,y],i)=><div key={i} style={{
+                position:"absolute",
+                [y?"bottom":"top"]:offset,[x?"right":"left"]:offset,
+                width:sz,height:sz,zIndex:5,
+                borderTop:!y?`2px solid ${col}`:"none",borderBottom:y?`2px solid ${col}`:"none",
+                borderLeft:!x?`2px solid ${col}`:"none",borderRight:x?`2px solid ${col}`:"none",
+                transition:"all 0.8s cubic-bezier(.22,1,.36,1)",
+                filter:scanStatus==="locked"?`drop-shadow(0 0 6px ${T.accent})`:""
+              }}/>);
+            })()}
+
+            {/* Center targeting — pulse ring */}
+            {scanStatus!=="locked"&&<>
+              <div style={{position:"absolute",top:"50%",left:"50%",width:80,height:80,borderRadius:"50%",border:`1.5px solid ${T.green}60`,animation:"hudPulseRing 1.5s ease-in-out infinite",zIndex:3}}/>
+              <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:6,height:6,borderRadius:"50%",background:T.green,zIndex:3}}/>
+              <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:120,height:1,background:`${T.green}30`,zIndex:3}}/>
+              <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:1,height:120,background:`${T.green}30`,zIndex:3}}/>
+            </>}
+
+            {/* ═══ LOCK-ON FLASH + STAMP ═══ */}
+            {scanStatus==="locked"&&<>
+              <div style={{position:"absolute",inset:0,background:"white",animation:"hudLockFlash 0.6s ease-out forwards",zIndex:6,pointerEvents:"none"}}/>
+              <div style={{position:"absolute",top:"50%",left:"50%",zIndex:7,
+                animation:"hudStamp 0.5s cubic-bezier(.22,1,.36,1) 0.3s both",
+                padding:"12px 28px",borderRadius:6,
+                border:`3px solid ${T.accent}`,
+                background:"rgba(11,14,13,0.85)",backdropFilter:"blur(8px)",
+                transform:"translate(-50%,-50%) rotate(-3deg)",
+              }}>
+                <div style={{fontFamily:F.mono,fontSize:22,fontWeight:900,color:T.accent,letterSpacing:"0.15em",textShadow:`0 0 12px ${T.accent}80`,whiteSpace:"nowrap"}}>{scanResult&&scanResult.matches.length>0?"IDENTIFIÉ ✓":"NON TROUVÉ"}</div>
               </div>
-              <div style={{fontFamily:F.mono,fontSize:8,color:`${T.green}80`,marginTop:4}}>
-                {scanStatus==="compressing"?"800px · JPEG 85%":scanStatus==="scanning"?"CLAUDE VISION · SONNET":`${totalDBCount} RAQUETTES · FUZZY MATCH`}
-              </div>
-            </div>
-            <div style={{position:"absolute",bottom:16,right:16,zIndex:4}}>
-              <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.1em",textShadow:`0 0 8px ${T.green}80`}}>
-                PADEL ANALYZER
-              </div>
-            </div>
-            {/* Bottom progress */}
-            <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:"rgba(0,0,0,0.5)",zIndex:4}}>
-              <div style={{height:"100%",background:T.green,boxShadow:`0 0 10px ${T.green}`,transition:"width 0.8s ease",
-                width:scanStatus==="compressing"?"25%":scanStatus==="scanning"?"65%":"92%"}}/>
+              {scanResult&&scanResult.matches.length>0&&<div style={{position:"absolute",bottom:20,left:0,right:0,textAlign:"center",zIndex:7,animation:"verdictFade 0.4s ease 0.7s both"}}>
+                <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:"#fff",textShadow:"0 2px 12px rgba(0,0,0,0.9)"}}>{scanResult.matches[0].racket.name}</div>
+              </div>}
+            </>}
+
+            {/* Terminal data — left side */}
+            {scanStatus!=="locked"&&<div style={{position:"absolute",top:14,left:14,zIndex:4,display:"flex",flexDirection:"column",gap:3}}>
+              {(()=>{
+                const lines = scanStatus==="compressing"
+                  ? ["COMPRESSION IMAGE...", "800px · JPEG 85%"]
+                  : scanStatus==="scanning"
+                  ? ["ANALYSE TEXTURE...", "DÉTECTION FORME...", "EXTRACTION MARQUE...", "CLAUDE VISION · SONNET"]
+                  : ["RECHERCHE MARQUE...", "MATCHING MODÈLE...", `${totalDBCount} RAQUETTES`, "CALCUL SCORE..."];
+                return lines.map((line,i) => <div key={line} style={{
+                  fontFamily:F.mono,fontSize:8,color:T.green,letterSpacing:"0.08em",
+                  textShadow:`0 0 6px ${T.green}60`,
+                  animation:`hudTermLine 0.3s ease ${i*0.4}s both`,
+                  display:"flex",alignItems:"center",gap:4,
+                }}>
+                  <span style={{color:`${T.green}60`}}>›</span> {line}
+                  {i===lines.length-1&&<span style={{display:"inline-block",width:6,height:10,background:T.green,animation:"hudBlink 0.8s step-end infinite",marginLeft:2}}/>}
+                </div>);
+              })()}
+            </div>}
+
+            {scanStatus!=="locked"&&<div style={{position:"absolute",bottom:16,right:16,zIndex:4}}>
+              <div style={{fontFamily:F.mono,fontSize:9,color:T.green,letterSpacing:"0.1em",textShadow:`0 0 8px ${T.green}80`}}>PADEL ANALYZER</div>
+            </div>}
+
+            <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,background:"rgba(0,0,0,0.5)",zIndex:8}}>
+              <div style={{height:"100%",transition:"width 0.8s ease,background 0.3s",
+                background:scanStatus==="locked"?T.accent:T.green,
+                boxShadow:`0 0 10px ${scanStatus==="locked"?T.accent:T.green}`,
+                width:scanStatus==="compressing"?"25%":scanStatus==="scanning"?"55%":scanStatus==="matching"?"80%":"100%"}}/>
             </div>
           </div>
         </div>}
@@ -5233,7 +5428,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   background:`linear-gradient(160deg, ${pertCol}15, ${pertCol}08)`,
                   border:`2px solid ${pertCol}40`,
                   boxShadow:`0 12px 48px ${pertCol}20, inset 0 1px 0 ${pertCol}15`}}>
-                  <div style={{fontFamily:F.mono,fontSize:56,fontWeight:900,color:pertCol,lineHeight:1,letterSpacing:"-0.04em"}}>{pertPct}<span style={{fontSize:24}}>%</span></div>
+                  <div style={{fontFamily:F.mono,fontSize:56,fontWeight:900,color:pertCol,lineHeight:1,letterSpacing:"-0.04em"}}><CountUp target={parseInt(pertPct)} duration={1500}/><span style={{fontSize:24}}>%</span></div>
                   <div style={{fontSize:12,fontWeight:700,color:pertCol,textTransform:"uppercase",letterSpacing:"0.1em",marginTop:4}}>{pertLabel} compatibilité</div>
                   <div style={{fontSize:11,color:T.gray1,marginTop:2}}>pour {profileName}</div>
                 </div>
@@ -5328,6 +5523,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 color:T.gray2,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:F.body,
               }}>📷 Scanner une autre raquette</button>
             </div>
+
+            {/* DEBUG — raw Vision JSON (temporary) */}
+            {scanResult&&scanResult.vision&&<div style={{marginTop:16,padding:"12px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,maxHeight:200,overflow:"auto"}}>
+              <div style={{fontFamily:F.mono,fontSize:8,color:"#fbbf24",marginBottom:4}}>🔧 DEBUG — Réponse Vision brute :</div>
+              <pre style={{fontFamily:F.mono,fontSize:8,color:"#94a3b8",margin:0,whiteSpace:"pre-wrap",wordBreak:"break-all"}}>{JSON.stringify(scanResult.vision,null,2)}</pre>
+            </div>}
           </div>;
         })()}
 
