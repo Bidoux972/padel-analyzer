@@ -310,8 +310,8 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
       {/* Hero card — all slides stacked, crossfade */}
       <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} style={{
         position:"relative",overflow:"hidden",borderRadius:24,cursor:"pointer",
-        height:320,background:T.card,border:`1px solid ${T.border}`,
-        boxShadow:"0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)",
+        height:360,background:"#0A0A0A",border:`1px solid ${T.border}`,
+        boxShadow:"0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03)",
       }}>
         {newsItems.map((item, i) => {
           const r = item.racket;
@@ -324,64 +324,86 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
               pointerEvents: isActive ? "auto" : "none",
               zIndex: isActive ? 2 : 1,
             }}>
-              {/* BG blur */}
+              {/* BG blur — subtle ambient color */}
               {r.imageUrl && <div style={{
                 position:"absolute",inset:0,
                 backgroundImage:`url(${r.imageUrl})`,backgroundSize:"cover",backgroundPosition:"center",
-                filter:"blur(24px) brightness(0.2) saturate(1.4)",transform:"scale(1.3)",
+                filter:"blur(40px) brightness(0.15) saturate(2)",transform:"scale(1.5)",
+                mixBlendMode:"screen",opacity:0.6,
               }}/>}
-              {/* Gradient: strong dark left, hard cutoff middle, softer right */}
-              <div style={{position:"absolute",inset:0,
-                background:"linear-gradient(95deg, rgba(11,14,13,0.96) 0%, rgba(11,14,13,0.92) 35%, rgba(11,14,13,0.70) 50%, rgba(0,0,0,0.35) 65%, rgba(0,0,0,0.20) 100%)",
+
+              {/* Color accent glow — top area */}
+              <div style={{position:"absolute",top:"-30%",left:"50%",transform:"translateX(-50%)",
+                width:"120%",height:"60%",
+                background:`radial-gradient(ellipse, ${item.tagColor}12 0%, transparent 70%)`,
+                pointerEvents:"none",
               }}/>
-              {/* Accent line */}
+
+              {/* Accent line top */}
               <div style={{position:"absolute",top:0,left:0,right:0,height:3,zIndex:5,
-                background:`linear-gradient(90deg, ${item.tagColor}, ${item.tagColor}60, transparent)`,
+                background:`linear-gradient(90deg, ${item.tagColor}, ${item.tagColor}80, ${item.tagColor}20, transparent)`,
               }}/>
-              {/* Big racket — right side, cinematic */}
-              <div style={{position:"absolute",right:-15,top:"50%",transform:"translateY(-50%)",width:230,height:310,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                {/* Dark vignette behind image to blend white-bg photos */}
-                <div style={{position:"absolute",inset:-20,borderRadius:"50%",
-                  background:"radial-gradient(ellipse, rgba(11,14,13,0.15) 30%, rgba(11,14,13,0.50) 70%, rgba(11,14,13,0.85) 100%)"}}/>
-                <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:250,height:250,borderRadius:"50%",
-                  background:`radial-gradient(circle, ${item.tagColor}15 0%, transparent 60%)`}}/>
-                <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
-                  height:270,objectFit:"contain",position:"relative",
-                  filter:`drop-shadow(0 12px 40px ${item.tagColor}30) drop-shadow(0 0 50px rgba(0,0,0,0.5))`,
-                }} fallbackSize={120}/>
-              </div>
-              {/* Text — left side */}
-              <div style={{position:"absolute",left:0,top:0,bottom:0,width:"52%",
-                display:"flex",flexDirection:"column",justifyContent:"space-between",
-                padding:"22px 12px 20px 24px",zIndex:3,
+
+              {/* Big racket — CENTER, the star of the show */}
+              <div style={{
+                position:"absolute",left:"50%",top:"38%",transform:"translate(-50%,-50%)",
+                display:"flex",alignItems:"center",justifyContent:"center",
               }}>
-                <div>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
-                    <span style={{fontFamily:F.body,fontSize:9,fontWeight:800,color:"#fff",background:item.tagColor,
-                      padding:"4px 10px",borderRadius:4,letterSpacing:"0.1em",textTransform:"uppercase",
-                      boxShadow:`0 2px 12px ${item.tagColor}50`}}>{item.tag}</span>
-                    <span style={{fontFamily:F.body,fontSize:9,fontWeight:600,color:T.gray2,letterSpacing:"0.08em",textTransform:"uppercase"}}>{r.brand} · {r.year}</span>
-                  </div>
-                  <h2 style={{fontFamily:F.editorial,fontSize:24,fontWeight:700,color:T.cream,
-                    lineHeight:1.15,margin:"0 0 12px",letterSpacing:"-0.01em",
-                    overflow:"hidden",display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",
-                  }}>{item.headline}</h2>
-                  <p style={{fontFamily:F.body,fontSize:12,color:T.gray1,lineHeight:1.55,margin:0,
-                    overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
-                  }}>{item.subtitle}</p>
-                </div>
+                {/* Colored glow behind */}
+                <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",
+                  width:300,height:300,borderRadius:"50%",
+                  background:`radial-gradient(circle, ${item.tagColor}12 0%, ${item.tagColor}06 40%, transparent 70%)`,
+                }}/>
+                <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
+                  height:260,objectFit:"contain",position:"relative",
+                  filter:`drop-shadow(0 16px 50px rgba(0,0,0,0.7))`,
+                  mixBlendMode:"multiply",
+                }} fallbackSize={140}/>
+                {/* Same image on top with screen blend for vibrancy on dark bg */}
+                <RacketImg src={r.imageUrl} alt="" brand={r.brand} style={{
+                  height:260,objectFit:"contain",position:"absolute",
+                  filter:`drop-shadow(0 16px 50px rgba(0,0,0,0.5))`,
+                  mixBlendMode:"screen",opacity:0.85,
+                }} fallbackSize={140}/>
+              </div>
+
+              {/* Bottom gradient — protects text overlay */}
+              <div style={{position:"absolute",bottom:0,left:0,right:0,height:"60%",
+                background:"linear-gradient(to top, rgba(10,10,10,0.98) 0%, rgba(10,10,10,0.90) 30%, rgba(10,10,10,0.55) 60%, transparent 100%)",
+                zIndex:3,
+              }}/>
+
+              {/* Tag badge — top left */}
+              <div style={{position:"absolute",top:16,left:18,zIndex:5,display:"flex",alignItems:"center",gap:8}}>
+                <span style={{fontFamily:F.body,fontSize:9,fontWeight:800,color:"#fff",background:item.tagColor,
+                  padding:"4px 10px",borderRadius:4,letterSpacing:"0.1em",textTransform:"uppercase",
+                  boxShadow:`0 2px 12px ${item.tagColor}50`}}>{item.tag}</span>
+                <span style={{fontFamily:F.body,fontSize:9,fontWeight:600,color:"rgba(255,255,255,0.45)",letterSpacing:"0.08em",textTransform:"uppercase"}}>{r.brand} · {r.year}</span>
+              </div>
+
+              {/* Text overlay — bottom */}
+              <div style={{
+                position:"absolute",bottom:0,left:0,right:0,
+                padding:"0 24px 22px",zIndex:4,
+              }}>
+                <h2 style={{fontFamily:F.editorial,fontSize:26,fontWeight:700,color:"#fff",
+                  lineHeight:1.12,margin:"0 0 8px",letterSpacing:"-0.01em",
+                  overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
+                  textShadow:"0 2px 20px rgba(0,0,0,0.5)",
+                }}>{item.headline}</h2>
+                <p style={{fontFamily:F.body,fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.5,margin:"0 0 14px",
+                  overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
+                }}>{item.subtitle}</p>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
-                  <span style={{fontFamily:F.body,fontSize:11,fontWeight:700,color:T.accent,letterSpacing:"0.02em"}}>Lire l'article →</span>
+                  <span style={{fontFamily:F.body,fontSize:11,fontWeight:700,color:item.tagColor,letterSpacing:"0.02em"}}>Lire l'article →</span>
                   {r.proPlayerInfo?.name && <span style={{fontFamily:F.body,fontSize:9,color:T.gold,fontWeight:600,
-                    background:T.goldSoft,padding:"3px 8px",borderRadius:6}}>🎾 {r.proPlayerInfo.name}</span>}
+                    background:"rgba(212,168,86,0.15)",padding:"3px 8px",borderRadius:6,
+                    border:"1px solid rgba(212,168,86,0.2)"}}>🎾 {r.proPlayerInfo.name}</span>}
                 </div>
               </div>
             </div>
           );
         })}
-        {/* Bottom fade */}
-        <div style={{position:"absolute",bottom:0,left:0,right:0,height:50,
-          background:"linear-gradient(transparent, rgba(11,14,13,0.6))",pointerEvents:"none",zIndex:3}}/>
       </div>
       {/* Dots */}
       {newsItems.length > 1 && <div style={{display:"flex",justifyContent:"center",gap:8,marginTop:12}}>
