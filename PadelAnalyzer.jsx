@@ -239,22 +239,17 @@ function PalaLogo({size=44, gid="lg"}) {
 // ═════════════════════════════════════════════════════════════
 function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
   const [activeIdx, setActiveIdx] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const timerRef = useRef(null);
   const touchStartRef = useRef(null);
 
-  // Resolve rackets from DB
   const allDB = getMergedDB();
 
-  // Build news pool: curated + dynamic, then shuffle and pick 4
   const newsItems = useMemo(() => {
-    // 1. Curated articles
     const curated = FEATURED_NEWS.map(news => {
       const racket = allDB.find(r => r.id === news.racketId);
       return racket ? { ...news, racket } : null;
     }).filter(Boolean);
 
-    // 2. Dynamic articles from DB — pro players 2026 not already curated
     const curatedIds = new Set(FEATURED_NEWS.map(n => n.racketId));
     const tagColors = ["#ef4444","#E8622A","#a855f7","#3b82f6","#D4A856","#22c55e","#ec4899","#14b8a6"];
     const pickColor = () => tagColors[Math.floor(Math.random()*tagColors.length)];
@@ -270,229 +265,132 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
       (r,p) => ({ tag:"NOUVEAUTÉ", headline:`${r.brand} frappe fort avec la ${r.shortName||r.name}`, subtitle:`${lastName(p)} l'adopte pour ${r.year}. Les détails de cette nouvelle arme.`, tagColor:pickColor() }),
     ];
     const proRackets2026 = allDB.filter(r => r.year===2026 && r.proPlayerInfo?.name && !curatedIds.has(r.id) && r.imageUrl);
-    // Assign templates round-robin to avoid repeats
     const shuffledTemplates = [...dynamicTemplates].sort(() => Math.random() - 0.5);
     const dynamic = proRackets2026.slice(0,8).map((r,i) => {
       const tpl = shuffledTemplates[i % shuffledTemplates.length](r, r.proPlayerInfo.name);
       return { ...tpl, racketId:r.id, racket:r };
     });
 
-    // 3. Combine and shuffle (Fisher-Yates)
     const pool = [...curated, ...dynamic];
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
-
-    // 4. Pick 4
     return pool.slice(0, 4);
   }, [allDB]);
 
-  // Auto-rotate every 5s
-  useEffect(() => {
-    if (newsItems.length <= 1) return;
-    timerRef.current = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
+  const startTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    if (newsItems.length > 1) {
+      timerRef.current = setInterval(() => {
         setActiveIdx(prev => (prev + 1) % newsItems.length);
-        setIsTransitioning(false);
-      }, 400);
-    }, 5000);
-    return () => clearInterval(timerRef.current);
+      }, 8000);
+    }
   }, [newsItems.length]);
 
-  const goTo = (idx) => {
-    if (idx === activeIdx) return;
-    clearInterval(timerRef.current);
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setActiveIdx(idx);
-      setIsTransitioning(false);
-      // Restart timer
-      if (newsItems.length > 1) {
-        timerRef.current = setInterval(() => {
-          setIsTransitioning(true);
-          setTimeout(() => {
-            setActiveIdx(prev => (prev + 1) % newsItems.length);
-            setIsTransitioning(false);
-          }, 400);
-        }, 5000);
-      }
-    }, 400);
-  };
+  useEffect(() => { startTimer(); return () => clearInterval(timerRef.current); }, [startTimer]);
+
+  const goTo = (idx) => { if (idx === activeIdx) return; setActiveIdx(idx); startTimer(); };
 
   const handleTouchStart = (e) => { touchStartRef.current = e.touches[0].clientX; };
   const handleTouchEnd = (e) => {
     if (touchStartRef.current === null) return;
     const diff = touchStartRef.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
-      const next = diff > 0 
-        ? (activeIdx + 1) % newsItems.length 
-        : (activeIdx - 1 + newsItems.length) % newsItems.length;
+      const next = diff > 0 ? (activeIdx + 1) % newsItems.length : (activeIdx - 1 + newsItems.length) % newsItems.length;
       goTo(next);
     }
     touchStartRef.current = null;
   };
 
   if (newsItems.length === 0) return null;
-  const current = newsItems[activeIdx];
-  if (!current) return null;
-  const r = current.racket;
 
   return (
-    <div style={{
-      width:"100%",maxWidth:500,marginTop:8,marginBottom:28,position:"relative",zIndex:2,
-    }}>
-      {/* Main hero card */}
-      <div
-        onClick={() => openRacketSheet(r, "magazine")}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        style={{
-          position:"relative",overflow:"hidden",borderRadius:24,cursor:"pointer",
-          height:300,
-          background:T.card,
-          border:`1px solid ${T.border}`,
-          boxShadow:"0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)",
-        }}
-      >
-        {/* Background image — blurred and darkened */}
-        {r.imageUrl && <div style={{
-          position:"absolute",inset:0,
-          backgroundImage:`url(${r.imageUrl})`,
-          backgroundSize:"cover",backgroundPosition:"center",
-          filter:"blur(20px) brightness(0.3) saturate(1.3)",
-          transform:"scale(1.2)",
-        }}/>}
-
-        {/* Dark gradient overlay */}
-        <div style={{
-          position:"absolute",inset:0,
-          background:"linear-gradient(170deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 50%, rgba(11,14,13,0.95) 100%)",
-        }}/>
-
-        {/* Accent line top */}
-        <div style={{
-          position:"absolute",top:0,left:0,right:0,height:3,
-          background:`linear-gradient(90deg, ${current.tagColor}, ${current.tagColor}80, transparent)`,
-        }}/>
-
-        {/* Content layer */}
-        <div style={{
-          position:"relative",zIndex:2,height:"100%",
-          display:"flex",padding:"20px 22px",gap:12,
-          opacity: isTransitioning ? 0 : 1,
-          transform: isTransitioning ? "translateY(8px)" : "translateY(0)",
-          transition:"opacity 0.4s ease, transform 0.4s ease",
-        }}>
-          {/* Left: text content */}
-          <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",minWidth:0,paddingRight:8}}>
-            {/* Top — tag + brand */}
-            <div>
-              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
-                <span style={{
-                  fontFamily:F.body,fontSize:9,fontWeight:800,color:"#fff",
-                  background:current.tagColor,
-                  padding:"4px 10px",borderRadius:4,letterSpacing:"0.1em",textTransform:"uppercase",
-                  boxShadow:`0 2px 12px ${current.tagColor}60`,
-                }}>{current.tag}</span>
-                <span style={{fontFamily:F.body,fontSize:9,fontWeight:600,color:T.gray2,letterSpacing:"0.08em",textTransform:"uppercase"}}>{r.brand} · {r.year}</span>
-              </div>
-
-              {/* Headline */}
-              <h2 style={{
-                fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,
-                lineHeight:1.15,margin:"0 0 10px",letterSpacing:"-0.01em",
-                overflow:"hidden",display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",
-              }}>
-                {current.headline}
-              </h2>
-
-              {/* Subtitle */}
-              <p style={{
-                fontFamily:F.body,fontSize:12,color:T.gray1,lineHeight:1.55,
-                margin:0,
-                overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
-              }}>
-                {current.subtitle}
-              </p>
-            </div>
-
-            {/* Bottom — CTA */}
-            <div style={{display:"flex",alignItems:"center",gap:12,marginTop:12}}>
-              <span style={{
-                fontFamily:F.body,fontSize:11,fontWeight:700,color:T.accent,
-                letterSpacing:"0.02em",
-              }}>Lire l'article →</span>
-              {r.proPlayerInfo?.name && <span style={{
-                fontFamily:F.body,fontSize:9,color:T.gold,fontWeight:600,
-                background:T.goldSoft,padding:"3px 8px",borderRadius:6,
-              }}>🎾 {r.proPlayerInfo.name}</span>}
-            </div>
-          </div>
-
-          {/* Right: racket image */}
-          <div style={{
-            width:120,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",
-            position:"relative",overflow:"hidden",
-          }}>
-            {/* Glow behind racket */}
-            <div style={{
-              position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",
-              width:140,height:140,borderRadius:"50%",
-              background:`radial-gradient(circle, ${current.tagColor}20 0%, transparent 70%)`,
-            }}/>
-            <RacketImg
-              src={r.imageUrl} alt={r.name} brand={r.brand}
-              style={{
-                height:180,maxWidth:115,objectFit:"contain",position:"relative",
-                filter:`drop-shadow(0 8px 30px ${current.tagColor}40)`,
-              }}
-              fallbackSize={90}
-            />
-          </div>
-        </div>
-
-        {/* Bottom gradient fade */}
-        <div style={{
-          position:"absolute",bottom:0,left:0,right:0,height:60,
-          background:"linear-gradient(transparent, rgba(11,14,13,0.8))",
-          pointerEvents:"none",zIndex:1,
-        }}/>
-      </div>
-
-      {/* Navigation dots */}
-      {newsItems.length > 1 && <div style={{
-        display:"flex",justifyContent:"center",gap:8,marginTop:12,
+    <div style={{width:"100%",maxWidth:500,marginTop:8,marginBottom:28,position:"relative",zIndex:2}}>
+      {/* Hero card — all slides stacked, crossfade */}
+      <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} style={{
+        position:"relative",overflow:"hidden",borderRadius:24,cursor:"pointer",
+        height:320,background:T.card,border:`1px solid ${T.border}`,
+        boxShadow:"0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)",
       }}>
+        {newsItems.map((item, i) => {
+          const r = item.racket;
+          const isActive = i === activeIdx;
+          return (
+            <div key={i} onClick={() => openRacketSheet(r, "magazine")} style={{
+              position:"absolute",inset:0,
+              opacity: isActive ? 1 : 0,
+              transition:"opacity 0.8s ease-in-out",
+              pointerEvents: isActive ? "auto" : "none",
+              zIndex: isActive ? 2 : 1,
+            }}>
+              {/* BG blur */}
+              {r.imageUrl && <div style={{
+                position:"absolute",inset:0,
+                backgroundImage:`url(${r.imageUrl})`,backgroundSize:"cover",backgroundPosition:"center",
+                filter:"blur(24px) brightness(0.2) saturate(1.4)",transform:"scale(1.3)",
+              }}/>}
+              {/* Gradient: dark left, transparent right */}
+              <div style={{position:"absolute",inset:0,
+                background:"linear-gradient(100deg, rgba(11,14,13,0.93) 0%, rgba(11,14,13,0.78) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.10) 100%)",
+              }}/>
+              {/* Accent line */}
+              <div style={{position:"absolute",top:0,left:0,right:0,height:3,zIndex:5,
+                background:`linear-gradient(90deg, ${item.tagColor}, ${item.tagColor}60, transparent)`,
+              }}/>
+              {/* Big racket — right side, cinematic */}
+              <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",width:220,height:300,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:250,height:250,borderRadius:"50%",
+                  background:`radial-gradient(circle, ${item.tagColor}18 0%, transparent 65%)`}}/>
+                <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
+                  height:270,objectFit:"contain",position:"relative",
+                  filter:`drop-shadow(0 12px 40px ${item.tagColor}35) drop-shadow(0 0 60px rgba(0,0,0,0.4))`,
+                }} fallbackSize={120}/>
+              </div>
+              {/* Text — left side */}
+              <div style={{position:"absolute",left:0,top:0,bottom:0,width:"60%",
+                display:"flex",flexDirection:"column",justifyContent:"space-between",
+                padding:"22px 16px 20px 24px",zIndex:3,
+              }}>
+                <div>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
+                    <span style={{fontFamily:F.body,fontSize:9,fontWeight:800,color:"#fff",background:item.tagColor,
+                      padding:"4px 10px",borderRadius:4,letterSpacing:"0.1em",textTransform:"uppercase",
+                      boxShadow:`0 2px 12px ${item.tagColor}50`}}>{item.tag}</span>
+                    <span style={{fontFamily:F.body,fontSize:9,fontWeight:600,color:T.gray2,letterSpacing:"0.08em",textTransform:"uppercase"}}>{r.brand} · {r.year}</span>
+                  </div>
+                  <h2 style={{fontFamily:F.editorial,fontSize:24,fontWeight:700,color:T.cream,
+                    lineHeight:1.15,margin:"0 0 12px",letterSpacing:"-0.01em",
+                    overflow:"hidden",display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",
+                  }}>{item.headline}</h2>
+                  <p style={{fontFamily:F.body,fontSize:12,color:T.gray1,lineHeight:1.55,margin:0,
+                    overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
+                  }}>{item.subtitle}</p>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <span style={{fontFamily:F.body,fontSize:11,fontWeight:700,color:T.accent,letterSpacing:"0.02em"}}>Lire l'article →</span>
+                  {r.proPlayerInfo?.name && <span style={{fontFamily:F.body,fontSize:9,color:T.gold,fontWeight:600,
+                    background:T.goldSoft,padding:"3px 8px",borderRadius:6}}>🎾 {r.proPlayerInfo.name}</span>}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+        {/* Bottom fade */}
+        <div style={{position:"absolute",bottom:0,left:0,right:0,height:50,
+          background:"linear-gradient(transparent, rgba(11,14,13,0.6))",pointerEvents:"none",zIndex:3}}/>
+      </div>
+      {/* Dots */}
+      {newsItems.length > 1 && <div style={{display:"flex",justifyContent:"center",gap:8,marginTop:12}}>
         {newsItems.map((item, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            style={{
-              width: i === activeIdx ? 24 : 8,
-              height:8,
-              borderRadius:4,
-              border:"none",
-              cursor:"pointer",
-              padding:0,
-              background: i === activeIdx
-                ? item.tagColor
-                : `${T.gray3}`,
-              transition:"all 0.4s cubic-bezier(0.4,0,0.2,1)",
-              boxShadow: i === activeIdx ? `0 0 12px ${item.tagColor}50` : "none",
-            }}
-          />
+          <button key={i} onClick={() => goTo(i)} style={{
+            width: i === activeIdx ? 24 : 8,height:8,borderRadius:4,border:"none",cursor:"pointer",padding:0,
+            background: i === activeIdx ? item.tagColor : `${T.gray3}`,
+            transition:"all 0.4s cubic-bezier(0.4,0,0.2,1)",
+            boxShadow: i === activeIdx ? `0 0 12px ${item.tagColor}50` : "none",
+          }}/>
         ))}
       </div>}
-
-      {/* Micro-label */}
-      <div style={{
-        textAlign:"center",marginTop:8,
-        fontFamily:F.body,fontSize:9,color:T.gray3,letterSpacing:"0.06em",textTransform:"uppercase",
-      }}>
-        {activeIdx + 1} / {newsItems.length} · Swipe pour naviguer
-      </div>
     </div>
   );
 }
