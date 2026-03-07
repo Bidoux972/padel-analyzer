@@ -531,6 +531,10 @@
         "design épuré avec moins de graphismes que versions précédentes",
         "manche blanc à pois rouges distinctif de cette génération"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Ale Galán",
+      "rank": "N°1 mondial"
     }
   },
   {
@@ -706,7 +710,8 @@
         "forme du V inversé au niveau du pont",
         "style graphique moderne et épuré 2026"
       ]
-    }
+    },
+    "proPlayerInfo": null
   },
   {
     "name": "Adidas Arrow Hit Attack 2026",
@@ -799,7 +804,8 @@
         "grip avec motif de points jaunes dispersés",
         "finition carbone haute brillance"
       ]
-    }
+    },
+    "proPlayerInfo": null
   },
   {
     "id": "adidas-arrow-hit-ctrl-2026",
@@ -888,7 +894,8 @@
         "nouvelle technologie ASG CARBON",
         "design du logo triangulaire avec effet dégradé vertical"
       ]
-    }
+    },
+    "proPlayerInfo": null
   },
   {
     "id": "adidas-arrow-hit-carbon-ctrl-2026",
@@ -982,7 +989,8 @@
         "design du V argenté dans la partie inférieure",
         "finition carbone apparente avec texture striée visible"
       ]
-    }
+    },
+    "proPlayerInfo": null
   },
   {
     "id": "adidas-arrow-hit-jr-pink-2026",
@@ -1228,6 +1236,11 @@
         "ouverture triangulaire dans le manche"
       ],
       "yearClues": "Logo montagne Adidas avec motif de points en relief, coloris gris métallisé et rouge corail, inscription CROSS IT TEAM LIGHT, design minimaliste avec texture striée = version 2026"
+    },
+    "proPlayerInfo": {
+      "name": "Marta Ortega",
+      "rank": "N°9 mondiale",
+      "context": "La gamme Cross It est la signature de Martita Ortega, icône du padel féminin espagnol."
     }
   },
   {
@@ -1312,6 +1325,11 @@
         "typographie et graphisme du pont triangulaire",
         "motif de stries diagonales en relief"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Marta Ortega",
+      "rank": "N°9 mondiale",
+      "context": "Version légère de la gamme signature Marta Ortega."
     }
   },
   {
@@ -1564,6 +1582,11 @@
         "absence d'autres inscriptions visibles type '3.2' ou numéros de version",
         "design sobre comparé aux versions plus anciennes souvent plus chargées graphiquement"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Ale Galán",
+      "rank": "N°1 mondial",
+      "context": "Flagship Adidas d'Ale Galán, le n°1 mondial."
     }
   },
   {
@@ -1800,7 +1823,11 @@
       }
     ],
     "targetProfile": "Joueurs experts de contrôle exigeants. Pour ceux qui trouvent les rondes classiques trop molles et veulent de la rigidité sans sacrifier la tolérance de la forme ronde.",
-    "proPlayerInfo": null,
+    "proPlayerInfo": {
+      "name": "Ale Galán",
+      "rank": "N°1 mondial",
+      "context": "Version contrôle expert de la gamme Galán."
+    },
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -3218,7 +3245,10 @@
       }
     ],
     "targetProfile": "Joueurs avancés défensifs-contreurs. Le joueur de droite qui ne rate rien, qui lobe avec précision, et qui transforme chaque balle défensive en opportunité avec du spin.",
-    "proPlayerInfo": null,
+    "proPlayerInfo": {
+      "name": "Gamme Juan Lebrón",
+      "rank": "Top 3 mondial"
+    },
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -3448,6 +3478,10 @@
         "logo Babolat vertical style 2026",
         "mention SMART BUTTCAP"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Gamme Juan Lebrón",
+      "rank": "Top 3 mondial"
     }
   },
   {
@@ -3546,6 +3580,11 @@
         "disposition et style typographique du logo Babolat vertical",
         "signature Juan Lebrón intégrée au design"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Juan Lebrón",
+      "rank": "Top 3 mondial",
+      "context": "Version contrôle de la gamme Lebrón."
     }
   },
   {
@@ -3735,6 +3774,11 @@
         "design 3D SPIN HOLES visible",
         "combinaison orange/gris/noir caractéristique 2026"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Juan Lebrón",
+      "rank": "Top 3 mondial",
+      "context": "L'arme de Juan Lebrón, l'un des joueurs les plus puissants du circuit."
     }
   },
   {
@@ -4782,7 +4826,8 @@
         "design FLOW avec effet de flux dans les perforations",
         "finition gris métallisé du logo Bullpadel"
       ]
-    }
+    },
+    "proPlayerInfo": null
   },
   {
     "name": "Bullpadel Hack 04 2026",
@@ -4872,6 +4917,11 @@
         "finition bicolore moderne avec dégradé subtil",
         "logo W3 BACK présent"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Paquito Navarro",
+      "rank": "Top 10 mondial",
+      "context": "La raquette signature de Paquito Navarro, le joueur le plus spectaculaire du circuit."
     }
   },
   {
@@ -4956,6 +5006,10 @@
         "inscription HACK 04 (pas 03 ou 02)",
         "style graphique sobre et épuré 2026"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Paquito Navarro",
+      "rank": "Top 10 mondial"
     }
   },
   {
@@ -5012,7 +5066,10 @@
       }
     ],
     "targetProfile": "Joueurs avancés offensifs qui veulent de la puissance avec du confort. La passerelle entre les palas de contrôle et les diamants pures puissance.",
-    "proPlayerInfo": null,
+    "proPlayerInfo": {
+      "name": "Paquito Navarro",
+      "rank": "Top 10 mondial"
+    },
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -5233,6 +5290,11 @@
         "finition du logo Bullpadel avec effet métallisé",
         "présence FGL comme technologie mise en avant"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Federico Chingotto",
+      "rank": "Top 5 mondial",
+      "context": "Le magicien argentin Chingotto contrôle le jeu avec le Neuron, raquette de contrôle et de défense."
     }
   },
   {
@@ -5437,6 +5499,11 @@
         "mention THE PADEL SPOTLIGHT sous Bullpadel",
         "combinaison blanc/noir/bleu turquoise spécifique 2026"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Juan Tello",
+      "rank": "Top 10 mondial",
+      "context": "Raquette de Juan Tello, l'un des joueurs les plus réguliers du circuit."
     }
   },
   {
@@ -5714,6 +5781,11 @@
         "technologie Bluetooth intégrée",
         "référence HR-3829"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Martin Di Nenno",
+      "rank": "Top 5 mondial",
+      "context": "L'arme de Di Nenno, le gaucher le plus redouté du circuit."
     }
   },
   {
@@ -5805,6 +5877,10 @@
         "design asymétrique moderne avec bandes horizontales",
         "technologie VIBRADRIVE mise en avant"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Martin Di Nenno",
+      "rank": "Top 5 mondial"
     }
   },
   {
@@ -6498,6 +6574,10 @@
         "design du V bleu au niveau du col",
         "marquages 2FA/3FA en haut de la raquette"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Gamme Dunlop FX",
+      "context": "La gamme compétition Dunlop pour le circuit professionnel."
     }
   },
   {
@@ -6820,6 +6900,10 @@
         "design minimaliste épuré",
         "absence de technologies affichées (pas de Graphene, Auxetic visible)"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Ariana Sánchez",
+      "rank": "Top 5 mondiale"
     }
   },
   {
@@ -6986,6 +7070,11 @@
         "finition mate moderne",
         "typographie EXTREME MOTION en lettres espacées style contemporain"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Paula Josemaría",
+      "rank": "N°3 mondiale",
+      "context": "La raquette de Paula Josemaría, gauchère redoutable surnommée 'Dinamita'."
     }
   },
   {
@@ -7653,6 +7742,11 @@
         "absence de technologies inscrites visibles (design épuré 2025)",
         "coloris neutres et élégants typiques de la collection 2025"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Ariana Sánchez",
+      "rank": "N°3 mondiale",
+      "context": "Raquette d'Ari Sánchez en 2025. La joueuse a rejoint Adidas pour la saison 2026."
     }
   },
   {
@@ -8613,6 +8707,11 @@
         "design minimaliste deux tons",
         "finish mate non brillant"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Paula Josemaría",
+      "rank": "N°3 mondiale",
+      "context": "Raquette signature de 'Paulita Dinamita', gauchère explosive, n°3 mondiale. Édition limitée avec son design exclusif."
     }
   },
   {
@@ -8990,8 +9089,9 @@
     ],
     "targetProfile": "Joueurs experts défensifs ou polyvalents-contrôle. Le joueur de droite ultime, ou le défenseur qui ne rate jamais. Aussi parfaite pour les joueurs avancés qui veulent monter de niveau en toute sécurité.",
     "proPlayerInfo": {
-      "name": "Style Windahl-like",
-      "context": "La Gravity Pro est le choix des joueurs tactiques du circuit qui construisent les points avec patience et précision."
+      "name": "Beatriz González",
+      "rank": "N°5 mondiale",
+      "context": "La Gravity Pro est la raquette de contrôle des joueuses techniques. Bea González l'utilise pour son jeu de placement."
     },
     "ean": null,
     "availability": "available",
@@ -9318,7 +9418,10 @@
       }
     ],
     "targetProfile": "Joueurs experts contrôle-puissance. Ceux qui construisent les points méthodiquement puis accélèrent au moment parfait.",
-    "proPlayerInfo": null,
+    "proPlayerInfo": {
+      "name": "Gamme Head Radical",
+      "context": "La Radical est la raquette de contrôle de référence chez Head, utilisée par les joueurs de droite du circuit."
+    },
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12626,6 +12729,11 @@
         "logo étoile jaune sur fond vert dans le cœur",
         "style graphique moderne avec contraste noir/argenté/vert"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Matías Díaz",
+      "rank": "Top 30 WPT",
+      "context": "StarVie sponsorise Matías Díaz sur le circuit professionnel."
     }
   },
   {
@@ -15008,6 +15116,11 @@
         "absence de couleurs vives ou flashy",
         "design épuré version Woman 2025"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Alejandra Salazar",
+      "rank": "Top 10 WPT",
+      "context": "Pala d'Alejandra Salazar, légende du padel féminin espagnol."
     }
   },
   {
@@ -15096,6 +15209,11 @@
         "style du dégradé diagonal bleu",
         "typographie ELITE avec points de suspension"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Gemma Triay",
+      "rank": "N°1 mondiale",
+      "context": "La raquette de Gemma Triay, n°1 mondiale et référence du padel féminin."
     }
   },
   {
@@ -15261,6 +15379,11 @@
         "finition mate/texturée sur le bleu",
         "version Woman avec cette palette de couleurs"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Delfi Brea",
+      "rank": "N°1 mondiale ex-aequo",
+      "context": "La raquette de Delfi Brea, co-n°1 mondiale avec Gemma Triay, joueuse la plus spectaculaire du circuit."
     }
   },
   {
@@ -15340,6 +15463,11 @@
         "finition soignée mate/brillante"
       ],
       "yearClues": "Elite Woman 2026 signature Gemma Triay avec accents roses"
+    },
+    "proPlayerInfo": {
+      "name": "Gemma Triay",
+      "rank": "N°1 mondiale",
+      "context": "La raquette de Gemma Triay, n°1 mondiale et référence du padel féminin."
     }
   },
   {
@@ -15417,6 +15545,11 @@
         "perforations régulières"
       ],
       "yearClues": "VK10 Quantum 2025 avec coloris rouge/noir et marquage 3K"
+    },
+    "proPlayerInfo": {
+      "name": "Virginia Riera",
+      "rank": "Top 15 WPT",
+      "context": "La gamme VK10 est la signature de Virginia Riera."
     }
   },
   {
@@ -15494,6 +15627,11 @@
         "finition carbone"
       ],
       "yearClues": "LA10 Quantum 2025 avec coloris bleu/noir et marquage 12K"
+    },
+    "proPlayerInfo": {
+      "name": "Tamara Icardo",
+      "rank": "N°10 mondiale",
+      "context": "La gamme LA10 est associée aux joueuses Nox sur le circuit."
     }
   },
   {
@@ -15674,7 +15812,8 @@
         "logo Babolat vertical stylisé rouge",
         "disposition spécifique des perforations en lignes courbes"
       ]
-    }
+    },
+    "proPlayerInfo": null
   },
   {
     "id": "babolat-dyna-spirit-2025",
@@ -17760,6 +17899,11 @@
         "finition argentée brillante exclusive",
         "disposition spécifique des accents roses fuchsia"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Lucía Sainz",
+      "rank": "Top 10 WPT",
+      "context": "Gamme Nox associée à Lucía Sainz."
     }
   },
   {
