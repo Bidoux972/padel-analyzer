@@ -357,14 +357,12 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
                 <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
                   height:260,objectFit:"contain",position:"relative",
                   filter:`drop-shadow(0 16px 50px rgba(0,0,0,0.7))`,
-                  mixBlendMode:"multiply",
                 }} fallbackSize={140}/>
-                {/* Same image on top with screen blend for vibrancy on dark bg */}
-                <RacketImg src={r.imageUrl} alt="" brand={r.brand} style={{
-                  height:260,objectFit:"contain",position:"absolute",
-                  filter:`drop-shadow(0 16px 50px rgba(0,0,0,0.5))`,
-                  mixBlendMode:"screen",opacity:0.85,
-                }} fallbackSize={140}/>
+                {/* Dark vignette OVER image — eats white edges */}
+                <div style={{position:"absolute",inset:-30,
+                  background:"radial-gradient(ellipse 55% 50% at 50% 50%, transparent 35%, rgba(10,10,10,0.6) 60%, rgba(10,10,10,0.95) 80%, #0A0A0A 100%)",
+                  pointerEvents:"none",
+                }}/>
               </div>
 
               {/* Bottom gradient — protects text overlay */}
