@@ -330,27 +330,30 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
                 backgroundImage:`url(${r.imageUrl})`,backgroundSize:"cover",backgroundPosition:"center",
                 filter:"blur(24px) brightness(0.2) saturate(1.4)",transform:"scale(1.3)",
               }}/>}
-              {/* Gradient: dark left, transparent right */}
+              {/* Gradient: strong dark left, hard cutoff middle, softer right */}
               <div style={{position:"absolute",inset:0,
-                background:"linear-gradient(100deg, rgba(11,14,13,0.93) 0%, rgba(11,14,13,0.78) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.10) 100%)",
+                background:"linear-gradient(95deg, rgba(11,14,13,0.96) 0%, rgba(11,14,13,0.92) 35%, rgba(11,14,13,0.70) 50%, rgba(0,0,0,0.35) 65%, rgba(0,0,0,0.20) 100%)",
               }}/>
               {/* Accent line */}
               <div style={{position:"absolute",top:0,left:0,right:0,height:3,zIndex:5,
                 background:`linear-gradient(90deg, ${item.tagColor}, ${item.tagColor}60, transparent)`,
               }}/>
               {/* Big racket — right side, cinematic */}
-              <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",width:220,height:300,display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <div style={{position:"absolute",right:-15,top:"50%",transform:"translateY(-50%)",width:230,height:310,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                {/* Dark vignette behind image to blend white-bg photos */}
+                <div style={{position:"absolute",inset:-20,borderRadius:"50%",
+                  background:"radial-gradient(ellipse, rgba(11,14,13,0.15) 30%, rgba(11,14,13,0.50) 70%, rgba(11,14,13,0.85) 100%)"}}/>
                 <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:250,height:250,borderRadius:"50%",
-                  background:`radial-gradient(circle, ${item.tagColor}18 0%, transparent 65%)`}}/>
+                  background:`radial-gradient(circle, ${item.tagColor}15 0%, transparent 60%)`}}/>
                 <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
                   height:270,objectFit:"contain",position:"relative",
-                  filter:`drop-shadow(0 12px 40px ${item.tagColor}35) drop-shadow(0 0 60px rgba(0,0,0,0.4))`,
+                  filter:`drop-shadow(0 12px 40px ${item.tagColor}30) drop-shadow(0 0 50px rgba(0,0,0,0.5))`,
                 }} fallbackSize={120}/>
               </div>
               {/* Text — left side */}
-              <div style={{position:"absolute",left:0,top:0,bottom:0,width:"60%",
+              <div style={{position:"absolute",left:0,top:0,bottom:0,width:"52%",
                 display:"flex",flexDirection:"column",justifyContent:"space-between",
-                padding:"22px 16px 20px 24px",zIndex:3,
+                padding:"22px 12px 20px 24px",zIndex:3,
               }}>
                 <div>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
