@@ -6115,8 +6115,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               }}>📷 Scanner une autre raquette</button>
             </div>
 
-            {/* DEBUG — raw Vision JSON (temporary) */}
-            {scanResult&&scanResult.vision&&<div style={{marginTop:16,padding:"12px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,maxHeight:200,overflow:"auto"}}>
+            {/* DEBUG — raw Vision JSON (admin only) */}
+            {isAdmin&&scanResult&&scanResult.vision&&<div style={{marginTop:16,padding:"12px",background:"rgba(0,0,0,0.6)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,maxHeight:200,overflow:"auto"}}>
               <div style={{fontFamily:F.mono,fontSize:8,color:"#fbbf24",marginBottom:4}}>🔧 DEBUG — Réponse Vision brute :</div>
               <pre style={{fontFamily:F.mono,fontSize:8,color:"#94a3b8",margin:0,whiteSpace:"pre-wrap",wordBreak:"break-all"}}>{JSON.stringify(scanResult.vision,null,2)}</pre>
             </div>}
