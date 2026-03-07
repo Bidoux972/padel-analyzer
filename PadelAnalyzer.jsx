@@ -32,6 +32,38 @@ const T = {
   purpleSoft:"rgba(168,85,247,0.08)",
 };
 
+// ─── MAGAZINE THEME — Warm black, gold-dominant, luxury press ──
+const TM = {
+  bg:       "#0D0B08",
+  card:     "#15120D",
+  surface:  "#1D1914",
+  border:   "#2C261E",
+  accent:   "#D4A856",
+  accentSoft: "rgba(212,168,86,0.12)",
+  accentGlow: "rgba(212,168,86,0.25)",
+  cream:    "#FAF7F0",
+  white:    "#F5F0E8",
+  gray1:    "#BDB6A8",
+  gray2:    "#807A6E",
+  gray3:    "#4D483E",
+};
+
+// ─── COLLECTION THEME — Cool black, emerald accent, showroom ──
+const TC = {
+  bg:       "#090B10",
+  card:     "#0F1218",
+  surface:  "#161A22",
+  border:   "#222830",
+  accent:   "#3DB8A0",
+  accentSoft: "rgba(61,184,160,0.10)",
+  accentGlow: "rgba(61,184,160,0.20)",
+  cream:    "#F0F2F7",
+  white:    "#E8ECF2",
+  gray1:    "#A8B0BE",
+  gray2:    "#6B7385",
+  gray3:    "#3E4452",
+};
+
 const F = {
   editorial: "'Cormorant Garamond', Georgia, serif",
   body:      "'DM Sans', 'Inter', -apple-system, sans-serif",
@@ -449,19 +481,19 @@ function MagazineScreen({ ctx }) {
     const sc = r.scores||{};
     const avg = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
     return (
-      <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 16px"}}>
+      <div style={{minHeight:"100dvh",background:TM.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 16px"}}>
         <FontLoader/>
         <div style={{display:"flex",alignItems:"center",padding:"14px 0"}}>
-          <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← {catInfo ? catInfo.label.replace(/^[^\s]+ /,"") : "Magazine"}</button>
+          <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:TM.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← {catInfo ? catInfo.label.replace(/^[^\s]+ /,"") : "Magazine"}</button>
         </div>
         {/* Hero image */}
         <div style={{height:240,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",marginBottom:16}}>
-          <div style={{position:"absolute",top:"40%",left:"50%",transform:"translate(-50%,-50%)",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${T.accent}12 0%, transparent 70%)`}}/>
+          <div style={{position:"absolute",top:"40%",left:"50%",transform:"translate(-50%,-50%)",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${TM.accent}15 0%, transparent 70%)`}}/>
           <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{height:200,objectFit:"contain",position:"relative",filter:"drop-shadow(0 12px 32px rgba(0,0,0,0.5))"}} fallbackSize={120}/>
         </div>
         {/* Info */}
         <div style={{display:"flex",gap:6,marginBottom:8}}>
-          <span style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.1em",textTransform:"uppercase",background:T.accentSoft,padding:"3px 10px",borderRadius:4}}>{r.brand}</span>
+          <span style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:TM.accent,letterSpacing:"0.1em",textTransform:"uppercase",background:TM.accentSoft,padding:"3px 10px",borderRadius:4}}>{r.brand}</span>
           <span style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:catColor(r.category),letterSpacing:"0.1em",textTransform:"uppercase",background:`${catColor(r.category)}12`,padding:"3px 10px",borderRadius:4}}>{CAT_LABELS[r.category]||r.category}</span>
         </div>
         <h2 style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:T.white,lineHeight:1.05,margin:"0 0 6px"}}>{r.name}</h2>
@@ -474,23 +506,23 @@ function MagazineScreen({ ctx }) {
           </div>
         </div>}
         {/* Score + Radar */}
-        <div style={{display:"flex",gap:16,alignItems:"center",padding:"16px 0",borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`,marginBottom:20}}>
+        <div style={{display:"flex",gap:16,alignItems:"center",padding:"16px 0",borderTop:`1px solid ${TM.border}`,borderBottom:`1px solid ${TM.border}`,marginBottom:20}}>
           <div style={{textAlign:"center"}}>
-            <div style={{fontFamily:F.mono,fontSize:36,fontWeight:700,color:T.accent,lineHeight:1}}>{avg.toFixed(1)}</div>
-            <div style={{fontFamily:F.mono,fontSize:9,color:T.gray2,letterSpacing:"0.08em",marginTop:4}}>SCORE</div>
+            <div style={{fontFamily:F.mono,fontSize:36,fontWeight:700,color:TM.accent,lineHeight:1}}>{avg.toFixed(1)}</div>
+            <div style={{fontFamily:F.mono,fontSize:9,color:TM.gray2,letterSpacing:"0.08em",marginTop:4}}>SCORE</div>
           </div>
           <div style={{flex:1}}><SvgRadar scores={sc} size={170}/></div>
         </div>
         {r.verdict&&<div style={{marginBottom:20}}>
-          <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.15em",marginBottom:8}}>VERDICT</div>
-          <p style={{fontFamily:F.editorial,fontSize:20,fontStyle:"italic",color:T.cream,lineHeight:1.4,margin:0}}>"{r.verdict}"</p>
+          <div style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:TM.accent,letterSpacing:"0.15em",marginBottom:8}}>VERDICT</div>
+          <p style={{fontFamily:F.editorial,fontSize:20,fontStyle:"italic",color:TM.cream,lineHeight:1.4,margin:0}}>"{r.verdict}"</p>
         </div>}
         {r.editorial&&<div style={{marginBottom:20}}>
-          <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.gray2,letterSpacing:"0.15em",marginBottom:8}}>ANALYSE</div>
-          <p style={{fontFamily:F.body,fontSize:14,color:T.gray1,lineHeight:1.7,margin:0}}>{r.editorial}</p>
+          <div style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:TM.gray2,letterSpacing:"0.15em",marginBottom:8}}>ANALYSE</div>
+          <p style={{fontFamily:F.body,fontSize:14,color:TM.gray1,lineHeight:1.7,margin:0}}>{r.editorial}</p>
         </div>}
         <div style={{textAlign:"center",padding:"16px 0 40px"}}>
-          <button onClick={()=>openRacketSheet(r,"magazine")} style={{padding:"14px 40px",borderRadius:60,border:"none",background:T.accent,color:"#fff",fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${T.accentGlow}`,width:"100%",maxWidth:320}}>
+          <button onClick={()=>openRacketSheet(r,"magazine")} style={{padding:"14px 40px",borderRadius:60,border:"none",background:`linear-gradient(135deg, ${TM.accent}, #b8860b)`,color:"#fff",fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${TM.accentGlow}`,width:"100%",maxWidth:320}}>
             Voir la fiche technique complète →
           </button>
         </div>
@@ -501,19 +533,19 @@ function MagazineScreen({ ctx }) {
   // ── CATEGORY DETAIL VIEW — Top 5 editorial ──
   if (magCat && catInfo) {
     return (
-      <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
+      <div style={{minHeight:"100dvh",background:TM.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
         <FontLoader/>
 
         {/* Header */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px"}}>
-          <button onClick={()=>setMagCat(null)} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Magazine</button>
+          <button onClick={()=>setMagCat(null)} style={{background:"none",border:"none",color:TM.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Magazine</button>
           {/* Year toggle inline */}
           <div style={{display:"flex",gap:4}}>
             {[2026,2025,null].map(y => (
               <button key={y||"all"} onClick={()=>{setMagYear(y);setMagSlide(0);setMagDetail(null);}} style={{
-                padding:"4px 10px",borderRadius:6,border:`1px solid ${magYear===y?T.accent+"40":T.border}`,
-                background:magYear===y?T.accentSoft:"transparent",
-                color:magYear===y?T.accent:T.gray2,
+                padding:"4px 10px",borderRadius:6,border:`1px solid ${magYear===y?TM.accent+"40":TM.border}`,
+                background:magYear===y?TM.accentSoft:"transparent",
+                color:magYear===y?TM.accent:TM.gray2,
                 fontFamily:F.body,fontSize:9,fontWeight:700,cursor:"pointer",
               }}>
                 {y||"Tout"}
@@ -524,13 +556,13 @@ function MagazineScreen({ ctx }) {
 
         {/* Category hero title */}
         <div style={{padding:"10px 4px 24px",textAlign:"center"}}>
-          <div style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:8}}>
+          <div style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:TM.accent,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:8}}>
             TOP 5
           </div>
-          <h1 style={{fontFamily:F.editorial,fontSize:42,fontWeight:700,color:T.cream,margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1}}>
+          <h1 style={{fontFamily:F.editorial,fontSize:42,fontWeight:700,color:TM.cream,margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1}}>
             {catInfo.label.replace(/^[^\s]+ /,"")}
           </h1>
-          <p style={{fontFamily:F.editorial,fontSize:14,color:T.gray2,margin:0,fontStyle:"italic"}}>{catInfo.desc}</p>
+          <p style={{fontFamily:F.editorial,fontSize:14,color:TM.gray2,margin:0,fontStyle:"italic"}}>{catInfo.desc}</p>
         </div>
 
         {top5.length === 0 ? (
@@ -590,21 +622,21 @@ function MagazineScreen({ ctx }) {
                   </div>
 
                   {/* Article body */}
-                  <div style={{padding:"20px 20px 24px",background:T.card}}>
+                  <div style={{padding:"20px 20px 24px",background:TM.card}}>
                     {r.verdict && <p style={{
-                      fontFamily:F.editorial,fontSize:19,fontStyle:"italic",color:T.cream,lineHeight:1.45,
-                      margin:"0 0 14px",borderLeft:`3px solid ${T.accent}`,paddingLeft:14,
+                      fontFamily:F.editorial,fontSize:19,fontStyle:"italic",color:TM.cream,lineHeight:1.45,
+                      margin:"0 0 14px",borderLeft:`3px solid ${TM.accent}`,paddingLeft:14,
                     }}>
                       "{(r.verdict||"").slice(0,140)}{(r.verdict||"").length>140?"…":""}"
                     </p>}
                     {r.editorial && <p style={{
-                      fontFamily:F.body,fontSize:13,color:T.gray1,lineHeight:1.7,margin:"0 0 16px",
+                      fontFamily:F.body,fontSize:13,color:TM.gray1,lineHeight:1.7,margin:"0 0 16px",
                     }}>
                       {(r.editorial||"").slice(0,200)}{(r.editorial||"").length>200?"…":""}
                     </p>}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                      <span style={{fontFamily:F.body,fontSize:12,fontWeight:700,color:T.accent}}>Lire l'article complet →</span>
-                      <span style={{fontFamily:F.body,fontSize:11,color:T.gray2}}>{r.shape} · {r.price}</span>
+                      <span style={{fontFamily:F.body,fontSize:12,fontWeight:700,color:TM.accent}}>Lire l'article complet →</span>
+                      <span style={{fontFamily:F.body,fontSize:11,color:TM.gray2}}>{r.shape} · {r.price}</span>
                     </div>
                   </div>
                 </div>
@@ -619,7 +651,7 @@ function MagazineScreen({ ctx }) {
               return (
                 <div key={r.id||r.name} onClick={()=>setMagDetail(r)} style={{
                   display:"flex",gap:0,cursor:"pointer",marginBottom:14,borderRadius:18,overflow:"hidden",
-                  background:T.card,border:`1px solid ${T.border}`,
+                  background:TM.card,border:`1px solid ${TM.border}`,
                   boxShadow:"0 4px 16px rgba(0,0,0,0.2)",
                   transition:"transform 0.2s, box-shadow 0.2s",
                 }}>
@@ -634,7 +666,7 @@ function MagazineScreen({ ctx }) {
                       backgroundImage:`url(${r.imageUrl})`,backgroundSize:"cover",backgroundPosition:"center",
                       filter:"blur(16px) brightness(0.3) saturate(1.2)",transform:"scale(1.4)",
                     }}/>}
-                    <div style={{position:"absolute",inset:0,background:`linear-gradient(90deg, transparent 60%, ${T.card} 100%)`}}/>
+                    <div style={{position:"absolute",inset:0,background:`linear-gradient(90deg, transparent 60%, ${TM.card} 100%)`}}/>
                     {/* Rank badge */}
                     <div style={{position:"absolute",top:8,left:8,zIndex:3}}>
                       <span style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,
@@ -671,13 +703,13 @@ function MagazineScreen({ ctx }) {
           </div>
         )}
 
-        {/* CTA Catalogue */}
+        {/* CTA Collection */}
         <div style={{margin:"28px 4px 40px",padding:"24px 20px",borderRadius:20,textAlign:"center",cursor:"pointer",
-          background:`linear-gradient(135deg, ${T.accent}15, ${T.card})`,border:`1px solid ${T.accent}25`,
+          background:`linear-gradient(135deg, ${TM.accent}12, ${TM.card})`,border:`1px solid ${TM.accent}20`,
         }} onClick={()=>setScreen("catalog")}>
-          <div style={{fontFamily:F.body,fontSize:9,color:T.accent,letterSpacing:"0.12em",fontWeight:700,marginBottom:6}}>CATALOGUE COMPLET</div>
-          <div style={{fontFamily:F.editorial,fontSize:26,color:T.white,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
-          <div style={{fontFamily:F.body,fontSize:12,color:T.gray2}}>Rechercher, filtrer, comparer →</div>
+          <div style={{fontFamily:F.body,fontSize:9,color:TM.accent,letterSpacing:"0.12em",fontWeight:700,marginBottom:6}}>LA COLLECTION</div>
+          <div style={{fontFamily:F.editorial,fontSize:26,color:TM.cream,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
+          <div style={{fontFamily:F.body,fontSize:12,color:TM.gray2}}>Rechercher, filtrer, comparer →</div>
         </div>
       </div>
     );
@@ -691,18 +723,18 @@ function MagazineScreen({ ctx }) {
   };
 
   return (
-    <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
+    <div style={{minHeight:"100dvh",background:TM.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
       <FontLoader/>
 
       {/* Header */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px"}}>
-        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Accueil</button>
+        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:TM.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Accueil</button>
         <div style={{display:"flex",gap:4}}>
           {[2026,2025,null].map(y => (
             <button key={y||"all"} onClick={()=>{setMagYear(y);}} style={{
-              padding:"4px 10px",borderRadius:6,border:`1px solid ${magYear===y?T.accent+"40":T.border}`,
-              background:magYear===y?T.accentSoft:"transparent",
-              color:magYear===y?T.accent:T.gray2,
+              padding:"4px 10px",borderRadius:6,border:`1px solid ${magYear===y?TM.accent+"40":TM.border}`,
+              background:magYear===y?TM.accentSoft:"transparent",
+              color:magYear===y?TM.accent:TM.gray2,
               fontFamily:F.body,fontSize:9,fontWeight:700,cursor:"pointer",
             }}>
               {y||"Tout"}
@@ -714,15 +746,15 @@ function MagazineScreen({ ctx }) {
       {/* Magazine masthead */}
       <div style={{textAlign:"center",padding:"16px 8px 32px",position:"relative"}}>
         {/* Decorative line */}
-        <div style={{width:40,height:3,background:T.accent,borderRadius:2,margin:"0 auto 14px"}}/>
-        <h1 style={{fontFamily:F.editorial,fontSize:44,fontWeight:700,color:T.cream,margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1,fontStyle:"italic"}}>
+        <div style={{width:40,height:3,background:TM.accent,borderRadius:2,margin:"0 auto 14px"}}/>
+        <h1 style={{fontFamily:F.editorial,fontSize:44,fontWeight:700,color:TM.cream,margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1,fontStyle:"italic"}}>
           Le Magazine
         </h1>
-        <p style={{fontFamily:F.body,fontSize:12,color:T.gray2,margin:0,letterSpacing:"0.04em"}}>
+        <p style={{fontFamily:F.body,fontSize:12,color:TM.gray2,margin:0,letterSpacing:"0.04em"}}>
           Tendances, classements & analyses · {magYear || "Toutes années"}
         </p>
         {/* Bottom decorative line */}
-        <div style={{width:"60%",height:1,background:`linear-gradient(90deg, transparent, ${T.border}, transparent)`,margin:"20px auto 0"}}/>
+        <div style={{width:"60%",height:1,background:`linear-gradient(90deg, transparent, ${TM.border}, transparent)`,margin:"20px auto 0"}}/>
       </div>
 
       {/* Covers wall */}
@@ -740,7 +772,7 @@ function MagazineScreen({ ctx }) {
               style={{
                 position:"relative",overflow:"hidden",borderRadius:22,cursor:"pointer",
                 height: catIndex === 0 ? 300 : 240,
-                border:`1px solid ${T.border}`,
+                border:`1px solid ${TM.border}`,
                 boxShadow:"0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.02)",
                 transition:"transform 0.25s, box-shadow 0.25s",
               }}
@@ -828,13 +860,13 @@ function MagazineScreen({ ctx }) {
         })}
       </div>
 
-      {/* CTA Catalogue */}
+      {/* CTA Collection */}
       <div style={{margin:"28px 4px 40px",padding:"24px 20px",borderRadius:20,textAlign:"center",cursor:"pointer",
-        background:`linear-gradient(135deg, ${T.accent}15, ${T.card})`,border:`1px solid ${T.accent}25`,
+        background:`linear-gradient(135deg, ${TM.accent}12, ${TM.card})`,border:`1px solid ${TM.accent}20`,
       }} onClick={()=>setScreen("catalog")}>
-        <div style={{fontFamily:F.body,fontSize:9,color:T.accent,letterSpacing:"0.12em",fontWeight:700,marginBottom:6}}>CATALOGUE COMPLET</div>
-        <div style={{fontFamily:F.editorial,fontSize:26,color:T.white,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
-        <div style={{fontFamily:F.body,fontSize:12,color:T.gray2}}>Rechercher, filtrer, comparer →</div>
+        <div style={{fontFamily:F.body,fontSize:9,color:TM.accent,letterSpacing:"0.12em",fontWeight:700,marginBottom:6}}>LA COLLECTION</div>
+        <div style={{fontFamily:F.editorial,fontSize:26,color:TM.cream,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
+        <div style={{fontFamily:F.body,fontSize:12,color:TM.gray2}}>Rechercher, filtrer, comparer →</div>
       </div>
     </div>
   );
@@ -887,14 +919,20 @@ function CatalogScreen({ ctx }) {
     return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : "—";
   };
 
-  const chipSt = (active, color=T.accent) => ({
+  const chipSt = (active, color=TC.accent) => ({
     padding:"5px 13px",borderRadius:20,fontSize:10,fontWeight:active?700:500,cursor:"pointer",
-    background:active?`${color}15`:T.card,
-    border:`1px solid ${active?color+"40":T.border}`,
-    color:active?color:T.gray1,transition:"all 0.15s",fontFamily:F.body,whiteSpace:"nowrap",
+    background:active?`${color}15`:TC.card,
+    border:`1px solid ${active?color+"40":TC.border}`,
+    color:active?color:TC.gray1,transition:"all 0.15s",fontFamily:F.body,whiteSpace:"nowrap",
   });
 
   const [showFilters, setShowFilters] = useState(false);
+  const nouveautesRef = useRef(null);
+  const scrollNouveautes = (dir) => {
+    const el = nouveautesRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === "left" ? -200 : 200, behavior: "smooth" });
+  };
 
   // ── Racket card component — Premium boutique style ──
   const RacketCard = ({ r, isNew, size = "normal" }) => {
@@ -906,7 +944,7 @@ function CatalogScreen({ ctx }) {
     return (
       <button onClick={()=>openRacketSheet(r,"catalog")} className="pa-card" style={{
         padding:0,borderRadius:20,cursor:"pointer",textAlign:"left",overflow:"hidden",
-        background:T.card,border:`1px solid ${isNew?`#7c3aed25`:T.border}`,
+        background:TC.card,border:`1px solid ${isNew?`#7c3aed25`:TC.border}`,
         transition:"all 0.25s",display:"flex",flexDirection:"column",position:"relative",
         ...(isSmall ? {minWidth:cardW,maxWidth:cardW,flexShrink:0} : {}),
       }}>
@@ -917,8 +955,8 @@ function CatalogScreen({ ctx }) {
           height:imgH,display:"flex",alignItems:"center",justifyContent:"center",
           padding:"16px 12px 8px",position:"relative",
           background: isNew
-            ? `linear-gradient(180deg, rgba(124,58,237,0.05) 0%, ${T.card} 100%)`
-            : `linear-gradient(180deg, ${T.surface}80 0%, ${T.card} 100%)`,
+            ? `linear-gradient(180deg, rgba(124,58,237,0.05) 0%, ${TC.card} 100%)`
+            : `linear-gradient(180deg, ${TC.surface}80 0%, ${TC.card} 100%)`,
         }}>
           <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
             height:imgH-36,objectFit:"contain",
@@ -929,11 +967,11 @@ function CatalogScreen({ ctx }) {
         {/* Content area */}
         <div style={{padding:isSmall?"10px 12px 14px":"12px 14px 16px",flex:1,display:"flex",flexDirection:"column",gap:4}}>
           {/* Brand */}
-          <div style={{fontSize:9,fontWeight:600,color:T.accent,fontFamily:F.body,textTransform:"uppercase",letterSpacing:"0.06em"}}>{r.brand}</div>
+          <div style={{fontSize:9,fontWeight:600,color:TC.accent,fontFamily:F.body,textTransform:"uppercase",letterSpacing:"0.06em"}}>{r.brand}</div>
           {/* Name — editorial serif */}
           <div style={{
             fontFamily:F.editorial,fontSize:isSmall?14:16,fontWeight:700,fontStyle:"italic",
-            color:T.cream,lineHeight:1.2,
+            color:TC.cream,lineHeight:1.2,
             overflow:"hidden",textOverflow:"ellipsis",
             display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
           }}>{r.shortName||r.name}</div>
@@ -947,13 +985,13 @@ function CatalogScreen({ ctx }) {
               <span style={{fontSize:24,fontWeight:800,color:T.accent,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{score}</span>
               <span style={{fontSize:9,color:T.gray2,fontWeight:500,fontFamily:F.body}}>/10</span>
             </div>
-            {priceStr && <span style={{fontSize:15,fontWeight:700,color:T.cream,fontFamily:"'Outfit',sans-serif"}}>{priceStr}</span>}
+            {priceStr && <span style={{fontSize:15,fontWeight:700,color:TC.cream,fontFamily:"'Outfit',sans-serif"}}>{priceStr}</span>}
           </div>
 
           {/* Category + Year — minimal */}
           <div style={{display:"flex",gap:6,alignItems:"center",marginTop:4}}>
             <span style={{fontSize:8,padding:"2px 8px",borderRadius:6,background:`${catColor(r.category)}10`,color:catColor(r.category),fontWeight:600,fontFamily:F.body}}>{CAT_LABELS[r.category]||r.category}</span>
-            <span style={{fontSize:9,color:T.gray3,fontFamily:F.body}}>{r.year}</span>
+            <span style={{fontSize:9,color:TC.gray3,fontFamily:F.body}}>{r.year}</span>
             {r.proPlayerInfo?.name && <span style={{fontSize:8,color:T.gold,fontFamily:F.body}}>🎾</span>}
           </div>
         </div>
@@ -962,19 +1000,19 @@ function CatalogScreen({ ctx }) {
   };
 
   return (
-    <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:600,margin:"0 auto",padding:"0 12px",background:T.bg}}>
+    <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:600,margin:"0 auto",padding:"0 12px",background:TC.bg}}>
       <FontLoader/>
       {/* Header — sticky */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px",position:"sticky",top:0,zIndex:50,background:T.bg}}>
-        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Accueil</button>
-        <span style={{fontFamily:F.body,fontSize:10,color:T.gray2}}>{filtered.length} / {allDB.length}</span>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px",position:"sticky",top:0,zIndex:50,background:TC.bg}}>
+        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:TC.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Accueil</button>
+        <span style={{fontFamily:F.body,fontSize:10,color:TC.gray2}}>{filtered.length} / {allDB.length}</span>
       </div>
 
       {/* Title — editorial masthead */}
       <div style={{textAlign:"center",marginBottom:20,padding:"0 8px"}}>
-        <div style={{width:30,height:3,background:T.accent,borderRadius:2,margin:"0 auto 12px"}}/>
-        <h1 style={{fontFamily:F.editorial,fontSize:36,fontWeight:700,color:T.cream,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"-0.02em"}}>La Collection</h1>
-        <p style={{fontFamily:F.body,fontSize:11,color:T.gray2,margin:0}}>{totalDBCount} raquettes · {allBrands.length} marques · Saison {allYears[0]||2026}</p>
+        <div style={{width:30,height:3,background:TC.accent,borderRadius:2,margin:"0 auto 12px"}}/>
+        <h1 style={{fontFamily:F.editorial,fontSize:36,fontWeight:700,color:TC.cream,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"-0.02em"}}>La Collection</h1>
+        <p style={{fontFamily:F.body,fontSize:11,color:TC.gray2,margin:0}}>{totalDBCount} raquettes · {allBrands.length} marques · Saison {allYears[0]||2026}</p>
       </div>
 
       {/* ═══ NOUVEAUTÉS 2026 — Premium carousel ═══ */}
@@ -986,25 +1024,37 @@ function CatalogScreen({ ctx }) {
           }}>
             <div style={{display:"flex",alignItems:"center",gap:8,flex:1}}>
               <NewBadge/>
-              <span style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:T.cream,fontStyle:"italic"}}>Nouveautés {allYears[0]||2026}</span>
+              <span style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:TC.cream,fontStyle:"italic"}}>Nouveautés {allYears[0]||2026}</span>
               <span style={{fontFamily:F.body,fontSize:9,color:"#7c3aed",background:"rgba(124,58,237,0.1)",borderRadius:10,padding:"2px 8px",fontWeight:600}}>{nouveautes2026.length}</span>
             </div>
             <span style={{fontSize:14,color:T.gray2,transition:"transform 0.2s",transform:showNouveautes?"rotate(0deg)":"rotate(-90deg)"}}>{showNouveautes?"▾":"▸"}</span>
           </button>
-          {/* Horizontal scroll */}
-          {showNouveautes && <div style={{
-            display:"flex",gap:14,overflowX:"auto",paddingBottom:14,paddingRight:14,
-            scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",
-            scrollbarWidth:"none",msOverflowStyle:"none",
-          }}>
-            {nouveautes2026.map(r=>(
-              <div key={r.id||r.name} style={{scrollSnapAlign:"start"}}>
-                <RacketCard r={r} isNew={true} size="small"/>
-              </div>
-            ))}
+          {/* Horizontal scroll with arrows */}
+          {showNouveautes && <div style={{position:"relative",display:"flex",alignItems:"center",gap:4}}>
+            {nouveautes2026.length>2 && <button onClick={()=>scrollNouveautes("left")} style={{
+              width:32,height:32,borderRadius:"50%",border:`1px solid ${TC.border}`,background:TC.card,
+              color:TC.cream,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+              flexShrink:0,transition:"all 0.2s",zIndex:2,
+            }}>‹</button>}
+            <div ref={nouveautesRef} style={{
+              display:"flex",gap:14,overflowX:"auto",paddingBottom:14,paddingRight:14,flex:1,
+              scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",
+              scrollbarWidth:"none",msOverflowStyle:"none",
+            }}>
+              {nouveautes2026.map(r=>(
+                <div key={r.id||r.name} style={{scrollSnapAlign:"start"}}>
+                  <RacketCard r={r} isNew={true} size="small"/>
+                </div>
+              ))}
+            </div>
+            {nouveautes2026.length>2 && <button onClick={()=>scrollNouveautes("right")} style={{
+              width:32,height:32,borderRadius:"50%",border:`1px solid ${TC.border}`,background:TC.card,
+              color:TC.cream,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+              flexShrink:0,transition:"all 0.2s",zIndex:2,
+            }}>›</button>}
           </div>}
           {/* Separator */}
-          <div style={{height:1,background:`linear-gradient(90deg, transparent, ${T.border}, transparent)`,margin:"4px 12px 0"}}/>
+          <div style={{height:1,background:`linear-gradient(90deg, transparent, ${TC.border}, transparent)`,margin:"4px 12px 0"}}/>
         </div>
       )}
 
@@ -1013,9 +1063,9 @@ function CatalogScreen({ ctx }) {
         <span style={{position:"absolute",left:18,top:"50%",transform:"translateY(-50%)",fontSize:14,opacity:0.4}}>🔎</span>
         <input type="text" value={catalogSearch} onChange={e=>setCatalogSearch(e.target.value)}
           placeholder="Rechercher une raquette, une marque..."
-          style={{width:"100%",padding:"13px 14px 13px 42px",borderRadius:14,border:`1px solid ${T.border}`,
-            background:T.card,color:T.white,fontSize:13,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}/>
-        {catalogSearch&&<button onClick={()=>setCatalogSearch("")} style={{position:"absolute",right:16,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.gray2,fontSize:16,cursor:"pointer"}}>✕</button>}
+          style={{width:"100%",padding:"13px 14px 13px 42px",borderRadius:14,border:`1px solid ${TC.border}`,
+            background:TC.card,color:TC.white,fontSize:13,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}/>
+        {catalogSearch&&<button onClick={()=>setCatalogSearch("")} style={{position:"absolute",right:16,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:TC.gray2,fontSize:16,cursor:"pointer"}}>✕</button>}
       </div>
 
       {/* Quick filter buttons */}
@@ -1037,9 +1087,9 @@ function CatalogScreen({ ctx }) {
         </button>
         <button onClick={()=>setShowFilters(!showFilters)} style={{
           padding:"6px 14px",borderRadius:20,fontSize:10,fontWeight:600,cursor:"pointer",
-          background:activeCount>0?T.accentSoft:T.card,
-          border:`1px solid ${activeCount>0?T.accent+"40":T.border}`,
-          color:activeCount>0?T.accent:T.gray1,fontFamily:F.body,whiteSpace:"nowrap",
+          background:activeCount>0?TC.accentSoft:TC.card,
+          border:`1px solid ${activeCount>0?TC.accent+"40":TC.border}`,
+          color:activeCount>0?TC.accent:TC.gray1,fontFamily:F.body,whiteSpace:"nowrap",
           display:"flex",alignItems:"center",gap:4,transition:"all 0.2s",
         }}>
           ⚙ Filtres {activeCount>0?`(${activeCount})`:""}
@@ -1052,7 +1102,7 @@ function CatalogScreen({ ctx }) {
       </div>
 
       {/* Filters panel */}
-      {showFilters&&<div style={{marginBottom:14,background:T.card,borderRadius:16,border:`1px solid ${T.border}`,padding:"12px 14px",margin:"0 4px 14px"}}>
+      {showFilters&&<div style={{marginBottom:14,background:TC.card,borderRadius:16,border:`1px solid ${TC.border}`,padding:"12px 14px",margin:"0 4px 14px"}}>
         {/* Niveau */}
         <div style={{marginBottom:10}}>
           <div style={{fontSize:9,color:T.gray2,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Niveau</div>
@@ -1102,9 +1152,9 @@ function CatalogScreen({ ctx }) {
           return (
           <div key={brand} style={{marginBottom:28,padding:"0 4px"}}>
             {/* Brand header — editorial */}
-            <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:14,paddingBottom:8,borderBottom:`1px solid ${T.border}`}}>
-              <span style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,fontStyle:"italic"}}>{brand}</span>
-              <span style={{fontFamily:F.body,fontSize:10,color:T.gray2}}>{byBrand[brand].length} modèle{byBrand[brand].length>1?"s":""}</span>
+            <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:14,paddingBottom:8,borderBottom:`1px solid ${TC.border}`}}>
+              <span style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:TC.cream,fontStyle:"italic"}}>{brand}</span>
+              <span style={{fontFamily:F.body,fontSize:10,color:TC.gray2}}>{byBrand[brand].length} modèle{byBrand[brand].length>1?"s":""}</span>
               {brandHasNew && <span style={{fontSize:8,fontWeight:700,color:"#a78bfa",background:"rgba(124,58,237,0.1)",padding:"2px 8px",borderRadius:6,fontFamily:F.body}}>NEW</span>}
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(160px, 1fr))",gap:14}}>
