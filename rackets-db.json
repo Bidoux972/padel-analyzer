@@ -113,7 +113,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Version junior de l'Adipower. Forme ronde très tolérante avec mousse EVA Soft pour un maximum de confort et de facilité de jeu.",
-    "editorial": "L'Adipower Jr 2025 est la junior Adidas. Fibre de verre et Soft EVA en ronde — construction ultra-légère et confortable pour les jeunes joueurs. Le format réduit est adapté aux mains d'enfant. L'Adipower Jr est l'initiation au padel chez Adidas.",
+    "editorial": "Derrière le format réduit de la Adipower Jr 3.4 25, Adidas a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. La forme ronde offre un large sweet spot et contrôle naturel, essentiel quand le geste technique est encore en construction. Construction légère et maniable, pensée pour des sessions de jeu sans fatigue. Le padel se transmet mieux avec le bon outil.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -131,7 +131,7 @@
         "detail": "Tolérance maximale — confiance pour les jeunes joueurs"
       }
     ],
-    "targetProfile": "Juniors. L'Adidas pour les jeunes qui découvrent le padel.",
+    "targetProfile": "Juniors de 8-12 ans qui découvrent ou pratiquent régulièrement. Convient aussi bien aux stages d'été qu'aux entraînements hebdomadaires. Un investissement mesuré pour une passion naissante.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -201,7 +201,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Version light de l'Adipower, parfaite pour les débutants. Mousse EVA Soft pour un confort maximal et forme ronde très tolérante.",
-    "editorial": "L'Adipower Light 2025 est la pala d'initiation d'Adidas. Fibre de verre et Soft EVA en ronde — les matériaux les plus confortables et tolérants. Légère, maniable, indulgente. C'est la pala idéale pour les premiers mois de padel : elle pardonne tout et encourage à jouer.",
+    "editorial": "Quand Adidas conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Adipower Light 25 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Légère, maniable (8.7/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -219,7 +219,7 @@
         "detail": "Sweet spot centré et large — tolérance maximale"
       }
     ],
-    "targetProfile": "Débutants. L'Adidas pour apprendre en confiance.",
+    "targetProfile": "Adultes qui découvrent le padel ou jouent occasionnellement (1-2 fois par mois). Idéale comme première raquette personnelle après avoir emprunté celle du club. Budget maîtrisé, qualité Adidas.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -558,7 +558,7 @@
       "Tolérance": 9.2
     },
     "verdict": "Version junior de la Metalbone avec forme diamant pour une puissance maximale. Attention : tolérance limitée, convient mieux aux jeunes joueurs déjà à l'aise techniquement.",
-    "editorial": "La Metalbone Youth 2025 est la junior offensive d'Adidas. Le nom Metalbone sur une pala junior ! Fibre de verre et Soft EVA en diamant — l'esprit offensif pour les jeunes compétiteurs. Pour les juniors qui veulent l'image Metalbone.",
+    "editorial": "Adidas ne fait pas de compromis pour les plus jeunes. La Metalbone Youth 25 reprend les codes de la gamme adulte dans un châssis dimensionné pour les mains en croissance. Le choix d'une forme diamant n'est pas anodin : le point de frappe haut et puissance en attaque accompagne la progression sans punir les erreurs. Un poids maîtrisé pour ne pas fatiguer le bras en développement, un sweet spot tolérant pour encourager le plaisir de jouer.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -576,7 +576,7 @@
         "detail": "L'esprit offensif Metalbone en junior"
       }
     ],
-    "targetProfile": "Juniors offensifs. Le prestige Metalbone pour les jeunes compétiteurs.",
+    "targetProfile": "Enfants de 6-10 ans de tous niveaux. Parfaite pour les écoles de padel, les stages vacances et le jeu récréatif en famille. Assez solide pour résister à l'enthousiasme des plus jeunes.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -1009,7 +1009,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior Adidas avec construction fibre de verre et mousse souple. Forme ronde pour un maximum de tolérance et de contrôle.",
-    "editorial": "L'Arrow Hit Jr Pink 2026 est la junior de la nouvelle gamme Arrow. Fibre de verre et Soft EVA en ronde. Design coloré et attractif pour les jeunes joueuses. Construction légère et confortable.",
+    "editorial": "Derrière le format réduit de la Arrow Hit Jr 26, Adidas a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. En ronde, elle propose un large sweet spot et contrôle naturel — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Un poids maîtrisé pour ne pas fatiguer le bras en développement, un sweet spot tolérant pour encourager le plaisir de jouer.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -1027,7 +1027,7 @@
         "detail": "Tolérance maximale pour les jeunes"
       }
     ],
-    "targetProfile": "Juniors. L'Arrow Hit en version jeune et colorée.",
+    "targetProfile": "Jeunes joueurs de 6-10 ans en apprentissage du padel. Idéale pour les cours collectifs et les premiers matchs entre amis. Le format adapté permet de développer les bons gestes sans fatigue excessive.",
     "womanLine": true,
     "junior": true,
     "ean": null,
@@ -1179,7 +1179,7 @@
     },
     "verdict": "L'entrée de gamme Cross It en diamant oversize. Fibre de verre + DAF pour un premier contact avec la technologie Air Flow d'Adidas — offensive mais tolérante, un bon compromis pour les intermédiaires qui montent en puissance.",
     "id": "adidas-cross-it-team-2026",
-    "editorial": "La Cross It Team 2026 est l'intermédiaire de la nouvelle gamme Cross It. Fibre de verre avec DAF (Dynamic Air Flow) en diamant — orientation offensive accessible. Le Power Foam apporte plus de réactivité que l'EVA standard. C'est la passerelle vers la Cross It Light carbone.",
+    "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Cross It Team 26 de Adidas répond à cette ambition avec une construction pensée pour la montée en puissance. En diamant, elle combine point de frappe haut et puissance en attaque. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -1273,7 +1273,7 @@
         "detail": "Polyvalence — entre ronde et goutte"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires polyvalents. Transition en douceur vers le carbone.",
+    "targetProfile": "Joueurs intermédiaires ambitieux qui structurent leur jeu et veulent une raquette qui évolue avec eux. Convient à tous les terrains et styles de jeu. Le choix sûr pour monter en gamme sans changer de raquette chaque saison.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -1339,7 +1339,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Entrée de gamme Adidas. Ronde confortable et légère pour découvrir le padel. Fiberglass et EVA Soft pour maximum de tolérance sans effort.",
-    "editorial": "La Drive Black 2026 est la débutante de la nouvelle gamme Adidas. Fibre de verre et EVA Soft Performance en ronde. Un cran au-dessus de l'Adipower Light grâce à la mousse EVA Soft Performance — plus de répondant tout en restant confortable. Pour les débutants qui veulent un peu plus de mordant.",
+    "editorial": "Premier contact avec le padel ? La Drive Black 26 est pensée pour transformer la curiosité en passion. La forme ronde maximise le large sweet spot et contrôle naturel. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Légère, maniable (9.1/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -1357,7 +1357,7 @@
         "detail": "Tolérance maximale pour l'apprentissage"
       }
     ],
-    "targetProfile": "Débutants. L'Adidas moderne pour commencer avec un peu de répondant.",
+    "targetProfile": "Joueurs occasionnels à réguliers en phase d'apprentissage. Adaptée aux petits gabarits grâce à son poids contenu et aux joueurs plus âgés qui recherchent le confort avant tout.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -1423,7 +1423,7 @@
       "Tolérance": 9.5
     },
     "verdict": "La plus légère et accessible d'Adidas. Parfaite pour premières sessions. Confort maximal, aucune exigence technique.",
-    "editorial": "La Match Light 2026 est la pala la plus accessible d'Adidas. Fibre de verre et EVA Soft en ronde — construction ultra-légère et confortable. Le prix le plus bas de la gamme Adidas. C'est la pala pour tester le padel sans investissement important.",
+    "editorial": "Adidas a distillé des années d'expertise dans cette Match Light 26, calibrée pour que les premières frappes soient immédiatement satisfaisantes. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Le rapport qualité-prix est excellent pour une marque comme Adidas. C'est le type de raquette qu'on prête à un ami pour le convertir au padel.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -1441,7 +1441,7 @@
         "detail": "Tolérance — idéale pour les premiers coups"
       }
     ],
-    "targetProfile": "Débutants et primo-accédants. Le padel au meilleur prix chez Adidas.",
+    "targetProfile": "Nouveaux joueurs qui veulent une raquette fiable sans se poser de questions. Également parfaite à prêter aux amis non équipés ou comme raquette de prêt en club. Polyvalente et sans exigence.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -2061,7 +2061,7 @@
         "detail": "L'esprit Metalbone en version light"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires légers. La Metalbone la plus maniable du catalogue.",
+    "targetProfile": "Joueurs intermédiaires ambitieux qui commencent à attaquer et cherchent un premier diamant tolérant. Convient à tous les terrains et styles de jeu. Le choix sûr pour monter en gamme sans changer de raquette chaque saison.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -2148,7 +2148,7 @@
         "detail": "Polyvalence — le choix sûr de Babolat pour ses modèles techniques"
       }
     ],
-    "targetProfile": "Joueurs avancés polyvalents. Excellent rapport qualité/prix en fin de série.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Recommandée aux joueurs de club confirmés et aux compétiteurs régionaux. Le gap de performance par rapport à l'intermédiaire est immédiatement perceptible.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -2218,7 +2218,7 @@
       "Tolérance": 8.8
     },
     "verdict": "Version allégée de la Viper avec un bon équilibre offensif/défensif. Le carbone et le balance mi-haut offrent une frappe plus directe.",
-    "editorial": "L'Air Viper 2025 est l'intermédiaire de la gamme Viper. Carbone standard et EVA standard en goutte d'eau. C'est la Viper d'initiation — même philosophie offensive que les versions avancées, dans un format plus accessible et tolérant. Bonne pala de progression pour découvrir l'attaque Babolat.",
+    "editorial": "La Air Viper 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. La forme goutte d'eau offre un équilibre entre puissance et contrôle qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -2304,7 +2304,7 @@
       "Tolérance": 9.5
     },
     "verdict": "La plus légère du marché junior (290g), forme ronde très tolérante. Parfaite pour les enfants de 7-10 ans ou petits gabarits qui découvrent le padel.",
-    "editorial": "L'Alioth Mini Jr 2025 est la pala pour les plus petits chez Babolat. Fibre de verre et Soft EVA en ronde, format mini. Conçue pour les enfants de 4-8 ans qui découvrent le padel. Ultra-légère et facile à manier.",
+    "editorial": "Conçue pour les jeunes compétiteurs en herbe, la Alioth Mini Jr 25 transpose l'ADN Babolat dans un format adapté aux gabarits juniors. La forme ronde offre un large sweet spot et contrôle naturel, essentiel quand le geste technique est encore en construction. Un poids maîtrisé pour ne pas fatiguer le bras en développement, un sweet spot tolérant pour encourager le plaisir de jouer.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -2322,7 +2322,7 @@
         "detail": "Format mini pour les plus petits"
       }
     ],
-    "targetProfile": "Juniors 4-8 ans. La première pala Babolat pour les tout-petits.",
+    "targetProfile": "Jeunes joueurs de 8-14 ans en apprentissage du padel. Idéale pour les cours collectifs et les premiers matchs entre amis. Le format adapté permet de développer les bons gestes sans fatigue excessive.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -2389,7 +2389,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior intermédiaire avec forme goutte d'eau pour un peu plus de puissance. Bon compromis entre facilité et performance pour les jeunes en progression.",
-    "editorial": "L'Alioth Pro Jr 2025 est la junior polyvalente de Babolat. Fibre de verre et Soft EVA en goutte d'eau — un format légèrement plus offensif que la Mini. Pour les juniors de 8-14 ans qui commencent à développer un vrai jeu.",
+    "editorial": "Le padel junior mérite de vrais produits, pas des jouets. Babolat l'a compris avec la Alioth Pro Jr 25, une vraie raquette en miniature. Le choix d'une forme goutte d'eau n'est pas anodin : le équilibre entre puissance et contrôle accompagne la progression sans punir les erreurs. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -2407,7 +2407,7 @@
         "detail": "Polyvalence — pour les juniors qui développent leur jeu"
       }
     ],
-    "targetProfile": "Juniors 8-14 ans. La Babolat de progression pour les jeunes joueurs.",
+    "targetProfile": "Jeunes joueurs de 8-14 ans en apprentissage du padel. Idéale pour les cours collectifs et les premiers matchs entre amis. Le format adapté permet de développer les bons gestes sans fatigue excessive.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -2476,7 +2476,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Entrée de gamme Babolat, forme ronde très tolérante. Construction simple en fibre de verre pour débuter à petit prix.",
-    "editorial": "La Contact 2025 est la porte d'entrée Babolat. Fibre de verre et Soft EVA en ronde — la formule universelle du débutant. Babolat y met son savoir-faire de construction issu du tennis. C'est une pala d'apprentissage fiable avec la qualité Babolat.",
+    "editorial": "La Contact 25 ne demande rien et donne beaucoup. Babolat a conçu cette raquette pour que le padel révèle son plaisir dès la première session. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Avec un confort noté 9.2/10 et une tolérance à 9.5/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -2494,7 +2494,7 @@
         "detail": "Tolérance maximale — qualité Babolat"
       }
     ],
-    "targetProfile": "Débutants. La qualité Babolat pour apprendre.",
+    "targetProfile": "Joueurs occasionnels à réguliers en phase d'apprentissage. Adaptée aux petits gabarits grâce à son poids contenu et aux joueurs plus âgés qui recherchent le confort avant tout.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -2567,7 +2567,7 @@
       "Tolérance": 8.8
     },
     "verdict": "Goutte d'eau polyvalente avec système anti-vibrations Vibrasorb. Bonne répartition des performances pour progresser sereinement.",
-    "editorial": "La Counter Viper 2025 est l'intermédiaire de la gamme défensive Babolat. Carbone standard et EVA standard en goutte d'eau. Construction solide pour développer un jeu de contrôle et de contre. Moins technique que la Counter Viper 2026, mais un bon tremplin pour apprendre le jeu tactique.",
+    "editorial": "La Counter Viper 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -2585,7 +2585,7 @@
         "detail": "Polyvalence défensive — apprendre à contrer et placer"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires défensifs. L'apprentissage du contre et du placement.",
+    "targetProfile": "Joueurs réguliers (1-3 fois/semaine) en progression qui structurent leur jeu et veulent une raquette qui évolue avec eux. Aussi recommandée aux joueurs avancés qui cherchent un backup confortable pour les sessions d'entraînement détendues.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -2680,7 +2680,7 @@
         "detail": "Zone de frappe exigeante qui récompense la précision"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs purs. La Babolat la plus radicale du catalogue 2025.",
+    "targetProfile": "Compétiteurs offensifs purs — le smash est leur arme principale. Joueurs de compétition (3+ sessions/semaine) avec une technique aboutie. N'achète pas cette raquette pour progresser — achète-la pour dominer.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -2750,7 +2750,7 @@
       "Tolérance": 9.2
     },
     "verdict": "Goutte d'eau accessible avec fibre de verre pour un bon confort. Premier pas vers une raquette plus polyvalente.",
-    "editorial": "La Revenge 2025 est la débutante polyvalente de Babolat. Fibre de verre et Soft EVA en goutte d'eau — un format légèrement plus offensif que la Contact ronde. Pour les débutants qui veulent commencer avec un peu plus de punch.",
+    "editorial": "Babolat a distillé des années d'expertise dans cette Revenge 25, calibrée pour que les premières frappes soient immédiatement satisfaisantes. La forme goutte d'eau maximise le équilibre entre puissance et contrôle. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Avec un confort noté 9.2/10 et une tolérance à 9.2/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -2768,7 +2768,7 @@
         "detail": "Un peu plus de punch que la ronde — pour les débutants ambitieux"
       }
     ],
-    "targetProfile": "Débutants dynamiques. La Babolat pour commencer avec un soupçon d'attaque.",
+    "targetProfile": "Joueurs débutants et primo-accédants, du curieux qui teste au nouveau converti qui veut s'équiper. Aucun prérequis technique — elle pardonne tout et encourage la progression naturelle.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -2856,7 +2856,7 @@
         "detail": "Polyvalente — offensive mais pas radicale"
       }
     ],
-    "targetProfile": "Joueurs avancés en transition vers le jeu offensif. La Viper pour commencer.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Joueurs réguliers (2-4 sessions/semaine) avec une technique solide. Exige un minimum de maîtrise mais récompense la progression.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -3077,7 +3077,7 @@
     },
     "verdict": "La défensive intermédiaire de la nouvelle gamme Babolat. CarbonFlex Hybrid en ronde — un mix propriétaire qui donne du contrôle et de la tolérance à un prix raisonnable. La pala de fond de court sécurisante.",
     "id": "babolat-counter-veron-2026",
-    "editorial": "La Counter Veron 2026 est la défensive intermédiaire de la nouvelle gamme. CarbonFlex Hybrid et Power Foam en ronde — orientation contrôle avec la technologie moderne Babolat. Le CarbonFlex offre un toucher plus fin que le carbone brut, idéal pour développer la précision des volées et des contres.",
+    "editorial": "La Counter Veron 26 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En ronde, elle combine large sweet spot et contrôle naturel. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -3565,7 +3565,7 @@
         "detail": "Tolérance — la formule éprouvée pour débuter"
       }
     ],
-    "targetProfile": "Débutants. La Babolat nouvelle génération avec un peu plus de réactivité.",
+    "targetProfile": "Joueurs occasionnels à réguliers en phase d'apprentissage. Adaptée aux petits gabarits grâce à son poids contenu et aux joueurs plus âgés qui recherchent le confort avant tout.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -3861,7 +3861,7 @@
         "detail": "L'ADN Vertex — puissance en tête depuis toujours"
       }
     ],
-    "targetProfile": "Joueurs avancés offensifs. Excellente affaire en fin de série.",
+    "targetProfile": "Attaquants côté gauche qui veulent imposer leur puissance au smash et en bandeja. Idéale pour les joueurs qui participent à des tournois et cherchent un avantage technique mesurable. Suffisamment technique pour exiger de la rigueur, suffisamment tolérante pour rester plaisante.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -4015,7 +4015,7 @@
       "Tolérance": 8.5
     },
     "verdict": "La Hack offre un bon compromis entre puissance et contrôle. Le Vibradrive aide au confort mais le carbone reste ferme. Bonne raquette de progression.",
-    "editorial": "La Hack 03 2025 est l'intermédiaire de la gamme polyvalente Bullpadel. Carbone standard et EVA standard en goutte d'eau. La Hack est la gamme la plus vendue de Bullpadel pour une bonne raison : elle fait tout correctement. La 03 est le tremplin vers la Hack Elite et la Hack 04.",
+    "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Hack 03 25 de Bullpadel répond à cette ambition avec une construction pensée pour la montée en puissance. Le choix du goutte d'eau avec Surface, Noyau permet un équilibre entre puissance et contrôle. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -4196,7 +4196,7 @@
       "Tolérance": 9.2
     },
     "verdict": "Version junior offensive inspirée de Paquito Navarro. Forme diamant pour puissance maximale, mais confort et tolérance limités. Pour jeunes joueurs offensifs.",
-    "editorial": "La Hack Jr 2025 est la junior de la gamme polyvalente Bullpadel. Fibre de verre et Soft EVA en diamant — l'esprit offensif Hack dès le plus jeune âge. Pour les juniors compétiteurs qui veulent un format offensive.",
+    "editorial": "Derrière le format réduit de la Hack Junior 25, Bullpadel a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. Le choix d'une forme diamant n'est pas anodin : le point de frappe haut et puissance en attaque accompagne la progression sans punir les erreurs. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -4214,7 +4214,7 @@
         "detail": "L'esprit offensif Hack en junior"
       }
     ],
-    "targetProfile": "Juniors offensifs. Le Hack pour les jeunes compétiteurs.",
+    "targetProfile": "Enfants de 10-14 ans de tous niveaux. Parfaite pour les écoles de padel, les stages vacances et le jeu récréatif en famille. Assez solide pour résister à l'enthousiasme des plus jeunes.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -4245,7 +4245,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Ultra-légère (280g) pour les plus jeunes. Forme goutte d'eau accessible avec excellent confort. La plus légère de sa catégorie.",
-    "editorial": "L'Indiga Boy 2025 est la junior polyvalente de Bullpadel. Fibre de verre et Soft EVA en goutte d'eau. Construction légère et confortable pour les jeunes joueurs qui découvrent le padel. Plus polyvalente que la Hack Jr.",
+    "editorial": "Derrière le format réduit de la Indiga Boy 25, Bullpadel a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. En goutte d'eau, elle propose un équilibre entre puissance et contrôle — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Construction légère et maniable, pensée pour des sessions de jeu sans fatigue. Le padel se transmet mieux avec le bon outil.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -4263,7 +4263,7 @@
         "detail": "Polyvalence — la junior tout-terrain Bullpadel"
       }
     ],
-    "targetProfile": "Juniors. La Bullpadel polyvalente pour les jeunes.",
+    "targetProfile": "Juniors de 8-14 ans qui découvrent ou pratiquent régulièrement. Convient aussi bien aux stages d'été qu'aux entraînements hebdomadaires. Un investissement mesuré pour une passion naissante.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -4294,7 +4294,7 @@
       "Tolérance": 8.1
     },
     "verdict": "Diamant puissante avec balance haut. Le Vibradrive atténue un peu les vibrations mais le confort reste moyen. Pour intermédiaires offensifs.",
-    "editorial": "La Vertex 03 2025 est l'intermédiaire de la gamme puissance Bullpadel. Carbone standard et EVA standard en diamant. La Vertex commence ici : forme diamant pour l'offensive, matériaux accessibles pour la progression. C'est la première étape vers la Vertex 04 et la Vertex 05.",
+    "editorial": "La Vertex 03 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. La forme diamant offre un point de frappe haut et puissance en attaque qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -4312,7 +4312,7 @@
         "detail": "L'ADN Vertex — puissance en tête dès l'intermédiaire"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires offensifs. L'entrée dans la gamme Vertex.",
+    "targetProfile": "Joueurs intermédiaires qui commencent à attaquer et cherchent un premier diamant tolérant. De 6 mois à 2 ans de pratique, 1-3 sessions par semaine. La raquette de progression par excellence chez Bullpadel.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -4399,7 +4399,7 @@
         "detail": "Puissance en tête — l'ADN Vertex depuis les origines"
       }
     ],
-    "targetProfile": "Joueurs avancés offensifs. La Vertex de référence avant l'arrivée de la 05 GEO.",
+    "targetProfile": "Attaquants côté gauche qui veulent imposer leur puissance au smash et en bandeja. Recommandée aux joueurs de club confirmés et aux compétiteurs régionaux. Le gap de performance par rapport à l'intermédiaire est immédiatement perceptible.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -4557,7 +4557,7 @@
       "Tolérance": 9.2
     },
     "verdict": "Version junior du best-seller Vertex. Forme diamant offensive avec bon confort grâce à la fibre de verre, mais tolérance limitée aux frappes décentrées.",
-    "editorial": "La Vertex Jr 2025 est la junior premium de Bullpadel. Fibre de verre et Soft EVA en diamant. Le nom Vertex — la gamme puissance — sur une pala de jeune. Pour les juniors ambitieux qui rêvent de la Vertex des grands.",
+    "editorial": "Le padel junior mérite de vrais produits, pas des jouets. Bullpadel l'a compris avec la Vertex Junior 25, une vraie raquette en miniature. En diamant, elle propose un point de frappe haut et puissance en attaque — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Le prix reste contenu, mais la qualité de fabrication est bien là. Un investissement intelligent pour lancer une passion.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -4575,7 +4575,7 @@
         "detail": "L'ADN Vertex — puissance en junior"
       }
     ],
-    "targetProfile": "Juniors offensifs ambitieux. Le prestige Vertex pour les jeunes.",
+    "targetProfile": "Juniors de 6-10 ans qui découvrent ou pratiquent régulièrement. Convient aussi bien aux stages d'été qu'aux entraînements hebdomadaires. Un investissement mesuré pour une passion naissante.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -4764,7 +4764,7 @@
         "detail": "Canaux dans le cadre qui redistribuent l'énergie pour un sweet spot élargi"
       }
     ],
-    "targetProfile": "Joueurs experts polyvalents-offensifs. La Hack ultime pour la compétition.",
+    "targetProfile": "Compétiteurs offensifs purs — le smash est leur arme principale. Joueurs de compétition (3+ sessions/semaine) avec une technique aboutie. N'achète pas cette raquette pour progresser — achète-la pour dominer.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -4849,7 +4849,7 @@
         "detail": "Polyvalence confortable"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires qui veulent la technologie TriCarbon avec du confort.",
+    "targetProfile": "Joueurs de droite précis qui contrôlent les échanges et placent les balles au millimètre. Idéale pour les joueurs qui participent à des tournois et cherchent un avantage technique mesurable. Suffisamment technique pour exiger de la rigueur, suffisamment tolérante pour rester plaisante.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -5318,7 +5318,7 @@
         "detail": "Géométrie incurvée du cadre qui optimise le transfert d'énergie au point d'impact"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs qui veulent la technologie Bullpadel la plus avancée.",
+    "targetProfile": "Compétiteurs polyvalents experts — ils lisent le jeu et s'adaptent à chaque situation. Le haut du panier Bullpadel. Pour les joueurs qui connaissent exactement ce qu'ils veulent et pourquoi ils le veulent. Pas de compromis, pas de filet de sécurité.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -5597,7 +5597,7 @@
         "detail": "Puissance maximale — aucun compromis"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs purs. La Bullpadel la plus radicale du marché.",
+    "targetProfile": "Compétiteurs offensifs purs — le smash est leur arme principale. Réservée aux joueurs de niveau confirmé à professionnel. Chaque défaut technique sera amplifié, chaque bon geste sera sublimé. Exigeante mais exceptionnelle entre les bonnes mains.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -5853,7 +5853,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Le padel à hauteur d'enfant. Simple, robuste, colorée — elle met le sourire et le jeu entre les mains des plus jeunes. Parce que les champions de demain commencent quelque part.",
-    "editorial": "La Drop Shot Junior 2025 est la pala junior au meilleur prix du marché. Fibre de verre et Soft EVA en ronde. Drop Shot applique sa philosophie de prix agressif même en junior. Le choix malin pour équiper les jeunes sans se ruiner.",
+    "editorial": "Conçue pour les jeunes compétiteurs en herbe, la Explorer Jr 25 transpose l'ADN Drop Shot dans un format adapté aux gabarits juniors. Le choix d'une forme ronde n'est pas anodin : le large sweet spot et contrôle naturel accompagne la progression sans punir les erreurs. Construction légère et maniable, pensée pour des sessions de jeu sans fatigue. Le padel se transmet mieux avec le bon outil.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -5871,7 +5871,7 @@
         "detail": "Tolérance — le meilleur prix junior du marché"
       }
     ],
-    "targetProfile": "Juniors. Le meilleur prix du marché pour les jeunes.",
+    "targetProfile": "Jeunes joueurs de 8-14 ans en apprentissage du padel. Idéale pour les cours collectifs et les premiers matchs entre amis. Le format adapté permet de développer les bons gestes sans fatigue excessive.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -5937,7 +5937,7 @@
       "Tolérance": 8.8
     },
     "verdict": "Polyvalente et accessible, la Legend est un bon choix pour l'intermédiaire qui veut progresser sans se spécialiser.",
-    "editorial": "La Legend 2025 est l'intermédiaire de Drop Shot. Hybride carbone/fibre de verre et EVA standard en goutte d'eau. Drop Shot offre des specs correctes à prix imbattable — c'est l'ADN de la marque. La Legend est une pala de progression sans risque financier.",
+    "editorial": "La Legend 4.0 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. La forme goutte d'eau offre un équilibre entre puissance et contrôle qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -5955,7 +5955,7 @@
         "detail": "Polyvalence — le format Drop Shot classique"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires au budget maîtrisé. Drop Shot accessible et fiable.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui structurent leur jeu et veulent une raquette qui évolue avec eux. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6025,7 +6025,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior Dunlop accessible et tolérante. Construction classique fibre de verre pour un apprentissage en douceur.",
-    "editorial": "La Galactica Jr 2025 est la junior Dunlop. Fibre de verre et Soft EVA en ronde. Construction simple et fiable de la marque historique du tennis. Pour les jeunes qui font leurs premiers pas.",
+    "editorial": "Conçue pour les jeunes compétiteurs en herbe, la Galactica Jr 25 transpose l'ADN Dunlop dans un format adapté aux gabarits juniors. En ronde, elle propose un large sweet spot et contrôle naturel — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6043,7 +6043,7 @@
         "detail": "Tolérance — Dunlop fiable pour les jeunes"
       }
     ],
-    "targetProfile": "Juniors. Dunlop pour les premiers matchs.",
+    "targetProfile": "Juniors de 10-14 ans qui découvrent ou pratiquent régulièrement. Convient aussi bien aux stages d'été qu'aux entraînements hebdomadaires. Un investissement mesuré pour une passion naissante.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -6104,7 +6104,7 @@
       "Tolérance": 8.8
     },
     "verdict": "Polyvalente Dunlop avec mix carbone/verre. Bon confort pour une raquette carbone, idéale pour progresser.",
-    "editorial": "La Galactica Pro 2025 est l'intermédiaire de Dunlop. Hybride carbone/fibre de verre et EVA standard en goutte d'eau. Construction classique de la marque historique du tennis. Dunlop propose des specs honnêtes sans surenchère technologique ni surenchère tarifaire.",
+    "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Galactica Pro 25 de Dunlop répond à cette ambition avec une construction pensée pour la montée en puissance. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Son point fort — Contrôle à 8.8/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6122,7 +6122,7 @@
         "detail": "Polyvalence Dunlop"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires. Dunlop fiable et accessible.",
+    "targetProfile": "Joueurs intermédiaires qui structurent leur jeu et veulent une raquette qui évolue avec eux. De 6 mois à 2 ans de pratique, 1-3 sessions par semaine. La raquette de progression par excellence chez Dunlop.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6197,7 +6197,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Dunlop joue la carte de la douceur pour les premiers pas. Ronde, souple, pardonneuse — elle transforme les frappes hésitantes en gestes fluides. Le décollage se fait en douceur.",
-    "editorial": "La Rocket Ultra 2025 est la débutante de Dunlop. Fibre de verre et Soft EVA en ronde. La marque historique du tennis au service des premiers matchs de padel. Construction honnête et fiable.",
+    "editorial": "Quand Dunlop conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Rocket Ultra 25 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Avec un confort noté 9.2/10 et une tolérance à 9.5/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6215,7 +6215,7 @@
         "detail": "Tolérance pour l'apprentissage"
       }
     ],
-    "targetProfile": "Débutants. Dunlop fiable pour les premiers matchs.",
+    "targetProfile": "Adultes qui découvrent le padel ou jouent occasionnellement (1-2 fois par mois). Idéale comme première raquette personnelle après avoir emprunté celle du club. Budget maîtrisé, qualité Dunlop.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6387,7 +6387,7 @@
         "detail": "Puissance en tête — orientation compétition"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs. Dunlop haut de gamme à prix honnête.",
+    "targetProfile": "Compétiteurs offensifs purs — le smash est leur arme principale. Joueurs de compétition (3+ sessions/semaine) avec une technique aboutie. N'achète pas cette raquette pour progresser — achète-la pour dominer.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6456,7 +6456,7 @@
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-team-26.png",
     "verdict": "Entrée de gamme diamant accessible avec puissance contrôlée. Bonne option pour progresser vers un jeu plus offensif sans se ruiner.",
     "price": "130-180€",
-    "editorial": "La FX Team 2026 est la nouvelle intermédiaire de Dunlop. Carbone Premium et Pro EVA en diamant — Dunlop monte en gamme. Plus offensive que la Galactica avec une forme diamant et des matériaux supérieurs. C'est la preuve que Dunlop investit sérieusement dans le padel.",
+    "editorial": "La FX Team 26 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En diamant, elle combine point de frappe haut et puissance en attaque. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6474,7 +6474,7 @@
         "detail": "Offensive — nouvelle direction pour Dunlop"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires offensifs. La nouvelle génération Dunlop.",
+    "targetProfile": "Joueurs réguliers (1-3 fois/semaine) en progression qui commencent à attaquer et cherchent un premier diamant tolérant. Aussi recommandée aux joueurs avancés qui cherchent un backup confortable pour les sessions d'entraînement détendues.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6524,7 +6524,7 @@
         "detail": "Polyvalence offensive — le sweet spot Head classique"
       }
     ],
-    "targetProfile": "Joueurs avancés polyvalents. Bon rapport qualité/prix en fin de série.",
+    "targetProfile": "Attaquants côté gauche qui veulent imposer leur puissance au smash et en bandeja. Joueurs réguliers (2-4 sessions/semaine) avec une technique solide. Exige un minimum de maîtrise mais récompense la progression.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6594,7 +6594,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Ultra-légère et ultra-tolérante, la raquette parfaite pour les tout-petits ou vrais débutants. Zéro puissance mais un maximum de facilité et de confort.",
-    "editorial": "La Monster Kids 2024 est la pala Head pour les plus petits. Fibre de verre et Soft EVA en ronde — ultra-légère, ultra-confortable, ultra-fun. Le design Monster plaît aux enfants. Pour les 4-8 ans qui découvrent le padel.",
+    "editorial": "Le padel junior mérite de vrais produits, pas des jouets. Head l'a compris avec la Monster Kids 24, une vraie raquette en miniature. En ronde, elle propose un large sweet spot et contrôle naturel — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Un poids maîtrisé pour ne pas fatiguer le bras en développement, un sweet spot tolérant pour encourager le plaisir de jouer.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6612,7 +6612,7 @@
         "detail": "Fun et tolérant — design Monster"
       }
     ],
-    "targetProfile": "Juniors 4-8 ans. Le fun Head pour les plus petits.",
+    "targetProfile": "Juniors de 8-14 ans, du débutant au compétiteur en herbe. Adaptée aux gabarits en croissance avec un poids maîtrisé. Le bon outil pour construire les fondamentaux techniques dès le plus jeune âge.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -6674,7 +6674,7 @@
       "Tolérance": 9.2
     },
     "verdict": "Ancienne Speed Motion à prix réduit. Fibre de verre et Innegra pour un excellent confort. Très bon choix débutant en promotion.",
-    "editorial": "La Speed Motion 2024 est la débutante Head millésime 2024. Fibre de verre et Comfort Foam en goutte d'eau. La Comfort Foam — la mousse la plus souple de Head — est un choix parfait pour l'apprentissage. Bonne affaire en fin de série.",
+    "editorial": "Quand Head conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Speed Motion 24 remplit ce contrat. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Le noyau EVA souple absorbe les vibrations pour protéger les articulations encore peu habituées à l'effort. Avec un confort noté 8.7/10 et une tolérance à 9.2/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6692,7 +6692,7 @@
         "detail": "Polyvalence accessible"
       }
     ],
-    "targetProfile": "Débutants. Le confort Head à petit prix en déstockage.",
+    "targetProfile": "Joueurs débutants et primo-accédants, du curieux qui teste au nouveau converti qui veut s'équiper. Aucun prérequis technique — elle pardonne tout et encourage la progression naturelle.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6755,7 +6755,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Version junior de l'Extreme avec mousse Power Foam dosée et anti-vibrations Innegra. Plus de puissance que la Speed Junior tout en gardant un excellent confort.",
-    "editorial": "L'Extreme Jr 2025 est la junior polyvalente de Head. Fibre de verre et Soft EVA en goutte d'eau. Pour les juniors qui commencent à vouloir un peu plus de punch que la Monster Kids.",
+    "editorial": "Le padel junior mérite de vrais produits, pas des jouets. Head l'a compris avec la Extreme Jr 25, une vraie raquette en miniature. Le choix d'une forme goutte d'eau n'est pas anodin : le équilibre entre puissance et contrôle accompagne la progression sans punir les erreurs. Construction légère et maniable, pensée pour des sessions de jeu sans fatigue. Le padel se transmet mieux avec le bon outil.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6773,7 +6773,7 @@
         "detail": "Polyvalence — la junior qui grandit"
       }
     ],
-    "targetProfile": "Juniors 8-14 ans. La Head junior polyvalente.",
+    "targetProfile": "Enfants de 8-14 ans de tous niveaux. Parfaite pour les écoles de padel, les stages vacances et le jeu récréatif en famille. Assez solide pour résister à l'enthousiasme des plus jeunes.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -6836,7 +6836,7 @@
       "Tolérance": 8.5
     },
     "verdict": "Raquette polyvalente et confortable pour débuter ou reprendre. Le système Auxetic 2.0 absorbe bien les vibrations, forme goutte d'eau équilibrée.",
-    "editorial": "L'Extreme Motion 2025 est la débutante dynamique de Head. Hybride carbone/fibre de verre et Comfort Foam en goutte d'eau. Un cran au-dessus de la Speed Motion avec un peu plus de rigidité. Pour les débutants sportifs qui progressent vite.",
+    "editorial": "Premier contact avec le padel ? La Extreme Motion 25 est pensée pour transformer la curiosité en passion. La forme diamant maximise le point de frappe haut et puissance en attaque. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Légère, maniable (8.3/10), confortable (8.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6854,7 +6854,7 @@
         "detail": "Polyvalence pour les débutants dynamiques"
       }
     ],
-    "targetProfile": "Débutants sportifs. L'Extreme pour progresser vite.",
+    "targetProfile": "Nouveaux joueurs qui veulent une raquette fiable sans se poser de questions. Également parfaite à prêter aux amis non équipés ou comme raquette de prêt en club. Polyvalente et sans exigence.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -6921,7 +6921,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Forme ronde ultra-tolérante avec anti-vibrations Auxetic. Le choix le plus sûr pour un débutant adulte qui veut apprendre sans douleur.",
-    "editorial": "L'Extreme One 2025 est une autre option débutante de Head. Hybride carbone/fibre de verre et Comfort Foam en ronde. Même matériaux que l'Extreme Motion mais en ronde pour plus de tolérance. Le choix sûr pour les vrais débutants.",
+    "editorial": "Quand Head conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Extreme One 25 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Avec un confort noté 9/10 et une tolérance à 9.5/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -6939,7 +6939,7 @@
         "detail": "Tolérance maximale pour l'apprentissage"
       }
     ],
-    "targetProfile": "Débutants. Le confort Head en format ronde ultra-tolérant.",
+    "targetProfile": "Adultes qui découvrent le padel ou jouent occasionnellement (1-2 fois par mois). Idéale comme première raquette personnelle après avoir emprunté celle du club. Budget maîtrisé, qualité Head.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -7106,7 +7106,7 @@
         "detail": "Contrôle — la forme naturelle de la gamme Gravity"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires défensifs. Découverte du toucher Control Foam Head.",
+    "targetProfile": "Joueurs réguliers (1-3 fois/semaine) en progression qui privilégient le placement et la régularité au filet. Aussi recommandée aux joueurs avancés qui cherchent un backup confortable pour les sessions d'entraînement détendues.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -7270,7 +7270,7 @@
       "Tolérance": 9.5
     },
     "verdict": "La plus légère de la gamme Gravity. Ronde ultra-confortable, idéale pour débutants, femmes et joueurs légers. Facile à manœuvrer avec bon contrôle.",
-    "editorial": "La Gravity Team Light 2025 est la débutante légère de la gamme contrôle. Fibre de verre et Control Foam en ronde. Le choix de la Control Foam même à ce niveau est remarquable — les débutants bénéficient du même type de toucher que la Gravity Pro. Version Light pour la maniabilité.",
+    "editorial": "Quand Head conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Gravity Team Light 25 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Légère, maniable (9.1/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -7288,7 +7288,7 @@
         "detail": "Contrôle et tolérance — version Light"
       }
     ],
-    "targetProfile": "Débutants orientés contrôle. Le toucher Control Foam dès les premiers matchs.",
+    "targetProfile": "Joueurs débutants et primo-accédants, du curieux qui teste au nouveau converti qui veut s'équiper. Aucun prérequis technique — elle pardonne tout et encourage la progression naturelle.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -7349,7 +7349,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Ultra-légère avec anti-vibrations Innegra. Forme ronde pour une tolérance maximale. Idéale pour les juniors ou adultes recherchant un poids plume.",
-    "editorial": "La One Ultralight 2025 est la junior ultra-légère de Head. Fibre de verre et Soft EVA en ronde. La plus légère de la gamme junior Head — parfaite pour les petits gabarits.",
+    "editorial": "Conçue pour les jeunes compétiteurs en herbe, la One Ultralight 25 transpose l'ADN Head dans un format adapté aux gabarits juniors. En ronde, elle propose un large sweet spot et contrôle naturel — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Construction légère et maniable, pensée pour des sessions de jeu sans fatigue. Le padel se transmet mieux avec le bon outil.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -7367,7 +7367,7 @@
         "detail": "Tolérance — la plus légère pour les petits gabarits"
       }
     ],
-    "targetProfile": "Juniors légers. La Head la plus légère pour les petits gabarits.",
+    "targetProfile": "Jeunes joueurs de 10-14 ans en apprentissage du padel. Idéale pour les cours collectifs et les premiers matchs entre amis. Le format adapté permet de développer les bons gestes sans fatigue excessive.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -7426,7 +7426,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior Head avec technologie anti-vibrations Innegra. Forme goutte d'eau pour un bon compromis puissance/contrôle avec un confort supérieur.",
-    "editorial": "La Speed Jr 2025 est la junior de la gamme Speed. Fibre de verre et Soft EVA en goutte d'eau. L'esprit rapide de la gamme Speed adapté aux jeunes joueurs. Pour les juniors dynamiques.",
+    "editorial": "Derrière le format réduit de la Speed Junior 25, Head a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. La forme goutte d'eau offre un équilibre entre puissance et contrôle, essentiel quand le geste technique est encore en construction. Le prix reste contenu, mais la qualité de fabrication est bien là. Un investissement intelligent pour lancer une passion.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -7444,7 +7444,7 @@
         "detail": "Polyvalence rapide pour les juniors"
       }
     ],
-    "targetProfile": "Juniors dynamiques. La Speed pour les jeunes joueurs rapides.",
+    "targetProfile": "Enfants de 8-14 ans de tous niveaux. Parfaite pour les écoles de padel, les stages vacances et le jeu récréatif en famille. Assez solide pour résister à l'enthousiasme des plus jeunes.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -7507,7 +7507,7 @@
       "Tolérance": 8.8
     },
     "verdict": "Raquette débutant avec fibre de verre douce et anti-vibrations Innegra. Bon équilibre entre facilité et progression.",
-    "editorial": "La Speed Motion 2025 est la débutante classique de Head pour 2025. Fibre de verre et Comfort Foam en goutte d'eau. Mise à jour cosmétique et de construction par rapport à la 2024. La formule éprouvée pour apprendre le padel avec Head.",
+    "editorial": "Quand Head conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Speed Motion 25 remplit ce contrat. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Le noyau EVA souple absorbe les vibrations pour protéger les articulations encore peu habituées à l'effort. Légère, maniable (7.9/10), confortable (7.4/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -7525,7 +7525,7 @@
         "detail": "Polyvalence accessible"
       }
     ],
-    "targetProfile": "Débutants. La Speed Motion éprouvée pour apprendre.",
+    "targetProfile": "Adultes qui découvrent le padel ou jouent occasionnellement (1-2 fois par mois). Idéale comme première raquette personnelle après avoir emprunté celle du club. Budget maîtrisé, qualité Head.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -7755,7 +7755,7 @@
       "Tolérance": 8.5
     },
     "verdict": "Polyvalente accessible en fiberglass. Bon équilibre puissance/contrôle/confort pour joueurs intermédiaires. Facile à prendre en main avec un toucher doux.",
-    "editorial": "La Speed Team 2025 est la version accessible de la gamme Speed. Fibre de verre et Power Foam en goutte d'eau — matériaux simples mais mousse performante. C'est l'entrée dans la gamme Speed pour les joueurs qui débutent le carbone ou qui veulent un toucher plus souple.",
+    "editorial": "La Speed Team 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Son point fort — Confort à 8.5/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -7773,7 +7773,7 @@
         "detail": "Polyvalence Speed"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires. L'entrée dans la gamme Speed Head.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui structurent leur jeu et veulent une raquette qui évolue avec eux. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -7833,7 +7833,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior haut de gamme avec technologies anti-vibrations premium. Très légère et confortable, idéale pour l'apprentissage avec un excellent confort de frappe.",
-    "editorial": "La Coello Junior 2026 est la junior de la gamme du champion. Fibre de verre et Soft EVA en goutte d'eau. Le rêve Coello pour les jeunes fans. Même design que la version adulte, format adapté.",
+    "editorial": "Derrière le format réduit de la Coello Junior 26, Head a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. Le choix d'une forme goutte d'eau n'est pas anodin : le équilibre entre puissance et contrôle accompagne la progression sans punir les erreurs. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -7851,7 +7851,7 @@
         "detail": "Le rêve Coello en format junior"
       }
     ],
-    "targetProfile": "Juniors fans de Coello. Le prestige du champion pour les jeunes.",
+    "targetProfile": "Jeunes joueurs de 10-14 ans en apprentissage du padel. Idéale pour les cours collectifs et les premiers matchs entre amis. Le format adapté permet de développer les bons gestes sans fatigue excessive.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -7939,7 +7939,7 @@
         "detail": "Même technologie, format plus polyvalent et tolérant"
       }
     ],
-    "targetProfile": "Joueurs avancés qui veulent la gamme Coello sans l'exigence de la diamant.",
+    "targetProfile": "Attaquants côté gauche qui veulent imposer leur puissance au smash et en bandeja. Idéale pour les joueurs qui participent à des tournois et cherchent un avantage technique mesurable. Suffisamment technique pour exiger de la rigueur, suffisamment tolérante pour rester plaisante.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -8110,7 +8110,7 @@
     },
     "verdict": "L'ADN Coello à prix accessible. Diamant en fibre de verre qui offre la puissance d'un format offensif avec le pardon que les experts ne demandent plus. Le premier pas vers le jeu d'attaque, sans la facture carbone.",
     "id": "head-coello-team-2026",
-    "editorial": "La Coello Team 2026 est la version intermédiaire de la gamme Arturo Coello. Fibre de verre avec Power Foam en diamant — l'esprit offensif Coello dans des matériaux accessibles. Le prestige du nom, la philosophie d'attaque, sans l'exigence du carbone 3K. Le rêve Coello accessible.",
+    "editorial": "Head a positionné la Coello Team 26 sur le créneau le plus compétitif : celui du joueur intermédiaire qui veut progresser sans changer de raquette tous les six mois. La forme diamant offre un point de frappe haut et puissance en attaque qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -8128,7 +8128,7 @@
         "detail": "L'ADN offensif Coello — diamant même en intermédiaire"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires offensifs. Le prestige Coello dans un format accessible.",
+    "targetProfile": "Joueurs intermédiaires ambitieux qui commencent à attaquer et cherchent un premier diamant tolérant. Convient à tous les terrains et styles de jeu. Le choix sûr pour monter en gamme sans changer de raquette chaque saison.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -8208,7 +8208,7 @@
         "detail": "Polyvalence avec le prestige Coello"
       }
     ],
-    "targetProfile": "Débutants dynamiques. Le nom Coello sur une pala d'apprentissage réactive.",
+    "targetProfile": "Nouveaux joueurs qui veulent une raquette fiable sans se poser de questions. Également parfaite à prêter aux amis non équipés ou comme raquette de prêt en club. Polyvalente et sans exigence.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -8370,7 +8370,7 @@
       "Tolérance": 9.2
     },
     "verdict": "Raquette récréative ultra-accessible. Grand sweet spot, puissance facile et maximum de confort pour débuter sereinement et prendre du plaisir.",
-    "editorial": "L'Evo Extreme 2026 est la pala la plus accessible de la gamme Extreme. Fibre de verre et EVA Soft en goutte d'eau. Construction simple et légère pour les tout premiers matchs. C'est le point d'entrée le plus économique dans l'univers Head.",
+    "editorial": "Premier contact avec le padel ? La Evo Extreme 26 est pensée pour transformer la curiosité en passion. La forme goutte d'eau maximise le équilibre entre puissance et contrôle. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Légère, maniable (8.7/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -8388,7 +8388,7 @@
         "detail": "Polyvalence pour les premiers coups"
       }
     ],
-    "targetProfile": "Débutants. L'entrée la plus économique chez Head.",
+    "targetProfile": "Joueurs débutants et primo-accédants, du curieux qui teste au nouveau converti qui veut s'équiper. Aucun prérequis technique — elle pardonne tout et encourage la progression naturelle.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -8480,7 +8480,7 @@
         "detail": "Offensive avec technologie Auxetic pour la tolérance"
       }
     ],
-    "targetProfile": "Joueurs avancés offensifs qui veulent la technologie Auxetic en diamant.",
+    "targetProfile": "Attaquants côté gauche qui veulent imposer leur puissance au smash et en bandeja. Idéale pour les joueurs qui participent à des tournois et cherchent un avantage technique mesurable. Suffisamment technique pour exiger de la rigueur, suffisamment tolérante pour rester plaisante.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -8548,7 +8548,7 @@
     },
     "verdict": "La porte d'entrée de l'univers Extreme. Plus légère de la gamme, goutte d'eau maniable, carbone 2D pour une première touche de rigidité. Le moment où le joueur intermédiaire comprend ce que Head sait faire.",
     "id": "head-extreme-one-2026",
-    "editorial": "L'Extreme One 2026 est l'intermédiaire de la gamme Extreme. Carbone 2D avec Extreme Spin — une texture de surface pour les effets — et Power Foam en goutte d'eau. C'est la pala des joueurs intermédiaires qui veulent commencer à travailler les effets avec une surface carbone accessible.",
+    "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Extreme One 26 de Head répond à cette ambition avec une construction pensée pour la montée en puissance. La forme ronde offre un large sweet spot et contrôle naturel qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -8566,7 +8566,7 @@
         "detail": "Polyvalence — apprendre les effets sans pression"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires qui veulent développer leurs effets.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui structurent leur jeu et veulent une raquette qui évolue avec eux. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -8709,7 +8709,7 @@
     },
     "verdict": "Le diamant qui sait se faire pardonner. La fibre de verre enveloppe les frappes décentrées, le format offensif délivre la puissance quand le geste est juste. L'attaque sans le stress.",
     "id": "head-extreme-team-2026",
-    "editorial": "L'Extreme Team 2026 est la version diamant intermédiaire de la gamme Extreme. Fibre de verre avec Extreme Spin et Power Foam. Plus accessible que l'Extreme One carbone, mais en diamant pour l'orientation offensive. C'est la pala des jeunes joueurs offensifs qui progressent vite.",
+    "editorial": "Head a positionné la Extreme Team 26 sur le créneau le plus compétitif : celui du joueur intermédiaire qui veut progresser sans changer de raquette tous les six mois. En diamant, elle combine point de frappe haut et puissance en attaque. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Son point fort — Puissance à 8.9/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -8727,7 +8727,7 @@
         "detail": "Offensive — pour les intermédiaires ambitieux"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires offensifs en progression rapide.",
+    "targetProfile": "Joueurs intermédiaires qui commencent à attaquer et cherchent un premier diamant tolérant. De 6 mois à 2 ans de pratique, 1-3 sessions par semaine. La raquette de progression par excellence chez Head.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -8788,7 +8788,7 @@
     },
     "verdict": "La Gravity allégée avec Auxetic 2.0 — une première à ce niveau de prix. Ronde fibre de verre pour un sweet spot large et un toucher doux, avec la technologie de déformation Head qui pardonne les frappes décentrées.",
     "id": "head-gravity-motion-2026",
-    "editorial": "La Gravity Motion 2026 fait évoluer l'intermédiaire contrôle avec l'Auxetic 2.0 — une première à ce niveau de gamme. Fibre de verre avec Auxetic et Control Foam en ronde. Le sweet spot élargi par Auxetic est un vrai plus pour les joueurs qui développent leur jeu de contrôle.",
+    "editorial": "La Gravity Motion 26 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. Le choix du ronde avec Surface, Noyau permet un large sweet spot et contrôle naturel. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -9035,7 +9035,7 @@
     },
     "verdict": "L'ultra-légère de la gamme Gravity à 340g. Ronde en fibre de verre avec Control Foam — tolérance maximale (9.5) et maniabilité au sommet (9.1). La raquette la plus facile à jouer du catalogue Head, parfaite pour débuter sans fatigue.",
     "id": "head-gravity-team-light-2026",
-    "editorial": "La Gravity Team Light 2026 est la mise à jour de la débutante contrôle. Fibre de verre et Control Foam en ronde — même formule éprouvée. Le Control Foam à ce prix reste un argument fort : le toucher premium Head accessible aux débutants.",
+    "editorial": "Head a distillé des années d'expertise dans cette Gravity Team Lt 26, calibrée pour que les premières frappes soient immédiatement satisfaisantes. La forme ronde maximise le large sweet spot et contrôle naturel. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Avec un confort noté 9.5/10 et une tolérance à 9.5/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -9141,7 +9141,7 @@
         "detail": "Compromis contrôle/attaque pour les tacticiens"
       }
     ],
-    "targetProfile": "Joueurs avancés contrôle-polyvalents. La Radical accessible avec Auxetic.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Idéale pour les joueurs qui participent à des tournois et cherchent un avantage technique mesurable. Suffisamment technique pour exiger de la rigueur, suffisamment tolérante pour rester plaisante.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -9289,7 +9289,7 @@
     },
     "verdict": "La Radical accessible. Fibre de verre avec Auxetic en goutte d'eau et balance très basse — maniabilité maximale avec une tolérance de 9.2 remarquable. Le tremplin vers la gamme Radical Pro pour les joueurs tactiques.",
     "id": "head-radical-team-2026",
-    "editorial": "La Radical Team 2026 est l'intermédiaire de la gamme tactique Head. Fibre de verre avec Auxetic et Control Foam en goutte d'eau. Le format goutte offre plus de polyvalence que la Gravity ronde, tout en gardant le toucher Control Foam. C'est la pala des futurs tacticiens.",
+    "editorial": "Entre le confort du débutant et les exigences de l'expert, la Radical Team 26 occupe le terrain le plus stratégique du catalogue Head. La forme goutte d'eau offre un équilibre entre puissance et contrôle qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -9366,7 +9366,7 @@
     },
     "verdict": "La Radical au régime, sans perdre son âme. Plus légère de la famille, ronde et fibre de verre, elle garde cette précision signature Head tout en offrant un confort de débutant. Débuter avec un pedigree de champion.",
     "id": "head-radical-team-light-2026",
-    "editorial": "La Radical Team Light 2026 est la débutante tactique de Head. Fibre de verre et Control Foam en ronde. Même mousse que la Gravity Team Light, mais un positionnement légèrement différent dans la gamme. Pour les débutants qui veulent un toucher soigné.",
+    "editorial": "Quand Head conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Radical Team Lt 26 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Le rapport qualité-prix est excellent pour une marque comme Head. C'est le type de raquette qu'on prête à un ami pour le convertir au padel.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -9384,7 +9384,7 @@
         "detail": "Tolérance et contrôle"
       }
     ],
-    "targetProfile": "Débutants. Alternative à la Gravity Team Light avec un design Radical.",
+    "targetProfile": "Nouveaux joueurs qui veulent une raquette fiable sans se poser de questions. Également parfaite à prêter aux amis non équipés ou comme raquette de prêt en club. Polyvalente et sans exigence.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -9548,7 +9548,7 @@
     },
     "verdict": "L'intermédiaire la plus technologique de Head. Carbone 2D avec système DAMP+ anti-vibrations en goutte d'eau — confort et protection du bras au premier plan. La pala pour les joueurs sensibles qui veulent quand même du carbone.",
     "id": "head-speed-one-x-2026",
-    "editorial": "La Speed One X 2026 est l'intermédiaire haut de gamme de la gamme Speed. Carbone 2D avec DAMP+ et Power Foam en goutte d'eau. Le DAMP+ — système anti-vibrations avancé — est rare à ce niveau de gamme. C'est probablement l'intermédiaire la plus complète technologiquement de Head.",
+    "editorial": "Head a positionné la Speed One X 26 sur le créneau le plus compétitif : celui du joueur intermédiaire qui veut progresser sans changer de raquette tous les six mois. Le choix du goutte d'eau avec Surface, Noyau permet un équilibre entre puissance et contrôle. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -9709,7 +9709,7 @@
     },
     "verdict": "La polyvalente tranquille de Head. Fibre de verre et Power Foam construisent un confort de croisière — ni trop agressive, ni trop sage. Elle fait le job proprement, session après session, sans jamais se plaindre.",
     "id": "head-speed-team-2026",
-    "editorial": "La Speed Team 2026 est la version accessible de la Speed. Fibre de verre avec 3D Grain — une texture de surface pour l'accroche — et Power Foam en goutte d'eau. Construction simple mais efficace, avec un bonus d'effets grâce au 3D Grain. Bonne pala d'initiation à la gamme Speed.",
+    "editorial": "Entre le confort du débutant et les exigences de l'expert, la Speed Team 26 occupe le terrain le plus stratégique du catalogue Head. Le choix du goutte d'eau avec Surface, Noyau permet un équilibre entre puissance et contrôle. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. Son point fort — Tolérance à 8.5/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -9727,7 +9727,7 @@
         "detail": "Polyvalence Speed accessible"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires. L'entrée dans la gamme Speed 2026.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui structurent leur jeu et veulent une raquette qui évolue avec eux. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -9790,7 +9790,7 @@
       "Tolérance": 9.2
     },
     "verdict": "Raquette débutant polyvalente et légère. Grand sweet spot et confort maximal pour découvrir le padel en confiance.",
-    "editorial": "La Vibe 2026 est la débutante universelle de Head. Fibre de verre et EVA Soft en goutte d'eau. Construction simple, prix attractif, qualité Head. La pala pour emprunter au club ou offrir à quelqu'un qui découvre le padel.",
+    "editorial": "Head a distillé des années d'expertise dans cette Vibe 26, calibrée pour que les premières frappes soient immédiatement satisfaisantes. Le format goutte d'eau avec son équilibre entre puissance et contrôle est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Légère, maniable (8.7/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -9808,7 +9808,7 @@
         "detail": "Polyvalence d'apprentissage"
       }
     ],
-    "targetProfile": "Débutants. La Head universelle pour découvrir le padel.",
+    "targetProfile": "Joueurs occasionnels à réguliers en phase d'apprentissage. Adaptée aux petits gabarits grâce à son poids contenu et aux joueurs plus âgés qui recherchent le confort avant tout.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -9885,7 +9885,7 @@
         "detail": "Le best-seller absolu — sweet spot centré, zéro risque"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires de tous profils. Le choix sûr par excellence.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui privilégient le placement et la régularité au filet. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -9972,7 +9972,7 @@
         "detail": "Contrôle maximum — sweet spot centré et tolérant"
       }
     ],
-    "targetProfile": "Joueurs avancés défensifs. La AT10 en version contrôle pour les tacticiens.",
+    "targetProfile": "Joueurs de droite précis qui contrôlent les échanges et placent les balles au millimètre. Recommandée aux joueurs de club confirmés et aux compétiteurs régionaux. Le gap de performance par rapport à l'intermédiaire est immédiatement perceptible.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -10046,7 +10046,7 @@
       "Tolérance": 9.2
     },
     "verdict": "La raquette d'Agustín Tapia en version intermédiaire. Forme ronde pour un contrôle exceptionnel et une grande tolérance.",
-    "editorial": "La AT10 Genius 2025 est la version intermédiaire de la gamme Tapia. Hybride carbone/fibre de verre et EVA standard en ronde. C'est le prestige AT10 à prix accessible — le nom du champion sur une pala de progression. Bonne pala pour les fans de Tapia qui construisent leur jeu.",
+    "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La AT10 Genius 25 de Nox répond à cette ambition avec une construction pensée pour la montée en puissance. Le choix du ronde avec Surface, Noyau permet un large sweet spot et contrôle naturel. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. Son point fort — Tolérance à 9.2/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -10064,7 +10064,7 @@
         "detail": "Contrôle — même forme que les AT10 premium"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires. L'entrée dans l'univers AT10 Tapia.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui structurent leur jeu et veulent une raquette qui évolue avec eux. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -10146,7 +10146,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Version junior de la raquette d'Agustín Tapia. Forme ronde très tolérante, idéale pour développer la technique et le contrôle.",
-    "editorial": "La AT10 Genius Jr 2025 est la junior de la gamme Tapia. Fibre de verre et Soft EVA en ronde. Le prestige AT10 pour les jeunes joueurs qui admirent Agustín Tapia.",
+    "editorial": "Conçue pour les jeunes compétiteurs en herbe, la AT10 Genius Jr 25 transpose l'ADN Nox dans un format adapté aux gabarits juniors. La forme ronde offre un large sweet spot et contrôle naturel, essentiel quand le geste technique est encore en construction. Construction légère et maniable, pensée pour des sessions de jeu sans fatigue. Le padel se transmet mieux avec le bon outil.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -10164,7 +10164,7 @@
         "detail": "Tolérance — la AT10 pour les jeunes"
       }
     ],
-    "targetProfile": "Juniors fans de Tapia. Le prestige AT10 en junior.",
+    "targetProfile": "Juniors de 6-10 ans qui découvrent ou pratiquent régulièrement. Convient aussi bien aux stages d'été qu'aux entraînements hebdomadaires. Un investissement mesuré pour une passion naissante.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -10424,7 +10424,7 @@
       "Tolérance": 9.5
     },
     "verdict": "L'icône ML10, simplifiée pour les premiers pas. Vingt ans de lignée condensés dans une ronde accessible et fiable. Le choix classique, éprouvé par des milliers de débutants — parce que les bonnes habitudes se prennent tôt.",
-    "editorial": "La ML10 Beginner 2025 est exactement ce que son nom indique : la ML10 pour les débutants. Fibre de verre et Soft EVA en ronde. La légende ML10 dans sa version la plus accessible. Même philosophie de fiabilité et de confort que la Pro Cup, en version allégée.",
+    "editorial": "Quand Nox conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La ML10 Beginner 25 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Le rapport qualité-prix est excellent pour une marque comme Nox. C'est le type de raquette qu'on prête à un ami pour le convertir au padel.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -10442,7 +10442,7 @@
         "detail": "La ronde ML10 — zéro risque, tout confort"
       }
     ],
-    "targetProfile": "Débutants. La légende ML10 en version d'apprentissage.",
+    "targetProfile": "Joueurs occasionnels à réguliers en phase d'apprentissage. Adaptée aux petits gabarits grâce à son poids contenu et aux joueurs plus âgés qui recherchent le confort avant tout.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -10517,7 +10517,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Version junior de l'iconique ML10. Forme ronde ultra-tolérante, parfaite pour les premiers pas sur le court.",
-    "editorial": "La ML10 Jr 2025 est la version junior du best-seller Nox. Fibre de verre et Soft EVA en ronde. La légende ML10 pour les plus jeunes — même philosophie de fiabilité et de confort.",
+    "editorial": "Le padel junior mérite de vrais produits, pas des jouets. Nox l'a compris avec la ML10 Jr 25, une vraie raquette en miniature. En ronde, elle propose un large sweet spot et contrôle naturel — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -10535,7 +10535,7 @@
         "detail": "Le classique ML10 en junior"
       }
     ],
-    "targetProfile": "Juniors. La légende ML10 pour les plus jeunes.",
+    "targetProfile": "Juniors de 8-12 ans, du débutant au compétiteur en herbe. Adaptée aux gabarits en croissance avec un poids maîtrisé. Le bon outil pour construire les fondamentaux techniques dès le plus jeune âge.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -10627,7 +10627,7 @@
         "detail": "Puissance pure en tête"
       }
     ],
-    "targetProfile": "Joueurs avancés offensifs. Diamant simple et efficace à prix accessible.",
+    "targetProfile": "Attaquants côté gauche qui veulent imposer leur puissance au smash et en bandeja. Joueurs réguliers (2-4 sessions/semaine) avec une technique solide. Exige un minimum de maîtrise mais récompense la progression.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -11056,7 +11056,7 @@
         "detail": "Anti-vibrations essentiel sur cette construction ultra-rigide"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs purs. La AT10 de compétition la plus radicale.",
+    "targetProfile": "Compétiteurs offensifs purs — le smash est leur arme principale. Réservée aux joueurs de niveau confirmé à professionnel. Chaque défaut technique sera amplifié, chaque bon geste sera sublimé. Exigeante mais exceptionnelle entre les bonnes mains.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -11131,7 +11131,7 @@
       "Tolérance": 8.5
     },
     "verdict": "Nouvelle gamme hybride polyvalente Nox. Bon équilibre puissance/contrôle pour joueurs avancés qui ne sont pas purement offensifs.",
-    "editorial": "La Ventus 2026 est la polyvalente avancée de Nox. Carbone 12K et mousse EVA HR3 en forme hybride — un format qui offre un bon compromis entre puissance et contrôle. Le Pulse System filtre les vibrations. C'est la Nox pour les joueurs complets qui ne veulent pas se limiter à un seul style de jeu.",
+    "editorial": "Nox a concentré son expertise dans la Ventus 26, une raquette qui ne fait pas de concessions. En hybride, elle offre un polyvalence de forme entre ronde et diamant. Surface, Noyau, Technologie composent un cocktail technique abouti pour les joueurs exigeants. Avec Contrôle à 8.8/10 comme point fort, elle s'inscrit dans le haut du catalogue Nox. Pour joueurs avertis qui savent ce qu'ils veulent.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -11154,7 +11154,7 @@
         "detail": "Sweet spot intermédiaire — polyvalence maximale"
       }
     ],
-    "targetProfile": "Joueurs avancés polyvalents. La Nox tout-terrain pour les joueurs complets.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Joueurs réguliers (2-4 sessions/semaine) avec une technique solide. Exige un minimum de maîtrise mais récompense la progression.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -11222,7 +11222,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Version junior de la raquette de Franco Stupaczuk. Forme ronde très tolérante, construction fibre de verre légère et durable pour l'apprentissage.",
-    "editorial": "L'Electra ST3 Jr 2024 est la junior Siux. Fibre de verre et Soft EVA en ronde. Construction simple et abordable pour les jeunes joueurs. Siux offre des prix accessibles même en junior.",
+    "editorial": "Derrière le format réduit de la Electra ST3 Jr 24, Siux a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. Le choix d'une forme ronde n'est pas anodin : le large sweet spot et contrôle naturel accompagne la progression sans punir les erreurs. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -11240,7 +11240,7 @@
         "detail": "Tolérance — Siux au meilleur prix junior"
       }
     ],
-    "targetProfile": "Juniors. Siux accessible pour les jeunes.",
+    "targetProfile": "Jeunes joueurs de 8-14 ans en apprentissage du padel. Idéale pour les cours collectifs et les premiers matchs entre amis. Le format adapté permet de développer les bons gestes sans fatigue excessive.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -11386,7 +11386,7 @@
       "Tolérance": 7.3
     },
     "verdict": "Raquette de Stupaczuk version compétition. Carbone 12K rigide avec surface texturée pour spin+puissance. Experte et exigeante.",
-    "editorial": "La Diablo Black 2025 est la version premium de la gamme offensive Siux pour 2025. Carbone 12K et mousse Hard EVA en goutte d'eau — une combinaison offensive dans un format tolérant. C'est le Diablo pour les joueurs experts qui veulent de la puissance avec la sécurité de la forme goutte.",
+    "editorial": "Siux a concentré son expertise dans la Diablo Black 25, une raquette qui ne fait pas de concessions. En diamant, elle offre un point de frappe haut et puissance en attaque. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Puissance à 9.5/10 comme point fort, elle s'inscrit dans le haut du catalogue Siux. Pour joueurs avertis qui savent ce qu'ils veulent.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -11467,7 +11467,7 @@
       "Tolérance": 8.8
     },
     "verdict": "Goutte d'eau avec surface texturée pour un bon spin. Le carbone offre de la réactivité pour les joueurs cherchant plus de mordant.",
-    "editorial": "La Diablo Revolution 2025 est l'intermédiaire de la gamme Siux. Carbone standard et EVA standard en goutte d'eau. Construction honnête et accessible, tarif compétitif. Siux propose des specs correctes à prix serré — la Revolution est une bonne pala de progression sans pression financière.",
+    "editorial": "Entre le confort du débutant et les exigences de l'expert, la Diablo Revol 25 occupe le terrain le plus stratégique du catalogue Siux. La forme goutte d'eau offre un équilibre entre puissance et contrôle qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Son point fort — Tolérance à 8.8/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -11485,7 +11485,7 @@
         "detail": "Polyvalence — le Diablo accessible"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires. Le Diablo d'entrée de gamme à prix compétitif.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui structurent leur jeu et veulent une raquette qui évolue avec eux. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -11546,7 +11546,7 @@
       "Tolérance": 7.3
     },
     "verdict": "Diamant extrême pour purs attaquants. Carbone 12K + EVA dure = sortie de balle explosive. Confort minimal, réservée aux experts.",
-    "editorial": "La Diablo Xtrem 2025 est la version la plus radicale de la gamme Siux 2025. Carbone 12K et Hard EVA en diamant — puissance pure sans concession. C'est la Siux pour les frappeurs qui veulent du diamant abordable sans les technologies premium du TeXtreme.",
+    "editorial": "Siux a concentré son expertise dans la Diablo Xtrem 25, une raquette qui ne fait pas de concessions. En diamant, elle offre un point de frappe haut et puissance en attaque. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Puissance à 9.5/10 comme point fort, elle s'inscrit dans le haut du catalogue Siux. Pour joueurs avertis qui savent ce qu'ils veulent.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -11564,7 +11564,7 @@
         "detail": "Puissance radicale en tête"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs. Diamant puissance à prix Siux.",
+    "targetProfile": "Compétiteurs offensifs purs — le smash est leur arme principale. Joueurs de compétition (3+ sessions/semaine) avec une technique aboutie. N'achète pas cette raquette pour progresser — achète-la pour dominer.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -11628,7 +11628,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Le padel, point final. Pas de chichi, pas de technologie superflue — juste ce qu'il faut pour frapper une balle et prendre du plaisir. Siux prouve qu'on n'a pas besoin de se ruiner pour commencer.",
-    "editorial": "L'Optimus 2025 est la débutante de Siux. Fibre de verre et Soft EVA en ronde. Construction simple et efficace à prix Siux — c'est-à-dire compétitif. Pour les débutants qui veulent du matériel correct sans investir beaucoup.",
+    "editorial": "Quand Siux conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Optimus 25 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Légère, maniable (8.7/10), confortable (9.2/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -11646,7 +11646,7 @@
         "detail": "Tolérance maximale au meilleur prix"
       }
     ],
-    "targetProfile": "Débutants au budget serré. Siux accessible.",
+    "targetProfile": "Nouveaux joueurs qui veulent une raquette fiable sans se poser de questions. Également parfaite à prêter aux amis non équipés ou comme raquette de prêt en club. Polyvalente et sans exigence.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -11709,7 +11709,7 @@
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-elite-26.png",
     "verdict": "Goutte confortable et maniable, idéale pour monter en niveau en douceur. Polyvalente sans être exceptionnelle dans un domaine.",
     "price": "180-230€",
-    "editorial": "La Diablo Elite 2026 est la nouvelle intermédiaire premium de Siux. Carbone 3K et EVA en goutte d'eau — une montée en gamme par rapport à la Revolution. Le 3K apporte plus de réactivité et de toucher que le carbone standard. C'est le tremplin vers les versions Pro en TeXtreme.",
+    "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Diablo Elite 6 26 de Siux répond à cette ambition avec une construction pensée pour la montée en puissance. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Son point fort — Tolérance à 8.5/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -11727,7 +11727,7 @@
         "detail": "Polyvalence Diablo"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires ambitieux. La passerelle vers le TeXtreme Siux.",
+    "targetProfile": "Du joueur intermédiaire qui consolide ses acquis au joueur avancé en reprise. Qui structurent leur jeu et veulent une raquette qui évolue avec eux. Bon compromis pour les couples ou binômes de niveaux légèrement différents.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12058,7 +12058,7 @@
         "detail": "Polyvalence maximale"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires polyvalents. La Siux tout-terrain.",
+    "targetProfile": "Joueurs intermédiaires qui structurent leur jeu et veulent une raquette qui évolue avec eux. De 6 mois à 2 ans de pratique, 1-3 sessions par semaine. La raquette de progression par excellence chez Siux.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12138,7 +12138,7 @@
         "detail": "Polyvalence — attaque et défense"
       }
     ],
-    "targetProfile": "Joueurs avancés polyvalents. Le TeXtreme dans un format tout-terrain.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Idéale pour les joueurs qui participent à des tournois et cherchent un avantage technique mesurable. Suffisamment technique pour exiger de la rigueur, suffisamment tolérante pour rester plaisante.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12220,7 +12220,7 @@
         "detail": "Polyvalence et tolérance pour un jeu complet"
       }
     ],
-    "targetProfile": "Joueuses avancées et joueurs cherchant une goutte TeXtreme polyvalente.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Recommandée aux joueurs de club confirmés et aux compétiteurs régionaux. Le gap de performance par rapport à l'intermédiaire est immédiatement perceptible.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12284,7 +12284,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior confortable et tolérante. Construction fibre de verre souple pour un apprentissage sans fatigue.",
-    "editorial": "La StarVie Junior 2025 est la pala junior de la marque madrilène. Fibre de verre et Soft EVA en ronde. Construction soignée avec la finition StarVie caractéristique. Pour les jeunes qui veulent se démarquer avec une marque alternative.",
+    "editorial": "Derrière le format réduit de la Starvie Jr 25, Starvie a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. La forme ronde offre un large sweet spot et contrôle naturel, essentiel quand le geste technique est encore en construction. Le prix reste contenu, mais la qualité de fabrication est bien là. Un investissement intelligent pour lancer une passion.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -12302,7 +12302,7 @@
         "detail": "Tolérance — finition StarVie soignée"
       }
     ],
-    "targetProfile": "Juniors. StarVie pour les jeunes qui veulent se démarquer.",
+    "targetProfile": "Juniors de 6-10 ans, du débutant au compétiteur en herbe. Adaptée aux gabarits en croissance avec un poids maîtrisé. Le bon outil pour construire les fondamentaux techniques dès le plus jeune âge.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -12385,7 +12385,7 @@
         "detail": "Polyvalence — le sweet spot StarVie classique"
       }
     ],
-    "targetProfile": "Joueurs avancés polyvalents. StarVie premium à prix compétitif.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Recommandée aux joueurs de club confirmés et aux compétiteurs régionaux. Le gap de performance par rapport à l'intermédiaire est immédiatement perceptible.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12453,7 +12453,7 @@
       "Tolérance": 8.5
     },
     "verdict": "La polyvalente sans éclat qui fait tout correctement. Goutte d'eau en carbone/EVA, construction maîtrisée, aucun défaut criant. Pas la plus excitante, mais la plus fiable — le choix de raison du joueur intermédiaire.",
-    "editorial": "La Metheora 2025 est l'intermédiaire de StarVie. Carbone standard et EVA standard en goutte d'eau. StarVie offre une construction propre à prix compétitif — c'est le positionnement de la marque. La Metheora est la pala de progression pour les joueurs attirés par l'alternative StarVie.",
+    "editorial": "La Metheora 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -12471,7 +12471,7 @@
         "detail": "Polyvalence StarVie à prix doux"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires. StarVie accessible et fiable.",
+    "targetProfile": "Joueurs réguliers (1-3 fois/semaine) en progression qui structurent leur jeu et veulent une raquette qui évolue avec eux. Aussi recommandée aux joueurs avancés qui cherchent un backup confortable pour les sessions d'entraînement détendues.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12537,7 +12537,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Ronde Starvie confortable et tolérante. Idéale pour les joueurs occasionnels qui veulent du plaisir sans effort.",
-    "editorial": "Le Raptor 2025 est la débutante de StarVie. Fibre de verre et Soft EVA en ronde. Construction simple avec la finition soignée caractéristique de StarVie. Un bon choix pour les débutants qui veulent une marque alternative aux leaders.",
+    "editorial": "Quand Starvie conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Raptor 25 remplit ce contrat. La forme ronde maximise le large sweet spot et contrôle naturel. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Légère, maniable (8.7/10), confortable (9.2/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -12555,7 +12555,7 @@
         "detail": "Tolérance StarVie pour débuter"
       }
     ],
-    "targetProfile": "Débutants. StarVie pour les premiers matchs.",
+    "targetProfile": "Adultes qui découvrent le padel ou jouent occasionnellement (1-2 fois par mois). Idéale comme première raquette personnelle après avoir emprunté celle du club. Budget maîtrisé, qualité Starvie.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12646,7 +12646,7 @@
         "detail": "Compromis puissance/contrôle — sweet spot intermédiaire"
       }
     ],
-    "targetProfile": "Joueurs experts à la recherche d'une alternative premium aux grandes marques.",
+    "targetProfile": "Compétiteurs polyvalents experts — ils lisent le jeu et s'adaptent à chaque situation. Réservée aux joueurs de niveau confirmé à professionnel. Chaque défaut technique sera amplifié, chaque bon geste sera sublimé. Exigeante mais exceptionnelle entre les bonnes mains.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12818,7 +12818,7 @@
         "detail": "Puissance en tête mais avec équilibre — pas radical"
       }
     ],
-    "targetProfile": "Joueurs avancés offensifs qui veulent une diamant mesurée. StarVie accessible.",
+    "targetProfile": "Attaquants côté gauche qui veulent imposer leur puissance au smash et en bandeja. Idéale pour les joueurs qui participent à des tournois et cherchent un avantage technique mesurable. Suffisamment technique pour exiger de la rigueur, suffisamment tolérante pour rester plaisante.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12903,7 +12903,7 @@
         "detail": "Puissance radicale en tête"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs. Le Triton de puissance maximale.",
+    "targetProfile": "Compétiteurs offensifs purs — le smash est leur arme principale. Le haut du panier Starvie. Pour les joueurs qui connaissent exactement ce qu'ils veulent et pourquoi ils le veulent. Pas de compromis, pas de filet de sécurité.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12990,7 +12990,7 @@
         "detail": "Polyvalence Varlion"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires polyvalents. L'entrée dans l'univers Varlion.",
+    "targetProfile": "Joueurs intermédiaires qui structurent leur jeu et veulent une raquette qui évolue avec eux. De 6 mois à 2 ans de pratique, 1-3 sessions par semaine. La raquette de progression par excellence chez Varlion.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -13057,7 +13057,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior Varlion, marque historique du padel. Forme ronde classique pour un apprentissage confortable et progressif.",
-    "editorial": "La Cañas Jr 2025 est la junior Varlion. Fibre de verre et Soft EVA en ronde. Le toucher Varlion pour les jeunes joueurs. Construction légère et confortable.",
+    "editorial": "Varlion ne fait pas de compromis pour les plus jeunes. La Cañas Junior 25 reprend les codes de la gamme adulte dans un châssis dimensionné pour les mains en croissance. En ronde, elle propose un large sweet spot et contrôle naturel — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Le prix reste contenu, mais la qualité de fabrication est bien là. Un investissement intelligent pour lancer une passion.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13075,7 +13075,7 @@
         "detail": "Tolérance — junior Varlion"
       }
     ],
-    "targetProfile": "Juniors. Le toucher Varlion pour les jeunes.",
+    "targetProfile": "Juniors de 8-14 ans, du débutant au compétiteur en herbe. Adaptée aux gabarits en croissance avec un poids maîtrisé. Le bon outil pour construire les fondamentaux techniques dès le plus jeune âge.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -13106,7 +13106,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Version allégée de la Cañas, parfaite pour débuter. Marque historique du padel, construction fiable et confortable.",
-    "editorial": "La Cañas W 2025 est la débutante de Varlion. Fibre de verre et Soft EVA en ronde. Le W indique une orientation féminine, mais la pala convient à tous les débutants. Construction légère et confortable avec le toucher Varlion.",
+    "editorial": "Quand Varlion conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Cañas W 25 remplit ce contrat. La forme ronde maximise le large sweet spot et contrôle naturel. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Légère, maniable (9.1/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13124,7 +13124,7 @@
         "detail": "Tolérance maximale"
       }
     ],
-    "targetProfile": "Débutants et débutantes. Varlion accessible et confortable.",
+    "targetProfile": "Joueurs occasionnels à réguliers en phase d'apprentissage. Adaptée aux petits gabarits grâce à son poids contenu et aux joueurs plus âgés qui recherchent le confort avant tout.",
     "womanLine": true,
     "ean": null,
     "availability": "available",
@@ -13155,7 +13155,7 @@
       "Tolérance": 8.5
     },
     "verdict": "Goutte d'eau Varlion haut de gamme. Construction carbone traditionnelle pour joueurs avancés polyvalents.",
-    "editorial": "La LW Carbon 2025 est la polyvalente carbone de Varlion. Construction classique carbone/EVA standard en goutte d'eau. Varlion apporte son toucher Pro-Touch distinctif, même sur ses modèles standard. C'est une pala honnête et fiable pour les joueurs avancés qui veulent découvrir le toucher Varlion.",
+    "editorial": "Varlion a concentré son expertise dans la LW Carbon 25, une raquette qui ne fait pas de concessions. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Contrôle à 8.8/10 comme point fort, elle s'inscrit dans le haut du catalogue Varlion. Pour joueurs avertis qui savent ce qu'ils veulent.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13173,7 +13173,7 @@
         "detail": "Polyvalence — le format Varlion par excellence"
       }
     ],
-    "targetProfile": "Joueurs avancés polyvalents. Découverte du toucher Varlion à prix accessible.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Recommandée aux joueurs de club confirmés et aux compétiteurs régionaux. Le gap de performance par rapport à l'intermédiaire est immédiatement perceptible.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -13252,7 +13252,7 @@
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-orquidea-26.png",
     "verdict": "Ronde ultra-confortable et tolérante, parfaite pour débuter. Sweet spot généreux, poids plume — zéro stress sur le bras.",
     "price": "60-100€",
-    "editorial": "La LW Orquídea 2026 est la nouvelle débutante Varlion. Fibre de verre et Soft EVA en ronde. Construction légère (LW = Light Weight) pour la maniabilité. L'Orquídea est positionnée pour les femmes mais convient à tous les débutants légers.",
+    "editorial": "Varlion a distillé des années d'expertise dans cette LW Orquidea 26, calibrée pour que les premières frappes soient immédiatement satisfaisantes. La forme ronde maximise le large sweet spot et contrôle naturel. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Le rapport qualité-prix est excellent pour une marque comme Varlion. C'est le type de raquette qu'on prête à un ami pour le convertir au padel.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13270,7 +13270,7 @@
         "detail": "Tolérance — version Light Weight"
       }
     ],
-    "targetProfile": "Débutants et débutantes. Varlion ultra-légère pour les premiers matchs.",
+    "targetProfile": "Joueurs débutants et primo-accédants, du curieux qui teste au nouveau converti qui veut s'équiper. Aucun prérequis technique — elle pardonne tout et encourage la progression naturelle.",
     "womanLine": true,
     "ean": null,
     "availability": "available",
@@ -13403,7 +13403,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior d'entrée de gamme très tolérante. Excellent rapport qualité/prix pour débuter sans se ruiner.",
-    "editorial": "La Vermont Origin Jr 2025 est la junior de Vermont — marque anglaise spécialisée dans l'équipement sportif accessible. Fibre de verre et Soft EVA en ronde. Construction basique mais honnête pour les jeunes qui essaient le padel.",
+    "editorial": "Vermont ne fait pas de compromis pour les plus jeunes. La Origin Jr 25 reprend les codes de la gamme adulte dans un châssis dimensionné pour les mains en croissance. Le choix d'une forme ronde n'est pas anodin : le large sweet spot et contrôle naturel accompagne la progression sans punir les erreurs. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13421,7 +13421,7 @@
         "detail": "Tolérance — l'essentiel pour commencer"
       }
     ],
-    "targetProfile": "Juniors. Vermont pour les premiers essais à petit budget.",
+    "targetProfile": "Juniors de 8-14 ans qui découvrent ou pratiquent régulièrement. Convient aussi bien aux stages d'été qu'aux entraînements hebdomadaires. Un investissement mesuré pour une passion naissante.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -13481,7 +13481,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Raquette junior entrée de gamme au design attractif. Construction fibre de verre simple mais efficace pour débuter. Excellent rapport qualité/prix.",
-    "editorial": "La Minions Jr Face 2024 est la junior fun de Wilson. Fibre de verre et Soft EVA en goutte d'eau avec le design Minions — les enfants adorent. C'est la pala pour que le padel rime avec plaisir chez les plus jeunes.",
+    "editorial": "Wilson ne fait pas de compromis pour les plus jeunes. La Minions Jr Face 24 reprend les codes de la gamme adulte dans un châssis dimensionné pour les mains en croissance. Le choix d'une forme goutte d'eau n'est pas anodin : le équilibre entre puissance et contrôle accompagne la progression sans punir les erreurs. Construction légère et maniable, pensée pour des sessions de jeu sans fatigue. Le padel se transmet mieux avec le bon outil.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13499,7 +13499,7 @@
         "detail": "Polyvalence fun — design Minions"
       }
     ],
-    "targetProfile": "Juniors 4-10 ans. Le fun Wilson avec les Minions pour les plus petits.",
+    "targetProfile": "Juniors de 8-12 ans, du débutant au compétiteur en herbe. Adaptée aux gabarits en croissance avec un poids maîtrisé. Le bon outil pour construire les fondamentaux techniques dès le plus jeune âge.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -13579,7 +13579,7 @@
         "detail": "Polyvalence offensive — l'ADN Bela"
       }
     ],
-    "targetProfile": "Joueurs experts offensifs-polyvalents. Le meilleur de Wilson pour 2025.",
+    "targetProfile": "Compétiteurs polyvalents experts — ils lisent le jeu et s'adaptent à chaque situation. Le haut du panier Wilson. Pour les joueurs qui connaissent exactement ce qu'ils veulent et pourquoi ils le veulent. Pas de compromis, pas de filet de sécurité.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -13642,7 +13642,7 @@
       "Tolérance": 8.5
     },
     "verdict": "La raquette de légende de Bela en version élite. Goutte d'eau équilibrée pour les joueurs avancés complets.",
-    "editorial": "La Bela Elite V2 2025 est la version avancée de la gamme Bela. Carbone standard et EVA standard en goutte d'eau — construction propre et fiable. C'est le cran en dessous de la Pro, mais la qualité Wilson est là. Pour les joueurs avancés qui veulent une Bela solide sans le tarif expert.",
+    "editorial": "La Bela Elite V2 25 vise les joueurs confirmés qui exigent performance et précision dans chaque frappe. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Contrôle à 8.8/10 comme point fort, elle s'inscrit dans le haut du catalogue Wilson. Pour joueurs avertis qui savent ce qu'ils veulent.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13660,7 +13660,7 @@
         "detail": "Polyvalence Bela — le format signature"
       }
     ],
-    "targetProfile": "Joueurs avancés polyvalents. La gamme Bela accessible avec qualité Wilson.",
+    "targetProfile": "Joueurs complets qui alternent attaque et défense selon les situations. Joueurs réguliers (2-4 sessions/semaine) avec une technique solide. Exige un minimum de maîtrise mais récompense la progression.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -13721,7 +13721,7 @@
       "Tolérance": 8.5
     },
     "verdict": "Raquette signature de la légende Belasteguín. Bon compromis puissance/contrôle mais confort limité par le carbone. Pour intermédiaires exigeants.",
-    "editorial": "La Bela Pro V2 2025 est l'intermédiaire de la gamme Bela. Carbone standard et EVA standard en goutte d'eau. La qualité de construction Wilson est là — finitions soignées, équilibre bien calibré. C'est la Bela pour progresser avec la fiabilité Wilson avant de passer à l'Elite ou à la V3.",
+    "editorial": "Wilson a positionné la Bela Pro V2 25 sur le créneau le plus compétitif : celui du joueur intermédiaire qui veut progresser sans changer de raquette tous les six mois. Le choix du goutte d'eau avec Surface, Noyau permet un équilibre entre puissance et contrôle. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13739,7 +13739,7 @@
         "detail": "L'ADN polyvalent Bela"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires polyvalents. La Bela de progression Wilson.",
+    "targetProfile": "Joueurs intermédiaires qui structurent leur jeu et veulent une raquette qui évolue avec eux. De 6 mois à 2 ans de pratique, 1-3 sessions par semaine. La raquette de progression par excellence chez Wilson.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -13802,7 +13802,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Ultra-légère (300g) avec forme goutte d'eau pour un bon équilibre contrôle/puissance. Fibre de verre confortable et tolérante pour l'apprentissage.",
-    "editorial": "La Blade Jr V2 est la junior technique de Wilson. Fibre de verre et Soft EVA en goutte d'eau. L'esprit Blade — toucher et finesse — pour les jeunes joueurs techniques. Pour les juniors qui développent un vrai jeu de placement.",
+    "editorial": "Derrière le format réduit de la Blade Jr V2 25, Wilson a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. La forme goutte d'eau offre un équilibre entre puissance et contrôle, essentiel quand le geste technique est encore en construction. Un poids maîtrisé pour ne pas fatiguer le bras en développement, un sweet spot tolérant pour encourager le plaisir de jouer.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13820,7 +13820,7 @@
         "detail": "Polyvalence technique pour les juniors"
       }
     ],
-    "targetProfile": "Juniors techniques. Le toucher Blade Wilson pour les jeunes.",
+    "targetProfile": "Juniors de 8-14 ans qui découvrent ou pratiquent régulièrement. Convient aussi bien aux stages d'été qu'aux entraînements hebdomadaires. Un investissement mesuré pour une passion naissante.",
     "junior": true,
     "ean": null,
     "availability": "available",
@@ -13882,7 +13882,7 @@
       "Tolérance": 9.5
     },
     "verdict": "Wilson joue la carte du confort accessible. Goutte d'eau en fibre de verre, douce au toucher, tolérante aux erreurs de jeunesse. Le premier chapitre d'une histoire de padel, écrit avec bienveillance.",
-    "editorial": "L'Ultra V2 2025 est la débutante de Wilson. Fibre de verre et Soft EVA en goutte d'eau. La qualité de construction Wilson est perceptible même à ce niveau — finitions soignées, équilibre calibré. Pour les débutants qui veulent la fiabilité Wilson dès le premier match.",
+    "editorial": "La Ultra V2 25 ne demande rien et donne beaucoup. Wilson a conçu cette raquette pour que le padel révèle son plaisir dès la première session. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Le noyau EVA souple absorbe les vibrations pour protéger les articulations encore peu habituées à l'effort. Avec un confort noté 9.2/10 et une tolérance à 9.5/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13900,7 +13900,7 @@
         "detail": "Polyvalence d'apprentissage"
       }
     ],
-    "targetProfile": "Débutants. La fiabilité Wilson pour les premiers pas.",
+    "targetProfile": "Nouveaux joueurs qui veulent une raquette fiable sans se poser de questions. Également parfaite à prêter aux amis non équipés ou comme raquette de prêt en club. Polyvalente et sans exigence.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -13962,7 +13962,7 @@
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-accent-26.png",
     "verdict": "Porte d'entrée Wilson : légère, confortable, très tolérante. Idéale pour découvrir le padel sans se soucier de la technique.",
     "price": "60-100€",
-    "editorial": "L'Accent 2026 est la pala la plus accessible de Wilson. Fibre de verre et Soft EVA en ronde. Construction simple, prix d'appel, qualité Wilson. C'est la pala pour tester le padel avec une marque de confiance.",
+    "editorial": "Quand Wilson conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Accent 26 remplit ce contrat. Le format ronde avec son large sweet spot et contrôle naturel est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Avec un confort noté 9.5/10 et une tolérance à 9.5/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -13980,7 +13980,7 @@
         "detail": "Tolérance maximale — zéro risque"
       }
     ],
-    "targetProfile": "Débutants et primo-accédants. Wilson au meilleur prix.",
+    "targetProfile": "Joueurs occasionnels à réguliers en phase d'apprentissage. Adaptée aux petits gabarits grâce à son poids contenu et aux joueurs plus âgés qui recherchent le confort avant tout.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -14055,7 +14055,7 @@
         "detail": "Polyvalence Bela"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires en progression. La nouvelle Bela pour monter de niveau.",
+    "targetProfile": "Joueurs intermédiaires ambitieux qui structurent leur jeu et veulent une raquette qui évolue avec eux. Convient à tous les terrains et styles de jeu. Le choix sûr pour monter en gamme sans changer de raquette chaque saison.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -14327,7 +14327,7 @@
         "detail": "Polyvalence et maniabilité"
       }
     ],
-    "targetProfile": "Joueurs avancés techniques. La Wilson du toucher et de la finesse.",
+    "targetProfile": "Joueurs de droite précis qui contrôlent les échanges et placent les balles au millimètre. Recommandée aux joueurs de club confirmés et aux compétiteurs régionaux. Le gap de performance par rapport à l'intermédiaire est immédiatement perceptible.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -14392,7 +14392,7 @@
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-team-26.png",
     "verdict": "Goutte douce et tolérante pour intermédiaires. Sweet spot généreux, bon confort — transition idéale vers un jeu plus technique.",
     "price": "100-150€",
-    "editorial": "La Blade Team 2026 est l'intermédiaire de la gamme Blade. Fibre de verre et Soft EVA en goutte d'eau. Construction souple et confortable, orientée toucher. C'est la Wilson pour les joueurs intermédiaires techniques qui veulent sentir la balle plutôt que la frapper.",
+    "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Blade Team 26 de Wilson répond à cette ambition avec une construction pensée pour la montée en puissance. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -14410,7 +14410,7 @@
         "detail": "Polyvalence technique — la Blade accessible"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires techniques. La Blade pour le toucher.",
+    "targetProfile": "Joueurs réguliers (1-3 fois/semaine) en progression qui structurent leur jeu et veulent une raquette qui évolue avec eux. Aussi recommandée aux joueurs avancés qui cherchent un backup confortable pour les sessions d'entraînement détendues.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -14635,7 +14635,7 @@
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-team-26.png",
     "verdict": "Diamant accessible avec sweet spot large Infinity Edge. Bonne porte d'entrée vers le jeu offensif sans trop de risque.",
     "price": "120-170€",
-    "editorial": "L'Ultra Team 2026 est l'intermédiaire de la gamme puissance Wilson. Hybride fibre de verre/carbone et EVA en diamant. C'est l'initiation à la puissance Wilson — forme diamant et matériaux accessibles pour développer un jeu offensif. Le premier pas vers l'Ultra Pro et son Double Carbon Wall.",
+    "editorial": "Entre le confort du débutant et les exigences de l'expert, la Ultra Team 26 occupe le terrain le plus stratégique du catalogue Wilson. La forme diamant offre un point de frappe haut et puissance en attaque qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Son point fort — Puissance à 8.8/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
     "techHighlights": [
       {
         "label": "Surface",
@@ -14653,7 +14653,7 @@
         "detail": "Puissance en tête — l'ADN Ultra"
       }
     ],
-    "targetProfile": "Joueurs intermédiaires offensifs. L'entrée dans la gamme Ultra Wilson.",
+    "targetProfile": "Joueurs réguliers (1-3 fois/semaine) en progression qui commencent à attaquer et cherchent un premier diamant tolérant. Aussi recommandée aux joueurs avancés qui cherchent un backup confortable pour les sessions d'entraînement détendues.",
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -18559,7 +18559,7 @@
         "detail": "Pardonne toutes les approximations"
       }
     ],
-    "targetProfile": "Grands débutants. La pala Decathlon pour découvrir le padel à prix symbolique.",
+    "targetProfile": "Nouveaux joueurs qui veulent une raquette fiable sans se poser de questions. Également parfaite à prêter aux amis non équipés ou comme raquette de prêt en club. Polyvalente et sans exigence.",
     "junior": false,
     "womanLine": false,
     "proPlayerInfo": null,
