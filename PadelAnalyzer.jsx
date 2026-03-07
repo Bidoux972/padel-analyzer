@@ -245,11 +245,38 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
 
   // Resolve rackets from DB
   const allDB = getMergedDB();
+
+  // Build news pool: curated + dynamic, then shuffle and pick 4
   const newsItems = useMemo(() => {
-    return FEATURED_NEWS.map(news => {
+    // 1. Curated articles
+    const curated = FEATURED_NEWS.map(news => {
       const racket = allDB.find(r => r.id === news.racketId);
       return racket ? { ...news, racket } : null;
     }).filter(Boolean);
+
+    // 2. Dynamic articles from DB — pro players 2026 not already curated
+    const curatedIds = new Set(FEATURED_NEWS.map(n => n.racketId));
+    const tagColors = ["#ef4444","#E8622A","#a855f7","#3b82f6","#D4A856","#22c55e","#ec4899","#14b8a6"];
+    const dynamicTemplates = [
+      (r,p) => ({ tag:"SIGNATURE", headline:`${p} choisit la ${r.shortName||r.name}`, subtitle:`${r.brand} dévoile la raquette signature de ${p.split(" ").pop()}. Notre verdict.`, tagColor:tagColors[Math.floor(Math.random()*tagColors.length)] }),
+      (r,p) => ({ tag:"2026", headline:`${r.shortName||r.name} : le test complet`, subtitle:`${r.brand} ${r.year}. ${r.shape}, ${r.weight||""}. On a testé, voici notre avis.`, tagColor:tagColors[Math.floor(Math.random()*tagColors.length)] }),
+      (r,p) => ({ tag:"PRO", headline:`Avec la ${r.shortName||r.name}, ${p.split(" ").pop()} vise le titre`, subtitle:`Nouvelle saison, nouvelle arme. ${r.brand} mise sur l'innovation pour ${p}.`, tagColor:tagColors[Math.floor(Math.random()*tagColors.length)] }),
+    ];
+    const proRackets2026 = allDB.filter(r => r.year===2026 && r.proPlayerInfo?.name && !curatedIds.has(r.id) && r.imageUrl);
+    const dynamic = proRackets2026.slice(0,8).map(r => {
+      const tpl = dynamicTemplates[Math.floor(Math.random()*dynamicTemplates.length)](r, r.proPlayerInfo.name);
+      return { ...tpl, racketId:r.id, racket:r };
+    });
+
+    // 3. Combine and shuffle (Fisher-Yates)
+    const pool = [...curated, ...dynamic];
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+
+    // 4. Pick 4
+    return pool.slice(0, 4);
   }, [allDB]);
 
   // Auto-rotate every 5s
@@ -2623,6 +2650,27 @@ const FEATURED_NEWS = [
     subtitle: "TriCarbon 18K, Tricore, 3D Grain — Bullpadel vise le sommet. Notre analyse terrain.",
     tagColor: "#a855f7",
   },
+  {
+    racketId: "head-coello-pro-2026",
+    tag: "STAR",
+    headline: "Coello Pro 2026 : la griffe du prodige",
+    subtitle: "Arturo Coello impose sa signature. Carbone 3K et Dual Core pour un toucher chirurgical.",
+    tagColor: "#3b82f6",
+  },
+  {
+    racketId: "wilson-bela-v3-2026",
+    tag: "LÉGENDE",
+    headline: "Bela V3 : le retour du roi",
+    subtitle: "Fernando Belasteguín co-signe sa nouvelle arme. Polyvalence et spin au rendez-vous.",
+    tagColor: "#D4A856",
+  },
+  {
+    racketId: "babolat-viper-soft-3.0-lebron-2026",
+    tag: "ANALYSE",
+    headline: "Viper Soft 3.0 : Lebrón adoucit la bête",
+    subtitle: "Juan Lebrón ajoute du confort sans sacrifier la puissance. Un virage stratégique.",
+    tagColor: "#22c55e",
+  },
 ];
 
 function getTopByCategory(catId, year, n=5) {
@@ -4677,8 +4725,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {!isKiosk&&savedProfiles.length>0&&(()=>{
           const profileSearch = profileSearchTerm;
           const filtered = savedProfiles.filter(sp=>!profileSearch||sp.name.toLowerCase().includes(profileSearch.toLowerCase()));
-          const CARD_W = 210;
-          const GAP = 14;
+          const CARD_W = 270;
+          const GAP = 12;
           const scrollToIdx = (idx)=>{
             const el = carouselRef.current;
             if(!el) return;
@@ -4699,30 +4747,30 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             else scrollToIdx(0); // loop
           };
           return (
-          <div style={{width:"100%",maxWidth:560,marginBottom:24}}>
+          <div style={{width:"100%",maxWidth:560,marginBottom:20}}>
             {/* Email banner for accounts without email */}
-            {familyCode && familyCode!=="LOCAL" && !groupEmail && <div style={{margin:"0 0 16px",padding:"10px 14px",background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:12,display:"flex",alignItems:"center",gap:10,animation:"fadeIn 0.4s ease"}}>
-              <span style={{fontSize:16,flexShrink:0}}>📧</span>
+            {familyCode && familyCode!=="LOCAL" && !groupEmail && <div style={{margin:"0 0 14px",padding:"8px 12px",background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:10,display:"flex",alignItems:"center",gap:8,animation:"fadeIn 0.4s ease"}}>
+              <span style={{fontSize:14,flexShrink:0}}>📧</span>
               <div style={{flex:1}}>
                 <input type="email" value={cloudLoginEmail} onChange={e=>setCloudLoginEmail(e.target.value)} placeholder="Votre email pour recevoir vos résultats"
-                  style={{width:"100%",padding:"6px 10px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:8,color:T.white,fontSize:12,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
+                  style={{width:"100%",padding:"5px 8px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:8,color:T.white,fontSize:11,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
                   onKeyDown={e=>{if(e.key==="Enter"&&cloudLoginEmail.trim()){updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}}}/>
               </div>
-              <button onClick={()=>{if(!cloudLoginEmail.trim())return;updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}} style={{padding:"6px 12px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:8,color:T.accent,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:F.body,flexShrink:0}}>OK</button>
+              <button onClick={()=>{if(!cloudLoginEmail.trim())return;updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}} style={{padding:"5px 10px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:8,color:T.accent,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:F.body,flexShrink:0}}>OK</button>
             </div>}
 
-            <p style={{fontSize:10,color:T.gray1,fontWeight:600,letterSpacing:"0.06em",textTransform:"uppercase",marginBottom:12,textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>Mes profils <span style={{color:T.gray2,fontWeight:400}}>({savedProfiles.length})</span></p>
+            <p style={{fontSize:9,color:T.gray2,fontWeight:600,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10,textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>Profils <span style={{color:T.gray3}}>({savedProfiles.length})</span></p>
 
             {/* Search bar — shows when 4+ profiles */}
-            {savedProfiles.length>=4&&<div style={{display:"flex",justifyContent:"center",marginBottom:12}}>
-              <div style={{position:"relative",width:"100%",maxWidth:280}}>
+            {savedProfiles.length>=4&&<div style={{display:"flex",justifyContent:"center",marginBottom:10}}>
+              <div style={{position:"relative",width:"100%",maxWidth:260}}>
                 <input
-                  type="text" placeholder="Rechercher un profil…" value={profileSearch}
+                  type="text" placeholder="Rechercher…" value={profileSearch}
                   onChange={e=>{setProfileSearchTerm(e.target.value);setActiveProfileIdx(0);}}
-                  style={{width:"100%",padding:"8px 12px 8px 32px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:10,color:T.white,fontSize:12,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
+                  style={{width:"100%",padding:"7px 10px 7px 28px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:8,color:T.white,fontSize:11,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
                 />
-                <span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:13,color:T.gray2,pointerEvents:"none"}}>🔍</span>
-                {profileSearch&&<button onClick={()=>{setProfileSearchTerm("");setActiveProfileIdx(0);}} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.gray2,fontSize:14,cursor:"pointer",padding:2}}>✕</button>}
+                <span style={{position:"absolute",left:8,top:"50%",transform:"translateY(-50%)",fontSize:11,color:T.gray2,pointerEvents:"none"}}>🔍</span>
+                {profileSearch&&<button onClick={()=>{setProfileSearchTerm("");setActiveProfileIdx(0);}} style={{position:"absolute",right:6,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.gray2,fontSize:12,cursor:"pointer",padding:2}}>✕</button>}
               </div>
             </div>}
 
@@ -4730,16 +4778,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{position:"relative",display:"flex",alignItems:"center",gap:4}}>
               {/* Left arrow */}
               {filtered.length>1&&<button onClick={()=>scrollDir("left")} aria-label="Précédent" style={{
-                width:36,height:36,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
-                color:T.white,fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
-                fontFamily:F.body,transition:"all 0.2s",backdropFilter:"blur(8px)",
-              }} onMouseEnter={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=`${T.accent}60`;}}
-                 onMouseLeave={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=T.border;}}>‹</button>}
+                width:30,height:30,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
+                color:T.white,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+                fontFamily:F.body,transition:"all 0.2s",
+              }}>‹</button>}
 
               {/* Scrollable track */}
               <div ref={carouselRef} className="pa-carousel" onScroll={handleScroll} style={{
                 display:"flex",gap:GAP,overflowX:"auto",scrollSnapType:"x mandatory",scrollBehavior:"smooth",
-                flex:1,padding:"6px 0 10px",msOverflowStyle:"none",scrollbarWidth:"none",WebkitOverflowScrolling:"touch",
+                flex:1,padding:"4px 0 8px",msOverflowStyle:"none",scrollbarWidth:"none",WebkitOverflowScrolling:"touch",
               }} onKeyDown={e=>{if(e.key==="ArrowLeft"){e.preventDefault();scrollDir("left");}if(e.key==="ArrowRight"){e.preventDefault();scrollDir("right");}}} tabIndex={0}>
                 {/* Spacer so first card can center */}
                 <div style={{minWidth:`calc(50% - ${CARD_W/2}px)`,flexShrink:0}} aria-hidden="true"/>
@@ -4749,7 +4796,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const injuries = (p.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
                   const isJunior = p.age && parseInt(p.age)<16;
                   const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0",Expert:"#a855f7"};
-                  const desc = [p.side&&`Côté ${p.side}`, p.hand].filter(Boolean).join(" · ");
+                  const lvlColor = levelColors[p.level]||T.gray2;
+                  const desc = [p.side&&`${p.side}`, p.hand].filter(Boolean).join(" · ");
                   const stylesStr = styles.length?styles.slice(0,2).join(", "):"";
                   const isActive = i === activeProfileIdx;
                   return (
@@ -4758,66 +4806,61 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                         setPinInput("");setPinError("");setPasswordModal({mode:'unlock',profileName:sp.name,onSuccess:()=>{selectHomeProfile(sp);setPasswordModal(null);}});
                       } else { selectHomeProfile(sp); }
                     }} style={{
-                      background: isActive ? T.accentSoft : `${T.card}cc`,
-                      border: isActive ? `1px solid ${T.accent}50` : `1px solid ${T.border}`,
-                      borderRadius:18,padding:"22px 16px 16px",cursor:"pointer",textAlign:"center",fontFamily:F.body,
+                      background: isActive
+                        ? `linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`
+                        : `${T.card}cc`,
+                      border: isActive ? `1px solid ${lvlColor}40` : `1px solid ${T.border}`,
+                      borderRadius:14,padding:"12px 14px",cursor:"pointer",textAlign:"left",fontFamily:F.body,
                       minWidth:CARD_W,maxWidth:CARD_W,flexShrink:0,scrollSnapAlign:"center",
-                      display:"flex",flexDirection:"column",alignItems:"center",gap:8,position:"relative",
+                      display:"flex",alignItems:"center",gap:12,position:"relative",
                       transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
-                      transform: isActive ? "scale(1.03)" : "scale(0.97)",
-                      opacity: isActive ? 1 : 0.7,
-                      boxShadow: isActive ? `0 8px 32px ${T.accentGlow}, inset 0 1px 0 ${T.gold}15` : "none",
+                      transform: isActive ? "scale(1.02)" : "scale(0.97)",
+                      opacity: isActive ? 1 : 0.6,
+                      boxShadow: isActive ? `0 6px 24px rgba(0,0,0,0.3), 0 0 0 1px ${lvlColor}15` : "none",
                     }}>
-                      {/* Lock toggle (top-left) */}
-                      <div onClick={e=>{e.stopPropagation();
-                        if(sp.locked){
-                          setPinInput("");setPinError("");setPasswordModal({mode:'unlock-toggle',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});
-                        } else {
-                          const pin=getAdminPin();
-                          if(!pin){setPinInput("");setPinError("");setPasswordModal({mode:'setpin',profileName:sp.name,onSuccess:()=>{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);setPasswordModal(null);}});}
-                          else{const updated=toggleProfileLock(sp.name);setSavedProfiles(updated);}
-                        }
-                      }} style={{
-                        position:"absolute",top:6,left:6,width:22,height:22,borderRadius:"50%",
-                        background:sp.locked?"rgba(99,102,241,0.15)":T.accentSoft,
-                        border:`1px solid ${sp.locked?"rgba(99,102,241,0.3)":T.border}`,
-                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,
-                        color:sp.locked?"#a5b4fc":"#475569",
-                        cursor:"pointer",opacity:sp.locked?0.9:0.4,transition:"all 0.2s",zIndex:2,
-                      }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";}}
-                         onMouseLeave={e=>{e.currentTarget.style.opacity=sp.locked?"0.9":"0.4";}}
-                         title={sp.locked?"Déverrouiller":"Verrouiller"}>{sp.locked?"🔒":"🔓"}</div>
+                      {/* Lock icon */}
+                      {sp.locked&&<div style={{position:"absolute",top:4,left:4,fontSize:9,color:"#a5b4fc",opacity:0.7}}>🔒</div>}
                       {/* Delete button */}
-                      {!sp.locked&&<div onClick={e=>{e.stopPropagation();setConfirmModal({message:`Supprimer le profil "${sp.name}" ?`,onConfirm:()=>{const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);cloudDeleteProfileFn(sp.name);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{
-                        position:"absolute",top:6,right:6,width:22,height:22,borderRadius:"50%",
-                        background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.2)",
-                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#ef4444",
-                        cursor:"pointer",opacity:0.5,transition:"all 0.2s",zIndex:2,
-                      }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";e.currentTarget.style.background="rgba(239,68,68,0.25)";}}
-                         onMouseLeave={e=>{e.currentTarget.style.opacity="0.5";e.currentTarget.style.background="rgba(239,68,68,0.1)";}}>🗑</div>}
-                      {/* Avatar */}
-                      <div style={{width:56,height:56,borderRadius:16,
-                        background: isActive 
-                          ? `linear-gradient(135deg,${T.accent}55,${T.gold}40)` 
-                          : `linear-gradient(135deg,${T.accent}30,${T.gold}20)`,
-                        border: isActive ? `2px solid ${T.accent}70` : `1px solid ${T.accent}30`,
-                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,fontWeight:700,
-                        color: isActive ? T.accent : T.gray2,flexShrink:0,transition:"all 0.3s"}}>
-                        {sp.name.charAt(0).toUpperCase()}
+                      {!sp.locked&&<div onClick={e=>{e.stopPropagation();setConfirmModal({message:`Supprimer "${sp.name}" ?`,onConfirm:()=>{const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);cloudDeleteProfileFn(sp.name);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{
+                        position:"absolute",top:4,right:4,width:18,height:18,borderRadius:"50%",
+                        background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.15)",
+                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,color:"#ef4444",
+                        cursor:"pointer",opacity:0.4,transition:"all 0.2s",zIndex:2,
+                      }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";}}
+                         onMouseLeave={e=>{e.currentTarget.style.opacity="0.4";}}>✕</div>}
+
+                      {/* Avatar — compact circle with initial + level color ring */}
+                      <div style={{
+                        width:44,height:44,borderRadius:12,flexShrink:0,
+                        background:`linear-gradient(135deg, ${lvlColor}25, ${lvlColor}10)`,
+                        border:`2px solid ${isActive ? lvlColor+"70" : lvlColor+"30"}`,
+                        display:"flex",alignItems:"center",justifyContent:"center",
+                        transition:"all 0.3s",
+                      }}>
+                        <span style={{fontSize:18,fontWeight:700,color:isActive?lvlColor:T.gray2,fontFamily:F.editorial,transition:"color 0.3s"}}>
+                          {sp.name.charAt(0).toUpperCase()}
+                        </span>
                       </div>
-                      {/* Name */}
-                      <div style={{fontSize:15,fontWeight:700,color: isActive ? T.cream : T.gray1,lineHeight:1.2,transition:"color 0.3s",fontFamily:F.editorial}}>{sp.name}</div>
-                      {/* Level badge */}
-                      {p.level&&<div style={{fontSize:9,fontWeight:600,color:levelColors[p.level]||T.gray2,background:`${levelColors[p.level]||T.gray2}18`,padding:"2px 10px",borderRadius:10,letterSpacing:"0.03em",textTransform:"uppercase",fontFamily:F.body}}>{p.level}{isJunior?" · Junior":""}</div>}
-                      {/* Desc */}
-                      {desc&&<div style={{fontSize:10,color:T.gray2,lineHeight:1.3,fontFamily:F.body}}>{desc}</div>}
-                      {/* Styles */}
-                      {stylesStr&&<div style={{fontSize:9,color:T.gray2,fontStyle:"italic",fontFamily:F.body}}>{stylesStr}</div>}
-                      {/* Injuries */}
-                      {injuries.length>0&&<div style={{fontSize:9,color:"#ef4444",opacity:0.8}}>🩹 {injuries.join(", ")}</div>}
-                      {/* CTA */}
-                      <div style={{marginTop:6,fontSize:10,color: sp.locked ? "#a5b4fc" : isActive ? T.accent : T.gray2,fontWeight:600,letterSpacing:"0.04em",textTransform:"uppercase",transition:"color 0.3s",fontFamily:F.body}}>
-                        {sp.locked ? "🔒 Protégé" : isActive ? "▶ Ouvrir" : "Ouvrir →"}
+
+                      {/* Text content */}
+                      <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
+                        {/* Name + level */}
+                        <div style={{display:"flex",alignItems:"center",gap:6}}>
+                          <span style={{fontFamily:F.editorial,fontSize:15,fontWeight:700,fontStyle:"italic",color:isActive?T.cream:T.gray1,lineHeight:1.2,transition:"color 0.3s",
+                            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sp.name}</span>
+                          {p.level&&<span style={{fontSize:7,fontWeight:700,color:lvlColor,background:`${lvlColor}18`,padding:"1px 6px",borderRadius:6,letterSpacing:"0.04em",textTransform:"uppercase",flexShrink:0}}>{p.level}{isJunior?" Jr":""}</span>}
+                        </div>
+                        {/* Info line — side, style */}
+                        <div style={{fontSize:9,color:T.gray2,lineHeight:1.3,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                          {[desc, stylesStr].filter(Boolean).join(" · ") || "Profil joueur"}
+                        </div>
+                        {/* Injuries subtle */}
+                        {injuries.length>0&&<div style={{fontSize:8,color:"#ef4444",opacity:0.7,marginTop:1}}>🩹 {injuries.join(", ")}</div>}
+                      </div>
+
+                      {/* Right arrow / action */}
+                      <div style={{flexShrink:0,display:"flex",alignItems:"center"}}>
+                        <span style={{fontSize:14,color:isActive?T.accent:T.gray3,transition:"color 0.3s"}}>{sp.locked?"🔒":"›"}</span>
                       </div>
                     </button>
                   );
@@ -4828,26 +4871,22 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
               {/* Right arrow */}
               {filtered.length>1&&<button onClick={()=>scrollDir("right")} aria-label="Suivant" style={{
-                width:36,height:36,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
-                color:T.white,fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
-                fontFamily:F.body,transition:"all 0.2s",backdropFilter:"blur(8px)",
-              }} onMouseEnter={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=`${T.accent}60`;}}
-                 onMouseLeave={e=>{e.currentTarget.style.background=T.accentSoft;e.currentTarget.style.borderColor=T.border;}}>›</button>}
+                width:30,height:30,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
+                color:T.white,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+                fontFamily:F.body,transition:"all 0.2s",
+              }}>›</button>}
             </div>
 
             {/* Dot indicators — clickable */}
-            {filtered.length>1&&<div style={{display:"flex",justifyContent:"center",gap:7,marginTop:10}}>
+            {filtered.length>1&&<div style={{display:"flex",justifyContent:"center",gap:5,marginTop:8}}>
               {filtered.map((_,i)=><button key={i} onClick={()=>scrollToIdx(i)} aria-label={`Profil ${i+1}`} style={{
-                width: i===activeProfileIdx ? 18 : 7,height:7,borderRadius:4,border:"none",cursor:"pointer",padding:0,
+                width: i===activeProfileIdx ? 16 : 6,height:6,borderRadius:3,border:"none",cursor:"pointer",padding:0,
                 background: i===activeProfileIdx ? T.accent : `${T.gray3}`,
                 transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
               }}/>)}
             </div>}
 
-            {/* Keyboard hint */}
-            {filtered.length>1&&<p style={{fontSize:8,color:T.gray3,textAlign:"center",marginTop:6,letterSpacing:"0.04em",fontFamily:F.body}}>← → Flèches ou swipe pour naviguer</p>}
-
-            {profileSearch&&filtered.length===0&&<p style={{fontSize:11,color:T.gray2,textAlign:"center",marginTop:8,fontFamily:F.body}}>Aucun profil trouvé pour "{profileSearch}"</p>}
+            {profileSearch&&filtered.length===0&&<p style={{fontSize:10,color:T.gray2,textAlign:"center",marginTop:6,fontFamily:F.body}}>Aucun profil trouvé pour "{profileSearch}"</p>}
           </div>);
         })()}
 
