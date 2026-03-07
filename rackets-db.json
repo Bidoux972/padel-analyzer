@@ -7073,7 +7073,7 @@
     },
     "proPlayerInfo": {
       "name": "Paula Josemaría",
-      "rank": "N°3 mondiale",
+      "rank": "N°4 mondiale",
       "context": "La raquette de Paula Josemaría, gauchère redoutable surnommée 'Dinamita'."
     }
   },
@@ -7746,7 +7746,7 @@
     "proPlayerInfo": {
       "name": "Ariana Sánchez",
       "rank": "N°3 mondiale",
-      "context": "Raquette d'Ari Sánchez en 2025. La joueuse a rejoint Adidas pour la saison 2026."
+      "context": "Raquette d'Ari Sánchez, N°3 mondiale. Magie et technique au service d'un jeu complet."
     }
   },
   {
@@ -8710,8 +8710,8 @@
     },
     "proPlayerInfo": {
       "name": "Paula Josemaría",
-      "rank": "N°3 mondiale",
-      "context": "Raquette signature de 'Paulita Dinamita', gauchère explosive, n°3 mondiale. Édition limitée avec son design exclusif."
+      "rank": "N°4 mondiale",
+      "context": "Raquette signature de 'Paulita Dinamita', gauchère explosive. Édition limitée avec son design exclusif."
     }
   },
   {
@@ -9032,6 +9032,11 @@
         "finition mate avec texture granuleuse intégrée",
         "design minimaliste épuré"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Andrea Ustero",
+      "rank": "N°7 mondiale",
+      "context": "Gauchère prodigieuse, Andrea Ustero fait partie de la nouvelle génération du padel féminin."
     }
   },
   {
@@ -9088,11 +9093,7 @@
       }
     ],
     "targetProfile": "Joueurs experts défensifs ou polyvalents-contrôle. Le joueur de droite ultime, ou le défenseur qui ne rate jamais. Aussi parfaite pour les joueurs avancés qui veulent monter de niveau en toute sécurité.",
-    "proPlayerInfo": {
-      "name": "Beatriz González",
-      "rank": "N°5 mondiale",
-      "context": "La Gravity Pro est la raquette de contrôle des joueuses techniques. Bea González l'utilise pour son jeu de placement."
-    },
+    "proPlayerInfo": null,
     "ean": null,
     "availability": "available",
     "junior": false,
@@ -12476,6 +12477,11 @@
         "absence de technologies marquées visiblement",
         "motifs géométriques beiges latéraux"
       ]
+    },
+    "proPlayerInfo": {
+      "name": "Sofia Araujo",
+      "rank": "N°8 mondiale",
+      "context": "La Portugaise Sofia Araujo impose son jeu puissant avec la Valkiria Pro."
     }
   },
   {
@@ -15628,11 +15634,7 @@
       ],
       "yearClues": "LA10 Quantum 2025 avec coloris bleu/noir et marquage 12K"
     },
-    "proPlayerInfo": {
-      "name": "Tamara Icardo",
-      "rank": "N°10 mondiale",
-      "context": "La gamme LA10 est associée aux joueuses Nox sur le circuit."
-    }
+    "proPlayerInfo": null
   },
   {
     "id": "nox-tl10-quantum-12k-2025",
@@ -19895,6 +19897,264 @@
         "style graphique épuré caractéristique 2026",
         "logo W simplifié sur le manche"
       ]
+    }
+  },
+  {
+    "id": "bullpadel-pearl-2026",
+    "name": "Bullpadel Pearl 2026",
+    "shortName": "Pearl 26",
+    "brand": "Bullpadel",
+    "shape": "Diamant",
+    "weight": "355-365g",
+    "balance": "Haute",
+    "surface": "Fibrix (carbone + fibre de verre)",
+    "core": "MultiEva triple densité",
+    "antivib": "Vibradrive",
+    "price": "~300€",
+    "player": "Femme / Avancé",
+    "imageUrl": "",
+    "year": 2026,
+    "category": "avance",
+    "junior": false,
+    "womanLine": true,
+    "proPlayerInfo": {
+      "name": "Beatriz González",
+      "rank": "N°6 mondiale",
+      "context": "Raquette signature de Bea González. Design perlé blanc avec accents dorés. Easy Power — puissance accessible et jeu fluide."
+    },
+    "scores": {
+      "Puissance": 8.8,
+      "Contrôle": 8.2,
+      "Confort": 8.0,
+      "Spin": 8.4,
+      "Maniabilité": 8.3,
+      "Tolérance": 7.9
+    },
+    "verdict": "L'élégance au service de la puissance. La Pearl est la signature de Bea González — un diamant féminin qui frappe fort sans jamais forcer. Le noyau MultiEva triple densité offre une explosion mesurée : puissante en attaque, douce en défense. Le système CustomWeight permet d'ajuster l'équilibre au gramme près. C'est la raquette qui prouve que la puissance peut être gracieuse.",
+    "editorial": "La Bullpadel Pearl 2026 incarne la philosophie 'Easy Power' de Bullpadel — une puissance qui vient naturellement, sans effort. Conçue en étroite collaboration avec Beatriz González, N°6 mondiale, cette raquette en diamant combine le Fibrix (mélange carbone/fibre de verre) pour un toucher confortable et progressif avec le noyau MultiEva à triple densité qui dose l'énergie selon la frappe. Le système Air React Channel, innovation aérodynamique emblématique de Bullpadel, optimise la vitesse du swing grâce à un canal creux au cœur de la structure. Le Trinamic renforce l'intégrité structurelle avec sa géométrie triangulaire inversée. Et le CustomWeight permet de personnaliser l'équilibre avec des plaques de 3g positionnées en tête. Le Vibradrive dans le manche absorbe les vibrations sur les frappes décentrées. Design blanc perlé avec accents dorés — l'esthétique la plus raffinée du catalogue Bullpadel.",
+    "targetProfile": "Joueuses avancées à expertes qui cherchent une raquette offensive puissante mais accessible. Idéale pour les joueuses de gauche qui smashent et veulent de l'explosivité sans fatigue. Le système CustomWeight la rend adaptable à tous les profils. Parfaite pour celles qui passent de l'intermédiaire à la compétition.",
+    "techHighlights": [
+      {
+        "label": "MultiEva",
+        "value": "Triple densité",
+        "detail": "Trois couches EVA de densités différentes — rigide en extérieur pour la puissance, souple au centre pour le confort"
+      },
+      {
+        "label": "Fibrix",
+        "value": "Carbone + fibre de verre",
+        "detail": "Surface de frappe hybride offrant toucher progressif et confort sans sacrifier la réactivité"
+      },
+      {
+        "label": "Air React Channel",
+        "value": "Aérodynamisme",
+        "detail": "Canal creux au cœur de la raquette pour une meilleure circulation d'air et une vitesse de swing accrue"
+      },
+      {
+        "label": "CustomWeight",
+        "value": "4 x 3g",
+        "detail": "Système de plaques amovibles en tête pour personnaliser l'équilibre — jusqu'à +12g et +1cm de balance"
+      },
+      {
+        "label": "Vibradrive",
+        "value": "Anti-vibrations",
+        "detail": "Élastomère haute élasticité dans le manche pour absorber les vibrations sur les frappes décentrées"
+      }
+    ],
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "PEARL",
+        "Bea González",
+        "Easy Power"
+      ],
+      "colors": [
+        "blanc perlé",
+        "doré",
+        "bleu clair",
+        "gris"
+      ],
+      "tech": [
+        "Trinamic",
+        "Air React Channel",
+        "CustomWeight",
+        "Vibradrive"
+      ],
+      "design": [
+        "finition blanche nacrée",
+        "accents dorés sur le cadre et le cœur",
+        "motif perlé subtil",
+        "design premium féminin élégant"
+      ],
+      "yearClues": "Pearl 2026 avec finition nacrée blanche et détails dorés, design Bea González"
+    }
+  },
+  {
+    "id": "bullpadel-pearl-tour-final-2026",
+    "name": "Bullpadel Pearl Tour Final 2026",
+    "shortName": "Pearl TF 26",
+    "brand": "Bullpadel",
+    "shape": "Diamant",
+    "weight": "355-365g",
+    "balance": "Haute",
+    "surface": "Fibrix (carbone + fibre de verre)",
+    "core": "MultiEva triple densité",
+    "antivib": "Vibradrive",
+    "price": "~320€",
+    "player": "Femme / Expert",
+    "imageUrl": "",
+    "year": 2026,
+    "category": "expert",
+    "junior": false,
+    "womanLine": true,
+    "proPlayerInfo": {
+      "name": "Claudia Fernández",
+      "rank": "N°5 mondiale",
+      "context": "Édition Tour Final de la Pearl, raquette de Claudia Fernández. Version compétition avec carbone renforcé."
+    },
+    "scores": {
+      "Puissance": 9.0,
+      "Contrôle": 8.4,
+      "Confort": 7.6,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.7
+    },
+    "verdict": "La Pearl passe en mode compétition. L'édition Tour Final pousse les curseurs de la Pearl standard vers la performance pure — plus de carbone, plus de rigidité, plus d'explosivité. C'est la raquette de Claudia Fernández, N°5 mondiale, qui frappe avec une autorité rare. Réservée aux joueuses qui savent ce qu'elles font et qui veulent le faire plus fort.",
+    "editorial": "La Pearl Tour Final est la version compétition de la gamme Pearl de Bullpadel. Là où la Pearl standard mise sur l'accessibilité de la puissance ('Easy Power'), la Tour Final pousse la rigidité et l'explosivité d'un cran pour les joueuses de très haut niveau. Le Fibrix est ici enrichi d'une couche de carbone supplémentaire pour une réponse plus sèche et directe. Le noyau MultiEva conserve sa structure triple densité mais avec une couche externe plus ferme, taillée pour les frappes à pleine puissance. Le Trinamic et l'Air React Channel sont présents, offrant stabilité structurelle et aérodynamisme. C'est la raquette que Claudia Fernández utilise en tournoi — une arme de compétition qui ne fait pas de concessions. Le CustomWeight permet les ajustements fins, et le Vibradrive protège le bras sur les sessions longues. Design exclusif Tour Final.",
+    "targetProfile": "Joueuses expertes en compétition (3+ sessions/semaine). Raquette de tournoi qui exige une technique aboutie. Parfaite pour les joueuses offensives du circuit ou les compétitrices régionales qui veulent le top de la gamme Pearl. Pas adaptée aux joueuses intermédiaires — la Pearl standard est meilleure pour la progression.",
+    "techHighlights": [
+      {
+        "label": "MultiEva TF",
+        "value": "Triple densité renforcée",
+        "detail": "Version compétition du MultiEva avec couche externe plus ferme pour une frappe plus sèche"
+      },
+      {
+        "label": "Fibrix Pro",
+        "value": "Carbone renforcé",
+        "detail": "Surface de frappe avec couche de carbone supplémentaire pour plus de rigidité et de réactivité"
+      },
+      {
+        "label": "Air React Channel",
+        "value": "Aérodynamisme",
+        "detail": "Canal creux au cœur pour vitesse de swing optimisée"
+      },
+      {
+        "label": "Trinamic",
+        "value": "Cœur triangulaire",
+        "detail": "Géométrie inversée avec entrées/sorties diagonales pour optimiser chaque frappe"
+      },
+      {
+        "label": "CustomWeight",
+        "value": "Personnalisable",
+        "detail": "Plaques de 3g pour ajuster l'équilibre selon les préférences de la joueuse"
+      }
+    ],
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "PEARL",
+        "TOUR FINAL",
+        "Claudia Fernández"
+      ],
+      "colors": [
+        "blanc",
+        "noir",
+        "doré",
+        "rouge"
+      ],
+      "tech": [
+        "Trinamic",
+        "Air React Channel",
+        "Tour Final"
+      ],
+      "design": [
+        "édition Tour Final distincte",
+        "accents noirs et dorés",
+        "finition premium compétition"
+      ],
+      "yearClues": "Pearl Tour Final 2026 — édition compétition avec marquage Tour Final"
+    }
+  },
+  {
+    "id": "macron-tridens-stealth-pro-2026",
+    "name": "Macron Tridens Stealth Pro 2026",
+    "shortName": "Tridens Stealth Pro",
+    "brand": "Macron",
+    "shape": "Goutte d'eau",
+    "weight": "355-370g",
+    "balance": "Moyenne-haute",
+    "surface": "Carbone 12K",
+    "core": "EVA HR",
+    "antivib": "",
+    "price": "~280€",
+    "player": "Femme / Avancé-Expert",
+    "imageUrl": "",
+    "year": 2026,
+    "category": "avance",
+    "junior": false,
+    "womanLine": false,
+    "proPlayerInfo": {
+      "name": "Tamara Icardo",
+      "rank": "N°9 mondiale",
+      "context": "Raquette de Tamara Icardo, N°9 mondiale. La marque italienne Macron fait son entrée sur le circuit professionnel féminin."
+    },
+    "scores": {
+      "Puissance": 8.5,
+      "Contrôle": 8.7,
+      "Confort": 7.8,
+      "Spin": 8.3,
+      "Maniabilité": 8.2,
+      "Tolérance": 8.4
+    },
+    "verdict": "L'outsider italien qui bouscule les codes. Macron, géant du textile sportif, débarque dans le padel avec la Tridens Stealth Pro — et ne fait pas dans la demi-mesure. Goutte d'eau en carbone 12K, polyvalente et technique, c'est la raquette surprise du circuit. Tamara Icardo, N°9 mondiale, l'a adoptée. Quand une marque de cette envergure s'engage, le padel change de dimension.",
+    "editorial": "Macron est un nom qui résonne dans le football, le rugby et le basketball — équipementier de clubs majeurs à travers l'Europe. Son entrée dans le padel avec la Tridens Stealth Pro n'est pas un coup d'essai mais une déclaration d'intention. La raquette est construite autour d'une surface en carbone 12K qui délivre une réponse franche et précise, associée à un noyau EVA HR pour un équilibre entre puissance et confort. La forme goutte d'eau offre la polyvalence nécessaire au jeu complet de Tamara Icardo — attaque au smash, défense au lob, contrôle à la volée. Le design 'Stealth' joue sur les codes militaires avec une finition mate sobre et technique. C'est une raquette qui parle aux joueurs et joueuses qui cherchent une alternative crédible aux mastodontes Bullpadel, Head et Nox. Le fait que la N°9 mondiale lui fasse confiance en dit long sur la qualité de fabrication.",
+    "targetProfile": "Joueurs et joueuses avancés à experts polyvalents. La Tridens Stealth Pro convient à ceux qui alternent attaque et défense selon les situations. Recommandée pour les joueurs curieux d'une alternative aux marques dominantes, avec un rapport qualité-prix compétitif. Le choix de Tamara Icardo valide la crédibilité de cette raquette en compétition.",
+    "techHighlights": [
+      {
+        "label": "Carbone 12K",
+        "value": "Surface de frappe",
+        "detail": "Carbone haute densité 12K pour une réponse franche et un contrôle précis à chaque frappe"
+      },
+      {
+        "label": "EVA HR",
+        "value": "Noyau haute résilience",
+        "detail": "Mousse EVA à haute résilience offrant un bon retour d'énergie et un confort maîtrisé"
+      },
+      {
+        "label": "Stealth Design",
+        "value": "Finition mate",
+        "detail": "Design sobre et technique inspiré des codes militaires — une esthétique unique sur le circuit"
+      },
+      {
+        "label": "Goutte d'eau",
+        "value": "Polyvalence",
+        "detail": "Forme optimale pour l'équilibre entre puissance offensive et contrôle défensif"
+      }
+    ],
+    "visualSignature": {
+      "texts": [
+        "Macron",
+        "TRIDENS",
+        "STEALTH",
+        "PRO"
+      ],
+      "colors": [
+        "noir",
+        "gris anthracite",
+        "blanc",
+        "vert olive"
+      ],
+      "tech": [
+        "Tridens",
+        "Stealth Pro"
+      ],
+      "design": [
+        "finition mate militaire",
+        "logo Macron",
+        "design sobre et technique",
+        "lignes angulaires"
+      ],
+      "yearClues": "Tridens Stealth Pro 2026 avec finition mate noire et marquage Macron"
     }
   }
 ]
