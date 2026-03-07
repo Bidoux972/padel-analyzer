@@ -34,34 +34,34 @@ const T = {
 
 // ─── MAGAZINE THEME — Warm black, gold-dominant, luxury press ──
 const TM = {
-  bg:       "#0D0B08",
-  card:     "#15120D",
-  surface:  "#1D1914",
-  border:   "#2C261E",
+  bg:       "#14100A",
+  card:     "#1E1812",
+  surface:  "#261F16",
+  border:   "#3A3028",
   accent:   "#D4A856",
-  accentSoft: "rgba(212,168,86,0.12)",
-  accentGlow: "rgba(212,168,86,0.25)",
+  accentSoft: "rgba(212,168,86,0.15)",
+  accentGlow: "rgba(212,168,86,0.30)",
   cream:    "#FAF7F0",
   white:    "#F5F0E8",
-  gray1:    "#BDB6A8",
-  gray2:    "#807A6E",
-  gray3:    "#4D483E",
+  gray1:    "#C4BAA8",
+  gray2:    "#8A7E6E",
+  gray3:    "#554D3E",
 };
 
 // ─── COLLECTION THEME — Cool black, emerald accent, showroom ──
 const TC = {
-  bg:       "#090B10",
-  card:     "#0F1218",
-  surface:  "#161A22",
-  border:   "#222830",
+  bg:       "#0A0D16",
+  card:     "#111520",
+  surface:  "#181D2A",
+  border:   "#252B3A",
   accent:   "#3DB8A0",
-  accentSoft: "rgba(61,184,160,0.10)",
-  accentGlow: "rgba(61,184,160,0.20)",
-  cream:    "#F0F2F7",
-  white:    "#E8ECF2",
-  gray1:    "#A8B0BE",
-  gray2:    "#6B7385",
-  gray3:    "#3E4452",
+  accentSoft: "rgba(61,184,160,0.12)",
+  accentGlow: "rgba(61,184,160,0.22)",
+  cream:    "#EDF0F7",
+  white:    "#E0E5F0",
+  gray1:    "#A0AABE",
+  gray2:    "#646E85",
+  gray3:    "#3A4258",
 };
 
 const F = {
@@ -4914,66 +4914,73 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* ============================================================ */}
         <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1,display:"flex",flexDirection:"column",gap:14}} className="pa-stagger">
 
-          {/* MAGAZINE — Hero card */}
+          {/* MAGAZINE — Warm luxury gold card */}
           <button onClick={()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} className="pa-card" style={{
             width:"100%",borderRadius:22,cursor:"pointer",position:"relative",overflow:"hidden",
-            background:`linear-gradient(160deg, ${T.card} 0%, rgba(212,168,86,0.08) 50%, ${T.surface} 100%)`,
-            border:`1px solid ${T.gold}35`,padding:0,textAlign:"left",
-            boxShadow:`0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 ${T.gold}15`,
+            background:`linear-gradient(160deg, #1E1812 0%, #261F16 40%, #1A1510 100%)`,
+            border:`1px solid ${T.gold}40`,padding:0,textAlign:"left",
+            boxShadow:`0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(212,168,86,0.08), inset 0 1px 0 ${T.gold}20`,
           }}>
-            {/* Gold accent line */}
-            <div style={{position:"absolute",top:0,left:"10%",right:"10%",height:2,background:`linear-gradient(90deg, transparent, ${T.gold}80, transparent)`,borderRadius:1}}/>
-            {/* Glow */}
-            <div style={{position:"absolute",top:"-30%",right:"-10%",width:180,height:180,borderRadius:"50%",background:`radial-gradient(circle, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.4,pointerEvents:"none"}}/>
+            {/* Gold accent line top */}
+            <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, transparent 5%, ${T.gold} 30%, ${T.gold}80 70%, transparent 95%)`,borderRadius:1}}/>
+            {/* Warm glow top-right */}
+            <div style={{position:"absolute",top:"-20%",right:"-5%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, rgba(212,168,86,0.20) 0%, transparent 65%)`,pointerEvents:"none"}}/>
+            {/* Warm glow bottom-left */}
+            <div style={{position:"absolute",bottom:"-10%",left:"-5%",width:150,height:150,borderRadius:"50%",background:`radial-gradient(circle, rgba(212,168,86,0.10) 0%, transparent 65%)`,pointerEvents:"none"}}/>
             
-            <div style={{padding:"24px 24px 20px"}}>
+            <div style={{padding:"24px 24px 20px",position:"relative",zIndex:1}}>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                <span style={{fontSize:9,fontWeight:700,color:"#0B0E0D",background:T.gold,padding:"3px 10px",borderRadius:6,textTransform:"uppercase",letterSpacing:"0.06em",fontFamily:F.body}}>2026</span>
-                <span style={{fontSize:9,fontWeight:600,color:T.gold,letterSpacing:"0.06em",textTransform:"uppercase",fontFamily:F.body}}>Magazine Padel</span>
+                <span style={{fontSize:9,fontWeight:800,color:"#14100A",background:`linear-gradient(135deg, ${T.gold}, #c49a40)`,padding:"4px 12px",borderRadius:6,textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:F.body,boxShadow:`0 2px 8px rgba(212,168,86,0.35)`}}>2026</span>
+                <span style={{fontSize:9,fontWeight:600,color:T.gold,letterSpacing:"0.06em",textTransform:"uppercase",fontFamily:F.body}}>Le Magazine</span>
               </div>
-              <div style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,lineHeight:1.25,marginBottom:8}}>Tendances, analyses<br/>& fiches techniques</div>
-              <div style={{fontSize:12,color:T.gray1,fontFamily:F.body,lineHeight:1.5,marginBottom:14}}>Les meilleures raquettes classées par catégorie. Top Puissance, Contrôle, Polyvalence…</div>
-              {/* Category pills */}
+              <div style={{fontFamily:F.editorial,fontSize:24,fontWeight:700,fontStyle:"italic",color:"#FAF7F0",lineHeight:1.25,marginBottom:8}}>Tendances, analyses<br/>& fiches techniques</div>
+              <div style={{fontSize:12,color:"#C4BAA8",fontFamily:F.body,lineHeight:1.5,marginBottom:14}}>Les meilleures raquettes classées par catégorie. Top Puissance, Contrôle, Polyvalence…</div>
+              {/* Category pills — gold toned */}
               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                {["Puissance","Contrôle","Confort","Polyvalence"].map(c=><span key={c} style={{fontSize:9,fontWeight:600,padding:"4px 10px",borderRadius:8,background:`${T.gold}12`,border:`1px solid ${T.gold}25`,color:T.gold,fontFamily:F.body}}>{c}</span>)}
+                {["Puissance","Contrôle","Confort","Polyvalence"].map(c=><span key={c} style={{fontSize:9,fontWeight:600,padding:"4px 10px",borderRadius:8,background:"rgba(212,168,86,0.15)",border:"1px solid rgba(212,168,86,0.30)",color:T.gold,fontFamily:F.body}}>{c}</span>)}
               </div>
             </div>
-            {/* Bottom bar */}
-            <div style={{padding:"12px 24px",borderTop:`1px solid ${T.gold}15`,display:"flex",alignItems:"center",justifyContent:"space-between",background:`${T.gold}06`}}>
-              <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Explorer le magazine</span>
+            {/* Bottom bar — warm */}
+            <div style={{padding:"12px 24px",borderTop:"1px solid rgba(212,168,86,0.20)",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(212,168,86,0.06)"}}>
+              <span style={{fontSize:11,fontWeight:600,color:"#FAF7F0",fontFamily:F.editorial,fontStyle:"italic"}}>Explorer le magazine</span>
               <span style={{fontSize:18,color:T.gold}}>→</span>
             </div>
           </button>
 
-          {/* CATALOGUE — Data-driven card */}
+          {/* COLLECTION — Cool blue/emerald showroom card */}
           <button onClick={()=>{setCatalogSearch("");resetCatFilters();setScreen("catalog");}} className="pa-card" style={{
             width:"100%",borderRadius:22,cursor:"pointer",position:"relative",overflow:"hidden",
-            background:`linear-gradient(160deg, ${T.card} 0%, rgba(61,176,107,0.06) 50%, ${T.surface} 100%)`,
-            border:`1px solid ${T.green}25`,padding:0,textAlign:"left",
-            boxShadow:"0 8px 28px rgba(0,0,0,0.25)",
+            background:`linear-gradient(160deg, #111520 0%, #181D2A 40%, #0F1320 100%)`,
+            border:`1px solid rgba(61,184,160,0.25)`,padding:0,textAlign:"left",
+            boxShadow:`0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(61,184,160,0.06), inset 0 1px 0 rgba(61,184,160,0.12)`,
           }}>
-            <div style={{padding:"22px 24px 18px",display:"flex",alignItems:"center",gap:18}}>
-              {/* Big number */}
+            {/* Emerald accent line top */}
+            <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, transparent 5%, #3DB8A0 30%, rgba(61,184,160,0.6) 70%, transparent 95%)`}}/>
+            {/* Cool glow top-right */}
+            <div style={{position:"absolute",top:"-20%",right:"-5%",width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle, rgba(61,184,160,0.12) 0%, transparent 65%)",pointerEvents:"none"}}/>
+            
+            <div style={{padding:"22px 24px 18px",display:"flex",alignItems:"center",gap:18,position:"relative",zIndex:1}}>
+              {/* Big number — emerald */}
               <div style={{flexShrink:0,textAlign:"center",minWidth:80}}>
-                <div style={{fontSize:38,fontWeight:900,color:T.green,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{totalDBCount}</div>
-                <div style={{fontSize:8,color:T.gray2,textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:F.body,marginTop:2}}>raquettes</div>
+                <div style={{fontSize:40,fontWeight:900,color:"#3DB8A0",fontFamily:"'Outfit',sans-serif",lineHeight:1,textShadow:"0 0 20px rgba(61,184,160,0.25)"}}>{totalDBCount}</div>
+                <div style={{fontSize:8,color:"#646E85",textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:F.body,marginTop:2}}>raquettes</div>
               </div>
               <div style={{flex:1}}>
-                <div style={{fontFamily:F.editorial,fontSize:18,fontWeight:700,color:T.cream,lineHeight:1.3,marginBottom:4,fontStyle:"italic"}}>La Collection</div>
-                <div style={{fontSize:11,color:T.gray1,fontFamily:F.body,lineHeight:1.5}}>Recherche, filtres avancés, fiches détaillées. Toutes marques, toutes gammes.</div>
+                <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:"#EDF0F7",lineHeight:1.3,marginBottom:4,fontStyle:"italic"}}>La Collection</div>
+                <div style={{fontSize:11,color:"#A0AABE",fontFamily:F.body,lineHeight:1.5}}>Recherche, filtres avancés, fiches détaillées. Toutes marques, toutes gammes.</div>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginTop:6}}>
                   <span style={{fontSize:8,fontWeight:700,color:"#fff",background:"linear-gradient(135deg, #7c3aed, #6d28d9)",padding:"3px 8px",borderRadius:6,display:"inline-flex",alignItems:"center",gap:3}}>
                     <svg width={8} height={8} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
                     NEW 2026
                   </span>
-                  <span style={{fontSize:9,color:T.gray2,fontFamily:F.body}}>Dernières sorties disponibles</span>
+                  <span style={{fontSize:9,color:"#646E85",fontFamily:F.body}}>Dernières sorties</span>
                 </div>
               </div>
             </div>
-            {/* Bottom bar */}
-            <div style={{padding:"10px 24px",borderTop:`1px solid ${T.green}15`,display:"flex",alignItems:"center",justifyContent:"space-between",background:`${T.green}06`}}>
-              <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Parcourir la collection</span>
-              <span style={{fontSize:18,color:T.green}}>→</span>
+            {/* Bottom bar — cool */}
+            <div style={{padding:"10px 24px",borderTop:"1px solid rgba(61,184,160,0.15)",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(61,184,160,0.04)"}}>
+              <span style={{fontSize:11,fontWeight:600,color:"#EDF0F7",fontFamily:F.editorial,fontStyle:"italic"}}>Parcourir la collection</span>
+              <span style={{fontSize:18,color:"#3DB8A0"}}>→</span>
             </div>
           </button>
         </div>
