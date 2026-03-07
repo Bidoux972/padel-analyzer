@@ -257,14 +257,23 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
     // 2. Dynamic articles from DB — pro players 2026 not already curated
     const curatedIds = new Set(FEATURED_NEWS.map(n => n.racketId));
     const tagColors = ["#ef4444","#E8622A","#a855f7","#3b82f6","#D4A856","#22c55e","#ec4899","#14b8a6"];
+    const pickColor = () => tagColors[Math.floor(Math.random()*tagColors.length)];
+    const lastName = (p) => p.split(" ").pop();
     const dynamicTemplates = [
-      (r,p) => ({ tag:"SIGNATURE", headline:`${p} choisit la ${r.shortName||r.name}`, subtitle:`${r.brand} dévoile la raquette signature de ${p.split(" ").pop()}. Notre verdict.`, tagColor:tagColors[Math.floor(Math.random()*tagColors.length)] }),
-      (r,p) => ({ tag:"2026", headline:`${r.shortName||r.name} : le test complet`, subtitle:`${r.brand} ${r.year}. ${r.shape}, ${r.weight||""}. On a testé, voici notre avis.`, tagColor:tagColors[Math.floor(Math.random()*tagColors.length)] }),
-      (r,p) => ({ tag:"PRO", headline:`Avec la ${r.shortName||r.name}, ${p.split(" ").pop()} vise le titre`, subtitle:`Nouvelle saison, nouvelle arme. ${r.brand} mise sur l'innovation pour ${p}.`, tagColor:tagColors[Math.floor(Math.random()*tagColors.length)] }),
+      (r,p) => ({ tag:"SIGNATURE", headline:`${p} signe la ${r.shortName||r.name}`, subtitle:`${r.brand} dévoile la raquette signature de ${lastName(p)}. Notre verdict.`, tagColor:pickColor() }),
+      (r,p) => ({ tag:"TEST", headline:`${r.shortName||r.name} : notre test terrain`, subtitle:`${r.brand} ${r.year}. ${r.shape}${r.weight?", "+r.weight:""}. On l'a testée, voici notre avis.`, tagColor:pickColor() }),
+      (r,p) => ({ tag:"PRO TOUR", headline:`${lastName(p)} monte en puissance avec ${r.brand}`, subtitle:`Nouvelle saison, nouvelle arme. La ${r.shortName||r.name} fait parler d'elle sur le circuit.`, tagColor:pickColor() }),
+      (r,p) => ({ tag:"FOCUS", headline:`Pourquoi ${lastName(p)} a choisi cette ${r.shape}`, subtitle:`${r.brand} ${r.shortName||r.name} — les raisons d'un choix stratégique pour ${r.year}.`, tagColor:pickColor() }),
+      (r,p) => ({ tag:"DUEL", headline:`${r.shortName||r.name} vs la concurrence`, subtitle:`Face aux ténors de ${r.year}, comment se place la pala de ${lastName(p)} ? Comparatif.`, tagColor:pickColor() }),
+      (r,p) => ({ tag:"DÉCRYPTAGE", headline:`${r.brand} ${r.year} : ce qui change vraiment`, subtitle:`La ${r.shortName||r.name} de ${lastName(p)} innove. On décrypte les technologies clés.`, tagColor:pickColor() }),
+      (r,p) => ({ tag:"VERDICT", headline:`${r.shortName||r.name} : puissance ou contrôle ?`, subtitle:`Le choix de ${p} chez ${r.brand} en dit long. Analyse complète.`, tagColor:pickColor() }),
+      (r,p) => ({ tag:"NOUVEAUTÉ", headline:`${r.brand} frappe fort avec la ${r.shortName||r.name}`, subtitle:`${lastName(p)} l'adopte pour ${r.year}. Les détails de cette nouvelle arme.`, tagColor:pickColor() }),
     ];
     const proRackets2026 = allDB.filter(r => r.year===2026 && r.proPlayerInfo?.name && !curatedIds.has(r.id) && r.imageUrl);
-    const dynamic = proRackets2026.slice(0,8).map(r => {
-      const tpl = dynamicTemplates[Math.floor(Math.random()*dynamicTemplates.length)](r, r.proPlayerInfo.name);
+    // Assign templates round-robin to avoid repeats
+    const shuffledTemplates = [...dynamicTemplates].sort(() => Math.random() - 0.5);
+    const dynamic = proRackets2026.slice(0,8).map((r,i) => {
+      const tpl = shuffledTemplates[i % shuffledTemplates.length](r, r.proPlayerInfo.name);
       return { ...tpl, racketId:r.id, racket:r };
     });
 
@@ -377,7 +386,7 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
           transition:"opacity 0.4s ease, transform 0.4s ease",
         }}>
           {/* Left: text content */}
-          <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",minWidth:0}}>
+          <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",minWidth:0,paddingRight:8}}>
             {/* Top — tag + brand */}
             <div>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
@@ -392,8 +401,9 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
 
               {/* Headline */}
               <h2 style={{
-                fontFamily:F.editorial,fontSize:24,fontWeight:700,color:T.cream,
+                fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,
                 lineHeight:1.15,margin:"0 0 10px",letterSpacing:"-0.01em",
+                overflow:"hidden",display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",
               }}>
                 {current.headline}
               </h2>
@@ -401,7 +411,8 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
               {/* Subtitle */}
               <p style={{
                 fontFamily:F.body,fontSize:12,color:T.gray1,lineHeight:1.55,
-                margin:0,maxWidth:280,
+                margin:0,
+                overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
               }}>
                 {current.subtitle}
               </p>
@@ -423,21 +434,21 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
           {/* Right: racket image */}
           <div style={{
             width:120,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",
-            position:"relative",
+            position:"relative",overflow:"hidden",
           }}>
             {/* Glow behind racket */}
             <div style={{
               position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",
-              width:160,height:160,borderRadius:"50%",
+              width:140,height:140,borderRadius:"50%",
               background:`radial-gradient(circle, ${current.tagColor}20 0%, transparent 70%)`,
             }}/>
             <RacketImg
               src={r.imageUrl} alt={r.name} brand={r.brand}
               style={{
-                height:200,objectFit:"contain",position:"relative",
+                height:180,maxWidth:115,objectFit:"contain",position:"relative",
                 filter:`drop-shadow(0 8px 30px ${current.tagColor}40)`,
               }}
-              fallbackSize={100}
+              fallbackSize={90}
             />
           </div>
         </div>
