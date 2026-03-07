@@ -896,58 +896,65 @@ function CatalogScreen({ ctx }) {
 
   const [showFilters, setShowFilters] = useState(false);
 
-  // ── Racket card component (réutilisé dans nouveautés + grille) ──
+  // ── Racket card component — Premium boutique style ──
   const RacketCard = ({ r, isNew, size = "normal" }) => {
     const isSmall = size === "small";
-    const imgH = isSmall ? 100 : 130;
-    const cardW = isSmall ? 150 : undefined;
+    const imgH = isSmall ? 130 : 180;
+    const cardW = isSmall ? 175 : undefined;
     const priceStr = r.price ? String(r.price).replace(/[^\d.,€]/g,"") : "";
+    const score = avgScore(r);
     return (
       <button onClick={()=>openRacketSheet(r,"catalog")} className="pa-card" style={{
-        padding:0,borderRadius:18,cursor:"pointer",textAlign:"center",overflow:"hidden",
-        background:T.card,border:`1px solid ${isNew?`#7c3aed30`:T.border}`,
-        transition:"all 0.2s",display:"flex",flexDirection:"column",position:"relative",
+        padding:0,borderRadius:20,cursor:"pointer",textAlign:"left",overflow:"hidden",
+        background:T.card,border:`1px solid ${isNew?`#7c3aed25`:T.border}`,
+        transition:"all 0.25s",display:"flex",flexDirection:"column",position:"relative",
         ...(isSmall ? {minWidth:cardW,maxWidth:cardW,flexShrink:0} : {}),
       }}>
         {/* NEW badge */}
-        {isNew && <div style={{position:"absolute",top:8,right:8,zIndex:2}}><NewBadge small={isSmall}/></div>}
-        {/* Image area */}
-        <div style={{height:imgH,display:"flex",alignItems:"center",justifyContent:"center",padding:"10px 8px 4px",position:"relative",
-          background:isNew
-            ? `linear-gradient(180deg, rgba(124,58,237,0.06) 0%, ${T.card} 100%)`
-            : `linear-gradient(180deg, ${T.surface} 0%, ${T.card} 100%)`}}>
-          <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{height:imgH-20,objectFit:"contain",filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.35))"}} fallbackSize={isSmall?50:70}/>
+        {isNew && <div style={{position:"absolute",top:10,right:10,zIndex:2}}><NewBadge small={isSmall}/></div>}
+        {/* Image area — clean, generous */}
+        <div style={{
+          height:imgH,display:"flex",alignItems:"center",justifyContent:"center",
+          padding:"16px 12px 8px",position:"relative",
+          background: isNew
+            ? `linear-gradient(180deg, rgba(124,58,237,0.05) 0%, ${T.card} 100%)`
+            : `linear-gradient(180deg, ${T.surface}80 0%, ${T.card} 100%)`,
+        }}>
+          <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
+            height:imgH-36,objectFit:"contain",
+            filter:"drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
+          }} fallbackSize={isSmall?60:80}/>
         </div>
-        <div style={{padding:isSmall?"8px 8px 12px":"10px 12px 14px",flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+
+        {/* Content area */}
+        <div style={{padding:isSmall?"10px 12px 14px":"12px 14px 16px",flex:1,display:"flex",flexDirection:"column",gap:4}}>
           {/* Brand */}
-          <div style={{fontSize:8,fontWeight:600,color:T.gray2,fontFamily:F.body,textTransform:"uppercase",letterSpacing:"0.05em"}}>{r.brand}</div>
-          {/* Name */}
-          <div style={{fontSize:isSmall?10:11,fontWeight:700,color:T.white,fontFamily:F.body,lineHeight:1.3}}>{r.shortName||r.name}</div>
+          <div style={{fontSize:9,fontWeight:600,color:T.accent,fontFamily:F.body,textTransform:"uppercase",letterSpacing:"0.06em"}}>{r.brand}</div>
+          {/* Name — editorial serif */}
+          <div style={{
+            fontFamily:F.editorial,fontSize:isSmall?14:16,fontWeight:700,fontStyle:"italic",
+            color:T.cream,lineHeight:1.2,
+            overflow:"hidden",textOverflow:"ellipsis",
+            display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
+          }}>{r.shortName||r.name}</div>
+
+          {/* Spacer */}
+          <div style={{flex:1}}/>
+
           {/* Score + Price row */}
-          <div style={{display:"flex",alignItems:"center",gap:8,marginTop:2}}>
-            <div style={{display:"flex",alignItems:"baseline",gap:2}}>
-              <span style={{fontSize:18,fontWeight:800,color:T.accent,fontFamily:F.mono}}>{avgScore(r)}</span>
-              <span style={{fontSize:8,color:T.gray2,fontWeight:500}}>/10</span>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:6}}>
+            <div style={{display:"flex",alignItems:"baseline",gap:3}}>
+              <span style={{fontSize:24,fontWeight:800,color:T.accent,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{score}</span>
+              <span style={{fontSize:9,color:T.gray2,fontWeight:500,fontFamily:F.body}}>/10</span>
             </div>
-            {priceStr && <span style={{fontSize:12,fontWeight:700,color:T.gold,fontFamily:F.mono}}>{priceStr}</span>}
+            {priceStr && <span style={{fontSize:15,fontWeight:700,color:T.cream,fontFamily:"'Outfit',sans-serif"}}>{priceStr}</span>}
           </div>
-          {/* Category + Year tags */}
-          <div style={{display:"flex",gap:4,flexWrap:"wrap",justifyContent:"center",marginTop:2}}>
-            <span style={{fontSize:8,padding:"2px 7px",borderRadius:6,background:`${catColor(r.category)}12`,color:catColor(r.category),fontWeight:600}}>{CAT_LABELS[r.category]||r.category}</span>
-            {!isNew && <span style={{fontSize:8,padding:"2px 7px",borderRadius:6,background:T.surface,color:T.gray2}}>{r.year}</span>}
-          </div>
-          {/* Mini score bars with labels */}
-          <div style={{display:"flex",gap:3,width:"100%",marginTop:5}}>
-            {["Puissance","Contrôle","Spin"].map(k=>{
-              const v = (r.scores||{})[k]||0;
-              return <div key={k} style={{flex:1}}>
-                <div style={{fontSize:6,color:T.gray2,textAlign:"center",marginBottom:2,fontFamily:F.body}}>{k.slice(0,3).toUpperCase()}</div>
-                <div style={{height:3,borderRadius:2,background:T.border,overflow:"hidden"}}>
-                  <div style={{width:`${(v/10)*100}%`,height:"100%",borderRadius:2,
-                    background:v>=9?T.accent:v>=8?T.gold:v>=7?"#60a5fa":T.gray2,transition:"width 0.6s ease"}}/>
-                </div>
-              </div>;
-            })}
+
+          {/* Category + Year — minimal */}
+          <div style={{display:"flex",gap:6,alignItems:"center",marginTop:4}}>
+            <span style={{fontSize:8,padding:"2px 8px",borderRadius:6,background:`${catColor(r.category)}10`,color:catColor(r.category),fontWeight:600,fontFamily:F.body}}>{CAT_LABELS[r.category]||r.category}</span>
+            <span style={{fontSize:9,color:T.gray3,fontFamily:F.body}}>{r.year}</span>
+            {r.proPlayerInfo?.name && <span style={{fontSize:8,color:T.gold,fontFamily:F.body}}>🎾</span>}
           </div>
         </div>
       </button>
@@ -957,35 +964,36 @@ function CatalogScreen({ ctx }) {
   return (
     <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:600,margin:"0 auto",padding:"0 12px",background:T.bg}}>
       <FontLoader/>
-      {/* Header */}
+      {/* Header — sticky */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px",position:"sticky",top:0,zIndex:50,background:T.bg}}>
-        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Accueil</button>
-        <span style={{fontFamily:F.mono,fontSize:10,color:T.gray2}}>{filtered.length} / {allDB.length}</span>
+        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Accueil</button>
+        <span style={{fontFamily:F.body,fontSize:10,color:T.gray2}}>{filtered.length} / {allDB.length}</span>
       </div>
 
-      {/* Title */}
-      <div style={{textAlign:"center",marginBottom:14}}>
-        <h1 style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:T.white,margin:"0 0 4px"}}>Catalogue</h1>
-        <p style={{fontFamily:F.body,fontSize:11,color:T.gray2,margin:0}}>{totalDBCount} raquettes · {allBrands.length} marques</p>
+      {/* Title — editorial masthead */}
+      <div style={{textAlign:"center",marginBottom:20,padding:"0 8px"}}>
+        <div style={{width:30,height:3,background:T.accent,borderRadius:2,margin:"0 auto 12px"}}/>
+        <h1 style={{fontFamily:F.editorial,fontSize:36,fontWeight:700,color:T.cream,margin:"0 0 6px",fontStyle:"italic",letterSpacing:"-0.02em"}}>La Collection</h1>
+        <p style={{fontFamily:F.body,fontSize:11,color:T.gray2,margin:0}}>{totalDBCount} raquettes · {allBrands.length} marques · Saison {allYears[0]||2026}</p>
       </div>
 
-      {/* ═══ NOUVEAUTÉS 2026 — Carousel horizontal ═══ */}
+      {/* ═══ NOUVEAUTÉS 2026 — Premium carousel ═══ */}
       {nouveautes2026.length > 0 && !term && activeCount === 0 && (
-        <div style={{marginBottom:20,padding:"0 0 0 4px"}}>
+        <div style={{marginBottom:24,padding:"0 0 0 4px"}}>
           {/* Section header */}
           <button onClick={()=>setShowNouveautes(!showNouveautes)} style={{
-            display:"flex",alignItems:"center",gap:8,marginBottom:12,background:"none",border:"none",cursor:"pointer",padding:0,width:"100%",
+            display:"flex",alignItems:"center",gap:8,marginBottom:14,background:"none",border:"none",cursor:"pointer",padding:0,width:"100%",
           }}>
             <div style={{display:"flex",alignItems:"center",gap:8,flex:1}}>
               <NewBadge/>
-              <span style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:T.cream}}>Nouveautés 2026</span>
-              <span style={{fontFamily:F.mono,fontSize:9,color:"#7c3aed",background:"rgba(124,58,237,0.1)",borderRadius:10,padding:"2px 8px"}}>{nouveautes2026.length}</span>
+              <span style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:T.cream,fontStyle:"italic"}}>Nouveautés {allYears[0]||2026}</span>
+              <span style={{fontFamily:F.body,fontSize:9,color:"#7c3aed",background:"rgba(124,58,237,0.1)",borderRadius:10,padding:"2px 8px",fontWeight:600}}>{nouveautes2026.length}</span>
             </div>
             <span style={{fontSize:14,color:T.gray2,transition:"transform 0.2s",transform:showNouveautes?"rotate(0deg)":"rotate(-90deg)"}}>{showNouveautes?"▾":"▸"}</span>
           </button>
           {/* Horizontal scroll */}
           {showNouveautes && <div style={{
-            display:"flex",gap:12,overflowX:"auto",paddingBottom:12,paddingRight:12,
+            display:"flex",gap:14,overflowX:"auto",paddingBottom:14,paddingRight:14,
             scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",
             scrollbarWidth:"none",msOverflowStyle:"none",
           }}>
@@ -996,7 +1004,7 @@ function CatalogScreen({ ctx }) {
             ))}
           </div>}
           {/* Separator */}
-          <div style={{height:1,background:`linear-gradient(90deg, transparent, ${T.border}, transparent)`,margin:"8px 12px 0"}}/>
+          <div style={{height:1,background:`linear-gradient(90deg, transparent, ${T.border}, transparent)`,margin:"4px 12px 0"}}/>
         </div>
       )}
 
@@ -1083,22 +1091,23 @@ function CatalogScreen({ ctx }) {
         </div>
       </div>}
 
-      {/* ═══ Results by brand ═══ */}
+      {/* ═══ Results by brand — Premium grid ═══ */}
       <div style={{flex:1,overflowY:"auto",paddingBottom:40}}>
         {!filtered.length&&<div style={{textAlign:"center",padding:"40px 0",color:T.gray2}}>
           <div style={{fontSize:32,marginBottom:8}}>🔍</div>
-          <p style={{fontSize:13}}>Aucune raquette trouvée</p>
+          <p style={{fontFamily:F.body,fontSize:13}}>Aucune raquette trouvée</p>
         </div>}
         {sortedBrands.map(brand=>{
           const brandHasNew = byBrand[brand].some(r=>r.year===2026);
           return (
-          <div key={brand} style={{marginBottom:24,padding:"0 4px"}}>
-            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
-              <span style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:T.white}}>{brand}</span>
-              <span style={{fontFamily:F.mono,fontSize:9,color:T.gray2,background:T.surface,borderRadius:10,padding:"2px 8px"}}>{byBrand[brand].length}</span>
-              {brandHasNew && <span style={{fontSize:7,fontWeight:700,color:"#a78bfa",background:"rgba(124,58,237,0.1)",padding:"2px 6px",borderRadius:4,fontFamily:F.body,textTransform:"uppercase"}}>New</span>}
+          <div key={brand} style={{marginBottom:28,padding:"0 4px"}}>
+            {/* Brand header — editorial */}
+            <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:14,paddingBottom:8,borderBottom:`1px solid ${T.border}`}}>
+              <span style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,fontStyle:"italic"}}>{brand}</span>
+              <span style={{fontFamily:F.body,fontSize:10,color:T.gray2}}>{byBrand[brand].length} modèle{byBrand[brand].length>1?"s":""}</span>
+              {brandHasNew && <span style={{fontSize:8,fontWeight:700,color:"#a78bfa",background:"rgba(124,58,237,0.1)",padding:"2px 8px",borderRadius:6,fontFamily:F.body}}>NEW</span>}
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(165px, 1fr))",gap:12}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(160px, 1fr))",gap:14}}>
               {byBrand[brand].map(r=>(
                 <RacketCard key={r.id||r.name} r={r} isNew={r.year===2026} size="normal"/>
               ))}
@@ -4900,7 +4909,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <div style={{fontSize:8,color:T.gray2,textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:F.body,marginTop:2}}>raquettes</div>
               </div>
               <div style={{flex:1}}>
-                <div style={{fontFamily:F.editorial,fontSize:18,fontWeight:700,color:T.cream,lineHeight:1.3,marginBottom:4}}>Catalogue complet</div>
+                <div style={{fontFamily:F.editorial,fontSize:18,fontWeight:700,color:T.cream,lineHeight:1.3,marginBottom:4,fontStyle:"italic"}}>La Collection</div>
                 <div style={{fontSize:11,color:T.gray1,fontFamily:F.body,lineHeight:1.5}}>Recherche, filtres avancés, fiches détaillées. Toutes marques, toutes gammes.</div>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginTop:6}}>
                   <span style={{fontSize:8,fontWeight:700,color:"#fff",background:"linear-gradient(135deg, #7c3aed, #6d28d9)",padding:"3px 8px",borderRadius:6,display:"inline-flex",alignItems:"center",gap:3}}>
@@ -4913,7 +4922,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
             {/* Bottom bar */}
             <div style={{padding:"10px 24px",borderTop:`1px solid ${T.green}15`,display:"flex",alignItems:"center",justifyContent:"space-between",background:`${T.green}06`}}>
-              <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Parcourir le catalogue</span>
+              <span style={{fontSize:11,fontWeight:600,color:T.cream,fontFamily:F.editorial}}>Parcourir la collection</span>
               <span style={{fontSize:18,color:T.green}}>→</span>
             </div>
           </button>
