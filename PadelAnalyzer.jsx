@@ -452,7 +452,7 @@ function MagazineScreen({ ctx }) {
       <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 16px"}}>
         <FontLoader/>
         <div style={{display:"flex",alignItems:"center",padding:"14px 0"}}>
-          <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Magazine</button>
+          <button onClick={()=>setMagDetail(null)} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← {catInfo ? catInfo.label.replace(/^[^\s]+ /,"") : "Magazine"}</button>
         </div>
         {/* Hero image */}
         <div style={{height:240,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",marginBottom:16}}>
@@ -498,146 +498,343 @@ function MagazineScreen({ ctx }) {
     );
   }
 
-  // Main magazine view
+  // ── CATEGORY DETAIL VIEW — Top 5 editorial ──
+  if (magCat && catInfo) {
+    return (
+      <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
+        <FontLoader/>
+
+        {/* Header */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px"}}>
+          <button onClick={()=>setMagCat(null)} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Magazine</button>
+          {/* Year toggle inline */}
+          <div style={{display:"flex",gap:4}}>
+            {[2026,2025,null].map(y => (
+              <button key={y||"all"} onClick={()=>{setMagYear(y);setMagSlide(0);setMagDetail(null);}} style={{
+                padding:"4px 10px",borderRadius:6,border:`1px solid ${magYear===y?T.accent+"40":T.border}`,
+                background:magYear===y?T.accentSoft:"transparent",
+                color:magYear===y?T.accent:T.gray2,
+                fontFamily:F.body,fontSize:9,fontWeight:700,cursor:"pointer",
+              }}>
+                {y||"Tout"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Category hero title */}
+        <div style={{padding:"10px 4px 24px",textAlign:"center"}}>
+          <div style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:8}}>
+            TOP 5
+          </div>
+          <h1 style={{fontFamily:F.editorial,fontSize:42,fontWeight:700,color:T.cream,margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1}}>
+            {catInfo.label.replace(/^[^\s]+ /,"")}
+          </h1>
+          <p style={{fontFamily:F.editorial,fontSize:14,color:T.gray2,margin:0,fontStyle:"italic"}}>{catInfo.desc}</p>
+        </div>
+
+        {top5.length === 0 ? (
+          <div style={{textAlign:"center",padding:"40px 0",color:T.gray2}}>
+            <div style={{fontSize:32,marginBottom:8}}>🏓</div>
+            <p style={{fontFamily:F.body,fontSize:13}}>Aucune raquette dans cette catégorie</p>
+          </div>
+        ) : (
+          <div style={{padding:"0 4px"}} className="pa-stagger">
+
+            {/* ── N°1 — Big editorial article ── */}
+            {top5[0] && (()=>{
+              const r = top5[0];
+              return (
+                <div onClick={()=>setMagDetail(r)} style={{
+                  position:"relative",overflow:"hidden",borderRadius:24,marginBottom:24,cursor:"pointer",
+                  border:`1px solid ${T.border}`,
+                  boxShadow:"0 16px 48px rgba(0,0,0,0.4)",
+                }}>
+                  {/* Hero image zone */}
+                  <div style={{position:"relative",height:260,overflow:"hidden"}}>
+                    {/* Blurred bg */}
+                    {r.imageUrl && <div style={{
+                      position:"absolute",inset:0,
+                      backgroundImage:`url(${r.imageUrl})`,backgroundSize:"cover",backgroundPosition:"center",
+                      filter:"blur(24px) brightness(0.25) saturate(1.4)",transform:"scale(1.3)",
+                    }}/>}
+                    {/* Gradient overlay */}
+                    <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(11,14,13,0.95) 100%)"}}/>
+                    {/* Racket image */}
+                    <div style={{position:"absolute",top:"50%",right:20,transform:"translateY(-50%)",zIndex:2}}>
+                      <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
+                        height:220,objectFit:"contain",
+                        filter:"drop-shadow(0 12px 40px rgba(0,0,0,0.6))",
+                      }} fallbackSize={110}/>
+                    </div>
+                    {/* N°1 badge */}
+                    <div style={{position:"absolute",top:16,left:16,zIndex:3}}>
+                      <span style={{
+                        fontFamily:F.body,fontSize:9,fontWeight:800,color:"#fff",
+                        background:`linear-gradient(135deg, ${T.gold}, #b8860b)`,
+                        padding:"5px 12px",borderRadius:6,letterSpacing:"0.08em",
+                        boxShadow:`0 2px 12px ${T.gold}50`,
+                      }}>🏆 N°1</span>
+                    </div>
+                    {/* Text overlay bottom */}
+                    <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 20px 20px",zIndex:3}}>
+                      <div style={{fontFamily:F.body,fontSize:10,fontWeight:600,color:T.accent,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>{r.brand}</div>
+                      <h2 style={{fontFamily:F.editorial,fontSize:30,fontWeight:700,fontStyle:"italic",color:T.cream,lineHeight:1.05,margin:"0 0 8px"}}>
+                        {r.shortName||r.name}
+                      </h2>
+                      {r.proPlayerInfo?.name && <div style={{display:"inline-flex",alignItems:"center",gap:5,background:T.goldSoft,border:`1px solid ${T.gold}30`,padding:"4px 10px",borderRadius:8}}>
+                        <span style={{fontSize:12}}>🎾</span>
+                        <span style={{fontFamily:F.body,fontSize:10,fontWeight:700,color:T.gold}}>{r.proPlayerInfo.name}</span>
+                      </div>}
+                    </div>
+                  </div>
+
+                  {/* Article body */}
+                  <div style={{padding:"20px 20px 24px",background:T.card}}>
+                    {r.verdict && <p style={{
+                      fontFamily:F.editorial,fontSize:19,fontStyle:"italic",color:T.cream,lineHeight:1.45,
+                      margin:"0 0 14px",borderLeft:`3px solid ${T.accent}`,paddingLeft:14,
+                    }}>
+                      "{(r.verdict||"").slice(0,140)}{(r.verdict||"").length>140?"…":""}"
+                    </p>}
+                    {r.editorial && <p style={{
+                      fontFamily:F.body,fontSize:13,color:T.gray1,lineHeight:1.7,margin:"0 0 16px",
+                    }}>
+                      {(r.editorial||"").slice(0,200)}{(r.editorial||"").length>200?"…":""}
+                    </p>}
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                      <span style={{fontFamily:F.body,fontSize:12,fontWeight:700,color:T.accent}}>Lire l'article complet →</span>
+                      <span style={{fontFamily:F.body,fontSize:11,color:T.gray2}}>{r.shape} · {r.price}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* ── N°2 to N°5 — Editorial horizontal cards ── */}
+            {top5.slice(1).map((r, i) => {
+              const sc = r.scores||{};
+              const sortAttr = catInfo?.attr;
+              const mainScore = sortAttr ? (sc[sortAttr]||0) : ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
+              return (
+                <div key={r.id||r.name} onClick={()=>setMagDetail(r)} style={{
+                  display:"flex",gap:0,cursor:"pointer",marginBottom:14,borderRadius:18,overflow:"hidden",
+                  background:T.card,border:`1px solid ${T.border}`,
+                  boxShadow:"0 4px 16px rgba(0,0,0,0.2)",
+                  transition:"transform 0.2s, box-shadow 0.2s",
+                }}>
+                  {/* Left — image zone */}
+                  <div style={{
+                    width:110,minHeight:130,flexShrink:0,position:"relative",overflow:"hidden",
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                  }}>
+                    {/* Blurred bg */}
+                    {r.imageUrl && <div style={{
+                      position:"absolute",inset:0,
+                      backgroundImage:`url(${r.imageUrl})`,backgroundSize:"cover",backgroundPosition:"center",
+                      filter:"blur(16px) brightness(0.3) saturate(1.2)",transform:"scale(1.4)",
+                    }}/>}
+                    <div style={{position:"absolute",inset:0,background:`linear-gradient(90deg, transparent 60%, ${T.card} 100%)`}}/>
+                    {/* Rank badge */}
+                    <div style={{position:"absolute",top:8,left:8,zIndex:3}}>
+                      <span style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:T.cream,
+                        textShadow:"0 2px 8px rgba(0,0,0,0.6)",
+                      }}>{i+2}</span>
+                    </div>
+                    <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{
+                      height:100,objectFit:"contain",position:"relative",zIndex:2,
+                      filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.5))",
+                    }} fallbackSize={60}/>
+                  </div>
+
+                  {/* Right — text content */}
+                  <div style={{flex:1,padding:"14px 16px",display:"flex",flexDirection:"column",justifyContent:"center",gap:5,minWidth:0}}>
+                    <div style={{fontFamily:F.body,fontSize:9,fontWeight:600,color:T.accent,textTransform:"uppercase",letterSpacing:"0.06em"}}>{r.brand}</div>
+                    <div style={{fontFamily:F.editorial,fontSize:17,fontWeight:700,fontStyle:"italic",color:T.cream,lineHeight:1.2,
+                      overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
+                    {r.verdict && <p style={{fontFamily:F.body,fontSize:11,color:T.gray2,lineHeight:1.4,margin:0,
+                      overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
+                    }}>
+                      {(r.verdict||"").slice(0,80)}{(r.verdict||"").length>80?"…":""}
+                    </p>}
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginTop:2}}>
+                      <span style={{fontFamily:"'Outfit',sans-serif",fontSize:22,fontWeight:800,
+                        color:mainScore>=9?T.accent:mainScore>=8?T.gold:T.gray1,lineHeight:1,
+                      }}>{mainScore.toFixed(1)}</span>
+                      <span style={{fontFamily:F.body,fontSize:9,color:T.gray2}}>{r.price}</span>
+                      {r.proPlayerInfo?.name && <span style={{fontFamily:F.body,fontSize:8,color:T.gold}}>🎾 {r.proPlayerInfo.name.split(" ").pop()}</span>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* CTA Catalogue */}
+        <div style={{margin:"28px 4px 40px",padding:"24px 20px",borderRadius:20,textAlign:"center",cursor:"pointer",
+          background:`linear-gradient(135deg, ${T.accent}15, ${T.card})`,border:`1px solid ${T.accent}25`,
+        }} onClick={()=>setScreen("catalog")}>
+          <div style={{fontFamily:F.body,fontSize:9,color:T.accent,letterSpacing:"0.12em",fontWeight:700,marginBottom:6}}>CATALOGUE COMPLET</div>
+          <div style={{fontFamily:F.editorial,fontSize:26,color:T.white,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
+          <div style={{fontFamily:F.body,fontSize:12,color:T.gray2}}>Rechercher, filtrer, comparer →</div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── COVERS WALL — Main magazine view ──
+  // Color accents per category for editorial variety
+  const coverAccents = {
+    puissance:"#ef4444", controle:"#3b82f6", confort:"#22c55e",
+    spin:"#a855f7", polyvalence:T.gold, rapport:"#E8622A",
+  };
+
   return (
     <div style={{minHeight:"100dvh",background:T.bg,fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 12px"}}>
       <FontLoader/>
 
       {/* Header */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 4px 10px"}}>
-        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Accueil</button>
-        <span style={{fontFamily:F.mono,fontSize:10,color:T.gray2,letterSpacing:"0.08em"}}>{totalDBCount} PALAS</span>
+        <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Accueil</button>
+        <div style={{display:"flex",gap:4}}>
+          {[2026,2025,null].map(y => (
+            <button key={y||"all"} onClick={()=>{setMagYear(y);}} style={{
+              padding:"4px 10px",borderRadius:6,border:`1px solid ${magYear===y?T.accent+"40":T.border}`,
+              background:magYear===y?T.accentSoft:"transparent",
+              color:magYear===y?T.accent:T.gray2,
+              fontFamily:F.body,fontSize:9,fontWeight:700,cursor:"pointer",
+            }}>
+              {y||"Tout"}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Title */}
-      <div style={{textAlign:"center",marginBottom:20,padding:"0 8px"}}>
-        <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.accent,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:8}}>
-          TENDANCES & MAGAZINE
-        </div>
-        <h1 style={{fontFamily:F.editorial,fontSize:38,fontWeight:700,color:T.white,margin:"0 0 4px",letterSpacing:"-0.02em",lineHeight:1.05}}>
-          {catInfo?.label || "Magazine"}
+      {/* Magazine masthead */}
+      <div style={{textAlign:"center",padding:"16px 8px 32px",position:"relative"}}>
+        {/* Decorative line */}
+        <div style={{width:40,height:3,background:T.accent,borderRadius:2,margin:"0 auto 14px"}}/>
+        <h1 style={{fontFamily:F.editorial,fontSize:44,fontWeight:700,color:T.cream,margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1,fontStyle:"italic"}}>
+          Le Magazine
         </h1>
-        <p style={{fontFamily:F.body,fontSize:12,color:T.gray2,margin:0}}>{catInfo?.desc}</p>
+        <p style={{fontFamily:F.body,fontSize:12,color:T.gray2,margin:0,letterSpacing:"0.04em"}}>
+          Tendances, classements & analyses · {magYear || "Toutes années"}
+        </p>
+        {/* Bottom decorative line */}
+        <div style={{width:"60%",height:1,background:`linear-gradient(90deg, transparent, ${T.border}, transparent)`,margin:"20px auto 0"}}/>
       </div>
 
-      {/* Category nav */}
-      <div style={{display:"flex",gap:6,overflowX:"auto",padding:"0 4px 16px",scrollbarWidth:"none"}}>
-        {MAGAZINE_CATEGORIES.map((c,i) => (
-          <button key={c.id} onClick={()=>{setMagCat(c.id);setMagDetail(null);setMagSlide(0);}} style={{
-            padding:"8px 16px",borderRadius:60,border:"none",whiteSpace:"nowrap",
-            background:magCat===c.id?T.accent:T.surface,
-            color:magCat===c.id?"#fff":T.gray1,
-            fontFamily:F.body,fontSize:11,fontWeight:600,cursor:"pointer",
-            transition:"all 0.2s",flexShrink:0,
-          }}>
-            {c.label}
-          </button>
-        ))}
-      </div>
+      {/* Covers wall */}
+      <div style={{display:"flex",flexDirection:"column",gap:18,padding:"0 4px"}} className="pa-stagger">
+        {MAGAZINE_CATEGORIES.map((cat, catIndex) => {
+          const catTop = getTopByCategory(cat.id, magYear);
+          const hero = catTop[0];
+          if (!hero) return null;
+          const accent = coverAccents[cat.id] || T.accent;
 
-      {/* Year toggle */}
-      <div style={{display:"flex",gap:4,justifyContent:"center",marginBottom:20}}>
-        {[2026,2025,null].map(y => (
-          <button key={y||"all"} onClick={()=>{setMagYear(y);setMagSlide(0);setMagDetail(null);}} style={{
-            padding:"6px 14px",borderRadius:8,border:`1px solid ${magYear===y?T.accent+"40":T.border}`,
-            background:magYear===y?T.accentSoft:"transparent",
-            color:magYear===y?T.accent:T.gray2,
-            fontFamily:F.mono,fontSize:10,fontWeight:700,cursor:"pointer",
-          }}>
-            {y||"Toutes"}
-          </button>
-        ))}
-      </div>
+          return (
+            <div
+              key={cat.id}
+              onClick={()=>{setMagCat(cat.id);setMagDetail(null);setMagSlide(0);}}
+              style={{
+                position:"relative",overflow:"hidden",borderRadius:22,cursor:"pointer",
+                height: catIndex === 0 ? 300 : 240,
+                border:`1px solid ${T.border}`,
+                boxShadow:"0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.02)",
+                transition:"transform 0.25s, box-shadow 0.25s",
+              }}
+            >
+              {/* Background = blurred hero racket image */}
+              {hero.imageUrl && <div style={{
+                position:"absolute",inset:0,
+                backgroundImage:`url(${hero.imageUrl})`,
+                backgroundSize:"cover",backgroundPosition:"center",
+                filter:"blur(20px) brightness(0.25) saturate(1.3)",
+                transform:"scale(1.2)",
+              }}/>}
 
-      {/* Top 5 list */}
-      {top5.length === 0 ? (
-        <div style={{textAlign:"center",padding:"40px 0",color:T.gray2}}>
-          <div style={{fontSize:32,marginBottom:8}}>🏓</div>
-          <p style={{fontSize:13}}>Aucune raquette dans cette catégorie</p>
-        </div>
-      ) : (
-        <div style={{padding:"0 4px"}}>
-          {/* Featured #1 */}
-          {top5[0] && (()=>{
-            const r = top5[0];
-            const sc = r.scores||{};
-            return (
-              <div onClick={()=>setMagDetail(r)} style={{
-                position:"relative",overflow:"hidden",borderRadius:20,marginBottom:16,cursor:"pointer",
-                background:`linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`,
-                border:`1px solid ${T.border}`,padding:"24px 20px",
-              }}>
-                {/* Background ghost image */}
-                {r.imageUrl&&<div style={{position:"absolute",top:0,right:-20,bottom:0,width:"50%",opacity:0.08,
-                  backgroundImage:`url(${r.imageUrl})`,backgroundSize:"contain",backgroundRepeat:"no-repeat",backgroundPosition:"center right"}}/>}
-                <div style={{position:"relative",zIndex:2}}>
-                  <div style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:T.gold,letterSpacing:"0.12em",marginBottom:10}}>
-                    🏆 N°1 · {catInfo?.label}
+              {/* Dark gradient */}
+              <div style={{
+                position:"absolute",inset:0,
+                background:`linear-gradient(160deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.65) 50%, rgba(11,14,13,0.93) 100%)`,
+              }}/>
+
+              {/* Accent line top */}
+              <div style={{position:"absolute",top:0,left:0,right:0,height:3,
+                background:`linear-gradient(90deg, ${accent}, ${accent}60, transparent)`,
+              }}/>
+
+              {/* Content */}
+              <div style={{position:"relative",zIndex:2,height:"100%",display:"flex",padding:"20px 20px"}}>
+
+                {/* Left text */}
+                <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",minWidth:0}}>
+                  {/* Top */}
+                  <div>
+                    <span style={{
+                      fontFamily:F.body,fontSize:9,fontWeight:800,color:"#fff",
+                      background:accent,padding:"4px 10px",borderRadius:4,
+                      letterSpacing:"0.1em",textTransform:"uppercase",
+                      boxShadow:`0 2px 10px ${accent}50`,
+                    }}>{cat.label.replace(/^[^\s]+ /,"").toUpperCase()}</span>
+
+                    <h2 style={{
+                      fontFamily:F.editorial,fontSize: catIndex === 0 ? 26 : 22,fontWeight:700,fontStyle:"italic",
+                      color:T.cream,lineHeight:1.15,margin:"14px 0 8px",letterSpacing:"-0.01em",
+                    }}>
+                      {hero.shortName||hero.name}
+                    </h2>
+
+                    {hero.verdict && <p style={{
+                      fontFamily:F.body,fontSize:11,color:T.gray1,lineHeight:1.5,margin:0,
+                      overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
+                    }}>
+                      {(hero.verdict||"").slice(0,100)}{(hero.verdict||"").length>100?"…":""}
+                    </p>}
                   </div>
-                  <h2 style={{fontFamily:F.editorial,fontSize:30,fontWeight:700,fontStyle:"italic",color:T.white,lineHeight:1.05,margin:"0 0 6px"}}>
-                    {r.shortName||r.name}
-                  </h2>
-                  <div style={{fontFamily:F.body,fontSize:12,color:T.gray2,marginBottom:4}}>{r.brand} · {r.shape} · {r.price}</div>
-                  {r.proPlayerInfo?.name&&<div style={{fontFamily:F.body,fontSize:11,color:T.gold,marginBottom:12}}>
-                    🎾 {r.proPlayerInfo.name}
-                  </div>}
-                  {r.verdict&&<p style={{fontFamily:F.editorial,fontSize:16,fontStyle:"italic",color:T.cream,lineHeight:1.4,margin:"0 0 14px",maxWidth:340}}>
-                    "{(r.verdict||"").slice(0,100)}{(r.verdict||"").length>100?"...":""}"
-                  </p>}
-                  <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                    {ATTRS.slice(0,4).map(a=>{
-                      const v = sc[a]||0;
-                      return <span key={a} style={{fontFamily:F.mono,fontSize:9,fontWeight:700,
-                        color:v>=9?T.accent:v>=8?T.gold:T.gray1,
-                        background:v>=9?T.accentSoft:v>=8?T.goldSoft:`${T.gray2}18`,
-                        padding:"3px 8px",borderRadius:4}}>{a.slice(0,3).toUpperCase()} {v.toFixed(1)}</span>;
-                    })}
+
+                  {/* Bottom */}
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginTop:10}}>
+                    <span style={{fontFamily:F.body,fontSize:11,fontWeight:700,color:accent}}>
+                      Découvrir le Top 5 →
+                    </span>
+                    {hero.proPlayerInfo?.name && <span style={{
+                      fontFamily:F.body,fontSize:8,color:T.gold,background:T.goldSoft,
+                      padding:"3px 8px",borderRadius:6,fontWeight:600,
+                    }}>🎾 {hero.proPlayerInfo.name.split(" ").pop()}</span>}
                   </div>
+                </div>
+
+                {/* Right — racket image */}
+                <div style={{width: catIndex === 0 ? 120 : 100,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+                  <div style={{
+                    position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",
+                    width:140,height:140,borderRadius:"50%",
+                    background:`radial-gradient(circle, ${accent}18 0%, transparent 70%)`,
+                  }}/>
+                  <RacketImg
+                    src={hero.imageUrl} alt={hero.name} brand={hero.brand}
+                    style={{
+                      height: catIndex === 0 ? 200 : 160,objectFit:"contain",position:"relative",
+                      filter:`drop-shadow(0 8px 24px ${accent}35)`,
+                    }}
+                    fallbackSize={80}
+                  />
                 </div>
               </div>
-            );
-          })()}
-
-          {/* Rest of top 5 */}
-          {top5.slice(1).map((r, i) => {
-            const sc = r.scores||{};
-            const sortAttr = catInfo?.attr;
-            const sortVal = r._sortScore || (sortAttr ? sc[sortAttr] : 0);
-            return (
-              <div key={r.id||r.name} onClick={()=>setMagDetail(r)} style={{
-                display:"flex",gap:14,padding:"14px 8px",cursor:"pointer",
-                borderBottom:i < top5.length-2 ? `1px solid ${T.border}` : "none",
-                alignItems:"center",transition:"background 0.2s",
-              }}>
-                <div style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:T.gray3,width:28,textAlign:"center",flexShrink:0}}>
-                  {i+2}
-                </div>
-                <div style={{width:56,height:56,borderRadius:12,background:T.card,border:`1px solid ${T.border}`,
-                  display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden"}}>
-                  <RacketImg src={r.imageUrl} alt="" brand={r.brand} style={{height:48,objectFit:"contain"}} fallbackSize={36}/>
-                </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontFamily:F.body,fontSize:10,color:T.accent,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>{r.brand}</div>
-                  <div style={{fontFamily:F.body,fontSize:14,color:T.white,fontWeight:600,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
-                  <div style={{fontFamily:F.body,fontSize:11,color:T.gray2,marginTop:2}}>{r.shape} · {r.price}</div>
-                </div>
-                <div style={{textAlign:"right",flexShrink:0}}>
-                  <div style={{fontFamily:F.mono,fontSize:18,fontWeight:700,color:sortVal>=9?T.accent:sortVal>=8?T.gold:T.gray1}}>{typeof sortVal==="number"?sortVal.toFixed(1):sortVal}</div>
-                  {r.proPlayerInfo?.name&&<div style={{fontFamily:F.mono,fontSize:8,color:T.gold,marginTop:2}}>🎾 {r.proPlayerInfo.name.split(" ").pop()}</div>}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+            </div>
+          );
+        })}
+      </div>
 
       {/* CTA Catalogue */}
-      <div style={{margin:"28px 4px 40px",padding:"28px 20px",borderRadius:20,textAlign:"center",cursor:"pointer",
+      <div style={{margin:"28px 4px 40px",padding:"24px 20px",borderRadius:20,textAlign:"center",cursor:"pointer",
         background:`linear-gradient(135deg, ${T.accent}15, ${T.card})`,border:`1px solid ${T.accent}25`,
       }} onClick={()=>setScreen("catalog")}>
-        <div style={{fontFamily:F.mono,fontSize:9,color:T.accent,letterSpacing:"0.15em",marginBottom:6}}>CATALOGUE COMPLET</div>
-        <div style={{fontFamily:F.editorial,fontSize:28,color:T.white,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
-        <div style={{fontFamily:F.body,fontSize:13,color:T.gray2}}>Rechercher, filtrer, comparer →</div>
+        <div style={{fontFamily:F.body,fontSize:9,color:T.accent,letterSpacing:"0.12em",fontWeight:700,marginBottom:6}}>CATALOGUE COMPLET</div>
+        <div style={{fontFamily:F.editorial,fontSize:26,color:T.white,fontWeight:700,marginBottom:6}}>{totalDBCount} raquettes</div>
+        <div style={{fontFamily:F.body,fontSize:12,color:T.gray2}}>Rechercher, filtrer, comparer →</div>
       </div>
     </div>
   );
@@ -2703,7 +2900,7 @@ export default function PadelAnalyzer() {
   const [passwordModal, setPasswordModal] = useState(null); // { mode:'unlock'|'setpin'|'lock', profileName, onSuccess }
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState("");
-  const [magCat, setMagCat] = useState("puissance");
+  const [magCat, setMagCat] = useState(null);
   const [magYear, setMagYear] = useState(2026);
   const [magDetail, setMagDetail] = useState(null); // racket to show in detail
   const [racketSheet, setRacketSheet] = useState(null); // full racket sheet view
@@ -4659,7 +4856,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1,display:"flex",flexDirection:"column",gap:14}} className="pa-stagger">
 
           {/* MAGAZINE — Hero card */}
-          <button onClick={()=>{setMagCat("puissance");setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} className="pa-card" style={{
+          <button onClick={()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} className="pa-card" style={{
             width:"100%",borderRadius:22,cursor:"pointer",position:"relative",overflow:"hidden",
             background:`linear-gradient(160deg, ${T.card} 0%, rgba(212,168,86,0.08) 50%, ${T.surface} 100%)`,
             border:`1px solid ${T.gold}35`,padding:0,textAlign:"left",
