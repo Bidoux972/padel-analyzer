@@ -2955,7 +2955,33 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "AIR VERON",
+        "Air",
+        "VERON",
+        "CarbonFlex"
+      ],
+      "colors": [
+        "noir",
+        "bleu",
+        "jaune fluo",
+        "gris"
+      ],
+      "tech": [
+        "CarbonFlex",
+        "X-EVA"
+      ],
+      "design": [
+        "logo Babolat centré en haut",
+        "motif aérodynamique en lignes courbes",
+        "finition brillante",
+        "perforations en grille régulière"
+      ],
+      "yearClues": "Coloris bleu/jaune fluo et inscription CarbonFlex = génération Air 2026"
+    }
   },
   {
     "name": "Babolat Air Viper 2026",
@@ -4218,7 +4244,28 @@
     "junior": true,
     "ean": null,
     "availability": "available",
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "HACK",
+        "Jr",
+        "Junior"
+      ],
+      "colors": [
+        "noir",
+        "vert fluo",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo Bullpadel en haut",
+        "design Hack simplifié",
+        "motif géométrique vert",
+        "finition mate"
+      ],
+      "yearClues": "Version junior 2025 avec coloris vert fluo typique de la gamme Hack 2025"
+    }
   },
   {
     "id": "bullpadel-indiga-boy-2025",
@@ -4267,7 +4314,28 @@
     "junior": true,
     "ean": null,
     "availability": "available",
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "INDIGA",
+        "Boy"
+      ],
+      "colors": [
+        "bleu",
+        "noir",
+        "blanc",
+        "orange"
+      ],
+      "tech": [],
+      "design": [
+        "design coloré jeune",
+        "motifs graphiques dynamiques",
+        "logo Bullpadel",
+        "finition brillante"
+      ],
+      "yearClues": "Gamme junior Indiga 2025 avec coloris bleu/orange vif"
+    }
   },
   {
     "id": "bullpadel-vertex-03-2025",
@@ -6479,7 +6547,31 @@
     "availability": "available",
     "junior": false,
     "womanLine": false,
-    "player": "Intermédiaire"
+    "player": "Intermédiaire",
+    "visualSignature": {
+      "texts": [
+        "Dunlop",
+        "FX",
+        "TEAM",
+        "FX TEAM"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "gris",
+        "blanc"
+      ],
+      "tech": [
+        "FX"
+      ],
+      "design": [
+        "logo Dunlop classique",
+        "lettrage FX grand",
+        "lignes diagonales",
+        "perforations rondes régulières"
+      ],
+      "yearClues": "Gamme FX 2026 de Dunlop avec coloris noir/rouge"
+    }
   },
   {
     "id": "head-extreme-pro-2024",
@@ -11929,7 +12021,31 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Siux",
+        "ELECTRA",
+        "PRO",
+        "TeXtreme"
+      ],
+      "colors": [
+        "noir",
+        "rose",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "TeXtreme 18K"
+      ],
+      "design": [
+        "logo Siux centré",
+        "motif électrique/éclairs",
+        "finition carbone visible",
+        "accents roses"
+      ],
+      "yearClues": "Electra Pro 2026 avec TeXtreme 18K et accents rose/magenta"
+    }
   },
   {
     "id": "siux-fenix-pro-2026",
@@ -13079,7 +13195,28 @@
     "junior": true,
     "ean": null,
     "availability": "available",
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Varlion",
+        "CAÑAS",
+        "Junior",
+        "Jr"
+      ],
+      "colors": [
+        "noir",
+        "doré",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo Varlion doré",
+        "design épuré",
+        "finition mate noire",
+        "lettrage Cañas"
+      ],
+      "yearClues": "Junior Varlion 2025 avec coloris noir/doré signature Cañas"
+    }
   },
   {
     "id": "varlion-canas-w-2025",
@@ -13128,7 +13265,29 @@
     "womanLine": true,
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Varlion",
+        "CAÑAS",
+        "W",
+        "Woman"
+      ],
+      "colors": [
+        "noir",
+        "doré",
+        "rose",
+        "blanc"
+      ],
+      "tech": [],
+      "design": [
+        "logo Varlion doré",
+        "accents roses féminins",
+        "finition mate",
+        "lettrage Cañas élégant"
+      ],
+      "yearClues": "Version femme Cañas 2025 avec accents roses et dorés"
+    }
   },
   {
     "id": "varlion-lw-carbon-2025",
@@ -13177,7 +13336,31 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Varlion",
+        "LW",
+        "CARBON",
+        "Lethal Weapon"
+      ],
+      "colors": [
+        "noir",
+        "doré",
+        "gris carbone"
+      ],
+      "tech": [
+        "Carbon",
+        "LW"
+      ],
+      "design": [
+        "texture carbone visible",
+        "logo Varlion doré premium",
+        "finition noire mate",
+        "lettrage LW stylisé"
+      ],
+      "yearClues": "LW Carbon 2025 avec finition full carbone noir et lettrage doré"
+    }
   },
   {
     "id": "varlion-bourne-carbon-ti-2026",
@@ -13226,7 +13409,33 @@
     "availability": "available",
     "junior": false,
     "womanLine": false,
-    "player": "Avancé"
+    "player": "Avancé",
+    "visualSignature": {
+      "texts": [
+        "Varlion",
+        "BOURNE",
+        "CARBON",
+        "Ti",
+        "Titanium"
+      ],
+      "colors": [
+        "noir",
+        "argent",
+        "gris titane",
+        "blanc"
+      ],
+      "tech": [
+        "Carbon Ti",
+        "Titanium"
+      ],
+      "design": [
+        "finition titane métallique",
+        "logo Varlion",
+        "accents argentés",
+        "texture carbone"
+      ],
+      "yearClues": "Bourne 2026 avec finition titane argenté distinctif"
+    }
   },
   {
     "id": "varlion-lw-orquidea-2026",
@@ -13275,7 +13484,31 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "player": "Débutant"
+    "player": "Débutant",
+    "visualSignature": {
+      "texts": [
+        "Varlion",
+        "LW",
+        "ORQUIDEA",
+        "Lethal Weapon"
+      ],
+      "colors": [
+        "violet",
+        "noir",
+        "blanc",
+        "rose orchidée"
+      ],
+      "tech": [
+        "LW"
+      ],
+      "design": [
+        "coloris violet/orchidée distinctif",
+        "logo Varlion",
+        "finition brillante",
+        "design féminin élégant"
+      ],
+      "yearClues": "LW Orquidea 2026 avec coloris violet orchidée unique"
+    }
   },
   {
     "id": "varlion-lw-carbon-ti-2026",
@@ -14917,7 +15150,30 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "NEURON",
+        "Neuron"
+      ],
+      "colors": [
+        "bleu",
+        "noir",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "Neuron"
+      ],
+      "design": [
+        "motif neuronal/organique",
+        "logo Bullpadel",
+        "lignes courbes fluides",
+        "finition mate"
+      ],
+      "yearClues": "Neuron 2025 avec coloris bleu et motif organique"
+    }
   },
   {
     "id": "bullpadel-vertex-05-woman-2026",
@@ -15059,7 +15315,32 @@
     "targetProfile": "Joueuses avancées polyvalentes. L'hybride par excellence pour le jeu féminin technique et complet.",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Bullpadel",
+        "ELITE",
+        "W",
+        "Woman",
+        "Gemma Triay"
+      ],
+      "colors": [
+        "noir",
+        "rose",
+        "blanc",
+        "gris"
+      ],
+      "tech": [
+        "Elite"
+      ],
+      "design": [
+        "design premium féminin",
+        "accents roses",
+        "logo Bullpadel",
+        "finition soignée mate/brillante"
+      ],
+      "yearClues": "Elite Woman 2026 signature Gemma Triay avec accents roses"
+    }
   },
   {
     "id": "nox-vk10-quantum-3k-2025",
@@ -15113,7 +15394,30 @@
     "targetProfile": "Joueuses avancées défensives. Très demandée en test center. Parfaite pour la prévention des douleurs coude/épaule grâce à la forme ronde et au poids léger.",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Nox",
+        "VK10",
+        "QUANTUM",
+        "3K"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "blanc"
+      ],
+      "tech": [
+        "Quantum 3K"
+      ],
+      "design": [
+        "logo Nox centré",
+        "lettrage VK10 visible",
+        "motif géométrique rouge",
+        "perforations régulières"
+      ],
+      "yearClues": "VK10 Quantum 2025 avec coloris rouge/noir et marquage 3K"
+    }
   },
   {
     "id": "nox-la10-quantum-12k-2025",
@@ -15167,7 +15471,30 @@
     "ean": null,
     "availability": "available",
     "junior": false,
-    "womanLine": false
+    "womanLine": false,
+    "visualSignature": {
+      "texts": [
+        "Nox",
+        "LA10",
+        "QUANTUM",
+        "12K"
+      ],
+      "colors": [
+        "noir",
+        "bleu",
+        "blanc"
+      ],
+      "tech": [
+        "Quantum 12K"
+      ],
+      "design": [
+        "logo Nox centré",
+        "lettrage LA10 visible",
+        "accents bleus",
+        "finition carbone"
+      ],
+      "yearClues": "LA10 Quantum 2025 avec coloris bleu/noir et marquage 12K"
+    }
   },
   {
     "id": "nox-tl10-quantum-12k-2025",
@@ -16218,7 +16545,31 @@
     "targetProfile": "PRIORITÉ SANTÉ. Joueuses, seniors, petits gabarits avec problèmes articulaires. Le confort du polyéthylène dans un format maniable.",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Royal Padel",
+        "M27",
+        "Light",
+        "RP"
+      ],
+      "colors": [
+        "noir",
+        "rouge",
+        "blanc",
+        "doré"
+      ],
+      "tech": [
+        "M27"
+      ],
+      "design": [
+        "logo Royal Padel couronné",
+        "lettrage M27",
+        "finition classique",
+        "accents dorés"
+      ],
+      "yearClues": "M27 Light 2025 avec logo couronné Royal Padel et accents dorés"
+    }
   },
   {
     "id": "royal-padel-whip-extreme-2025",
@@ -16636,7 +16987,30 @@
     "shortName": "Ultimate Tour X 2026",
     "ean": null,
     "availability": "available",
-    "junior": false
+    "junior": false,
+    "visualSignature": {
+      "texts": [
+        "Oxdog",
+        "ULTIMATE",
+        "TOUR",
+        "X"
+      ],
+      "colors": [
+        "noir",
+        "orange",
+        "blanc"
+      ],
+      "tech": [
+        "Ultimate Tour"
+      ],
+      "design": [
+        "logo Oxdog",
+        "design scandinave épuré",
+        "accents orange vifs",
+        "finition mate premium"
+      ],
+      "yearClues": "Ultimate Tour X 2026 avec design scandinave noir/orange"
+    }
   },
   {
     "id": "starvie-kenta-eternal-pro-2026",
@@ -18514,7 +18888,29 @@
     "womanLine": false,
     "proPlayerInfo": null,
     "ean": null,
-    "availability": "available"
+    "availability": "available",
+    "visualSignature": {
+      "texts": [
+        "Kuikma",
+        "CONTROL",
+        "PRO"
+      ],
+      "colors": [
+        "noir",
+        "bleu",
+        "blanc"
+      ],
+      "tech": [
+        "Control Pro"
+      ],
+      "design": [
+        "logo Kuikma/Decathlon",
+        "design épuré minimaliste",
+        "lettrage Control Pro",
+        "finition mate"
+      ],
+      "yearClues": "Control Pro 2025 Kuikma avec coloris bleu/noir sobre"
+    }
   },
   {
     "id": "kuikma-pr-open-2025",
@@ -18825,7 +19221,30 @@
     "womanLine": false,
     "proPlayerInfo": null,
     "ean": null,
-    "availability": "available"
+    "availability": "available",
+    "visualSignature": {
+      "texts": [
+        "Kuikma",
+        "HYBRID",
+        "METAL"
+      ],
+      "colors": [
+        "gris métallique",
+        "noir",
+        "bleu",
+        "blanc"
+      ],
+      "tech": [
+        "Hybrid Metal"
+      ],
+      "design": [
+        "finition métallique distinctive",
+        "logo Kuikma",
+        "reflets argentés",
+        "design moderne"
+      ],
+      "yearClues": "Hybrid Metal 2025 avec finition gris métallique unique Kuikma"
+    }
   },
   {
     "id": "wilson-endure-pro-v1-2026",
