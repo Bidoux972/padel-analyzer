@@ -2618,7 +2618,7 @@ Pour CHAQUE raquette trouvée, donne un JSON avec ces champs EXACTEMENT :
 - womanLine: true/false (ligne femme spécifique)
 - proPlayerInfo: {name:"...", rank:"..."} ou null
 
-Réponds UNIQUEMENT avec un tableau JSON valide, rien d'autre. Pas de markdown, pas de commentaires.`;
+Réponds UNIQUEMENT avec un tableau JSON valide. RÈGLE ABSOLUE : ta réponse doit commencer par [ et finir par ]. Zéro texte avant, zéro texte après, zéro markdown. Juste le JSON pur.`;
 
 const ASSISTANT_CONTENT_PROMPT = `Tu es un rédacteur padel expert. Génère le contenu éditorial pour cette raquette.
 Applique les RÈGLES DE SCORING MÉCANIQUES ci-dessous pour calculer les scores.
@@ -5524,10 +5524,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const resp = await fetch("/api/chat", {
                     method:"POST", headers:{"Content-Type":"application/json"},
                     body: JSON.stringify({
-                      model:"claude-sonnet-4-5-20250929", max_tokens: 4096,
-                      tools: [{type:"web_search_20250305",name:"web_search"}],
+                      model:"claude-sonnet-4-5-20250929", max_tokens: 16384,
+                      tools: [{type:"web_search_20250305",name:"web_search",max_uses:5}],
                       system: ASSISTANT_SEARCH_PROMPT,
-                      messages: [{role:"user",content:`Recherche: "${assistantQuery}". Trouve TOUTES les raquettes correspondantes avec specs complètes. Cherche sur padelnuestro.com, padelful.com, sites constructeurs officiels.`}]
+                      messages: [{role:"user",content:`Recherche: "${assistantQuery}". Trouve TOUTES les raquettes correspondantes. Retourne UNIQUEMENT le tableau JSON, sans texte avant ou après. Pas de markdown, pas de commentaires, juste le JSON pur.`}]
                     })
                   });
                   const data = await resp.json();
@@ -5537,16 +5537,29 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const textParts = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
                   if(!textParts.trim()) throw new Error("Réponse vide de l'IA — vérifiez le modèle et l'API key");
                   let parsed;
-                  try { parsed = JSON.parse(textParts.trim()); } catch {
-                    // Try stripping markdown code blocks
-                    const mdMatch = textParts.match(/```(?:json)?\s*([\s\S]*?)```/);
-                    if(mdMatch) { try { parsed = JSON.parse(mdMatch[1].trim()); } catch {} }
-                    // Try extracting JSON array
-                    if(!parsed) { const arrMatch = textParts.match(/\[[\s\S]*\]/); if(arrMatch) { try { parsed = JSON.parse(arrMatch[0]); } catch {} } }
-                    // Try extracting JSON object
-                    if(!parsed) { const objMatch = textParts.match(/\{[\s\S]*\}/); if(objMatch) { try { parsed = JSON.parse(objMatch[0]); } catch {} } }
-                    if(!parsed) throw new Error("Pas de JSON trouvé. Réponse brute: "+textParts.slice(0,200));
+                  // Strategy 1: direct parse
+                  try { parsed = JSON.parse(textParts.trim()); } catch {}
+                  // Strategy 2: extract from markdown ```json ... ```
+                  if(!parsed) { const md = textParts.match(/```(?:json)?\s*([\s\S]*?)```/); if(md) { try { parsed = JSON.parse(md[1].trim()); } catch {} } }
+                  // Strategy 3: extract JSON array
+                  if(!parsed) { const arr = textParts.match(/\[[\s\S]*\]/); if(arr) { try { parsed = JSON.parse(arr[0]); } catch {} } }
+                  // Strategy 4: extract JSON object
+                  if(!parsed) { const obj = textParts.match(/\{[\s\S]*\}/); if(obj) { try { parsed = JSON.parse(obj[0]); } catch {} } }
+                  // Strategy 5: truncated JSON — find start of array, try to repair
+                  if(!parsed) {
+                    const arrStart = textParts.indexOf("[");
+                    if(arrStart>=0) {
+                      let raw = textParts.slice(arrStart).replace(/```\s*$/,"").trim();
+                      // Find last complete object (ends with })
+                      const lastBrace = raw.lastIndexOf("}");
+                      if(lastBrace>0) {
+                        raw = raw.slice(0, lastBrace+1);
+                        if(!raw.endsWith("]")) raw += "]";
+                        try { parsed = JSON.parse(raw); } catch {}
+                      }
+                    }
                   }
+                  if(!parsed) throw new Error("JSON non parseable. Début réponse: "+textParts.slice(0,300));
                   if(!Array.isArray(parsed)) parsed = [parsed];
                   // Mark duplicates
                   const existingIds = new Set(getMergedDB().map(r=>r.id));
