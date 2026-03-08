@@ -5531,12 +5531,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     })
                   });
                   const data = await resp.json();
-                  const textParts = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+                  // Check for API error
+                  if(data.error) throw new Error("API: "+(data.error.message||JSON.stringify(data.error)));
+                  // Extract text from all text blocks (web_search responses have mixed block types)
+                  const textParts = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+                  if(!textParts.trim()) throw new Error("Réponse vide de l'IA — vérifiez le modèle et l'API key");
                   let parsed;
                   try { parsed = JSON.parse(textParts.trim()); } catch {
-                    const m = textParts.match(/\[[\s\S]*\]/);
-                    if(m) parsed = JSON.parse(m[0]);
-                    else throw new Error("Pas de JSON dans la réponse IA");
+                    // Try stripping markdown code blocks
+                    const mdMatch = textParts.match(/```(?:json)?\s*([\s\S]*?)```/);
+                    if(mdMatch) { try { parsed = JSON.parse(mdMatch[1].trim()); } catch {} }
+                    // Try extracting JSON array
+                    if(!parsed) { const arrMatch = textParts.match(/\[[\s\S]*\]/); if(arrMatch) { try { parsed = JSON.parse(arrMatch[0]); } catch {} } }
+                    // Try extracting JSON object
+                    if(!parsed) { const objMatch = textParts.match(/\{[\s\S]*\}/); if(objMatch) { try { parsed = JSON.parse(objMatch[0]); } catch {} } }
+                    if(!parsed) throw new Error("Pas de JSON trouvé. Réponse brute: "+textParts.slice(0,200));
                   }
                   if(!Array.isArray(parsed)) parsed = [parsed];
                   // Mark duplicates
@@ -5599,11 +5608,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       })
                     });
                     const data = await resp.json();
-                    const text = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+                    if(data.error) throw new Error(data.error.message||"API error");
+                    const text = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
                     let content;
                     try { content = JSON.parse(text.trim()); } catch {
-                      const m = text.match(/\{[\s\S]*\}/);
-                      if(m) content = JSON.parse(m[0]); else throw new Error("JSON invalide");
+                      const md = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+                      if(md) { try { content = JSON.parse(md[1].trim()); } catch {} }
+                      if(!content) { const m = text.match(/\{[\s\S]*\}/); if(m) { try { content = JSON.parse(m[0]); } catch {} } }
+                      if(!content) throw new Error("JSON invalide");
                     }
                     generated.push({...r, ...content, imageUrl:"", featured:false, _isNew:true});
                   } catch(e) {
