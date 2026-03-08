@@ -5568,9 +5568,37 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   }
                   if(!parsed) throw new Error("JSON non parseable. Début réponse: "+textParts.slice(0,300));
                   if(!Array.isArray(parsed)) parsed = [parsed];
-                  // Mark duplicates
-                  const existingIds = new Set(getMergedDB().map(r=>r.id));
-                  const results = parsed.map(r => ({...r, selected: !existingIds.has(r.id), duplicate: existingIds.has(r.id)}));
+                  // Mark duplicates — fuzzy matching by ID + normalized name
+                  const existingDB = getMergedDB();
+                  const existingIds = new Set(existingDB.map(r=>r.id));
+                  const normalize = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+                  const existingNames = existingDB.map(r => ({ id:r.id, norm:normalize(r.name), brand:normalize(r.brand), year:r.year }));
+                  const isFuzzyDuplicate = (r) => {
+                    // 1. Exact ID match
+                    if(existingIds.has(r.id)) return existingDB.find(e=>e.id===r.id)?.name || r.id;
+                    // 2. Fuzzy name match: same brand + same year + high word overlap
+                    const rNorm = normalize(r.name);
+                    const rBrand = normalize(r.brand);
+                    const rWords = rNorm.split(" ").filter(w=>w.length>1);
+                    for(const ex of existingNames) {
+                      if(ex.brand !== rBrand) continue;
+                      if(ex.year !== r.year && Math.abs((ex.year||0) - (r.year||0)) > 1) continue;
+                      const exWords = ex.norm.split(" ").filter(w=>w.length>1);
+                      // Count shared words (ignoring brand name and year)
+                      const sigWords = w => w.filter(x => x !== rBrand && !/^\d{4}$/.test(x));
+                      const rSig = sigWords(rWords);
+                      const exSig = sigWords(exWords);
+                      if(rSig.length === 0 || exSig.length === 0) continue;
+                      const shared = rSig.filter(w => exSig.includes(w)).length;
+                      const shorter = Math.min(rSig.length, exSig.length);
+                      if(shorter > 0 && shared / shorter >= 0.75) return ex.id + " (≈ " + existingDB.find(e=>e.id===ex.id)?.name + ")";
+                    }
+                    return null;
+                  };
+                  const results = parsed.map(r => {
+                    const dup = isFuzzyDuplicate(r);
+                    return {...r, selected: !dup, duplicate: !!dup, duplicateOf: dup||null};
+                  });
                   setAssistantResults(results);
                   setAssistantStep(2);
                   setAssistantMsg(`✅ ${results.length} raquette(s) trouvée(s) — ${results.filter(r=>r.duplicate).length} doublon(s) grisé(s)`);
@@ -5598,20 +5626,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:6,maxHeight:400,overflowY:"auto"}}>
-                {assistantResults.map((r,idx)=><div key={r.id||idx} onClick={()=>{if(!r.duplicate) setAssistantResults(prev=>{const n=[...prev];n[idx]={...n[idx],selected:!n[idx].selected};return n;})}} style={{padding:"10px 12px",background:r.duplicate?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.04)",border:`1px solid ${r.duplicate?"rgba(255,255,255,0.05)":r.selected?"rgba(168,85,247,0.4)":"rgba(255,255,255,0.08)"}`,borderRadius:10,cursor:r.duplicate?"default":"pointer",opacity:r.duplicate?0.4:1,display:"flex",gap:10,alignItems:"center"}}>
-                  <div style={{width:20,height:20,borderRadius:6,border:`2px solid ${r.duplicate?"#475569":r.selected?"#a855f7":"#64748b"}`,background:r.selected&&!r.duplicate?"rgba(168,85,247,0.3)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,flexShrink:0}}>
-                    {r.duplicate?"🔒":r.selected?"✓":""}
+                {assistantResults.map((r,idx)=><div key={r.id||idx} onClick={()=>{setAssistantResults(prev=>{const n=[...prev];if(n[idx].duplicate&&!n[idx].forceOverride){n[idx]={...n[idx],forceOverride:true,selected:false};}else if(n[idx].duplicate&&n[idx].forceOverride){n[idx]={...n[idx],selected:!n[idx].selected};}else{n[idx]={...n[idx],selected:!n[idx].selected};}return n;})}} style={{padding:"10px 12px",background:r.duplicate&&!r.forceOverride?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.04)",border:`1px solid ${r.duplicate&&!r.forceOverride?"rgba(255,255,255,0.05)":r.selected?"rgba(168,85,247,0.4)":"rgba(255,255,255,0.08)"}`,borderRadius:10,cursor:"pointer",opacity:r.duplicate&&!r.forceOverride?0.4:1,display:"flex",gap:10,alignItems:"center"}}>
+                  <div style={{width:20,height:20,borderRadius:6,border:`2px solid ${r.duplicate&&!r.forceOverride?"#475569":r.selected?"#a855f7":"#64748b"}`,background:r.selected?"rgba(168,85,247,0.3)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,flexShrink:0}}>
+                    {r.duplicate&&!r.forceOverride?"🔒":r.selected?"✓":""}
                   </div>
                   <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:12,fontWeight:700,color:r.duplicate?"#64748b":"#e2e8f0"}}>{r.name} {r.duplicate&&<span style={{fontSize:9,color:"#f59e0b",fontWeight:600}}>DOUBLON</span>}</div>
+                    <div style={{fontSize:12,fontWeight:700,color:r.duplicate&&!r.forceOverride?"#64748b":"#e2e8f0"}}>{r.name} {r.duplicate&&!r.forceOverride&&<span style={{fontSize:9,color:"#f59e0b",fontWeight:600}}>DOUBLON — cliquer pour forcer</span>}{r.forceOverride&&<span style={{fontSize:9,color:"#f97316",fontWeight:600}}>⚠️ FORCÉ</span>}</div>
+                    {r.duplicateOf&&!r.forceOverride&&<div style={{fontSize:9,color:"#f59e0b",marginTop:1}}>≈ {r.duplicateOf}</div>}
                     <div style={{fontSize:10,color:"#94a3b8",marginTop:2}}>{r.brand} · {r.shape} · {r.weight} · {r.balance} · {r.category} {r.player&&r.player!=="—"?`· 🎾 ${r.player}`:""}</div>
                   </div>
                 </div>)}
               </div>
 
               {/* Generate button */}
-              {assistantStep===2&&<button disabled={!assistantResults.some(r=>r.selected&&!r.duplicate)} onClick={async()=>{
-                const selected = assistantResults.filter(r=>r.selected&&!r.duplicate);
+              {assistantStep===2&&<button disabled={!assistantResults.some(r=>r.selected)} onClick={async()=>{
+                const selected = assistantResults.filter(r=>r.selected);
                 if(selected.length===0) return;
                 setAssistantStep(3); setAssistantMsg(`⏳ Génération des fiches pour ${selected.length} raquette(s)...`);
                 const generated = [];
@@ -5646,8 +5675,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 setAssistantGenerated(generated);
                 setAssistantStep(4);
                 setAssistantMsg(`✅ ${generated.length} fiche(s) générée(s) — vérifiez et validez ci-dessous`);
-              }} style={{marginTop:12,width:"100%",padding:"14px",background:"linear-gradient(135deg,rgba(168,85,247,0.2),rgba(124,58,237,0.15))",border:"1px solid rgba(168,85,247,0.4)",borderRadius:14,color:"#c4b5fd",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit",opacity:assistantResults.some(r=>r.selected&&!r.duplicate)?1:0.4}}>
-                {assistantStep===3?`⏳ Génération en cours...`:`🚀 Générer les fiches (${assistantResults.filter(r=>r.selected&&!r.duplicate).length})`}
+              }} style={{marginTop:12,width:"100%",padding:"14px",background:"linear-gradient(135deg,rgba(168,85,247,0.2),rgba(124,58,237,0.15))",border:"1px solid rgba(168,85,247,0.4)",borderRadius:14,color:"#c4b5fd",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit",opacity:assistantResults.some(r=>r.selected)?1:0.4}}>
+                {assistantStep===3?`⏳ Génération en cours...`:`🚀 Générer les fiches (${assistantResults.filter(r=>r.selected).length})`}
               </button>}
             </div>}
 
