@@ -1376,7 +1376,25 @@ function RacketSheetScreen({ ctx }) {
 }
 
 
-// Merged DB: RACKETS_DB + extras, dédupliqué par ID (extras override static)
+// Cloud rackets cache (loaded from Supabase on startup, merged into getMergedDB)
+let _cloudRackets = [];
+
+function mapCloudRacket(r) {
+  return {
+    id: r.id, name: r.name, shortName: r.short_name||"", brand: r.brand,
+    shape: r.shape, weight: r.weight, balance: r.balance, surface: r.surface,
+    core: r.core, antivib: r.antivib, price: r.price, player: r.player,
+    imageUrl: r.image_url||"", year: r.year, category: r.category,
+    scores: r.scores||{}, verdict: r.verdict||"", editorial: r.editorial||"",
+    techHighlights: r.tech_highlights||[], targetProfile: r.target_profile||"",
+    junior: r.junior||false, womanLine: r.woman_line||false,
+    proPlayerInfo: r.pro_player_info||null, featured: r.featured||false,
+    visualSignature: r.visual_signature||null, description: r.description||"",
+    isActive: r.is_active!==false
+  };
+}
+
+// Merged DB: RACKETS_DB (static) + localStorage extras + Supabase cloud
 function getMergedDB() {
   let extra = [];
   try { extra = JSON.parse(localStorage.getItem('padel_db_extra') || '[]'); } catch {}
@@ -1387,7 +1405,6 @@ function getMergedDB() {
   RACKETS_DB.forEach(r => {
     const ex = extraMap.get(r.id);
     if (ex) {
-      // Static DB wins for scores, but take richer content from extras
       const merged = { ...r };
       if (ex.editorial && (!r.editorial || ex.editorial.length > r.editorial.length)) merged.editorial = ex.editorial;
       if (ex.techHighlights && ex.techHighlights.length > (r.techHighlights || []).length) merged.techHighlights = ex.techHighlights;
@@ -1398,8 +1415,25 @@ function getMergedDB() {
       map.set(r.id, r);
     }
   });
-  // Add extras that don't exist in static DB (new imports)
   extra.forEach(r => { if (!map.has(r.id)) map.set(r.id, r); });
+  // Merge cloud rackets (Supabase) — cloud overrides static for shared IDs, adds new ones
+  _cloudRackets.forEach(cr => {
+    const mapped = mapCloudRacket(cr);
+    if (!mapped.isActive) return;
+    const existing = map.get(mapped.id);
+    if (existing) {
+      // Cloud enriches static: take cloud data for fields that are richer
+      const merged = { ...existing };
+      if (mapped.imageUrl && !existing.imageUrl) merged.imageUrl = mapped.imageUrl;
+      if (mapped.editorial && (!existing.editorial || mapped.editorial.length > existing.editorial.length)) merged.editorial = mapped.editorial;
+      if (mapped.visualSignature && !existing.visualSignature) merged.visualSignature = mapped.visualSignature;
+      if (mapped.featured) merged.featured = true;
+      map.set(mapped.id, merged);
+    } else {
+      // New racket from cloud — add it
+      map.set(mapped.id, mapped);
+    }
+  });
   return [...map.values()];
 }
 
@@ -2918,8 +2952,21 @@ export default function PadelAnalyzer() {
   const [localDBCount, setLocalDBCount] = useState(()=>{
     try { return JSON.parse(localStorage.getItem('padel_db_extra')||'[]').length; } catch{ return 0; }
   });
-  // Compteur dynamique = total unique (embedded + extras dédupliqués par ID)
-  const totalDBCount = useMemo(() => getMergedDB().length, [localDBCount]);
+  const [cloudRacketsLoaded, setCloudRacketsLoaded] = useState(false);
+  // Load cloud rackets from Supabase on startup
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await cloudLoadAllRackets();
+        if (Array.isArray(data) && data.length > 0) {
+          _cloudRackets = data;
+          setCloudRacketsLoaded(true);
+        }
+      } catch(e) { console.warn('[Cloud DB] Load failed:', e.message); }
+    })();
+  }, []);
+  // Compteur dynamique = total unique (embedded + extras + cloud dédupliqués par ID)
+  const totalDBCount = useMemo(() => getMergedDB().length, [localDBCount, cloudRacketsLoaded]);
   const [screen, setScreen] = useState(()=>{
     // Check session freshness for vendeur/admin
     const role = getGroupRole();
@@ -5114,6 +5161,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             await adminUpsertRacket(familyCode, racket);
             setAdminMsg("✅ Raquette sauvegardée: " + racket.name);
             setAdminEditRacket(null);
+            try { const fresh = await cloudLoadAllRackets(); if(Array.isArray(fresh)) { _cloudRackets = fresh; setCloudRacketsLoaded(prev=>!prev); } } catch{}
           } catch(e) { setAdminMsg("Erreur: "+e.message); }
           setAdminLoading(false);
         };
@@ -5143,6 +5191,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               } catch { fail++; }
             }
             setAdminMsg(`✅ Import: ${ok} OK, ${fail} erreurs sur ${arr.length}`);
+            try { const fresh = await cloudLoadAllRackets(); if(Array.isArray(fresh)) { _cloudRackets = fresh; setCloudRacketsLoaded(prev=>!prev); } } catch{}
           } catch(e) { setAdminMsg("Erreur JSON: "+e.message); }
           setAdminLoading(false);
         };
@@ -5666,9 +5715,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       if(!content) { const m = text.match(/\{[\s\S]*\}/); if(m) { try { content = JSON.parse(m[0]); } catch {} } }
                       if(!content) throw new Error("JSON invalide");
                     }
-                    generated.push({...r, ...content, imageUrl:"", featured:false, _isNew:true});
+                    const imgFile = (r.id||"").replace(/[^a-z0-9-]/g,"") + ".png";
+                    const imgUrl = "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/" + imgFile;
+                    generated.push({...r, ...content, imageUrl:imgUrl, _imgFile:imgFile, featured:false, _isNew:true});
                   } catch(e) {
-                    generated.push({...r, scores:{Puissance:5,Contrôle:5,Confort:5,Spin:5,Maniabilité:5,Tolérance:5}, verdict:"[Erreur génération: "+e.message+"]", editorial:"", targetProfile:"", techHighlights:[], imageUrl:"", featured:false, _isNew:true});
+                    const imgFileE = (r.id||"").replace(/[^a-z0-9-]/g,"") + ".png";
+                    const imgUrlE = "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/" + imgFileE;
+                    generated.push({...r, scores:{Puissance:5,Contrôle:5,Confort:5,Spin:5,Maniabilité:5,Tolérance:5}, verdict:"[Erreur génération: "+e.message+"]", editorial:"", targetProfile:"", techHighlights:[], imageUrl:imgUrlE, _imgFile:imgFileE, featured:false, _isNew:true});
                   }
                   setAssistantMsg(`⏳ ${generated.length}/${selected.length} générées...`);
                 }
@@ -5722,6 +5775,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     } catch { fail++; }
                   }
                   setAdminMsg(`✅ Upsert: ${ok} OK, ${fail} erreurs sur ${assistantGenerated.length}`);
+                  // Reload cloud rackets so new ones appear everywhere immediately
+                  try { const fresh = await cloudLoadAllRackets(); if(Array.isArray(fresh)) { _cloudRackets = fresh; setCloudRacketsLoaded(prev=>!prev); } } catch{}
                   setAdminLoading(false);
                 }} style={{flex:1,padding:"14px",background:"linear-gradient(135deg,rgba(76,175,80,0.2),rgba(56,142,60,0.15))",border:"1px solid rgba(76,175,80,0.4)",borderRadius:14,color:"#4ade80",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'"}}>
                   💾 Sauvegarder tout dans Supabase ({assistantGenerated.length})
@@ -5729,8 +5784,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
                 {/* Generate Python script for images */}
                 <button onClick={()=>{
-                  const noImg = assistantGenerated.filter(r=>!r.imageUrl);
-                  if(noImg.length===0){setAssistantMsg("Toutes les raquettes ont déjà une image"); return;}
+                  const noImg = assistantGenerated.filter(r=>r._imgFile);
+                  if(noImg.length===0){setAssistantMsg("Aucune image à télécharger"); return;}
                   const missing = noImg.map(r=>({
                     name: r.name, brand: r.brand, file: (r.id||"").replace(/[^a-z0-9-]/g,"")+".png",
                     query: r.name+" padel racket", id: r.id
@@ -5840,7 +5895,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   URL.revokeObjectURL(url);
                   setAssistantMsg("📥 Script Python téléchargé — "+noImg.length+" images. Glisse sur le Bureau puis: python3 ~/Desktop/download_images_new.py");
                 }} style={{flex:1,padding:"14px",background:"linear-gradient(135deg,rgba(251,191,36,0.15),rgba(245,158,11,0.1))",border:"1px solid rgba(251,191,36,0.3)",borderRadius:14,color:"#fbbf24",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'"}}>
-                  📥 Script images Python ({assistantGenerated.filter(r=>!r.imageUrl).length})
+                  📥 Script images Python ({assistantGenerated.filter(r=>r._imgFile).length})
+                </button>
+
+                {/* Open Supabase Storage */}
+                <button onClick={()=>{
+                  window.open("https://supabase.com/dashboard/project/nvomaxjyhuemdfvhzcbf/storage/buckets/racket-images","_blank");
+                  setAssistantMsg("📤 Supabase Storage ouvert — glisse tes images depuis ~/Desktop/racket-images/");
+                }} style={{flex:1,padding:"14px",background:"linear-gradient(135deg,rgba(61,184,160,0.15),rgba(45,140,120,0.1))",border:"1px solid rgba(61,184,160,0.3)",borderRadius:14,color:"#3DB8A0",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'"}}>
+                  📤 Ouvrir Supabase Storage
                 </button>
               </div>
 
