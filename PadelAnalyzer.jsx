@@ -264,10 +264,13 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
       (r,p) => ({ tag:"VERDICT", headline:`${r.shortName||r.name} : puissance ou contrôle ?`, subtitle:`Le choix de ${p} chez ${r.brand} en dit long. Analyse complète.`, tagColor:pickColor() }),
       (r,p) => ({ tag:"NOUVEAUTÉ", headline:`${r.brand} frappe fort avec la ${r.shortName||r.name}`, subtitle:`${lastName(p)} l'adopte pour ${r.year}. Les détails de cette nouvelle arme.`, tagColor:pickColor() }),
     ];
-    const proRackets2026 = allDB.filter(r => r.year===2026 && r.proPlayerInfo?.name && !curatedIds.has(r.id) && r.imageUrl);
+    const proRackets2026 = allDB.filter(r => !curatedIds.has(r.id) && r.imageUrl && (
+      (r.year===2026 && r.proPlayerInfo?.name) || r.featured
+    ));
     const shuffledTemplates = [...dynamicTemplates].sort(() => Math.random() - 0.5);
     const dynamic = proRackets2026.slice(0,8).map((r,i) => {
-      const tpl = shuffledTemplates[i % shuffledTemplates.length](r, r.proPlayerInfo.name);
+      const playerName = r.proPlayerInfo?.name || r.brand;
+      const tpl = shuffledTemplates[i % shuffledTemplates.length](r, playerName);
       return { ...tpl, racketId:r.id, racket:r };
     });
 
@@ -2559,6 +2562,82 @@ const MAGAZINE_CATEGORIES = [
   {id:"rapport", label:"💰 Rapport qualité/prix", attr:null, desc:"Performances au meilleur prix"},
 ];
 
+// === ASSISTANT ADMIN — SCORING RULES (gravées dans le code, ne plus jamais perdre) ===
+const ASSISTANT_SCORING_RULES = `RÈGLES DE SCORING MÉCANIQUES — applique ces calculs, pas de feeling :
+
+PUISSANCE (base forme + modifs):
+- Diamant=8.0, Goutte d'eau=6.5, Hybride=6.0, Ronde=5.5
+- Balance Haut: +1.0, Mi-haut: +0.5, Moyen: 0, Bas: -0.5
+- Mousse réactive/power: +0.5, Standard EVA: 0, Soft/control: -0.5
+- Cap 10.0
+
+CONTRÔLE (base forme inverse + modifs):
+- Ronde=8.5, Hybride=8.0, Goutte d'eau=7.5, Diamant=5.5
+- Fiberglass/hybrid surface: +0.5, Pure carbone: 0, Carbone rigide 12K+: -0.5
+- Sweet spot optimisé/large: +0.5
+
+CONFORT (base mousse + modifs):
+- Soft foam/Control: 7.5, Standard EVA/MLD: 6.0, Hard EVA (HR3 Black): 5.0, Reactive/Power foam: 5.0
+- Surface fiberglass dominante: +1.5, Hybrid carbone/verre: +0.5, Pure carbone: 0, Carbone rigide 12K+: -0.5
+- Anti-vib dédié (Auxetic, Pulse System, Ease Vibe): +0.5
+- Poids <355g: +0.5, 355-365g: 0, >365g: -0.5
+- IMPORTANT: Carbone rigide (12K, TriCarbon) + mousse dure = JAMAIS au-dessus de 6.0
+
+SPIN (texture surface):
+- Rough 3D + texture sable (Dual Spin, Extreme Spin): 8.5
+- 3D texture seule: 7.5
+- Lisse/standard: 6.0
+
+MANIABILITÉ (base poids + modif balance):
+- <350g: 9.0, 350-355g: 8.0, 355-360g: 7.5, 360-365g: 7.0, 365-370g: 6.5, >370g: 6.0
+- Balance Bas: +1.0, Moyen: +0.5, Mi-haut: 0, Haut: -0.5
+
+TOLÉRANCE (base forme + modifs):
+- Ronde=8.5, Hybride=8.0, Goutte d'eau=7.0, Diamant=5.0
+- Sweet spot optimisé/large: +0.5
+- Surface fiberglass: +0.5, Hybrid: 0, Carbone rigide: -0.5`;
+
+const ASSISTANT_SEARCH_PROMPT = `Tu es un expert padel. L'utilisateur cherche des raquettes à ajouter à une base de données.
+Cherche sur le web toutes les raquettes qui correspondent à la requête.
+Pour CHAQUE raquette trouvée, donne un JSON avec ces champs EXACTEMENT :
+- id: slug en kebab-case (ex: "bullpadel-vertex-05-2026")
+- name: nom complet (ex: "Bullpadel Vertex 05 2026")
+- shortName: nom court max 18 chars (ex: "Vertex 05")
+- brand: marque
+- year: année (number)
+- shape: parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
+- weight: fourchette en grammes (ex: "360-370g")
+- balance: parmi "Bas", "Moyen", "Haut"
+- surface: matériau surface (ex: "Carbon 18K Alum")
+- core: mousse (ex: "HR3 Black EVA")
+- antivib: techno anti-vibration ou "—"
+- price: prix approx en € (ex: "250-300€")
+- player: joueur pro ou "—"
+- category: parmi "debutant", "intermediaire", "avance", "expert", "junior"
+- junior: true/false
+- womanLine: true/false (ligne femme spécifique)
+- proPlayerInfo: {name:"...", rank:"..."} ou null
+
+Réponds UNIQUEMENT avec un tableau JSON valide, rien d'autre. Pas de markdown, pas de commentaires.`;
+
+const ASSISTANT_CONTENT_PROMPT = `Tu es un rédacteur padel expert. Génère le contenu éditorial pour cette raquette.
+Applique les RÈGLES DE SCORING MÉCANIQUES ci-dessous pour calculer les scores.
+
+{SCORING_RULES}
+
+SPECS DE LA RAQUETTE :
+{RACKET_SPECS}
+
+Génère un JSON avec :
+- scores: {Puissance: X, Contrôle: X, Confort: X, Spin: X, Maniabilité: X, Tolérance: X} (arrondis au 0.5, entre 3.0 et 10.0)
+- verdict: résumé style magazine 150-250 chars, en français, unique et percutant (PAS de "La X est la Y de Z")
+- editorial: analyse détaillée 400-500 chars, français, style magazine, technique mais accessible
+- targetProfile: profil joueur cible 120-200 chars, français, concret
+- techHighlights: tableau de 4-5 objets {label, value, detail} — technologies clés
+
+Chaque texte doit avoir sa propre voix. Varie les ouvertures. Pas de formules génériques.
+Réponds UNIQUEMENT en JSON valide.`;
+
 // === BREAKING NEWS / FEATURED ARTICLES ===
 const FEATURED_NEWS = [
   {
@@ -2981,6 +3060,13 @@ export default function PadelAnalyzer() {
   const adminFileInputRef = useRef(null);
   const [sigBatchProgress, setSigBatchProgress] = useState(null); // {done, total, errors, results}
   const [sigBatchRunning, setSigBatchRunning] = useState(false);
+
+  // ============ ASSISTANT ADMIN STATE ============
+  const [assistantQuery, setAssistantQuery] = useState("");
+  const [assistantStep, setAssistantStep] = useState(0); // 0=idle, 1=searching, 2=results, 3=generating, 4=done
+  const [assistantResults, setAssistantResults] = useState([]); // [{name,brand,year,...,selected,duplicate}]
+  const [assistantGenerated, setAssistantGenerated] = useState([]); // full racket objects ready for upsert
+  const [assistantMsg, setAssistantMsg] = useState("");
 
   // ============ KIOSK MODE ============
   const [kioskIdle, setKioskIdle] = useState(false); // attract screen
@@ -5042,6 +5128,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   target_profile: r.targetProfile||r.target_profile,
                   junior: r.junior||false, woman_line: r.womanLine||r.woman_line||false,
                   description: r.description, pro_player_info: r.proPlayerInfo||r.pro_player_info,
+                  featured: r.featured||r.featured||false,
                   is_active: true
                 };
                 await adminUpsertRacket(familyCode, dbRacket);
@@ -5090,6 +5177,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <button onClick={()=>setAdminTab("rackets")} style={tabStyle(adminTab==="rackets")}>🏓 Raquettes</button>
             <button onClick={()=>{setAdminTab("stats");setAdminStats(null);}} style={tabStyle(adminTab==="stats")}>📊 Statistiques</button>
             <button onClick={()=>setAdminTab("signatures")} style={tabStyle(adminTab==="signatures")}>🔍 Signatures</button>
+            <button onClick={()=>setAdminTab("assistant")} style={tabStyle(adminTab==="assistant")}>🤖 Assistant</button>
           </div>
 
           {/* Status message */}
@@ -5212,7 +5300,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 e.target.value = "";
               }}/>
               <button onClick={()=>adminFileInputRef.current?.click()} style={{padding:"8px 14px",background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:8,color:"#4CAF50",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>📥 Import JSON</button>
-              <button onClick={()=>setAdminEditRacket({id:"",name:"",shortName:"",brand:"",shape:"Ronde",weight:"",balance:"Moyen",surface:"",core:"",antivib:"—",price:"",player:"—",imageUrl:"",year:2025,category:"intermediaire",scores:{Puissance:5,Contrôle:5,Confort:5,Spin:5,Maniabilité:5,Tolérance:5},verdict:"",editorial:"",techHighlights:[],targetProfile:"",junior:false,womanLine:false,proPlayerInfo:null,_isNew:true})} style={{padding:"8px 14px",background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.25)",borderRadius:8,color:"#c084fc",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>➕ Nouvelle raquette</button>
+              <button onClick={()=>setAdminEditRacket({id:"",name:"",shortName:"",brand:"",shape:"Ronde",weight:"",balance:"Moyen",surface:"",core:"",antivib:"—",price:"",player:"—",imageUrl:"",year:2025,category:"intermediaire",scores:{Puissance:5,Contrôle:5,Confort:5,Spin:5,Maniabilité:5,Tolérance:5},verdict:"",editorial:"",techHighlights:[],targetProfile:"",junior:false,womanLine:false,featured:false,proPlayerInfo:null,_isNew:true})} style={{padding:"8px 14px",background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.25)",borderRadius:8,color:"#c084fc",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>➕ Nouvelle raquette</button>
             </div>
 
             <div style={{fontSize:11,color:"#64748b",marginBottom:10}}>{filteredRackets.length} raquette(s) affichée(s) sur {allRackets.length}</div>
@@ -5418,6 +5506,303 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>}
 
 
+          {/* ====== TAB: ASSISTANT IA ====== */}
+          {adminTab==="assistant"&&<div>
+            <div style={{marginBottom:16}}>
+              <h3 style={{fontSize:14,fontWeight:700,color:"#e2e8f0",marginBottom:6}}>🤖 Assistant — Ajout de raquettes par IA</h3>
+              <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,margin:0}}>
+                Tape une marque + année (ex: "Babolat 2026") ou un modèle précis. L'IA cherche sur le web, génère les fiches complètes, et tu valides.
+              </p>
+            </div>
+
+            {/* Search bar */}
+            <div style={{display:"flex",gap:8,marginBottom:16}}>
+              <input value={assistantQuery} onChange={e=>setAssistantQuery(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&assistantQuery.trim()&&assistantStep===0) document.getElementById("assistant-search-btn")?.click()}} placeholder="Babolat 2026, Head Gravity Pro 2026, Nox AT10..." style={{flex:1,padding:"10px 14px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"#e2e8f0",fontSize:12,fontFamily:"inherit",outline:"none"}}/>
+              <button id="assistant-search-btn" disabled={!assistantQuery.trim()||assistantStep===1||assistantStep===3} onClick={async()=>{
+                setAssistantStep(1); setAssistantResults([]); setAssistantGenerated([]); setAssistantMsg("");
+                try {
+                  const resp = await fetch("/api/chat", {
+                    method:"POST", headers:{"Content-Type":"application/json"},
+                    body: JSON.stringify({
+                      model:"claude-sonnet-4-5-20250929", max_tokens: 4096,
+                      tools: [{type:"web_search_20250305",name:"web_search"}],
+                      system: ASSISTANT_SEARCH_PROMPT,
+                      messages: [{role:"user",content:`Recherche: "${assistantQuery}". Trouve TOUTES les raquettes correspondantes avec specs complètes. Cherche sur padelnuestro.com, padelful.com, sites constructeurs officiels.`}]
+                    })
+                  });
+                  const data = await resp.json();
+                  const textParts = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+                  let parsed;
+                  try { parsed = JSON.parse(textParts.trim()); } catch {
+                    const m = textParts.match(/\[[\s\S]*\]/);
+                    if(m) parsed = JSON.parse(m[0]);
+                    else throw new Error("Pas de JSON dans la réponse IA");
+                  }
+                  if(!Array.isArray(parsed)) parsed = [parsed];
+                  // Mark duplicates
+                  const existingIds = new Set(getMergedDB().map(r=>r.id));
+                  const results = parsed.map(r => ({...r, selected: !existingIds.has(r.id), duplicate: existingIds.has(r.id)}));
+                  setAssistantResults(results);
+                  setAssistantStep(2);
+                  setAssistantMsg(`✅ ${results.length} raquette(s) trouvée(s) — ${results.filter(r=>r.duplicate).length} doublon(s) grisé(s)`);
+                } catch(e) {
+                  setAssistantMsg("❌ Erreur: "+e.message);
+                  setAssistantStep(0);
+                }
+              }} style={{padding:"10px 18px",background:assistantStep===1?"rgba(168,85,247,0.3)":"rgba(168,85,247,0.15)",border:"1px solid rgba(168,85,247,0.4)",borderRadius:10,color:"#c084fc",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'",whiteSpace:"nowrap",opacity:(!assistantQuery.trim()||assistantStep===1||assistantStep===3)?0.5:1}}>
+                {assistantStep===1?"⏳ Recherche...":"🔍 Chercher"}
+              </button>
+            </div>
+
+            {/* Status message */}
+            {assistantMsg&&<div style={{padding:"10px 14px",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:10,marginBottom:16,fontSize:11,color:"#c084fc"}}>
+              {assistantMsg}
+            </div>}
+
+            {/* Step 2: Results with checkboxes */}
+            {assistantStep>=2&&assistantResults.length>0&&<div style={{marginBottom:16}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{assistantResults.length} raquette(s) trouvée(s)</div>
+                <div style={{display:"flex",gap:6}}>
+                  <button onClick={()=>setAssistantResults(prev=>prev.map(r=>({...r,selected:!r.duplicate})))} style={{padding:"4px 10px",background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.2)",borderRadius:6,color:"#4CAF50",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>✅ Tout cocher</button>
+                  <button onClick={()=>setAssistantResults(prev=>prev.map(r=>({...r,selected:false})))} style={{padding:"4px 10px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#94a3b8",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Tout décocher</button>
+                </div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:6,maxHeight:400,overflowY:"auto"}}>
+                {assistantResults.map((r,idx)=><div key={r.id||idx} onClick={()=>{if(!r.duplicate) setAssistantResults(prev=>{const n=[...prev];n[idx]={...n[idx],selected:!n[idx].selected};return n;})}} style={{padding:"10px 12px",background:r.duplicate?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.04)",border:`1px solid ${r.duplicate?"rgba(255,255,255,0.05)":r.selected?"rgba(168,85,247,0.4)":"rgba(255,255,255,0.08)"}`,borderRadius:10,cursor:r.duplicate?"default":"pointer",opacity:r.duplicate?0.4:1,display:"flex",gap:10,alignItems:"center"}}>
+                  <div style={{width:20,height:20,borderRadius:6,border:`2px solid ${r.duplicate?"#475569":r.selected?"#a855f7":"#64748b"}`,background:r.selected&&!r.duplicate?"rgba(168,85,247,0.3)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,flexShrink:0}}>
+                    {r.duplicate?"🔒":r.selected?"✓":""}
+                  </div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:12,fontWeight:700,color:r.duplicate?"#64748b":"#e2e8f0"}}>{r.name} {r.duplicate&&<span style={{fontSize:9,color:"#f59e0b",fontWeight:600}}>DOUBLON</span>}</div>
+                    <div style={{fontSize:10,color:"#94a3b8",marginTop:2}}>{r.brand} · {r.shape} · {r.weight} · {r.balance} · {r.category} {r.player&&r.player!=="—"?`· 🎾 ${r.player}`:""}</div>
+                  </div>
+                </div>)}
+              </div>
+
+              {/* Generate button */}
+              {assistantStep===2&&<button disabled={!assistantResults.some(r=>r.selected&&!r.duplicate)} onClick={async()=>{
+                const selected = assistantResults.filter(r=>r.selected&&!r.duplicate);
+                if(selected.length===0) return;
+                setAssistantStep(3); setAssistantMsg(`⏳ Génération des fiches pour ${selected.length} raquette(s)...`);
+                const generated = [];
+                for(const r of selected) {
+                  try {
+                    const specsStr = JSON.stringify({name:r.name,brand:r.brand,shape:r.shape,weight:r.weight,balance:r.balance,surface:r.surface,core:r.core,antivib:r.antivib,price:r.price,category:r.category,player:r.player});
+                    const prompt = ASSISTANT_CONTENT_PROMPT.replace("{SCORING_RULES}",ASSISTANT_SCORING_RULES).replace("{RACKET_SPECS}",specsStr);
+                    const resp = await fetch("/api/chat", {
+                      method:"POST", headers:{"Content-Type":"application/json"},
+                      body: JSON.stringify({
+                        model:"claude-sonnet-4-5-20250929", max_tokens: 2048,
+                        system: prompt,
+                        messages: [{role:"user",content:"Génère le JSON pour cette raquette. Applique les règles mécaniques de scoring."}]
+                      })
+                    });
+                    const data = await resp.json();
+                    const text = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+                    let content;
+                    try { content = JSON.parse(text.trim()); } catch {
+                      const m = text.match(/\{[\s\S]*\}/);
+                      if(m) content = JSON.parse(m[0]); else throw new Error("JSON invalide");
+                    }
+                    generated.push({...r, ...content, imageUrl:"", featured:false, _isNew:true});
+                  } catch(e) {
+                    generated.push({...r, scores:{Puissance:5,Contrôle:5,Confort:5,Spin:5,Maniabilité:5,Tolérance:5}, verdict:"[Erreur génération: "+e.message+"]", editorial:"", targetProfile:"", techHighlights:[], imageUrl:"", featured:false, _isNew:true});
+                  }
+                  setAssistantMsg(`⏳ ${generated.length}/${selected.length} générées...`);
+                }
+                setAssistantGenerated(generated);
+                setAssistantStep(4);
+                setAssistantMsg(`✅ ${generated.length} fiche(s) générée(s) — vérifiez et validez ci-dessous`);
+              }} style={{marginTop:12,width:"100%",padding:"14px",background:"linear-gradient(135deg,rgba(168,85,247,0.2),rgba(124,58,237,0.15))",border:"1px solid rgba(168,85,247,0.4)",borderRadius:14,color:"#c4b5fd",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit",opacity:assistantResults.some(r=>r.selected&&!r.duplicate)?1:0.4}}>
+                {assistantStep===3?`⏳ Génération en cours...`:`🚀 Générer les fiches (${assistantResults.filter(r=>r.selected&&!r.duplicate).length})`}
+              </button>}
+            </div>}
+
+            {/* Step 4: Generated rackets preview + actions */}
+            {assistantStep===4&&assistantGenerated.length>0&&<div>
+              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:10}}>Fiches générées — Vérification</div>
+              <div style={{display:"flex",flexDirection:"column",gap:10,maxHeight:500,overflowY:"auto",marginBottom:16}}>
+                {assistantGenerated.map((r,idx)=><div key={r.id||idx} style={{padding:"14px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                    <div style={{fontSize:13,fontWeight:700,color:"#e2e8f0"}}>{r.name}</div>
+                    <div style={{display:"flex",gap:6}}>
+                      <button onClick={()=>{setAdminEditRacket({...r,scores:{...r.scores},techHighlights:[...(r.techHighlights||[]).map(h=>({...h}))],proPlayerInfo:r.proPlayerInfo?{...r.proPlayerInfo}:null,_isNew:true});}} style={{padding:"4px 10px",background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.25)",borderRadius:6,color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>✏️ Éditer</button>
+                    </div>
+                  </div>
+                  <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:6}}>
+                    {["Puissance","Contrôle","Confort","Spin","Maniabilité","Tolérance"].map(attr=><span key={attr} style={{padding:"2px 8px",borderRadius:6,background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",fontSize:9,color:"#fb923c",fontWeight:600}}>{attr}: {(r.scores?.[attr]||0).toFixed(1)}</span>)}
+                  </div>
+                  <div style={{fontSize:10,color:"#94a3b8",lineHeight:1.5}}>{(r.verdict||"").slice(0,200)}</div>
+                </div>)}
+              </div>
+
+              {/* Batch upsert */}
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                <button onClick={async()=>{
+                  setAdminLoading(true);
+                  let ok=0, fail=0;
+                  for(const r of assistantGenerated) {
+                    try {
+                      const dbRacket = {
+                        id: r.id, name: r.name, short_name: r.shortName||"",
+                        brand: r.brand, shape: r.shape, weight: r.weight, balance: r.balance,
+                        surface: r.surface, core: r.core, antivib: r.antivib||"—", price: r.price,
+                        player: r.player||"—", image_url: r.imageUrl||"", year: r.year,
+                        category: r.category, scores: r.scores, verdict: r.verdict,
+                        editorial: r.editorial, tech_highlights: r.techHighlights,
+                        target_profile: r.targetProfile,
+                        junior: r.junior||false, woman_line: r.womanLine||false,
+                        pro_player_info: r.proPlayerInfo, featured: r.featured||false,
+                        is_active: true
+                      };
+                      await adminUpsertRacket(familyCode, dbRacket);
+                      ok++;
+                    } catch { fail++; }
+                  }
+                  setAdminMsg(`✅ Upsert: ${ok} OK, ${fail} erreurs sur ${assistantGenerated.length}`);
+                  setAdminLoading(false);
+                }} style={{flex:1,padding:"14px",background:"linear-gradient(135deg,rgba(76,175,80,0.2),rgba(56,142,60,0.15))",border:"1px solid rgba(76,175,80,0.4)",borderRadius:14,color:"#4ade80",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'"}}>
+                  💾 Sauvegarder tout dans Supabase ({assistantGenerated.length})
+                </button>
+
+                {/* Generate Python script for images */}
+                <button onClick={()=>{
+                  const noImg = assistantGenerated.filter(r=>!r.imageUrl);
+                  if(noImg.length===0){setAssistantMsg("Toutes les raquettes ont déjà une image"); return;}
+                  const missing = noImg.map(r=>({
+                    name: r.name, brand: r.brand, file: (r.id||"").replace(/[^a-z0-9-]/g,"")+".png",
+                    query: r.name+" padel racket", id: r.id
+                  }));
+                  // Build Python script as array of lines to avoid escaping hell
+                  const L = [];
+                  L.push('#!/usr/bin/env python3');
+                  L.push('"""PadelAnalyzer — Download images via Google Images');
+                  L.push('python3 ~/Desktop/download_images_new.py"""');
+                  L.push('import os, time, urllib.request, urllib.parse, re, ssl');
+                  L.push('');
+                  L.push('ctx = ssl.create_default_context()');
+                  L.push('ctx.check_hostname = False');
+                  L.push('ctx.verify_mode = ssl.CERT_NONE');
+                  L.push('');
+                  L.push('DESKTOP = os.path.expanduser("~/Desktop/racket-images")');
+                  L.push('os.makedirs(DESKTOP, exist_ok=True)');
+                  L.push('');
+                  L.push('HEADERS = {');
+                  L.push('    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",');
+                  L.push('    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",');
+                  L.push('    "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",');
+                  L.push('}');
+                  L.push('');
+                  L.push('MISSING = '+JSON.stringify(missing,null,2));
+                  L.push('');
+                  L.push('def fetch(url):');
+                  L.push('    req = urllib.request.Request(url, headers=HEADERS)');
+                  L.push('    try:');
+                  L.push('        with urllib.request.urlopen(req, timeout=15, context=ctx) as resp:');
+                  L.push('            return resp.read()');
+                  L.push('    except:');
+                  L.push('        return None');
+                  L.push('');
+                  L.push('def google_image_search(query):');
+                  L.push('    q = urllib.parse.quote(query)');
+                  L.push('    url = f"https://www.google.com/search?q={q}&tbm=isch&hl=fr"');
+                  L.push('    html_bytes = fetch(url)');
+                  L.push('    if not html_bytes: return []');
+                  L.push('    html = html_bytes.decode("utf-8", errors="ignore")');
+                  L.push('    urls = []');
+                  L.push("    for m in re.finditer(r'imgurl=(https?://[^&\"]+)', html):");
+                  L.push('        urls.append(urllib.parse.unquote(m.group(1)))');
+                  L.push('    for m in re.finditer(r' + "'" + '\\[\"](https?://[^\"]+\\.(?:jpg|jpeg|png|webp))[\"]' + "'" + ', html):');
+                  L.push("        u = m.group(1).replace('\\\\u0026', '&')");
+                  L.push("        if 'google' not in u and 'gstatic' not in u: urls.append(u)");
+                  L.push('    for m in re.finditer(r' + "'" + '(https?://[^\\s\"<>]+\\.(?:png|jpg|jpeg|webp))' + "'" + ', html):');
+                  L.push('        u = m.group(1)');
+                  L.push("        if 'google' not in u and 'gstatic' not in u and 'favicon' not in u: urls.append(u)");
+                  L.push('    seen = set()');
+                  L.push('    unique = []');
+                  L.push('    for u in urls:');
+                  L.push("        uc = u.split('?')[0]");
+                  L.push('        if uc not in seen and len(u) > 30:');
+                  L.push('            seen.add(uc)');
+                  L.push('            unique.append(u)');
+                  L.push('    return unique[:15]');
+                  L.push('');
+                  L.push('def download_image(url, filepath):');
+                  L.push('    try:');
+                  L.push('        data = fetch(url)');
+                  L.push('        if data and len(data) > 3000:');
+                  L.push('            with open(filepath, "wb") as f: f.write(data)');
+                  L.push('            return len(data)');
+                  L.push('    except: pass');
+                  L.push('    return 0');
+                  L.push('');
+                  L.push('def main():');
+                  L.push('    print("=" * 60)');
+                  L.push('    print("PadelAnalyzer -- Google Images Batch")');
+                  L.push('    print(f"   Dossier : {DESKTOP}")');
+                  L.push('    print(f"   {len(MISSING)} images a telecharger")');
+                  L.push('    print("=" * 60)');
+                  L.push('    ok, failed, skipped = 0, [], 0');
+                  L.push('    for i, m in enumerate(MISSING):');
+                  L.push('        filepath = os.path.join(DESKTOP, m["file"])');
+                  L.push('        if os.path.exists(filepath) and os.path.getsize(filepath) > 3000:');
+                  L.push('            print(f"  SKIP [{i+1}/{len(MISSING)}] {m[\'name\']} -- deja la")');
+                  L.push('            skipped += 1; ok += 1; continue');
+                  L.push('        print(f"  SEARCH [{i+1}/{len(MISSING)}] {m[\'name\']}...", end=" ", flush=True)');
+                  L.push('        queries = [f"{m[\'name\']} padel racket png", f"{m[\'brand\']} {m[\'name\']} pala padel"]');
+                  L.push('        found = False');
+                  L.push('        for query in queries:');
+                  L.push('            urls = google_image_search(query)');
+                  L.push('            for url in urls:');
+                  L.push('                size = download_image(url, filepath)');
+                  L.push('                if size > 0:');
+                  L.push('                    print(f"OK ({size//1024}KB)"); ok += 1; found = True; break');
+                  L.push('            if found: break');
+                  L.push('            time.sleep(1)');
+                  L.push('        if not found: print("FAIL"); failed.append(m)');
+                  L.push('        time.sleep(1.5)');
+                  L.push('    print(f"\\nResultat: {ok}/{len(MISSING)} images OK")');
+                  L.push('    if failed:');
+                  L.push('        print("A chercher manuellement :")');
+                  L.push('        for f in failed: print(f"   FAIL {f[\'name\']} -> {f[\'file\']}")');
+                  L.push('    print(f"\\nDossier: {DESKTOP}")');
+                  L.push('    print("   -> Upload dans Supabase > Storage > racket-images")');
+                  L.push('');
+                  L.push('if __name__ == "__main__":');
+                  L.push('    main()');
+                  const pyScript = L.join('\n');
+                  const blob = new Blob([pyScript], {type:"text/x-python"});
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url; a.download = "download_images_new.py"; a.click();
+                  URL.revokeObjectURL(url);
+                  setAssistantMsg("📥 Script Python téléchargé — "+noImg.length+" images. Glisse sur le Bureau puis: python3 ~/Desktop/download_images_new.py");
+                }} style={{flex:1,padding:"14px",background:"linear-gradient(135deg,rgba(251,191,36,0.15),rgba(245,158,11,0.1))",border:"1px solid rgba(251,191,36,0.3)",borderRadius:14,color:"#fbbf24",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit'"}}>
+                  📥 Script images Python ({assistantGenerated.filter(r=>!r.imageUrl).length})
+                </button>
+              </div>
+
+              {/* Reset */}
+              <button onClick={()=>{setAssistantStep(0);setAssistantResults([]);setAssistantGenerated([]);setAssistantQuery("");setAssistantMsg("");}} style={{marginTop:12,width:"100%",padding:"10px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:10,color:"#64748b",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>
+                🔄 Nouvelle recherche
+              </button>
+            </div>}
+
+            {/* Empty state */}
+            {assistantStep===0&&!assistantMsg&&<div style={{textAlign:"center",padding:"40px 20px",color:"#475569"}}>
+              <div style={{fontSize:40,marginBottom:12}}>🤖</div>
+              <div style={{fontSize:12,fontWeight:600,marginBottom:6}}>Prêt à enrichir la base</div>
+              <div style={{fontSize:10,lineHeight:1.6}}>
+                Tape "Head 2026" pour toutes les Head 2026<br/>
+                "Bullpadel Vertex" pour toutes les Vertex<br/>
+                "Babolat Air" pour la gamme Air<br/>
+                Les doublons sont détectés automatiquement.
+              </div>
+            </div>}
+          </div>}
+
+
           {/* ====== MODAL: COUP D'ŒIL PROFIL ====== */}
           {adminViewProfile&&(()=>{
             const p = adminViewProfile;
@@ -5542,6 +5927,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 target_profile: r.targetProfile,
                 junior: r.junior||false, woman_line: r.womanLine||false,
                 pro_player_info: r.proPlayerInfo,
+                featured: r.featured||false,
                 is_active: true
               };
               handleSaveRacket(dbRacket);
@@ -5608,6 +5994,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </label>
                   <label style={{display:"flex",alignItems:"center",gap:6,fontSize:11,color:"#94a3b8",cursor:"pointer"}}>
                     <input type="checkbox" checked={r.womanLine||false} onChange={e=>setR("womanLine",e.target.checked)}/> Ligne femme
+                  </label>
+                  <label style={{display:"flex",alignItems:"center",gap:6,fontSize:11,color:"#fbbf24",cursor:"pointer"}}>
+                    <input type="checkbox" checked={r.featured||false} onChange={e=>setR("featured",e.target.checked)}/> ⭐ Breaking News
                   </label>
                 </div>
 
