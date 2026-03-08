@@ -9,9 +9,14 @@ module.exports = async function handler(req, res) {
   try {
     const body = req.body;
     if (!body.model || !body.messages) return res.status(400).json({ error: 'Missing model or messages' });
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-api-key': API_KEY,
+      'anthropic-version': '2025-01-01',
+    };
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' },
+      headers,
       body: JSON.stringify(body),
     });
     const data = await response.json();
