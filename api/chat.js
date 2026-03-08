@@ -12,8 +12,13 @@ module.exports = async function handler(req, res) {
     const headers = {
       'Content-Type': 'application/json',
       'x-api-key': API_KEY,
-      'anthropic-version': '2025-01-01',
+      'anthropic-version': '2023-06-01',
     };
+    // Web search requires beta header
+    const hasWebSearch = (body.tools || []).some(t => t.type && t.type.startsWith('web_search'));
+    if (hasWebSearch) {
+      headers['anthropic-beta'] = 'web-search-2025-03-05';
+    }
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers,
