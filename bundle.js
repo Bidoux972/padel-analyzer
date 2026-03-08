@@ -194,28 +194,35 @@ MANIABILIT\xC9 (base poids + modif balance):
 TOL\xC9RANCE (base forme + modifs):
 - Ronde=8.5, Hybride=8.0, Goutte d'eau=7.0, Diamant=5.0
 - Sweet spot optimis\xE9/large: +0.5
-- Surface fiberglass: +0.5, Hybrid: 0, Carbone rigide: -0.5`,lie=`Tu es un expert padel. L'utilisateur cherche des raquettes \xE0 ajouter \xE0 une base de donn\xE9es.
-Cherche sur le web toutes les raquettes qui correspondent \xE0 la requ\xEAte.
-Pour CHAQUE raquette trouv\xE9e, donne un JSON avec ces champs EXACTEMENT :
-- id: slug en kebab-case (ex: "bullpadel-vertex-05-2026")
-- name: nom complet (ex: "Bullpadel Vertex 05 2026")
-- shortName: nom court max 18 chars (ex: "Vertex 05")
-- brand: marque
-- year: ann\xE9e (number)
-- shape: parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
-- weight: fourchette en grammes (ex: "360-370g")
-- balance: parmi "Bas", "Moyen", "Haut"
-- surface: mat\xE9riau surface (ex: "Carbon 18K Alum")
-- core: mousse (ex: "HR3 Black EVA")
-- antivib: techno anti-vibration ou "\u2014"
-- price: prix approx en \u20AC (ex: "250-300\u20AC")
-- player: joueur pro ou "\u2014"
-- category: parmi "debutant", "intermediaire", "avance", "expert", "junior"
-- junior: true/false
-- womanLine: true/false (ligne femme sp\xE9cifique)
-- proPlayerInfo: {name:"...", rank:"..."} ou null
+- Surface fiberglass: +0.5, Hybrid: 0, Carbone rigide: -0.5`,lie=`Tu es un expert padel qui alimente une base de donn\xE9es de raquettes. PR\xC9CISION ABSOLUE exig\xE9e.
 
-R\xE9ponds UNIQUEMENT avec un tableau JSON valide. R\xC8GLE ABSOLUE : ta r\xE9ponse doit commencer par [ et finir par ]. Z\xE9ro texte avant, z\xE9ro texte apr\xE8s, z\xE9ro markdown. Juste le JSON pur.`,sie=`Tu es un r\xE9dacteur padel expert. G\xE9n\xE8re le contenu \xE9ditorial pour cette raquette.
+R\xC8GLES CRITIQUES :
+1. ANN\xC9E : rapporte l'ann\xE9e EXACTE trouv\xE9e sur le site web (Collection 2025, 2026, etc.). Si l'utilisateur demande "2026" mais que tu trouves des mod\xE8les "2025", indique 2025. NE JAMAIS renommer une ann\xE9e pour plaire \xE0 l'utilisateur.
+2. SPECS : rapporte les specs EXACTEMENT comme trouv\xE9es sur le site source (poids, forme, balance, mousse, surface). Si le site dit "360-375g, Diamant, \xC9quilibre Haut, Mousse Dure", tu mets exactement \xE7a. Z\xC9RO invention.
+3. Si un mod\xE8le n'existe pas encore (pas trouv\xE9 sur le web), NE L'INVENTE PAS. Ne retourne que des mod\xE8les r\xE9ellement trouv\xE9s avec une source web.
+4. Privil\xE9gie les sources fiables : sites constructeurs (head.com, bullpadel.com), retailers (padelnuestro.com, espritpadelshop.com, padelful.com).
+
+Pour CHAQUE raquette trouv\xE9e, donne un JSON avec ces champs EXACTEMENT :
+- id: slug kebab-case avec la VRAIE ann\xE9e (ex: "head-extreme-one-x-2025")
+- name: nom complet avec la VRAIE ann\xE9e (ex: "Head Extreme One X 2025")
+- shortName: nom court max 18 chars (ex: "Extreme One X")
+- brand: marque
+- year: la VRAIE ann\xE9e trouv\xE9e (number)
+- shape: parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
+- weight: fourchette EXACTE en grammes telle que trouv\xE9e (ex: "360-375g")
+- balance: parmi "Bas", "Moyen", "Haut" \u2014 bas\xE9 sur la description trouv\xE9e (Haut/Alto=Haut, Medio=Moyen, Bajo=Bas)
+- surface: mat\xE9riau surface EXACT (ex: "Carbone 12K", "Fiberglass", "Carbon 18K Alum")
+- core: mousse EXACTE (ex: "HR3 Black EVA Dure", "Soft EVA", "Power Foam")
+- antivib: techno anti-vibration trouv\xE9e ou "\u2014"
+- price: prix EXACT trouv\xE9 en \u20AC (ex: "299\u20AC")
+- player: joueur pro associ\xE9 ou "\u2014"
+- category: parmi "debutant", "intermediaire", "avance", "expert", "junior" \u2014 bas\xE9 sur le niveau indiqu\xE9 sur le site
+- junior: true/false
+- womanLine: true/false
+- proPlayerInfo: {name:"...", rank:"..."} ou null
+- source: URL de la page o\xF9 tu as trouv\xE9 les specs
+
+R\xE9ponds UNIQUEMENT avec un tableau JSON valide. Ta r\xE9ponse DOIT commencer par [ et finir par ]. Z\xE9ro texte avant ou apr\xE8s.`,sie=`Tu es un r\xE9dacteur padel expert. G\xE9n\xE8re le contenu \xE9ditorial pour cette raquette.
 Applique les R\xC8GLES DE SCORING M\xC9CANIQUES ci-dessous pour calculer les scores.
 
 {SCORING_RULES}

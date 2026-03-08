@@ -2597,28 +2597,35 @@ TOLÉRANCE (base forme + modifs):
 - Sweet spot optimisé/large: +0.5
 - Surface fiberglass: +0.5, Hybrid: 0, Carbone rigide: -0.5`;
 
-const ASSISTANT_SEARCH_PROMPT = `Tu es un expert padel. L'utilisateur cherche des raquettes à ajouter à une base de données.
-Cherche sur le web toutes les raquettes qui correspondent à la requête.
-Pour CHAQUE raquette trouvée, donne un JSON avec ces champs EXACTEMENT :
-- id: slug en kebab-case (ex: "bullpadel-vertex-05-2026")
-- name: nom complet (ex: "Bullpadel Vertex 05 2026")
-- shortName: nom court max 18 chars (ex: "Vertex 05")
-- brand: marque
-- year: année (number)
-- shape: parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
-- weight: fourchette en grammes (ex: "360-370g")
-- balance: parmi "Bas", "Moyen", "Haut"
-- surface: matériau surface (ex: "Carbon 18K Alum")
-- core: mousse (ex: "HR3 Black EVA")
-- antivib: techno anti-vibration ou "—"
-- price: prix approx en € (ex: "250-300€")
-- player: joueur pro ou "—"
-- category: parmi "debutant", "intermediaire", "avance", "expert", "junior"
-- junior: true/false
-- womanLine: true/false (ligne femme spécifique)
-- proPlayerInfo: {name:"...", rank:"..."} ou null
+const ASSISTANT_SEARCH_PROMPT = `Tu es un expert padel qui alimente une base de données de raquettes. PRÉCISION ABSOLUE exigée.
 
-Réponds UNIQUEMENT avec un tableau JSON valide. RÈGLE ABSOLUE : ta réponse doit commencer par [ et finir par ]. Zéro texte avant, zéro texte après, zéro markdown. Juste le JSON pur.`;
+RÈGLES CRITIQUES :
+1. ANNÉE : rapporte l'année EXACTE trouvée sur le site web (Collection 2025, 2026, etc.). Si l'utilisateur demande "2026" mais que tu trouves des modèles "2025", indique 2025. NE JAMAIS renommer une année pour plaire à l'utilisateur.
+2. SPECS : rapporte les specs EXACTEMENT comme trouvées sur le site source (poids, forme, balance, mousse, surface). Si le site dit "360-375g, Diamant, Équilibre Haut, Mousse Dure", tu mets exactement ça. ZÉRO invention.
+3. Si un modèle n'existe pas encore (pas trouvé sur le web), NE L'INVENTE PAS. Ne retourne que des modèles réellement trouvés avec une source web.
+4. Privilégie les sources fiables : sites constructeurs (head.com, bullpadel.com), retailers (padelnuestro.com, espritpadelshop.com, padelful.com).
+
+Pour CHAQUE raquette trouvée, donne un JSON avec ces champs EXACTEMENT :
+- id: slug kebab-case avec la VRAIE année (ex: "head-extreme-one-x-2025")
+- name: nom complet avec la VRAIE année (ex: "Head Extreme One X 2025")
+- shortName: nom court max 18 chars (ex: "Extreme One X")
+- brand: marque
+- year: la VRAIE année trouvée (number)
+- shape: parmi "Ronde", "Diamant", "Goutte d'eau", "Hybride"
+- weight: fourchette EXACTE en grammes telle que trouvée (ex: "360-375g")
+- balance: parmi "Bas", "Moyen", "Haut" — basé sur la description trouvée (Haut/Alto=Haut, Medio=Moyen, Bajo=Bas)
+- surface: matériau surface EXACT (ex: "Carbone 12K", "Fiberglass", "Carbon 18K Alum")
+- core: mousse EXACTE (ex: "HR3 Black EVA Dure", "Soft EVA", "Power Foam")
+- antivib: techno anti-vibration trouvée ou "—"
+- price: prix EXACT trouvé en € (ex: "299€")
+- player: joueur pro associé ou "—"
+- category: parmi "debutant", "intermediaire", "avance", "expert", "junior" — basé sur le niveau indiqué sur le site
+- junior: true/false
+- womanLine: true/false
+- proPlayerInfo: {name:"...", rank:"..."} ou null
+- source: URL de la page où tu as trouvé les specs
+
+Réponds UNIQUEMENT avec un tableau JSON valide. Ta réponse DOIT commencer par [ et finir par ]. Zéro texte avant ou après.`;
 
 const ASSISTANT_CONTENT_PROMPT = `Tu es un rédacteur padel expert. Génère le contenu éditorial pour cette raquette.
 Applique les RÈGLES DE SCORING MÉCANIQUES ci-dessous pour calculer les scores.
