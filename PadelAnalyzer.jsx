@@ -5511,6 +5511,37 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 setSigBatchProgress({done:Math.min(i+BATCH_SIZE, allDB.length), total:allDB.length, errors, results:allResults});
               }
               setSigBatchRunning(false);
+              // Auto-save signatures to Supabase for cloud rackets
+              const sigResults = allResults.filter(r => r.visualSignature);
+              if (sigResults.length > 0) {
+                let saved = 0;
+                const currentDB = getMergedDB();
+                for (const r of sigResults) {
+                  try {
+                    const full = currentDB.find(x => x.id === r.id);
+                    if (!full) continue;
+                    const dbRacket = {
+                      id: full.id, name: full.name, short_name: full.shortName||"",
+                      brand: full.brand, shape: full.shape, weight: full.weight, balance: full.balance,
+                      surface: full.surface, core: full.core, antivib: full.antivib, price: full.price,
+                      player: full.player, image_url: full.imageUrl, year: full.year,
+                      category: full.category, scores: full.scores, verdict: full.verdict,
+                      editorial: full.editorial, tech_highlights: full.techHighlights,
+                      target_profile: full.targetProfile,
+                      junior: full.junior||false, woman_line: full.womanLine||false,
+                      pro_player_info: full.proPlayerInfo, featured: full.featured||false,
+                      visual_signature: r.visualSignature,
+                      is_active: true
+                    };
+                    await adminUpsertRacket(familyCode, dbRacket);
+                    saved++;
+                  } catch {}
+                }
+                if (saved > 0) {
+                  setAdminMsg("✅ " + saved + " signature(s) sauvegardée(s) dans Supabase");
+                  try { const fresh = await cloudLoadAllRackets(); if(Array.isArray(fresh)) { _cloudRackets = fresh; setCloudRacketsLoaded(prev=>!prev); } } catch{}
+                }
+              }
             }} style={{width:"100%",padding:"14px",background:"linear-gradient(135deg,rgba(168,85,247,0.15),rgba(124,58,237,0.1))",border:"1px solid rgba(168,85,247,0.3)",borderRadius:14,color:"#c4b5fd",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:16}}>
               🚀 Lancer l'extraction ({getMergedDB().filter(r=>r.imageUrl&&!r.visualSignature).length} raquettes)
             </button>}
