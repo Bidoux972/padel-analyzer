@@ -1390,6 +1390,7 @@ function mapCloudRacket(r) {
     junior: r.junior||false, womanLine: r.woman_line||false,
     proPlayerInfo: r.pro_player_info||null, featured: r.featured||false,
     visualSignature: r.visual_signature||null, description: r.description||"",
+    premiumEdge: r.premium_edge||null,
     isActive: r.is_active!==false
   };
 }
@@ -5230,6 +5231,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   junior: r.junior||false, woman_line: r.womanLine||r.woman_line||false,
                   description: r.description, pro_player_info: r.proPlayerInfo||r.pro_player_info,
                   featured: r.featured||r.featured||false,
+                  premium_edge: r.premiumEdge||r.premium_edge||null,
                   is_active: true
                 };
                 await adminUpsertRacket(familyCode, dbRacket);
@@ -5577,6 +5579,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       junior: full.junior||false, woman_line: full.womanLine||false,
                       pro_player_info: full.proPlayerInfo, featured: full.featured||false,
                       visual_signature: r.visualSignature,
+                      premium_edge: full.premiumEdge||null,
                       is_active: true
                     };
                     await adminUpsertRacket(familyCode, dbRacket);
@@ -5845,6 +5848,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                         target_profile: r.targetProfile,
                         junior: r.junior||false, woman_line: r.womanLine||false,
                         pro_player_info: r.proPlayerInfo, featured: r.featured||false,
+                        premium_edge: r.premiumEdge||null,
                         is_active: true
                       };
                       await adminUpsertRacket(familyCode, dbRacket);
@@ -6129,6 +6133,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 junior: r.junior||false, woman_line: r.womanLine||false,
                 pro_player_info: r.proPlayerInfo,
                 featured: r.featured||false,
+                premium_edge: r.premiumEdge||null,
                 is_active: true
               };
               handleSaveRacket(dbRacket);
