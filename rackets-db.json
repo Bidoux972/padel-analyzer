@@ -20158,97 +20158,6 @@
     }
   },
   {
-    "id": "babolat-air-origin-2026",
-    "name": "Babolat Air Origin 2026",
-    "shortName": "Air Origin",
-    "brand": "Babolat",
-    "shape": "Hybride",
-    "weight": "340-350g",
-    "balance": "Moyen",
-    "surface": "Fiberglass",
-    "core": "Soft EVA",
-    "antivib": "Vibrabsorb",
-    "price": "100€",
-    "player": "—",
-    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-origin-2026.png",
-    "year": 2026,
-    "category": "debutant",
-    "scores": {
-      "Spin": 6,
-      "Confort": 9,
-      "Contrôle": 8.5,
-      "Puissance": 6.5,
-      "Tolérance": 9,
-      "Maniabilité": 8.5
-    },
-    "verdict": "Une raquette de démarrage exemplaire qui transforme l'apprentissage en plaisir. Légère, stable et terriblement indulgente, l'Air Origin 2026 offre aux débutants un confort de jeu exceptionnel sans sacrifier le feedback nécessaire à la progression.",
-    "editorial": "Babolat signe ici une véritable déclaration d'intentions pour les nouveaux venus du padel. L'Air Origin 2026 capitalise sur une géométrie hybride particulièrement généreuse, associée à une surface fiberglass qui filtre les vibrations avec une efficacité remarquable. Son noyau Soft EVA combiné au système Vibrabsorb délivre un toucher de balle d'une douceur rare à ce niveau de prix. Le poids plume (340-350g) et la balance médiane autorisent des échanges prolongés sans fatigue, tandis que le sweet spot XXL pardonne les décentrages typiques des débutants. Une base technique solide pour construire son jeu sereinement.",
-    "techHighlights": [
-      {
-        "label": "Surface Fiberglass",
-        "value": "Douceur maximale",
-        "detail": "Matériau souple qui absorbe les chocs et offre un toucher velouté, idéal pour protéger le bras des débutants"
-      },
-      {
-        "label": "Noyau Soft EVA",
-        "value": "Confort premium",
-        "detail": "Mousse tendre qui privilégie le contrôle et les sensations, avec un excellent retour d'information sur chaque frappe"
-      },
-      {
-        "label": "Système Vibrabsorb",
-        "value": "Anti-vibrations",
-        "detail": "Technologie propriétaire Babolat qui filtre les vibrations indésirables pour un confort articulaire optimal"
-      },
-      {
-        "label": "Poids plume",
-        "value": "340-350g",
-        "detail": "Légèreté qui facilite la maniabilité et permet des sessions prolongées sans fatigue du bras"
-      },
-      {
-        "label": "Format Hybride",
-        "value": "Polyvalence",
-        "detail": "Géométrie équilibrée offrant un large sweet spot et un compromis idéal entre contrôle et puissance"
-      }
-    ],
-    "targetProfile": "Débutants recherchant confort et confiance. Joueurs occasionnels privilégiant les sensations douces. Profils physiques moyens à légers souhaitant apprendre sans contraintes musculaires. Idéal pour les 2-6 premiers mois de pratique.",
-    "junior": false,
-    "womanLine": false,
-    "proPlayerInfo": null,
-    "featured": false,
-    "visualSignature": {
-      "texts": [
-        "BABOLAT",
-        "AIR",
-        "ORIGIN",
-        "24R",
-        "Babolat"
-      ],
-      "colors": [
-        "bleu clair",
-        "bleu marine",
-        "blanc",
-        "noir"
-      ],
-      "tech": [
-        "24R"
-      ],
-      "design": [
-        "bande verticale blanche centrale avec logo Babolat en bleu",
-        "motifs de lignes diagonales hachurées sur les côtés bleu marine",
-        "nombreux trous de perforation disposés symétriquement",
-        "logo 24R ORIGIN en haut à droite",
-        "grip bleu clair assorti",
-        "forme de cœur/diamant au niveau du manche",
-        "cordons noir attaché au manche",
-        "trois petits logos circulaires informatifs en bas de la raquette",
-        "finition brillante/glossy sur le cadre"
-      ],
-      "yearClues": "inscription 24R visible, coloris bleu clair et bleu marine spécifique, design avec bande centrale blanche verticale, logo ORIGIN intégré au design graphique"
-    },
-    "description": "",
-    "isActive": true
-  },
-  {
     "id": "babolat-counter-origin-2026",
     "name": "Babolat Counter Origin 2026",
     "shortName": "Counter Origin",
@@ -20310,11 +20219,11 @@
       "texts": [
         "Babolat",
         "COUNTER",
-        "RUN THE ORIGIN",
         "ORIGIN",
-        "BALANCE",
-        "WEIGHT",
-        "COTTON"
+        "RUN THE ORIGIN",
+        "BABOLAT BALANCE",
+        "BABOLAT WEIGHT",
+        "BABOLAT COTTON"
       ],
       "colors": [
         "noir",
@@ -20323,28 +20232,125 @@
         "rouge"
       ],
       "tech": [
-        "ORIGIN"
+        "BABOLAT BALANCE",
+        "BABOLAT WEIGHT",
+        "BABOLAT COTTON"
       ],
       "design": [
         "bande verticale blanche centrale avec logo Babolat noir",
-        "deux bandes jaune fluo verticales encadrant la bande centrale",
-        "motif de points/perforations en dégradé sur les côtés noirs",
-        "texture carbon visible sur fond noir",
-        "poignée jaune fluo intégrale",
-        "cadre noir avec liseré jaune fluo",
-        "zone rouge visible en bas du cadre",
-        "forme Y jaune fluo à la jonction cadre/manche",
-        "icônes techniques sur les côtés (balance, weight, cotton)",
+        "deux bandes verticales jaunes fluo de chaque côté de la bande blanche",
+        "surface noire avec motif de points perforés",
+        "texture carbon fiber visible en arrière-plan",
+        "trois pictogrammes au bas de la raquette (balance, weight, cotton)",
+        "contour jaune fluo sur le cadre",
+        "détail rouge sur le bas du cadre",
+        "manche jaune fluo",
         "dragonne noire Babolat",
-        "finition mate sur le noir avec effet carbone"
+        "design symétrique avec effet de profondeur",
+        "typographie moderne et audacieuse pour 'COUNTER'"
+      ],
+      "yearClues": "Mention '2026' non visible directement sur la raquette, design épuré avec bandes verticales contrastées jaune fluo/blanc/noir, slogan 'RUN THE ORIGIN', pictogrammes techniques au bas de la raquette caractéristiques de la génération Origin 2026"
+    },
+    "description": "",
+    "isActive": true
+  },
+  {
+    "id": "babolat-air-origin-2026",
+    "name": "Babolat Air Origin 2026",
+    "shortName": "Air Origin",
+    "brand": "Babolat",
+    "shape": "Hybride",
+    "weight": "340-350g",
+    "balance": "Moyen",
+    "surface": "Fiberglass",
+    "core": "Soft EVA",
+    "antivib": "Vibrabsorb",
+    "price": "100€",
+    "player": "—",
+    "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/babolat-air-origin-2026.png",
+    "year": 2026,
+    "category": "debutant",
+    "scores": {
+      "Spin": 6,
+      "Confort": 9,
+      "Contrôle": 8.5,
+      "Puissance": 6.5,
+      "Tolérance": 9,
+      "Maniabilité": 8.5
+    },
+    "verdict": "Une raquette de démarrage exemplaire qui transforme l'apprentissage en plaisir. Légère, stable et terriblement indulgente, l'Air Origin 2026 offre aux débutants un confort de jeu exceptionnel sans sacrifier le feedback nécessaire à la progression.",
+    "editorial": "Babolat signe ici une véritable déclaration d'intentions pour les nouveaux venus du padel. L'Air Origin 2026 capitalise sur une géométrie hybride particulièrement généreuse, associée à une surface fiberglass qui filtre les vibrations avec une efficacité remarquable. Son noyau Soft EVA combiné au système Vibrabsorb délivre un toucher de balle d'une douceur rare à ce niveau de prix. Le poids plume (340-350g) et la balance médiane autorisent des échanges prolongés sans fatigue, tandis que le sweet spot XXL pardonne les décentrages typiques des débutants. Une base technique solide pour construire son jeu sereinement.",
+    "techHighlights": [
+      {
+        "label": "Surface Fiberglass",
+        "value": "Douceur maximale",
+        "detail": "Matériau souple qui absorbe les chocs et offre un toucher velouté, idéal pour protéger le bras des débutants"
+      },
+      {
+        "label": "Noyau Soft EVA",
+        "value": "Confort premium",
+        "detail": "Mousse tendre qui privilégie le contrôle et les sensations, avec un excellent retour d'information sur chaque frappe"
+      },
+      {
+        "label": "Système Vibrabsorb",
+        "value": "Anti-vibrations",
+        "detail": "Technologie propriétaire Babolat qui filtre les vibrations indésirables pour un confort articulaire optimal"
+      },
+      {
+        "label": "Poids plume",
+        "value": "340-350g",
+        "detail": "Légèreté qui facilite la maniabilité et permet des sessions prolongées sans fatigue du bras"
+      },
+      {
+        "label": "Format Hybride",
+        "value": "Polyvalence",
+        "detail": "Géométrie équilibrée offrant un large sweet spot et un compromis idéal entre contrôle et puissance"
+      }
+    ],
+    "targetProfile": "Débutants recherchant confort et confiance. Joueurs occasionnels privilégiant les sensations douces. Profils physiques moyens à légers souhaitant apprendre sans contraintes musculaires. Idéal pour les 2-6 premiers mois de pratique.",
+    "junior": false,
+    "womanLine": false,
+    "proPlayerInfo": null,
+    "featured": false,
+    "visualSignature": {
+      "texts": [
+        "Babolat",
+        "AIR ORIGIN",
+        "24R",
+        "WOVEN SURFACE",
+        "FIBER GLASS",
+        "SOFT EVA",
+        "SMART HOLES"
+      ],
+      "colors": [
+        "bleu ciel",
+        "bleu foncé/noir",
+        "blanc",
+        "bleu électrique"
+      ],
+      "tech": [
+        "WOVEN SURFACE",
+        "FIBER GLASS",
+        "SOFT EVA",
+        "SMART HOLES"
+      ],
+      "design": [
+        "bande centrale verticale blanche avec logo Babolat en bleu",
+        "fond noir avec motifs de lignes diagonales bleues hachurées",
+        "perforations blanches réparties sur toute la surface",
+        "logo '24R ORIGIN' en haut à droite",
+        "4 icônes circulaires avec descriptions techniques disposées symétriquement",
+        "bordure bleue autour de la raquette",
+        "forme en V au niveau du manche",
+        "grip bleu ciel avec bande noire",
+        "dragonne noire Babolat"
       ],
       "yearClues": [
-        "mention 'RUN THE ORIGIN' spécifique",
-        "coloris jaune fluo vif dominant",
-        "design vertical avec bande centrale blanche",
-        "icônes techniques visibles sur les côtés",
-        "forme Y jaune à la base du manche",
-        "combinaison noir/jaune fluo/blanc/rouge"
+        "logo '24R ORIGIN' indiquant la gamme 2024 ou génération R",
+        "style graphique avec hachures diagonales bleues sur fond noir",
+        "combinaison coloris bleu ciel/bleu électrique/noir",
+        "présentation des 4 technologies avec icônes circulaires disposées en carré",
+        "design de la bande centrale blanche avec découpe puzzle"
       ]
     },
     "description": "",
@@ -20410,42 +20416,43 @@
     "featured": false,
     "visualSignature": {
       "texts": [
-        "Figgare4",
-        "STIMA VITA",
-        "PERFORATED SWEETSPOT",
+        "Figgare",
+        "STIMA",
+        "VITA",
+        "FIBERGLASS SWEETSPOT",
         "HYBRID FRAME",
         "LIGHT WEIGHT",
         "SOFT EVA"
       ],
       "colors": [
         "noir",
-        "rose/violet",
-        "blanc",
-        "bleu clair"
+        "rose/magenta",
+        "violet",
+        "blanc"
       ],
       "tech": [
-        "PERFORATED SWEETSPOT",
+        "FIBERGLASS SWEETSPOT",
         "HYBRID FRAME",
         "LIGHT WEIGHT",
         "SOFT EVA"
       ],
       "design": [
-        "bande centrale verticale dégradé rose-violet-bleu",
-        "logo Figgare4 en lettres blanches verticales stylisées",
-        "perforations circulaires blanches réparties sur toute la surface",
-        "pont/gorge rose vif en forme de V",
-        "grip rose uni",
-        "cadre noir mat avec contour coloré",
-        "bordure rose-violet sur le cadre",
-        "4 icônes circulaires avec descriptifs techniques sur les côtés",
-        "finition bicolore noir et rose"
+        "dégradé vertical rose-violet-bleu au centre",
+        "logo Figgare vertical en blanc",
+        "nombreux trous de perforation circulaires",
+        "pont rose translucide en forme de Y",
+        "grip rose",
+        "finition mate sur fond noir",
+        "forme ronde/teardrop",
+        "texte vertical centré",
+        "icônes circulaires pour chaque technologie"
       ],
       "yearClues": [
-        "dégradé rose-violet-bleu sur bande centrale",
-        "design minimaliste avec logo vertical centré",
-        "combinaison couleurs noir/rose/violet spécifique",
-        "4 technologies mentionnées en icônes",
-        "pont rose vif distinctif"
+        "combinaison gradient rose-violet-bleu",
+        "logo Figgare style moderne vertical",
+        "pont en Y rose translucide",
+        "disposition des 4 technologies avec icônes",
+        "coloris rose dominant pour 2026"
       ]
     },
     "description": "",
