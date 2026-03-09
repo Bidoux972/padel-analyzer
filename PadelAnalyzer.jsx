@@ -1797,44 +1797,57 @@ METHODOLOGY:
 2. If NO reference scores: use PURE MECHANICAL RULES below to calculate from scratch.
 3. Guard-rail caps ALWAYS apply regardless of source. They prevent marketing inflation.
 
+CORE CLASSIFICATION — classify before scoring:
+- POWER (reactive): Power Foam, Power Foam HD, EVA+Carbon Power Layer, High Memory EVA. Also rigid (not reactive): Hard EVA, HR3 Black EVA, Dense EVA, EVA Hard, MultiEVA Hard, etc.
+- STANDARD: Standard EVA, EVA, MultiEva, MultiEVA, Black EVA, X-EVA, Pro EVA, Dual Foam, M-EVA Balance, Power Foam EVA (Wilson=standard)
+- SOFT: Soft EVA, EVA Soft, EVA Soft Performance (Adidas=soft), Control Foam (Head=soft), Comfort foam, MultiEVA Soft, Ultra Soft EVA
+
+SURFACE CLASSIFICATION:
+- PREMIUM: 18K, 24K, Aluminized, TriCarbon, UD Carbon, Double Carbon Wall, TeXtreme, HES Carbon, 12K Xtrem
+- CARBON: 3K-15K standard carbon, Fibrix (Bullpadel=carbon), X-Tend Carbon, Spiral Tech
+- HYBRID: CarbonFlex, Carbon Hybrid, Hybrid Woven, Carbon+Fiberglass mixes
+- FIBERGLASS: Fiberglass, Fibre de verre (even with Extreme Spin/Auxetic = still fiberglass), Soft Fiber
+
+SWEET SPOT TECH (gives +0.5 Contrôle, +0.5 Tolérance, +0.5 Maniabilité):
+Auxetic (1.0/2.0), CurvAktiv, Ease Vibe, Pulse System, Kinetic System, Vertex Core, Air Power
+
 MECHANICAL RULES (1.0 to 10.0, use 0.5 increments):
 
 PUISSANCE (power = ball exit speed per effort):
-- Shape base: Diamant=8.0, Goutte d'eau/Teardrop=6.5, Hybride=6.0, Ronde/Round=5.5
-- Balance modifier: Haut/High: +1.0, Mi-haut/Medium-high: +0.5, Moyen/Medium: 0, Bas/Low: -0.5
-- Core modifier: Reactive/Power foam: +0.5, Standard EVA: 0, Soft/Control foam: -0.5
+- Shape base: Diamant=8.5, Goutte d'eau/Teardrop=7.5, Hybride=7.0, Ronde/Round=7.0
+- Balance modifier: Haut/High: +0.5, Moyen/Medium: 0, Bas/Low: -0.5
+- Core modifier: REACTIVE only (Power Foam, Power Foam HD, EVA+Carbon Power Layer, High Memory EVA): +0.5
+- Surface modifier: PREMIUM: +0.5, CARBON/HYBRID: 0, FIBERGLASS: -0.5
+- Weight >370g: +0.5
 - Cap at 10.0
 
 CONTRÔLE (control = shot placement precision):
-- Shape base: Ronde=8.5, Hybride=8.0, Goutte d'eau=7.5, Diamant=5.5
-- Surface modifier: Fiberglass/hybrid: +0.5, Pure carbon: 0, Very stiff carbon (12K+): -0.5
-- Sweet spot modifier: Optimized/large: +0.5, Standard: 0
-- GUARD-RAIL: Diamant shape CANNOT exceed 7.5 contrôle (limited sweet spot)
+- Shape base: Ronde=9.0, Hybride=9.0, Goutte d'eau=8.5, Diamant=8.5
+- Surface modifier: FIBERGLASS/HYBRID: +0.5, CARBON: 0, PREMIUM: -0.5
+- Sweet spot tech: +0.5
 
 CONFORT (comfort = vibration absorption, arm protection):
-- Core base: Soft foam/Control foam: 7.5, Standard EVA/MLD: 6.0, Hard EVA (HR3 Black): 5.0, Reactive/Power foam: 5.0
-- Surface modifier: Fiberglass dominant: +1.5, Hybrid carbon/glass: +0.5, Pure carbon: 0, Stiff carbon (12K, 18K Xtrem): -0.5
-- Anti-vib tech modifier: Dedicated system (Ease Vibe, Pulse System, Auxetic+SoftCap): +0.5
+- Core base: SOFT=8.0, STANDARD=7.0, POWER=6.0
+- Surface modifier: FIBERGLASS: +1.0, HYBRID: +0.5, CARBON: 0, PREMIUM: -0.5
+- Anti-vib tech: +0.5
 - Weight modifier: <355g: +0.5, 355-365g: 0, >365g: -0.5
-- GUARD-RAIL: Stiff carbon (12K Xtrem, TriCarbon) + hard EVA core = NEVER above 6.0
-- GUARD-RAIL: Any reactive/power foam without anti-vib = NEVER above 6.5
-- GUARD-RAIL: Fiberglass + soft foam + anti-vib = MINIMUM 7.0
+- GUARD-RAIL: Core POWER + Surface PREMIUM/CARBON = max 7.0
 
 SPIN (spin = surface grip on ball):
-- Rough 3D + sand texture (Dual Spin, Extreme Spin): 8.5
-- 3D texture only: 7.5
-- Smooth/standard: 6.0
+- Texture (3D, Spin, Rough, Sand, Grain, Extreme Spin, Dual Spin, Top Spin, Hex, Spin Blade): 8.5
+- PREMIUM no texture: 7.5
+- CARBON/HYBRID no texture: 7.0
+- FIBERGLASS no texture: 6.0
 
 MANIABILITÉ (maneuverability = ease of quick movement):
-- Weight base: <350g: 9.0, 350-355g: 8.0, 355-360g: 7.5, 360-365g: 7.0, 365-370g: 6.5, >370g: 6.0
-- Balance modifier: Bas/Low: +1.0, Moyen/Medium: +0.5, Mi-haut: 0, Haut/High: -0.5
-- Adjustable balance (Weight Balance system): +0.5
+- Weight base: <340g=9.5, 340-349g=9.0, 350-355g=8.5, 356-360g=8.0, 361-365g=7.5, 366-370g=7.0, >370g=7.0
+- Balance modifier: Bas/Low: +0.5, Moyen/Medium: 0, Haut/High: -0.5
+- Sweet spot tech: +0.5
 
 TOLÉRANCE (forgiveness on off-center hits):
-- Shape base: Ronde=8.5, Hybride=8.0, Goutte d'eau=7.0, Diamant=5.0
-- Sweet spot modifier: Optimized/large: +0.5, Standard: 0
-- Surface modifier: Fiberglass (softer rebound): +0.5, Hybrid: 0, Stiff carbon: -0.5
-- GUARD-RAIL: Diamant shape CANNOT exceed 6.5 tolérance
+- Shape base: Ronde=9.0, Hybride=8.5, Goutte d'eau=8.0, Diamant=7.5
+- Sweet spot tech: +0.5
+- Surface modifier: FIBERGLASS: +0.5, PREMIUM: -0.5
 
 VERDICT RULES for player profile — use these padel-specific style tags:
 - "Offensif" → needs power, rewards diamant/high balance
@@ -2596,40 +2609,72 @@ const MAGAZINE_CATEGORIES = [
   {id:"rapport", label:"💰 Rapport qualité/prix", attr:null, desc:"Performances au meilleur prix"},
 ];
 
-// === ASSISTANT ADMIN — SCORING RULES (gravées dans le code, ne plus jamais perdre) ===
-const ASSISTANT_SCORING_RULES = `RÈGLES DE SCORING MÉCANIQUES — applique ces calculs, pas de feeling :
+// === ASSISTANT ADMIN — SCORING RULES V4 (recalibrées marché PadelZoom/Padelful — 9 mars 2026) ===
+const ASSISTANT_SCORING_RULES = `RÈGLES DE SCORING MÉCANIQUES V4 — applique ces calculs, pas de feeling.
+Calibrées sur PadelZoom, Padelful et Extreme-Padel. Benchmarkées sur 8 raquettes de référence.
+
+=== ÉTAPE 1 : CLASSIFIER LE CORE ET LA SURFACE AVEC CE DICTIONNAIRE ===
+
+CORE → 3 catégories (POWER / STANDARD / SOFT) :
+- POWER (dur, réactif) : Hard EVA, EVA Hard, H-EVA Power, HR3 Black EVA, HR3 Black EVA Hard, EVA HR3, EVA HR, MultiEVA Hard, MultiEVA + Tricore, High Memory EVA, Dense EVA, EVA Power, Power Foam (Head/Adidas), Power Foam HD, EVA + Carbon Power Layer, X-EVA hard, Mousse Dure/Rigide, EVA Pro (dur), Hypersoft EVA (dur)
+- STANDARD (medium) : Standard EVA, EVA, MultiEva, MultiEVA, MultiEva triple densité, Black EVA (Babolat=medium), X-EVA, X-EVA (basse densité), EVA Performance (Adidas=standard), Pro EVA, HR3 Color EVA, HR4 White EVA, M-EVA Balance, EVA Medium, EVA Medium+, Pro-Touch EVA, Softcolor EVA, Polyethylene Soft, Dual Foam, Dual-Foam EVA, Power Foam EVA (Wilson=standard, PAS le Power Foam de Head)
+- SOFT (souple) : Soft EVA, EVA Soft, EVA Soft Performance (Adidas=soft malgré "Performance"), Soft Performance EVA, EVA Soft V30, Black EVA Soft, X-EVA + Comfort Layer, Power Foam soft (Babolat=soft), HR3 EVA Soft, Control Foam (Head=soft), Control Foam+ (Wilson=soft), Comfort foam, Ultra Soft EVA, MultiEVA Soft
+- ATTENTION: seuls ces cores POWER sont "réactifs" (bonus Puissance) : Power Foam, Power Foam HD, EVA + Carbon Power Layer, High Memory EVA. Les Hard EVA sont rigides mais PAS réactifs.
+
+SURFACE → 4 catégories (PREMIUM / CARBON / HYBRID / FIBERGLASS) :
+- PREMIUM : tout ce qui contient 18K, 24K, Aluminized/Aluminisé, TriCarbon, UD Carbon, Double Carbon Wall, TeXtreme, HES Carbon, "12K Xtrem"
+- CARBON : tout ce qui contient Carbon/Carbone 3K-15K standard, Fibrix (Bullpadel=carbone), X-Tend Carbon, Spiral Tech, 3D Carbon
+- HYBRID : CarbonFlex, Carbon Hybrid, Hybrid Woven, Carbon + Fiberglass, Carbon Flex + ExactTouch, Carbone/Fibre de verre mélangés
+- FIBERGLASS : Fiberglass, Fibre de verre (même avec Extreme Spin ou Auxetic = reste fiberglass), Soft Fiber, Comfort Flex Fibres
+
+SWEET SPOT TECH (donne +0.5 Contrôle ET +0.5 Tolérance ET +0.5 Maniabilité) :
+Auxetic (1.0 et 2.0), CurvAktiv/CurvActiv, Ease Vibe, Pulse System, Kinetic System, Vertex Core, Air Power, Air React, Optimized Sweet Spot, Smart Holes
+
+=== ÉTAPE 2 : SI JUNIOR (poids <340g, Core Soft, Fiberglass) → GRILLE JUNIOR ===
+- Puissance: 5.0 (Diamant: +1.0, Goutte: +0.5)
+- Contrôle: 9.0 (Fiberglass: +0.5)
+- Confort: 9.5 fixe
+- Spin: 6.0 (texture rugueuse: +0.5)
+- Maniabilité: 9.5 fixe
+- Tolérance: 9.5 fixe
+
+=== ÉTAPE 3 : SINON → RÈGLES STANDARD (women et hommes, le poids fait la différence) ===
 
 PUISSANCE (base forme + modifs):
-- Diamant=8.0, Goutte d'eau=6.5, Hybride=6.0, Ronde=5.5
-- Balance Haut: +1.0, Mi-haut: +0.5, Moyen: 0, Bas: -0.5
-- Mousse réactive/power: +0.5, Standard EVA: 0, Soft/control: -0.5
+- Diamant=8.5, Goutte d'eau=7.5, Hybride=7.0, Ronde=7.0
+- Balance Haut: +0.5, Moyen: 0, Bas: -0.5
+- Core RÉACTIF uniquement (Power Foam, Power Foam HD, EVA+Carbon Power Layer, High Memory EVA): +0.5
+- Surface PREMIUM: +0.5, CARBON: 0, HYBRID: 0, FIBERGLASS: -0.5
+- Poids >370g: +0.5
 - Cap 10.0
 
-CONTRÔLE (base forme inverse + modifs):
-- Ronde=8.5, Hybride=8.0, Goutte d'eau=7.5, Diamant=5.5
-- Fiberglass/hybrid surface: +0.5, Pure carbone: 0, Carbone rigide 12K+: -0.5
-- Sweet spot optimisé/large: +0.5
+CONTRÔLE (base forme + modifs):
+- Ronde=9.0, Hybride=9.0, Goutte d'eau=8.5, Diamant=8.5
+- Surface FIBERGLASS ou HYBRID: +0.5, CARBON: 0, PREMIUM: -0.5
+- Sweet spot tech: +0.5
 
-CONFORT (base mousse + modifs):
-- Soft foam/Control: 7.5, Standard EVA/MLD: 6.0, Hard EVA (HR3 Black): 5.0, Reactive/Power foam: 5.0
-- Surface fiberglass dominante: +1.5, Hybrid carbone/verre: +0.5, Pure carbone: 0, Carbone rigide 12K+: -0.5
-- Anti-vib dédié (Auxetic, Pulse System, Ease Vibe): +0.5
+CONFORT (base core + modifs):
+- SOFT=8.0, STANDARD=7.0, POWER=6.0
+- Surface FIBERGLASS: +1.0, HYBRID: +0.5, CARBON: 0, PREMIUM: -0.5
+- Anti-vib présent: +0.5
 - Poids <355g: +0.5, 355-365g: 0, >365g: -0.5
-- IMPORTANT: Carbone rigide (12K, TriCarbon) + mousse dure = JAMAIS au-dessus de 6.0
+- IMPORTANT: Core POWER + Surface PREMIUM ou CARBON = max 7.0
 
 SPIN (texture surface):
-- Rough 3D + texture sable (Dual Spin, Extreme Spin): 8.5
-- 3D texture seule: 7.5
-- Lisse/standard: 6.0
+- Texture rugueuse (3D, Spin, Rough, Sand, Grain, Extreme Spin, Dual Spin, Top Spin, Hex, Spin Blade, Spin²): 8.5
+- PREMIUM sans texture: 7.5
+- CARBON ou HYBRID sans texture: 7.0
+- FIBERGLASS sans texture: 6.0
 
-MANIABILITÉ (base poids + modif balance):
-- <350g: 9.0, 350-355g: 8.0, 355-360g: 7.5, 360-365g: 7.0, 365-370g: 6.5, >370g: 6.0
-- Balance Bas: +1.0, Moyen: +0.5, Mi-haut: 0, Haut: -0.5
+MANIABILITÉ (base poids + modifs):
+- <340g=9.5, 340-349g=9.0, 350-355g=8.5, 356-360g=8.0, 361-365g=7.5, 366-370g=7.0, >370g=7.0
+- Balance Bas: +0.5, Moyen: 0, Haut: -0.5
+- Sweet spot tech: +0.5
 
 TOLÉRANCE (base forme + modifs):
-- Ronde=8.5, Hybride=8.0, Goutte d'eau=7.0, Diamant=5.0
-- Sweet spot optimisé/large: +0.5
-- Surface fiberglass: +0.5, Hybrid: 0, Carbone rigide: -0.5`;
+- Ronde=9.0, Hybride=8.5, Goutte d'eau=8.0, Diamant=7.5
+- Sweet spot tech: +0.5
+- Surface FIBERGLASS: +0.5, PREMIUM: -0.5`;
 
 const ASSISTANT_SEARCH_PROMPT = `Tu es un expert padel qui alimente une base de données de raquettes. PRÉCISION ABSOLUE exigée.
 
@@ -2672,9 +2717,10 @@ SPECS DE LA RAQUETTE :
 Génère un JSON avec :
 - scores: {Puissance: X, Contrôle: X, Confort: X, Spin: X, Maniabilité: X, Tolérance: X} (arrondis au 0.5, entre 3.0 et 10.0)
 - verdict: résumé style magazine 150-250 chars, en français, unique et percutant (PAS de "La X est la Y de Z")
-- editorial: analyse détaillée 400-500 chars, français, style magazine, technique mais accessible
+- editorial: analyse détaillée 400-500 chars, français, style magazine, technique mais accessible. IMPORTANT : mentionne la ou les technologies clés qui expliquent POURQUOI cette raquette obtient ses scores (ex: "L'Auxetic 2.0 élargit le sweet spot, ce qui explique le contrôle exceptionnel pour une Diamant").
 - targetProfile: profil joueur cible 120-200 chars, français, concret
-- techHighlights: tableau de 4-5 objets {label, value, detail} — technologies clés
+- techHighlights: tableau de 4-5 objets {label, value, detail} — technologies clés, avec dans "detail" l'impact concret sur le jeu (pas juste le nom de la techno)
+- premiumEdge: argument vendeur clé en 80-120 chars, français. Explique en UNE phrase pourquoi cette raquette sort du lot grâce à sa technologie. Format: "[Techno] → [bénéfice concret]". Exemples : "Auxetic 2.0 + Carbone UD — la seule Diamant à 10/10 en Puissance", "Carbon Aluminized 16K sur forme Ronde — puissance rare dans cette catégorie", "CurvAktiv + MultiEVA — sweet spot élargi +8%, une Diamant qui pardonne". Si la raquette est entrée de gamme sans tech différenciante, mettre null.
 
 Chaque texte doit avoir sa propre voix. Varie les ouvertures. Pas de formules génériques.
 Réponds UNIQUEMENT en JSON valide.`;
