@@ -87,7 +87,7 @@
         "style minimaliste avec accents bleus discrets"
       ]
     },
-    "premiumEdge": "Carbon — Ronde Adidas avancée, performances solides"
+    "premiumEdge": null
   },
   {
     "id": "adidas-adipower-jr-2025",
@@ -541,7 +541,7 @@
       "name": "Ale Galán",
       "rank": "N°1 mondial"
     },
-    "premiumEdge": "Carbon 18K Aluminized + EVA Dure — l'arme d'Ale Galán, puissance sans filtre"
+    "premiumEdge": null
   },
   {
     "id": "adidas-metalbone-youth-2025",
@@ -719,7 +719,7 @@
       ]
     },
     "proPlayerInfo": null,
-    "premiumEdge": "Carbon Aluminized + IBS — la Arrow Hit polyvalente, Diamant accessible avec bon contrôle"
+    "premiumEdge": null
   },
   {
     "name": "Adidas Arrow Hit Attack 2026",
@@ -814,7 +814,7 @@
       ]
     },
     "proPlayerInfo": null,
-    "premiumEdge": "Carbon Aluminized 16K + IBS — la Arrow Hit offensive, Diamant pour joueuses puissantes"
+    "premiumEdge": null
   },
   {
     "id": "adidas-arrow-hit-ctrl-2026",
@@ -905,7 +905,7 @@
       ]
     },
     "proPlayerInfo": null,
-    "premiumEdge": "Carbon Aluminized + IBS + MPS ribs — le contrôle Arrow Hit avec personnalisation du toucher"
+    "premiumEdge": "Carbon Aluminized + IBS + MPS ribs — triple système anti-vibration, la Ronde zéro douleur"
   },
   {
     "id": "adidas-arrow-hit-carbon-ctrl-2026",
@@ -1001,7 +1001,7 @@
       ]
     },
     "proPlayerInfo": null,
-    "premiumEdge": "Carbon 24K + IBS sur Ronde — le contrôle Arrow Hit version carbone premium"
+    "premiumEdge": null
   },
   {
     "id": "adidas-arrow-hit-jr-pink-2026",
@@ -1083,7 +1083,7 @@
         "disposition particulière des perforations blanches en cercle"
       ]
     },
-    "premiumEdge": "Fiberglass + IBS — la Arrow Hit polyvalente, Diamant accessible avec bon contrôle"
+    "premiumEdge": null
   },
   {
     "name": "Adidas Cross It Light 2026",
@@ -1173,7 +1173,7 @@
         "inscription CROSS IT LIGHT en bas de raquette"
       ]
     },
-    "premiumEdge": "Carbon Aluminized 24K + DAF sur Ronde — aérodynamisme et puissance rare à 355g"
+    "premiumEdge": "Carbon Aluminized 24K + Dynamic Air Flow sur Ronde 345g — aérodynamique et puissance rare à ce poids"
   },
   {
     "name": "Adidas Cross It Team 2026",
@@ -1255,7 +1255,7 @@
       "rank": "N°9 mondiale",
       "context": "La gamme Cross It est la signature de Martita Ortega, icône du padel féminin espagnol."
     },
-    "premiumEdge": "Fibre de verre + DAF — la Cross It accessible, Diamant confort pour progresser"
+    "premiumEdge": null
   },
   {
     "id": "adidas-cross-it-team-light-2026",
@@ -1345,7 +1345,7 @@
       "rank": "N°9 mondiale",
       "context": "Version légère de la gamme signature Marta Ortega."
     },
-    "premiumEdge": "Fibre de verre + DAF — la Cross It accessible, Diamant confort pour progresser [2026]"
+    "premiumEdge": null
   },
   {
     "id": "adidas-drive-black-2026",
@@ -1605,7 +1605,7 @@
       "rank": "N°1 mondial",
       "context": "Flagship Adidas d'Ale Galán, le n°1 mondial."
     },
-    "premiumEdge": "Carbon Aluminized 16K + Spin Blade — la Metalbone de référence, puissance et polyvalence"
+    "premiumEdge": "Weight Balance System ±11g — la seule Diamant dont tu peux changer l'équilibre entre deux sets"
   },
   {
     "id": "adidas-metalbone-ctrl-2026",
@@ -1698,7 +1698,7 @@
       ],
       "yearClues": "Version 2026 identifiable par : caractères chinois 敏捷型, coloris blanc/noir/orange spécifique, finition carbone apparente, nouveau design épuré du logo et inscriptions minimalistes"
     },
-    "premiumEdge": "Carbon Aluminized 16K + Weight Balance System — Ronde personnalisable, puissance sur demande"
+    "premiumEdge": "Carbon Aluminized 16K + EVA Soft — la Ronde avec la meilleure sortie de balle du marché selon PadelZoom"
   },
   {
     "name": "Adidas Metalbone Carbon 2026",
@@ -1787,7 +1787,7 @@
         "design épuré et sobre"
       ]
     },
-    "premiumEdge": "Carbone 6K + Spin Blade — la Metalbone maniable, attaque rapide et effets"
+    "premiumEdge": "Carbone 6K + Spin Blade sur Diamant légère — la Metalbone rapide pour les transitions"
   },
   {
     "id": "adidas-metalbone-carbon-ctrl-2026",
@@ -1889,7 +1889,7 @@
         "bandes orange et blanche horizontales fines caractéristiques de la version 2026"
       ]
     },
-    "premiumEdge": "Carbon Aluminized 24K sur Ronde — le carbone le plus premium d'Adidas au service du contrôle"
+    "premiumEdge": "Carbon Aluminized 24K sur Ronde — le carbone le plus haut de gamme d'Adidas au service du contrôle"
   },
   {
     "name": "Adidas Metalbone HRD 2026",
@@ -1984,7 +1984,7 @@
       ],
       "yearClues": "Combinaison noir/orange/turquoise, texture carbone intégrale apparente, motif triangulaire géométrique central en relief, ligne turquoise unique en partie basse, typographie et placement spécifiques du texte METALBONE HRD = version 2026"
     },
-    "premiumEdge": "Carbon Aluminized 15K + High Memory EVA — la plus offensive des Metalbone, pour Ale Galán"
+    "premiumEdge": "High Memory EVA + Carbon Aluminized 15K — la plus sèche des Metalbone, l'arme d'Ale Galán au smash"
   },
   {
     "name": "Adidas Metalbone Team 2026",
@@ -2243,7 +2243,7 @@
         "technologies 3K Carbon et Black Holes marquées"
       ]
     },
-    "premiumEdge": "Vibrabsorb + Carbon — la Technical Viper historique, ADN offensif Babolat"
+    "premiumEdge": null
   },
   {
     "id": "babolat-air-viper-2025",
@@ -2330,7 +2330,7 @@
         "intensité du bleu vif caractéristique"
       ]
     },
-    "premiumEdge": "Goutte Carbon + Vibrabsorb — l'Air Viper pour les attaquants rapides"
+    "premiumEdge": null
   },
   {
     "id": "babolat-alioth-mini-jr-2025",
@@ -2687,7 +2687,7 @@
         "mention '3K' et 'CARBON FRAME' affichées"
       ]
     },
-    "premiumEdge": "Ronde Carbon 3K + Spin+ — la Ronde Babolat qui ose l'attaque"
+    "premiumEdge": null
   },
   {
     "id": "babolat-rebel-2025",
@@ -2781,7 +2781,7 @@
         "style graphique abstrait contemporain"
       ]
     },
-    "premiumEdge": "Carbon 12K + EVA Dure — construction expert Babolat pour compétiteurs"
+    "premiumEdge": null
   },
   {
     "id": "babolat-revenge-2025",
@@ -2966,7 +2966,7 @@
         "protection avant bicolore gris/rouge"
       ]
     },
-    "premiumEdge": "Vibrabsorb + Carbon — la Technical Viper historique, ADN offensif Babolat [2025]"
+    "premiumEdge": null
   },
   {
     "name": "Babolat Air Veron 2026",
@@ -3042,7 +3042,7 @@
       ],
       "yearClues": "Coloris bleu/jaune fluo et inscription CarbonFlex = génération Air 2026"
     },
-    "premiumEdge": "CarbonFlex hybrid allégée — polyvalence Air Veron, le padel intelligent"
+    "premiumEdge": "CarbonFlex hybrid 355g — la Goutte polyvalente Babolat, toucher et maniabilité sans compromis"
   },
   {
     "name": "Babolat Air Viper 2026",
@@ -3138,7 +3138,7 @@
         "logo Babolat argenté en lettres capitales alignées verticalement"
       ]
     },
-    "premiumEdge": "Carbone 16K + X-EVA dure — Air Viper allégée pour attaquants véloces"
+    "premiumEdge": "Carbone 16K + X-EVA dure à seulement 355g — la Goutte offensive allégée pour attaquants rapides"
   },
   {
     "name": "Babolat Counter Veron 2026",
@@ -3225,7 +3225,7 @@
         "disposition et taille des perforations blanches"
       ]
     },
-    "premiumEdge": "CarbonFlex sur Ronde + Power Foam — contrôle dominant avec punch inattendu"
+    "premiumEdge": "CarbonFlex + Power Foam sur Ronde Haut — la Ronde Babolat qui ose l'attaque, sortie de balle explosive"
   },
   {
     "name": "Babolat Counter Viper 2026",
@@ -3325,7 +3325,7 @@
         "design des perforations avec motif de flèches directionnelles"
       ]
     },
-    "premiumEdge": "Ronde Carbon 3K + Spin+ — la Ronde Babolat qui ose l'attaque [2026]"
+    "premiumEdge": null
   },
   {
     "id": "babolat-technical-veron-2026",
@@ -3418,7 +3418,7 @@
         "style graphique moderne avec dégradés pointillés"
       ]
     },
-    "premiumEdge": "X-EVA + CarbonFlex — le renouveau de la Technical Veron, plus réactive"
+    "premiumEdge": "X-EVA + CarbonFlex — le toucher de balle Babolat signature, polyvalence technique maximale"
   },
   {
     "id": "babolat-technical-viper-2026",
@@ -3521,7 +3521,7 @@
       "name": "Gamme Juan Lebrón",
       "rank": "Top 3 mondial"
     },
-    "premiumEdge": "EVA + Carbon Power Layer + 3D Spin+ — nouvelle génération Technical Viper"
+    "premiumEdge": "EVA + Carbon Power Layer + 3D Spin+ — nouvelle couche carbone intégrée au noyau, sortie de balle inédite"
   },
   {
     "name": "Babolat Veron 3.0 Juan Lebrón 2026",
@@ -3625,7 +3625,7 @@
       "rank": "Top 3 mondial",
       "context": "Version contrôle de la gamme Lebrón."
     },
-    "premiumEdge": "CarbonFlex hybrid + Power Foam — la polyvalente offensive signée Lebrón"
+    "premiumEdge": null
   },
   {
     "name": "Babolat Vertuo 2026",
@@ -3821,7 +3821,7 @@
       "rank": "Top 3 mondial",
       "context": "L'arme de Juan Lebrón, l'un des joueurs les plus puissants du circuit."
     },
-    "premiumEdge": "Carbon 3K + 3D Spin+ — la plus dure des Babolat, l'arme de Lebrón au filet"
+    "premiumEdge": null
   },
   {
     "id": "babolat-viper-soft-3.0-lebron-2026",
@@ -3929,7 +3929,7 @@
         "style graphique moderne 2026"
       ]
     },
-    "premiumEdge": "X-EVA Confort + 3K Soft Carbon — la puissance Lebrón avec le confort en plus"
+    "premiumEdge": "X-EVA Confort + 3K Soft Carbon — tout le punch de la Viper Lebrón sans la rigidité qui fatigue le bras"
   },
   {
     "id": "bullpadel-vertex-04-2024",
@@ -4016,7 +4016,7 @@
         "typographie Vertex moderne en haut"
       ]
     },
-    "premiumEdge": "Vibradrive + Carbon 12K — la Vertex qui a défini le standard Diamant moderne"
+    "premiumEdge": "Vibradrive + Carbon 12K — la Vertex qui a lancé la nouvelle ère Diamant confortable"
   },
   {
     "id": "bullpadel-flow-2025",
@@ -4193,7 +4193,7 @@
         "design plus épuré et moderne"
       ]
     },
-    "premiumEdge": "TriCarbon 12K + Vibradrive — technologie premium Bullpadel pour joueurs exigeants"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-hack-elite-2025",
@@ -4286,7 +4286,7 @@
         "structure du manche en V turquoise redessinée"
       ]
     },
-    "premiumEdge": "TriCarbon 12K + Vibradrive — technologie premium Bullpadel pour joueurs exigeants [2025]"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-hack-jr-2025",
@@ -4516,7 +4516,7 @@
         "style typographique moderne du logo Bullpadel"
       ]
     },
-    "premiumEdge": "Carbon + Vibradrive — Diamant Bullpadel technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-vertex-04-2025",
@@ -4610,7 +4610,7 @@
         "positionnement et style des technologies inscrites"
       ]
     },
-    "premiumEdge": "CurvAktiv + Air Power — sweet spot élargi +8% sur Diamant, réf. du marché"
+    "premiumEdge": "CurvAktiv + Air Power — sweet spot +8% vs Vertex 03, la réf. qui a redéfini la Diamant polyvalente"
   },
   {
     "id": "bullpadel-vertex-elite-2025",
@@ -4694,7 +4694,7 @@
         "design de gorge géométrique orange distinctif"
       ]
     },
-    "premiumEdge": "Carbon 12K + Vibradrive — Diamant Bullpadel technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-vertex-jr-2025",
@@ -4881,7 +4881,7 @@
       ]
     },
     "proPlayerInfo": null,
-    "premiumEdge": "Xtend Carbon 3K en Goutte — la Flow qui passe à l'attaque, pour joueuses ambitieuses"
+    "premiumEdge": "Xtend Carbon 3K en Goutte — la Flow qui passe à l'attaque, pour joueuses qui veulent plus de punch"
   },
   {
     "name": "Bullpadel Hack 04 2026",
@@ -4977,7 +4977,7 @@
       "rank": "Top 10 mondial",
       "context": "La raquette signature de Paquito Navarro, le joueur le plus spectaculaire du circuit."
     },
-    "premiumEdge": "TriCarbon 18K + Air React Channel — l'explosivité de Paquito, la plus maniable des Diamant"
+    "premiumEdge": "TriCarbon 18K + Air React Channel — la plus maniable des Diamant puissance du marché"
   },
   {
     "id": "bullpadel-hack-04-comfort-2026",
@@ -5066,7 +5066,7 @@
       "name": "Paquito Navarro",
       "rank": "Top 10 mondial"
     },
-    "premiumEdge": "MultiEVA Soft Soft + TriCarbon 18K — la Hack confort pour les attaquants qui ménagent leur bras"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-hack-04-hybrid-2026",
@@ -5161,7 +5161,7 @@
       ],
       "yearClues": "Logo HACK04 en orange en haut, combinaison gris/noir/blanc avec trois bandes horizontales noires, mention TS HACK WEIGHT et VIBRADRIVE = version 2026"
     },
-    "premiumEdge": "La Hack en forme hybride — potentiel offensif de Paquito, contrôle en plus"
+    "premiumEdge": "La Hack en forme hybride — le potentiel offensif de Paquito avec le filet de sécurité d'une Goutte"
   },
   {
     "id": "bullpadel-icon-2026",
@@ -5256,7 +5256,7 @@
       ],
       "yearClues": "Logo couronne avec '14' en or, signature dorée du joueur, coloris vert forêt avec détails dorés sophistiqués, design épuré avec grand '7' blanc = indicateurs version 2026"
     },
-    "premiumEdge": "TriCarbon 18K + Ease Vibe — hommage à Juan Martín Díaz, légende vivante du padel"
+    "premiumEdge": "TriCarbon 18K + Ease Vibe — hommage à Juan Martín Díaz, la légende qui mixe puissance et intelligence"
   },
   {
     "name": "Bullpadel Neuron 02 2026",
@@ -5354,7 +5354,7 @@
       "rank": "Top 5 mondial",
       "context": "Le magicien argentin Chingotto contrôle le jeu avec le Neuron, raquette de contrôle et de défense."
     },
-    "premiumEdge": "Forme hybride + Xtend Carbon 12K — le jeu défensif de Chingotto, modernisé"
+    "premiumEdge": "Forme hybride + cœur fendu anti-vibrations — le secret défensif de Chingotto, confort et précision"
   },
   {
     "id": "bullpadel-neuron-02-edge-2026",
@@ -5458,7 +5458,7 @@
         "Edge 2026 implique finition/bordure spécifique de l'année 2026"
       ]
     },
-    "premiumEdge": "Forme hybride + Xtend Carbon 12K — le jeu défensif de Chingotto, modernisé [2026]"
+    "premiumEdge": null
   },
   {
     "name": "Bullpadel Vertex 05 2026",
@@ -5565,7 +5565,7 @@
       "rank": "Top 10 mondial",
       "context": "Raquette de Juan Tello, l'un des joueurs les plus réguliers du circuit."
     },
-    "premiumEdge": "Xtend Carbon 12K + CurvAktiv + Top Spin — l'héritière de la Vertex 04, par Tello"
+    "premiumEdge": "Xtend Carbon 12K + nouveau CurvAktiv triangulaire — sweet spot agrandi, la Vertex la plus complète de Tello"
   },
   {
     "id": "bullpadel-vertex-05-geo-2026",
@@ -5665,7 +5665,7 @@
         "inscription VERTEX 05 (avec espace) distincte"
       ]
     },
-    "premiumEdge": "Geometric Shape — zone de frappe élargie +8% pour des remates plus constants"
+    "premiumEdge": "Geometric Shape exclusif — zone de frappe élargie pour des remates plus réguliers, même décentrés"
   },
   {
     "name": "Bullpadel Vertex 05 Hybrid 2026",
@@ -5750,7 +5750,7 @@
       ],
       "yearClues": "Logo Bullpadel minimaliste moderne, combinaison noir/bleu ciel spécifique, inscription VERTEX 05 visible, protecteur bleu avec découpes triangulaires symétriques, finition carbone damier sur toute la surface = version 2026"
     },
-    "premiumEdge": "Vertex en forme hybride — la puissance Vertex avec le contrôle d'une Goutte"
+    "premiumEdge": null
   },
   {
     "name": "Bullpadel XPLO 2026",
@@ -5850,7 +5850,7 @@
       "rank": "Top 5 mondial",
       "context": "L'arme de Di Nenno, le gaucher le plus redouté du circuit."
     },
-    "premiumEdge": "TriCarbon 18K — la Diamant la plus rigide de Bullpadel, pour finisseurs purs"
+    "premiumEdge": "TriCarbon 18K + MultiEVA Hard + 3D Grain — la Diamant la plus rigide de Bullpadel, pour finisseurs purs"
   },
   {
     "name": "Bullpadel XPLO Comfort 2026",
@@ -5946,7 +5946,7 @@
       "name": "Martin Di Nenno",
       "rank": "Top 5 mondial"
     },
-    "premiumEdge": "TriCarbon 12K + Fibrix — puissance TriCarbon avec couche de confort intégrée"
+    "premiumEdge": null
   },
   {
     "id": "drop-shot-conqueror-2025",
@@ -6036,7 +6036,7 @@
         "pattern de points blancs avec espacement régulier"
       ]
     },
-    "premiumEdge": "Carbon 12K + EVA Power — la Conqueror, Diamant Drop Shot pour attaquants purs"
+    "premiumEdge": null
   },
   {
     "id": "drop-shot-junior-2025",
@@ -6210,7 +6210,7 @@
         "motif quadrillé sur le X distinctif de cette version"
       ]
     },
-    "premiumEdge": "Goutte hybrid — la Legend Drop Shot, polyvalence et fiabilité"
+    "premiumEdge": null
   },
   {
     "id": "dunlop-galactica-jr-2025",
@@ -6384,7 +6384,7 @@
         "design minimaliste noir et turquoise = version 2025"
       ]
     },
-    "premiumEdge": "Goutte hybrid — la Galactica Pro Dunlop, polyvalence compétitive"
+    "premiumEdge": null
   },
   {
     "id": "dunlop-rocket-ultra-2025",
@@ -6559,7 +6559,7 @@
       ],
       "yearClues": "Logo spirale blanc en relief, double chevron bleu cyan, 5 indicateurs en haut de la raquette, motif hexagonal texturé, design épuré bleu cyan et noir = version 2026"
     },
-    "premiumEdge": "12K Carbon allégée — la Dunlop Diamant légère, attaque accessible"
+    "premiumEdge": null
   },
   {
     "id": "dunlop-fx-pro-2026",
@@ -6651,7 +6651,7 @@
       "name": "Gamme Dunlop FX",
       "context": "La gamme compétition Dunlop pour le circuit professionnel."
     },
-    "premiumEdge": "12K Carbon + Pro EVA — la Diamant Dunlop pro, puissance et stabilité"
+    "premiumEdge": null
   },
   {
     "id": "dunlop-fx-team-2026",
@@ -6725,7 +6725,7 @@
       ],
       "yearClues": "Gamme FX 2026 de Dunlop avec coloris noir/rouge"
     },
-    "premiumEdge": "Premium Carbon + Pro EVA — la Dunlop Diamant intermédiaire, solide et fiable"
+    "premiumEdge": null
   },
   {
     "id": "head-extreme-pro-2024",
@@ -6814,7 +6814,7 @@
         "design épuré avec dégradé subtil caractéristique 2024"
       ]
     },
-    "premiumEdge": "Auxetic + Carbon 3K — l'ADN offensif Head dans sa forme la plus pure"
+    "premiumEdge": null
   },
   {
     "id": "head-monster-kids-2024",
@@ -6895,7 +6895,7 @@
         "style graphique du visage monstre caractéristique 2024"
       ]
     },
-    "premiumEdge": "Fiberglass + Innegra — Ronde Head technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "head-speed-motion-2024",
@@ -6981,7 +6981,7 @@
       "name": "Ariana Sánchez",
       "rank": "Top 5 mondiale"
     },
-    "premiumEdge": "Goutte Power Foam + Innegra — vitesse de bras et potentiel offensif aérien"
+    "premiumEdge": null
   },
   {
     "id": "head-extreme-jr-2025",
@@ -7063,7 +7063,7 @@
         "découpe géométrique diagonale gris anthracite caractéristique 2025"
       ]
     },
-    "premiumEdge": "Fiberglass + Innegra — Goutte d'eau Head technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "head-extreme-motion-2025",
@@ -7154,7 +7154,7 @@
       "rank": "N°4 mondiale",
       "context": "La raquette de Paula Josemaría, gauchère redoutable surnommée 'Dinamita'."
     },
-    "premiumEdge": "Power Foam + Auxetic 2.0 — la Diamant qui se manie comme une Goutte"
+    "premiumEdge": "La pala de Paula Josemaría N°1 mondiale — Diamant allégée avec vitesse de bras supérieure"
   },
   {
     "id": "head-extreme-one-2025",
@@ -7235,7 +7235,7 @@
         "style minimaliste sans inscriptions techniques visibles sur la face"
       ]
     },
-    "premiumEdge": "Ronde Extreme Spin — les effets d'une Diamant dans une forme tolérante"
+    "premiumEdge": null
   },
   {
     "id": "head-extreme-pro-2025",
@@ -7323,7 +7323,7 @@
         "design épuré minimaliste typique génération 2025"
       ]
     },
-    "premiumEdge": "Auxetic 2.0 + Innegra — puissance brute avec stabilité renforcée"
+    "premiumEdge": "Auxetic 2.0 + Innegra — absorbe les chocs sans perdre en explosivité, rare sur Diamant aussi dure"
   },
   {
     "id": "head-gravity-motion-2025",
@@ -7405,7 +7405,7 @@
         "transition diagonale blanc-turquoise caractéristique"
       ]
     },
-    "premiumEdge": "Ronde allégée 355g — contrôle de la Gravity Pro avec plus de réactivité"
+    "premiumEdge": null
   },
   {
     "id": "head-gravity-pro-2025",
@@ -7507,7 +7507,7 @@
         "design minimaliste épuré avec touches de couleur géométriques"
       ]
     },
-    "premiumEdge": "Ronde premium Fiberglass — le contrôle absolu avec Auxetic 2.0 pour les tacticiens"
+    "premiumEdge": null
   },
   {
     "id": "head-gravity-team-light-2025",
@@ -7587,7 +7587,7 @@
         "palette turquoise-blanc-noir caractéristique du millésime 2025"
       ]
     },
-    "premiumEdge": "Ronde Auxetic accessible — la Gravity pour les joueurs en progression"
+    "premiumEdge": null
   },
   {
     "id": "head-one-ultralight-2025",
@@ -7665,7 +7665,7 @@
         "logo Head en bas centré avec texte 'One Ultralight'"
       ]
     },
-    "premiumEdge": "Seulement 300g — la Head la plus légère pour découvrir le padel"
+    "premiumEdge": null
   },
   {
     "id": "head-speed-jr-2025",
@@ -7747,7 +7747,7 @@
         "trous blancs contrastant sur fond noir"
       ]
     },
-    "premiumEdge": "Fiberglass + Innegra — Goutte d'eau Head technologique, confort et précision [2025]"
+    "premiumEdge": null
   },
   {
     "id": "head-speed-motion-2025",
@@ -7834,7 +7834,7 @@
       "rank": "N°3 mondiale",
       "context": "Raquette d'Ari Sánchez, N°3 mondiale. Magie et technique au service d'un jeu complet."
     },
-    "premiumEdge": "Goutte Power Foam + Auxetic — vitesse de bras et potentiel offensif aérien"
+    "premiumEdge": "La pala d'Ariana Sánchez — Power Foam + Hybrid Woven, polyvalence du fond à la volée"
   },
   {
     "id": "head-speed-one-x-2025",
@@ -7924,7 +7924,7 @@
         "branding réduit au minimum (juste logo + SPEED)"
       ]
     },
-    "premiumEdge": "Goutte 2D Carbon + Auxetic 2.0 — polyvalence technique avec capacité d'accélération"
+    "premiumEdge": null
   },
   {
     "id": "head-speed-pro-2025",
@@ -8003,7 +8003,7 @@
         "esthétique minimaliste et sobre caractéristique 2025"
       ]
     },
-    "premiumEdge": "Goutte Fiberglass + Innegra — polyvalence technique avec capacité d'accélération"
+    "premiumEdge": null
   },
   {
     "id": "head-speed-team-2025",
@@ -8082,7 +8082,7 @@
         "absence de mentions de technologies apparentes type Auxetic ou Graphene visibles"
       ]
     },
-    "premiumEdge": "Goutte Auxetic 2.0 + Fibre de verre — confort et contrôle pour le joueur technique"
+    "premiumEdge": null
   },
   {
     "id": "head-coello-junior-2026",
@@ -8166,7 +8166,7 @@
         "design minimaliste premium"
       ]
     },
-    "premiumEdge": "Fiberglass + Auxetic 2.0 — Goutte d'eau Head technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "head-coello-motion-2026",
@@ -8263,7 +8263,7 @@
         "année 2026 marquée par le nom MOTION"
       ]
     },
-    "premiumEdge": "Version Motion de Coello — même ADN offensif, 360g de maniabilité en plus"
+    "premiumEdge": "L'Extreme Spin 3D de Coello en version allégée — attaque rapide sans forcer le bras"
   },
   {
     "id": "head-coello-pro-2026",
@@ -8362,7 +8362,7 @@
         "disposition particulière des anneaux de couleur (rose extérieur, blanc intérieur)"
       ]
     },
-    "premiumEdge": "Raquette d'Arturo Coello — Auxetic 2.0 2.0 + Extreme Spin pour dominer au filet"
+    "premiumEdge": "La pala d'Arturo Coello — Extreme Spin 3D + Auxetic 2.0, finition au filet dévastatrice"
   },
   {
     "name": "Head Coello Team 2026",
@@ -8443,7 +8443,7 @@
         "absence de technologies visibles inscrites = génération épurée 2026"
       ]
     },
-    "premiumEdge": "ADN Coello accessible — Extreme Spin + Auxetic 2.0 à prix intermédiaire"
+    "premiumEdge": null
   },
   {
     "name": "Head Coello Vibe 2026",
@@ -8625,7 +8625,7 @@
         "texture carbone très visible et prononcée"
       ]
     },
-    "premiumEdge": "Série limitée Hybrid Woven + Auxetic 2.0 — exclusivité et polyvalence"
+    "premiumEdge": null
   },
   {
     "id": "head-evo-extreme-2026",
@@ -8713,7 +8713,7 @@
         "finition mate moderne"
       ]
     },
-    "premiumEdge": "Seulement 340g — la Head la plus légère pour découvrir le padel"
+    "premiumEdge": null
   },
   {
     "name": "Head Extreme Motion 2026",
@@ -8810,7 +8810,7 @@
       "rank": "N°4 mondiale",
       "context": "Raquette signature de 'Paulita Dinamita', gauchère explosive. Édition limitée avec son design exclusif."
     },
-    "premiumEdge": "L'Extreme allégée à 355g — potentiel offensif Diamant avec maniabilité Goutte"
+    "premiumEdge": "La Extreme en seulement 355g — même ADN offensif que la Pro, mais se manie comme une Goutte"
   },
   {
     "name": "Head Extreme One 2026",
@@ -8893,7 +8893,7 @@
         "logo HEAD en spirale avec effet métallique distinctif"
       ]
     },
-    "premiumEdge": "Ronde Extreme Spin — les effets d'une Diamant dans une forme tolérante [2026]"
+    "premiumEdge": null
   },
   {
     "id": "head-extreme-pro-2026",
@@ -8973,7 +8973,7 @@
         "texte EXTREME simple sans suffixe 'Pro' visible sur la face"
       ]
     },
-    "premiumEdge": "Carbone UD + Auxetic + Extreme Spin — la Diamant la plus puissante du marché"
+    "premiumEdge": "Carbone UD + Extreme Spin — sweet spot élargi par Auxetic, la Diamant qui monte à 10/10 en Puissance"
   },
   {
     "name": "Head Extreme Team 2026",
@@ -9053,7 +9053,7 @@
         "palette de couleurs vert clair et noir spécifique à l'année 2026"
       ]
     },
-    "premiumEdge": "Fibre de verre — l'entrée en gamme Extreme, contrôle 9.0/10"
+    "premiumEdge": "Fibre de verre + Auxetic à prix accessible — le contrôle 9.5/10 d'une Ronde dans un format Diamant"
   },
   {
     "name": "Head Gravity Motion 2026",
@@ -9139,7 +9139,7 @@
       "rank": "N°7 mondiale",
       "context": "Gauchère prodigieuse, Andrea Ustero fait partie de la nouvelle génération du padel féminin."
     },
-    "premiumEdge": "Ronde allégée 355g — contrôle de la Gravity Pro avec plus de réactivité [2026]"
+    "premiumEdge": null
   },
   {
     "name": "Head Gravity Pro 2026",
@@ -9233,7 +9233,7 @@
         "pont noir géométrique moderne"
       ]
     },
-    "premiumEdge": "Ronde Carbon Hybrid Woven + Auxetic 2.0 — le contrôle absolu pour tacticiens"
+    "premiumEdge": "Carbon Hybrid Woven + Auxetic 2.0 — la Ronde la plus technique du marché, contrôle chirurgical"
   },
   {
     "name": "Head Gravity Team 2026",
@@ -9305,7 +9305,7 @@
       ],
       "yearClues": "coloris turquoise menthe et blanc avec arcs noirs concentriques = version 2026, palette de couleurs pastels distincte des versions antérieures plus sombres"
     },
-    "premiumEdge": "Ronde Auxetic accessible — la Gravity pour les joueurs en progression [2026]"
+    "premiumEdge": null
   },
   {
     "name": "Head Gravity Team Light 2026",
@@ -9389,7 +9389,7 @@
         "combinaison turquoise-blanc caractéristique de la version 2026"
       ]
     },
-    "premiumEdge": "Ronde Auxetic accessible — la Gravity pour les joueurs en progression [2026]"
+    "premiumEdge": null
   },
   {
     "name": "Head Radical Motion 2026",
@@ -9474,7 +9474,7 @@
         "absence de mentions technologiques visibles = approche épurée 2026"
       ]
     },
-    "premiumEdge": "Goutte Carbon 3K — le compromis parfait attaque/défense"
+    "premiumEdge": null
   },
   {
     "name": "Head Radical Pro 2026",
@@ -9565,7 +9565,7 @@
         "perforations blanches uniformes"
       ]
     },
-    "premiumEdge": "Carbon 3K — la Ronde la plus technique de Head, contrôle 9.5/10"
+    "premiumEdge": null
   },
   {
     "name": "Head Radical Team 2026",
@@ -9643,7 +9643,7 @@
         "logo HEAD triangulaire stylisé distinctif de cette génération"
       ]
     },
-    "premiumEdge": "Goutte accessible — contrôle et confort pour la progression"
+    "premiumEdge": null
   },
   {
     "name": "Head Radical Team Light 2026",
@@ -9725,7 +9725,7 @@
         "absence de technologies inscrites visibles (génération simplifiée)"
       ]
     },
-    "premiumEdge": "Goutte accessible — contrôle et confort pour la progression [2026]"
+    "premiumEdge": null
   },
   {
     "name": "Head Speed Motion 2026",
@@ -9827,7 +9827,7 @@
         "palette de couleurs pastel tendance"
       ]
     },
-    "premiumEdge": "Goutte Power Foam + Auxetic 2.0 — vitesse de bras et potentiel offensif aérien"
+    "premiumEdge": "Auxetic 2.0 + Power Foam sur Goutte — sortie de balle haute pour transitions défense-attaque rapides"
   },
   {
     "name": "Head Speed One X 2026",
@@ -9912,7 +9912,7 @@
         "mise en avant de la matière carbone visible"
       ]
     },
-    "premiumEdge": "Goutte Carbone 2D + DAMP+ — polyvalence technique avec capacité d'accélération"
+    "premiumEdge": null
   },
   {
     "id": "head-speed-pro-2026",
@@ -9990,7 +9990,7 @@
       ],
       "yearClues": "Combinaison technologie AUXETIC + coloris gris anthracite avec accents orange cuivré + pattern de points blancs concentriques + texture quadrillée visible = version 2026"
     },
-    "premiumEdge": "Goutte Carbon 3K + Innegra — polyvalence technique avec capacité d'accélération"
+    "premiumEdge": null
   },
   {
     "name": "Head Speed Team 2026",
@@ -10072,7 +10072,7 @@
         "palette de couleurs douce vert/bleu marine spécifique à cette génération"
       ]
     },
-    "premiumEdge": "Goutte Fibre de verre — confort et contrôle pour le joueur technique"
+    "premiumEdge": null
   },
   {
     "id": "head-vibe-2026",
@@ -10150,7 +10150,7 @@
         "triangle découpé caractéristique dans la zone de jonction"
       ]
     },
-    "premiumEdge": "Fiberglass + Graphene 360+ — Goutte d'eau Head technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "nox-ml10-pro-cup-2024",
@@ -10331,7 +10331,7 @@
         "combinaison grip rouge et noir"
       ]
     },
-    "premiumEdge": "Carbon 18K sur Ronde — le meilleur contrôle Nox avec de la puissance en réserve"
+    "premiumEdge": null
   },
   {
     "id": "nox-at10-genius-2025",
@@ -10619,7 +10619,7 @@
         "étiquette blanche d'information positionnée bas"
       ]
     },
-    "premiumEdge": "Carbon 18K + EVA Dure — la Ronde premium Nox, puissance inhabituelle pour la forme"
+    "premiumEdge": null
   },
   {
     "id": "nox-ml10-pro-cup-2025",
@@ -10997,7 +10997,7 @@
         "technologies MULTILAYERED et HYBRID ROUGH FOOT ensemble"
       ]
     },
-    "premiumEdge": "Diamant Carbon EVA Dure — la Nerbo WPT, puissance brute sans artifice"
+    "premiumEdge": null
   },
   {
     "id": "nox-at10-luxury-genius-12k-xtrem-2026",
@@ -11105,7 +11105,7 @@
         "finitions dorées/or rose sur version Luxury 2026"
       ]
     },
-    "premiumEdge": "Carbon 12K Xtrem + Pulse System — la Goutte offensive de Tapia, version 2026"
+    "premiumEdge": null
   },
   {
     "id": "nox-at10-luxury-genius-12k-xtrem-lite-2026",
@@ -11217,7 +11217,7 @@
         "esthétique minimaliste haut de gamme"
       ]
     },
-    "premiumEdge": "Version allégée 12K Xtrem — la Nox Tapia maniable pour joueurs/joueuses rapides"
+    "premiumEdge": null
   },
   {
     "name": "Nox AT10 Luxury Genius 18K Alum 2026",
@@ -11328,7 +11328,7 @@
         "version LUXURY GENIUS avec code couleur or/noir"
       ]
     },
-    "premiumEdge": "Carbone 18K Aluminisé + Dual Spin — la Nox premium de Tapia, Goutte haut de gamme"
+    "premiumEdge": "Carbon 18K Aluminisé + Dual Spin — le premium absolu Nox, la Goutte la plus réactive de la gamme Tapia"
   },
   {
     "id": "nox-at10-luxury-attack-12k-xtrem-2026",
@@ -11427,7 +11427,7 @@
         "combinaison LUXURY GENIUS ATTACK avec 12K XTREM"
       ]
     },
-    "premiumEdge": "12K Xtrem + Dual Spin 3D — la Nox la plus agressive, Diamant pure pour finisseurs"
+    "premiumEdge": null
   },
   {
     "id": "nox-ventus-2026",
@@ -11519,7 +11519,7 @@
         "esthétique 2026 minimaliste et premium"
       ]
     },
-    "premiumEdge": "Goutte Carbon + Pulse System — la Ventus Nox pour joueurs polyvalents"
+    "premiumEdge": null
   },
   {
     "id": "siux-electra-st3-jr-2024",
@@ -11767,7 +11767,7 @@
         "finition semi-transparente montrant le carbone"
       ]
     },
-    "premiumEdge": "Carbon 12K + EVA Dure — la Diablo extrême, frappe maximale"
+    "premiumEdge": null
   },
   {
     "id": "siux-diablo-revolution-2025",
@@ -11930,7 +11930,7 @@
         "design minimaliste comparé aux versions antérieures"
       ]
     },
-    "premiumEdge": "Carbon 18K + EVA Dure — la Diablo extrême, frappe maximale"
+    "premiumEdge": null
   },
   {
     "id": "siux-optimus-2025",
@@ -12097,7 +12097,7 @@
         "version 6 du modèle Elite (2026)"
       ]
     },
-    "premiumEdge": "Goutte 3K Carbon — la Diablo accessible, bon compromis puissance/maniabilité"
+    "premiumEdge": null
   },
   {
     "id": "siux-diablo-pro-2026",
@@ -12198,7 +12198,7 @@
         "logo PRO encadré en bas à gauche"
       ]
     },
-    "premiumEdge": "TeXtreme 18K + 3K Carbon — double couche carbone, la Goutte offensive Siux"
+    "premiumEdge": "TeXtreme 18K + 3K Carbon double couche — la Goutte Siux avec le plus de mordant, effets dévastateurs"
   },
   {
     "id": "siux-electra-pro-2026",
@@ -12286,7 +12286,7 @@
       ],
       "yearClues": "Electra Pro 2026 avec TeXtreme 18K et accents rose/magenta"
     },
-    "premiumEdge": "TeXtreme 18K en Goutte — la Electra Pro de Stupaczuk, attaque explosive"
+    "premiumEdge": "TeXtreme 18K en Goutte — la plus maniable des Siux premium, rapide au bras sans sacrifier la frappe"
   },
   {
     "id": "siux-fenix-pro-2026",
@@ -12372,7 +12372,7 @@
         "absence de graphiques complexes"
       ]
     },
-    "premiumEdge": "Carbon 12K + EVA Dure — la Fenix Diamant, frappe directe et sèche"
+    "premiumEdge": null
   },
   {
     "id": "siux-pegasus-elite-2026",
@@ -12453,7 +12453,7 @@
         "structure en Y du cadre au niveau du manche"
       ]
     },
-    "premiumEdge": "Goutte 3K Carbon — la Pegasus intermédiaire, polyvalence pour progresser"
+    "premiumEdge": null
   },
   {
     "id": "siux-pegasus-pro-2026",
@@ -12535,7 +12535,7 @@
         "design épuré minimaliste caractéristique de la version 2026"
       ]
     },
-    "premiumEdge": "TeXtreme 18K en Goutte — la Pegasus Pro, puissance et polyvalence Siux"
+    "premiumEdge": null
   },
   {
     "id": "siux-valkiria-pro-2026",
@@ -12623,7 +12623,7 @@
       "rank": "N°8 mondiale",
       "context": "La Portugaise Sofia Araujo impose son jeu puissant avec la Valkiria Pro."
     },
-    "premiumEdge": "TeXtreme 18K — la Valkiria pour Sofia Araujo, puissance féminine haut niveau"
+    "premiumEdge": null
   },
   {
     "id": "starvie-junior-2025",
@@ -12794,7 +12794,7 @@
         "accent jaune au centre du pont"
       ]
     },
-    "premiumEdge": "Goutte Carbon — la Metheora Galaxy, ADN polyvalent StarVie"
+    "premiumEdge": null
   },
   {
     "id": "starvie-metheora-2025",
@@ -12884,7 +12884,7 @@
       "rank": "Top 30 WPT",
       "context": "StarVie sponsorise Matías Díaz sur le circuit professionnel."
     },
-    "premiumEdge": "Goutte Carbon standard — la Metheora Warrior, fiable et polyvalente"
+    "premiumEdge": null
   },
   {
     "id": "starvie-raptor-2025",
@@ -13057,7 +13057,7 @@
         "design épuré noir et blanc sans couleurs vives"
       ]
     },
-    "premiumEdge": "24K Carbon Master — la plus premium des StarVie, puissance hybride brute"
+    "premiumEdge": "24K Carbon Master — le carbone le plus dense du marché, puissance hybride brute et son unique à la frappe"
   },
   {
     "id": "starvie-raptor-2026",
@@ -13151,7 +13151,7 @@
         "texture carbone apparente sur toute la surface"
       ]
     },
-    "premiumEdge": "3D Carbon + M-EVA Balance — la Raptor 2026, effets et polyvalence Goutte"
+    "premiumEdge": null
   },
   {
     "id": "starvie-triton-balance-2026",
@@ -13237,7 +13237,7 @@
         "combinaison coloris noir/blanc/jaune/vert spécifique à 2026"
       ]
     },
-    "premiumEdge": "18K Carbon Hybrid + M-EVA — Diamant équilibrée, la Triton intelligente"
+    "premiumEdge": null
   },
   {
     "id": "starvie-triton-power-2026",
@@ -13324,7 +13324,7 @@
         "positionnement et style du logo STARVIE avec dégradé"
       ]
     },
-    "premiumEdge": "Carbon 12K Rough + H-EVA Power — la Triton la plus agressive, frappe pure"
+    "premiumEdge": null
   },
   {
     "id": "varlion-bourne-2025",
@@ -13410,7 +13410,7 @@
         "disposition particulière des perforations blanches"
       ]
     },
-    "premiumEdge": "Goutte Carbon — la Bourne, la polyvalente de compétition Varlion"
+    "premiumEdge": null
   },
   {
     "id": "varlion-canas-jr-2025",
@@ -13627,7 +13627,7 @@
       ],
       "yearClues": "LW Carbon 2025 avec finition full carbone noir et lettrage doré"
     },
-    "premiumEdge": "Goutte Carbon — la Lethal Weapon, puissance offensive historique Varlion"
+    "premiumEdge": null
   },
   {
     "id": "varlion-bourne-carbon-ti-2026",
@@ -13703,7 +13703,7 @@
       ],
       "yearClues": "Bourne 2026 avec finition titane argenté distinctif"
     },
-    "premiumEdge": "Goutte Carbon — la Bourne, la polyvalente de compétition Varlion [2026]"
+    "premiumEdge": null
   },
   {
     "id": "varlion-lw-orquidea-2026",
@@ -13879,7 +13879,7 @@
         "palette de couleurs noir/bleu/blanc spécifique 2026"
       ]
     },
-    "premiumEdge": "Carbon + Titanium — alliage exclusif Varlion, rigidité et légèreté combinées"
+    "premiumEdge": null
   },
   {
     "id": "vermont-origin-jr-2025",
@@ -14121,7 +14121,7 @@
         "combinaison noir-rouge-gris spécifique à cette version"
       ]
     },
-    "premiumEdge": "Carbon 12K + EVA Dure — la Bela maximum, pour les attaquants qui veulent finir"
+    "premiumEdge": null
   },
   {
     "id": "wilson-bela-elite-v2-2025",
@@ -14201,7 +14201,7 @@
         "logo W rouge central prominent caractéristique de la série Bela 2025"
       ]
     },
-    "premiumEdge": "Goutte Carbon — le jeu offensif de Bela pour joueurs avancés"
+    "premiumEdge": null
   },
   {
     "id": "wilson-bela-pro-v2-2025",
@@ -14610,7 +14610,7 @@
         "design épuré et moderne du col avec double triangle"
       ]
     },
-    "premiumEdge": "Bela allégée 340g — le jeu du maestro accessible aux joueurs polyvalents"
+    "premiumEdge": null
   },
   {
     "id": "wilson-bela-pro-v3-2026",
@@ -14699,7 +14699,7 @@
         "logo Wilson en rouge (non blanc)"
       ]
     },
-    "premiumEdge": "Carbon + Spin Effect sur Diamant — la Bela offensive, contrôle 8.5/10"
+    "premiumEdge": "Diamant Carbon + Spin Effect — la Bela offensive pour les attaquants qui veulent placer ET finir"
   },
   {
     "id": "wilson-bela-v3-2026",
@@ -14797,7 +14797,7 @@
         "structure en V très marquée distincte des versions V1 et V2"
       ]
     },
-    "premiumEdge": "3K Carbon + Power Foam EVA — la Goutte de Belasteguín, légende et précision"
+    "premiumEdge": "3K Carbon + double densité EVA — la Goutte du maestro Belasteguín, le placement avant la puissance brute"
   },
   {
     "id": "wilson-blade-pro-v2-2026",
@@ -14881,7 +14881,7 @@
         "coloris noir et or comme signature 2026"
       ]
     },
-    "premiumEdge": "Goutte Carbon + EVA Soft — la Blade pour défenseurs techniques et précis"
+    "premiumEdge": "Carbon + EVA Soft sur Goutte — la Blade défensive, pour les murs qui ne laissent rien passer"
   },
   {
     "id": "wilson-blade-team-2026",
@@ -14956,7 +14956,7 @@
       ],
       "yearClues": "Logo W en vert dégradé central, absence de technologies inscrites visibles, design minimaliste noir et vert, contour vert fluo fin"
     },
-    "premiumEdge": "Goutte Fiberglass + EVA Soft — Blade accessible, le contrôle avant tout"
+    "premiumEdge": null
   },
   {
     "id": "wilson-prostaff-v2-2026",
@@ -15038,7 +15038,7 @@
         "palette de couleurs gris-rouge orangé-jaune spécifique"
       ]
     },
-    "premiumEdge": "Carbon — Ronde Wilson avancée, performances solides"
+    "premiumEdge": null
   },
   {
     "id": "wilson-ultra-pro-v2-2026",
@@ -15127,7 +15127,7 @@
         "coloris noir et bleu cyan caractéristique du millésime 2026"
       ]
     },
-    "premiumEdge": "Double Carbon Wall 2.0 — la Diamant Wilson la plus puissante et stable"
+    "premiumEdge": "Double Carbon Wall 2.0 — double paroi carbone exclusive Wilson, rigidité et stabilité maximales"
   },
   {
     "id": "wilson-ultra-team-2026",
@@ -15206,7 +15206,7 @@
       ],
       "yearClues": "Coloris bleu métallique avec logo W bleu clair central, technologie ENDURE PRO mentionnée, design épuré avec surface grise graphite = version 2026"
     },
-    "premiumEdge": "Diamant Fiberglass/Carbon — l'entrée en gamme Ultra, attaque accessible"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-vertex-04-woman-2025",
@@ -15300,7 +15300,7 @@
       "rank": "Top 10 WPT",
       "context": "Pala d'Alejandra Salazar, légende du padel féminin espagnol."
     },
-    "premiumEdge": "Vertex MultiEVA + Fibrix pour Delfi Brea — puissance Diamant adaptée au jeu féminin"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-elite-woman-2025",
@@ -15394,7 +15394,7 @@
       "rank": "N°1 mondiale",
       "context": "La raquette de Gemma Triay, n°1 mondiale et référence du padel féminin."
     },
-    "premiumEdge": "Forme hybride Fibrix — le choix de Gemma Triay pour dominer avec intelligence"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-neuron-2025",
@@ -15472,7 +15472,7 @@
       ],
       "yearClues": "Neuron 2025 avec coloris bleu et motif organique"
     },
-    "premiumEdge": "Carbon 3K + Vibradrive — Hybride Bullpadel technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-vertex-05-woman-2026",
@@ -15566,7 +15566,7 @@
       "rank": "N°1 mondiale ex-aequo",
       "context": "La raquette de Delfi Brea, co-n°1 mondiale avec Gemma Triay, joueuse la plus spectaculaire du circuit."
     },
-    "premiumEdge": "Vertex féminine + CurvAktiv — la puissance Diamant allégée à 350g"
+    "premiumEdge": "CurvAktiv + Fibrix allégé à 350g — la puissance Vertex sans le poids, pour Delfi Brea"
   },
   {
     "id": "bullpadel-elite-woman-2026",
@@ -15651,7 +15651,7 @@
       "rank": "N°1 mondiale",
       "context": "La raquette de Gemma Triay, n°1 mondiale et référence du padel féminin."
     },
-    "premiumEdge": "Hybride Fibrix + Ease Vibe — Gemma Triay N°1 mondiale, précision totale"
+    "premiumEdge": "Hybride Fibrix + Ease Vibe — la raquette de Gemma Triay N°1 mondiale, précision totale au filet"
   },
   {
     "id": "nox-vk10-quantum-3k-2025",
@@ -15734,7 +15734,7 @@
       "rank": "Top 15 WPT",
       "context": "La gamme VK10 est la signature de Virginia Riera."
     },
-    "premiumEdge": "Carbon 3K + Pulse System — la Ronde Nox pour joueuses, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "nox-la10-quantum-12k-2025",
@@ -15813,7 +15813,7 @@
       "yearClues": "LA10 Quantum 2025 avec coloris bleu/noir et marquage 12K"
     },
     "proPlayerInfo": null,
-    "premiumEdge": "Carbon 12K + Pulse System — Diamant Nox technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "nox-tl10-quantum-12k-2025",
@@ -15909,7 +15909,7 @@
         "grip hexagonal rouge et noir"
       ]
     },
-    "premiumEdge": "Carbon 12K + Pulse System — la Goutte intermédiaire Nox, solide et fiable"
+    "premiumEdge": null
   },
   {
     "id": "babolat-stima-spirit-2025",
@@ -16085,7 +16085,7 @@
         "manche blanc avec détail violet"
       ]
     },
-    "premiumEdge": "Forme hybride + EVA Soft — initiation premium pour joueuses en progression"
+    "premiumEdge": null
   },
   {
     "id": "babolat-technical-vertuo-2025",
@@ -16184,7 +16184,7 @@
         "design général 2025 avec bande centrale rouge large"
       ]
     },
-    "premiumEdge": "Fiberglass + Vibrabsorb — la porte d'entrée Diamant la plus confortable de Babolat"
+    "premiumEdge": null
   },
   {
     "id": "babolat-air-vertuo-2025",
@@ -16280,7 +16280,7 @@
         "combinaison des 4 technologies affichées ensemble"
       ]
     },
-    "premiumEdge": "Forme hybride CarbonFlex — la Babolat la plus polyvalente, zéro compromis"
+    "premiumEdge": null
   },
   {
     "id": "babolat-air-vertuo-2026",
@@ -16373,7 +16373,7 @@
         "motif strié diagonal caractéristique de cette génération"
       ]
     },
-    "premiumEdge": "Forme hybride CarbonFlex — la Babolat la plus polyvalente, zéro compromis [2026]"
+    "premiumEdge": null
   },
   {
     "id": "babolat-technical-vertuo-2026",
@@ -16467,7 +16467,7 @@
         "graphisme des lignes diagonales sur les zones latérales"
       ]
     },
-    "premiumEdge": "Soft Fiber + Vibrabsorb — la Diamant Babolat la plus tolérante"
+    "premiumEdge": null
   },
   {
     "id": "prokennex-kinetic-legend-pro-2025",
@@ -16554,7 +16554,7 @@
         "style épuré sans marquages techniques additionnels visibles"
       ]
     },
-    "premiumEdge": "Kinetic System + Damping Chamber — technologie anti-vibration unique, confort Ronde"
+    "premiumEdge": null
   },
   {
     "id": "prokennex-kinetic-focus-pro-2025",
@@ -16642,7 +16642,7 @@
         "style graphique épuré minimaliste 2025"
       ]
     },
-    "premiumEdge": "Kinetic System sur Diamant — absorption des chocs exceptionnelle en forme offensive"
+    "premiumEdge": null
   },
   {
     "id": "prokennex-kinetic-black-ace-2025",
@@ -16730,7 +16730,7 @@
         "style ornemental raffiné caractéristique du modèle 2025"
       ]
     },
-    "premiumEdge": "Kinetic System + Spiral Tech Carbon — la Goutte Pro Kennex, toucher et stabilité"
+    "premiumEdge": null
   },
   {
     "id": "royal-padel-m27-poly-2025",
@@ -16822,7 +16822,7 @@
         "design 2025 avec combinaison noir/gris/orange"
       ]
     },
-    "premiumEdge": "Core Polyéthylène Soft — toucher unique Royal Padel, alternative premium à l'EVA"
+    "premiumEdge": null
   },
   {
     "id": "royal-padel-m27-light-2025",
@@ -16901,7 +16901,7 @@
       ],
       "yearClues": "M27 Light 2025 avec logo couronné Royal Padel et accents dorés"
     },
-    "premiumEdge": "Polyéthylène Soft allégé — le confort Royal Padel en version maniable"
+    "premiumEdge": null
   },
   {
     "id": "royal-padel-whip-extreme-2025",
@@ -16996,7 +16996,7 @@
         "style graphique agressif et moderne du rouge"
       ]
     },
-    "premiumEdge": "Ronde Carbon + Polyéthylène — la Whip Extreme, contrôle avec réserve de puissance"
+    "premiumEdge": null
   },
   {
     "id": "oxdog-ultimate-pro-plus-2025",
@@ -17084,7 +17084,7 @@
         "caractères asiatiques intégrés au design principal"
       ]
     },
-    "premiumEdge": "HES Carbon + Sandy Surface + Vibradamp — la plus offensive des Oxdog, artisanale"
+    "premiumEdge": null
   },
   {
     "id": "oxdog-hyper-pro-2-0-2026",
@@ -17175,7 +17175,7 @@
         "Logo X stylisé spécifique à cette version"
       ]
     },
-    "premiumEdge": "HES Carbon Sandy + PowerRibs + Side Ports — la Goutte Oxdog premium, complète"
+    "premiumEdge": null
   },
   {
     "id": "oxdog-sense-pro-2026",
@@ -17269,7 +17269,7 @@
         "logo Oxdog version 2026"
       ]
     },
-    "premiumEdge": "HES Carbon + Vibradamp — technologie premium Oxdog pour joueurs exigeants"
+    "premiumEdge": null
   },
   {
     "id": "oxdog-ultimate-tour-2026",
@@ -17347,7 +17347,7 @@
       ],
       "yearClues": "Ultimate Tour X 2026 avec design scandinave noir/orange"
     },
-    "premiumEdge": "HES Carbon Sandy + Vibradamp + RBS — la Diamant Oxdog technique et maniable"
+    "premiumEdge": null
   },
   {
     "id": "starvie-kenta-eternal-pro-2026",
@@ -17441,7 +17441,7 @@
         "texture carbon visible + motif étoile = évolution design 2026"
       ]
     },
-    "premiumEdge": "Carbon 3K double couche + Hex Tech + Noene — la Ronde StarVie la plus technique"
+    "premiumEdge": null
   },
   {
     "id": "starvie-astrum-2026",
@@ -17531,7 +17531,7 @@
         "texture carbon damier apparente"
       ]
     },
-    "premiumEdge": "Carbon 3K + EVA Soft V30 — la Ronde StarVie, confort premium et contrôle"
+    "premiumEdge": null
   },
   {
     "id": "starvie-metheora-warrior-2026",
@@ -17619,7 +17619,7 @@
         "positionnement et style du logo Starvie"
       ]
     },
-    "premiumEdge": "Carbon 3K double couche + Full Plane — la Warrior 2026, précision et puissance"
+    "premiumEdge": null
   },
   {
     "id": "varlion-bourne-summum-prisma-2026",
@@ -17717,7 +17717,7 @@
         "combinaison spécifique vert fluo/jaune citron caractéristique 2026"
       ]
     },
-    "premiumEdge": "Carbon 12K + Wings Diffuser Prisma — hybride premium Varlion, technologie unique"
+    "premiumEdge": null
   },
   {
     "id": "varlion-lw-summum-prisma-2026",
@@ -17813,7 +17813,7 @@
         "combinaison PRISMA visible sur le design 2026"
       ]
     },
-    "premiumEdge": "Carbon 12K + Wings Diffuser — la Ronde Varlion technique, ErgoSlice et précision"
+    "premiumEdge": null
   },
   {
     "id": "kuikma-ms-pro-2025",
@@ -17904,7 +17904,7 @@
         "disposition et style du marquage AIR sur le côté"
       ]
     },
-    "premiumEdge": "TeXtreme 18K + Shock Block Testea — la Diamant Kuikma, certifiée anti-vibration"
+    "premiumEdge": null
   },
   {
     "id": "kuikma-ls-pro-2025",
@@ -18005,7 +18005,7 @@
         "signature Catchy présente"
       ]
     },
-    "premiumEdge": "TeXtreme 18K + Shock Block — la Goutte Kuikma technique, contrôle de précision"
+    "premiumEdge": null
   },
   {
     "id": "nox-ml10-pro-cup-silver-2025",
@@ -18110,7 +18110,7 @@
       "rank": "Top 10 WPT",
       "context": "Gamme Nox associée à Lucía Sainz."
     },
-    "premiumEdge": "Fiberglass Silver + HR3 Soft — la ML10 femme, douceur et contrôle absolu"
+    "premiumEdge": null
   },
   {
     "id": "nox-at10-genius-12k-xtrem-2026",
@@ -18204,7 +18204,7 @@
         "positionnement et style des textes AT10 GENIUS 12K XTREM"
       ]
     },
-    "premiumEdge": "Carbon 12K Xtrem + Dual Spin — la Goutte attaquante Nox, version Pulse System"
+    "premiumEdge": "Carbon 12K Xtrem + Dual Spin + Pulse System — la Goutte de Tapia, polyvalence et potentiel offensif"
   },
   {
     "id": "wilson-carbon-force-pro-2025",
@@ -18298,7 +18298,7 @@
         "absence de technologies additionnelles marquées (épuré 2025)"
       ]
     },
-    "premiumEdge": "Composite Tri-Hex — la Wilson entry-offensive, effets et toucher à prix malin"
+    "premiumEdge": null
   },
   {
     "id": "wilson-carbon-force-lt-2025",
@@ -18389,7 +18389,7 @@
         "relief 3D du logo Wilson"
       ]
     },
-    "premiumEdge": "Goutte allégée + Tri-Hex Texture — la Wilson femme pour progresser avec style"
+    "premiumEdge": null
   },
   {
     "id": "babolat-technical-veron-2025",
@@ -18483,7 +18483,7 @@
         "style graphique réseau technologique = identité visuelle 2025"
       ]
     },
-    "premiumEdge": "CarbonFlex hybrid + Vibrabsorb 3D Spin — la plus polyvalente des Babolat expert"
+    "premiumEdge": null
   },
   {
     "id": "babolat-air-veron-2025",
@@ -18575,7 +18575,7 @@
         "bande centrale blanche large avec logo vertical"
       ]
     },
-    "premiumEdge": "CarbonFlex + Vibrabsorb — polyvalence et toucher, la marque de l'Air Veron"
+    "premiumEdge": null
   },
   {
     "id": "babolat-counter-veron-2025",
@@ -18670,7 +18670,7 @@
         "design de perforations blanches en pattern spécifique"
       ]
     },
-    "premiumEdge": "X-EVA basse densité + Vibrabsorb — le meilleur confort Babolat en Ronde"
+    "premiumEdge": null
   },
   {
     "id": "head-coello-pro-2025",
@@ -18765,7 +18765,7 @@
         "logo HEAD argenté de grande taille centré"
       ]
     },
-    "premiumEdge": "Auxetic 2.0 + Carbon Hybrid — la signature d'Arturo Coello, attaque pure"
+    "premiumEdge": null
   },
   {
     "id": "head-coello-team-2025",
@@ -18847,7 +18847,7 @@
         "absence de technologies Auxetic ou Graphene visibles"
       ]
     },
-    "premiumEdge": "ADN Coello accessible — Extreme Spin + Auxetic 2.0 à prix intermédiaire [2025]"
+    "premiumEdge": null
   },
   {
     "id": "head-coello-junior-2025",
@@ -19030,7 +19030,7 @@
         "disposition verticale COELLO MOTION"
       ]
     },
-    "premiumEdge": "L'Extreme Spin 3D sur Diamant allégée — attaque rapide façon Coello"
+    "premiumEdge": null
   },
   {
     "id": "head-coello-vibe-2025",
@@ -19114,7 +19114,7 @@
         "inscription VIBE sous COELLO"
       ]
     },
-    "premiumEdge": "Fiberglass + Innegra — Goutte d'eau Head technologique, confort et précision [2025]"
+    "premiumEdge": null
   },
   {
     "id": "kuikma-power-pro-2025",
@@ -19200,7 +19200,7 @@
         "design épuré avec perforations régulières"
       ]
     },
-    "premiumEdge": "TeXtreme 18K + Shock Block — la Kuikma puissance, Diamant accessible et fiable"
+    "premiumEdge": null
   },
   {
     "id": "kuikma-control-pro-2025",
@@ -19273,7 +19273,7 @@
       ],
       "yearClues": "Control Pro 2025 Kuikma avec coloris bleu/noir sobre"
     },
-    "premiumEdge": "TeXtreme 18K + Shock Block — le contrôle Kuikma en Ronde, premium accessible"
+    "premiumEdge": null
   },
   {
     "id": "kuikma-pr-open-2025",
@@ -19448,7 +19448,7 @@
         "positionnement et style du logo KUIKMA version 2025"
       ]
     },
-    "premiumEdge": "Fibre de Verre + Metal + élastomère — la Ronde Kuikma, confort unique et abordable"
+    "premiumEdge": null
   },
   {
     "id": "kuikma-hybrid-pro-2025",
@@ -19537,7 +19537,7 @@
         "graduation visible sur cadre = indicateur nouveau design 2025"
       ]
     },
-    "premiumEdge": "TeXtreme 18K + insert élastomère — la Goutte Kuikma polyvalente, bon rapport qualité/prix"
+    "premiumEdge": null
   },
   {
     "id": "kuikma-hybrid-metal-2025",
@@ -19611,7 +19611,7 @@
       ],
       "yearClues": "Hybrid Metal 2025 avec finition gris métallique unique Kuikma"
     },
-    "premiumEdge": "Fibre de Verre + Metal — la Kuikma Goutte confort, surface unique et tolérante"
+    "premiumEdge": null
   },
   {
     "id": "wilson-endure-pro-v1-2026",
@@ -19700,7 +19700,7 @@
         "disposition des pictogrammes en bas"
       ]
     },
-    "premiumEdge": "Carbone 3K + Y-Beam — l'Endure offensive, Ronde avec punch inattendu"
+    "premiumEdge": null
   },
   {
     "id": "wilson-endure-v1-2026",
@@ -19785,7 +19785,7 @@
         "absence de textes technologiques additionnels sur la face visible"
       ]
     },
-    "premiumEdge": "UD Carbon + Y-Beam — la Ronde endurance Wilson, confort longue durée"
+    "premiumEdge": null
   },
   {
     "id": "wilson-defy-pro-v1-2025",
@@ -19875,7 +19875,7 @@
         "positionnement et style typographique de DEFY PRO BURST"
       ]
     },
-    "premiumEdge": "Carbone 15K + Spin² — la Diamant Wilson pour Garrido, finition et effets"
+    "premiumEdge": null
   },
   {
     "id": "wilson-defy-v1-2025",
@@ -19957,7 +19957,7 @@
         "finition mate du cadre"
       ]
     },
-    "premiumEdge": "Carbone 3K + Spin² + I-Beam — la Defy polyvalente, attaque et placement"
+    "premiumEdge": null
   },
   {
     "id": "wilson-defy-ls-v1-2025",
@@ -20040,7 +20040,7 @@
       ],
       "yearClues": "Coloris noir et doré spécifique, inscription LS (Light Spin) visible, design 2025 avec finition bicolore mate/brillant distincte"
     },
-    "premiumEdge": "Comfort Flex + I-Beam — la Diamant la plus tolérante de Wilson"
+    "premiumEdge": null
   },
   {
     "id": "wilson-endure-ls-v1-2026",
@@ -20124,7 +20124,7 @@
         "logo W simplifié sur le manche"
       ]
     },
-    "premiumEdge": "Carbon Flex + Y-Beam — la Ronde ultralégère pour sessions marathon"
+    "premiumEdge": null
   },
   {
     "id": "bullpadel-pearl-2026",
@@ -20214,7 +20214,7 @@
       ],
       "yearClues": "Pearl 2026 avec finition nacrée blanche et détails dorés, design Bea González"
     },
-    "premiumEdge": "Fibrix + MultiEVA 3 densités — la Diamant confort de Bea González, puissance sans rigidité"
+    "premiumEdge": "MultiEVA triple densité + Fibrix — la Diamant femme qui adapte sa réponse à chaque frappe"
   },
   {
     "id": "bullpadel-pearl-tour-final-2026",
@@ -20302,7 +20302,7 @@
       ],
       "yearClues": "Pearl Tour Final 2026 — édition compétition avec marquage Tour Final"
     },
-    "premiumEdge": "MultiEVA 3 densités + Fibrix — la Pearl expert de Claudia Fernández, attaque féminine haut de gamme"
+    "premiumEdge": "Version expert de la Pearl — Claudia Fernández, triple densité pour joueuses offensives confirmées"
   },
   {
     "id": "macron-tridens-stealth-pro-2026",
@@ -20385,7 +20385,7 @@
       ],
       "yearClues": "Tridens Stealth Pro 2026 avec finition mate noire et marquage Macron"
     },
-    "premiumEdge": "Carbone 12K + EVA HR — Macron Tridens de Tamara Icardo, la marque italienne du padel"
+    "premiumEdge": null
   },
   {
     "id": "babolat-counter-origin-2026",
@@ -20483,7 +20483,7 @@
     },
     "description": "",
     "isActive": true,
-    "premiumEdge": "Fiberglass + Vibrabsorb — Ronde Babolat technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "babolat-air-origin-2026",
@@ -20586,7 +20586,7 @@
     },
     "description": "",
     "isActive": true,
-    "premiumEdge": "Fiberglass + Vibrabsorb — Hybride Babolat technologique, confort et précision"
+    "premiumEdge": null
   },
   {
     "id": "babolat-stima-vita-2026",
