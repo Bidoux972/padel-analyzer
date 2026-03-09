@@ -16,12 +16,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 9.0
     },
     "verdict": "Ronde carbone pour le contrôle pur. Grande tolérance grâce à la forme ronde malgré le carbone. Pour les défenseurs avancés.",
     "editorial": "L'Adipower CTRL 2025 est la porte d'entrée de la gamme contrôle Adidas. Surface carbone standard pour une rigidité mesurée, noyau EVA classique pour un toucher neutre. Forme ronde qui pardonne les approximations. Pas de technologie spectaculaire, mais une exécution solide et fiable. C'est la pala du joueur avancé qui veut du contrôle sans chichis — efficace, sobre, sans surprise.",
@@ -105,10 +105,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.6,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -193,11 +193,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Version light de l'Adipower, parfaite pour les débutants. Mousse EVA Soft pour un confort maximal et forme ronde très tolérante.",
@@ -281,12 +281,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.4,
-      "Contrôle": 8.8,
-      "Confort": 8.5,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "Raquette polyvalente avec système de poids ajustable. Permet d'adapter l'équilibre selon son jeu, très bonne idée pour les joueurs en progression.",
     "editorial": "L'Adipower Multiweight 2025 est la polyvalente intermédiaire d'Adidas. Hybride carbone/fibre de verre pour un toucher accessible, EVA standard pour la neutralité. Forme goutte d'eau classique. Le Multiweight permet d'ajuster le poids avec des lests — une fonctionnalité rare à ce niveau de gamme qui aide à trouver son équilibre idéal.",
@@ -369,12 +369,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.5,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Diamant puissante inspirée d'Ale Galán. Frappe explosive mais demande de la technique. Pour intermédiaires confirmés à l'aise en attaque.",
     "editorial": "La Metalbone 2025 version intermédiaire est la porte d'entrée de la gamme mythique. Carbone standard et EVA standard en diamant — on retrouve l'ADN offensif Metalbone dans un format accessible. Moins rigide que les versions expert, mais le nom Metalbone et la forme diamant posent les bases d'un jeu offensif en développement.",
@@ -458,11 +458,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 8.4,
-      "Confort": 6,
-      "Spin": 8.1,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.3
+      "Contrôle": 8.0,
+      "Confort": 5.5,
+      "Spin": 7.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.0
     },
     "verdict": "La plus puissante du marché. Carbone 18K + EVA dure + balance haute = frappe dévastatrice. Attention : confort très limité, bras sensibles s'abstenir.",
     "editorial": "La Metalbone HRD 2025 est la version précédente de l'arme fatale d'Adidas. Carbone 18K et mousse Hard EVA pour une puissance sans filtre. Moins de technologie que la 2026 (pas de Weight & Balance System), mais le même ADN radical : diamant, rigide, puissant. Pour ceux qui veulent la Metalbone HRD à prix réduit maintenant que la 2026 est sortie — un excellent plan.",
@@ -554,12 +554,12 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8.8,
+      "Puissance": 8.5,
+      "Contrôle": 9.0,
       "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.0
     },
     "verdict": "Version junior de la Metalbone avec forme diamant pour une puissance maximale. Attention : tolérance limitée, convient mieux aux jeunes joueurs déjà à l'aise techniquement.",
     "editorial": "Adidas ne fait pas de compromis pour les plus jeunes. La Metalbone Youth 25 reprend les codes de la gamme adulte dans un châssis dimensionné pour les mains en croissance. Le choix d'une forme diamant n'est pas anodin : le point de frappe haut et puissance en attaque accompagne la progression sans punir les erreurs. Un poids maîtrisé pour ne pas fatiguer le bras en développement, un sweet spot tolérant pour encourager le plaisir de jouer.",
@@ -637,12 +637,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8.8,
-      "Confort": 8.7,
+      "Puissance": 9.5,
+      "Contrôle": 8.0,
+      "Confort": 8.0,
       "Spin": 7.5,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.1
+      "Maniabilité": 7.5,
+      "Tolérance": 7.0
     },
     "verdict": "Nouvelle gamme Adidas avec balance intelligente ajustable (IBS). Diamant polyvalent et adaptable. Pour joueurs avancés qui veulent personnaliser leur jeu.",
     "editorial": "L'Arrow Hit 2026 est la nouvelle gamme d'Adidas — un compromis entre la puissance Metalbone et le contrôle Adipower. Carbone aluminisé en surface pour la réactivité, EVA Soft Performance pour le confort. Forme diamant pour l'orientation offensive, mais un équilibre moins radical que la Metalbone. C'est la pala de l'attaquant intelligent qui veut de la puissance dosée.",
@@ -729,12 +729,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 10.0,
+      "Contrôle": 8.0,
+      "Confort": 6.0,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.0
     },
     "verdict": "La diamant offensive de la nouvelle gamme Arrow. Carbone aluminisé 16K avec système IBS pour ajuster la balance — puissance de frappe sérieuse avec une personnalisation rare à ce prix. Un tremplin crédible vers la gamme Metalbone.",
     "id": "adidas-arrow-hit-attack-2026",
@@ -825,11 +825,11 @@
     "category": "avance",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 9.5,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.5
+      "Contrôle": 8.5,
+      "Confort": 8.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.5
     },
     "verdict": "Arrow Hit version contrôle ronde. IBS et nervures MPS pour stabilité maximale. Contact net et prévisible pour placement chirurgical.",
     "editorial": "L'Arrow Hit CTRL est la version contrôle de la gamme Arrow — forme ronde, carbone aluminisé, mousse EVA Soft Performance. L'IBS et les nervures MPS stabilisent le cadre pour une réponse prévisible. C'est la sœur défensive de l'Arrow Hit, pour les joueurs qui veulent la technologie de la gamme Arrow au service du placement plutôt que de la puissance.",
@@ -915,11 +915,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 8.2,
-      "Spin": 8.1,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.5
     },
     "verdict": "Contrôle expert en full carbon 24K ronde. Structure extrêmement rigide et stable. Pour joueurs défensifs de haut niveau qui veulent placement millimétré.",
     "editorial": "L'Arrow Hit Carbon CTRL est le sommet de la gamme Arrow en mode contrôle. Carbone 24K — le même que sur la Metalbone HRD — mais en forme ronde. Le résultat est une pala de contrôle inhabituellement rigide : chaque volée claque, chaque contre est précis. L'EVA Performance offre du répondant sans sacrifier le toucher. Pour les experts qui veulent dominer les échanges avec autorité.",
@@ -1009,10 +1009,10 @@
     "year": 2026,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.9,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -1089,12 +1089,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 8.1,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 8.5,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.5
     },
     "verdict": "La ronde rapide d'Adidas, inspirée par Martita Ortega. Carbone aluminisé 24K avec Dynamic Air Flow — maniable et vive en main, avec un contrôle appuyé par les scores. Une raquette technique qui récompense le jeu de placement.",
     "id": "adidas-cross-it-light-2026",
@@ -1178,12 +1178,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 7.5,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 6.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "L'entrée de gamme Cross It en diamant oversize. Fibre de verre + DAF pour un premier contact avec la technologie Air Flow d'Adidas — offensive mais tolérante, un bon compromis pour les intermédiaires qui montent en puissance.",
     "id": "adidas-cross-it-team-2026",
@@ -1260,12 +1260,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.4,
-      "Contrôle": 8.8,
-      "Confort": 9,
-      "Spin": 7.8,
-      "Maniabilité": 9.1,
-      "Tolérance": 9.2
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 8.5,
+      "Spin": 7.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.0
     },
     "verdict": "Hybride légère orientée contrôle. Dynamic Air Flow pour rapidité et maniabilité. Confort et tolérance pour intermédiaires en progression.",
     "editorial": "La Cross It Team Light 2026 est la version légère et hybride de la gamme Cross It. Carbone aluminisé — un cran au-dessus de la fibre de verre — avec EVA Soft Performance pour le confort. Forme hybride pour la polyvalence. La version la plus équilibrée de la gamme Cross It, parfaite pour progresser en douceur.",
@@ -1349,11 +1349,11 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 9.1,
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Entrée de gamme Adidas. Ronde confortable et légère pour découvrir le padel. Fiberglass et EVA Soft pour maximum de tolérance sans effort.",
@@ -1433,10 +1433,10 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.5,
-      "Spin": 7.5,
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -1512,12 +1512,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 8.7,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.1
+      "Puissance": 9.5,
+      "Contrôle": 8.0,
+      "Confort": 8.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 7.0
     },
     "verdict": "Le vaisseau amiral d'Adidas, forgé pour Ale Galán. Le Weight & Balance System permet de calibrer l'équilibre au gramme près — une première dans le padel. Diamant expert qui ne pardonne rien, mais récompense tout.",
     "id": "adidas-metalbone-2026",
@@ -1606,12 +1606,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.5,
-      "Confort": 9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 8.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "Metalbone version contrôle ronde. Même qualité de construction avec focus sur précision et placement. Weight system personnalisable. Pour joueurs tactiques.",
     "editorial": "La Metalbone CTRL 2026 incarne le parfait équilibre entre puissance et contrôle chez Adidas. Son carbone aluminisé 16K offre une rigidité maîtrisée qui canalise la frappe sans sacrifier le toucher de balle. La mousse EVA Soft Performance absorbe les vibrations tout en restituant assez d'énergie pour des contres incisifs. C'est la pala des stratèges qui veulent dicter le jeu depuis le fond du court.",
@@ -1697,12 +1697,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 8.5,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "Le premier échelon carbone de la gamme Metalbone. Carbone 6K avec Spin Blade — moins rigide que les versions supérieures mais déjà bien punchy. La transition naturelle depuis la Metalbone Team pour le joueur qui passe au carbone.",
     "id": "adidas-metalbone-carbon-2026",
@@ -1786,12 +1786,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 9.5,
-      "Confort": 8.7,
-      "Spin": 8.1,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 8.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "Contrôle premium en 24K Carbon ronde. Ultra-stable et précise. Pour experts défensifs exigeants qui veulent construction rigide et sensation sèche.",
     "editorial": "La Metalbone Carbon CTRL 2026 est la version la plus extrême de la gamme contrôle Adidas. Le carbone aluminisé 24K — le même que sur la HRD — est ici associé à une mousse EVA Soft Performance et une forme ronde. Le résultat est unique : une rigidité de surface digne d'une pala de puissance, combinée à un sweet spot centré et tolérant. Le Weight & Balance System permet de basculer entre un setup plus défensif ou plus offensif. L'excellence du contrôle.",
@@ -1886,12 +1886,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 10.0,
+      "Contrôle": 8.0,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 7.0
     },
     "verdict": "L'arme fatale d'Adidas, pala d'Ale Galán. Carbone aluminisé 15K + EVA Hard Memory + balance haute = la frappe la plus sèche et la plus lourde du catalogue. Exige un physique solide et une technique irréprochable — aucune concession au confort.",
     "id": "adidas-metalbone-hrd-2026",
@@ -1980,12 +1980,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 8.4,
-      "Maniabilité": 8.3,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 8.0
     },
     "verdict": "La Metalbone accessible en fibre de verre. Garde le format diamant offensif et la texture Spin Blade Gritt pour les effets, mais avec la tolérance de la fibre. Le prix d'entrée le plus bas pour goûter à l'ADN Metalbone.",
     "id": "adidas-metalbone-team-2026",
@@ -2061,12 +2061,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8,
-      "Confort": 7.4,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "La Metalbone la plus légère du catalogue. Fibre de verre et Power Foam en diamant allégé — garde l'orientation offensive de la gamme avec une maniabilité maximale. Idéale pour les joueurs légers qui veulent attaquer sans fatigue.",
     "id": "adidas-metalbone-team-light-2026",
@@ -2149,12 +2149,12 @@
     "year": 2024,
     "category": "avance",
     "scores": {
-      "Puissance": 8.3,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "Version 2024 de la Viper de Lebrón. Même qualité technique à prix déstocké. Excellent rapport qualité/prix pour joueurs avancés.",
     "editorial": "La Technical Viper 2024 est un millésime qui a marqué Babolat — la pala qui a posé les bases de la gamme Viper actuelle. Carbone standard en surface, mousse EVA classique, forme goutte d'eau. Pas de fioritures technologiques, mais un équilibre de construction qui a prouvé son efficacité. En 2024 c'est une affaire si on la trouve en déstockage.",
@@ -2237,12 +2237,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Version allégée de la Viper avec un bon équilibre offensif/défensif. Le carbone et le balance mi-haut offrent une frappe plus directe.",
     "editorial": "La Air Viper 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. La forme goutte d'eau offre un équilibre entre puissance et contrôle qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
@@ -2323,10 +2323,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -2408,10 +2408,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9,
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -2495,11 +2495,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Entrée de gamme Babolat, forme ronde très tolérante. Construction simple en fibre de verre pour débuter à petit prix.",
@@ -2586,12 +2586,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.8,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Goutte d'eau polyvalente avec système anti-vibrations Vibrasorb. Bonne répartition des performances pour progresser sereinement.",
     "editorial": "La Counter Viper 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
@@ -2676,12 +2676,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8,
-      "Confort": 6,
-      "Spin": 7.8,
-      "Maniabilité": 7.2,
-      "Tolérance": 7.3
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 5.5,
+      "Spin": 7.0,
+      "Maniabilité": 6.5,
+      "Tolérance": 7.5
     },
     "verdict": "Diamant extrême Babolat. Carbone 18K brut pour une puissance maximale absolue. Zéro concession sur le confort.",
     "editorial": "La Rebel 2025 est la pala la plus agressive de Babolat pour 2025. Carbone 18K en surface — haute rigidité — couplé à une mousse Hard EVA sans concession. Forme diamant radicale. C'est la Babolat pour les frappeurs purs qui veulent de la sortie de balle brute. Moins sophistiquée que la Viper 3.0 Lebrón 2026, mais tout aussi efficace quand il s'agit de claquer des smashs.",
@@ -2769,12 +2769,12 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.6,
-      "Contrôle": 8.8,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 9.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "Goutte d'eau accessible avec fibre de verre pour un bon confort. Premier pas vers une raquette plus polyvalente.",
     "editorial": "Babolat a distillé des années d'expertise dans cette Revenge 25, calibrée pour que les premières frappes soient immédiatement satisfaisantes. La forme goutte d'eau maximise le équilibre entre puissance et contrôle. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Avec un confort noté 9.2/10 et une tolérance à 9.2/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
@@ -2857,12 +2857,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.3,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "Signature Juan Lebrón. Goutte d'eau technique avec surface texturée pour le spin. Le Vibrasorb atténue les vibrations du carbone.",
     "editorial": "La Viper 2025 est la version standard de la gamme offensive Babolat. Carbone en surface, EVA standard, forme goutte d'eau. Moins extrême que la Rebel, plus accessible que la Viper Lebrón. C'est la Viper d'entrée pour découvrir l'ADN offensif de Babolat sans engagement radical. Bonne option pour un joueur avancé qui explore le jeu d'attaque.",
@@ -2951,12 +2951,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "La polyvalente qui ne dit jamais non. CarbonFlex en surface pour claquer sans forcer, EVA douce au cœur pour encaisser sans broncher. Elle fait tout bien et rien de travers — le choix intelligent du joueur qui refuse de choisir.",
     "id": "babolat-air-veron-2026",
@@ -3026,12 +3026,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.3,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.1
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 6.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "La Viper passe en mode aérien. Le 16K carbone allié au X-EVA crée une réactivité de félin — chaque transition filet-fond se fait en un battement. Pour ceux qui jouent vite et pensent encore plus vite.",
     "id": "babolat-air-viper-2026",
@@ -3121,12 +3121,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.8,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 9.0
     },
     "verdict": "La défensive intermédiaire de la nouvelle gamme Babolat. CarbonFlex Hybrid en ronde — un mix propriétaire qui donne du contrôle et de la tolérance à un prix raisonnable. La pala de fond de court sécurisante.",
     "id": "babolat-counter-veron-2026",
@@ -3207,12 +3207,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 8.4,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 9.0,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 9.0
     },
     "verdict": "La ronde offensive Babolat — un concept original. Carbone 3K avec Spin+ en format rond et balance haute, taillée pour le contre-attaquant qui défend en spin et contre avec précision. L'anti-thèse de la Viper classique.",
     "id": "babolat-counter-viper-2026",
@@ -3307,12 +3307,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Diamant technique CarbonFlex. Plus tolérant que le Technical Viper avec bonne puissance offensive. Pour avancés qui veulent de l'attaque avec du contrôle.",
     "editorial": "La Technical Veron 2026 est la pala technique de la nouvelle gamme Babolat. CarbonFlex en surface — le composite propriétaire Babolat qui combine rigidité du carbone et flexibilité — avec noyau X-EVA pour un bon retour d'énergie. Le Vibrabsorb filtre les vibrations. C'est une pala de joueur technique qui veut du toucher et de la précision dans ses frappes.",
@@ -3399,12 +3399,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7,
-      "Spin": 8.7,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.3
+      "Puissance": 9.5,
+      "Contrôle": 8.5,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "Diamant expert pour attaquants purs. Carbon 12K ultra-rigide et X-EVA pour sortie de balle explosive. Spin dévastateur grâce au 3D Spin+.",
     "editorial": "La Technical Viper 2026 est la version purement offensive de la nouvelle gamme. Carbone 12K pour la rigidité, X-EVA pour l'explosivité, forme diamant. Pas de CarbonFlex ici — Babolat veut de la rigidité pure. C'est la Viper pour les compétiteurs qui veulent du retour d'énergie sans compromis. La rivale directe de la Bullpadel Hack 04.",
@@ -3500,12 +3500,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "La version polyvalente de la gamme signature Lebrón. CarbonFlex Hybrid en diamant — le toucher propriétaire Babolat avec la puissance du format. Plus accessible que la Viper, moins radicale, plus polyvalente. Le bon compromis Lebrón.",
     "id": "babolat-veron-3-0-juan-lebr-n-2026",
@@ -3603,11 +3603,11 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8.8,
-      "Confort": 9.2,
-      "Spin": 7.5,
-      "Maniabilité": 8.7,
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
       "Tolérance": 9.5
     },
     "verdict": "Le premier contact avec Babolat, et il est doux. Ronde, légère, tolérante comme un coach patient — elle pardonne les erreurs et encourage les progrès. Le padel commence ici, sans stress et sans se ruiner.",
@@ -3697,11 +3697,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 8.7,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 7.5
     },
     "verdict": "La morsure de Lebrón, concentrée dans un diamant. Le 3K carbone claque comme un fouet, le X-EVA absorbe le reste. Quand le smash part, la balle ne revient pas. Réservée aux joueurs qui frappent d'abord et posent les questions ensuite.",
     "id": "babolat-viper-3-0-juan-lebr-n-2026",
@@ -3798,12 +3798,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "Viper avec couche confort supplémentaire. Même puissance Lebrón avec toucher plus doux. Pour experts offensifs qui veulent ménager leur bras.",
     "editorial": "La Viper Soft 3.0 est la version confort de l'arme de Juan Lebrón. Babolat a gardé la puissance de la Viper originale — le carbone 3K Soft qui fléchit juste assez à l'impact pour emmagasiner de l'énergie — et a ajouté une couche de confort via le X-EVA avec Comfort Layer intégré. Le Vibrabsorb, système anti-vibrations maison, complète l'équation. Résultat : une pala qui frappe fort mais qui ne vous détruit pas le bras.",
@@ -3905,12 +3905,12 @@
     "year": 2024,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 7,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 6.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Vertex 2024 en déstockage. Même puissance dévastatrice que la 2025. Prix plus doux pour la même performance.",
     "editorial": "La Vertex 04 2024 est le millésime qui a précédé la révolution GEO. Carbone 12K et mousse Hard EVA pour une puissance directe. Pas de CurvAktiv ni de GEO Geometry — c'est du Bullpadel classique, efficace, sans technologie superflue. En déstockage, c'est un excellent rapport qualité/puissance pour un joueur avancé.",
@@ -3991,11 +3991,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Fluide comme son nom. Cette ronde Bullpadel transforme chaque débutant en joueur confiant en trois sessions. Construction solide, toucher souple, prix sage — l'assurance que le padel, c'est fait pour vous.",
@@ -4077,12 +4077,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.4,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 8.5,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "La Hack offre un bon compromis entre puissance et contrôle. Le Vibradrive aide au confort mais le carbone reste ferme. Bonne raquette de progression.",
     "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Hack 03 25 de Bullpadel répond à cette ambition avec une construction pensée pour la montée en puissance. Le choix du goutte d'eau avec Surface, Noyau permet un équilibre entre puissance et contrôle. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
@@ -4166,12 +4166,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.3,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 8.5,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Version élite de la Hack de Paquito. Bon compromis puissance/contrôle pour joueurs avancés polyvalents.",
     "editorial": "La Hack Elite 2025 est la version avancée de la gamme polyvalente de Bullpadel. Carbone standard en surface, EVA standard au cœur, forme goutte d'eau. La Hack est historiquement la gamme la plus équilibrée de Bullpadel — ni trop offensive, ni trop défensive. La version Elite affine ce compromis avec une construction plus soignée que la Hack 03.",
@@ -4258,12 +4258,12 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 6.5,
-      "Contrôle": 8.8,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
-      "Maniabilité": 8.5,
-      "Tolérance": 9.2
+      "Spin": 6.0,
+      "Maniabilité": 9.5,
+      "Tolérance": 9.5
     },
     "verdict": "Version junior offensive inspirée de Paquito Navarro. Forme diamant pour puissance maximale, mais confort et tolérance limités. Pour jeunes joueurs offensifs.",
     "editorial": "Derrière le format réduit de la Hack Junior 25, Bullpadel a glissé tout son savoir-faire. Les juniors méritent mieux qu'un produit au rabais. Le choix d'une forme diamant n'est pas anodin : le point de frappe haut et puissance en attaque accompagne la progression sans punir les erreurs. Les matériaux choisis privilégient le confort et la durabilité — parce qu'une raquette junior doit survivre à l'enthousiasme de son propriétaire.",
@@ -4328,10 +4328,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -4398,12 +4398,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.7,
-      "Contrôle": 8,
-      "Confort": 8.2,
-      "Spin": 7.5,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Diamant puissante avec balance haut. Le Vibradrive atténue un peu les vibrations mais le confort reste moyen. Pour intermédiaires offensifs.",
     "editorial": "La Vertex 03 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. La forme diamant offre un point de frappe haut et puissance en attaque qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
@@ -4485,12 +4485,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 6.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "La Vertex ultime. Carbone 12K + EVA dure pour une sortie de balle explosive. Confort minimal — réservée aux experts avec bras solide.",
     "editorial": "La Vertex 04 2025 est la mise à jour annuelle du best-seller offensif de Bullpadel. Même recette gagnante — carbone 12K, Hard EVA, diamant — avec des ajustements de construction pour plus d'homogénéité. La Vertex est à Bullpadel ce que la Metalbone est à Adidas : la référence puissance. Cette version 2025 affine la recette sans la révolutionner.",
@@ -4578,12 +4578,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 7,
-      "Spin": 8.1,
-      "Maniabilité": 7.2,
-      "Tolérance": 7.3
+      "Puissance": 8.5,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "Le top absolu de Bullpadel. Carbone 18K + EVA Hard pour une puissance dévastatrice. Vibradrive aide un peu mais confort minimal.",
     "editorial": "La Vertex Elite 2025 est le haut de gamme puissance de Bullpadel pour 2025. Carbone 18K — un cran au-dessus du 12K — et mousse Hard EVA pour une frappe dévastatrice. C'est la Vertex pour les compétiteurs qui veulent le maximum de rigidité avant l'ère du Xtend Carbon. Un classique de la puissance brute.",
@@ -4661,12 +4661,12 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 6.1,
-      "Contrôle": 8.8,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
-      "Maniabilité": 8.8,
-      "Tolérance": 9.2
+      "Spin": 6.0,
+      "Maniabilité": 9.5,
+      "Tolérance": 9.5
     },
     "verdict": "Version junior du best-seller Vertex. Forme diamant offensive avec bon confort grâce à la fibre de verre, mais tolérance limitée aux frappes décentrées.",
     "editorial": "Le padel junior mérite de vrais produits, pas des jouets. Bullpadel l'a compris avec la Vertex Junior 25, une vraie raquette en miniature. En diamant, elle propose un point de frappe haut et puissance en attaque — exactement ce dont un jeune joueur a besoin pour développer la confiance dans ses frappes. Le prix reste contenu, mais la qualité de fabrication est bien là. Un investissement intelligent pour lancer une passion.",
@@ -4753,12 +4753,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "La pala légère et maniable de Bullpadel, inspirée par Alejandra Salazar. Xtend Carbon 3K avec Fibrix en goutte d'eau — confort exceptionnel (9.2) avec du punch en attaque. Parfaite pour les joueurs rapides et les joueuses avancées.",
     "id": "bullpadel-flow-legend-2026",
@@ -4845,12 +4845,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 8.0,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.0
     },
     "verdict": "Le sommet de la gamme Bullpadel, pala de Paquito Navarro. TriCarbon 18K avec Tricore et 3D Grain — puissance de frappe dévastatrice mais avec un confort (7.9) rare à ce niveau d'intensité. La diamant expert la plus équilibrée du marché.",
     "id": "bullpadel-hack-04-2026",
@@ -4941,12 +4941,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 9.1,
-      "Confort": 8.7,
-      "Spin": 8.1,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 8.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "ADN offensif Hack avec confort accru. Goutte d'eau et MultiEVA Soft pour sessions longues. Équilibre attaque/confort pour intermédiaires progressant.",
     "editorial": "La Hack 04 Comfort 2026 est la version accessible de la Hack 04. TriCarbon — le nouveau carbone triple couche de Bullpadel — en version standard avec noyau MultiEVA Soft pour le confort. Forme goutte d'eau pour la polyvalence. C'est la porte d'entrée vers la technologie TriCarbon sans l'exigence de la version expert.",
@@ -5029,12 +5029,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.5
     },
     "verdict": "Hack format hybride pour contre-attaque. Puissance dynamique avec meilleur contrôle défensif. Pour joueurs avancés offensifs polyvalents.",
     "editorial": "La Hack 04 Hybrid 2026 est le tank de Bullpadel — la pala des gros frappeurs qui ne veulent pas sacrifier le toucher. Le carbone aluminisé 18K en surface est l'un des plus rigides du catalogue, mais le noyau MultiEVA et le double système Ease Vibe + Total Channel tempèrent la brutalité. Le Total Channel — des canaux creusés dans le cadre — redistribue l'énergie d'impact pour un sweet spot plus homogène. C'est la puissance civilisée.",
@@ -5123,12 +5123,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 8.1,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.1
+      "Puissance": 9.5,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Hommage au légendaire Juan Martín Díaz. Puissance et contrôle premium pour joueurs d'élite qui cherchent l'excellence sur chaque point.",
     "editorial": "La Icon 2026 est la signature de Juan Martín Díaz — 'El Lobo', le loup du padel. À l'image de son créateur, cette pala est polyvalente, intelligente et redoutable quand le point se tend. Le Xtend Carbon 12K offre un bon compromis entre rigidité et toucher, tandis que le noyau MultiEVA s'adapte à tous les coups. L'Ease Vibe assure un confort sur la durée. Une pala de vétéran pour joueurs matures.",
@@ -5216,12 +5216,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.3,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.5
     },
     "verdict": "La contrôle hybride Bullpadel, pala de Chingotto. Xtend Carbon 3K avec PrismLock qui réduit les torsions — un contrôle structurel unique qui stabilise chaque frappe. Forme hybride originale entre ronde et goutte pour une polyvalence naturelle.",
     "id": "bullpadel-neuron-02-2026",
@@ -5314,12 +5314,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 8.5,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 8.7,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 7.5,
+      "Contrôle": 9.5,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 9.0
     },
     "verdict": "Version pro du Neuron avec géométrie modifiée pour plus de punch. Précision de Chingotto avec boost offensif. Pour experts tactiques qui veulent aussi accélérer.",
     "editorial": "La Neuron 02 Edge est la pala de Federico Chingotto — et elle lui ressemble : technique, précise, tactique. Le Xtend Carbon 3K est dosé pour offrir du toucher plutôt que de la brutalité. Le PrismLock, exclusivité Bullpadel, verrouille les fibres de carbone en position pour une réponse plus prévisible frappe après frappe. L'Ease Vibe filtre les vibrations parasites. C'est une pala d'orfèvre, pas de bûcheron.",
@@ -5416,12 +5416,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "verdict": "Le joyau de la couronne Bullpadel, dans les mains de Juan Tello. Le 12K carbone assure la frappe, le MultiEva nuance le toucher — puissance ET finesse dans le même geste. Le diamant qui a deux visages.",
     "id": "bullpadel-vertex-05-2026",
@@ -5523,12 +5523,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.7,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 8.0,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Version la plus agressive du Vertex. Géométrie optimisée pour surface de frappe élargie et balance encore plus haute. Puissance brute maximale.",
     "editorial": "La Vertex 05 GEO 2026 est le vaisseau amiral de Bullpadel — la pala que les attaquants rêvent de manier. Le Xtend Carbon 3K sur la face offre une frappe sèche et directe, tandis que la géométrie GEO redistribue les forces d'impact pour un sweet spot plus homogène. Le noyau MultiEVA stratifie plusieurs densités de mousse : dur au centre pour la puissance, plus souple en périphérie pour le confort. Un bijou d'ingénierie.",
@@ -5621,12 +5621,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 8.2,
-      "Spin": 8.7,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 7.5,
+      "Contrôle": 9.5,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "verdict": "La Vertex sort du moule diamant pour épouser la goutte d'eau. Plus de contrôle, plus de maniabilité, même ADN Bullpadel. Le choix malin du joueur côté droit qui veut attaquer sans sacrifier la précision.",
     "id": "bullpadel-vertex-05-hybrid-2026",
@@ -5705,12 +5705,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.5,
-      "Contrôle": 8.4,
-      "Confort": 6.5,
-      "Spin": 8.4,
-      "Maniabilité": 7.2,
-      "Tolérance": 7.7
+      "Puissance": 10.0,
+      "Contrôle": 8.0,
+      "Confort": 5.0,
+      "Spin": 8.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 7.0
     },
     "verdict": "La bombe de Di Nenno. Le diamant le plus radical de chez Bullpadel — quand elle frappe, le terrain tremble. Zéro compromis sur la puissance, technique impérative. Pas une raquette : une déclaration de guerre.",
     "id": "bullpadel-xplo-2026",
@@ -5804,12 +5804,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 8.5,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.1
+      "Puissance": 9.5,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.0
     },
     "verdict": "La XPLO apprivoisée. TriCarbon 12K avec Fibrix garde l'ADN offensif de la gamme avec un confort nettement amélioré (8.5 vs 7 sur la XPLO standard). La diamant puissante pour les attaquants qui veulent préserver leur bras.",
     "id": "bullpadel-xplo-comfort-2026",
@@ -5900,12 +5900,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 6,
-      "Spin": 7.8,
-      "Maniabilité": 7.2,
-      "Tolérance": 7.3
+      "Puissance": 8.5,
+      "Contrôle": 8.5,
+      "Confort": 5.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "Diamant offensive Drop Shot pour les joueurs de puissance. Carbone + EVA dure pour un maximum de sortie de balle.",
     "editorial": "La Conqueror 2025 est la pala phare de Drop Shot — la marque espagnole qui offre souvent des specs premium à prix compétitif. Carbone standard et mousse Hard EVA en diamant. Construction honnête, pas de technologie propriétaire complexe, mais un rapport qualité/prix souvent imbattable. Drop Shot est le choix malin pour le joueur avancé qui refuse de payer la prime de marque.",
@@ -5989,10 +5989,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -6073,12 +6073,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.4,
-      "Contrôle": 8.8,
-      "Confort": 8.5,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "Polyvalente et accessible, la Legend est un bon choix pour l'intermédiaire qui veut progresser sans se spécialiser.",
     "editorial": "La Legend 4.0 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. La forme goutte d'eau offre un équilibre entre puissance et contrôle qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. C'est la raquette qu'un coach recommanderait pour la deuxième saison — assez technique pour apprendre, assez pardonnante pour ne pas décourager.",
@@ -6161,10 +6161,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
+      "Puissance": 5.0,
       "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -6240,12 +6240,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.8,
-      "Contrôle": 8.8,
-      "Confort": 8.5,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "Polyvalente Dunlop avec mix carbone/verre. Bon confort pour une raquette carbone, idéale pour progresser.",
     "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La Galactica Pro 25 de Dunlop répond à cette ambition avec une construction pensée pour la montée en puissance. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Son point fort — Contrôle à 8.8/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
@@ -6333,11 +6333,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Dunlop joue la carte de la douceur pour les premiers pas. Ronde, souple, pardonneuse — elle transforme les frappes hésitantes en gestes fluides. Le décollage se fait en douceur.",
@@ -6412,11 +6412,11 @@
     "description": "Diamant légère offensive. 12K Carbon + Soft EVA + Sonic Core Infinergy. Maniabilité sans sacrifier puissance.",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 8.4,
-      "Confort": 8.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.1
+      "Contrôle": 8.5,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-lite-26.png",
     "verdict": "Diamant légère qui privilégie la maniabilité sans sacrifier la frappe. Bon compromis pour attaquants qui veulent rester mobiles.",
@@ -6503,12 +6503,12 @@
     "core": "Pro EVA",
     "description": "Diamant puissance premium. 12K Carbon + Pro EVA + Force Bridge. Head heavy pour smashes dévastateurs.",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-pro-26.png",
     "verdict": "Arme offensive pure, balance haute et carbone 12K pour des smashes dévastateurs. Réservée aux bras solides et aux frappes engagées.",
@@ -6595,11 +6595,11 @@
     "description": "Diamant accessible. SpinBoost + Power Holes + Force Bridge. Puissance contrôlée pour progression.",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 8,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/dunlop-fx-team-26.png",
     "verdict": "Entrée de gamme diamant accessible avec puissance contrôlée. Bonne option pour progresser vers un jeu plus offensif sans se ruiner.",
@@ -6670,12 +6670,12 @@
     "year": 2024,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 9.0,
+      "Confort": 6.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "Version 2024 de l'Extreme Pro. Même ADN polyvalent avec Power Foam et double anti-vibrations. Excellent rapport qualité/prix en déstockage.",
     "editorial": "L'Extreme Pro 2024 est la version pré-Auxetic de la gamme offensive Head. Carbone 3K et Power Foam en goutte d'eau. Pas d'Auxetic 2.0 sur ce millésime — le sweet spot est donc naturel, sans élargissement technologique. C'est du Head classique, bien construit, avec le toucher caractéristique de la marque. Un bon plan en déstockage.",
@@ -6758,10 +6758,10 @@
     "year": 2024,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
+      "Puissance": 5.0,
       "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -6838,12 +6838,12 @@
     "year": 2024,
     "category": "debutant",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8.4,
-      "Confort": 8.7,
-      "Spin": 7.2,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "Ancienne Speed Motion à prix réduit. Fibre de verre et Innegra pour un excellent confort. Très bon choix débutant en promotion.",
     "editorial": "Quand Head conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Speed Motion 24 remplit ce contrat. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Le noyau EVA souple absorbe les vibrations pour protéger les articulations encore peu habituées à l'effort. Avec un confort noté 8.7/10 et une tolérance à 9.2/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
@@ -6923,10 +6923,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5.6,
-      "Contrôle": 9.2,
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -7004,12 +7004,12 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.4,
-      "Confort": 8.5,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 8.5,
+      "Contrôle": 9.5,
+      "Confort": 9.0,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.0
     },
     "verdict": "Raquette polyvalente et confortable pour débuter ou reprendre. Le système Auxetic 2.0 absorbe bien les vibrations, forme goutte d'eau équilibrée.",
     "editorial": "Premier contact avec le padel ? La Extreme Motion 25 est pensée pour transformer la curiosité en passion. La forme diamant maximise le point de frappe haut et puissance en attaque. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Légère, maniable (8.3/10), confortable (8.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
@@ -7094,11 +7094,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9,
-      "Spin": 7.5,
-      "Maniabilité": 8.7,
+      "Puissance": 6.5,
+      "Contrôle": 10.0,
+      "Confort": 9.0,
+      "Spin": 7.0,
+      "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
     "verdict": "Forme ronde ultra-tolérante avec anti-vibrations Auxetic. Le choix le plus sûr pour un débutant adulte qui veut apprendre sans douleur.",
@@ -7174,12 +7174,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8.4,
-      "Confort": 8.5,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "Goutte d'eau polyvalente avec un bon compromis puissance/contrôle. La mousse Power Foam apporte de la réactivité compensée par les anti-vibrations Auxetic.",
     "editorial": "L'Extreme Pro 2025 fait évoluer la gamme avec un hybride carbone/fibre de verre qui adoucit la frappe tout en gardant du punch. Le Power Foam assure l'explosivité. C'est l'Extreme pour les joueurs qui veulent de la puissance sans la sécheresse du carbone pur. Plus accessible que la Coello Pro, moins radicale que la Delta Elite.",
@@ -7261,12 +7261,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9.1,
+      "Puissance": 6.5,
+      "Contrôle": 10.0,
       "Confort": 9.5,
-      "Spin": 7.5,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.5
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 10.0
     },
     "verdict": "Ronde légère et très maniable. Fiberglass doux et large sweet spot. Excellente pour joueuses ou joueurs intermédiaires cherchant contrôle et confort maximal.",
     "editorial": "La Gravity Motion 2025 est l'intermédiaire de la gamme contrôle Head. Fibre de verre et Control Foam en ronde. On retrouve la mousse de contrôle signature Head — la même que sur la Gravity Pro — dans un format accessible. C'est la meilleure initiation au toucher Head pour les joueurs de contrôle en développement.",
@@ -7342,11 +7342,11 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.5,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
+      "Puissance": 7.0,
+      "Contrôle": 10.0,
+      "Confort": 9.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
       "Tolérance": 9.5
     },
     "verdict": "Référence contrôle Head en forme ronde. Grand sweet spot, stable sur les blocks et les lobs. Pour joueurs de droite qui construisent le point avec patience et placement.",
@@ -7443,11 +7443,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.3,
-      "Contrôle": 9.1,
-      "Confort": 9.5,
-      "Spin": 7.5,
-      "Maniabilité": 9.1,
+      "Puissance": 7.0,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
       "Tolérance": 9.5
     },
     "verdict": "La plus légère de la gamme Gravity. Ronde ultra-confortable, idéale pour débutants, femmes et joueurs légers. Facile à manœuvrer avec bon contrôle.",
@@ -7522,11 +7522,11 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 6,
+      "Puissance": 6.0,
       "Contrôle": 9.5,
-      "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 10.0,
       "Tolérance": 9.5
     },
     "verdict": "Ultra-légère avec anti-vibrations Innegra. Forme ronde pour une tolérance maximale. Idéale pour les juniors ou adultes recherchant un poids plume.",
@@ -7599,10 +7599,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5.6,
-      "Contrôle": 9,
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.1,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -7680,12 +7680,12 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8,
-      "Confort": 7.4,
-      "Spin": 7.5,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 8.5,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "Raquette débutant avec fibre de verre douce et anti-vibrations Innegra. Bon équilibre entre facilité et progression.",
     "editorial": "Quand Head conçoit une raquette débutante, l'objectif est simple : donner envie de revenir demain. La Speed Motion 25 remplit ce contrat. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Le noyau EVA souple absorbe les vibrations pour protéger les articulations encore peu habituées à l'effort. Légère, maniable (7.9/10), confortable (7.4/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
@@ -7766,11 +7766,11 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
+      "Puissance": 8.0,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
       "Tolérance": 8.5
     },
     "verdict": "Ultra-confortable grâce au DAMP+ dans le cœur. Polyvalente légère avec bon rendement. Pour joueurs confirmés qui cherchent sensations et protection du bras.",
@@ -7855,12 +7855,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 8.5,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.1,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.1
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Raquette polyvalente expert à mousse dure. Toucher sec et direct, réactivité carbone/fibre de verre + Smart Bridge. La Speed d'un joueur WPT qui veut tout maîtriser.",
     "editorial": "La Speed Pro 2025 est la pala que choisissent les joueurs expert qui veulent un toucher sec sans sacrifier la polyvalence. Mousse dure/rigide pour des sensations directes, cadre carbone/fibre de verre pour le contrôle, technologie Auxetic 2.0 et Smart Bridge pour l'équilibre des forces. C'est une raquette de sensations — pas la plus puissante, pas la plus confortable, mais celle qui parle au bras du joueur exigeant.",
@@ -7933,12 +7933,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.4,
-      "Confort": 8.5,
-      "Spin": 7.2,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 7.5,
+      "Contrôle": 9.5,
+      "Confort": 7.5,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "verdict": "Polyvalente accessible en fiberglass. Bon équilibre puissance/contrôle/confort pour joueurs intermédiaires. Facile à prendre en main avec un toucher doux.",
     "editorial": "La Speed Team 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Son point fort — Confort à 8.5/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
@@ -8011,10 +8011,10 @@
     "year": 2026,
     "category": "junior",
     "scores": {
-      "Puissance": 5.3,
-      "Contrôle": 9,
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -8094,12 +8094,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 8.7,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Signature Arturo Coello. Goutte d'eau équilibrée avec Power Foam et Auxetic pour un mix puissance/toucher de balle remarquable.",
     "editorial": "La Coello Motion 2026 est la version accessible de la gamme Arturo Coello. Même carbone 3K, même Power Foam, mais en forme goutte d'eau pour plus de polyvalence. C'est la Coello pour les joueurs avancés qui veulent la technologie et le prestige de la gamme sans l'exigence de la forme diamant. Le tremplin parfait vers la Coello Pro.",
@@ -8191,11 +8191,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 8.4,
-      "Confort": 7,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Contrôle": 9.5,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 8.0
     },
     "verdict": "La raquette signature d'Arturo Coello version pro. Carbone 3K premium avec Dual Spin pour un effet dévastateur. Réservée aux experts.",
     "editorial": "La Coello Pro 2026 porte le nom du prodige espagnol qui a révolutionné le padel à 19 ans. Head a conçu une arme de compétition pure : carbone 3K pour la réactivité, Power Foam pour l'explosivité, et l'incontournable Auxetic 2.0 pour pardonner les frappes légèrement décentrées. La forme diamant assumée envoie un message clair — cette pala est faite pour finir les points, pas pour les subir.",
@@ -8287,12 +8287,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8,
-      "Confort": 7.4,
-      "Spin": 8.4,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 9.5,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.5
     },
     "verdict": "L'ADN Coello à prix accessible. Diamant en fibre de verre qui offre la puissance d'un format offensif avec le pardon que les experts ne demandent plus. Le premier pas vers le jeu d'attaque, sans la facture carbone.",
     "id": "head-coello-team-2026",
@@ -8367,11 +8367,11 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 7.4,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.5,
-      "Maniabilité": 8.7,
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
       "Tolérance": 8.5
     },
     "verdict": "L'empreinte Coello pour les débutants exigeants. Goutte d'eau oversized, sweet spot généreux, tolérante sans être molle. Premium dans la finition, accessible dans le jeu — Head ouvre les portes de sa gamme signature.",
@@ -8451,11 +8451,11 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
+      "Puissance": 8.0,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
       "Tolérance": 8.5
     },
     "verdict": "Édition limitée 25ème anniversaire Head Padel (1000 exemplaires). Polyvalente avec technologies modernes dans un design rétro années 80. Collector.",
@@ -8548,12 +8548,12 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.6,
-      "Contrôle": 9.1,
-      "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.5
     },
     "verdict": "Raquette récréative ultra-accessible. Grand sweet spot, puissance facile et maximum de confort pour débuter sereinement et prendre du plaisir.",
     "editorial": "Premier contact avec le padel ? La Evo Extreme 26 est pensée pour transformer la curiosité en passion. La forme goutte d'eau maximise le équilibre entre puissance et contrôle. La fibre de verre amortit les impacts et pardonne les frappes décentrées. Légère, maniable (8.7/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
@@ -8634,12 +8634,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8,
-      "Confort": 7,
-      "Spin": 8.4,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "L'Extreme perd du poids mais garde les crocs. L'Auxetic injecte du punch dans chaque frappe, le format diamant allégé libère la vitesse de bras. Pour les attaquants qui veulent frapper plus vite, pas plus fort.",
     "id": "head-extreme-motion-2026",
@@ -8730,12 +8730,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.4,
-      "Maniabilité": 9.1,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.0
     },
     "verdict": "La porte d'entrée de l'univers Extreme. Plus légère de la gamme, goutte d'eau maniable, carbone 2D pour une première touche de rigidité. Le moment où le joueur intermédiaire comprend ce que Head sait faire.",
     "id": "head-extreme-one-2026",
@@ -8813,12 +8813,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 9.0,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "La référence polyvalente pour joueurs avancés. Double anti-vibrations Auxetic+Innegra avec mousse Power Foam pour une frappe précise et puissante.",
     "editorial": "L'Extreme Pro 2026 est la version goutte d'eau de la gamme Extreme — même carbone 3K et Power Foam que les Coello, mais dans un format plus polyvalent. C'est la pala du joueur offensif qui veut garder de la défense. Le sweet spot goutte offre plus de tolérance que le diamant tout en conservant du punch dans les frappes hautes.",
@@ -8891,12 +8891,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.9,
-      "Contrôle": 8,
-      "Confort": 7.4,
-      "Spin": 8.4,
-      "Maniabilité": 7.9,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "Le diamant qui sait se faire pardonner. La fibre de verre enveloppe les frappes décentrées, le format offensif délivre la puissance quand le geste est juste. L'attaque sans le stress.",
     "id": "head-extreme-team-2026",
@@ -8970,12 +8970,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.2,
-      "Contrôle": 8.8,
-      "Confort": 9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.5
+      "Puissance": 6.5,
+      "Contrôle": 10.0,
+      "Confort": 9.5,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 10.0
     },
     "verdict": "La Gravity allégée avec Auxetic 2.0 — une première à ce niveau de prix. Ronde fibre de verre pour un sweet spot large et un toucher doux, avec la technologie de déformation Head qui pardonne les frappes décentrées.",
     "id": "head-gravity-motion-2026",
@@ -9055,12 +9055,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 9,
-      "Spin": 7.5,
-      "Maniabilité": 7.9,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 10.0,
+      "Confort": 9.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 9.5
     },
     "verdict": "La reine du contrôle Head 2026. Carbone Hybrid Woven avec Auxetic 2.0 en ronde — stabilité et toucher premium pour un contrôle chirurgical. Tolérance à 9.2 exceptionnelle pour une raquette de ce niveau.",
     "id": "head-gravity-pro-2026",
@@ -9148,12 +9148,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9.1,
-      "Confort": 9,
-      "Spin": 7.5,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.5
+      "Puissance": 6.5,
+      "Contrôle": 10.0,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 10.0
     },
     "verdict": "La ronde intermédiaire Head avec Auxetic 2.0. Fibre de verre et Control Foam pour un contrôle confortable et tolérant — tolérance à 9.5, la plus haute de la gamme Head. Le choix évident pour apprendre le jeu de placement.",
     "id": "head-gravity-team-2026",
@@ -9219,11 +9219,11 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.6,
-      "Contrôle": 8.8,
-      "Confort": 9.5,
-      "Spin": 7.5,
-      "Maniabilité": 9.1,
+      "Puissance": 7.0,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
       "Tolérance": 9.5
     },
     "verdict": "L'ultra-légère de la gamme Gravity à 340g. Ronde en fibre de verre avec Control Foam — tolérance maximale (9.5) et maniabilité au sommet (9.1). La raquette la plus facile à jouer du catalogue Head, parfaite pour débuter sans fatigue.",
@@ -9302,12 +9302,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 8.7,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.5
     },
     "verdict": "La polyvalente-contrôle allégée de Head. Carbone 3K avec Auxetic 2.0 en goutte d'eau — précision et maniabilité pour les joueurs techniques qui construisent les points. Plus légère que la Radical Pro, tout aussi précise.",
     "id": "head-radical-motion-2026",
@@ -9386,12 +9386,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 9.1,
-      "Confort": 8.7,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 9.2
+      "Puissance": 7.5,
+      "Contrôle": 9.5,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 9.5
     },
     "verdict": "Le scalpel du chirurgien. La Radical Pro est la ronde la plus précise de Head — carbone 3K, balance basse, contrôle absolu. Chaque balle va exactement où le joueur la décide. La raquette des stratèges.",
     "id": "head-radical-pro-2026",
@@ -9476,12 +9476,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.8,
-      "Contrôle": 8.8,
-      "Confort": 8.7,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 9.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "verdict": "La Radical accessible. Fibre de verre avec Auxetic en goutte d'eau et balance très basse — maniabilité maximale avec une tolérance de 9.2 remarquable. Le tremplin vers la gamme Radical Pro pour les joueurs tactiques.",
     "id": "head-radical-team-2026",
@@ -9553,11 +9553,11 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.3,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.5,
-      "Maniabilité": 8.7,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "La Radical au régime, sans perdre son âme. Plus légère de la famille, ronde et fibre de verre, elle garde cette précision signature Head tout en offrant un confort de débutant. Débuter avec un pedigree de champion.",
@@ -9634,11 +9634,11 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
+      "Puissance": 8.0,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
       "Tolérance": 8.5
     },
     "verdict": "La polyvalente par excellence de Head 2026. Carbone Hybrid Woven avec Auxetic 2.0 en goutte d'eau — rapide, réactive, adaptable. Le couteau suisse pour le joueur avancé qui refuse de choisir entre attaque et défense.",
@@ -9735,12 +9735,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 7.5,
-      "Maniabilité": 8.7,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "L'intermédiaire la plus technologique de Head. Carbone 2D avec système DAMP+ anti-vibrations en goutte d'eau — confort et protection du bras au premier plan. La pala pour les joueurs sensibles qui veulent quand même du carbone.",
     "id": "head-speed-one-x-2026",
@@ -9820,12 +9820,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8.5,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Raquette de vitesse avec excellent contrôle. Le carbone 3K offre de la précision, l'Innegra protège le bras. Pour les joueurs techniques.",
     "editorial": "La Speed Pro 2026 est la pala rapide avancée de Head. Carbone 3K et EVA standard en forme goutte d'eau — construction classique mais efficace. Pas d'Auxetic ni de mousse spéciale — Head mise ici sur la pureté de la construction carbone. C'est la Speed pour les joueurs qui veulent sentir le carbone sans filtrage technologique.",
@@ -9896,11 +9896,11 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 8.4,
-      "Maniabilité": 8.3,
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
       "Tolérance": 8.5
     },
     "verdict": "La polyvalente tranquille de Head. Fibre de verre et Power Foam construisent un confort de croisière — ni trop agressive, ni trop sage. Elle fait le job proprement, session après session, sans jamais se plaindre.",
@@ -9978,12 +9978,12 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.6,
-      "Contrôle": 8.8,
-      "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.5
     },
     "verdict": "Raquette débutant polyvalente et légère. Grand sweet spot et confort maximal pour découvrir le padel en confiance.",
     "editorial": "Head a distillé des années d'expertise dans cette Vibe 26, calibrée pour que les premières frappes soient immédiatement satisfaisantes. Le format goutte d'eau avec son équilibre entre puissance et contrôle est le plus recommandé pour l'apprentissage. Chaque frappe trouve naturellement sa trajectoire. Légère, maniable (8.7/10), confortable (9.5/10) — les trois piliers d'une bonne première raquette sont réunis. Un prix accessible complète le tableau.",
@@ -10055,12 +10055,12 @@
     "year": 2024,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6.6,
-      "Contrôle": 9.1,
-      "Confort": 8.5,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 8.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 9.5
     },
     "verdict": "La ML10 2024, toujours aussi fiable. Contrôle et tolérance exceptionnels à prix doux en fin de série.",
     "editorial": "La ML10 Pro Cup 2024 est le classique éternel de Nox — la pala la plus vendue de l'histoire de la marque. Fibre de verre et EVA standard en ronde. Aucune prétention technologique, juste un équilibre parfait, un prix attractif, et une fiabilité légendaire. La ML10 est à Nox ce que la Corolla est à Toyota : indestructible et populaire.",
@@ -10143,11 +10143,11 @@
     "category": "avance",
     "scores": {
       "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 7.4,
-      "Spin": 8.1,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Contrôle": 8.5,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.5
     },
     "verdict": "La raquette d'Agustín Tapia version pro. Carbone 18K rigide pour une sortie de balle nette. Contrôle exceptionnel mais confort limité.",
     "editorial": "La AT10 Genius 18K 2025 est la version avancée de la gamme Tapia pour 2025. Carbone 18K pour la rigidité, EVA standard pour la polyvalence. Forme ronde — inhabituelle pour la gamme AT10 — qui offre un maximum de contrôle. C'est la AT10 pour les joueurs défensifs qui veulent le prestige de la gamme Tapia dans un format contrôle.",
@@ -10234,12 +10234,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6.6,
-      "Contrôle": 8.8,
-      "Confort": 8.7,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 9.0
     },
     "verdict": "La raquette d'Agustín Tapia en version intermédiaire. Forme ronde pour un contrôle exceptionnel et une grande tolérance.",
     "editorial": "Progresser au padel, c'est exiger plus de sa raquette. La AT10 Genius 25 de Nox répond à cette ambition avec une construction pensée pour la montée en puissance. Le choix du ronde avec Surface, Noyau permet un large sweet spot et contrôle naturel. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. Son point fort — Tolérance à 9.2/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
@@ -10334,10 +10334,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -10428,12 +10428,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 7.8,
-      "Contrôle": 9.1,
-      "Confort": 7,
-      "Spin": 8.1,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 5.5,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.5
     },
     "verdict": "La raquette de match d'Agustín Tapia. Carbone 18K ultra-rigide pour une sortie de balle chirurgicale. Contrôle d'exception mais bras en acier requis.",
     "editorial": "La AT10 Genius Luxury 2025 est le sommet de la gamme Nox pour 2025. Carbone 18K et Hard EVA en forme ronde — combinaison inhabituelle de puissance et de contrôle. C'est une ronde qui frappe : le carbone 18K et la mousse dure offrent une sortie de balle rare pour une forme ronde. Pour les experts qui veulent dominer les échanges sans passer en diamant.",
@@ -10519,11 +10519,11 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6.6,
-      "Contrôle": 9.1,
-      "Confort": 8.5,
-      "Spin": 7.2,
-      "Maniabilité": 8.3,
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 8.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.0,
       "Tolérance": 9.5
     },
     "verdict": "L'iconique ML10, raquette la plus vendue au monde. Contrôle et tolérance exceptionnels, fiable pour les joueurs de tous niveaux.",
@@ -10612,11 +10612,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "L'icône ML10, simplifiée pour les premiers pas. Vingt ans de lignée condensés dans une ronde accessible et fiable. Le choix classique, éprouvé par des milliers de débutants — parce que les bonnes habitudes se prennent tôt.",
@@ -10705,10 +10705,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
+      "Puissance": 5.0,
       "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -10797,12 +10797,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 6.5,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "Diamant de compétition Nox. Puissance brute maximale. Pour les joueurs confirmés avec technique irréprochable.",
     "editorial": "La Nerbo WPT 2025 est la pala de puissance agressive de Nox. Carbone standard et Hard EVA en diamant — construction directe et sans compromis. Pas de Pulse System ni d'anti-vibrations ici — Nox assume le choix de la performance brute. C'est la Nox pour les attaquants qui veulent une diamant simple, efficace et accessible.",
@@ -10893,12 +10893,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 8.7,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.7,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.1
+      "Puissance": 8.5,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Version plus rigide du AT10. 12K Xtrem pour frappe plus sèche et puissante. Toucher dur et réactif pour joueurs offensifs techniques.",
     "editorial": "La AT10 Luxury Genius 12K est LA pala de référence d'Agustín Tapia en version plein poids. Le carbone 12K aluminisé Xtrem délivre une puissance dévastatrice au smash — chaque frappe semble catapultée. Le noyau EVA HR3 Black, le plus dense du catalogue Nox, est un choix radical : zéro compromis sur la dureté pour un maximum de sortie de balle. Réservée aux bras solides et aux ambitions de compétition.",
@@ -11000,12 +11000,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.4,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.0
     },
     "verdict": "AT10 allégée pour maniabilité. Même qualité Tapia avec moins de fatigue. Idéale joueuses ou joueurs techniques cherchant réactivité et confort.",
     "editorial": "La AT10 Luxury Genius 12K Xtrem Lite est la signature d'Agustín Tapia en version allégée. Même ADN de puissance brute avec le carbone 12K aluminisé Xtrem, mais un poids réduit qui libère la vitesse de bras. Le noyau EVA HR4 White — le plus récent de Nox — offre un retour d'énergie phénoménal tout en gardant un confort surprenant pour une pala de ce calibre. Le Pulse System couplé à l'EOS Tunnel canalise les vibrations vers le cadre.",
@@ -11110,12 +11110,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 8.7,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.4,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 8.0,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "La référence polyvalente de la galaxie Tapia. Le 18K aluminisé frappe sec, le Dual Spin vrille la balle, le MultiEva amortit le reste. Goutte d'eau expert pour ceux qui veulent tout faire — et tout bien faire.",
     "id": "nox-at10-luxury-genius-18k-alum-2026",
@@ -11221,12 +11221,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8,
-      "Confort": 7.9,
-      "Spin": 9,
-      "Maniabilité": 7.2,
-      "Tolérance": 7.3
+      "Puissance": 9.5,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Version diamant offensive maximale de la gamme AT10. Puissance explosive pour joueurs de gauche experts. Dual Spin pour spin dévastateur.",
     "editorial": "La AT10 Luxury Attack 12K Xtrem est la version diamant radicale de la gamme Tapia. Carbone 12K aluminisé Xtrem — même surface que les versions Genius — mais en forme diamant avec noyau HR3 Black, le plus dur de Nox. C'est la AT10 la plus agressive : puissance brute, zéro compromis. Pour les smasheurs qui veulent la signature Tapia en mode destruction.",
@@ -11319,12 +11319,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 7.0,
+      "Contrôle": 9.5,
+      "Confort": 6.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "verdict": "Nouvelle gamme hybride polyvalente Nox. Bon équilibre puissance/contrôle pour joueurs avancés qui ne sont pas purement offensifs.",
     "editorial": "Nox a concentré son expertise dans la Ventus 26, une raquette qui ne fait pas de concessions. En hybride, elle offre un polyvalence de forme entre ronde et diamant. Surface, Noyau, Technologie composent un cocktail technique abouti pour les joueurs exigeants. Avec Contrôle à 8.8/10 comme point fort, elle s'inscrit dans le haut du catalogue Nox. Pour joueurs avertis qui savent ce qu'ils veulent.",
@@ -11410,10 +11410,10 @@
     "year": 2024,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -11494,10 +11494,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -11574,12 +11574,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 9.5,
-      "Contrôle": 8,
-      "Confort": 6,
-      "Spin": 7.8,
-      "Maniabilité": 7.2,
-      "Tolérance": 7.3
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 5.5,
+      "Spin": 7.0,
+      "Maniabilité": 6.5,
+      "Tolérance": 7.5
     },
     "verdict": "Raquette de Stupaczuk version compétition. Carbone 12K rigide avec surface texturée pour spin+puissance. Experte et exigeante.",
     "editorial": "Siux a concentré son expertise dans la Diablo Black 25, une raquette qui ne fait pas de concessions. En diamant, elle offre un point de frappe haut et puissance en attaque. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Puissance à 9.5/10 comme point fort, elle s'inscrit dans le haut du catalogue Siux. Pour joueurs avertis qui savent ce qu'ils veulent.",
@@ -11655,12 +11655,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.5,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "Goutte d'eau avec surface texturée pour un bon spin. Le carbone offre de la réactivité pour les joueurs cherchant plus de mordant.",
     "editorial": "Entre le confort du débutant et les exigences de l'expert, la Diablo Revol 25 occupe le terrain le plus stratégique du catalogue Siux. La forme goutte d'eau offre un équilibre entre puissance et contrôle qui correspond à un jeu en construction. Surface, Noyau apportent une dose de performance mesurée, qui grandit avec le joueur. Son point fort — Tolérance à 8.8/10 — donne un avant-goût de ce que les gammes supérieures proposent. La transition vers le haut niveau se prépare ici.",
@@ -11735,11 +11735,11 @@
     "category": "expert",
     "scores": {
       "Puissance": 9.5,
-      "Contrôle": 8.4,
-      "Confort": 6,
-      "Spin": 8.1,
-      "Maniabilité": 7.2,
-      "Tolérance": 7.3
+      "Contrôle": 8.0,
+      "Confort": 5.5,
+      "Spin": 7.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.0
     },
     "verdict": "Diamant extrême pour purs attaquants. Carbone 12K + EVA dure = sortie de balle explosive. Confort minimal, réservée aux experts.",
     "editorial": "Siux a concentré son expertise dans la Diablo Xtrem 25, une raquette qui ne fait pas de concessions. En diamant, elle offre un point de frappe haut et puissance en attaque. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Puissance à 9.5/10 comme point fort, elle s'inscrit dans le haut du catalogue Siux. Pour joueurs avertis qui savent ce qu'ils veulent.",
@@ -11816,11 +11816,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Le padel, point final. Pas de chichi, pas de technologie superflue — juste ce qu'il faut pour frapper une balle et prendre du plaisir. Siux prouve qu'on n'a pas besoin de se ruiner pour commencer.",
@@ -11895,12 +11895,12 @@
     "core": "EVA",
     "description": "Goutte intermédiaire-avancé. Plus souple que le Pro, contrôle et confort accrus. Progression Siux.",
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-elite-26.png",
     "verdict": "Goutte confortable et maniable, idéale pour monter en niveau en douceur. Polyvalente sans être exceptionnelle dans un domaine.",
@@ -11978,12 +11978,12 @@
     "core": "Ultra Soft EVA",
     "description": "Goutte hybride polyvalente signature Libaak. Texture 3D + Ultra Soft EVA. Contrôle-puissance équilibré.",
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 9.1,
-      "Confort": 8.7,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 8.0,
+      "Confort": 7.5,
+      "Spin": 7.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-diablo-pro-26.png",
     "verdict": "Polyvalente haut de gamme avec un équilibre rare entre puissance et contrôle. Son confort et son spin en font une valeur sûre pour joueurs complets.",
@@ -12078,12 +12078,12 @@
     "core": "EVA",
     "description": "Goutte signature Stupaczuk. Anti-vibration + TeXtreme 18K. Puissance explosive avec polyvalence.",
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 8.1,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 8.5,
+      "Contrôle": 8.0,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-electra-pro-26.png",
     "verdict": "Puissance explosive en goutte d'eau — un profil rare. Le TeXtreme 18K frappe fort tout en gardant du contrôle. Pour attaquants techniques.",
@@ -12165,12 +12165,12 @@
     "core": "Hard EVA",
     "description": "Diamant puissance max signature Augsburger. Balance haute + carbone TeXtreme. Offensif pur.",
     "scores": {
-      "Puissance": 9.5,
-      "Contrôle": 8.4,
-      "Confort": 6,
-      "Spin": 8.1,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.3
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-fenix-pro-26.png",
     "verdict": "Canon offensif sans concession : 9.5 en puissance mais confort et tolérance sacrifiés. Pour experts qui finissent les points au filet.",
@@ -12250,12 +12250,12 @@
     "core": "EVA",
     "description": "Goutte polyvalente abordable. Contrôle hybride et confort. Pour joueurs intermédiaires ambitieux.",
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 8.4,
-      "Confort": 7.9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-pegasus-elite-26.png",
     "verdict": "Goutte polyvalente et confortable à prix contenu. Profil équilibré sans pic — rassurante pour intermédiaires qui cherchent de la régularité.",
@@ -12330,12 +12330,12 @@
     "core": "EVA",
     "description": "Goutte premium offensive. TeXtreme 18K + texture satin 3D. Puissance avec précision pour avancés.",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 8.5,
+      "Contrôle": 8.0,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-pegasus-pro-26.png",
     "verdict": "Montée en gamme avec TeXtreme 18K : plus de puissance et de spin que l'Elite. Pour avancés qui veulent du mordant sans perdre en précision.",
@@ -12411,12 +12411,12 @@
     "core": "EVA",
     "description": "Goutte signature Araujo, orientation féminine. Polyvalence puissance/contrôle, poids modéré pour maniabilité.",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/siux-valkiria-pro-26.png",
     "verdict": "Polyvalente signature Araujo, poids contenu pour une maniabilité supérieure. Excellent ratio puissance/contrôle, accessible aux gabarits légers.",
@@ -12501,10 +12501,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -12584,12 +12584,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8.8,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 8.0
     },
     "verdict": "Goutte d'eau haut de gamme Starvie avec surface texturée pour le spin. Polyvalente et technique pour joueurs avancés.",
     "editorial": "La Metheora Galaxy 2025 est la polyvalente avancée de StarVie. Carbone standard et EVA standard en goutte d'eau — construction classique mais efficace. StarVie compense l'absence de technologies propriétaires spectaculaires par un prix attractif et une construction soignée. La Galaxy est la version premium de la gamme Metheora.",
@@ -12670,12 +12670,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 7.5,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "La polyvalente sans éclat qui fait tout correctement. Goutte d'eau en carbone/EVA, construction maîtrisée, aucun défaut criant. Pas la plus excitante, mais la plus fiable — le choix de raison du joueur intermédiaire.",
     "editorial": "La Metheora 25 s'adresse au joueur qui a dépassé la phase d'apprentissage et cherche à structurer son jeu. En goutte d'eau, elle combine équilibre entre puissance et contrôle. Surface, Noyau assurent une réponse franche sans devenir brutale — le juste milieu que recherchent les joueurs en progression. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
@@ -12759,11 +12759,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Ronde Starvie confortable et tolérante. Idéale pour les joueurs occasionnels qui veulent du plaisir sans effort.",
@@ -12848,12 +12848,12 @@
     "core": "H-EVA Power",
     "description": "Hybride flagship puissance. 24K Carbon Master + Dynamic Star ajustable. Anti-Vibe. Pour experts offensifs.",
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8.8,
-      "Confort": 6,
-      "Spin": 8.1,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.1
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 5.5,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-black-titan-26.png",
     "verdict": "Flagship hybride avec carbone 24K et système Dynamic Star. Puissance expert avec un contrôle surprenant pour ce niveau de frappe.",
@@ -12927,12 +12927,12 @@
     "core": "M-EVA Balance",
     "description": "Goutte polyvalente iconique renouvelée. Dynamic Star + Spin Boost Tech Pro + Anti-Vibe. All-court avancé.",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.8,
-      "Confort": 7.9,
-      "Spin": 8.4,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-raptor-26.png",
     "verdict": "Goutte all-court renouvelée : spin et contrôle en vedette avec un confort correct. Polyvalente fiable pour joueurs avancés complets.",
@@ -13020,12 +13020,12 @@
     "core": "M-EVA Balance",
     "description": "Diamant équilibrée. Plus souple que Power, bon compromis puissance/contrôle. TriTech Core + Z-Shock.",
     "scores": {
-      "Puissance": 9.1,
-      "Contrôle": 8.4,
-      "Confort": 7.4,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 8.0,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-triton-balance-26.png",
     "verdict": "Diamant tempérée — plus souple que la Power avec un meilleur équilibre puissance/contrôle. Bon compromis pour attaquants qui veulent de la marge.",
@@ -13105,12 +13105,12 @@
     "core": "Hard EVA",
     "description": "Diamant puissance explosive. 18K Carbon Hybrid + H-EVA Power haute densité + TriTech Core. Attaquant pur.",
     "scores": {
-      "Puissance": 9.5,
-      "Contrôle": 8,
-      "Confort": 6,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.3
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/starvie-triton-power-26.png",
     "verdict": "Diamant brutale : 9.5 en puissance, carbone 18K hybride. Réservée aux experts physiques qui assument un jeu 100% offensif.",
@@ -13194,12 +13194,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 8.8,
-      "Confort": 7.6,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Goutte d'eau carbone Varlion. Construction solide et équilibrée pour les joueurs intermédiaires polyvalents.",
     "editorial": "La Bourne 2025 est l'intermédiaire polyvalente de Varlion. Carbone standard et EVA standard en goutte d'eau. Construction classique avec le toucher Varlion caractéristique. C'est l'entrée dans l'univers Varlion pour les joueurs intermédiaires curieux du toucher carbone-titane des modèles supérieurs.",
@@ -13279,10 +13279,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
+      "Puissance": 5.0,
       "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -13349,11 +13349,11 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 9.1,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "Version allégée de la Cañas, parfaite pour débuter. Marque historique du padel, construction fiable et confortable.",
@@ -13420,12 +13420,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8.8,
-      "Confort": 7.6,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 8.0
     },
     "verdict": "Goutte d'eau Varlion haut de gamme. Construction carbone traditionnelle pour joueurs avancés polyvalents.",
     "editorial": "Varlion a concentré son expertise dans la LW Carbon 25, une raquette qui ne fait pas de concessions. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Contrôle à 8.8/10 comme point fort, elle s'inscrit dans le haut du catalogue Varlion. Pour joueurs avertis qui savent ce qu'ils veulent.",
@@ -13490,11 +13490,11 @@
     "core": "Pro-Touch EVA",
     "description": "Hybride Bourne puissance/contrôle. Prisma Frame + Summum grip long 14.5cm. Polyvalence offensive.",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8.8,
-      "Confort": 7.6,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
       "Tolérance": 8.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-bourne-carbon-ti-26.png",
@@ -13565,10 +13565,10 @@
     "core": "Soft EVA",
     "description": "Ronde débutante confort. Ergoholes sweet spot élargi + Handlesafety. Légère et tolérante.",
     "scores": {
-      "Puissance": 6,
-      "Contrôle": 9.1,
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 7.2,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -13638,12 +13638,12 @@
     "core": "Pro-Touch EVA",
     "description": "Ronde contrôle Lethal Weapon. Summum grip + Slice Texture. Précision défensive pour tacticiens.",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 8,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 6.5,
+      "Contrôle": 9.0,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/varlion-lw-carbon-ti-26.png",
     "verdict": "Ronde de précision chirurgicale : contrôle à 9 et tolérance à 8.5. Le choix des tacticiens et constructeurs de points patients.",
@@ -13742,10 +13742,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
+      "Puissance": 5.0,
       "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.1,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -13820,10 +13820,10 @@
     "year": 2024,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.4,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -13900,12 +13900,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8.8,
-      "Confort": 6,
-      "Spin": 7.8,
-      "Maniabilité": 7.2,
-      "Tolérance": 8.1
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 5.5,
+      "Spin": 7.0,
+      "Maniabilité": 6.5,
+      "Tolérance": 8.0
     },
     "verdict": "Version compétition de la raquette de Bela. Carbone 12K pour une frappe sèche et précise. Exigeante physiquement.",
     "editorial": "La Bela Elite Pro 2025 est le haut de gamme Wilson pour 2025. Carbone 12K et mousse Hard EVA en goutte d'eau — une construction expert qui favorise l'attaque tout en gardant la polyvalence de la forme goutte. C'est la Wilson pour les joueurs offensifs qui veulent la qualité de construction Wilson au sommet de ses capacités.",
@@ -13981,12 +13981,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8.8,
-      "Confort": 7.1,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.0,
+      "Tolérance": 8.0
     },
     "verdict": "La raquette de légende de Bela en version élite. Goutte d'eau équilibrée pour les joueurs avancés complets.",
     "editorial": "La Bela Elite V2 25 vise les joueurs confirmés qui exigent performance et précision dans chaque frappe. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Surface, Noyau, Forme composent un cocktail technique abouti pour les joueurs exigeants. Avec Contrôle à 8.8/10 comme point fort, elle s'inscrit dans le haut du catalogue Wilson. Pour joueurs avertis qui savent ce qu'ils veulent.",
@@ -14060,12 +14060,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.4,
-      "Confort": 7.6,
-      "Spin": 7.5,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "Raquette signature de la légende Belasteguín. Bon compromis puissance/contrôle mais confort limité par le carbone. Pour intermédiaires exigeants.",
     "editorial": "Wilson a positionné la Bela Pro V2 25 sur le créneau le plus compétitif : celui du joueur intermédiaire qui veut progresser sans changer de raquette tous les six mois. Le choix du goutte d'eau avec Surface, Noyau permet un équilibre entre puissance et contrôle. C'est le format qui accompagne la progression la plus naturelle vers le jeu avancé. Suffisamment performante pour le joueur qui s'affirme, suffisamment tolérante pour celui qui expérimente. L'équilibre parfait pour progresser sereinement.",
@@ -14141,10 +14141,10 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Puissance": 5,
-      "Contrôle": 9.2,
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 6.1,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
@@ -14221,12 +14221,12 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Puissance": 6.7,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.5
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 9.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "Wilson joue la carte du confort accessible. Goutte d'eau en fibre de verre, douce au toucher, tolérante aux erreurs de jeunesse. Le premier chapitre d'une histoire de padel, écrit avec bienveillance.",
     "editorial": "La Ultra V2 25 ne demande rien et donne beaucoup. Wilson a conçu cette raquette pour que le padel révèle son plaisir dès la première session. En goutte d'eau, elle offre un équilibre entre puissance et contrôle. Le noyau EVA souple absorbe les vibrations pour protéger les articulations encore peu habituées à l'effort. Avec un confort noté 9.2/10 et une tolérance à 9.5/10, c'est la définition d'une raquette bienveillante. Le padel commence sans stress.",
@@ -14299,11 +14299,11 @@
     "core": "Soft EVA",
     "description": "Ronde confort-first pour débutants. Fibre de verre + EVA souple. Timing facile, légère, gateway Wilson.",
     "scores": {
-      "Puissance": 6,
+      "Puissance": 6.0,
       "Contrôle": 9.5,
       "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 9.1,
+      "Spin": 6.0,
+      "Maniabilité": 9.5,
       "Tolérance": 9.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-accent-26.png",
@@ -14373,12 +14373,12 @@
     "core": "Power Foam EVA",
     "description": "Version allégée de la Bela V3. Maniabilité accrue sans perdre le spin et la puissance. Idéale progression.",
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 8.4,
-      "Confort": 7.1,
-      "Spin": 7.8,
-      "Maniabilité": 9.1,
-      "Tolérance": 8.5
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-lt-v3-26.png",
     "verdict": "Version allégée de la Bela : maniabilité boostée à 8.5 tout en gardant le spin. Parfaite pour progresser avec le confort en plus.",
@@ -14461,12 +14461,12 @@
     "core": "EVA Standard",
     "description": "Diamant offensive signature Bela. C2 Tubular Construction + 24K Carbon + DuoGrid. Puissance max pour joueurs confirmés.",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 6.5,
-      "Spin": 8.7,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.1
+      "Puissance": 8.5,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-pro-v3-26.png",
     "verdict": "Diamant signature Bela, carbone 24K et construction tubulaire. Puissance maximale pour experts — exige un bon niveau technique.",
@@ -14549,12 +14549,12 @@
     "core": "Power Foam EVA",
     "description": "Goutte versatile co-design Bela. V-Bridge + Spin2 Texture + DuoGrid Holes. Polyvalence attaque/défense.",
     "scores": {
-      "Puissance": 8.4,
-      "Contrôle": 8.8,
-      "Confort": 6.5,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-bela-v3-26.png",
     "verdict": "Co-design Bela en goutte versatile : spin à 8 et bon équilibre global. Polyvalente fiable qui s'adapte à tous les styles de jeu.",
@@ -14646,12 +14646,12 @@
     "core": "Soft EVA",
     "description": "Goutte toucher doux et précision. Dwell time long pour touches et défenses. Polyvalence attaque/défense.",
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 9.1,
-      "Confort": 8.6,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 8.5,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-pro-v2-26.png",
     "verdict": "Toucher doux et dwell time long pour un contrôle précis. Excellente en défense et en construction — la patte du tacticien.",
@@ -14729,12 +14729,12 @@
     "core": "Soft EVA",
     "description": "Goutte polyvalente intermédiaire. Feel doux et sweet spot tolérant. Transition vers jeu technique.",
     "scores": {
-      "Puissance": 7.6,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-blade-team-26.png",
     "verdict": "Goutte douce et tolérante pour intermédiaires. Sweet spot généreux, bon confort — transition idéale vers un jeu plus technique.",
@@ -14803,12 +14803,12 @@
     "core": "Dense EVA",
     "description": "Ronde précision chirurgicale. Sweet spot central, réponse crisp. Pour constructeurs de points tactiques.",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 7.6,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
-      "Tolérance": 8.8
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 6.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-prostaff-v2-26.png",
     "verdict": "Ronde contrôle pur : réponse nette et précision chirurgicale. Pour constructeurs patients qui placent chaque balle avec intention.",
@@ -14884,12 +14884,12 @@
     "core": "Pro EVA",
     "description": "Diamant puissance explosive. Infinity Edge sweet spot élargi + Power Pillar stabilité. Finisseur agressif.",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7.1,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 8.0,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.0
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-pro-v2-26.png",
     "verdict": "Diamant explosive à 9.5 en puissance avec sweet spot élargi. Finisseur agressif — demande du physique et de la précision.",
@@ -14972,12 +14972,12 @@
     "core": "EVA",
     "description": "Diamant puissance accessible. Infinity Edge pour sweet spot large. Progression vers jeu offensif.",
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8.4,
-      "Confort": 8,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "imageUrl": "https://nvomaxjyhuemdfvhzcbf.supabase.co/storage/v1/object/public/racket-images/wilson-ultra-team-26.png",
     "verdict": "Diamant accessible avec sweet spot large Infinity Edge. Bonne porte d'entrée vers le jeu offensif sans trop de risque.",
@@ -15054,12 +15054,12 @@
     "category": "avance",
     "womanLine": true,
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8.8,
-      "Confort": 8.9,
-      "Spin": 7.5,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.5
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "La Vertex de Delfi Brea. Diamant plus légère (350-370g) adaptée aux joueuses avancées. Puissance et spin grâce au Fibrix et au Top Spin. Custom Weight pour ajuster l'équilibre.",
     "editorial": "La Vertex 04 Woman reprend l'ADN de la Vertex classique — diamant, balance haute, carbone — mais calibrée 15-20g plus léger pour les joueuses. Le Fibrix (hybride fibre de verre + carbone) offre plus de flexibilité qu'un full carbone, ce qui apporte du confort sans sacrifier la réactivité. Le noyau MultiEVA double densité réagit fort sur les frappes rapides et absorbe sur les touches lentes. L'Ease Vibe dans le manche réduit les vibrations. Le Custom Weight permet d'ajouter jusqu'à 12g en tête pour personnaliser. C'est la raquette de la joueuse complète qui veut attaquer sans se fatiguer le bras.",
@@ -15147,12 +15147,12 @@
     "category": "avance",
     "womanLine": true,
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 9.1,
-      "Confort": 8.9,
-      "Spin": 7.2,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "La raquette de Gemma Triay. Hybride légère avec Vibradrive — l'équilibre parfait contrôle/puissance pour les joueuses avancées qui veulent tout.",
     "editorial": "L'Elite Woman est la raquette la plus équilibrée de la gamme pro féminine Bullpadel. Forme hybride (entre goutte d'eau et ronde) avec balance moyenne — maniable partout, du fond de court au filet. Le Vibradrive est le vrai plus : un élastomère intégré dans le manche qui absorbe les vibrations des frappes décentrées. Le Fibrix en surface donne un toucher souple mais réactif. Le noyau MultiEVA double densité fait le job en puissance comme en contrôle. L'Air React Channel dans le cœur améliore l'aérodynamisme. C'est la pala de la joueuse technique qui construit le point.",
@@ -15239,12 +15239,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.8,
-      "Confort": 8.3,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.5
     },
     "verdict": "La pala de Chingotto. Hybride contrôle avec Wave System et Vibradrive. Pour les constructeurs de point qui veulent de la précision et de la vitesse de bras.",
     "editorial": "Le Neuron est la raquette du tacticien. Conçue avec Fede Chingotto, elle est pensée pour les joueurs qui construisent le point avec précision plutôt qu'avec la force brute. Le Wave System (structure ondulée dans le cadre) augmente la rigidité ciblée tout en absorbant les vibrations — un toucher 'sec' et précis. Le X-Tend Carbon 3K en surface donne de la réactivité et du spin. La balance moyenne et la forme hybride permettent des transitions rapides défense-attaque. Le Vibradrive + Hesacore dans le manche forment un double système anti-vibrations. Le 3D Grain en surface améliore l'accroche pour les effets. C'est la pala du joueur intelligent qui place plutôt qu'il ne frappe.",
@@ -15317,12 +15317,12 @@
     "category": "avance",
     "womanLine": true,
     "scores": {
-      "Puissance": 8.6,
-      "Contrôle": 8.8,
-      "Confort": 8.9,
-      "Spin": 8.4,
-      "Maniabilité": 8.7,
-      "Tolérance": 8.1
+      "Puissance": 8.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 8.5,
+      "Maniabilité": 9.5,
+      "Tolérance": 8.0
     },
     "verdict": "Évolution 2026 de la Vertex Woman. Plus légère, plus aérodynamique grâce à l'Air Power. Diamant taillée pour l'attaque féminine de haut niveau.",
     "editorial": "La Vertex 05 Woman 2026 pousse le curseur plus loin que la 04 : l'Air Power (canal aérodynamique agrandi de 50%) rend la raquette plus rapide en mouvement, le Curv:Aktiv (structure latérale à section variable) améliore la stabilité en torsion. Le Vertex Core redessiné avec pont diagonal double offre plus de rigidité au cœur. Toujours en Fibrix + MultiEVA pour le confort, mais l'ensemble est plus réactif et explosif. Le Custom Weight permet jusqu'à 12g d'ajustement. Pour les joueuses qui veulent la puissance maximale dans un poids contrôlé.",
@@ -15410,12 +15410,12 @@
     "category": "avance",
     "womanLine": true,
     "scores": {
-      "Puissance": 7.9,
-      "Contrôle": 9.1,
-      "Confort": 8.9,
-      "Spin": 8.4,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.5,
+      "Confort": 8.0,
+      "Spin": 8.5,
+      "Maniabilité": 9.5,
+      "Tolérance": 9.0
     },
     "verdict": "Mise à jour 2026 de l'Elite Triay. Hybride légère avec Vibradrive amélioré. Contrôle et élégance pour les joueuses techniques.",
     "editorial": "L'Elite W 2026 poursuit la philosophie de Gemma Triay : un jeu complet qui allie grâce et efficacité. Forme hybride et balance moyenne pour une polyvalence totale. Le Vibradrive reste le pilier anti-vibrations. La construction Carbon + Fibrix en surface offre un compromis idéal entre rigidité et souplesse. Le MultiEVA double densité maintient un toucher réactif. L'Elite Core renforcé augmente la stabilité sur les frappes décentrées. C'est la raquette de la joueuse technique qui maîtrise tous les coups.",
@@ -15494,12 +15494,12 @@
     "category": "avance",
     "womanLine": true,
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 8.3,
-      "Spin": 7.8,
-      "Maniabilité": 9.1,
-      "Tolérance": 9.2
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 9.5,
+      "Tolérance": 9.5
     },
     "verdict": "La raquette d'Aranzazu Osoro. Ronde, légère (350-365g), contrôle maximal. Basée sur la ML10 avec poids adapté. Idéale pour le jeu défensif et la prévention des blessures.",
     "editorial": "La VK10 Quantum est la ML10 de Lamperti allégée pour les joueuses. Forme ronde = sweet spot XXL, balance basse = maniabilité maximale, poids de 350-365g = pas de fatigue. Le carbone 3K en surface donne de la réactivité sans excès de rigidité. Le noyau HR3 (haute densité, effet mémoire) assure une bonne sortie de balle. Le Pulse System et le Custom Grip réduisent les vibrations. L'EOS Flap (perforations latérales) redistribue le poids efficacement. C'est la raquette idéale pour les joueuses qui privilégient le contrôle et qui veulent protéger leurs articulations.",
@@ -15575,12 +15575,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 7.1,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.3
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Le diamant de Leo Augsburger. Puissance maximale avec le 12K carbone et le HR3. Pour les attaquants agressifs qui veulent dominer au filet.",
     "editorial": "La LA10 est l'arme offensive de la gamme Nox Quantum. Diamant + balance haute + carbone 12K = puissance brute maximale. Le 12K offre plus de rigidité que le 3K tout en restant plus léger que le carbone traditionnel. Le noyau HR3 à mémoire de forme assure une sortie de balle explosive. Le Spin 3D exclusif (hexagones 3D au centre + sable rugueux autour) permet de mettre beaucoup d'effet. Le Pulse System et le Custom Grip atténuent les vibrations — indispensable vu la rigidité du cadre. C'est la raquette du frappeur pur qui veut tout casser en smash et en bandeja.",
@@ -15653,12 +15653,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.2,
-      "Contrôle": 8.8,
-      "Confort": 7.6,
-      "Spin": 7.8,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.1
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "La polyvalente de Tino Libaak. Goutte d'eau en 12K — le meilleur compromis puissance/contrôle de la gamme Quantum. Pour les all-rounders.",
     "editorial": "La TL10 est le point d'équilibre parfait de la gamme Quantum Nox. Forme goutte d'eau = compromis idéal entre le contrôle de la ronde et la puissance du diamant. Le carbone 12K en surface apporte rigidité et réactivité, tandis que le noyau HR3 donne un toucher intermédiaire confortable. Balance moyenne pour une maniabilité en toutes situations. Le Spin 3D exclusif améliore l'accroche. Le Pulse System réduit les vibrations. Conçue avec Tino Libaak, jeune prodige du circuit. C'est la raquette du joueur complet qui veut être efficace partout.",
@@ -15749,11 +15749,11 @@
     "category": "intermediaire",
     "womanLine": true,
     "scores": {
-      "Puissance": 6.5,
+      "Puissance": 6.0,
       "Contrôle": 9.5,
-      "Confort": 9.5,
-      "Spin": 7.5,
-      "Maniabilité": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 10.0,
       "Tolérance": 9.5
     },
     "verdict": "La plus légère et maniable de chez Babolat. 330g, ronde, fibre de verre — confort maximal pour les joueuses et les joueurs sensibles du bras. Le pôle santé en priorité.",
@@ -15835,12 +15835,12 @@
     "category": "intermediaire",
     "womanLine": true,
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8.8,
-      "Confort": 9.5,
-      "Spin": 7.5,
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
       "Maniabilité": 9.5,
-      "Tolérance": 9.2
+      "Tolérance": 9.0
     },
     "verdict": "La Stima Spirit en mode dynamique. Hybride légère pour les joueuses qui veulent attaquer au filet sans se fatiguer. 330g de pur confort offensif.",
     "editorial": "La Dyna Spirit est la sœur offensive de la Stima Spirit. Même poids plume (330g) et même profil 36mm, mais forme hybride (entre goutte d'eau et diamant) qui apporte plus de puissance en attaque. La fibre de verre en surface maintient le confort et la tolérance. Le noyau Black EVA Soft garde un toucher doux. Le Vibrasorb System protège le bras. C'est la raquette de la joueuse dynamique qui monte au filet mais qui veut un maximum de confort. Parfaite pour la transition vers un jeu plus agressif.",
@@ -15923,11 +15923,11 @@
     "category": "intermediaire",
     "scores": {
       "Puissance": 8.5,
-      "Contrôle": 8.4,
-      "Confort": 9.2,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.5
+      "Contrôle": 9.0,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "La version souple du diamant Babolat. Fibre de verre + EVA Soft pour les intermédiaires qui veulent de la puissance sans la rigidité du carbone.",
     "editorial": "Le Technical Vertuo est la porte d'entrée vers le jeu offensif chez Babolat. Forme diamant et balance haute pour la puissance, mais surface fibre de verre au lieu du carbone — beaucoup plus tolérante et confortable. Le noyau EVA Soft absorbe bien les chocs. Le Vibrasorb System filtre les vibrations. Le 3D Spin en surface ajoute de l'accroche. C'est l'alternative idéale pour les joueurs intermédiaires qui veulent tester le diamant sans se faire mal au bras. La version fibre de verre de ce qui serait normalement un Technical Viper.",
@@ -16020,12 +16020,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9.1,
-      "Confort": 9.5,
-      "Spin": 7.5,
-      "Maniabilité": 9.1,
-      "Tolérance": 9.2
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.0
     },
     "verdict": "345g de pur maniabilité. Hybride fibre de verre pour les joueurs qui veulent de la vitesse de bras et du confort. L'Air Striker par excellence.",
     "editorial": "L'Air Vertuo est le modèle le plus léger de la gamme Vertuo. À 345g environ, c'est une plume en main. Forme hybride et balance équilibrée pour être à l'aise partout. La fibre de verre offre un toucher souple et élastique — la puissance vient de la flexibilité de la surface, pas de la rigidité. Le Black EVA Soft dans le noyau accentue le confort. Le Vibrasorb System réduit les vibrations. Le HPS (Holes Pattern System) optimise la distribution des trous pour la puissance et la tolérance. C'est la raquette 'easy power' — idéale pour les joueurs qui veulent progresser vite sans se faire mal.",
@@ -16115,12 +16115,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 8.8,
-      "Confort": 8.9,
-      "Spin": 7.5,
-      "Maniabilité": 9.1,
-      "Tolérance": 8.8
+      "Puissance": 6.5,
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.0
     },
     "verdict": "Mise à jour 2026 de l'Air Vertuo. Même philosophie ultra-légère et confortable. HPS amélioré et Soft Fiber pour plus de tolérance.",
     "editorial": "L'Air Vertuo 2026 évolue en douceur par rapport à la 2025. Le Soft Fiber remplace la fibre de verre classique pour encore plus de flexibilité et de pardon sur les frappes décentrées. Le HPS (Holes Pattern System) est optimisé pour chaque forme de raquette. Le Black EVA apporte plus d'élasticité. Le Vibrasorb System reste le pilier confort. Toujours à ~345g, c'est la continuité de la philosophie 'légèreté et easy power' de Babolat. Parfaite pour l'intermédiaire qui veut monter en régime progressivement.",
@@ -16207,12 +16207,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8,
-      "Confort": 8.9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 7.7
+      "Puissance": 8.5,
+      "Contrôle": 9.0,
+      "Confort": 9.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Le diamant souple 2026. Soft Fiber + Black EVA pour un diamant qui reste confortable. L'offensif accessible des Vertuo.",
     "editorial": "Le Technical Vertuo 2026 est le diamant de la gamme Vertuo — la famille confort et accessibilité de Babolat. Là où le Technical Viper est en full carbone et dur, le Technical Vertuo utilise le Soft Fiber pour un toucher beaucoup plus souple. Le Black EVA dans le noyau ajoute de l'élasticité. Le Vibrasorb System filtre les vibrations. Forme diamant + balance haute = puissance naturelle, mais le package est beaucoup plus tolérant qu'un Technical Viper. C'est l'entrée en matière offensive parfaite pour les intermédiaires.",
@@ -16300,12 +16300,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
+      "Puissance": 6.5,
       "Contrôle": 9.5,
-      "Confort": 8.9,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.5
     },
     "verdict": "LA référence anti-épicondylite. Les billes Kinetic dans le cadre réduisent les vibrations de 43% et le choc de 20%. Ronde, confortable, 10/10 confort. À prescrire.",
     "editorial": "Pro Kennex est LE spécialiste du confort articulaire dans le monde de la raquette. La technologie Kinetic utilise des micro-billes dans des capsules intégrées au cadre : à l'impact, elles se déplacent vers la zone de frappe et absorbent l'énergie du choc au lieu de la transmettre au bras. Résultat validé par le MIT : -20% choc, -43% vibrations, +50% stabilité en torsion. Le Kinetic Damping Chamber dans le manche absorbe les vibrations résiduelles. Le Spiral Tech Graphite en surface donne un toucher propre. Le noyau EVA Soft assure le confort. Forme ronde + balance basse = contrôle et sweet spot généreux. C'est la prescription n°1 pour l'épicondylite, l'épaule fragile ou le mal de dos.",
@@ -16386,12 +16386,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8.8,
-      "Confort": 8.3,
-      "Spin": 7.8,
-      "Maniabilité": 7.6,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Le Kinetic en mode puissance. Diamant avec billes Kinetic — l'offensif qui protège le bras. Pour les attaquants avec douleur au coude.",
     "editorial": "La Focus Pro est la version offensive du système Kinetic. Même technologie anti-vibrations révolutionnaire (micro-billes + Damping Chamber), mais dans une forme diamant avec balance haute pour la puissance. Le Spiral Tech Graphite en surface assure rigidité et réactivité. Le noyau EVA Soft maintient le confort. La texture 3D Grain améliore le spin. C'est la réponse parfaite au joueur qui dit 'je veux un diamant mais j'ai mal au coude' — la puissance sans la douleur. Un compromis unique sur le marché.",
@@ -16473,12 +16473,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 7.7,
-      "Contrôle": 9.1,
-      "Confort": 8.6,
-      "Spin": 7.5,
-      "Maniabilité": 8.3,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.5
     },
     "verdict": "Le polyvalent Kinetic. Goutte d'eau avec billes anti-vibrations — l'all-rounder qui protège le bras. Pour les joueurs complets sensibles des articulations.",
     "editorial": "La Black Ace est le polyvalent de la gamme Kinetic padel. Forme goutte d'eau avec balance moyenne — le compromis idéal entre puissance et contrôle. Même technologie Kinetic (micro-billes + Damping Chamber) que les Legend et Focus, mais en version plus équilibrée. Le Spiral Tech Carbon en surface apporte plus de réactivité que le Graphite tout en maintenant le confort. Protection PVC Bumper pour le cadre. C'est le choix naturel pour les joueurs complets qui veulent les bénéfices anti-vibrations sans se spécialiser en contrôle ou en attaque.",
@@ -16560,12 +16560,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 8.9,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 9.0
     },
     "verdict": "Noyau polyéthylène = absorption maximale des vibrations. Le M27 est LE classique du confort depuis 1991. Fabriquée à la main en Espagne. Référence pour l'épicondylite.",
     "editorial": "Royal Padel est le pionnier espagnol du confort depuis 1991. Le M27 est leur best-seller absolu, et pour cause : le noyau en polyéthylène soft haute densité absorbe les vibrations comme aucune mousse EVA ne le peut. Le polyéthylène offre un toucher unique — doux, amortissant, avec une bonne restitution d'énergie. Le cadre et les faces en carbone 3K apportent la puissance nécessaire. Le Shock Absorption System dans le cœur ouvert réduit encore les vibrations. Forme ronde + balance moyenne = contrôle et tolérance. Chaque raquette est pesée individuellement — vous choisissez votre poids exact. C'est l'arme anti-épicondylite n°1 avec Pro Kennex.",
@@ -16652,12 +16652,12 @@
     "category": "avance",
     "womanLine": true,
     "scores": {
-      "Puissance": 7.5,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.5
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "verdict": "Le M27 en version légère (350-365g). Même polyéthylène anti-vibrations, mais plus maniable. Idéal pour les joueuses et les seniors sensibles du bras.",
     "editorial": "Le M27 Light est la déclinaison allégée du best-seller Royal Padel. Mêmes technologies — polyéthylène soft, Shock Absorption System, carbone 3K — mais dans une fourchette de 350 à 365g. Plus facile à manier pour les gabarits légers, les joueuses et les seniors. L'absorption des vibrations reste identique au M27 standard. La texture 5D Hex Twill en surface améliore l'accroche pour les effets. C'est le M27 adapté au public qui a le plus besoin de confort : petits gabarits, bras sensibles, retour de blessure.",
@@ -16729,12 +16729,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Puissance": 6.5,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "verdict": "Le Whip polyéthylène classique. Confort extrême à prix plus accessible que le M27. Ronde, adaptable, anti-blessures. Le confort Royal Padel pour tous.",
     "editorial": "Le Whip Extreme est la version accessible du confort Royal Padel. Même noyau polyéthylène que le M27 pour l'absorption maximale des vibrations. Forme ronde et balance moyenne pour la polyvalence. Le Shock Absorption System réduit les vibrations transmises au bras. Plus abordable que le M27, c'est l'entrée en matière idéale dans le monde du polyéthylène pour les joueurs qui veulent protéger leurs articulations sans se ruiner.",
@@ -16822,12 +16822,12 @@
     "player": "Avancé",
     "womanLine": false,
     "scores": {
-      "Puissance": 9.3,
-      "Contrôle": 8.4,
-      "Confort": 6.5,
-      "Spin": 8.4,
-      "Maniabilité": 7.6,
-      "Tolérance": 7.7
+      "Puissance": 9.5,
+      "Contrôle": 8.0,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 7.0
     },
     "verdict": "Le fer de lance d'Oxdog. Diamant pur power avec surface sablée, balance haute, toucher dur. Pour smasheurs confirmés qui veulent innovation suédoise (PowerRibs, RBS ±8g).",
     "editorial": "Oxdog, la marque suédoise venue du floorball, bouscule les codes avec le Ultimate Pro+. Le HES Carbon (High Energy System) est un carbone ultra-réactif et rigide exclusif à la marque. Les PowerRibs — des rails intégrés au cadre — redistribuent l'énergie et réduisent les vibrations tout en augmentant la puissance. Le système RBS (Racket Balance System) avec poids amovible de 8g permet de personnaliser l'équilibre. Surface sablée pour le spin. C'est du brut, du direct, du power — pas pour les bras fragiles.",
@@ -16909,12 +16909,12 @@
     "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
-      "Puissance": 8.3,
-      "Contrôle": 8.8,
-      "Confort": 8,
-      "Spin": 8.4,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.8
+      "Puissance": 8.5,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Le polyvalent Oxdog. Goutte d'eau avec Side Ports aérodynamiques — rapide en défense, puissant en attaque. Le meilleur compromis de la gamme suédoise.",
     "editorial": "La Hyper Pro 2.0 est le modèle le plus équilibré d'Oxdog. Sa forme goutte d'eau avec balance haute offre un mix puissance/contrôle convaincant. L'innovation clé : les Side Ports, des perforations latérales qui réduisent la résistance à l'air et augmentent la vitesse du bras. Le Vibradamp à 4 insertions silicone sous le grip protège le bras. DSH (Double Size Holes) améliore la jouabilité hors sweet spot. RBS inclus pour personnalisation.",
@@ -16999,12 +16999,12 @@
     "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
-      "Puissance": 7.3,
-      "Contrôle": 8.8,
-      "Confort": 8.3,
-      "Spin": 8.1,
-      "Maniabilité": 8.7,
-      "Tolérance": 9.2
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.5
     },
     "verdict": "\"Potentiellement la ronde la plus rapide du monde\" selon Oxdog. Contrôle + balance étonnamment haute pour une ronde = défense + capacité offensive. Le Vibradamp protège le bras.",
     "editorial": "La Sense Pro est la raquette de contrôle d'Oxdog, mais pas une ronde timide. Son balance moyen-haut (inhabituel pour une ronde) lui donne une capacité offensive rare dans sa catégorie. Le Vibradamp 3 couches réduit le stress sur poignet, coude et épaule — un vrai argument santé. Les PowerRibs en position haute ajoutent de la puissance sans effort. RBS permet d'affiner. Surface sablée pour le spin. Un choix santé intelligent pour défenseurs actifs.",
@@ -17092,12 +17092,12 @@
     "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
-      "Puissance": 8.5,
-      "Contrôle": 8,
-      "Confort": 8,
-      "Spin": 8.4,
-      "Maniabilité": 7.9,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.0
     },
     "verdict": "Diamant accessible. Balance moyen pour un diamant = plus de contrôle et polyvalence qu'un Ultimate Pro+. Le pont entre puissance et maîtrise chez Oxdog.",
     "editorial": "Le Tour X est le diamant polyvalent d'Oxdog. Contrairement au Pro+ (balance haute, toucher dur), le Tour X a un balance moyen qui le rend plus maniable et tolérant. C'est le meilleur choix pour qui veut la forme diamant Oxdog sans l'exigence technique du Pro+. Surface sablée, HES Carbon, PowerRibs et RBS inclus. Un bon point d'entrée dans l'écosystème offensif Oxdog.",
@@ -17169,12 +17169,12 @@
     "player": "Bea González",
     "womanLine": false,
     "scores": {
-      "Puissance": 7.3,
-      "Contrôle": 8.8,
-      "Confort": 8.3,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.0,
+      "Tolérance": 9.0
     },
     "verdict": "La ronde la plus offensive de Starvie. Bea González joue avec. Double couche 3K carbon + EVA Pro dur = spin monstrueux et attaque depuis une forme ronde. Grip Noene anti-vibrations.",
     "editorial": "La Kenta Eternal Pro remplace la Raptor Evolution et se positionne entre la Metheora (contrôle) et la Triton (puissance). Sa double couche de carbone 3K sur les faces la rend très rigide — c'est une raquette exigeante mais redoutable en spin. La technologie Hex Tech (hexagones 3D) est considérée comme le meilleur système de rugosité du marché. Le grip Noene absorbe les vibrations malgré la dureté. Grip allongé +1.5cm pour les revers à deux mains.",
@@ -17262,12 +17262,12 @@
     "player": "Bea González",
     "womanLine": false,
     "scores": {
-      "Puissance": 6.8,
+      "Puissance": 7.0,
       "Contrôle": 9.5,
-      "Confort": 9.5,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.5
+      "Confort": 9.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 9.0
     },
     "verdict": "La plus confortable de la gamme Premium Starvie. Fiberglass + Carbon 3K + EVA Soft = toucher doux et sweet spot large. Protection articulaire naturelle. Idéal centre santé.",
     "editorial": "L'Astrum Eris est le pilier confort de Starvie. Sa combinaison fiberglass + carbone 3K sur les faces crée un toucher plus doux que la Kenta ou la Metheora. L'EVA Soft V30 absorbe les vibrations naturellement. Le sweet spot est le plus large de la gamme Premium. C'est LA raquette Starvie à recommander aux joueurs sensibles du bras ou en reprise après blessure. Full Plane Effect pour le spin malgré le confort.",
@@ -17351,12 +17351,12 @@
     "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
-      "Puissance": 6.8,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 9.0
     },
     "verdict": "Le compromis Starvie. Entre Astrum (confort) et Kenta (attaque). Double 3K carbon + EVA Soft = la ronde la plus puissante de la gamme tout en restant confortable. Polyvalence totale.",
     "editorial": "La Metheora Warrior est le juste milieu de la gamme Premium Starvie. Elle combine le sweet spot moyen de l'Astrum avec la double couche 3K de la Kenta, ce qui en fait la ronde la plus puissante des trois tout en gardant le confort de l'EVA Soft V30. Idéale pour les joueurs qui veulent tout : contrôle, puissance au filet, spin, et un minimum de confort. Full Plane Effect pour la rugosité. 100% carbone pour la durabilité.",
@@ -17438,12 +17438,12 @@
     "player": "Avancé",
     "womanLine": false,
     "scores": {
-      "Puissance": 8,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.3,
-      "Tolérance": 9.2
+      "Puissance": 7.5,
+      "Contrôle": 9.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.5
     },
     "verdict": "Le diamant offensif de Varlion. Forme Bourne exclusive (60% puissance / 40% contrôle). Cadre Prisma aérodynamique (-10% résistance air). Grip Summum 14.5cm. Pour attaquants exigeants.",
     "editorial": "La Bourne Summum Prisma est le fer de lance offensif de Varlion. Sa forme exclusive Bourne (hybride entre diamant et goutte d'eau) offre 60% puissance / 40% contrôle. Le cadre Prisma en forme de prisme réduit la surface de contact avec les vitres de 90% et la résistance à l'air de 10%. Le Wings Diffuser dans le cœur optimise le flux d'air. Grip Summum allongé à 14.5cm pour les revers à deux mains. Résine VAR-FLEX exclusive pour élasticité maximale.",
@@ -17536,11 +17536,11 @@
     "womanLine": true,
     "scores": {
       "Puissance": 6.5,
-      "Contrôle": 9.1,
-      "Confort": 9.5,
-      "Spin": 7.8,
+      "Contrôle": 9.5,
+      "Confort": 8.5,
+      "Spin": 7.0,
       "Maniabilité": 9.5,
-      "Tolérance": 9.5
+      "Tolérance": 9.0
     },
     "verdict": "La légende du contrôle Varlion depuis 1995. LW = Lethal Weapon. Ronde, balance bas, sweet spot immense, 340-355g. Grip 14.5cm. Le best-seller historique réédité avec techs Prisma.",
     "editorial": "La LW (Lethal Weapon) est LA raquette historique de Varlion, best-seller depuis sa création en 1995. Cette réédition Summum Prisma intègre toutes les technologies modernes dans le modèle le plus vendu de l'histoire de la marque. Forme ronde + balance bas = maniabilité et sweet spot maximum. Parfait pour les défenseurs et les joueurs cherchant le contrôle absolu. Légèreté (340-355g) idéale pour femmes et seniors. Le cadre Prisma protège contre les chocs aux vitres.",
@@ -17630,12 +17630,12 @@
     "player": "Maxi Sánchez",
     "womanLine": false,
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 8.8,
-      "Confort": 8.3,
-      "Spin": 7.8,
-      "Maniabilité": 8.2,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.0
     },
     "verdict": "Le diamant Decathlon signé Maxi Sánchez. Textreme 18K aérospatial + Dual-Foam + Shock Block. Qualité pro à 200€. Le meilleur rapport qualité/prix du marché en diamant.",
     "editorial": "La MS Pro est la raquette signature de Maxi Sánchez chez Kuikma (Decathlon). Le carbone Textreme 18K, utilisé dans l'aérospatiale, offre puissance et légèreté. Le Dual-Foam (double densité EVA) combine puissance en surface et contrôle en profondeur. Le Shock Block, un insert élastomère dans le manche certifié par le labo Testea (Polytechnique de Valence), réduit les vibrations. À 200€, c'est probablement le meilleur rapport qualité/prix du marché en raquette pro.",
@@ -17720,12 +17720,12 @@
     "player": "Lucía Sainz",
     "womanLine": true,
     "scores": {
-      "Puissance": 7.7,
-      "Contrôle": 8.8,
-      "Confort": 8.6,
-      "Spin": 7.8,
-      "Maniabilité": 8.6,
-      "Tolérance": 8.8
+      "Puissance": 8.0,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "verdict": "La goutte d'eau Decathlon signée Lucía Sainz. Même technologies pro que la MS Pro en format polyvalent. Toucher moyen-dur, sweet spot centré. 200€ pour une raquette World Padel Tour.",
     "editorial": "La LS Pro est la raquette de Lucía Sainz, conçue avec les mêmes technologies que la MS Pro mais en forme goutte d'eau pour plus de polyvalence. Le sweet spot est centré (pas haut comme un diamant), offrant plus de tolérance. Textreme 18K + Dual-Foam + Shock Block anti-vibrations certifié. Design neutre (noir et blanc) adapté à tous. À 200€, impossible de trouver mieux en rapport qualité/prix pour une raquette signature WPT.",
@@ -17820,11 +17820,11 @@
     "player": "Miguel Lamperti",
     "womanLine": true,
     "scores": {
-      "Puissance": 6.5,
+      "Puissance": 6.0,
       "Contrôle": 9.5,
-      "Confort": 9.5,
-      "Spin": 7.2,
-      "Maniabilité": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
       "Tolérance": 9.5
     },
     "verdict": "La ML10 légère. Version Silver (350-365g) du best-seller historique de Nox. Ronde, douce, maniable. Fiberglass Silver + HR3 Soft. Idéale femmes, seniors, bras sensibles. Prix accessible.",
@@ -17924,12 +17924,12 @@
     "player": "Agustín Tapia",
     "womanLine": false,
     "scores": {
-      "Puissance": 8.3,
-      "Contrôle": 8.6,
-      "Confort": 7.6,
-      "Spin": 8.4,
-      "Maniabilité": 8.2,
-      "Tolérance": 8.5
+      "Puissance": 8.5,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "La raquette du n°1 mondial Agustín Tapia. 12K Alum Xtrem = rigidité + stabilité thermique. Weight Balance ajustable. Dual Spin double rugosité. Le sommet de la tech Nox 2026.",
     "editorial": "La AT10 Genius 2026 est la nouvelle arme d'Agustín Tapia, le Mozart du padel. Le 12K Alum Xtrem est une innovation majeure : l'aluminisation du carbone réduit l'ondulation des fibres de 50%, donnant une surface plus uniforme, plus rigide, et stable face aux changements de température. Le Weight Balance permet d'ajuster l'équilibre avec des pièces de 2g et 4g. Dual Spin combine hexagones 3D + sable silice pour le spin maximal. EOS Tunnel (perforations latérales) améliore l'aérodynamisme.",
@@ -18017,12 +18017,12 @@
     "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9.5,
-      "Confort": 9.2,
-      "Spin": 7.8,
-      "Maniabilité": 8.6,
-      "Tolérance": 9.2
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 9.0,
+      "Spin": 8.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "Le Carbon Force iconique en version Pro. Goutte d'eau, EVA Soft, sweet spot large. Polyvalent et confortable. La gamme Wilson la plus vendue, maintenant avec Tri-Hex Texture pour le spin.",
     "editorial": "Le Carbon Force est la franchise iconique de Wilson en padel. La version Pro offre un profil polyvalent avec sa forme goutte d'eau et son EVA Soft. Le sweet spot est large et tolérant. La Tri-Hex Texture (texture hexagonale unique) améliore le spin. Le Carbon Fiberglass Composite combine légèreté et puissance. Sangle détachable personnalisable. Un excellent choix de milieu de gamme pour joueurs intermédiaires.",
@@ -18110,12 +18110,12 @@
     "player": "Intermédiaire",
     "womanLine": true,
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9.5,
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
       "Confort": 9.5,
-      "Spin": 7.8,
-      "Maniabilité": 9.5,
-      "Tolérance": 9.5
+      "Spin": 8.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.0
     },
     "verdict": "Le Carbon Force le plus léger (355g). Goutte d'eau maniable, EVA Soft confort, sweet spot large. Le meilleur rapport qualité/prix Wilson pour femmes, seniors et débutants.",
     "editorial": "Le Carbon Force LT (Light) est la version allégée du best-seller Wilson. À seulement 355g, c'est l'une des raquettes les plus maniables du marché. EVA Soft pour le confort et l'absorption des chocs. Sweet spot large et tolérant. Tri-Hex Texture pour le spin. À 80-130€, c'est un choix excellent pour la boutique club : accessible, confortable, et adapté aux joueurs cherchant maniabilité sans complexité.",
@@ -18200,12 +18200,12 @@
     "player": "Avancé",
     "womanLine": false,
     "scores": {
-      "Puissance": 8.6,
-      "Contrôle": 9.1,
-      "Confort": 8.9,
-      "Spin": 7.5,
-      "Maniabilité": 7.8,
-      "Tolérance": 8.1
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "Le diamant Veron pour attaquants flexibles. Carbon Flex = réactivité du carbone + souplesse du fiberglass. Vibrasorb SMAC pour le confort. Le pendant \"souple\" du Technical Viper.",
     "editorial": "Le Technical Veron 2025 est le diamant de la gamme Veron — la ligne Babolat positionnée sur la flexibilité et le dynamisme. Là où le Technical Viper est rigide et explosif, le Veron utilise la technologie Carbon Flex (tissage carbone + fibre de verre) pour offrir puissance dynamique avec plus de souplesse. Le Vibrasorb System powered by SMAC intègre des élastomères dans les fibres de carbone et le manche pour réduire les vibrations. Holes Pattern System adapté à la forme diamant.",
@@ -18293,12 +18293,12 @@
     "player": "Intermédiaire",
     "womanLine": false,
     "scores": {
-      "Puissance": 7,
-      "Contrôle": 9.1,
-      "Confort": 9.2,
-      "Spin": 7.5,
-      "Maniabilité": 9.1,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "Le Veron léger et maniable. Goutte d'eau 355g, balance moyen, Carbon Flex dynamique. \"Air Striker\" — vitesse et agilité pour dominer tout le court avec flexibilité.",
     "editorial": "L'Air Veron 2025 est le polyvalent agile de la gamme Veron. À 355g avec une forme goutte d'eau et un balance moyen (265mm), c'est une raquette rapide dans les échanges. Le Carbon Flex offre une puissance dynamique sans la dureté du carbone pur. Black EVA pour stabilité et confort. Vibrasorb System pour la protection du bras. Holes Pattern System avec petits trous au centre (précision) et grands trous sur les bords (tolérance).",
@@ -18386,10 +18386,10 @@
     "scores": {
       "Puissance": 6.5,
       "Contrôle": 9.5,
-      "Confort": 8.9,
-      "Spin": 7.8,
-      "Maniabilité": 9.1,
-      "Tolérance": 9.2
+      "Confort": 8.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.0
     },
     "verdict": "Le \"Counter Striker\" Babolat. Ronde surdimensionnée, balance bas, X-EVA souple. Sweet spot élargi + Vibrasorb = tolérance et confort maximum. Pour les défenseurs qui retournent tout.",
     "editorial": "Le Counter Veron 2025 est la raquette défensive de la gamme Veron. Sa forme ronde surdimensionnée offre un sweet spot élargi. Le X-EVA (basse densité) donne un toucher souple qui absorbe les chocs. Le Carbon Flex maintient une puissance dynamique pour la contre-attaque. Le Vibrasorb System SMAC protège le bras sur les retours puissants. Holes Pattern adapté à la forme ronde pour précision. 3D Spin+ pour les effets défensifs.",
@@ -18479,12 +18479,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Spin": 8.4,
-      "Confort": 6,
-      "Contrôle": 6.9,
       "Puissance": 9.5,
-      "Tolérance": 6.4,
-      "Maniabilité": 6
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 8.0
     },
     "verdict": "La signature d'Arturo Coello, n°1 mondial. Diamant carbone hybride à balance haute — puissance maximale avec un spin mordant. Construction exigeante : réservée aux joueurs experts capables de gérer l'inertie et le manque de tolérance.",
     "editorial": "La Head Coello Pro 2025 est la raquette la plus puissante de la collection Head 2025. Conçue en collaboration avec Arturo Coello, n°1 mondial, elle incarne l'attaque à l'état pur. Sa forme diamant et son équilibre très haut (272mm) génèrent une vitesse de balle exceptionnelle sur les smashs, viboras et X3. Le noyau Power Foam rouge, plus dense que les versions précédentes, offre une sortie de balle explosive. La technologie Auxetic 2.0 maintient un sweet spot étonnamment large pour une raquette aussi offensive. La surface Carbon Hybrid avec le motif Extreme Spin ajoute un grip redoutable pour les effets. À 375g, c'est une arme qui exige de la technique et de la condition physique — réservée aux joueurs experts qui veulent dominer au filet.",
@@ -18573,12 +18573,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Confort": 7.8,
-      "Contrôle": 7.8,
-      "Maniabilité": 7.8,
-      "Puissance": 8.2,
-      "Spin": 7.5,
-      "Tolérance": 7.7
+      "Puissance": 8.5,
+      "Contrôle": 9.5,
+      "Confort": 7.5,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.5
     },
     "verdict": "La Coello accessible. Diamant fibre de verre avec un équilibre plus centré — garde l'ADN offensif de la gamme tout en restant jouable pour les intermédiaires. Bon rapport qualité-prix pour découvrir la signature Coello.",
     "editorial": "La Head Coello Team 2025 est le point d'entrée idéal dans la collection Coello pour les joueurs intermédiaires à avancés. Sa forme diamant conserve l'ADN offensif de la gamme, mais avec une surface en fibre de verre plus tolérante que le carbone hybride des modèles supérieurs. Le Power Foam offre une bonne réactivité et l'Auxetic 2.0 maintient un sweet spot généreux même sur les frappes décentrées. L'équilibre moyen permet autant les phases offensives au filet que les phases défensives en fond de court. C'est la raquette idéale pour le joueur qui monte en niveau et veut goûter à la puissance de la gamme Coello sans la rigidité des modèles pro. Excellent rapport qualité-prix de la collection.",
@@ -18654,12 +18654,12 @@
     "year": 2025,
     "category": "junior",
     "scores": {
-      "Confort": 8.5,
-      "Contrôle": 8,
-      "Maniabilité": 9,
-      "Puissance": 5,
-      "Spin": 5.5,
-      "Tolérance": 8.5
+      "Puissance": 5.5,
+      "Contrôle": 9.5,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 9.5,
+      "Tolérance": 9.5
     },
     "verdict": "La Coello pour les jeunes. Goutte d'eau légère en fibre de verre, ultra-maniable et confortable. Le format junior adapté aux enfants qui veulent jouer avec la raquette de leur idole.",
     "editorial": "La Head Coello Junior 2025 est conçue pour les jeunes joueurs qui veulent débuter avec une raquette inspirée par le n°1 mondial. Légère (environ 315g), avec une forme goutte d'eau et un équilibre bas, elle est facile à manier pour les enfants et adolescents. La surface en fibre de verre et le noyau EVA standard offrent un toucher doux et tolérant. Le design reprend les codes visuels de la collection Coello — noir, argent et rouge — pour que les plus petits puissent rêver de jouer comme le Roi Arturo.",
@@ -18741,12 +18741,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Confort": 6.6,
-      "Contrôle": 7.4,
-      "Maniabilité": 7.3,
-      "Puissance": 8.9,
-      "Spin": 8.1,
-      "Tolérance": 6.9
+      "Puissance": 9.5,
+      "Contrôle": 9.5,
+      "Confort": 7.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.0
     },
     "verdict": "Le compromis Coello haut de gamme. Diamant carbone hybride avec un équilibre mi-haut — presque autant de puissance que la Pro mais plus de contrôle. Pour les joueurs avancés offensifs qui veulent un poil de sécurité.",
     "editorial": "La Head Coello Motion 2025 est la version allégée de la Coello Pro, pensée pour les joueurs avancés qui veulent de la puissance sans sacrifier la maniabilité. À 360g contre 375g pour la Pro, elle offre une réactivité nettement supérieure tout en conservant la forme diamant et l'équilibre mi-haut caractéristiques de la gamme. La structure Carbon Hybrid avec Auxetic 2.0 assure une réponse explosive à chaque frappe. Le Power Foam rouge maintient la sortie de balle percutante de la Pro mais avec un swing weight réduit. L'Extreme Spin apporte le même grip sur les effets. C'est le choix idéal pour les attaquants qui veulent bouger vite au filet sans perdre de percussion — la raquette parfaite pour le joueur côté gauche qui enchaîne smash et descente de filet.",
@@ -18835,12 +18835,12 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Confort": 8.8,
-      "Contrôle": 7.8,
-      "Maniabilité": 8.2,
-      "Puissance": 6.7,
-      "Spin": 6.9,
-      "Tolérance": 8.8
+      "Puissance": 7.5,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "La Coello pour débuter. Goutte d'eau en fibre de verre, confortable et tolérante. La pala parfaite pour les nouveaux joueurs qui veulent un produit Head signé Coello sans se ruiner.",
     "editorial": "La Head Coello Vibe 2025 est la version la plus accessible de la collection Coello, pensée pour les joueurs débutants et occasionnels. Sa forme goutte d'eau surdimensionnée offre un sweet spot XXL et une tolérance maximale sur les frappes décentrées. La fibre de verre en surface apporte souplesse et confort, tandis que la technologie Innegra absorbe les vibrations pour protéger le coude et le poignet. Le Power Foam assure un bon retour d'énergie malgré le positionnement entrée de gamme. C'est la raquette parfaite pour débuter au padel avec un produit de qualité sans casser la tirelire — et avec le design signature d'Arturo Coello en bonus.",
@@ -18918,12 +18918,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Confort": 6.6,
-      "Contrôle": 6.5,
-      "Maniabilité": 6,
       "Puissance": 9.5,
-      "Spin": 8.4,
-      "Tolérance": 6
+      "Contrôle": 8.0,
+      "Confort": 6.5,
+      "Spin": 7.5,
+      "Maniabilité": 6.5,
+      "Tolérance": 7.0
     },
     "verdict": "La bombe Decathlon. Diamant carbone 18K balance haute — puissance pure à 180€, un rapport qualité-prix imbattable. Dure et exigeante, mais pour le prix d'une intermédiaire concurrente.",
     "editorial": "La Kuikma Power Pro 2025 est le fer de lance offensif de la nouvelle gamme Pro. Développée avec Maxi Sánchez, elle pousse la puissance au maximum grâce à sa forme diamant et son équilibre haut. Le TeXtreme Carbon 18K sur la surface avec le nouveau motif Rough Surface améliore considérablement la prise d'effet. Le cadre Air Foam Frame double tube renforce la rigidité. Le Dual Foam et le Shock Block complètent le package. C'est la plus rigide et la plus exigeante de la gamme. À 180€ avec ces technologies, le rapport qualité-prix défie la concurrence.",
@@ -19003,12 +19003,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Confort": 8.5,
-      "Contrôle": 9.5,
-      "Maniabilité": 9.1,
-      "Puissance": 7.5,
-      "Spin": 7.8,
-      "Tolérance": 8.8
+      "Puissance": 7.0,
+      "Contrôle": 8.5,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 9.0,
+      "Tolérance": 8.5
     },
     "verdict": "La ronde carbone Decathlon. TeXtreme 18K en forme ronde — contrôle chirurgical avec un sweet spot immense. Le meilleur rapport qualité-prix du marché pour les défenseurs et joueurs techniques.",
     "editorial": "La Kuikma Control Pro 2025 a été élue meilleure raquette de contrôle 2025 par Testea aux Best Padel Awards. Sa forme ronde et son équilibre bas offrent une maniabilité chirurgicale et un sweet spot XXL grâce à un motif de perçage spécial. C'est paradoxalement la plus rigide de la gamme Pro, ce qui lui donne un punch inattendu. Le TeXtreme Carbon 18K avec Rough Surface permet des effets précis. Idéale pour les constructeurs de points et les joueurs côté droit. À 180€ avec ce palmarès, c'est un choix évident.",
@@ -19075,12 +19075,12 @@
     "year": 2025,
     "category": "debutant",
     "scores": {
-      "Confort": 8.5,
-      "Contrôle": 7.4,
-      "Maniabilité": 9.1,
-      "Puissance": 6,
-      "Spin": 6,
-      "Tolérance": 9.2
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 9.5,
+      "Tolérance": 9.5
     },
     "verdict": "L'ultra-accessible Decathlon. Ronde fibre de verre à 35€ — impossible de trouver moins cher pour débuter. Légère, tolérante, sans prétention. La pala pour essayer le padel sans investir.",
     "editorial": "La Kuikma PR Open 2025 est la raquette d'initiation absolue de Decathlon. Fibre de verre et Soft EVA en ronde — les matériaux les plus doux et tolérants du marché. À 35€, c'est le prix d'entrée le plus bas pour une raquette de padel décente. La tolérance à 9.2 pardonne tout. Idéale pour les premiers cours ou pour prêter aux amis qui veulent essayer.",
@@ -19154,12 +19154,12 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Confort": 8.8,
-      "Contrôle": 8.6,
-      "Maniabilité": 8.6,
-      "Puissance": 6.7,
-      "Spin": 6,
-      "Tolérance": 9.2
+      "Puissance": 6.0,
+      "Contrôle": 9.5,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 8.5,
+      "Tolérance": 9.5
     },
     "verdict": "La ronde métal Decathlon pour progresser. Fibre de verre renforcée métal en ronde — plus de rigidité que la PR Open, plus de confort que la Control Pro. Le juste milieu intermédiaire à 99€.",
     "editorial": "La Kuikma Control Metal 2025 est la raquette de contrôle de la gamme intermédiaire Metal. Sa forme ronde et son équilibre bas offrent un sweet spot généreux et une maniabilité excellente. La technologie Metal Biaxial Core — une maille métallique tissée avec la fibre de verre dans la gorge — améliore la sortie de balle et la résistance à la flexion. Le noyau Soft EVA assure un toucher doux. À 99€ chez Décathlon, c'est un excellent rapport qualité-prix pour les joueurs en progression.",
@@ -19248,12 +19248,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Confort": 8.2,
-      "Contrôle": 8.2,
-      "Maniabilité": 8.2,
-      "Puissance": 8.5,
-      "Spin": 7.7,
-      "Tolérance": 7.7
+      "Puissance": 8.0,
+      "Contrôle": 8.0,
+      "Confort": 7.0,
+      "Spin": 7.5,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "verdict": "La polyvalente carbone Decathlon, signée Coki Nieto. Goutte d'eau TeXtreme 18K — l'équilibre parfait entre puissance et contrôle à 180€. La pala qui fait tout bien sans rien sacrifier.",
     "editorial": "La Kuikma Hybrid Pro 2025 est la synthèse parfaite de la gamme — polyvalente, réactive et sans compromis. Sa forme hybride goutte d'eau avec équilibre moyen permet de tout faire : défendre, attaquer, smasher. Le TeXtreme Carbon 18K avec Rough Surface donne de l'explosivité en smash et du grip pour les effets. Le Dual Foam offre un toucher medium-hard qui équilibre contrôle et sortie de balle. Coki Nieto (#7 mondial) l'a choisie comme raquette signature pour 2026. Avec plus de 80 avis à 4.5/5 sur Décathlon, c'est la préférée des joueurs. À 180€, c'est une des meilleures offres du marché.",
@@ -19336,11 +19336,11 @@
     "year": 2025,
     "category": "intermediaire",
     "scores": {
-      "Confort": 8.5,
-      "Contrôle": 7.8,
-      "Maniabilité": 8.2,
-      "Puissance": 7.9,
-      "Spin": 6,
+      "Puissance": 7.0,
+      "Contrôle": 9.0,
+      "Confort": 9.5,
+      "Spin": 6.0,
+      "Maniabilité": 8.0,
       "Tolérance": 8.5
     },
     "verdict": "La goutte d'eau intermédiaire Decathlon. Fibre de verre métal en goutte — polyvalente, confortable, tolérante. Le choix rationnel à 99€ pour le joueur qui progresse.",
@@ -19409,12 +19409,12 @@
     "year": 2026,
     "category": "expert",
     "scores": {
-      "Confort": 7.8,
-      "Contrôle": 9.5,
-      "Maniabilité": 7.8,
       "Puissance": 7.5,
-      "Spin": 8,
-      "Tolérance": 8.8
+      "Contrôle": 9.0,
+      "Confort": 8.5,
+      "Spin": 7.0,
+      "Maniabilité": 7.5,
+      "Tolérance": 9.0
     },
     "verdict": "La ronde premium Wilson 2026, signée Momo González. Carbone 3K + ExactTouch en ronde — contrôle de haute précision avec une tolérance remarquable. La pala du défenseur expert qui veut aussi passer en attaque.",
     "editorial": "La Wilson Endure Pro V1 2026 inaugure la nouvelle gamme Endure, conçue pour les défenseurs stratèges de haut niveau. C'est la raquette de Momo González, l'un des joueurs les plus complets du circuit. Sa forme ronde offre un sweet spot élargi, idéal pour sécuriser les frappes même sur les balles décentrées. Le cadre en carbone 3K assure un excellent compromis entre légèreté et solidité, avec une transmission optimale de l'énergie à l'impact. Le noyau Control Foam+ à double densité combine toucher doux et réponse rapide — confort en défense, précision en attaque. La technologie ExactTouch (surface sablée 3D) maximise l'accroche de la balle pour générer facilement des effets. Le Y-Beam, structure renforcée en Y dans le cœur, apporte stabilité et réactivité dans les changements de direction. Son équilibre moyen-haut la rend plus polyvalente que les deux autres Endure, permettant à Momo de varier entre construction patiente et accélérations décisives.",
@@ -19497,12 +19497,12 @@
     "year": 2026,
     "category": "avance",
     "scores": {
-      "Confort": 8.5,
-      "Contrôle": 9.5,
-      "Maniabilité": 8.2,
-      "Puissance": 7.5,
+      "Puissance": 7.0,
+      "Contrôle": 8.5,
+      "Confort": 8.0,
       "Spin": 7.5,
-      "Tolérance": 9.2
+      "Maniabilité": 8.5,
+      "Tolérance": 8.5
     },
     "verdict": "La ronde Wilson accessible. UD Carbon + ExactTouch en ronde balance basse — contrôle maximal (9.5) et tolérance exceptionnelle (9.2). La pala la plus sûre de la gamme Wilson 2026.",
     "editorial": "La Wilson Endure V1 2026 est le cœur de la gamme Endure, destinée aux joueurs intermédiaires à avancés qui construisent le point depuis le fond du court. Son équilibre bas (255mm) et sa forme ronde génèrent un sweet spot très large, favorisant la tolérance et la régularité — chaque frappe est sécurisée. La surface UD Carbon (carbone unidirectionnel) avec ExactTouch offre stabilité et réactivité pour le contrôle directionnel et les effets. Le noyau Control Foam+ double densité absorbe les impacts pour protéger le bras tout en transmettant juste ce qu'il faut de puissance. Le Y-Beam dans le manche facilite les changements de direction fluides et rapides. Le toucher est plus souple que la Pro V1, privilégiant le confort sur les longs échanges. C'est la raquette du stratège patient qui exploite les angles et provoque l'erreur adverse plutôt que de forcer la balle.",
@@ -19581,12 +19581,12 @@
     "year": 2025,
     "category": "expert",
     "scores": {
-      "Confort": 6,
-      "Contrôle": 6.5,
-      "Maniabilité": 6,
       "Puissance": 9.5,
+      "Contrôle": 8.5,
+      "Confort": 6.5,
       "Spin": 8.5,
-      "Tolérance": 6
+      "Maniabilité": 7.0,
+      "Tolérance": 7.5
     },
     "verdict": "L'arme offensive Wilson, signée Javi Garrido. Diamant carbone 15K balance haute — puissance et spin extrêmes. Construction sans concession : experts confirmés uniquement.",
     "editorial": "La Wilson Defy Pro V1 est l'arme ultime de la gamme Wilson pour les attaquants purs. Conçue avec Javi Garrido (#12 mondial), c'est la raquette la plus lourde et la plus puissante de la marque. Sa forme diamant et son équilibre haut génèrent une inertie considérable, idéale pour les smashs, viboras et X3 dévastateurs. La surface en carbone 15K avec texture Spin² offre une accroche exceptionnelle — la balle mord littéralement la surface pour des effets agressifs. Le noyau Power Foam haute densité assure une sortie de balle explosive avec un toucher ferme et direct. La technologie Aeroexact Design près du manche améliore l'aérodynamisme pour des swings plus rapides malgré le poids. Le Duo Grid Hole Pattern combine gros trous en haut (puissance sur les smashs) et petits en bas (contrôle sur les vollées). Le I-Beam renforce le cadre central pour une stabilité maximale à l'impact. À 370g, c'est une raquette qui exige technique et condition physique — elle ne pardonne pas les frappes décentrées — mais récompense chaque frappe propre par une vitesse de balle terrifiante.",
@@ -19670,12 +19670,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Confort": 6.7,
-      "Contrôle": 6.5,
-      "Maniabilité": 6,
-      "Puissance": 8.9,
-      "Spin": 8,
-      "Tolérance": 6
+      "Puissance": 9.5,
+      "Contrôle": 8.5,
+      "Confort": 6.5,
+      "Spin": 8.5,
+      "Maniabilité": 7.5,
+      "Tolérance": 7.5
     },
     "verdict": "La diamant offensive Wilson un cran sous la Pro. Carbone 3K + Spin² balance haute — presque autant de puissance que la Defy Pro mais un poil plus accessible. Pour les joueurs avancés qui veulent attaquer fort.",
     "editorial": "La Wilson Defy V1 est la version standard de la gamme puissance Wilson, positionnée entre la Pro (expert) et la LS (légère). Sa forme diamant et son équilibre haut conservent l'ADN offensif de la ligne, mais le carbone 3K (au lieu du 15K de la Pro) apporte un toucher légèrement plus souple et tolérant. Le noyau Power Foam reste identique pour une sortie de balle dynamique. La surface Spin² maintient une excellente capacité de rotation. Le Duo Grid Pattern optimise la répartition puissance/contrôle sur la face. L'Aeroexact Design facilite l'accélération du swing. À environ 365g, elle est un peu plus légère que la Pro, offrant un meilleur compromis entre puissance brute et maniabilité. C'est la raquette de transition idéale pour les joueurs avancés qui veulent attaquer mais sans l'exigence physique de la Pro. Elle pardonne davantage les erreurs de timing tout en gardant assez de mordant pour finir les points au filet.",
@@ -19751,12 +19751,12 @@
     "year": 2025,
     "category": "avance",
     "scores": {
-      "Confort": 8,
-      "Contrôle": 7,
-      "Maniabilité": 8,
-      "Puissance": 8.5,
-      "Spin": 7.5,
-      "Tolérance": 7.1
+      "Puissance": 9.0,
+      "Contrôle": 9.0,
+      "Confort": 8.0,
+      "Spin": 6.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "La diamant Wilson allégée. Comfort Flex en diamant — garde le potentiel offensif de la gamme Defy avec plus de maniabilité et de confort. Le compromis puissance-confort intelligent.",
     "editorial": "La Wilson Defy LS V1 est la version Light Series de la gamme puissance Wilson. À seulement 355g, elle conserve la forme diamant caractéristique de la ligne Defy mais avec des matériaux adaptés pour un meilleur confort. Les Comfort Flex Fibres (mélange carbone/fibre de verre) apportent une souplesse accrue qui absorbe mieux les vibrations et améliore la tolérance sur les frappes décentrées. Le noyau Power Foam maintient une sortie de balle dynamique malgré le poids réduit. La surface Spin² conserve la capacité de rotation de la gamme. L'équilibre moyen-haut offre encore de la puissance sans le poids de tête exigeant de la Pro. C'est la porte d'entrée dans l'univers diamant Wilson — pour les joueurs avancés qui veulent attaquer mais sans les contraintes physiques des modèles lourds, ou pour les joueurs en recherche de puissance sans sacrifier trop de maniabilité.",
@@ -19833,12 +19833,12 @@
     "year": 2026,
     "category": "intermediaire",
     "scores": {
-      "Confort": 9.1,
-      "Contrôle": 9,
-      "Maniabilité": 9.5,
       "Puissance": 6.5,
-      "Spin": 7,
-      "Tolérance": 9.1
+      "Contrôle": 9.5,
+      "Confort": 9.5,
+      "Spin": 7.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.0
     },
     "verdict": "La ronde Wilson la plus légère et maniable. Carbon Flex en ronde balance basse — confort (9.1), maniabilité (9.5) et tolérance (9.1) au sommet. La pala la plus facile à jouer de la gamme Wilson 2026.",
     "editorial": "La Wilson Endure LS V1 2026 est la version Light Series de la gamme Endure, à seulement 355g (+/- 10g). Conçue pour les joueurs qui valorisent l'agilité et la prévention des blessures. Son cadre Carbon Flex, mélange de carbone et de fibre de verre, apporte une flexibilité accrue qui améliore le confort à l'impact et la tolérance, tout en conservant la stabilité nécessaire. La mousse Control Foam (simple densité, plus souple que la Pro) offre un toucher doux et réduit significativement les vibrations — idéal pour les joueurs sensibles au coude ou au poignet. La surface ExactTouch sablée maintient la capacité à générer des effets malgré le poids léger. À ce prix et ce niveau de confort, c'est une excellente porte d'entrée dans l'univers Wilson pour les joueurs intermédiaires, les femmes, les juniors ou les joueurs en reprise.",
@@ -19923,12 +19923,12 @@
       "context": "Raquette signature de Bea González. Design perlé blanc avec accents dorés. Easy Power — puissance accessible et jeu fluide."
     },
     "scores": {
-      "Puissance": 8.8,
-      "Contrôle": 8.2,
-      "Confort": 8,
-      "Spin": 8.4,
-      "Maniabilité": 8.3,
-      "Tolérance": 7.9
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "verdict": "L'élégance au service de la puissance. La Pearl est la signature de Bea González — un diamant féminin qui frappe fort sans jamais forcer. Le noyau MultiEva triple densité offre une explosion mesurée : puissante en attaque, douce en défense. Le système CustomWeight permet d'ajuster l'équilibre au gramme près. C'est la raquette qui prouve que la puissance peut être gracieuse.",
     "editorial": "La Bullpadel Pearl 2026 incarne la philosophie 'Easy Power' de Bullpadel — une puissance qui vient naturellement, sans effort. Conçue en étroite collaboration avec Beatriz González, N°6 mondiale, cette raquette en diamant combine le Fibrix (mélange carbone/fibre de verre) pour un toucher confortable et progressif avec le noyau MultiEva à triple densité qui dose l'énergie selon la frappe. Le système Air React Channel, innovation aérodynamique emblématique de Bullpadel, optimise la vitesse du swing grâce à un canal creux au cœur de la structure. Le Trinamic renforce l'intégrité structurelle avec sa géométrie triangulaire inversée. Et le CustomWeight permet de personnaliser l'équilibre avec des plaques de 3g positionnées en tête. Le Vibradrive dans le manche absorbe les vibrations sur les frappes décentrées. Design blanc perlé avec accents dorés — l'esthétique la plus raffinée du catalogue Bullpadel.",
@@ -20012,12 +20012,12 @@
       "context": "Édition Tour Final de la Pearl, raquette de Claudia Fernández. Version compétition avec carbone renforcé."
     },
     "scores": {
-      "Puissance": 9,
-      "Contrôle": 8.4,
-      "Confort": 7.6,
-      "Spin": 8.5,
-      "Maniabilité": 8,
-      "Tolérance": 7.7
+      "Puissance": 9.0,
+      "Contrôle": 8.5,
+      "Confort": 7.5,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 7.5
     },
     "verdict": "La Pearl passe en mode compétition. L'édition Tour Final pousse les curseurs de la Pearl standard vers la performance pure — plus de carbone, plus de rigidité, plus d'explosivité. C'est la raquette de Claudia Fernández, N°5 mondiale, qui frappe avec une autorité rare. Réservée aux joueuses qui savent ce qu'elles font et qui veulent le faire plus fort.",
     "editorial": "La Pearl Tour Final est la version compétition de la gamme Pearl de Bullpadel. Là où la Pearl standard mise sur l'accessibilité de la puissance ('Easy Power'), la Tour Final pousse la rigidité et l'explosivité d'un cran pour les joueuses de très haut niveau. Le Fibrix est ici enrichi d'une couche de carbone supplémentaire pour une réponse plus sèche et directe. Le noyau MultiEva conserve sa structure triple densité mais avec une couche externe plus ferme, taillée pour les frappes à pleine puissance. Le Trinamic et l'Air React Channel sont présents, offrant stabilité structurelle et aérodynamisme. C'est la raquette que Claudia Fernández utilise en tournoi — une arme de compétition qui ne fait pas de concessions. Le CustomWeight permet les ajustements fins, et le Vibradrive protège le bras sur les sessions longues. Design exclusif Tour Final.",
@@ -20099,12 +20099,12 @@
       "context": "Raquette de Tamara Icardo, N°9 mondiale. La marque italienne Macron fait son entrée sur le circuit professionnel féminin."
     },
     "scores": {
-      "Puissance": 8.5,
-      "Contrôle": 8.7,
-      "Confort": 7.8,
-      "Spin": 8.3,
-      "Maniabilité": 8.2,
-      "Tolérance": 8.4
+      "Puissance": 8.0,
+      "Contrôle": 8.5,
+      "Confort": 6.0,
+      "Spin": 7.0,
+      "Maniabilité": 8.0,
+      "Tolérance": 8.0
     },
     "verdict": "L'outsider italien qui bouscule les codes. Macron, géant du textile sportif, débarque dans le padel avec la Tridens Stealth Pro — et ne fait pas dans la demi-mesure. Goutte d'eau en carbone 12K, polyvalente et technique, c'est la raquette surprise du circuit. Tamara Icardo, N°9 mondiale, l'a adoptée. Quand une marque de cette envergure s'engage, le padel change de dimension.",
     "editorial": "Macron est un nom qui résonne dans le football, le rugby et le basketball — équipementier de clubs majeurs à travers l'Europe. Son entrée dans le padel avec la Tridens Stealth Pro n'est pas un coup d'essai mais une déclaration d'intention. La raquette est construite autour d'une surface en carbone 12K qui délivre une réponse franche et précise, associée à un noyau EVA HR pour un équilibre entre puissance et confort. La forme goutte d'eau offre la polyvalence nécessaire au jeu complet de Tamara Icardo — attaque au smash, défense au lob, contrôle à la volée. Le design 'Stealth' joue sur les codes militaires avec une finition mate sobre et technique. C'est une raquette qui parle aux joueurs et joueuses qui cherchent une alternative crédible aux mastodontes Bullpadel, Head et Nox. Le fait que la N°9 mondiale lui fasse confiance en dit long sur la qualité de fabrication.",
@@ -20174,12 +20174,12 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Spin": 6,
-      "Confort": 9.5,
+      "Puissance": 6.0,
       "Contrôle": 9.5,
-      "Puissance": 5,
-      "Tolérance": 9.5,
-      "Maniabilité": 9.5
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.5,
+      "Tolérance": 9.5
     },
     "verdict": "Une raquette d'apprentissage exemplaire qui transforme le padel en jeu d'enfant. Babolat signe ici une référence à 90€ pour débuter sans trembler, avec un confort royal et une tolérance infinie.",
     "editorial": "La Counter Origin 2026 incarne la philosophie Babolat du padel accessible : forme ronde XXL, fiberglass généreux en surface, mousse EVA soft et balance basse créent un cocon protecteur pour les débutants. Le système Vibrabsorb absorbe les chocs avec efficacité, tandis que le sweet spot cathédrale pardonne tout. À 350g avec équilibre en manche, elle pivote comme une plume. Le contrôle atteint des sommets (9.5) grâce à la synergie fiberglass-mousse tendre. Seule la puissance reste modeste, mais c'est précisément le deal : maîtrise maximale contre accélération brute.",
@@ -20271,12 +20271,12 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Spin": 6,
-      "Confort": 9,
-      "Contrôle": 8.5,
       "Puissance": 6.5,
-      "Tolérance": 9,
-      "Maniabilité": 8.5
+      "Contrôle": 9.5,
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 9.0,
+      "Tolérance": 9.0
     },
     "verdict": "Une raquette de démarrage exemplaire qui transforme l'apprentissage en plaisir. Légère, stable et terriblement indulgente, l'Air Origin 2026 offre aux débutants un confort de jeu exceptionnel sans sacrifier le feedback nécessaire à la progression.",
     "editorial": "Babolat signe ici une véritable déclaration d'intentions pour les nouveaux venus du padel. L'Air Origin 2026 capitalise sur une géométrie hybride particulièrement généreuse, associée à une surface fiberglass qui filtre les vibrations avec une efficacité remarquable. Son noyau Soft EVA combiné au système Vibrabsorb délivre un toucher de balle d'une douceur rare à ce niveau de prix. Le poids plume (340-350g) et la balance médiane autorisent des échanges prolongés sans fatigue, tandis que le sweet spot XXL pardonne les décentrages typiques des débutants. Une base technique solide pour construire son jeu sereinement.",
@@ -20373,12 +20373,12 @@
     "year": 2026,
     "category": "debutant",
     "scores": {
-      "Spin": 6,
-      "Confort": 9.5,
+      "Puissance": 6.0,
       "Contrôle": 9.5,
-      "Puissance": 5,
-      "Tolérance": 9.5,
-      "Maniabilité": 9.5
+      "Confort": 10.0,
+      "Spin": 6.0,
+      "Maniabilité": 10.0,
+      "Tolérance": 9.5
     },
     "verdict": "Babolat signe une raquette d'apprentissage exemplaire avec la Stima Vita 2026. Son profil ultra-confortable et tolérant en fait l'alliée parfaite des débutants exigeants qui cherchent à construire un jeu solide sans souffrir.",
     "editorial": "La Stima Vita 2026 incarne la philosophie d'entrée de gamme premium de Babolat : qualité sans compromis à prix accessible. Sa forme ronde associée à une balance basse crée un sweet spot généreux qui pardonne les frappes décentrées, tandis que la fibre de verre combinée à la mousse Soft EVA absorbe les vibrations avec une douceur remarquable. Le système Vibrabsorb complète ce dispositif anti-choc pour des sessions prolongées sans fatigue articulaire. À 80€, elle offre un rapport qualité-prix redoutable pour débuter sereinement.",
