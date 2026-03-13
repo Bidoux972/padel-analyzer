@@ -3185,7 +3185,91 @@ export default function PadelAnalyzer() {
   const [scanPreview, setScanPreview] = useState(null); // {file, url} for image preview
   const [scanPreviewFile, setScanPreviewFile] = useState(null); // raw File object
 
-  // ============ SCAN VISUEL — Functions ============
+  // ============ CONSEILLER CHAT — State ============
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatAdvisor, setChatAdvisor] = useState(null); // "leo"|"juan"|"manon"
+  const [chatMessages, setChatMessages] = useState([]); // [{role,content,advisor?}]
+  const [chatInput, setChatInput] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatBubbleVisible, setChatBubbleVisible] = useState(false);
+  const chatEndRef = useRef(null);
+
+  useEffect(() => { const t = setTimeout(() => setChatBubbleVisible(true), 4000); return () => clearTimeout(t); }, []);
+  useEffect(() => { chatEndRef.current?.scrollIntoView({behavior:"smooth"}); }, [chatMessages, chatLoading]);
+
+  const ADVISORS = {
+    leo: {
+      name: "Léo", color: "#F97316", emoji: "🟠", subtitle: "Le pote du court",
+      intro: "Salut ! Moi c'est Léo, je joue 4 fois par semaine et j'adore tester des raquettes. Y'en a qui m'ont bluffé, d'autres beaucoup moins...",
+      personality: `Tu es Léo, conseiller padel chez Padel Center & Santé en Martinique. Tu es un joueur passionné, tu joues 4 fois par semaine, tu testes plein de raquettes. Tu parles comme un pote — tutoiement naturel, langage direct et vivant, pas de jargon marketing. Tu donnes ton avis sincère avec des expressions naturelles ("franchement", "je te cache pas", "pour moi"). Tu es enthousiaste mais honnête — si une raquette est pas adaptée, tu le dis. Tu fais des comparaisons concrètes ("elle tape comme...", "c'est le genre de raquette qui..."). Tu ramènes subtilement vers Padel Center & Santé au Lamentin pour essayer en boutique, sans forcer. Tu restes humble — tu ne sais pas tout et tu le dis quand c'est le cas.`
+    },
+    juan: {
+      name: "Juan", color: "#3B82F6", emoji: "🔵", subtitle: "L'expert matos",
+      intro: "Bonjour, je suis Juan. Carbone, mousse, balance — j'aime comprendre ce qui fait la différence. Et souvent, elle se cache dans un détail.",
+      personality: `Tu es Juan, conseiller technique chez Padel Center & Santé en Martinique. Tu es l'expert matériau et technologie — tu connais les cores, les surfaces, les systèmes anti-vibration de chaque marque. Tu commences au vouvoiement, puis tu passes au tutoiement naturellement si le client est décontracté. Tu expliques avec pédagogie — pas de jargon gratuit, tu traduis toujours en impact concret ("le Carbon 18K Aluminisé, concrètement ça veut dire que la balle sort plus vite"). Tu es posé, précis, tu aimes les comparaisons techniques. Tu mentionnes des détails que les autres ne voient pas (le premiumEdge des raquettes). Tu orientes vers Padel Center & Santé pour toucher et comparer en main, car "les specs sur papier ne disent pas tout".`
+    },
+    manon: {
+      name: "Manon", color: "#10B981", emoji: "🟢", subtitle: "L'œil attentif",
+      intro: "Coucou ! Moi c'est Manon. Avant de parler raquettes, j'aimerais savoir comment tu joues et ce que tu ressens sur le court. En général, la réponse vient plus vite qu'on croit.",
+      personality: `Tu es Manon, conseillère chez Padel Center & Santé en Martinique. Tu es attentive et chaleureuse — avant de recommander, tu poses des questions sur le jeu, le niveau, les sensations, les éventuelles douleurs. Tu tutoies naturellement avec un ton cool et bienveillant. Tu t'intéresses au joueur/à la joueuse avant de parler matos. Tu fais attention au confort, aux blessures, au plaisir de jeu. Tu valorises le padel féminin — tu connais les joueuses pro, les gammes femme. Tu es pragmatique — "la meilleure raquette c'est celle avec laquelle tu prends du plaisir". Tu guides vers Padel Center & Santé en disant qu'on peut essayer sur place et trouver ensemble.`
+    }
+  };
+
+  const buildAdvisorSystemPrompt = (advisorKey) => {
+    const adv = ADVISORS[advisorKey];
+    const allRackets = getMergedDB();
+    const racketIndex = allRackets.slice(0, 233).map(r => {
+      const s = r.scores||{};
+      const pe = r.premiumEdge ? ` ★${r.premiumEdge}` : "";
+      const pro = r.proPlayerInfo ? ` (${typeof r.proPlayerInfo==="object"?r.proPlayerInfo.name:""})` : "";
+      return `${r.name}|${r.shape}|${r.weight}|${r.balance}|${r.category}|P${s.Puissance||0} C${s.Contrôle||0} Cf${s.Confort||0} S${s.Spin||0} M${s.Maniabilité||0} T${s.Tolérance||0}${pro}${pe}`;
+    }).join("\n");
+    return `${adv.personality}
+
+CONTEXTE: Tu travailles chez Padel Center & Santé, boutique de padel à Le Lamentin, Martinique. Le site web est padelanalyzer.fr.
+
+RÈGLES ABSOLUES:
+- Ne jamais inventer une raquette qui n'est pas dans la liste ci-dessous
+- Si tu ne sais pas, dis-le honnêtement
+- Ne jamais critiquer un concurrent
+- Quand tu recommandes, explique POURQUOI en termes de jeu (pas juste les specs)
+- Si le client demande ton avis personnel, donne-le (tu es "Adaptable" — neutre par défaut, mais tu assumes tes préférences quand on te le demande)
+- Intègre naturellement la possibilité d'essayer en boutique à Padel Center & Santé
+- Le padel féminin est aussi important que le masculin — ne jamais traiter les joueuses comme secondaires
+
+BASE DE 233 RAQUETTES (Nom|Forme|Poids|Balance|Catégorie|Scores|Joueur pro|★Argument clé):
+${racketIndex}
+
+Scores: P=Puissance, C=Contrôle, Cf=Confort, S=Spin, M=Maniabilité, T=Tolérance (sur 10)
+Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=compromis`;
+  };
+
+  const sendChatMessage = async () => {
+    if (!chatInput.trim() || chatLoading || !chatAdvisor) return;
+    const userMsg = chatInput.trim();
+    setChatInput("");
+    const newMessages = [...chatMessages, {role:"user", content:userMsg}];
+    setChatMessages(newMessages);
+    setChatLoading(true);
+    try {
+      const apiMessages = newMessages.map(m => ({role:m.role, content:m.content}));
+      const resp = await fetch("/api/chat", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+          model: "claude-sonnet-4-5-20250929", max_tokens: 1024,
+          system: buildAdvisorSystemPrompt(chatAdvisor),
+          messages: apiMessages
+        })
+      });
+      const data = await resp.json();
+      if (data.error) throw new Error(data.error.message||"Erreur API");
+      const text = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+      setChatMessages(prev => [...prev, {role:"assistant", content: text || "Désolé, je n'ai pas pu répondre.", advisor: chatAdvisor}]);
+    } catch (e) {
+      setChatMessages(prev => [...prev, {role:"assistant", content: `Oups, petit problème technique 😅 Réessaie dans un instant. (${e.message})`, advisor: chatAdvisor}]);
+    }
+    setChatLoading(false);
+  };
   const compressImage = useCallback((file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -9401,6 +9485,157 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
         </div>
       </div>}
+
+      {/* ============ CONSEILLER PADEL — Chat Bubble + Panel ============ */}
+      {chatBubbleVisible && !chatOpen && (
+        <div onClick={()=>setChatOpen(true)} style={{
+          position:"fixed", bottom:20, right:20, zIndex:9999,
+          display:"flex", alignItems:"center", gap:10,
+          padding:"12px 18px 12px 14px", borderRadius:50,
+          background:"linear-gradient(135deg, #E8622A 0%, #D4541E 100%)",
+          boxShadow:"0 4px 20px rgba(232,98,42,0.4), 0 0 60px rgba(232,98,42,0.1)",
+          cursor:"pointer", transition:"all 0.3s ease",
+          animation:"chatBubbleIn 0.6s cubic-bezier(.22,1,.36,1)",
+        }} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px) scale(1.03)";e.currentTarget.style.boxShadow="0 6px 28px rgba(232,98,42,0.5)"}} onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="0 4px 20px rgba(232,98,42,0.4)"}}>
+          <span style={{fontSize:22}}>🏓</span>
+          <span style={{color:"#fff",fontSize:13,fontWeight:600,fontFamily:"'Outfit',sans-serif",whiteSpace:"nowrap"}}>Besoin d'un conseil ? Nos conseillers padel sont dispo</span>
+          <style>{`@keyframes chatBubbleIn{from{opacity:0;transform:translateY(20px) scale(0.9)}to{opacity:1;transform:translateY(0) scale(1)}}`}</style>
+        </div>
+      )}
+
+      {chatOpen && (
+        <div style={{
+          position:"fixed", bottom:20, right:20, zIndex:10000,
+          width: chatAdvisor ? 380 : 420,
+          maxHeight: chatAdvisor ? "70vh" : "auto",
+          borderRadius:20, overflow:"hidden",
+          background:"#0D1117",
+          border:"1px solid rgba(255,255,255,0.08)",
+          boxShadow:"0 12px 48px rgba(0,0,0,0.6), 0 0 80px rgba(232,98,42,0.06)",
+          display:"flex", flexDirection:"column",
+          animation:"chatPanelIn 0.35s cubic-bezier(.22,1,.36,1)",
+          fontFamily:"'Inter','DM Sans',sans-serif",
+        }}>
+          <style>{`@keyframes chatPanelIn{from{opacity:0;transform:translateY(10px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+          @keyframes typingDot{0%,60%,100%{opacity:0.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+          .chat-input-field:focus{border-color:rgba(232,98,42,0.5)!important;box-shadow:0 0 0 2px rgba(232,98,42,0.1)!important}`}</style>
+
+          {/* Header */}
+          <div style={{padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,0.06)", background:"rgba(255,255,255,0.02)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              {chatAdvisor && <div onClick={()=>{setChatAdvisor(null);setChatMessages([]);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:14,color:"#94a3b8",transition:"background 0.2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>←</div>}
+              <div>
+                <div style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>
+                  {chatAdvisor ? `${ADVISORS[chatAdvisor].emoji} ${ADVISORS[chatAdvisor].name}` : "Nos conseillers"}
+                </div>
+                {chatAdvisor && <div style={{fontSize:10,color:"#64748b",marginTop:1}}>{ADVISORS[chatAdvisor].subtitle} · Padel Center & Santé</div>}
+              </div>
+            </div>
+            <div onClick={()=>{setChatOpen(false);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:16,color:"#94a3b8"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>✕</div>
+          </div>
+
+          {/* Advisor Selection */}
+          {!chatAdvisor && (
+            <div style={{padding:"20px 16px"}}>
+              <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,textAlign:"center",lineHeight:1.5}}>
+                Choisissez votre conseiller
+              </div>
+              {Object.entries(ADVISORS).map(([key, adv]) => (
+                <div key={key} onClick={()=>{setChatAdvisor(key);setChatMessages([{role:"assistant",content:adv.intro,advisor:key}]);}} style={{
+                  display:"flex",alignItems:"flex-start",gap:12,
+                  padding:"14px",marginBottom:10,borderRadius:14,
+                  background:"rgba(255,255,255,0.03)",
+                  border:`1px solid rgba(255,255,255,0.06)`,
+                  cursor:"pointer",transition:"all 0.25s ease",
+                }} onMouseEnter={e=>{e.currentTarget.style.background=`${adv.color}11`;e.currentTarget.style.borderColor=`${adv.color}44`;e.currentTarget.style.transform="translateX(4px)"}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.03)";e.currentTarget.style.borderColor="rgba(255,255,255,0.06)";e.currentTarget.style.transform=""}}>
+                  <div style={{
+                    width:44,height:44,borderRadius:12,flexShrink:0,
+                    background:`linear-gradient(135deg, ${adv.color}22 0%, ${adv.color}44 100%)`,
+                    border:`1.5px solid ${adv.color}66`,
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    fontSize:22,
+                  }}>{adv.emoji}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+                      <span style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>{adv.name}</span>
+                      <span style={{fontSize:10,color:adv.color,fontWeight:600,padding:"2px 7px",borderRadius:6,background:`${adv.color}15`,border:`1px solid ${adv.color}30`}}>{adv.subtitle}</span>
+                    </div>
+                    <div style={{fontSize:11,color:"#94a3b8",lineHeight:1.5}}>{adv.intro}</div>
+                  </div>
+                </div>
+              ))}
+              <div style={{fontSize:9,color:"#475569",textAlign:"center",marginTop:12,lineHeight:1.5}}>
+                🏝️ Padel Center & Santé · Le Lamentin, Martinique
+              </div>
+            </div>
+          )}
+
+          {/* Chat Messages */}
+          {chatAdvisor && (
+            <>
+              <div style={{flex:1,overflowY:"auto",padding:"16px",display:"flex",flexDirection:"column",gap:10,minHeight:200,maxHeight:"calc(70vh - 140px)"}}>
+                {chatMessages.map((msg, i) => (
+                  <div key={i} style={{
+                    display:"flex",
+                    justifyContent: msg.role==="user" ? "flex-end" : "flex-start",
+                    animation:"fadeIn 0.3s ease",
+                  }}>
+                    <div style={{
+                      maxWidth:"82%",
+                      padding:"10px 14px",
+                      borderRadius: msg.role==="user" ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
+                      background: msg.role==="user" 
+                        ? "linear-gradient(135deg, #E8622A 0%, #D4541E 100%)" 
+                        : "rgba(255,255,255,0.06)",
+                      color: msg.role==="user" ? "#fff" : "#e2e8f0",
+                      fontSize:13,lineHeight:1.55,
+                      border: msg.role==="user" ? "none" : "1px solid rgba(255,255,255,0.06)",
+                    }}>
+                      {msg.content.split('\n').map((line,j) => <div key={j}>{line || <br/>}</div>)}
+                    </div>
+                  </div>
+                ))}
+                {chatLoading && (
+                  <div style={{display:"flex",justifyContent:"flex-start"}}>
+                    <div style={{padding:"12px 18px",borderRadius:"14px 14px 14px 4px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.06)",display:"flex",gap:4,alignItems:"center"}}>
+                      {[0,1,2].map(i => <div key={i} style={{width:6,height:6,borderRadius:3,background:ADVISORS[chatAdvisor].color,animation:`typingDot 1.2s infinite`,animationDelay:`${i*0.2}s`}}/>)}
+                    </div>
+                  </div>
+                )}
+                <div ref={chatEndRef}/>
+              </div>
+
+              {/* Input */}
+              <div style={{padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,0.06)",background:"rgba(255,255,255,0.02)",display:"flex",gap:8}}>
+                <input
+                  className="chat-input-field"
+                  value={chatInput}
+                  onChange={e=>setChatInput(e.target.value)}
+                  onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChatMessage();}}}
+                  placeholder={`Message à ${ADVISORS[chatAdvisor].name}...`}
+                  disabled={chatLoading}
+                  style={{
+                    flex:1,padding:"10px 14px",
+                    background:"rgba(255,255,255,0.05)",
+                    border:"1px solid rgba(255,255,255,0.1)",
+                    borderRadius:12,color:"#e2e8f0",fontSize:13,
+                    fontFamily:"inherit",outline:"none",
+                    transition:"all 0.2s ease",
+                  }}
+                />
+                <button onClick={sendChatMessage} disabled={!chatInput.trim()||chatLoading} style={{
+                  width:40,height:40,borderRadius:12,border:"none",
+                  background: chatInput.trim()&&!chatLoading ? ADVISORS[chatAdvisor].color : "rgba(255,255,255,0.06)",
+                  color:"#fff",fontSize:16,cursor: chatInput.trim()&&!chatLoading ? "pointer" : "default",
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  transition:"all 0.2s ease",opacity: chatInput.trim()&&!chatLoading ? 1 : 0.4,
+                  flexShrink:0,
+                }}>↑</button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
     </div>
   );
