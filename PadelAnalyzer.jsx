@@ -4946,12 +4946,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"0",background:"linear-gradient(170deg, #FDF8F0 0%, #FAF3E8 35%, #F5EDE0 65%, #EDE4D4 100%)",position:"relative",overflow:"hidden"}}>
         <FontLoader/>
         <style>{`
-          @keyframes orbitalLand0{0%{transform:translate(60px,60px) scale(0);opacity:0}20%{transform:translate(80px,-30px) scale(0.7);opacity:1}45%{transform:translate(-40px,-50px) scale(0.9)}70%{transform:translate(10px,15px) scale(1.04)}90%{transform:translate(-2px,2px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
-          @keyframes orbitalLand1{0%{transform:translate(-60px,60px) scale(0);opacity:0}20%{transform:translate(-80px,-20px) scale(0.7);opacity:1}45%{transform:translate(50px,-40px) scale(0.9)}70%{transform:translate(-8px,10px) scale(1.04)}90%{transform:translate(2px,-2px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
-          @keyframes orbitalLand2{0%{transform:translate(60px,-60px) scale(0);opacity:0}20%{transform:translate(-30px,70px) scale(0.7);opacity:1}45%{transform:translate(45px,30px) scale(0.9)}70%{transform:translate(-5px,-10px) scale(1.04)}90%{transform:translate(1px,2px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
-          @keyframes orbitalLand3{0%{transform:translate(-60px,-60px) scale(0);opacity:0}20%{transform:translate(70px,40px) scale(0.7);opacity:1}45%{transform:translate(-50px,20px) scale(0.9)}70%{transform:translate(8px,-5px) scale(1.04)}90%{transform:translate(-1px,1px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
+          @keyframes orbitalLand0{0%{transform:translate(120px,100px) scale(0);opacity:0}15%{transform:translate(100px,-60px) scale(0.6);opacity:1}35%{transform:translate(-80px,-80px) scale(0.85);opacity:1}55%{transform:translate(50px,40px) scale(1.06);opacity:1}75%{transform:translate(-15px,-10px) scale(0.98);opacity:1}90%{transform:translate(4px,3px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
+          @keyframes orbitalLand1{0%{transform:translate(-120px,100px) scale(0);opacity:0}15%{transform:translate(-100px,-50px) scale(0.6);opacity:1}35%{transform:translate(90px,-60px) scale(0.85);opacity:1}55%{transform:translate(-40px,30px) scale(1.06);opacity:1}75%{transform:translate(12px,-8px) scale(0.98);opacity:1}90%{transform:translate(-3px,2px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
+          @keyframes orbitalLand2{0%{transform:translate(120px,-100px) scale(0);opacity:0}15%{transform:translate(-60px,110px) scale(0.6);opacity:1}35%{transform:translate(80px,50px) scale(0.85);opacity:1}55%{transform:translate(-30px,-40px) scale(1.06);opacity:1}75%{transform:translate(10px,12px) scale(0.98);opacity:1}90%{transform:translate(-2px,-3px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
+          @keyframes orbitalLand3{0%{transform:translate(-120px,-100px) scale(0);opacity:0}15%{transform:translate(110px,70px) scale(0.6);opacity:1}35%{transform:translate(-90px,40px) scale(0.85);opacity:1}55%{transform:translate(35px,-30px) scale(1.06);opacity:1}75%{transform:translate(-8px,10px) scale(0.98);opacity:1}90%{transform:translate(2px,-2px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
           @keyframes labelFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-          .tl-orb{width:130px;height:130px;border-radius:50%;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease;overflow:hidden;opacity:0}
+          .tl-orb{width:130px;height:130px;border-radius:50%;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease;overflow:hidden}
           .tl-orb:hover{transform:scale(1.08)!important;box-shadow:0 8px 32px rgba(0,0,0,0.18)!important}
           .tl-orb:active{transform:scale(0.95)!important}
           .tl-lbl{opacity:0;animation:labelFadeUp 0.5s ease forwards}
@@ -4982,11 +4982,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 background:"linear-gradient(145deg,#E86B5A,#D4503E)",
                 boxShadow:"0 6px 24px rgba(232,107,90,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",
-                animation:"orbitalLand0 1.6s cubic-bezier(.22,1,.36,1) 0.1s forwards",
+                animation:"orbitalLand0 2.8s cubic-bezier(.22,1,.36,1) 0.2s both",
               }}>
                 <svg width="60" height="60" viewBox="0 0 60 60"><polygon points="30,8 50,22 46,46 14,46 10,22" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1"/><polygon points="30,16 42,26 39,42 21,42 18,26" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><polygon points="30,24 36,30 34,38 26,38 24,30" fill="rgba(255,255,255,0.25)" stroke="#fff" strokeWidth="1"/><circle cx="30" cy="8" r="2.5" fill="#fff"/><circle cx="50" cy="22" r="2.5" fill="#fff"/><circle cx="46" cy="46" r="2.5" fill="#fff"/><circle cx="14" cy="46" r="2.5" fill="#fff"/><circle cx="10" cy="22" r="2.5" fill="#fff"/></svg>
               </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.5s"}}>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"2.8s"}}>
                 <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Trouve ta pala</div>
                 <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Matching personnalisé</div>
               </div>
@@ -4998,14 +4998,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 background:"linear-gradient(145deg,#E8A84C,#D49038)",
                 boxShadow:"0 6px 24px rgba(232,168,76,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,padding:18,
-                animation:"orbitalLand1 1.6s cubic-bezier(.22,1,.36,1) 0.25s forwards",
+                animation:"orbitalLand1 2.8s cubic-bezier(.22,1,.36,1) 0.5s both",
               }}>
                 <div style={{width:24,height:36,borderRadius:"4px 4px 10px 10px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
                 <div style={{width:24,height:36,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
                 <div style={{width:24,height:36,borderRadius:"10px 10px 4px 4px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
                 <div style={{width:24,height:36,borderRadius:6,border:"1.5px solid rgba(255,255,255,0.5)",background:"rgba(255,255,255,0.1)"}}/>
               </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.65s"}}>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"3.1s"}}>
                 <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>{totalDBCount} raquettes</div>
                 <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Magazine & fiches</div>
               </div>
@@ -5017,11 +5017,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 background:"linear-gradient(145deg,#1A9E8F,#0D7A6E)",
                 boxShadow:"0 6px 24px rgba(26,158,143,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",
-                animation:"orbitalLand2 1.6s cubic-bezier(.22,1,.36,1) 0.4s forwards",
+                animation:"orbitalLand2 2.8s cubic-bezier(.22,1,.36,1) 0.8s both",
               }}>
                 <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="16" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/><circle cx="30" cy="30" r="6" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.2"/><line x1="30" y1="10" x2="30" y2="19" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="30" y1="41" x2="30" y2="50" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="10" y1="30" x2="19" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="41" y1="30" x2="50" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/></svg>
               </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.8s"}}>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"3.4s"}}>
                 <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Scan raquette</div>
                 <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Photo → identification</div>
               </div>
@@ -5033,11 +5033,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 background:"linear-gradient(145deg,#7C5CBF,#6344A8)",
                 boxShadow:"0 6px 24px rgba(124,92,191,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",gap:4,
-                animation:"orbitalLand3 1.6s cubic-bezier(.22,1,.36,1) 0.55s forwards",
+                animation:"orbitalLand3 2.8s cubic-bezier(.22,1,.36,1) 1.1s both",
               }}>
                 {Object.values(ADVISORS).map((adv,i)=><img key={i} src={adv.avatar} alt={adv.name} style={{width:34,height:34,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.5)"}}/>)}
               </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.95s"}}>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"3.7s"}}>
                 <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Nos conseillers</div>
                 <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Léo, Juan & Manon</div>
               </div>
