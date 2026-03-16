@@ -3192,26 +3192,62 @@ export default function PadelAnalyzer() {
   const [chatInput, setChatInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [chatBubbleVisible, setChatBubbleVisible] = useState(false);
+  const [chatBubbleDismissed, setChatBubbleDismissed] = useState(false);
   const chatEndRef = useRef(null);
 
-  useEffect(() => { const t = setTimeout(() => setChatBubbleVisible(true), 4000); return () => clearTimeout(t); }, []);
+  useEffect(() => {
+    if (chatBubbleDismissed || chatOpen) return;
+    const validScreens = ["magazine","catalog","racketSheet","app","dashboard"];
+    if (!validScreens.includes(screen)) { setChatBubbleVisible(false); return; }
+    let timer = null;
+    const reset = () => { clearTimeout(timer); timer = setTimeout(() => setChatBubbleVisible(true), 18000); };
+    reset();
+    window.addEventListener("scroll", reset, true);
+    window.addEventListener("click", reset, true);
+    window.addEventListener("touchstart", reset, true);
+    return () => { clearTimeout(timer); window.removeEventListener("scroll", reset, true); window.removeEventListener("click", reset, true); window.removeEventListener("touchstart", reset, true); };
+  }, [screen, chatBubbleDismissed, chatOpen]);
   useEffect(() => { chatEndRef.current?.scrollIntoView({behavior:"smooth"}); }, [chatMessages, chatLoading]);
 
   const ADVISORS = {
     leo: {
       name: "Léo", color: "#F97316", emoji: "🟠", subtitle: "Le pote du court",
+      avatar: "/leo_avatar.png",
       intro: "Salut ! Moi c'est Léo, je joue 4 fois par semaine et j'adore tester des raquettes. Y'en a qui m'ont bluffé, d'autres beaucoup moins...",
-      personality: `Tu es Léo, conseiller padel chez Padel Center & Santé en Martinique. Tu es un joueur passionné, tu joues 4 fois par semaine, tu testes plein de raquettes. Tu parles comme un pote — tutoiement naturel, langage direct et vivant, pas de jargon marketing. Tu donnes ton avis sincère avec des expressions naturelles ("franchement", "je te cache pas", "pour moi"). Tu es enthousiaste mais honnête — si une raquette est pas adaptée, tu le dis. Tu fais des comparaisons concrètes ("elle tape comme...", "c'est le genre de raquette qui..."). Tu ramènes subtilement vers Padel Center & Santé au Lamentin pour essayer en boutique, sans forcer. Tu restes humble — tu ne sais pas tout et tu le dis quand c'est le cas.`
+      personality: `Tu es Léo, conseiller padel chez Padel Center & Santé en Martinique. Tu es un joueur passionné, tu joues 4 fois par semaine, tu testes plein de raquettes. Tu parles comme un pote — tutoiement naturel, langage direct et vivant, pas de jargon marketing. Tu donnes ton avis sincère avec des expressions naturelles ("franchement", "je te cache pas", "pour moi"). Tu es enthousiaste mais honnête — si une raquette est pas adaptée, tu le dis. Tu fais des comparaisons concrètes ("elle tape comme...", "c'est le genre de raquette qui..."). Tu ramènes subtilement vers Padel Center & Santé au Lamentin pour essayer en boutique, sans forcer. Tu restes humble — tu ne sais pas tout et tu le dis quand c'est le cas.
+
+INTERDICTIONS ABSOLUES:
+- Ne JAMAIS parler de l'affluence en boutique, de ton emploi du temps, de la météo, ou de ta disponibilité ("c'est calme", "je suis dispo", "il fait beau")
+- Ne JAMAIS te mettre en scène ("là je suis en train de...", "entre deux matchs...")
+- Ne JAMAIS utiliser de listes à puces ou de mise en forme markdown (**gras**, ##titres)
+- Va DROIT AU SUJET dès le premier message après l'intro`
     },
     juan: {
       name: "Juan", color: "#3B82F6", emoji: "🔵", subtitle: "L'expert matos",
+      avatar: "/juan_avatar.png",
       intro: "Bonjour, je suis Juan. Carbone, mousse, balance — j'aime comprendre ce qui fait la différence. Et souvent, elle se cache dans un détail.",
-      personality: `Tu es Juan, conseiller technique chez Padel Center & Santé en Martinique. Tu es l'expert matériau et technologie — tu connais les cores, les surfaces, les systèmes anti-vibration de chaque marque. Tu commences au vouvoiement, puis tu passes au tutoiement naturellement si le client est décontracté. Tu expliques avec pédagogie — pas de jargon gratuit, tu traduis toujours en impact concret ("le Carbon 18K Aluminisé, concrètement ça veut dire que la balle sort plus vite"). Tu es posé, précis, tu aimes les comparaisons techniques. Tu mentionnes des détails que les autres ne voient pas (le premiumEdge des raquettes). Tu orientes vers Padel Center & Santé pour toucher et comparer en main, car "les specs sur papier ne disent pas tout".`
+      personality: `Tu es Juan, conseiller technique chez Padel Center & Santé en Martinique. Tu es l'expert matériau et technologie — tu connais les cores, les surfaces, les systèmes anti-vibration de chaque marque. Tu commences au vouvoiement, puis tu passes au tutoiement naturellement si le client est décontracté. Tu expliques avec pédagogie — pas de jargon gratuit, tu traduis toujours en impact concret ("le Carbon 18K Aluminisé, concrètement ça veut dire que la balle sort plus vite"). Tu es posé, précis, tu aimes les comparaisons techniques. Tu mentionnes des détails que les autres ne voient pas (le premiumEdge des raquettes). Tu orientes vers Padel Center & Santé pour toucher et comparer en main, car "les specs sur papier ne disent pas tout".
+
+INTERDICTIONS ABSOLUES:
+- Ne JAMAIS parler de l'affluence en boutique, de ton emploi du temps, de la météo, ou de ta disponibilité
+- Ne JAMAIS te mettre en scène
+- Ne JAMAIS utiliser de listes à puces ou de mise en forme markdown (**gras**, ##titres)
+- Va DROIT AU SUJET`
     },
     manon: {
       name: "Manon", color: "#10B981", emoji: "🟢", subtitle: "L'œil attentif",
+      avatar: "/manon_avatar.png",
       intro: "Coucou ! Moi c'est Manon. Avant de parler raquettes, j'aimerais savoir comment tu joues et ce que tu ressens sur le court. En général, la réponse vient plus vite qu'on croit.",
-      personality: `Tu es Manon, conseillère chez Padel Center & Santé en Martinique. Tu es attentive et chaleureuse — avant de recommander, tu poses des questions sur le jeu, le niveau, les sensations, les éventuelles douleurs. Tu tutoies naturellement avec un ton cool et bienveillant. Tu t'intéresses au joueur/à la joueuse avant de parler matos. Tu fais attention au confort, aux blessures, au plaisir de jeu. Tu valorises le padel féminin — tu connais les joueuses pro, les gammes femme. Tu es pragmatique — "la meilleure raquette c'est celle avec laquelle tu prends du plaisir". Tu guides vers Padel Center & Santé en disant qu'on peut essayer sur place et trouver ensemble.`
+      personality: `Tu es Manon, conseillère chez Padel Center & Santé en Martinique. Tu es attentive et chaleureuse — avant de recommander, tu poses des questions. Tu tutoies naturellement avec un ton cool et bienveillant. Tu t'intéresses au joueur/à la joueuse avant de parler matos. Tu fais attention au confort, aux blessures, au plaisir de jeu. Tu valorises le padel féminin — tu connais les joueuses pro, les gammes femme. Tu es pragmatique — "la meilleure raquette c'est celle avec laquelle tu prends du plaisir". Tu guides vers Padel Center & Santé en disant qu'on peut essayer sur place et trouver ensemble.
+
+INTERDICTIONS ABSOLUES:
+- Ne JAMAIS parler de l'affluence en boutique, de ton emploi du temps, de la météo, ou de ta disponibilité
+- Ne JAMAIS te mettre en scène
+- Ne JAMAIS utiliser de listes à puces ou de mise en forme markdown (**gras**, ##titres)
+
+TA MÉTHODE (applique-la systématiquement):
+- Au premier message du client, tu poses TOUJOURS 2-3 questions avant de recommander quoi que ce soit: niveau approximatif, fréquence de jeu, douleurs éventuelles (coude, épaule, poignet), côté préféré (gauche/droite), ce qui ne plaît PAS dans la raquette actuelle
+- Seulement après les réponses, tu recommandes`
     }
   };
 
@@ -3252,11 +3288,11 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setChatMessages(newMessages);
     setChatLoading(true);
     try {
-      const apiMessages = newMessages.map(m => ({role:m.role, content:m.content}));
+      const apiMessages = newMessages.slice(-10).map(m => ({role:m.role, content:m.content}));
       const resp = await fetch("/api/chat", {
         method:"POST", headers:{"Content-Type":"application/json"},
         body: JSON.stringify({
-          model: "claude-sonnet-4-5-20250929", max_tokens: 1024,
+          model: "claude-sonnet-4-20250514", max_tokens: 1024,
           system: buildAdvisorSystemPrompt(chatAdvisor),
           messages: apiMessages
         })
@@ -9486,32 +9522,36 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
       </div>}
 
-      {/* ============ CONSEILLER PADEL — Chat Bubble + Panel ============ */}
-      {chatBubbleVisible && !chatOpen && (
-        <div onClick={()=>setChatOpen(true)} style={{
-          position:"fixed", bottom:20, right:20, zIndex:9999,
-          display:"flex", alignItems:"center", gap:10,
-          padding:"12px 18px 12px 14px", borderRadius:50,
-          background:"linear-gradient(135deg, #E8622A 0%, #D4541E 100%)",
-          boxShadow:"0 4px 20px rgba(232,98,42,0.4), 0 0 60px rgba(232,98,42,0.1)",
-          cursor:"pointer", transition:"all 0.3s ease",
-          animation:"chatBubbleIn 0.6s cubic-bezier(.22,1,.36,1)",
-        }} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px) scale(1.03)";e.currentTarget.style.boxShadow="0 6px 28px rgba(232,98,42,0.5)"}} onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="0 4px 20px rgba(232,98,42,0.4)"}}>
-          <span style={{fontSize:22}}>🏓</span>
-          <span style={{color:"#fff",fontSize:13,fontWeight:600,fontFamily:"'Outfit',sans-serif",whiteSpace:"nowrap"}}>Besoin d'un conseil ? Nos conseillers padel sont dispo</span>
-          <style>{`@keyframes chatBubbleIn{from{opacity:0;transform:translateY(20px) scale(0.9)}to{opacity:1;transform:translateY(0) scale(1)}}`}</style>
+      {/* ============ CONSEILLER PADEL — Chat Bubble BD + Panel ============ */}
+      {chatBubbleVisible && !chatOpen && !chatBubbleDismissed && (
+        <div style={{position:"fixed", bottom:24, right:20, zIndex:9999, animation:"chatBubbleIn 0.6s cubic-bezier(.22,1,.36,1)", display:"flex", alignItems:"flex-end", gap:8}}>
+          <style>{`@keyframes chatBubbleIn{from{opacity:0;transform:translateY(16px) scale(0.92)}to{opacity:1;transform:translateY(0) scale(1)}}`}</style>
+          <div onClick={()=>{setChatOpen(true);setChatBubbleVisible(false);}} style={{
+            position:"relative", padding:"14px 18px", borderRadius:"18px 18px 18px 6px",
+            background:"#fff", color:"#1a1a1a",
+            boxShadow:"0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08)",
+            cursor:"pointer", maxWidth:240, transition:"transform 0.2s ease",
+          }} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform=""}>
+            <div style={{fontSize:13,fontWeight:500,lineHeight:1.5,fontFamily:"'Inter','DM Sans',sans-serif"}}>Besoin d'un conseil pour choisir ta raquette ?</div>
+            <div style={{position:"absolute",bottom:-6,left:14,width:12,height:12,background:"#fff",transform:"rotate(45deg)",boxShadow:"2px 2px 4px rgba(0,0,0,0.06)"}}/>
+            <div onClick={e=>{e.stopPropagation();setChatBubbleDismissed(true);setChatBubbleVisible(false);}} style={{position:"absolute",top:-8,right:-8,width:22,height:22,borderRadius:11,background:"#e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:11,color:"#64748b",fontWeight:700,lineHeight:1,boxShadow:"0 1px 3px rgba(0,0,0,0.1)"}}>✕</div>
+          </div>
         </div>
       )}
 
       {chatOpen && (
         <div style={{
-          position:"fixed", bottom:20, right:20, zIndex:10000,
-          width: chatAdvisor ? 380 : 420,
-          maxHeight: chatAdvisor ? "70vh" : "auto",
-          borderRadius:20, overflow:"hidden",
+          position:"fixed", zIndex:10000,
+          bottom: window.innerWidth <= 640 ? 0 : 20,
+          right: window.innerWidth <= 640 ? 0 : 20,
+          width: window.innerWidth <= 640 ? "100%" : (chatAdvisor ? 380 : 420),
+          height: window.innerWidth <= 640 ? "100%" : "auto",
+          maxHeight: window.innerWidth <= 640 ? "100%" : (chatAdvisor ? "75vh" : "auto"),
+          borderRadius: window.innerWidth <= 640 ? 0 : 20,
+          overflow:"hidden",
           background:"#0D1117",
-          border:"1px solid rgba(255,255,255,0.08)",
-          boxShadow:"0 12px 48px rgba(0,0,0,0.6), 0 0 80px rgba(232,98,42,0.06)",
+          border: window.innerWidth <= 640 ? "none" : "1px solid rgba(255,255,255,0.08)",
+          boxShadow:"0 12px 48px rgba(0,0,0,0.6)",
           display:"flex", flexDirection:"column",
           animation:"chatPanelIn 0.35s cubic-bezier(.22,1,.36,1)",
           fontFamily:"'Inter','DM Sans',sans-serif",
@@ -9521,12 +9561,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           .chat-input-field:focus{border-color:rgba(232,98,42,0.5)!important;box-shadow:0 0 0 2px rgba(232,98,42,0.1)!important}`}</style>
 
           {/* Header */}
-          <div style={{padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,0.06)", background:"rgba(255,255,255,0.02)"}}>
+          <div style={{padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,0.06)", background:"rgba(255,255,255,0.02)", flexShrink:0}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               {chatAdvisor && <div onClick={()=>{setChatAdvisor(null);setChatMessages([]);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:14,color:"#94a3b8",transition:"background 0.2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>←</div>}
+              {chatAdvisor && <img src={ADVISORS[chatAdvisor].avatar} alt="" style={{width:32,height:32,borderRadius:"50%",objectFit:"cover",border:`2px solid ${ADVISORS[chatAdvisor].color}44`}}/>}
               <div>
                 <div style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>
-                  {chatAdvisor ? `${ADVISORS[chatAdvisor].emoji} ${ADVISORS[chatAdvisor].name}` : "Nos conseillers"}
+                  {chatAdvisor ? ADVISORS[chatAdvisor].name : "Nos conseillers"}
                 </div>
                 {chatAdvisor && <div style={{fontSize:10,color:"#64748b",marginTop:1}}>{ADVISORS[chatAdvisor].subtitle} · Padel Center & Santé</div>}
               </div>
@@ -9536,7 +9577,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Advisor Selection */}
           {!chatAdvisor && (
-            <div style={{padding:"20px 16px"}}>
+            <div style={{padding:"20px 16px", overflowY:"auto", flex:1}}>
               <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,textAlign:"center",lineHeight:1.5}}>
                 Choisissez votre conseiller
               </div>
@@ -9548,13 +9589,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   border:`1px solid rgba(255,255,255,0.06)`,
                   cursor:"pointer",transition:"all 0.25s ease",
                 }} onMouseEnter={e=>{e.currentTarget.style.background=`${adv.color}11`;e.currentTarget.style.borderColor=`${adv.color}44`;e.currentTarget.style.transform="translateX(4px)"}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.03)";e.currentTarget.style.borderColor="rgba(255,255,255,0.06)";e.currentTarget.style.transform=""}}>
-                  <div style={{
-                    width:44,height:44,borderRadius:12,flexShrink:0,
-                    background:`linear-gradient(135deg, ${adv.color}22 0%, ${adv.color}44 100%)`,
-                    border:`1.5px solid ${adv.color}66`,
-                    display:"flex",alignItems:"center",justifyContent:"center",
-                    fontSize:22,
-                  }}>{adv.emoji}</div>
+                  <img src={adv.avatar} alt={adv.name} style={{width:48,height:48,borderRadius:14,objectFit:"cover",flexShrink:0,border:`2px solid ${adv.color}44`}}/>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
                       <span style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>{adv.name}</span>
@@ -9565,7 +9600,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
               ))}
               <div style={{fontSize:9,color:"#475569",textAlign:"center",marginTop:12,lineHeight:1.5}}>
-                🏝️ Padel Center & Santé · Le Lamentin, Martinique
+                Padel Center & Santé · Le Lamentin, Martinique
               </div>
             </div>
           )}
@@ -9573,15 +9608,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Chat Messages */}
           {chatAdvisor && (
             <>
-              <div style={{flex:1,overflowY:"auto",padding:"16px",display:"flex",flexDirection:"column",gap:10,minHeight:200,maxHeight:"calc(70vh - 140px)"}}>
+              <div style={{flex:1,overflowY:"auto",padding:"16px",display:"flex",flexDirection:"column",gap:10}}>
                 {chatMessages.map((msg, i) => (
                   <div key={i} style={{
                     display:"flex",
                     justifyContent: msg.role==="user" ? "flex-end" : "flex-start",
+                    alignItems:"flex-end", gap:8,
                     animation:"fadeIn 0.3s ease",
                   }}>
+                    {msg.role==="assistant" && <img src={ADVISORS[chatAdvisor].avatar} alt="" style={{width:28,height:28,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/>}
                     <div style={{
-                      maxWidth:"82%",
+                      maxWidth:"78%",
                       padding:"10px 14px",
                       borderRadius: msg.role==="user" ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
                       background: msg.role==="user" 
@@ -9596,7 +9633,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </div>
                 ))}
                 {chatLoading && (
-                  <div style={{display:"flex",justifyContent:"flex-start"}}>
+                  <div style={{display:"flex",justifyContent:"flex-start",alignItems:"flex-end",gap:8}}>
+                    <img src={ADVISORS[chatAdvisor].avatar} alt="" style={{width:28,height:28,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/>
                     <div style={{padding:"12px 18px",borderRadius:"14px 14px 14px 4px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.06)",display:"flex",gap:4,alignItems:"center"}}>
                       {[0,1,2].map(i => <div key={i} style={{width:6,height:6,borderRadius:3,background:ADVISORS[chatAdvisor].color,animation:`typingDot 1.2s infinite`,animationDelay:`${i*0.2}s`}}/>)}
                     </div>
@@ -9606,7 +9644,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
 
               {/* Input */}
-              <div style={{padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,0.06)",background:"rgba(255,255,255,0.02)",display:"flex",gap:8}}>
+              <div style={{padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,0.06)",background:"rgba(255,255,255,0.02)",display:"flex",gap:8,flexShrink:0}}>
                 <input
                   className="chat-input-field"
                   value={chatInput}
