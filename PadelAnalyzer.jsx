@@ -3197,7 +3197,7 @@ export default function PadelAnalyzer() {
 
   useEffect(() => {
     if (chatBubbleDismissed || chatOpen) return;
-    const validScreens = ["magazine","catalog","racketSheet","app","dashboard"];
+    const validScreens = ["home","magazine","catalog","racketSheet","app","dashboard"];
     if (!validScreens.includes(screen)) { setChatBubbleVisible(false); return; }
     let timer = null;
     const reset = () => { clearTimeout(timer); timer = setTimeout(() => setChatBubbleVisible(true), 18000); };
@@ -5168,99 +5168,84 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </>}
 
         {/* ============================================================ */}
-        {/* SCAN VISUEL — Quick access button */}
+        {/* 4 CERCLES — Navigation Tropique Luxe */}
         {/* ============================================================ */}
-        <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");}} className="pa-card" style={{
-          marginTop:20,width:"100%",maxWidth:400,borderRadius:16,cursor:"pointer",position:"relative",overflow:"hidden",
-          background:`linear-gradient(135deg, rgba(232,98,42,0.08) 0%, rgba(212,168,86,0.06) 100%)`,
-          border:`1px solid ${T.accent}30`,padding:"16px 20px",textAlign:"left",
-          display:"flex",alignItems:"center",gap:14,zIndex:1,
-          boxShadow:`0 4px 20px rgba(232,98,42,0.1)`,
-        }}>
-          <div style={{width:44,height:44,borderRadius:12,background:`linear-gradient(135deg,${T.accent},#d4541e)`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:`0 4px 12px ${T.accentGlow}`}}>
-            <span style={{fontSize:22}}>📷</span>
+        <style>{`
+          @keyframes orbSpin{0%{transform:rotate(0deg) scale(0);opacity:0}50%{transform:rotate(400deg) scale(1.06);opacity:1}75%{transform:rotate(690deg) scale(0.97)}100%{transform:rotate(720deg) scale(1)}}
+          .pa-orb{width:120px;height:120px;border-radius:50%;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease;overflow:hidden;opacity:0;animation:orbSpin 1.4s cubic-bezier(.22,1,.36,1) forwards}
+          .pa-orb:hover{transform:scale(1.08)!important}.pa-orb:active{transform:scale(0.96)!important}
+          @media(max-width:400px){.pa-orb{width:100px;height:100px}}
+        `}</style>
+        <div style={{marginTop:28,width:"100%",maxWidth:440,position:"relative",zIndex:1}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"24px 20px",justifyItems:"center"}}>
+
+            {/* Cercle 1 — Trouve ta pala */}
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
+              <div className="pa-orb" onClick={createNewProfile} style={{
+                background:"linear-gradient(145deg,#E86B5A,#D4503E)",
+                boxShadow:"0 6px 24px rgba(232,107,90,0.3)",
+                display:"flex",alignItems:"center",justifyContent:"center",
+                animationDelay:"0.1s",
+              }}>
+                <svg width="60" height="60" viewBox="0 0 60 60"><polygon points="30,8 50,22 46,46 14,46 10,22" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1"/><polygon points="30,16 42,26 39,42 21,42 18,26" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><polygon points="30,24 36,30 34,38 26,38 24,30" fill="rgba(255,255,255,0.25)" stroke="#fff" strokeWidth="1"/><circle cx="30" cy="8" r="2.5" fill="#fff"/><circle cx="50" cy="22" r="2.5" fill="#fff"/><circle cx="46" cy="46" r="2.5" fill="#fff"/><circle cx="14" cy="46" r="2.5" fill="#fff"/><circle cx="10" cy="22" r="2.5" fill="#fff"/></svg>
+              </div>
+              <div style={{textAlign:"center"}}>
+                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>Trouve ta pala</div>
+                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Matching personnalisé</div>
+              </div>
+            </div>
+
+            {/* Cercle 2 — Le catalogue */}
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
+              <div className="pa-orb" onClick={()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} style={{
+                background:"linear-gradient(145deg,#E8A84C,#D49038)",
+                boxShadow:"0 6px 24px rgba(232,168,76,0.3)",
+                display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,padding:20,
+                animationDelay:"0.25s",
+              }}>
+                <div style={{width:24,height:36,borderRadius:"4px 4px 10px 10px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
+                <div style={{width:24,height:36,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
+                <div style={{width:24,height:36,borderRadius:"10px 10px 4px 4px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
+                <div style={{width:24,height:36,borderRadius:6,border:"1.5px solid rgba(255,255,255,0.5)",background:"rgba(255,255,255,0.1)"}}/>
+              </div>
+              <div style={{textAlign:"center"}}>
+                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>{totalDBCount} raquettes</div>
+                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Magazine & fiches</div>
+              </div>
+            </div>
+
+            {/* Cercle 3 — Scan raquette */}
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
+              <div className="pa-orb" onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");}} style={{
+                background:"linear-gradient(145deg,#1A9E8F,#0D7A6E)",
+                boxShadow:"0 6px 24px rgba(26,158,143,0.3)",
+                display:"flex",alignItems:"center",justifyContent:"center",
+                animationDelay:"0.4s",
+              }}>
+                <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="16" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/><circle cx="30" cy="30" r="6" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.2"/><line x1="30" y1="10" x2="30" y2="19" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="30" y1="41" x2="30" y2="50" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="10" y1="30" x2="19" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="41" y1="30" x2="50" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><rect x="10" y="10" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/><rect x="40" y="10" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/><rect x="10" y="40" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/><rect x="40" y="40" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/></svg>
+              </div>
+              <div style={{textAlign:"center"}}>
+                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>Scan raquette</div>
+                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Photo → identification</div>
+              </div>
+            </div>
+
+            {/* Cercle 4 — Nos conseillers */}
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
+              <div className="pa-orb" onClick={()=>{setChatOpen(true);setChatBubbleVisible(false);}} style={{
+                background:"linear-gradient(145deg,#7C5CBF,#6344A8)",
+                boxShadow:"0 6px 24px rgba(124,92,191,0.3)",
+                display:"flex",alignItems:"center",justifyContent:"center",gap:4,
+                animationDelay:"0.55s",
+              }}>
+                {Object.values(ADVISORS).map((adv,i)=><img key={i} src={adv.avatar} alt={adv.name} style={{width:32,height:32,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.5)"}}/>)}
+              </div>
+              <div style={{textAlign:"center"}}>
+                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>Nos conseillers</div>
+                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Léo, Juan & Manon</div>
+              </div>
+            </div>
           </div>
-          <div style={{flex:1}}>
-            <div style={{fontFamily:F.body,fontSize:14,fontWeight:700,color:T.cream,marginBottom:2}}>{profileName?"📷 Scanner & comparer":"Scanner une raquette"}</div>
-            <div style={{fontFamily:F.body,fontSize:11,color:T.gray1,lineHeight:1.4}}>{profileName?`Photo → pertinence pour ${profileName}`:"Photo → identification instantanée"}</div>
-          </div>
-          <span style={{fontSize:16,color:T.accent}}>→</span>
-        </button>
-
-        {/* ============================================================ */}
-        {/* CONTENT CTAs — Magazine + Catalogue */}
-        {/* ============================================================ */}
-        <div style={{marginTop:36,width:"100%",maxWidth:500,position:"relative",zIndex:1,display:"flex",flexDirection:"column",gap:14}} className="pa-stagger">
-
-          {/* MAGAZINE — Warm luxury gold card */}
-          <button onClick={()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} className="pa-card" style={{
-            width:"100%",borderRadius:22,cursor:"pointer",position:"relative",overflow:"hidden",
-            background:`linear-gradient(160deg, #1E1812 0%, #261F16 40%, #1A1510 100%)`,
-            border:`1px solid ${T.gold}40`,padding:0,textAlign:"left",
-            boxShadow:`0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(212,168,86,0.08), inset 0 1px 0 ${T.gold}20`,
-          }}>
-            {/* Gold accent line top */}
-            <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, transparent 5%, ${T.gold} 30%, ${T.gold}80 70%, transparent 95%)`,borderRadius:1}}/>
-            {/* Warm glow top-right */}
-            <div style={{position:"absolute",top:"-20%",right:"-5%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, rgba(212,168,86,0.20) 0%, transparent 65%)`,pointerEvents:"none"}}/>
-            {/* Warm glow bottom-left */}
-            <div style={{position:"absolute",bottom:"-10%",left:"-5%",width:150,height:150,borderRadius:"50%",background:`radial-gradient(circle, rgba(212,168,86,0.10) 0%, transparent 65%)`,pointerEvents:"none"}}/>
-            
-            <div style={{padding:"24px 24px 20px",position:"relative",zIndex:1}}>
-              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                <span style={{fontSize:9,fontWeight:800,color:"#14100A",background:`linear-gradient(135deg, ${T.gold}, #c49a40)`,padding:"4px 12px",borderRadius:6,textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:F.body,boxShadow:`0 2px 8px rgba(212,168,86,0.35)`}}>2026</span>
-                <span style={{fontSize:9,fontWeight:600,color:T.gold,letterSpacing:"0.06em",textTransform:"uppercase",fontFamily:F.body}}>Le Magazine</span>
-              </div>
-              <div style={{fontFamily:F.editorial,fontSize:24,fontWeight:700,fontStyle:"italic",color:"#FAF7F0",lineHeight:1.25,marginBottom:8}}>Tendances, analyses<br/>& fiches techniques</div>
-              <div style={{fontSize:12,color:"#C4BAA8",fontFamily:F.body,lineHeight:1.5,marginBottom:14}}>Les meilleures raquettes classées par catégorie. Top Puissance, Contrôle, Polyvalence…</div>
-              {/* Category pills — gold toned */}
-              <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                {["Puissance","Contrôle","Confort","Polyvalence"].map(c=><span key={c} style={{fontSize:9,fontWeight:600,padding:"4px 10px",borderRadius:8,background:"rgba(212,168,86,0.15)",border:"1px solid rgba(212,168,86,0.30)",color:T.gold,fontFamily:F.body}}>{c}</span>)}
-              </div>
-            </div>
-            {/* Bottom bar — warm */}
-            <div style={{padding:"12px 24px",borderTop:"1px solid rgba(212,168,86,0.20)",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(212,168,86,0.06)"}}>
-              <span style={{fontSize:11,fontWeight:600,color:"#FAF7F0",fontFamily:F.editorial,fontStyle:"italic"}}>Explorer le magazine</span>
-              <span style={{fontSize:18,color:T.gold}}>→</span>
-            </div>
-          </button>
-
-          {/* COLLECTION — Cool blue/emerald showroom card */}
-          <button onClick={()=>{setCatalogSearch("");resetCatFilters();setScreen("catalog");}} className="pa-card" style={{
-            width:"100%",borderRadius:22,cursor:"pointer",position:"relative",overflow:"hidden",
-            background:`linear-gradient(160deg, #111520 0%, #181D2A 40%, #0F1320 100%)`,
-            border:`1px solid rgba(61,184,160,0.25)`,padding:0,textAlign:"left",
-            boxShadow:`0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(61,184,160,0.06), inset 0 1px 0 rgba(61,184,160,0.12)`,
-          }}>
-            {/* Emerald accent line top */}
-            <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, transparent 5%, #3DB8A0 30%, rgba(61,184,160,0.6) 70%, transparent 95%)`}}/>
-            {/* Cool glow top-right */}
-            <div style={{position:"absolute",top:"-20%",right:"-5%",width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle, rgba(61,184,160,0.12) 0%, transparent 65%)",pointerEvents:"none"}}/>
-            
-            <div style={{padding:"22px 24px 18px",display:"flex",alignItems:"center",gap:18,position:"relative",zIndex:1}}>
-              {/* Big number — emerald */}
-              <div style={{flexShrink:0,textAlign:"center",minWidth:80}}>
-                <div style={{fontSize:40,fontWeight:900,color:"#3DB8A0",fontFamily:"'Outfit',sans-serif",lineHeight:1,textShadow:"0 0 20px rgba(61,184,160,0.25)"}}>{totalDBCount}</div>
-                <div style={{fontSize:8,color:"#646E85",textTransform:"uppercase",letterSpacing:"0.08em",fontFamily:F.body,marginTop:2}}>raquettes</div>
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:"#EDF0F7",lineHeight:1.3,marginBottom:4,fontStyle:"italic"}}>La Collection</div>
-                <div style={{fontSize:11,color:"#A0AABE",fontFamily:F.body,lineHeight:1.5}}>Recherche, filtres avancés, fiches détaillées. Toutes marques, toutes gammes.</div>
-                <div style={{display:"flex",alignItems:"center",gap:6,marginTop:6}}>
-                  <span style={{fontSize:8,fontWeight:700,color:"#fff",background:"linear-gradient(135deg, #7c3aed, #6d28d9)",padding:"3px 8px",borderRadius:6,display:"inline-flex",alignItems:"center",gap:3}}>
-                    <svg width={8} height={8} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
-                    NEW 2026
-                  </span>
-                  <span style={{fontSize:9,color:"#646E85",fontFamily:F.body}}>Dernières sorties</span>
-                </div>
-              </div>
-            </div>
-            {/* Bottom bar — cool */}
-            <div style={{padding:"10px 24px",borderTop:"1px solid rgba(61,184,160,0.15)",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(61,184,160,0.04)"}}>
-              <span style={{fontSize:11,fontWeight:600,color:"#EDF0F7",fontFamily:F.editorial,fontStyle:"italic"}}>Parcourir la collection</span>
-              <span style={{fontSize:18,color:"#3DB8A0"}}>→</span>
-            </div>
-          </button>
         </div>
 
         {familyCode && familyCode !== "LOCAL" && <div style={{marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
