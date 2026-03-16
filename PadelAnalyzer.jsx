@@ -3188,7 +3188,7 @@ export default function PadelAnalyzer() {
   // ============ CONSEILLER CHAT — State ============
   const [chatOpen, setChatOpen] = useState(false);
   const [chatAdvisor, setChatAdvisor] = useState(null); // "leo"|"juan"|"manon"
-  const [chatMessages, setChatMessages] = useState([]); // [{role,content,advisor?}]
+  const [chatMessages, setChatMessages] = useState({}); // {leo:[...], juan:[...], manon:[...]}
   const [chatInput, setChatInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [chatBubbleVisible, setChatBubbleVisible] = useState(false);
@@ -3207,7 +3207,7 @@ export default function PadelAnalyzer() {
     window.addEventListener("touchstart", reset, true);
     return () => { clearTimeout(timer); window.removeEventListener("scroll", reset, true); window.removeEventListener("click", reset, true); window.removeEventListener("touchstart", reset, true); };
   }, [screen, chatBubbleDismissed, chatOpen]);
-  useEffect(() => { chatEndRef.current?.scrollIntoView({behavior:"smooth"}); }, [chatMessages, chatLoading]);
+  useEffect(() => { chatEndRef.current?.scrollIntoView({behavior:"smooth"}); }, [chatMessages, chatLoading, chatAdvisor]);
 
   const ADVISORS = {
     leo: {
@@ -3264,14 +3264,26 @@ TA MÉTHODE (applique-la systématiquement):
 
 CONTEXTE: Tu travailles chez Padel Center & Santé, boutique de padel à Le Lamentin, Martinique. Le site web est padelanalyzer.fr.
 
-RÈGLES ABSOLUES:
+RÈGLES FONDAMENTALES SUR LE PADEL:
+- Les raquettes de padel n'ont PAS de cordage. C'est une surface rigide (fibre de verre, carbone, etc.) avec des trous. Ne JAMAIS confondre avec le tennis.
+- On ne "change pas le cordage" d'une raquette de padel. On peut changer le grip, le surgrip, le protecteur de cadre — c'est tout.
+- Les termes corrects sont : tamis (surface de frappe), mousse/core (intérieur), cadre, bridge, grip.
+
+RÈGLES DE CONVERSATION:
 - Ne jamais inventer une raquette qui n'est pas dans la liste ci-dessous
 - Si tu ne sais pas, dis-le honnêtement
 - Ne jamais critiquer un concurrent
 - Quand tu recommandes, explique POURQUOI en termes de jeu (pas juste les specs)
-- Si le client demande ton avis personnel, donne-le (tu es "Adaptable" — neutre par défaut, mais tu assumes tes préférences quand on te le demande)
+- Si le client demande ton avis personnel, donne-le franchement
 - Intègre naturellement la possibilité d'essayer en boutique à Padel Center & Santé
-- Le padel féminin est aussi important que le masculin — ne jamais traiter les joueuses comme secondaires
+- Le padel féminin est aussi important que le masculin
+- Ne JAMAIS utiliser de listes à puces, de tirets, de numérotation ou de mise en forme markdown. Écris en paragraphes naturels comme à l'oral.
+- Ne JAMAIS utiliser les mêmes phrases d'accroche. Varie tes formulations à chaque message.
+
+APPROCHE PROFESSIONNELLE — TRÈS IMPORTANT:
+- Avant de recommander quoi que ce soit, assure-toi de connaître: le prénom du client, son niveau approximatif, depuis combien de temps il joue, s'il a des douleurs, et ce qu'il recherche
+- Ne fonce JAMAIS dans des recommandations sans avoir posé au moins 2-3 questions d'abord
+- Tu es un conseiller professionnel, pas un distributeur automatique de suggestions
 
 BASE DE 233 RAQUETTES (Nom|Forme|Poids|Balance|Catégorie|Scores|Joueur pro|★Argument clé):
 ${racketIndex}
@@ -3284,8 +3296,9 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     if (!chatInput.trim() || chatLoading || !chatAdvisor) return;
     const userMsg = chatInput.trim();
     setChatInput("");
-    const newMessages = [...chatMessages, {role:"user", content:userMsg}];
-    setChatMessages(newMessages);
+    const prev = chatMessages[chatAdvisor] || [];
+    const newMessages = [...prev, {role:"user", content:userMsg}];
+    setChatMessages(m => ({...m, [chatAdvisor]: newMessages}));
     setChatLoading(true);
     try {
       const apiMessages = newMessages.slice(-10).map(m => ({role:m.role, content:m.content}));
@@ -3300,9 +3313,9 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
       const data = await resp.json();
       if (data.error) throw new Error(data.error.message||"Erreur API");
       const text = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
-      setChatMessages(prev => [...prev, {role:"assistant", content: text || "Désolé, je n'ai pas pu répondre.", advisor: chatAdvisor}]);
+      setChatMessages(m => ({...m, [chatAdvisor]: [...(m[chatAdvisor]||[]), {role:"assistant", content: text || "Désolé, je n'ai pas pu répondre.", advisor: chatAdvisor}]}));
     } catch (e) {
-      setChatMessages(prev => [...prev, {role:"assistant", content: `Oups, petit problème technique 😅 Réessaie dans un instant. (${e.message})`, advisor: chatAdvisor}]);
+      setChatMessages(m => ({...m, [chatAdvisor]: [...(m[chatAdvisor]||[]), {role:"assistant", content: `Oups, petit problème technique. Réessaie dans un instant. (${e.message})`, advisor: chatAdvisor}]}));
     }
     setChatLoading(false);
   };
@@ -4930,352 +4943,123 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </p>
       </div>}
 
-      {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"20px 16px",background:`radial-gradient(ellipse at 50% 10%, ${T.surface} 0%, ${T.bg} 50%, #080c14 100%)`,position:"relative",overflow:"hidden"}}>
+      {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"0",background:"linear-gradient(170deg, #FDF8F0 0%, #FAF3E8 35%, #F5EDE0 65%, #EDE4D4 100%)",position:"relative",overflow:"hidden"}}>
         <FontLoader/>
-        {/* Subtle top glow */}
-        <div style={{position:"absolute",top:"-10%",left:"50%",transform:"translateX(-50%)",width:"120%",height:"40%",background:`radial-gradient(ellipse, ${T.goldSoft} 0%, transparent 70%)`,opacity:0.25,pointerEvents:"none"}}/>
-        {/* Big logo */}
-        <div style={{marginBottom:16,position:"relative",zIndex:1}}>
-          <div style={{filter:`drop-shadow(0 8px 28px ${T.accentGlow})`}}><PalaLogo size={72} gid="lgHome"/></div>
-        </div>
-        <h1 style={{fontFamily:F.editorial,fontSize:30,fontWeight:700,color:T.cream,margin:"0 0 4px",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>PADEL ANALYZER</h1>
-        {groupName&&familyCode!=="LOCAL"?<>
-          <p style={{color:T.gold,fontSize:15,margin:"0 0 2px",fontWeight:600,textAlign:"center",fontFamily:F.editorial,fontStyle:"italic",position:"relative",zIndex:1}}>
-            {groupRole==="admin"?`${groupName}`
-              :groupRole==="vendeur"?`Espace vendeur`
-              :`Bienvenue ${groupName}`}
-          </p>
-          <p style={{color:T.gray1,fontSize:11,margin:"0 0 10px",textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>
-            {groupRole==="admin"?`Administration · ${savedProfiles.length} profil${savedProfiles.length>1?"s":""} · ${totalDBCount} raquettes`
-              :groupRole==="vendeur"?`Outil de recommandation · ${totalDBCount} raquettes en base`
-              :`${savedProfiles.length} profil${savedProfiles.length>1?"s":""} enregistré${savedProfiles.length>1?"s":""} · ${totalDBCount} raquettes`}
-          </p>
-        </>:<>
-          <p style={{fontFamily:F.editorial,fontSize:15,color:T.gold,margin:"0 0 2px",fontStyle:"italic",letterSpacing:"0.02em",textAlign:"center",position:"relative",zIndex:1}}>Padel Center & Santé</p>
-          <p style={{color:T.gray2,fontSize:11,margin:"0 0 10px",textAlign:"center",maxWidth:340,lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>Trouve ta pala idéale parmi {totalDBCount} raquettes analysées</p>
-        </>}
-
-        {/* ============================================================ */}
-        {/* BREAKING NEWS HERO */}
-        {/* ============================================================ */}
-        <BreakingNewsHero getMergedDB={getMergedDB} openRacketSheet={openRacketSheet}/>
-
-        {/* Saved profiles — Carousel (NOT shown in kiosk mode) */}
-        {!isKiosk&&savedProfiles.length>0&&(()=>{
-          const profileSearch = profileSearchTerm;
-          const filtered = savedProfiles.filter(sp=>!profileSearch||sp.name.toLowerCase().includes(profileSearch.toLowerCase()));
-          const CARD_W = 270;
-          const GAP = 12;
-          const scrollToIdx = (idx)=>{
-            const el = carouselRef.current;
-            if(!el) return;
-            const target = idx * (CARD_W + GAP);
-            el.scrollTo({left:target,behavior:"smooth"});
-            setActiveProfileIdx(idx);
-          };
-          const handleScroll = ()=>{
-            const el = carouselRef.current;
-            if(!el) return;
-            const idx = Math.round(el.scrollLeft / (CARD_W + GAP));
-            setActiveProfileIdx(Math.max(0, Math.min(idx, filtered.length-1)));
-          };
-          const scrollDir = (dir)=>{
-            const next = dir==="left" ? activeProfileIdx-1 : activeProfileIdx+1;
-            if(next>=0 && next<filtered.length) scrollToIdx(next);
-            else if(next<0) scrollToIdx(filtered.length-1); // loop
-            else scrollToIdx(0); // loop
-          };
-          return (
-          <div style={{width:"100%",maxWidth:560,marginBottom:20}}>
-            {/* Email banner for accounts without email */}
-            {familyCode && familyCode!=="LOCAL" && !groupEmail && <div style={{margin:"0 0 14px",padding:"8px 12px",background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:10,display:"flex",alignItems:"center",gap:8,animation:"fadeIn 0.4s ease"}}>
-              <span style={{fontSize:14,flexShrink:0}}>📧</span>
-              <div style={{flex:1}}>
-                <input type="email" value={cloudLoginEmail} onChange={e=>setCloudLoginEmail(e.target.value)} placeholder="Votre email pour recevoir vos résultats"
-                  style={{width:"100%",padding:"5px 8px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:8,color:T.white,fontSize:11,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
-                  onKeyDown={e=>{if(e.key==="Enter"&&cloudLoginEmail.trim()){updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}}}/>
-              </div>
-              <button onClick={()=>{if(!cloudLoginEmail.trim())return;updateGroupEmail(familyCode,cloudLoginEmail.trim()).then(()=>{setGroupEmail(cloudLoginEmail.trim());setCloudLoginEmail("");}).catch(()=>{})}} style={{padding:"5px 10px",background:T.accentSoft,border:`1px solid ${T.accent}40`,borderRadius:8,color:T.accent,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:F.body,flexShrink:0}}>OK</button>
-            </div>}
-
-            <p style={{fontSize:9,color:T.gray2,fontWeight:600,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10,textAlign:"center",fontFamily:F.body,position:"relative",zIndex:1}}>Profils <span style={{color:T.gray3}}>({savedProfiles.length})</span></p>
-
-            {/* Search bar — shows when 4+ profiles */}
-            {savedProfiles.length>=4&&<div style={{display:"flex",justifyContent:"center",marginBottom:10}}>
-              <div style={{position:"relative",width:"100%",maxWidth:260}}>
-                <input
-                  type="text" placeholder="Rechercher…" value={profileSearch}
-                  onChange={e=>{setProfileSearchTerm(e.target.value);setActiveProfileIdx(0);}}
-                  style={{width:"100%",padding:"7px 10px 7px 28px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:8,color:T.white,fontSize:11,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}
-                />
-                <span style={{position:"absolute",left:8,top:"50%",transform:"translateY(-50%)",fontSize:11,color:T.gray2,pointerEvents:"none"}}>🔍</span>
-                {profileSearch&&<button onClick={()=>{setProfileSearchTerm("");setActiveProfileIdx(0);}} style={{position:"absolute",right:6,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.gray2,fontSize:12,cursor:"pointer",padding:2}}>✕</button>}
-              </div>
-            </div>}
-
-            {/* Carousel container */}
-            <div style={{position:"relative",display:"flex",alignItems:"center",gap:4}}>
-              {/* Left arrow */}
-              {filtered.length>1&&<button onClick={()=>scrollDir("left")} aria-label="Précédent" style={{
-                width:30,height:30,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
-                color:T.white,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
-                fontFamily:F.body,transition:"all 0.2s",
-              }}>‹</button>}
-
-              {/* Scrollable track */}
-              <div ref={carouselRef} className="pa-carousel" onScroll={handleScroll} style={{
-                display:"flex",gap:GAP,overflowX:"auto",scrollSnapType:"x mandatory",scrollBehavior:"smooth",
-                flex:1,padding:"4px 0 8px",msOverflowStyle:"none",scrollbarWidth:"none",WebkitOverflowScrolling:"touch",
-              }} onKeyDown={e=>{if(e.key==="ArrowLeft"){e.preventDefault();scrollDir("left");}if(e.key==="ArrowRight"){e.preventDefault();scrollDir("right");}}} tabIndex={0}>
-                {/* Spacer so first card can center */}
-                <div style={{minWidth:`calc(50% - ${CARD_W/2}px)`,flexShrink:0}} aria-hidden="true"/>
-                {filtered.map((sp,i)=>{
-                  const p = sp.profile||{};
-                  const styles = (p.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-                  const injuries = (p.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-                  const isJunior = p.age && parseInt(p.age)<16;
-                  const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0",Expert:"#a855f7"};
-                  const lvlColor = levelColors[p.level]||T.gray2;
-                  const desc = [p.side&&`${p.side}`, p.hand].filter(Boolean).join(" · ");
-                  const stylesStr = styles.length?styles.slice(0,2).join(", "):"";
-                  const isActive = i === activeProfileIdx;
-                  return (
-                    <button key={sp.name} onClick={()=>{
-                      if(sp.locked){
-                        setPinInput("");setPinError("");setPasswordModal({mode:'unlock',profileName:sp.name,onSuccess:()=>{selectHomeProfile(sp);setPasswordModal(null);}});
-                      } else { selectHomeProfile(sp); }
-                    }} style={{
-                      background: isActive
-                        ? `linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`
-                        : `${T.card}cc`,
-                      border: isActive ? `1px solid ${lvlColor}40` : `1px solid ${T.border}`,
-                      borderRadius:14,padding:"12px 14px",cursor:"pointer",textAlign:"left",fontFamily:F.body,
-                      minWidth:CARD_W,maxWidth:CARD_W,flexShrink:0,scrollSnapAlign:"center",
-                      display:"flex",alignItems:"center",gap:12,position:"relative",
-                      transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
-                      transform: isActive ? "scale(1.02)" : "scale(0.97)",
-                      opacity: isActive ? 1 : 0.6,
-                      boxShadow: isActive ? `0 6px 24px rgba(0,0,0,0.3), 0 0 0 1px ${lvlColor}15` : "none",
-                    }}>
-                      {/* Lock icon */}
-                      {sp.locked&&<div style={{position:"absolute",top:4,left:4,fontSize:9,color:"#a5b4fc",opacity:0.7}}>🔒</div>}
-                      {/* Delete button */}
-                      {!sp.locked&&<div onClick={e=>{e.stopPropagation();setConfirmModal({message:`Supprimer "${sp.name}" ?`,onConfirm:()=>{const updated=deleteNamedProfile(sp.name);setSavedProfiles(updated);cloudDeleteProfileFn(sp.name);setConfirmModal(null);},onCancel:()=>setConfirmModal(null)});}} style={{
-                        position:"absolute",top:4,right:4,width:18,height:18,borderRadius:"50%",
-                        background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.15)",
-                        display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,color:"#ef4444",
-                        cursor:"pointer",opacity:0.4,transition:"all 0.2s",zIndex:2,
-                      }} onMouseEnter={e=>{e.currentTarget.style.opacity="1";}}
-                         onMouseLeave={e=>{e.currentTarget.style.opacity="0.4";}}>✕</div>}
-
-                      {/* Avatar — compact circle with initial + level color ring */}
-                      <div style={{
-                        width:44,height:44,borderRadius:12,flexShrink:0,
-                        background:`linear-gradient(135deg, ${lvlColor}25, ${lvlColor}10)`,
-                        border:`2px solid ${isActive ? lvlColor+"70" : lvlColor+"30"}`,
-                        display:"flex",alignItems:"center",justifyContent:"center",
-                        transition:"all 0.3s",
-                      }}>
-                        <span style={{fontSize:18,fontWeight:700,color:isActive?lvlColor:T.gray2,fontFamily:F.editorial,transition:"color 0.3s"}}>
-                          {sp.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-
-                      {/* Text content */}
-                      <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
-                        {/* Name + level */}
-                        <div style={{display:"flex",alignItems:"center",gap:6}}>
-                          <span style={{fontFamily:F.editorial,fontSize:15,fontWeight:700,fontStyle:"italic",color:isActive?T.cream:T.gray1,lineHeight:1.2,transition:"color 0.3s",
-                            overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{sp.name}</span>
-                          {p.level&&<span style={{fontSize:7,fontWeight:700,color:lvlColor,background:`${lvlColor}18`,padding:"1px 6px",borderRadius:6,letterSpacing:"0.04em",textTransform:"uppercase",flexShrink:0}}>{p.level}{isJunior?" Jr":""}</span>}
-                        </div>
-                        {/* Info line — side, style */}
-                        <div style={{fontSize:9,color:T.gray2,lineHeight:1.3,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                          {[desc, stylesStr].filter(Boolean).join(" · ") || "Profil joueur"}
-                        </div>
-                        {/* Injuries subtle */}
-                        {injuries.length>0&&<div style={{fontSize:8,color:"#ef4444",opacity:0.7,marginTop:1}}>🩹 {injuries.join(", ")}</div>}
-                      </div>
-
-                      {/* Right arrow / action */}
-                      <div style={{flexShrink:0,display:"flex",alignItems:"center"}}>
-                        <span style={{fontSize:14,color:isActive?T.accent:T.gray3,transition:"color 0.3s"}}>{sp.locked?"🔒":"›"}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-                {/* Spacer so last card can center */}
-                <div style={{minWidth:`calc(50% - ${CARD_W/2}px)`,flexShrink:0}} aria-hidden="true"/>
-              </div>
-
-              {/* Right arrow */}
-              {filtered.length>1&&<button onClick={()=>scrollDir("right")} aria-label="Suivant" style={{
-                width:30,height:30,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,
-                color:T.white,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
-                fontFamily:F.body,transition:"all 0.2s",
-              }}>›</button>}
-            </div>
-
-            {/* Dot indicators — clickable */}
-            {filtered.length>1&&<div style={{display:"flex",justifyContent:"center",gap:5,marginTop:8}}>
-              {filtered.map((_,i)=><button key={i} onClick={()=>scrollToIdx(i)} aria-label={`Profil ${i+1}`} style={{
-                width: i===activeProfileIdx ? 16 : 6,height:6,borderRadius:3,border:"none",cursor:"pointer",padding:0,
-                background: i===activeProfileIdx ? T.accent : `${T.gray3}`,
-                transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
-              }}/>)}
-            </div>}
-
-            {profileSearch&&filtered.length===0&&<p style={{fontSize:10,color:T.gray2,textAlign:"center",marginTop:6,fontFamily:F.body}}>Aucun profil trouvé pour "{profileSearch}"</p>}
-          </div>);
-        })()}
-
-        {/* Kiosk mode — big CTA */}
-        {isKiosk ? <div style={{width:"100%",maxWidth:400,position:"relative",zIndex:1,textAlign:"center"}}>
-          <button onClick={createNewProfile} className="pa-cta" style={{
-            padding:"20px 28px",
-            background:`linear-gradient(135deg,${T.accent},#d4541e,${T.gold},${T.accent})`,
-            backgroundSize:"300% 300%",
-            border:"none",borderRadius:18,color:"#fff",fontSize:18,fontWeight:800,
-            cursor:"pointer",fontFamily:F.body,letterSpacing:"-0.01em",
-            width:"100%",position:"relative",zIndex:1,
-            animation:"pulseGlow 2.5s ease-in-out infinite, shimmerGrad 4s ease-in-out infinite",
-            boxShadow:`0 8px 40px ${T.accentGlow}`,
-          }}>
-            🏓 C'est parti !
-          </button>
-          <p style={{fontSize:12,color:T.gray1,marginTop:12,lineHeight:1.5,fontFamily:F.body}}>
-            Réponds à quelques questions, découvre les raquettes faites pour toi
-          </p>
-        </div>
-
-        : <>
-        {/* New profile button */}
-        <button onClick={createNewProfile} className="pa-cta" style={{
-          padding:"15px 28px",
-          background: savedProfiles.length===0 ? `linear-gradient(135deg,${T.accent},#d4541e,${T.gold},${T.accent})` : `linear-gradient(135deg,${T.accent},#d4541e)`,
-          backgroundSize: savedProfiles.length===0 ? "300% 300%" : "100% 100%",
-          border:"none",borderRadius:14,color:"#fff",fontSize:14,fontWeight:700,
-          cursor:"pointer",fontFamily:F.body,letterSpacing:"-0.01em",
-          width:"100%",maxWidth:400,position:"relative",zIndex:1,
-          ...(savedProfiles.length===0 ? {animation:"pulseGlow 2.5s ease-in-out infinite, shimmerGrad 4s ease-in-out infinite",boxShadow:`0 6px 36px ${T.accentGlow}`} : {boxShadow:`0 6px 24px ${T.accentGlow}`}),
-        }}>
-          + Nouveau profil
-        </button>
-
-        {savedProfiles.length===0&&<p style={{fontSize:11,color:T.gray2,marginTop:12,textAlign:"center",lineHeight:1.5,fontFamily:F.body,position:"relative",zIndex:1}}>
-          Crée ton premier profil pour démarrer l'analyse
-        </p>}
-        </>}
-
-        {/* ============================================================ */}
-        {/* 4 CERCLES — Navigation Tropique Luxe */}
-        {/* ============================================================ */}
         <style>{`
-          @keyframes orbSpin{0%{transform:rotate(0deg) scale(0);opacity:0}50%{transform:rotate(400deg) scale(1.06);opacity:1}75%{transform:rotate(690deg) scale(0.97)}100%{transform:rotate(720deg) scale(1)}}
-          .pa-orb{width:120px;height:120px;border-radius:50%;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease;overflow:hidden;opacity:0;animation:orbSpin 1.4s cubic-bezier(.22,1,.36,1) forwards}
-          .pa-orb:hover{transform:scale(1.08)!important}.pa-orb:active{transform:scale(0.96)!important}
-          @media(max-width:400px){.pa-orb{width:100px;height:100px}}
+          @keyframes orbitalLand0{0%{transform:translate(60px,60px) scale(0);opacity:0}20%{transform:translate(80px,-30px) scale(0.7);opacity:1}45%{transform:translate(-40px,-50px) scale(0.9)}70%{transform:translate(10px,15px) scale(1.04)}90%{transform:translate(-2px,2px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
+          @keyframes orbitalLand1{0%{transform:translate(-60px,60px) scale(0);opacity:0}20%{transform:translate(-80px,-20px) scale(0.7);opacity:1}45%{transform:translate(50px,-40px) scale(0.9)}70%{transform:translate(-8px,10px) scale(1.04)}90%{transform:translate(2px,-2px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
+          @keyframes orbitalLand2{0%{transform:translate(60px,-60px) scale(0);opacity:0}20%{transform:translate(-30px,70px) scale(0.7);opacity:1}45%{transform:translate(45px,30px) scale(0.9)}70%{transform:translate(-5px,-10px) scale(1.04)}90%{transform:translate(1px,2px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
+          @keyframes orbitalLand3{0%{transform:translate(-60px,-60px) scale(0);opacity:0}20%{transform:translate(70px,40px) scale(0.7);opacity:1}45%{transform:translate(-50px,20px) scale(0.9)}70%{transform:translate(8px,-5px) scale(1.04)}90%{transform:translate(-1px,1px) scale(0.99)}100%{transform:translate(0,0) scale(1)}}
+          @keyframes labelFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+          .tl-orb{width:130px;height:130px;border-radius:50%;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease;overflow:hidden;opacity:0}
+          .tl-orb:hover{transform:scale(1.08)!important;box-shadow:0 8px 32px rgba(0,0,0,0.18)!important}
+          .tl-orb:active{transform:scale(0.95)!important}
+          .tl-lbl{opacity:0;animation:labelFadeUp 0.5s ease forwards}
+          @media(max-width:380px){.tl-orb{width:110px;height:110px}}
         `}</style>
-        <div style={{marginTop:28,width:"100%",maxWidth:440,position:"relative",zIndex:1}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"24px 20px",justifyItems:"center"}}>
+
+        {/* Subtle warm decorations */}
+        <div style={{position:"absolute",top:"-8%",right:"-12%",width:300,height:300,borderRadius:"50%",background:"radial-gradient(circle, rgba(232,107,90,0.12) 0%, transparent 70%)",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",bottom:"-5%",left:"-10%",width:250,height:250,borderRadius:"50%",background:"radial-gradient(circle, rgba(26,158,143,0.08) 0%, transparent 70%)",pointerEvents:"none"}}/>
+
+        {/* Logo section */}
+        <div style={{textAlign:"center",paddingTop:60,marginBottom:8,position:"relative",zIndex:1}}>
+          <div style={{width:80,height:80,borderRadius:20,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",boxShadow:"0 8px 30px rgba(232,98,42,0.25)"}}>
+            <div style={{transform:"rotate(20deg)"}}><PalaIcon size={44}/></div>
+          </div>
+          <h1 style={{fontFamily:F.editorial,fontSize:28,fontWeight:700,color:"#1A1A1A",margin:"0 0 4px",letterSpacing:"0.02em"}}>PADEL ANALYZER</h1>
+          <p style={{fontFamily:F.editorial,fontSize:14,color:"#1A9E8F",margin:"0 0 6px",fontStyle:"italic",fontWeight:600}}>Padel Center & Santé</p>
+          <p style={{color:"#8B7D6B",fontSize:12,margin:"0",fontFamily:F.body,lineHeight:1.5}}>{totalDBCount} raquettes analysées · Ta prochaine pala est ici.</p>
+        </div>
+
+        {/* 4 circles — orbital animation */}
+        <div style={{marginTop:40,width:"100%",maxWidth:360,position:"relative",zIndex:1,padding:"0 20px",boxSizing:"border-box"}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"28px 24px",justifyItems:"center"}}>
 
             {/* Cercle 1 — Trouve ta pala */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
-              <div className="pa-orb" onClick={createNewProfile} style={{
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+              <div className="tl-orb" onClick={createNewProfile} style={{
                 background:"linear-gradient(145deg,#E86B5A,#D4503E)",
-                boxShadow:"0 6px 24px rgba(232,107,90,0.3)",
+                boxShadow:"0 6px 24px rgba(232,107,90,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",
-                animationDelay:"0.1s",
+                animation:"orbitalLand0 1.6s cubic-bezier(.22,1,.36,1) 0.1s forwards",
               }}>
                 <svg width="60" height="60" viewBox="0 0 60 60"><polygon points="30,8 50,22 46,46 14,46 10,22" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1"/><polygon points="30,16 42,26 39,42 21,42 18,26" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><polygon points="30,24 36,30 34,38 26,38 24,30" fill="rgba(255,255,255,0.25)" stroke="#fff" strokeWidth="1"/><circle cx="30" cy="8" r="2.5" fill="#fff"/><circle cx="50" cy="22" r="2.5" fill="#fff"/><circle cx="46" cy="46" r="2.5" fill="#fff"/><circle cx="14" cy="46" r="2.5" fill="#fff"/><circle cx="10" cy="22" r="2.5" fill="#fff"/></svg>
               </div>
-              <div style={{textAlign:"center"}}>
-                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>Trouve ta pala</div>
-                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Matching personnalisé</div>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.5s"}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Trouve ta pala</div>
+                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Matching personnalisé</div>
               </div>
             </div>
 
             {/* Cercle 2 — Le catalogue */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
-              <div className="pa-orb" onClick={()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} style={{
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+              <div className="tl-orb" onClick={()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} style={{
                 background:"linear-gradient(145deg,#E8A84C,#D49038)",
-                boxShadow:"0 6px 24px rgba(232,168,76,0.3)",
-                display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,padding:20,
-                animationDelay:"0.25s",
+                boxShadow:"0 6px 24px rgba(232,168,76,0.25)",
+                display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,padding:18,
+                animation:"orbitalLand1 1.6s cubic-bezier(.22,1,.36,1) 0.25s forwards",
               }}>
                 <div style={{width:24,height:36,borderRadius:"4px 4px 10px 10px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
                 <div style={{width:24,height:36,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
                 <div style={{width:24,height:36,borderRadius:"10px 10px 4px 4px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
                 <div style={{width:24,height:36,borderRadius:6,border:"1.5px solid rgba(255,255,255,0.5)",background:"rgba(255,255,255,0.1)"}}/>
               </div>
-              <div style={{textAlign:"center"}}>
-                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>{totalDBCount} raquettes</div>
-                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Magazine & fiches</div>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.65s"}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>{totalDBCount} raquettes</div>
+                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Magazine & fiches</div>
               </div>
             </div>
 
             {/* Cercle 3 — Scan raquette */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
-              <div className="pa-orb" onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");}} style={{
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+              <div className="tl-orb" onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");}} style={{
                 background:"linear-gradient(145deg,#1A9E8F,#0D7A6E)",
-                boxShadow:"0 6px 24px rgba(26,158,143,0.3)",
+                boxShadow:"0 6px 24px rgba(26,158,143,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",
-                animationDelay:"0.4s",
+                animation:"orbitalLand2 1.6s cubic-bezier(.22,1,.36,1) 0.4s forwards",
               }}>
-                <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="16" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/><circle cx="30" cy="30" r="6" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.2"/><line x1="30" y1="10" x2="30" y2="19" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="30" y1="41" x2="30" y2="50" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="10" y1="30" x2="19" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="41" y1="30" x2="50" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><rect x="10" y="10" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/><rect x="40" y="10" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/><rect x="10" y="40" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/><rect x="40" y="40" rx="2" width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/></svg>
+                <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="16" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/><circle cx="30" cy="30" r="6" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.2"/><line x1="30" y1="10" x2="30" y2="19" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="30" y1="41" x2="30" y2="50" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="10" y1="30" x2="19" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="41" y1="30" x2="50" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/></svg>
               </div>
-              <div style={{textAlign:"center"}}>
-                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>Scan raquette</div>
-                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Photo → identification</div>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.8s"}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Scan raquette</div>
+                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Photo → identification</div>
               </div>
             </div>
 
             {/* Cercle 4 — Nos conseillers */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
-              <div className="pa-orb" onClick={()=>{setChatOpen(true);setChatBubbleVisible(false);}} style={{
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+              <div className="tl-orb" onClick={()=>{setChatOpen(true);setChatBubbleVisible(false);}} style={{
                 background:"linear-gradient(145deg,#7C5CBF,#6344A8)",
-                boxShadow:"0 6px 24px rgba(124,92,191,0.3)",
+                boxShadow:"0 6px 24px rgba(124,92,191,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",gap:4,
-                animationDelay:"0.55s",
+                animation:"orbitalLand3 1.6s cubic-bezier(.22,1,.36,1) 0.55s forwards",
               }}>
-                {Object.values(ADVISORS).map((adv,i)=><img key={i} src={adv.avatar} alt={adv.name} style={{width:32,height:32,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.5)"}}/>)}
+                {Object.values(ADVISORS).map((adv,i)=><img key={i} src={adv.avatar} alt={adv.name} style={{width:34,height:34,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.5)"}}/>)}
               </div>
-              <div style={{textAlign:"center"}}>
-                <div style={{fontSize:13,fontWeight:700,color:T.cream,fontFamily:F.body}}>Nos conseillers</div>
-                <div style={{fontSize:10,color:T.gray2,marginTop:2}}>Léo, Juan & Manon</div>
+              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"1.95s"}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Nos conseillers</div>
+                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Léo, Juan & Manon</div>
               </div>
             </div>
           </div>
         </div>
 
-        {familyCode && familyCode !== "LOCAL" && <div style={{marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-          <span style={{fontSize:10,color:cloudStatus==="synced"?"#4ade80":cloudStatus==="loading"?"#fbbf24":T.gray2}}>
-            {cloudStatus==="synced"?"☁️ Synchronisé":"☁️ Cloud"} · <span style={{fontFamily:F.legacy,fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
-          </span>
-          <button onClick={handleCloudLogout} style={{background:"none",border:`1px solid ${T.border}`,borderRadius:6,padding:"3px 8px",color:T.gray2,fontSize:10,cursor:"pointer",fontFamily:F.body}} title="Déconnexion cloud">⏻</button>
-          {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(168,85,247,0.12)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:6,padding:"3px 8px",color:"#c084fc",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>⚙️ Admin</button>}
-        </div>}
-
-        <div style={{marginTop:familyCode&&familyCode!=="LOCAL"?12:40,fontSize:8,color:T.gray3,letterSpacing:"0.06em",textAlign:"center",position:"relative",zIndex:1,fontFamily:F.body}}>
-          <span style={{fontFamily:F.legacy,fontWeight:600,color:T.gray2}}>PADEL ANALYZER</span> · {totalDBCount} raquettes · Scoring hybride calibré
+        {/* Footer */}
+        <div style={{marginTop:"auto",paddingBottom:24,textAlign:"center",position:"relative",zIndex:1}}>
+          {familyCode && familyCode !== "LOCAL" && <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:8}}>
+            <span style={{fontSize:10,color:cloudStatus==="synced"?"#1A9E8F":cloudStatus==="loading"?"#D49038":"#8B7D6B"}}>
+              {cloudStatus==="synced"?"Synchronisé":"Cloud"} · <span style={{fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
+            </span>
+            <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid #D5CBBD",borderRadius:6,padding:"3px 8px",color:"#8B7D6B",fontSize:10,cursor:"pointer",fontFamily:F.body}} title="Déconnexion">⏻</button>
+            {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(124,92,191,0.1)",border:"1px solid rgba(124,92,191,0.3)",borderRadius:6,padding:"3px 8px",color:"#7C5CBF",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Admin</button>}
+          </div>}
+          <div style={{fontSize:9,color:"#B8A890",letterSpacing:"0.04em",fontFamily:F.body}}>Le Lamentin, Martinique</div>
         </div>
 
-        {/* Staff exit for kiosk mode */}
-        {isKiosk && <button onClick={()=>{
-          setFamilyCode("");
-          setFamilyCodeLS("");
-          setGroupRole("famille");
-          setGroupRoleLS("");
-          setGroupNameState("");
-          setGroupNameLS("");
-          setKioskIdle(false);
-          setScreen("login");
-        }} style={{position:"fixed",bottom:12,right:12,background:"none",border:"none",color:"rgba(255,255,255,0.08)",fontSize:14,cursor:"pointer",padding:"8px 12px",zIndex:10,transition:"color 0.3s"}} onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,0.35)"} onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,0.08)"} title="Mode staff">🔐</button>}
+        {isKiosk && <button onClick={()=>{setFamilyCode("");setFamilyCodeLS("");setGroupRole("famille");setGroupRoleLS("");setGroupNameState("");setGroupNameLS("");setKioskIdle(false);setScreen("login");}} style={{position:"fixed",bottom:12,right:12,background:"none",border:"none",color:"rgba(0,0,0,0.06)",fontSize:14,cursor:"pointer",padding:"8px 12px",zIndex:10}} title="Mode staff">🔐</button>}
       </div>}
 
-      {/* ============================================================ */}
-      {/* ADMIN SCREEN */}
-      {/* ============================================================ */}
       {screen==="admin"&&(()=>{
         const loadFamilies = async () => {
           setAdminLoading(true);
@@ -9529,7 +9313,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           position:"fixed", zIndex:10000,
           bottom: window.innerWidth <= 640 ? 0 : 20,
           right: window.innerWidth <= 640 ? 0 : 20,
-          width: window.innerWidth <= 640 ? "100%" : (chatAdvisor ? 380 : 420),
+          width: window.innerWidth <= 640 ? "100%" : (chatAdvisor ? 520 : 440),
           height: window.innerWidth <= 640 ? "100%" : "auto",
           maxHeight: window.innerWidth <= 640 ? "100%" : (chatAdvisor ? "75vh" : "auto"),
           borderRadius: window.innerWidth <= 640 ? 0 : 20,
@@ -9548,7 +9332,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Header */}
           <div style={{padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,0.06)", background:"rgba(255,255,255,0.02)", flexShrink:0}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              {chatAdvisor && <div onClick={()=>{setChatAdvisor(null);setChatMessages([]);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:14,color:"#94a3b8",transition:"background 0.2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>←</div>}
+              {chatAdvisor && <div onClick={()=>{setChatAdvisor(null);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:14,color:"#94a3b8",transition:"background 0.2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>←</div>}
               {chatAdvisor && <img src={ADVISORS[chatAdvisor].avatar} alt="" style={{width:32,height:32,borderRadius:"50%",objectFit:"cover",border:`2px solid ${ADVISORS[chatAdvisor].color}44`}}/>}
               <div>
                 <div style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>
@@ -9567,7 +9351,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 Choisissez votre conseiller
               </div>
               {Object.entries(ADVISORS).map(([key, adv]) => (
-                <div key={key} onClick={()=>{setChatAdvisor(key);setChatMessages([{role:"assistant",content:adv.intro,advisor:key}]);}} style={{
+                <div key={key} onClick={()=>{setChatAdvisor(key);if(!(chatMessages[key]||[]).length)setChatMessages(m=>({...m,[key]:[{role:"assistant",content:adv.intro,advisor:key}]}));}} style={{
                   display:"flex",alignItems:"flex-start",gap:12,
                   padding:"14px",marginBottom:10,borderRadius:14,
                   background:"rgba(255,255,255,0.03)",
@@ -9594,7 +9378,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {chatAdvisor && (
             <>
               <div style={{flex:1,overflowY:"auto",padding:"16px",display:"flex",flexDirection:"column",gap:10}}>
-                {chatMessages.map((msg, i) => (
+                {(chatMessages[chatAdvisor]||[]).map((msg, i) => (
                   <div key={i} style={{
                     display:"flex",
                     justifyContent: msg.role==="user" ? "flex-end" : "flex-start",
