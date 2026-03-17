@@ -788,6 +788,18 @@ function MagazineScreen({ ctx }) {
         <div style={{width:"60%",height:1,background:`linear-gradient(90deg, transparent, ${TM.border}, transparent)`,margin:"20px auto 0"}}/>
       </div>
 
+      {/* ═══ BREAKING NEWS HERO — Editorial carousel ═══ */}
+      <div style={{display:"flex",justifyContent:"center",padding:"0 4px 8px"}}>
+        <BreakingNewsHero getMergedDB={getMergedDB} openRacketSheet={openRacketSheet}/>
+      </div>
+
+      {/* Section separator */}
+      <div style={{display:"flex",alignItems:"center",gap:12,padding:"8px 8px 20px"}}>
+        <div style={{flex:1,height:1,background:`linear-gradient(90deg, transparent, ${TM.border})`}}/>
+        <span style={{fontFamily:F.body,fontSize:8,fontWeight:700,color:TM.gray2,letterSpacing:"0.2em"}}>NOS CLASSEMENTS</span>
+        <div style={{flex:1,height:1,background:`linear-gradient(90deg, ${TM.border}, transparent)`}}/>
+      </div>
+
       {/* Covers wall */}
       <div style={{display:"flex",flexDirection:"column",gap:18,padding:"0 4px"}} className="pa-stagger">
         {MAGAZINE_CATEGORIES.map((cat, catIndex) => {
@@ -9576,18 +9588,74 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>
       )}
 
-      {chatOpen && (
+      {chatOpen && (()=>{
+        // ═══ CHAT ROOMS — Each advisor has their own atmosphere ═══
+        const CHAT_ROOMS = {
+          leo: {
+            bg: "linear-gradient(170deg, #1A2A18 0%, #1E3320 30%, #1C2E1A 60%, #182618 100%)",
+            headerBg: "rgba(34,72,28,0.4)",
+            headerBorder: "rgba(76,140,60,0.15)",
+            msgAssistantBg: "rgba(76,140,60,0.12)",
+            msgAssistantBorder: "rgba(76,140,60,0.15)",
+            msgUserBg: "linear-gradient(135deg, #4C8C3C 0%, #3A7030 100%)",
+            inputBg: "rgba(76,140,60,0.08)",
+            inputBorder: "rgba(76,140,60,0.2)",
+            inputFocusBorder: "rgba(76,140,60,0.5)",
+            inputFocusShadow: "0 0 0 2px rgba(76,140,60,0.12)",
+            textPrimary: "#D4E8CE",
+            textSecondary: "#8AAE80",
+            ambientA: "rgba(180,200,60,0.04)",
+            ambientB: "rgba(76,140,60,0.06)",
+          },
+          juan: {
+            bg: "linear-gradient(170deg, #101824 0%, #141E30 30%, #121A28 60%, #0E1620 100%)",
+            headerBg: "rgba(30,60,100,0.35)",
+            headerBorder: "rgba(58,111,184,0.12)",
+            msgAssistantBg: "rgba(58,111,184,0.10)",
+            msgAssistantBorder: "rgba(58,111,184,0.12)",
+            msgUserBg: "linear-gradient(135deg, #3870B0 0%, #2A5890 100%)",
+            inputBg: "rgba(58,111,184,0.08)",
+            inputBorder: "rgba(58,111,184,0.18)",
+            inputFocusBorder: "rgba(58,111,184,0.5)",
+            inputFocusShadow: "0 0 0 2px rgba(58,111,184,0.12)",
+            textPrimary: "#C8D8EA",
+            textSecondary: "#7A9ABE",
+            ambientA: "rgba(58,111,184,0.04)",
+            ambientB: "rgba(100,160,220,0.03)",
+          },
+          manon: {
+            bg: "linear-gradient(170deg, #1E1620 0%, #241C2A 30%, #201828 60%, #1A1420 100%)",
+            headerBg: "rgba(80,50,90,0.3)",
+            headerBorder: "rgba(155,133,212,0.12)",
+            msgAssistantBg: "rgba(155,133,212,0.10)",
+            msgAssistantBorder: "rgba(155,133,212,0.12)",
+            msgUserBg: "linear-gradient(135deg, #8B6BAF 0%, #7055A0 100%)",
+            inputBg: "rgba(155,133,212,0.08)",
+            inputBorder: "rgba(155,133,212,0.18)",
+            inputFocusBorder: "rgba(155,133,212,0.5)",
+            inputFocusShadow: "0 0 0 2px rgba(155,133,212,0.12)",
+            textPrimary: "#DDD4EA",
+            textSecondary: "#A894C4",
+            ambientA: "rgba(180,140,220,0.04)",
+            ambientB: "rgba(155,133,212,0.05)",
+          },
+        };
+        const room = chatAdvisor ? CHAT_ROOMS[chatAdvisor] : null;
+        const panelBg = room ? room.bg : "#0D1117";
+        const isMobile = window.innerWidth <= 640;
+
+        return (
         <div style={{
           position:"fixed", zIndex:10000,
-          bottom: window.innerWidth <= 640 ? 0 : 20,
-          right: window.innerWidth <= 640 ? 0 : 20,
-          width: window.innerWidth <= 640 ? "100%" : (chatAdvisor ? 520 : 440),
-          height: window.innerWidth <= 640 ? "100%" : "auto",
-          maxHeight: window.innerWidth <= 640 ? "100%" : (chatAdvisor ? "75vh" : "auto"),
-          borderRadius: window.innerWidth <= 640 ? 0 : 20,
+          bottom: isMobile ? 0 : 20,
+          right: isMobile ? 0 : 20,
+          width: isMobile ? "100%" : (chatAdvisor ? 520 : 440),
+          height: isMobile ? "100%" : "auto",
+          maxHeight: isMobile ? "100%" : (chatAdvisor ? "75vh" : "auto"),
+          borderRadius: isMobile ? 0 : 20,
           overflow:"hidden",
-          background:"#0D1117",
-          border: window.innerWidth <= 640 ? "none" : "1px solid rgba(255,255,255,0.08)",
+          background: panelBg,
+          border: isMobile ? "none" : `1px solid ${room ? room.headerBorder : "rgba(255,255,255,0.08)"}`,
           boxShadow:"0 12px 48px rgba(0,0,0,0.6)",
           display:"flex", flexDirection:"column",
           animation:"chatPanelIn 0.35s cubic-bezier(.22,1,.36,1)",
@@ -9595,30 +9663,57 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         }}>
           <style>{`@keyframes chatPanelIn{from{opacity:0;transform:translateY(10px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
           @keyframes typingDot{0%,60%,100%{opacity:0.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
-          .chat-input-field:focus{border-color:rgba(232,98,42,0.5)!important;box-shadow:0 0 0 2px rgba(232,98,42,0.1)!important}`}</style>
+          @keyframes roomAmbientDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(10px,-8px) scale(1.05)}100%{transform:translate(0,0) scale(1)}}
+          .chat-input-field:focus{border-color:${room?room.inputFocusBorder:"rgba(232,98,42,0.5)"}!important;box-shadow:${room?room.inputFocusShadow:"0 0 0 2px rgba(232,98,42,0.1)"}!important}`}</style>
 
-          {/* Header */}
-          <div style={{padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,0.06)", background:"rgba(255,255,255,0.02)", flexShrink:0}}>
+          {/* ═══ Room ambient elements (only when advisor selected) ═══ */}
+          {chatAdvisor && <>
+            <div style={{position:"absolute",top:"-15%",right:"-10%",width:250,height:250,borderRadius:"50%",background:`radial-gradient(circle, ${room.ambientA} 0%, transparent 70%)`,animation:"roomAmbientDrift 15s ease-in-out infinite",pointerEvents:"none",zIndex:0}}/>
+            <div style={{position:"absolute",bottom:"10%",left:"-15%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${room.ambientB} 0%, transparent 70%)`,animation:"roomAmbientDrift 20s ease-in-out infinite reverse",pointerEvents:"none",zIndex:0}}/>
+            {/* Léo — court lines */}
+            {chatAdvisor==="leo" && <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:0,opacity:0.04}} viewBox="0 0 520 700" preserveAspectRatio="none">
+              <rect x="40" y="80" width="440" height="540" fill="none" stroke="#4C8C3C" strokeWidth="1.5"/>
+              <line x1="260" y1="80" x2="260" y2="620" stroke="#4C8C3C" strokeWidth="1"/>
+              <line x1="40" y1="350" x2="480" y2="350" stroke="#4C8C3C" strokeWidth="1"/>
+              <rect x="160" y="180" width="200" height="340" fill="none" stroke="#4C8C3C" strokeWidth="0.8"/>
+            </svg>}
+            {/* Juan — grid technique */}
+            {chatAdvisor==="juan" && <div style={{position:"absolute",inset:0,opacity:0.025,backgroundImage:"linear-gradient(rgba(58,111,184,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(58,111,184,0.5) 1px, transparent 1px)",backgroundSize:"28px 28px",pointerEvents:"none",zIndex:0}}/>}
+            {/* Manon — organic shapes */}
+            {chatAdvisor==="manon" && <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:0,opacity:0.03}} viewBox="0 0 520 700" preserveAspectRatio="none">
+              <ellipse cx="420" cy="150" rx="120" ry="100" fill="none" stroke="#9B85D4" strokeWidth="1"/>
+              <ellipse cx="100" cy="500" rx="80" ry="60" fill="none" stroke="#9B85D4" strokeWidth="0.8"/>
+              <circle cx="350" cy="450" r="40" fill="none" stroke="#9B85D4" strokeWidth="0.6"/>
+              <ellipse cx="180" cy="200" rx="50" ry="70" fill="none" stroke="#9B85D4" strokeWidth="0.5"/>
+            </svg>}
+          </>}
+
+          {/* ═══ Header ═══ */}
+          <div style={{padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:`1px solid ${room?room.headerBorder:"rgba(255,255,255,0.06)"}`, background:room?room.headerBg:"rgba(255,255,255,0.02)", flexShrink:0, position:"relative", zIndex:1}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              {chatAdvisor && <div onClick={()=>{setChatAdvisor(null);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:14,color:"#94a3b8",transition:"background 0.2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>←</div>}
+              {chatAdvisor && <div onClick={()=>{setChatAdvisor(null);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:14,color:room?room.textSecondary:"#94a3b8",transition:"background 0.2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>←</div>}
               {chatAdvisor && <img src={ADVISORS[chatAdvisor].avatar} alt="" style={{width:32,height:32,borderRadius:"50%",objectFit:"cover",border:`2px solid ${ADVISORS[chatAdvisor].color}44`}}/>}
               <div>
-                <div style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>
+                <div style={{fontSize:14,fontWeight:700,color:room?room.textPrimary:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>
                   {chatAdvisor ? ADVISORS[chatAdvisor].name : "Nos conseillers"}
                 </div>
-                {chatAdvisor && <div style={{fontSize:10,color:"#64748b",marginTop:1}}>{ADVISORS[chatAdvisor].subtitle} · Padel Center & Santé</div>}
+                {chatAdvisor && <div style={{fontSize:10,color:room?room.textSecondary:"#64748b",marginTop:1}}>
+                  {chatAdvisor==="leo"?"Sur le court · Padel Center & Santé":chatAdvisor==="juan"?"Au labo · Padel Center & Santé":"Espace bien-être · Padel Center & Santé"}
+                </div>}
               </div>
             </div>
-            <div onClick={()=>{setChatOpen(false);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:16,color:"#94a3b8"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>✕</div>
+            <div onClick={()=>{setChatOpen(false);}} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.06)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:16,color:room?room.textSecondary:"#94a3b8"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}>✕</div>
           </div>
 
-          {/* Advisor Selection */}
+          {/* ═══ Advisor Selection — boutique cosy ═══ */}
           {!chatAdvisor && (
             <div style={{padding:"20px 16px", overflowY:"auto", flex:1}}>
               <div style={{fontSize:12,color:"#94a3b8",marginBottom:16,textAlign:"center",lineHeight:1.5}}>
                 Choisissez votre conseiller
               </div>
-              {Object.entries(ADVISORS).map(([key, adv]) => (
+              {Object.entries(ADVISORS).map(([key, adv]) => {
+                const roomHint = key==="leo"?"Court de padel":key==="juan"?"Labo raquettes":"Espace bien-être";
+                return (
                 <div key={key} onClick={()=>{setChatAdvisor(key);if(!(chatMessages[key]||[]).length)setChatMessages(m=>({...m,[key]:[{role:"assistant",content:adv.intro,advisor:key}]}));}} style={{
                   display:"flex",alignItems:"flex-start",gap:12,
                   padding:"14px",marginBottom:10,borderRadius:14,
@@ -9632,20 +9727,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       <span style={{fontSize:14,fontWeight:700,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif"}}>{adv.name}</span>
                       <span style={{fontSize:10,color:adv.color,fontWeight:600,padding:"2px 7px",borderRadius:6,background:`${adv.color}15`,border:`1px solid ${adv.color}30`}}>{adv.subtitle}</span>
                     </div>
+                    <div style={{fontSize:10,color:adv.color,marginBottom:3,fontWeight:600,opacity:0.7}}>{roomHint}</div>
                     <div style={{fontSize:11,color:"#94a3b8",lineHeight:1.5}}>{adv.intro}</div>
                   </div>
-                </div>
-              ))}
+                </div>);
+              })}
               <div style={{fontSize:9,color:"#475569",textAlign:"center",marginTop:12,lineHeight:1.5}}>
                 Padel Center & Santé · Le Lamentin, Martinique
               </div>
             </div>
           )}
 
-          {/* Chat Messages */}
+          {/* ═══ Chat Messages — styled per room ═══ */}
           {chatAdvisor && (
             <>
-              <div style={{flex:1,overflowY:"auto",padding:"16px",display:"flex",flexDirection:"column",gap:10}}>
+              <div style={{flex:1,overflowY:"auto",padding:"16px",display:"flex",flexDirection:"column",gap:10,position:"relative",zIndex:1}}>
                 {(chatMessages[chatAdvisor]||[]).map((msg, i) => (
                   <div key={i} style={{
                     display:"flex",
@@ -9659,11 +9755,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       padding:"10px 14px",
                       borderRadius: msg.role==="user" ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
                       background: msg.role==="user" 
-                        ? "linear-gradient(135deg, #E8622A 0%, #D4541E 100%)" 
-                        : "rgba(255,255,255,0.06)",
-                      color: msg.role==="user" ? "#fff" : "#e2e8f0",
+                        ? room.msgUserBg 
+                        : room.msgAssistantBg,
+                      color: msg.role==="user" ? "#fff" : room.textPrimary,
                       fontSize:13,lineHeight:1.55,
-                      border: msg.role==="user" ? "none" : "1px solid rgba(255,255,255,0.06)",
+                      border: msg.role==="user" ? "none" : `1px solid ${room.msgAssistantBorder}`,
                     }}>
                       {msg.content.split('\n').map((line,j) => <div key={j}>{line || <br/>}</div>)}
                     </div>
@@ -9672,7 +9768,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 {chatLoading && (
                   <div style={{display:"flex",justifyContent:"flex-start",alignItems:"flex-end",gap:8}}>
                     <img src={ADVISORS[chatAdvisor].avatar} alt="" style={{width:28,height:28,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/>
-                    <div style={{padding:"12px 18px",borderRadius:"14px 14px 14px 4px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.06)",display:"flex",gap:4,alignItems:"center"}}>
+                    <div style={{padding:"12px 18px",borderRadius:"14px 14px 14px 4px",background:room.msgAssistantBg,border:`1px solid ${room.msgAssistantBorder}`,display:"flex",gap:4,alignItems:"center"}}>
                       {[0,1,2].map(i => <div key={i} style={{width:6,height:6,borderRadius:3,background:ADVISORS[chatAdvisor].color,animation:`typingDot 1.2s infinite`,animationDelay:`${i*0.2}s`}}/>)}
                     </div>
                   </div>
@@ -9680,8 +9776,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <div ref={chatEndRef}/>
               </div>
 
-              {/* Input */}
-              <div style={{padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,0.06)",background:"rgba(255,255,255,0.02)",display:"flex",gap:8,flexShrink:0}}>
+              {/* Input — styled per room */}
+              <div style={{padding:"12px 16px",borderTop:`1px solid ${room.headerBorder}`,background:room.headerBg,display:"flex",gap:8,flexShrink:0,position:"relative",zIndex:1}}>
                 <input
                   className="chat-input-field"
                   value={chatInput}
@@ -9691,9 +9787,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   disabled={chatLoading}
                   style={{
                     flex:1,padding:"10px 14px",
-                    background:"rgba(255,255,255,0.05)",
-                    border:"1px solid rgba(255,255,255,0.1)",
-                    borderRadius:12,color:"#e2e8f0",fontSize:13,
+                    background:room.inputBg,
+                    border:`1px solid ${room.inputBorder}`,
+                    borderRadius:12,color:room.textPrimary,fontSize:13,
                     fontFamily:"inherit",outline:"none",
                     transition:"all 0.2s ease",
                   }}
@@ -9709,8 +9805,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
             </>
           )}
-        </div>
-      )}
+        </div>);
+      })()}
 
     </div>
   );
