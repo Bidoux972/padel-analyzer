@@ -3036,7 +3036,7 @@ export default function PadelAnalyzer() {
   });
 
   // ============ BROWSER BACK BUTTON SUPPORT ============
-  const SCREEN_BACK = { splash:null, home:"login", magazine:"home", wizard:"home", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"home", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home", welcome:null, sharedResults:"splash", scan:"home" };
+  const SCREEN_BACK = { splash:null, home:"login", profiles:"home", magazine:"home", wizard:"profiles", recap:"wizard", analyzing:null, reveal:"dashboard", dashboard:"profiles", app:"dashboard", racketSheet:"home", catalog:"home", admin:"home", welcome:null, sharedResults:"splash", scan:"home" };
   const cameFromAdminRef = useRef(false);
 
   // Open a full racket sheet from any screen
@@ -3744,13 +3744,13 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
   // ─── MANEGE — roulette merry-go-round ───
   const manegeTimer = useRef(null);
   useEffect(()=>{
-    if(screen!=="home" || savedProfiles.length<=1 || carouselPlayed.current) return;
+    if(screen!=="profiles" || savedProfiles.length<=1 || carouselPlayed.current) return;
     if(manegeTimer.current) clearTimeout(manegeTimer.current);
     manegeTimer.current = setTimeout(()=>{
       if(carouselPlayed.current) return;
       const el = carouselRef.current;
       if(!el) return;
-      const CARD_W = 210, GAP = 14;
+      const CARD_W = 270, GAP = 12;
       const cards = Array.from(el.children).filter(c => c.tagName === 'BUTTON');
       if(cards.length <= 1) return;
       const oneLoopWidth = cards.length * (CARD_W + GAP);
@@ -4978,7 +4978,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
             {/* Cercle 1 — Trouve ta pala */}
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
-              <div className="tl-orb" onClick={createNewProfile} style={{
+              <div className="tl-orb" onClick={()=>savedProfiles.length>0?setScreen("profiles"):createNewProfile()} style={{
                 background:"linear-gradient(145deg,#E86B5A,#D4503E)",
                 boxShadow:"0 6px 24px rgba(232,107,90,0.25)",
                 display:"flex",alignItems:"center",justifyContent:"center",
@@ -5059,6 +5059,127 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         {isKiosk && <button onClick={()=>{setFamilyCode("");setFamilyCodeLS("");setGroupRole("famille");setGroupRoleLS("");setGroupNameState("");setGroupNameLS("");setKioskIdle(false);setScreen("login");}} style={{position:"fixed",bottom:12,right:12,background:"none",border:"none",color:"rgba(0,0,0,0.06)",fontSize:14,cursor:"pointer",padding:"8px 12px",zIndex:10}} title="Mode staff">🔐</button>}
       </div>}
+
+      {/* ============================================================ */}
+      {/* PROFILES SCREEN — Saved profiles + Create new */}
+      {/* ============================================================ */}
+      {screen==="profiles"&&(()=>{
+        const profileSearch = profileSearchTerm;
+        const filtered = savedProfiles.filter(sp=>!profileSearch||sp.name.toLowerCase().includes(profileSearch.toLowerCase()));
+        const CARD_W = 270;
+        const GAP = 12;
+        const scrollToIdx = (idx)=>{
+          const el = carouselRef.current;
+          if(!el) return;
+          const target = idx * (CARD_W + GAP);
+          el.scrollTo({left:target,behavior:"smooth"});
+          setActiveProfileIdx(idx);
+        };
+        const handleScroll = ()=>{
+          const el = carouselRef.current;
+          if(!el) return;
+          const idx = Math.round(el.scrollLeft / (CARD_W + GAP));
+          setActiveProfileIdx(Math.max(0, Math.min(idx, filtered.length-1)));
+        };
+        const scrollDir = (dir)=>{
+          const next = dir==="left" ? activeProfileIdx-1 : activeProfileIdx+1;
+          if(next>=0 && next<filtered.length) scrollToIdx(next);
+          else if(next<0) scrollToIdx(filtered.length-1);
+          else scrollToIdx(0);
+        };
+        return (
+        <div className="pa-screen-fade" style={{minHeight:"100dvh",background:`radial-gradient(ellipse at 50% 0%, ${T.surface} 0%, ${T.bg} 50%, #080c14 100%)`,padding:"20px 16px",display:"flex",flexDirection:"column",alignItems:"center"}}>
+          <FontLoader/>
+          <div style={{width:"100%",maxWidth:560}}>
+            <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body,marginBottom:16}}>← Accueil</button>
+            
+            <h2 style={{fontFamily:F.editorial,fontSize:24,fontWeight:700,color:T.cream,margin:"0 0 4px",textAlign:"center"}}>Trouve ta pala</h2>
+            <p style={{fontSize:12,color:T.gray1,textAlign:"center",margin:"0 0 24px",fontFamily:F.body}}>Crée un profil ou reprends une analyse existante</p>
+
+            <button onClick={createNewProfile} className="pa-cta" style={{
+              width:"100%",padding:"16px",marginBottom:24,
+              background:`linear-gradient(135deg,${T.accent},#d4541e)`,
+              border:"none",borderRadius:14,color:"#fff",fontSize:15,fontWeight:700,
+              cursor:"pointer",fontFamily:F.body,
+              boxShadow:`0 6px 24px ${T.accentGlow}`,
+            }}>+ Nouveau profil</button>
+
+            {savedProfiles.length>0 && <>
+              <p style={{fontSize:9,color:T.gray2,fontWeight:600,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10,textAlign:"center",fontFamily:F.body}}>Profils <span style={{color:T.gray3}}>({savedProfiles.length})</span></p>
+
+              {savedProfiles.length>=4&&<div style={{display:"flex",justifyContent:"center",marginBottom:10}}>
+                <div style={{position:"relative",width:"100%",maxWidth:260}}>
+                  <input type="text" placeholder="Rechercher…" value={profileSearch}
+                    onChange={e=>{setProfileSearchTerm(e.target.value);setActiveProfileIdx(0);}}
+                    style={{width:"100%",padding:"7px 10px 7px 28px",background:T.accentSoft,border:`1px solid ${T.border}`,borderRadius:8,color:T.white,fontSize:11,fontFamily:F.body,outline:"none",boxSizing:"border-box"}}/>
+                  <span style={{position:"absolute",left:8,top:"50%",transform:"translateY(-50%)",fontSize:11,color:T.gray2,pointerEvents:"none"}}>🔍</span>
+                  {profileSearch&&<button onClick={()=>{setProfileSearchTerm("");setActiveProfileIdx(0);}} style={{position:"absolute",right:6,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.gray2,fontSize:12,cursor:"pointer",padding:2}}>✕</button>}
+                </div>
+              </div>}
+
+              <div style={{position:"relative",display:"flex",alignItems:"center",gap:4}}>
+                {filtered.length>1&&<button onClick={()=>scrollDir("left")} aria-label="Précédent" style={{width:30,height:30,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,color:T.white,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontFamily:F.body}}>‹</button>}
+
+                <div ref={carouselRef} className="pa-carousel" onScroll={handleScroll} style={{
+                  display:"flex",gap:GAP,overflowX:"auto",scrollSnapType:"x mandatory",scrollBehavior:"smooth",
+                  flex:1,padding:"4px 0 8px",msOverflowStyle:"none",scrollbarWidth:"none",WebkitOverflowScrolling:"touch",
+                }} tabIndex={0}>
+                  <div style={{minWidth:`calc(50% - ${CARD_W/2}px)`,flexShrink:0}} aria-hidden="true"/>
+                  {filtered.map((sp,i)=>{
+                    const p = sp.profile||{};
+                    const styles = (p.styleTags||[]).map(id=>STYLE_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+                    const injuries = (p.injuryTags||[]).filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+                    const isJunior = p.age && parseInt(p.age)<16;
+                    const levelColors = {Débutant:"#4CAF50",Intermédiaire:"#FF9800",Avancé:"#ef4444",Compétition:"#9C27B0",Expert:"#a855f7"};
+                    const lvlColor = levelColors[p.level]||T.gray2;
+                    const desc = [p.side&&`${p.side}`, p.hand].filter(Boolean).join(" · ");
+                    const stylesStr = styles.length?styles.slice(0,2).join(", "):"";
+                    const isActive = i === activeProfileIdx;
+                    return (
+                      <button key={sp.name} onClick={()=>{
+                        if(sp.locked){
+                          setPinInput("");setPinError("");setPasswordModal({mode:'unlock',profileName:sp.name,onSuccess:()=>{selectHomeProfile(sp);setPasswordModal(null);}});
+                        } else { selectHomeProfile(sp); }
+                      }} style={{
+                        background: isActive ? `linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)` : `${T.card}cc`,
+                        border: isActive ? `1.5px solid ${T.accent}50` : `1px solid ${T.border}80`,
+                        borderRadius:16,padding:"14px 18px",minWidth:CARD_W,maxWidth:CARD_W,
+                        cursor:"pointer",scrollSnapAlign:"center",transition:"all 0.3s ease",textAlign:"left",position:"relative",flexShrink:0,
+                        transform: isActive ? "scale(1)" : "scale(0.95)",opacity: isActive ? 1 : 0.75,
+                        boxShadow: isActive ? `0 8px 30px rgba(0,0,0,0.3), 0 0 20px ${T.accentGlow}` : "0 2px 8px rgba(0,0,0,0.2)",fontFamily:F.body,
+                      }}>
+                        {sp.locked&&<span style={{position:"absolute",top:10,right:12,fontSize:12,opacity:0.4}}>🔒</span>}
+                        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+                          <div style={{width:38,height:38,borderRadius:10,background:`linear-gradient(135deg, ${lvlColor}25, ${lvlColor}40)`,border:`1.5px solid ${lvlColor}60`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:800,color:lvlColor,fontFamily:F.legacy,flexShrink:0}}>
+                            {sp.name?.charAt(0)?.toUpperCase()||"?"}
+                          </div>
+                          <div>
+                            <div style={{fontSize:14,fontWeight:700,color:T.cream}}>{sp.name}</div>
+                            <div style={{display:"flex",alignItems:"center",gap:4,marginTop:2}}>
+                              <span style={{fontSize:9,fontWeight:700,color:lvlColor,background:`${lvlColor}18`,padding:"2px 6px",borderRadius:4,border:`1px solid ${lvlColor}30`}}>{p.level||"?"}</span>
+                              {desc&&<span style={{fontSize:9,color:T.gray2}}>{desc}</span>}
+                            </div>
+                          </div>
+                        </div>
+                        {stylesStr&&<div style={{fontSize:9,color:T.gray1,marginBottom:4}}>Style : {stylesStr}</div>}
+                        {injuries.length>0&&<div style={{fontSize:9,color:"#ef4444",marginBottom:4}}>⚠ {injuries.join(", ")}</div>}
+                        {isJunior&&<div style={{fontSize:8,fontWeight:700,color:"#fbbf24",background:"rgba(251,191,36,0.12)",border:"1px solid rgba(251,191,36,0.3)",padding:"2px 6px",borderRadius:4,display:"inline-block",marginTop:2}}>JUNIOR</div>}
+                      </button>
+                    );
+                  })}
+                  <div style={{minWidth:`calc(50% - ${CARD_W/2}px)`,flexShrink:0}} aria-hidden="true"/>
+                </div>
+
+                {filtered.length>1&&<button onClick={()=>scrollDir("right")} aria-label="Suivant" style={{width:30,height:30,borderRadius:"50%",border:`1px solid ${T.border}`,background:T.accentSoft,color:T.white,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontFamily:F.body}}>›</button>}
+              </div>
+
+              {filtered.length>1&&<div style={{display:"flex",justifyContent:"center",gap:6,marginTop:6}}>
+                {filtered.map((_,i)=><div key={i} onClick={()=>scrollToIdx(i)} style={{width: i===activeProfileIdx?20:6,height:6,borderRadius:3,background: i===activeProfileIdx?T.accent:T.gray3,cursor:"pointer",transition:"all 0.3s ease"}}/>)}
+              </div>}
+            </>}
+          </div>
+        </div>);
+      })()}
 
       {screen==="admin"&&(()=>{
         const loadFamilies = async () => {
