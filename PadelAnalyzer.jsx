@@ -235,6 +235,75 @@ function PalaLogo({size=44, gid="lg"}) {
 }
 
 // ═════════════════════════════════════════════════════════════
+// HOME PARTICLES — Ambient floating particle canvas
+// ═════════════════════════════════════════════════════════════
+function HomeParticles() {
+  const canvasRef = useRef(null);
+  const animRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const dpr = window.devicePixelRatio || 1;
+    let W, H;
+    const resize = () => {
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      W = parent.offsetWidth; H = parent.offsetHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.style.width = W + "px"; canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    const colors = ["rgba(196,151,58,","rgba(42,168,138,","rgba(58,111,184,","rgba(124,107,175,","rgba(255,255,255,"];
+    const particles = [];
+    for (let i = 0; i < 45; i++) {
+      particles.push({
+        x: Math.random() * 1000, y: Math.random() * 1000,
+        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.2 - 0.1,
+        size: Math.random() * 2 + 0.5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: Math.random() * 0.4 + 0.1,
+        pulse: Math.random() * Math.PI * 2, pulseSpeed: Math.random() * 0.02 + 0.005,
+      });
+    }
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy; p.pulse += p.pulseSpeed;
+        if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
+        const a = p.alpha * (0.5 + 0.5 * Math.sin(p.pulse));
+        ctx.beginPath();
+        ctx.arc(p.x * W / 1000, p.y * H / 1000, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + a + ")";
+        ctx.fill();
+      }
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = (particles[i].x - particles[j].x) * W / 1000;
+          const dy = (particles[i].y - particles[j].y) * H / 1000;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 80) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x * W / 1000, particles[i].y * H / 1000);
+            ctx.lineTo(particles[j].x * W / 1000, particles[j].y * H / 1000);
+            ctx.strokeStyle = `rgba(255,255,255,${0.03 * (1 - dist / 80)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      animRef.current = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(animRef.current); window.removeEventListener("resize", resize); };
+  }, []);
+  return <canvas ref={canvasRef} style={{position:"absolute",inset:0,zIndex:0,pointerEvents:"none"}}/>;
+}
+
+// ═════════════════════════════════════════════════════════════
 // BREAKING NEWS HERO — Home screen editorial carousel
 // ═════════════════════════════════════════════════════════════
 function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
@@ -4943,121 +5012,199 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </p>
       </div>}
 
-      {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"0",background:"linear-gradient(170deg, #FDF8F0 0%, #FAF3E8 35%, #F5EDE0 65%, #EDE4D4 100%)",position:"relative",overflow:"hidden"}}>
+      {screen==="home"&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",minHeight:"100dvh",animation:"fadeIn 0.5s ease",padding:"0",background:"linear-gradient(168deg, #141018 0%, #18162A 14%, #161E2C 30%, #121A24 50%, #10141C 70%, #0E1016 90%, #0C0E12 100%)",position:"relative",overflow:"hidden"}}>
         <FontLoader/>
+        <HomeParticles/>
         <style>{`
-          @keyframes orbitalLand0{0%{transform:translate(120px,100px) scale(0);opacity:0}15%{transform:translate(100px,-60px) scale(0.6);opacity:1}35%{transform:translate(-80px,-80px) scale(0.85);opacity:1}55%{transform:translate(50px,40px) scale(1.06);opacity:1}75%{transform:translate(-15px,-10px) scale(0.98);opacity:1}90%{transform:translate(4px,3px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
-          @keyframes orbitalLand1{0%{transform:translate(-120px,100px) scale(0);opacity:0}15%{transform:translate(-100px,-50px) scale(0.6);opacity:1}35%{transform:translate(90px,-60px) scale(0.85);opacity:1}55%{transform:translate(-40px,30px) scale(1.06);opacity:1}75%{transform:translate(12px,-8px) scale(0.98);opacity:1}90%{transform:translate(-3px,2px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
-          @keyframes orbitalLand2{0%{transform:translate(120px,-100px) scale(0);opacity:0}15%{transform:translate(-60px,110px) scale(0.6);opacity:1}35%{transform:translate(80px,50px) scale(0.85);opacity:1}55%{transform:translate(-30px,-40px) scale(1.06);opacity:1}75%{transform:translate(10px,12px) scale(0.98);opacity:1}90%{transform:translate(-2px,-3px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
-          @keyframes orbitalLand3{0%{transform:translate(-120px,-100px) scale(0);opacity:0}15%{transform:translate(110px,70px) scale(0.6);opacity:1}35%{transform:translate(-90px,40px) scale(0.85);opacity:1}55%{transform:translate(35px,-30px) scale(1.06);opacity:1}75%{transform:translate(-8px,10px) scale(0.98);opacity:1}90%{transform:translate(2px,-2px) scale(1.01);opacity:1}100%{transform:translate(0,0) scale(1);opacity:1}}
-          @keyframes labelFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-          .tl-orb{width:130px;height:130px;border-radius:50%;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease;overflow:hidden}
-          .tl-orb:hover{transform:scale(1.08)!important;box-shadow:0 8px 32px rgba(0,0,0,0.18)!important}
-          .tl-orb:active{transform:scale(0.95)!important}
-          .tl-lbl{opacity:0;animation:labelFadeUp 0.5s ease forwards}
-          @media(max-width:380px){.tl-orb{width:110px;height:110px}}
+          @keyframes orbV2Land0{
+            0%{transform:translate(200px,160px) scale(0);opacity:0;filter:blur(8px)}
+            8%{opacity:1;filter:blur(4px)}
+            22%{transform:translate(150px,-90px) scale(0.45);filter:blur(2px)}
+            42%{transform:translate(-110px,-110px) scale(0.82);filter:blur(0)}
+            62%{transform:translate(65px,55px) scale(1.1)}
+            80%{transform:translate(-20px,-14px) scale(0.96)}
+            93%{transform:translate(5px,4px) scale(1.03)}
+            100%{transform:translate(0,0) scale(1)}
+          }
+          @keyframes orbV2Land1{
+            0%{transform:translate(-200px,160px) scale(0);opacity:0;filter:blur(8px)}
+            8%{opacity:1;filter:blur(4px)}
+            22%{transform:translate(-150px,-80px) scale(0.45);filter:blur(2px)}
+            42%{transform:translate(120px,-90px) scale(0.82);filter:blur(0)}
+            62%{transform:translate(-55px,45px) scale(1.1)}
+            80%{transform:translate(16px,-12px) scale(0.96)}
+            93%{transform:translate(-4px,3px) scale(1.03)}
+            100%{transform:translate(0,0) scale(1)}
+          }
+          @keyframes orbV2Land2{
+            0%{transform:translate(200px,-160px) scale(0);opacity:0;filter:blur(8px)}
+            8%{opacity:1;filter:blur(4px)}
+            22%{transform:translate(-90px,140px) scale(0.45);filter:blur(2px)}
+            42%{transform:translate(110px,70px) scale(0.82);filter:blur(0)}
+            62%{transform:translate(-40px,-50px) scale(1.1)}
+            80%{transform:translate(14px,16px) scale(0.96)}
+            93%{transform:translate(-3px,-4px) scale(1.03)}
+            100%{transform:translate(0,0) scale(1)}
+          }
+          @keyframes orbV2Land3{
+            0%{transform:translate(-200px,-160px) scale(0);opacity:0;filter:blur(8px)}
+            8%{opacity:1;filter:blur(4px)}
+            22%{transform:translate(140px,100px) scale(0.45);filter:blur(2px)}
+            42%{transform:translate(-120px,55px) scale(0.82);filter:blur(0)}
+            62%{transform:translate(45px,-38px) scale(1.1)}
+            80%{transform:translate(-12px,14px) scale(0.96)}
+            93%{transform:translate(4px,-3px) scale(1.03)}
+            100%{transform:translate(0,0) scale(1)}
+          }
+          @keyframes orbBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+          @keyframes orbImpactRing{0%{transform:scale(0.5);opacity:0.7}100%{transform:scale(2.5);opacity:0}}
+          @keyframes orbImpactFlash{0%{opacity:0.5}100%{opacity:0}}
+          @keyframes orbLabelReveal{from{opacity:0;transform:translateY(12px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+          @keyframes homeHeroReveal{from{opacity:0;transform:translateY(24px) scale(0.94);filter:blur(6px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+          @keyframes homeCounterReveal{from{opacity:0;letter-spacing:0.3em}to{opacity:1;letter-spacing:0.12em}}
+          @keyframes homeLineGrow{from{width:0}to{width:60px}}
+          @keyframes homeFloatSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+          .home-orb{
+            width:140px;height:140px;border-radius:50%;cursor:pointer;position:relative;overflow:visible;
+            transition:transform 0.3s cubic-bezier(.22,1,.36,1),filter 0.3s ease;
+          }
+          .home-orb:hover{transform:scale(1.12)!important;filter:brightness(1.15)!important}
+          .home-orb:active{transform:scale(0.93)!important}
+          .home-orb-inner{
+            width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;
+            box-shadow:inset 0 2px 0 rgba(255,255,255,0.18),inset 0 -4px 12px rgba(0,0,0,0.4);
+          }
+          .home-orb-glass{
+            position:absolute;top:-10%;left:-10%;width:120%;height:60%;border-radius:50%;
+            background:linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+            pointer-events:none;transform:rotate(-8deg);
+          }
+          @media(max-width:380px){.home-orb{width:116px;height:116px}}
         `}</style>
 
-        {/* Subtle warm decorations */}
-        <div style={{position:"absolute",top:"-8%",right:"-12%",width:300,height:300,borderRadius:"50%",background:"radial-gradient(circle, rgba(232,107,90,0.12) 0%, transparent 70%)",pointerEvents:"none"}}/>
-        <div style={{position:"absolute",bottom:"-5%",left:"-10%",width:250,height:250,borderRadius:"50%",background:"radial-gradient(circle, rgba(26,158,143,0.08) 0%, transparent 70%)",pointerEvents:"none"}}/>
+        {/* Ambient light blobs */}
+        <div style={{position:"absolute",top:"-5%",left:"-20%",width:450,height:450,borderRadius:"50%",background:"radial-gradient(circle, rgba(196,151,58,0.07) 0%, transparent 65%)",animation:"homeFloatSlow 22s ease-in-out infinite",pointerEvents:"none",zIndex:0}}/>
+        <div style={{position:"absolute",top:"30%",right:"-25%",width:500,height:500,borderRadius:"50%",background:"radial-gradient(circle, rgba(42,168,138,0.05) 0%, transparent 60%)",animation:"homeFloatSlow 28s ease-in-out infinite reverse",pointerEvents:"none",zIndex:0}}/>
+        <div style={{position:"absolute",bottom:"-10%",left:"10%",width:400,height:400,borderRadius:"50%",background:"radial-gradient(circle, rgba(124,107,175,0.06) 0%, transparent 60%)",animation:"homeFloatSlow 18s ease-in-out infinite 5s",pointerEvents:"none",zIndex:0}}/>
+        {/* Subtle grid */}
+        <div style={{position:"absolute",inset:0,opacity:0.02,backgroundImage:"linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",backgroundSize:"32px 32px",pointerEvents:"none"}}/>
 
-        {/* Logo section */}
-        <div style={{textAlign:"center",paddingTop:60,marginBottom:8,position:"relative",zIndex:1}}>
-          <div style={{width:80,height:80,borderRadius:20,background:`linear-gradient(135deg,${T.accent},#ef4444)`,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",boxShadow:"0 8px 30px rgba(232,98,42,0.25)"}}>
-            <div style={{transform:"rotate(20deg)"}}><PalaIcon size={44}/></div>
-          </div>
-          <h1 style={{fontFamily:F.editorial,fontSize:28,fontWeight:700,color:"#1A1A1A",margin:"0 0 4px",letterSpacing:"0.02em"}}>PADEL ANALYZER</h1>
-          <p style={{fontFamily:F.editorial,fontSize:14,color:"#1A9E8F",margin:"0 0 6px",fontStyle:"italic",fontWeight:600}}>Padel Center & Santé</p>
-          <p style={{color:"#8B7D6B",fontSize:12,margin:"0",fontFamily:F.body,lineHeight:1.5}}>{totalDBCount} raquettes analysées · Ta prochaine pala est ici.</p>
-        </div>
-
-        {/* 4 circles — orbital animation */}
-        <div style={{marginTop:40,width:"100%",maxWidth:360,position:"relative",zIndex:1,padding:"0 20px",boxSizing:"border-box"}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"28px 24px",justifyItems:"center"}}>
-
-            {/* Cercle 1 — Trouve ta pala */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
-              <div className="tl-orb" onClick={()=>savedProfiles.length>0?setScreen("profiles"):createNewProfile()} style={{
-                background:"linear-gradient(145deg,#E86B5A,#D4503E)",
-                boxShadow:"0 6px 24px rgba(232,107,90,0.25)",
-                display:"flex",alignItems:"center",justifyContent:"center",
-                animation:"orbitalLand0 2.8s cubic-bezier(.22,1,.36,1) 0.2s both",
-              }}>
-                <svg width="60" height="60" viewBox="0 0 60 60"><polygon points="30,8 50,22 46,46 14,46 10,22" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1"/><polygon points="30,16 42,26 39,42 21,42 18,26" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><polygon points="30,24 36,30 34,38 26,38 24,30" fill="rgba(255,255,255,0.25)" stroke="#fff" strokeWidth="1"/><circle cx="30" cy="8" r="2.5" fill="#fff"/><circle cx="50" cy="22" r="2.5" fill="#fff"/><circle cx="46" cy="46" r="2.5" fill="#fff"/><circle cx="14" cy="46" r="2.5" fill="#fff"/><circle cx="10" cy="22" r="2.5" fill="#fff"/></svg>
-              </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"2.8s"}}>
-                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Trouve ta pala</div>
-                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Matching personnalisé</div>
-              </div>
-            </div>
-
-            {/* Cercle 2 — Le catalogue */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
-              <div className="tl-orb" onClick={()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");}} style={{
-                background:"linear-gradient(145deg,#E8A84C,#D49038)",
-                boxShadow:"0 6px 24px rgba(232,168,76,0.25)",
-                display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,padding:18,
-                animation:"orbitalLand1 2.8s cubic-bezier(.22,1,.36,1) 0.5s both",
-              }}>
-                <div style={{width:24,height:36,borderRadius:"4px 4px 10px 10px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
-                <div style={{width:24,height:36,borderRadius:"50%",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
-                <div style={{width:24,height:36,borderRadius:"10px 10px 4px 4px",border:"1.5px solid rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.15)"}}/>
-                <div style={{width:24,height:36,borderRadius:6,border:"1.5px solid rgba(255,255,255,0.5)",background:"rgba(255,255,255,0.1)"}}/>
-              </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"3.1s"}}>
-                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>{totalDBCount} raquettes</div>
-                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Magazine & fiches</div>
-              </div>
-            </div>
-
-            {/* Cercle 3 — Scan raquette */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
-              <div className="tl-orb" onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");}} style={{
-                background:"linear-gradient(145deg,#1A9E8F,#0D7A6E)",
-                boxShadow:"0 6px 24px rgba(26,158,143,0.25)",
-                display:"flex",alignItems:"center",justifyContent:"center",
-                animation:"orbitalLand2 2.8s cubic-bezier(.22,1,.36,1) 0.8s both",
-              }}>
-                <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="16" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/><circle cx="30" cy="30" r="6" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.2"/><line x1="30" y1="10" x2="30" y2="19" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="30" y1="41" x2="30" y2="50" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="10" y1="30" x2="19" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/><line x1="41" y1="30" x2="50" y2="30" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/></svg>
-              </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"3.4s"}}>
-                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Scan raquette</div>
-                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Photo → identification</div>
-              </div>
-            </div>
-
-            {/* Cercle 4 — Nos conseillers */}
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
-              <div className="tl-orb" onClick={()=>{setChatOpen(true);setChatBubbleVisible(false);}} style={{
-                background:"linear-gradient(145deg,#7C5CBF,#6344A8)",
-                boxShadow:"0 6px 24px rgba(124,92,191,0.25)",
-                display:"flex",alignItems:"center",justifyContent:"center",gap:4,
-                animation:"orbitalLand3 2.8s cubic-bezier(.22,1,.36,1) 1.1s both",
-              }}>
-                {Object.values(ADVISORS).map((adv,i)=><img key={i} src={adv.avatar} alt={adv.name} style={{width:34,height:34,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.5)"}}/>)}
-              </div>
-              <div className="tl-lbl" style={{textAlign:"center",animationDelay:"3.7s"}}>
-                <div style={{fontSize:14,fontWeight:700,color:"#1A1A1A",fontFamily:F.body}}>Nos conseillers</div>
-                <div style={{fontSize:11,color:"#8B7D6B",marginTop:2}}>Léo, Juan & Manon</div>
-              </div>
-            </div>
+        {/* ═══ LOGO ═══ */}
+        <div style={{textAlign:"center",marginBottom:4,paddingTop:56,position:"relative",zIndex:2,animation:"homeHeroReveal 1.2s cubic-bezier(.22,1,.36,1) 0.2s both"}}>
+          <div style={{width:56,height:56,borderRadius:14,background:"linear-gradient(145deg, #C4973A 0%, #8B6914 100%)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 12px",position:"relative",boxShadow:"0 6px 24px rgba(196,151,58,0.25)"}}>
+            <div style={{position:"absolute",inset:0,borderRadius:14,background:"linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 50%)",pointerEvents:"none"}}/>
+            <div style={{transform:"rotate(18deg)",position:"relative",zIndex:1}}><PalaIcon size={28}/></div>
           </div>
         </div>
 
-        {/* Footer */}
-        <div style={{marginTop:"auto",paddingBottom:24,textAlign:"center",position:"relative",zIndex:1}}>
+        {/* ═══ HEADLINE ═══ */}
+        <div style={{textAlign:"center",position:"relative",zIndex:2,marginBottom:2}}>
+          <h1 style={{fontFamily:F.legacy,fontSize:30,fontWeight:800,color:"#EDE8DF",lineHeight:1,margin:"0",letterSpacing:"-0.03em",animation:"homeHeroReveal 1.2s cubic-bezier(.22,1,.36,1) 0.4s both"}}>PADEL ANALYZER</h1>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,margin:"10px 0 6px",animation:"homeHeroReveal 1s ease 0.7s both"}}>
+            <div style={{height:1,background:"linear-gradient(90deg, transparent, rgba(196,151,58,0.4))",animation:"homeLineGrow 1.5s ease 1s both"}}/>
+            <div style={{width:5,height:5,borderRadius:"50%",border:"1px solid rgba(196,151,58,0.5)",flexShrink:0}}/>
+            <div style={{height:1,background:"linear-gradient(90deg, rgba(196,151,58,0.4), transparent)",animation:"homeLineGrow 1.5s ease 1s both"}}/>
+          </div>
+          <p style={{fontFamily:F.editorial,fontSize:14,color:"rgba(196,151,58,0.55)",margin:"0 0 4px",fontStyle:"italic",fontWeight:400,animation:"homeHeroReveal 1s ease 0.8s both"}}>Padel Center & Santé</p>
+          <p style={{fontSize:10,color:"rgba(237,232,223,0.2)",margin:0,fontFamily:F.legacy,fontWeight:600,animation:"homeCounterReveal 1.5s ease 1.2s both"}}>{totalDBCount} RAQUETTES ANALYSÉES</p>
+        </div>
+
+        {/* ═══ 4 ORBITAL CIRCLES ═══ */}
+        {(()=>{
+          const orbMeta = [
+            {bg:"linear-gradient(145deg, #D4A856 0%, #A67C28 40%, #7A5A18 100%)",glow:"rgba(196,151,58,0.35)",ring:"rgba(212,168,86,0.5)",labelCol:"rgba(212,168,86,0.7)"},
+            {bg:"linear-gradient(145deg, #34C4A0 0%, #1E9474 40%, #0E6A52 100%)",glow:"rgba(42,168,138,0.3)",ring:"rgba(52,196,160,0.5)",labelCol:"rgba(52,196,160,0.7)"},
+            {bg:"linear-gradient(145deg, #5A9ADB 0%, #3870B0 40%, #1E4E88 100%)",glow:"rgba(58,111,184,0.3)",ring:"rgba(90,154,219,0.5)",labelCol:"rgba(90,154,219,0.7)"},
+            {bg:"linear-gradient(145deg, #9B85D4 0%, #7360AA 40%, #503E82 100%)",glow:"rgba(124,107,175,0.3)",ring:"rgba(155,133,212,0.5)",labelCol:"rgba(155,133,212,0.7)"},
+          ];
+          const orbClicks = [
+            ()=>savedProfiles.length>0?setScreen("profiles"):createNewProfile(),
+            ()=>{setMagCat(null);setMagYear(2026);setMagDetail(null);setMagSlide(0);setScreen("magazine");},
+            ()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");},
+            ()=>{setChatOpen(true);setChatBubbleVisible(false);},
+          ];
+          const orbLabels = [
+            {title:"Trouve ta pala",sub:"Matching personnalisé"},
+            {title:"Le catalogue",sub:totalDBCount+" raquettes · Magazine"},
+            {title:"Scan raquette",sub:"Photo → identification"},
+            {title:"Nos conseillers",sub:"Léo, Juan & Manon"},
+          ];
+          const featuredRackets = getMergedDB().filter(r=>r.imageUrl && (r.featured || (r.proPlayerInfo && r.year===2026)));
+          const orbImgs = [featuredRackets[0],featuredRackets[1],featuredRackets[2]].filter(Boolean);
+          return (
+          <div style={{marginTop:32,width:"100%",maxWidth:370,position:"relative",zIndex:2,padding:"0 6px",boxSizing:"border-box"}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"36px 30px",justifyItems:"center"}}>
+              {orbMeta.map((c,idx)=>(
+                <div key={idx} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
+                  <div className="home-orb" onClick={orbClicks[idx]} style={{animation:`orbV2Land${idx} 3.2s cubic-bezier(.22,1,.36,1) ${0.3+idx*0.3}s both`}}>
+                    <div className="home-orb-inner" style={{background:c.bg,boxShadow:`inset 0 2px 0 rgba(255,255,255,0.18),inset 0 -4px 12px rgba(0,0,0,0.4),0 8px 32px ${c.glow}`}}>
+                      <div className="home-orb-glass"/>
+                      {/* Photo raquette en fond (pas pour conseillers) */}
+                      {idx<3 && orbImgs[idx] && <img src={orbImgs[idx].imageUrl} alt="" style={{position:"absolute",top:"50%",left:"50%",transform:`translate(-50%,-50%) rotate(${[-12,10,-5][idx]}deg)`,height:"130%",objectFit:"contain",opacity:0.4,mixBlendMode:"soft-light",filter:"brightness(1.4) contrast(1.1) saturate(0.8)",pointerEvents:"none"}}/>}
+                      {/* Contenu intérieur */}
+                      <div style={{position:"relative",zIndex:3,width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                        {idx===0 && <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+                          <polygon points="27,5 49,18 49,36 27,49 5,36 5,18" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.8"/>
+                          <polygon points="27,13 40,22 40,33 27,44 14,33 14,22" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.55)" strokeWidth="1"/>
+                          <polygon points="27,20 34,26 34,32 27,38 20,32 20,26" fill="rgba(255,255,255,0.12)" stroke="#fff" strokeWidth="1.2"/>
+                          {[[27,5],[49,18],[49,36],[27,49],[5,36],[5,18]].map(([cx,cy],i)=><circle key={i} cx={cx} cy={cy} r={i===0?2.5:1.8} fill="#fff" opacity={i===0?1:0.6}/>)}
+                        </svg>}
+                        {idx===1 && <div style={{display:"flex",flexWrap:"wrap",gap:4,padding:32,justifyContent:"center"}}>
+                          {[0,1,2,3,4,5].map(i=><div key={i} style={{width:20,height:30,borderRadius:i%3===0?"4px 4px 10px 10px":i%3===1?"50%":"10px 10px 4px 4px",border:"1.5px solid rgba(255,255,255,0.55)",background:"rgba(255,255,255,0.06)"}}/>)}
+                        </div>}
+                        {idx===2 && <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+                          <path d="M13,7 L7,7 L7,13" stroke="rgba(255,255,255,0.65)" strokeWidth="2.2" strokeLinecap="round"/>
+                          <path d="M45,7 L51,7 L51,13" stroke="rgba(255,255,255,0.65)" strokeWidth="2.2" strokeLinecap="round"/>
+                          <path d="M13,51 L7,51 L7,45" stroke="rgba(255,255,255,0.65)" strokeWidth="2.2" strokeLinecap="round"/>
+                          <path d="M45,51 L51,51 L51,45" stroke="rgba(255,255,255,0.65)" strokeWidth="2.2" strokeLinecap="round"/>
+                          <circle cx="29" cy="29" r="11" stroke="rgba(255,255,255,0.4)" strokeWidth="1" fill="none"/>
+                          <circle cx="29" cy="29" r="4" fill="rgba(255,255,255,0.15)" stroke="#fff" strokeWidth="1.2"/>
+                          <line x1="29" y1="13" x2="29" y2="22" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8"/>
+                          <line x1="29" y1="36" x2="29" y2="45" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8"/>
+                          <line x1="13" y1="29" x2="22" y2="29" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8"/>
+                          <line x1="36" y1="29" x2="45" y2="29" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8"/>
+                        </svg>}
+                        {idx===3 && <div style={{display:"flex",gap:3}}>
+                          {Object.values(ADVISORS).map((adv,i)=><img key={i} src={adv.avatar} alt={adv.name} style={{width:36,height:36,borderRadius:18,objectFit:"cover",border:"2px solid rgba(255,255,255,0.3)",boxShadow:`0 2px 10px ${adv.color}50`}}/>)}
+                        </div>}
+                      </div>
+                    </div>
+                    {/* Outer ring */}
+                    <div style={{position:"absolute",inset:-5,borderRadius:"50%",border:`1px solid ${c.ring}`,opacity:0.5,animation:`orbBreathe 4s ease-in-out ${idx*0.5}s infinite`,pointerEvents:"none"}}/>
+                  </div>
+                  {/* Label */}
+                  <div style={{textAlign:"center",animation:`orbLabelReveal 0.7s cubic-bezier(.22,1,.36,1) ${3.4+idx*0.15}s both`}}>
+                    <div style={{fontSize:14,fontWeight:700,color:"#EDE8DF",fontFamily:F.legacy,letterSpacing:"0.01em"}}>{orbLabels[idx].title}</div>
+                    <div style={{fontSize:10,color:c.labelCol,marginTop:3,fontWeight:500,letterSpacing:"0.04em"}}>{orbLabels[idx].sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>);
+        })()}
+
+        {/* ═══ TAGLINE ═══ */}
+        <div style={{marginTop:32,textAlign:"center",position:"relative",zIndex:2,animation:"homeHeroReveal 1s ease 2s both"}}>
+          <p style={{fontSize:12,color:"rgba(237,232,223,0.35)",margin:"0 0 4px",fontFamily:F.editorial,fontStyle:"italic",lineHeight:1.5}}>Ta prochaine pala est quelque part ici.</p>
+        </div>
+
+        {/* ═══ FOOTER ═══ */}
+        <div style={{marginTop:"auto",paddingBottom:24,textAlign:"center",position:"relative",zIndex:2}}>
           {familyCode && familyCode !== "LOCAL" && <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:8}}>
-            <span style={{fontSize:10,color:cloudStatus==="synced"?"#1A9E8F":cloudStatus==="loading"?"#D49038":"#8B7D6B"}}>
+            <span style={{fontSize:10,color:cloudStatus==="synced"?"#2AA88A":cloudStatus==="loading"?"#D4A856":"rgba(237,232,223,0.3)"}}>
               {cloudStatus==="synced"?"Synchronisé":"Cloud"} · <span style={{fontWeight:700,letterSpacing:"0.1em"}}>{familyCode}</span>
             </span>
-            <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid #D5CBBD",borderRadius:6,padding:"3px 8px",color:"#8B7D6B",fontSize:10,cursor:"pointer",fontFamily:F.body}} title="Déconnexion">⏻</button>
-            {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(124,92,191,0.1)",border:"1px solid rgba(124,92,191,0.3)",borderRadius:6,padding:"3px 8px",color:"#7C5CBF",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Admin</button>}
+            <button onClick={handleCloudLogout} style={{background:"none",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"3px 8px",color:"rgba(237,232,223,0.3)",fontSize:10,cursor:"pointer",fontFamily:F.body}} title="Déconnexion">⏻</button>
+            {isAdmin&&<button onClick={()=>{setAdminTab("families");setScreen("admin");}} style={{background:"rgba(124,92,191,0.1)",border:"1px solid rgba(124,92,191,0.3)",borderRadius:6,padding:"3px 8px",color:"#9B85D4",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Admin</button>}
           </div>}
-          <div style={{fontSize:9,color:"#B8A890",letterSpacing:"0.04em",fontFamily:F.body}}>Le Lamentin, Martinique</div>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,fontSize:8,color:"rgba(237,232,223,0.15)",letterSpacing:"0.14em",fontFamily:F.legacy,fontWeight:600}}>
+            <div style={{height:0.5,width:20,background:"linear-gradient(90deg, transparent, rgba(237,232,223,0.15))"}}/>
+            LE LAMENTIN, MARTINIQUE
+            <div style={{height:0.5,width:20,background:"linear-gradient(90deg, rgba(237,232,223,0.15), transparent)"}}/>
+          </div>
         </div>
 
-        {isKiosk && <button onClick={()=>{setFamilyCode("");setFamilyCodeLS("");setGroupRole("famille");setGroupRoleLS("");setGroupNameState("");setGroupNameLS("");setKioskIdle(false);setScreen("login");}} style={{position:"fixed",bottom:12,right:12,background:"none",border:"none",color:"rgba(0,0,0,0.06)",fontSize:14,cursor:"pointer",padding:"8px 12px",zIndex:10}} title="Mode staff">🔐</button>}
+        {isKiosk && <button onClick={()=>{setFamilyCode("");setFamilyCodeLS("");setGroupRole("famille");setGroupRoleLS("");setGroupNameState("");setGroupNameLS("");setKioskIdle(false);setScreen("login");}} style={{position:"fixed",bottom:12,right:12,background:"none",border:"none",color:"rgba(255,255,255,0.04)",fontSize:14,cursor:"pointer",padding:"8px 12px",zIndex:10}} title="Mode staff">🔐</button>}
       </div>}
 
       {/* ============================================================ */}
