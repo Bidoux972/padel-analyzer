@@ -552,6 +552,13 @@ function MagazineScreen({ ctx }) {
           <div style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:TM.gray2,letterSpacing:"0.15em",marginBottom:8}}>ANALYSE</div>
           <p style={{fontFamily:F.body,fontSize:14,color:TM.gray1,lineHeight:1.7,margin:0}}>{r.editorial}</p>
         </div>}
+        {r.premiumEdge&&<div style={{marginBottom:20,padding:"12px 16px",borderRadius:14,background:"linear-gradient(135deg, rgba(212,168,86,0.12), rgba(212,168,86,0.05))",border:`1px solid ${T.gold}25`,display:"flex",alignItems:"flex-start",gap:10}}>
+          <span style={{fontSize:16,flexShrink:0,marginTop:1}}>★</span>
+          <div>
+            <div style={{fontSize:8,fontWeight:700,color:T.gold,letterSpacing:"0.15em",marginBottom:3}}>ARGUMENT CLÉ</div>
+            <div style={{fontSize:13,fontWeight:600,color:TM.cream,lineHeight:1.45,fontFamily:F.body}}>{r.premiumEdge}</div>
+          </div>
+        </div>}
         <div style={{textAlign:"center",padding:"16px 0 40px"}}>
           <button onClick={()=>openRacketSheet(r,"magazine")} style={{padding:"14px 40px",borderRadius:60,border:"none",background:`linear-gradient(135deg, ${TM.accent}, #b8860b)`,color:"#fff",fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${TM.accentGlow}`,width:"100%",maxWidth:320}}>
             Voir la fiche technique complète →
@@ -665,6 +672,10 @@ function MagazineScreen({ ctx }) {
                     }}>
                       {(r.editorial||"").slice(0,200)}{(r.editorial||"").length>200?"…":""}
                     </p>}
+                    {r.premiumEdge&&<div style={{padding:"10px 14px",borderRadius:10,background:"linear-gradient(135deg, rgba(212,168,86,0.12), rgba(212,168,86,0.05))",border:`1px solid ${T.gold}25`,marginBottom:16,display:"flex",alignItems:"flex-start",gap:8}}>
+                      <span style={{fontSize:13,flexShrink:0}}>★</span>
+                      <div style={{fontSize:12,fontWeight:600,color:TM.cream,lineHeight:1.4}}>{r.premiumEdge}</div>
+                    </div>}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                       <span style={{fontFamily:F.body,fontSize:12,fontWeight:700,color:TM.accent}}>Lire l'article complet →</span>
                       <span style={{fontFamily:F.body,fontSize:11,color:TM.gray2}}>{r.shape} · {r.price}</span>
@@ -720,6 +731,10 @@ function MagazineScreen({ ctx }) {
                     }}>
                       {(r.verdict||"").slice(0,80)}{(r.verdict||"").length>80?"…":""}
                     </p>}
+                    {r.premiumEdge&&<div style={{fontSize:10,color:T.gold,fontWeight:600,lineHeight:1.3,display:"flex",alignItems:"flex-start",gap:4}}>
+                      <span style={{flexShrink:0}}>★</span>
+                      <span style={{overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{r.premiumEdge}</span>
+                    </div>}
                     <div style={{display:"flex",alignItems:"center",gap:8,marginTop:2}}>
                       <span style={{fontFamily:"'Outfit',sans-serif",fontSize:22,fontWeight:800,
                         color:mainScore>=9?T.accent:mainScore>=8?T.gold:T.gray1,lineHeight:1,
@@ -1019,6 +1034,12 @@ function CatalogScreen({ ctx }) {
             display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
           }}>{r.shortName||r.name}</div>
 
+          {/* ★ premiumEdge */}
+          {!isSmall&&r.premiumEdge&&<div style={{fontSize:9,color:T.gold,fontWeight:600,lineHeight:1.3,display:"flex",alignItems:"flex-start",gap:4,marginTop:2}}>
+            <span style={{flexShrink:0,fontSize:10}}>★</span>
+            <span style={{overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{r.premiumEdge}</span>
+          </div>}
+
           {/* Spacer */}
           <div style={{flex:1}}/>
 
@@ -1308,6 +1329,15 @@ function RacketSheetScreen({ ctx }) {
           {r.womanLine&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(236,72,153,0.1)",border:"1px solid rgba(236,72,153,0.2)",color:"#ec4899",fontWeight:600}}>♀ Ligne femme</span>}
         </div>
       </div>
+
+      {/* ★ premiumEdge — argument vendeur clé */}
+      {r.premiumEdge&&<div style={{margin:"0 0 14px",padding:"12px 16px",borderRadius:14,background:"linear-gradient(135deg, rgba(212,168,86,0.12) 0%, rgba(212,168,86,0.06) 100%)",border:`1px solid ${T.gold}30`,display:"flex",alignItems:"flex-start",gap:10}}>
+        <span style={{fontSize:16,flexShrink:0,marginTop:1}}>★</span>
+        <div>
+          <div style={{fontSize:8,fontWeight:700,color:T.gold,letterSpacing:"0.15em",marginBottom:3}}>ARGUMENT CLÉ</div>
+          <div style={{fontSize:13,fontWeight:600,color:T.cream,lineHeight:1.45,fontFamily:F.body}}>{r.premiumEdge}</div>
+        </div>
+      </div>}
 
       {/* Scan Pertinence Badge — when opened from scan with active profile */}
       {racketSheetFrom==="scan"&&profileName&&(()=>{
