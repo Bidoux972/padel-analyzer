@@ -32,20 +32,22 @@ const T = {
   purpleSoft:"rgba(168,85,247,0.08)",
 };
 
-// ─── MAGAZINE THEME — Warm black, gold-dominant, luxury press ──
+// ─── MAGAZINE THEME — Presse parisienne, fond blanc, brun chaud + bordeaux ──
 const TM = {
-  bg:       "#14100A",
-  card:     "#1E1812",
-  surface:  "#261F16",
-  border:   "#3A3028",
-  accent:   "#D4A856",
-  accentSoft: "rgba(212,168,86,0.15)",
-  accentGlow: "rgba(212,168,86,0.30)",
-  cream:    "#FAF7F0",
-  white:    "#F5F0E8",
-  gray1:    "#C4BAA8",
-  gray2:    "#8A7E6E",
-  gray3:    "#554D3E",
+  bg:       "#FDFBF8",
+  card:     "#FFFFFF",
+  surface:  "#F5F1EB",
+  border:   "#D5CCBF",
+  accent:   "#7A2E34",
+  accentSoft: "rgba(122,46,52,0.08)",
+  accentGlow: "rgba(122,46,52,0.15)",
+  cream:    "#2C1810",
+  white:    "#2C1810",
+  gray1:    "#4A3C30",
+  gray2:    "#A09080",
+  gray3:    "#D5CCBF",
+  gold:     "#C4973A",
+  goldSoft: "rgba(196,151,58,0.08)",
 };
 
 // ─── COLLECTION THEME — Cool black, emerald accent, showroom ──
@@ -560,7 +562,7 @@ function MagazineScreen({ ctx }) {
           </div>
         </div>}
         <div style={{textAlign:"center",padding:"16px 0 40px"}}>
-          <button onClick={()=>openRacketSheet(r,"magazine")} style={{padding:"14px 40px",borderRadius:60,border:"none",background:`linear-gradient(135deg, ${TM.accent}, #b8860b)`,color:"#fff",fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${TM.accentGlow}`,width:"100%",maxWidth:320}}>
+          <button onClick={()=>openRacketSheet(r,"magazine")} style={{padding:"14px 40px",borderRadius:60,border:"none",background:`linear-gradient(135deg, ${TM.accent}, #5A1E24)`,color:"#fff",fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${TM.accentGlow}`,width:"100%",maxWidth:320}}>
             Voir la fiche technique complète →
           </button>
         </div>
@@ -789,18 +791,17 @@ function MagazineScreen({ ctx }) {
         </div>
       </div>
 
-      {/* Magazine masthead */}
+      {/* Magazine masthead — Presse parisienne */}
       <div style={{textAlign:"center",padding:"16px 8px 32px",position:"relative"}}>
-        {/* Decorative line */}
-        <div style={{width:40,height:3,background:TM.accent,borderRadius:2,margin:"0 auto 14px"}}/>
-        <h1 style={{fontFamily:F.editorial,fontSize:44,fontWeight:700,color:TM.cream,margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1,fontStyle:"italic"}}>
+        <div style={{fontSize:8,fontWeight:600,color:TM.gray2,letterSpacing:"0.3em",marginBottom:12}}>PADEL CENTER & SANTÉ</div>
+        <div style={{height:0.5,background:TM.cream,margin:"0 60px 14px"}}/>
+        <h1 style={{fontFamily:F.editorial,fontSize:48,fontWeight:300,color:TM.cream,margin:"0 0 6px",letterSpacing:"-0.03em",lineHeight:0.95,fontStyle:"italic"}}>
           Le Magazine
         </h1>
-        <p style={{fontFamily:F.body,fontSize:12,color:TM.gray2,margin:0,letterSpacing:"0.04em"}}>
-          Tendances, classements & analyses · {magYear || "Toutes années"}
+        <p style={{fontFamily:F.editorial,fontSize:14,color:TM.gray2,margin:"8px 0 0",fontStyle:"italic",fontWeight:300}}>
+          Tendances, classements & analyses — {magYear || "Toutes années"}
         </p>
-        {/* Bottom decorative line */}
-        <div style={{width:"60%",height:1,background:`linear-gradient(90deg, transparent, ${TM.border}, transparent)`,margin:"20px auto 0"}}/>
+        <div style={{height:0.5,background:TM.cream,margin:"16px 60px 0"}}/>
       </div>
 
       {/* ═══ BREAKING NEWS HERO — Editorial carousel ═══ */}
@@ -831,7 +832,7 @@ function MagazineScreen({ ctx }) {
                 position:"relative",overflow:"hidden",borderRadius:22,cursor:"pointer",
                 height: catIndex === 0 ? 300 : 240,
                 border:`1px solid ${TM.border}`,
-                boxShadow:"0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.02)",
+                boxShadow:"0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)",
                 transition:"transform 0.25s, box-shadow 0.25s",
               }}
             >
