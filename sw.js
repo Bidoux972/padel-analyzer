@@ -1,4 +1,4 @@
-const CACHE_VERSION = 71;
+const CACHE_VERSION = 72;
 const CACHE_NAME = 'padel-analyzer-v' + CACHE_VERSION;
 const ASSETS_TO_CACHE = [
   '/',
