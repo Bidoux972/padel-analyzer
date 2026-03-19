@@ -1688,6 +1688,22 @@ async function checkIsAdmin(familyCode) {
   } catch { return false; }
 }
 
+// ─── TRACKING — Log racket consultation ───
+function logRacketView(racket, sourceScreen, profileName, familyCode) {
+  if (!racket || !racket.id) return;
+  try {
+    sbRpc('log_racket_view', {
+      p_racket_id: racket.id,
+      p_racket_name: racket.name || racket.shortName || '',
+      p_brand: racket.brand || null,
+      p_source_screen: sourceScreen || 'unknown',
+      p_profile_name: profileName || null,
+      p_family_code: familyCode || null,
+      p_category: racket.category || null,
+    }).catch(() => {}); // Fire-and-forget, never block UI
+  } catch {}
+}
+
 async function adminListFamilies(familyCode) {
   return sbRpc('admin_list_families', { p_family_code: familyCode });
 }
@@ -3160,7 +3176,11 @@ export default function PadelAnalyzer() {
     setRacketSheet(full);
     setRacketSheetFrom(fromScreen || screen);
     setScreen("racketSheet");
-  }, [screen]);
+    // Track consultation from magazine or catalog
+    if (fromScreen === "magazine" || fromScreen === "catalog") {
+      logRacketView(full, fromScreen, profileName, familyCode);
+    }
+  }, [screen, profileName, familyCode]);
   const isPopStateRef = useRef(false);
 
   // Push to browser history on screen change (but NOT when triggered by popstate)
@@ -3629,6 +3649,10 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     // Step 5: Lock-on moment (dramatic pause)
     setScanStatus("locked");
     setScanResult({ vision, matches, bestScore });
+    // Track scan identification
+    if (matches.length > 0 && matches[0].racket) {
+      logRacketView(matches[0].racket, "scan", profileName, familyCode);
+    }
     await new Promise(ok => setTimeout(ok, 1400));
 
     // Step 6: Decide — direct verdict or visual confirmation?
