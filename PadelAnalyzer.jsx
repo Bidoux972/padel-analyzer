@@ -995,29 +995,31 @@ function CatalogScreen({ ctx }) {
   };
 
   // ── Racket card component — Premium boutique style ──
-  const RacketCard = ({ r, isNew, size = "normal" }) => {
+  const RacketCard = ({ r, isNew, size = "normal", idx = 0 }) => {
     const isSmall = size === "small";
     const imgH = isSmall ? 130 : 165;
     const cardW = isSmall ? 175 : undefined;
     const priceStr = r.price ? String(r.price).replace(/[^\d.,€]/g,"") : "";
     const score = avgScore(r);
     const cc = catColor(r.category);
+    const staggerDelay = isSmall ? 0 : (idx * 0.08);
     return (
-      <div style={{...(isSmall ? {minWidth:cardW,maxWidth:cardW,flexShrink:0} : {})}}>
-        <button onClick={()=>openRacketSheet(r,"catalog")} style={{
+      <div style={{...(isSmall ? {minWidth:cardW,maxWidth:cardW,flexShrink:0} : {}), animation: isSmall ? "none" : `catCardReveal 0.7s cubic-bezier(.22,1,.36,1) ${staggerDelay}s both`}}>
+        <button onClick={()=>openRacketSheet(r,"catalog")} className={isSmall?"":"cat-3d-card"} style={{
           padding:0,borderRadius:22,cursor:"pointer",textAlign:"left",overflow:"hidden",
           background:"linear-gradient(165deg, rgba(30,28,36,0.95) 0%, rgba(18,16,24,0.98) 100%)",
           border:"1px solid rgba(255,255,255,0.07)",
-          transition:"all 0.35s cubic-bezier(.22,1,.36,1)",display:"flex",flexDirection:"column",position:"relative",width:"100%",
+          display:"flex",flexDirection:"column",position:"relative",width:"100%",
+          "--card-color": cc,
           boxShadow:`0 4px 6px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.12), 0 25px 45px rgba(0,0,0,0.14), 0 50px 80px rgba(0,0,0,0.10), 0 2px 0 rgba(255,255,255,0.04) inset`,
           animation: isSmall ? "none" : `catCardLevitate 5.5s ease-in-out ${Math.random()*3}s infinite`,
         }}>
-          {/* Top edge shine */}
-          <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.12) 80%, transparent 95%)",zIndex:3}}/>
-          {/* Colored spotlight */}
-          <div style={{position:"absolute",top:"-35%",left:"50%",transform:"translateX(-50%)",width:"160%",height:"75%",background:`radial-gradient(ellipse 50% 40%, ${cc}15 0%, ${cc}06 30%, transparent 65%)`,pointerEvents:"none"}}/>
-          {/* Accent bar */}
-          <div style={{position:"absolute",top:0,left:"12%",right:"12%",height:2,background:`linear-gradient(90deg, transparent, ${cc}55, transparent)`,boxShadow:`0 0 10px ${cc}25`,zIndex:3}}/>
+          {/* Top edge shine — intensifies on hover */}
+          <div className="cat-edge-shine" style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.12) 80%, transparent 95%)",zIndex:3,opacity:0.6,transition:"opacity 0.4s ease"}}/>
+          {/* Colored spotlight — intensifies on hover */}
+          <div className="cat-glow" style={{position:"absolute",top:"-35%",left:"50%",transform:"translateX(-50%)",width:"160%",height:"75%",background:`radial-gradient(ellipse 50% 40%, ${cc}20 0%, ${cc}08 30%, transparent 65%)`,pointerEvents:"none",opacity:0.5,transition:"opacity 0.4s ease"}}/>
+          {/* Accent bar — glows on hover */}
+          <div className="cat-accent-bar" style={{position:"absolute",top:0,left:"12%",right:"12%",height:2,background:`linear-gradient(90deg, transparent, ${cc}55, transparent)`,boxShadow:`0 0 10px ${cc}25`,zIndex:3,opacity:0.7,transition:"all 0.4s ease"}}/>
 
           {/* NEW badge */}
           {isNew && <div style={{position:"absolute",top:10,right:10,zIndex:4}}><NewBadge small={isSmall}/></div>}
@@ -1081,6 +1083,13 @@ function CatalogScreen({ ctx }) {
       <style>{`
         @keyframes catCardLevitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
         @keyframes catSpotPulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:0.8;transform:scale(1.08)}}
+        @keyframes catCardReveal{from{opacity:0;transform:translateY(40px) scale(0.94);filter:blur(4px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+        .cat-3d-card{transition:all 0.4s cubic-bezier(.22,1,.36,1)!important}
+        .cat-3d-card:hover{transform:translateY(-10px) scale(1.03)!important;box-shadow:0 6px 8px rgba(0,0,0,0.1), 0 14px 28px rgba(0,0,0,0.15), 0 30px 55px rgba(0,0,0,0.18), 0 55px 90px rgba(0,0,0,0.14), 0 2px 0 rgba(255,255,255,0.06) inset!important}
+        .cat-3d-card:hover .cat-glow{opacity:1!important}
+        .cat-3d-card:hover .cat-accent-bar{box-shadow:0 0 20px var(--card-color,#fff)!important;opacity:1!important}
+        .cat-3d-card:hover .cat-edge-shine{opacity:1!important}
+        .cat-3d-card:active{transform:translateY(-3px) scale(0.98)!important}
       `}</style>
       {/* Showroom stage lighting */}
       <div style={{position:"absolute",top:"-8%",left:"50%",transform:"translateX(-50%)",width:"100%",height:"40%",background:"radial-gradient(ellipse 70% 60% at 50% 0%, rgba(255,240,200,0.22) 0%, rgba(255,230,180,0.06) 40%, transparent 70%)",pointerEvents:"none",animation:"catSpotPulse 8s ease-in-out infinite"}}/>
@@ -1245,8 +1254,8 @@ function CatalogScreen({ ctx }) {
               {brandHasNew && <span style={{fontSize:8,fontWeight:700,color:"#a78bfa",background:"rgba(124,58,237,0.1)",padding:"2px 8px",borderRadius:6,fontFamily:F.body}}>NEW</span>}
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(160px, 1fr))",gap:20}}>
-              {byBrand[brand].map(r=>(
-                <RacketCard key={r.id||r.name} r={r} isNew={r.year===2026} size="normal"/>
+              {byBrand[brand].map((r,ri)=>(
+                <RacketCard key={r.id||r.name} r={r} isNew={r.year===2026} size="normal" idx={ri}/>
               ))}
             </div>
           </div>
