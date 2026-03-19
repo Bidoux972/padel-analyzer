@@ -1004,25 +1004,29 @@ function CatalogScreen({ ctx }) {
     const cc = catColor(r.category);
     const staggerDelay = isSmall ? 0 : (idx * 0.08);
     return (
-      <div style={{...(isSmall ? {minWidth:cardW,maxWidth:cardW,flexShrink:0} : {}), animation: isSmall ? "none" : `catCardReveal 0.7s cubic-bezier(.22,1,.36,1) ${staggerDelay}s both`}}>
-        <button onClick={()=>openRacketSheet(r,"catalog")} className={isSmall?"":"cat-3d-card"} style={{
-          padding:0,borderRadius:22,cursor:"pointer",textAlign:"left",overflow:"hidden",
-          background:"linear-gradient(165deg, rgba(30,28,36,0.95) 0%, rgba(18,16,24,0.98) 100%)",
-          border:"1px solid rgba(255,255,255,0.07)",
-          display:"flex",flexDirection:"column",position:"relative",width:"100%",
-          "--card-color": cc,
-          boxShadow:`0 4px 6px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.12), 0 25px 45px rgba(0,0,0,0.14), 0 50px 80px rgba(0,0,0,0.10), 0 2px 0 rgba(255,255,255,0.04) inset`,
-          animation: isSmall ? "none" : `catCardLevitate 5.5s ease-in-out ${Math.random()*3}s infinite`,
-        }}>
-          {/* Top edge shine — intensifies on hover */}
-          <div className="cat-edge-shine" style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.12) 80%, transparent 95%)",zIndex:3,opacity:0.6,transition:"opacity 0.4s ease"}}/>
-          {/* Colored spotlight — intensifies on hover */}
-          <div className="cat-glow" style={{position:"absolute",top:"-35%",left:"50%",transform:"translateX(-50%)",width:"160%",height:"75%",background:`radial-gradient(ellipse 50% 40%, ${cc}20 0%, ${cc}08 30%, transparent 65%)`,pointerEvents:"none",opacity:0.5,transition:"opacity 0.4s ease"}}/>
-          {/* Accent bar — glows on hover */}
-          <div className="cat-accent-bar" style={{position:"absolute",top:0,left:"12%",right:"12%",height:2,background:`linear-gradient(90deg, transparent, ${cc}55, transparent)`,boxShadow:`0 0 10px ${cc}25`,zIndex:3,opacity:0.7,transition:"all 0.4s ease"}}/>
+      <div style={{
+        ...(isSmall ? {minWidth:cardW,maxWidth:cardW,flexShrink:0} : {}),
+        animation: isSmall ? "none" : `catCardReveal 0.7s cubic-bezier(.22,1,.36,1) ${staggerDelay}s both`,
+      }}>
+        {/* Outer wrapper — handles levitation only */}
+        <div style={{animation: isSmall ? "none" : `catCardLevitate 5.5s ease-in-out ${idx*0.7}s infinite`}}>
+          <button onClick={()=>openRacketSheet(r,"catalog")} className={isSmall?"":"cat-3d-card"} style={{
+            padding:0,borderRadius:22,cursor:"pointer",textAlign:"left",overflow:"hidden",
+            background:"linear-gradient(165deg, rgba(30,28,36,0.95) 0%, rgba(18,16,24,0.98) 100%)",
+            border:"1px solid rgba(255,255,255,0.07)",
+            display:"flex",flexDirection:"column",position:"relative",width:"100%",
+            "--card-color": cc,
+            boxShadow:`0 4px 6px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.12), 0 25px 45px rgba(0,0,0,0.14), 0 50px 80px rgba(0,0,0,0.10), 0 2px 0 rgba(255,255,255,0.04) inset`,
+          }}>
+            {/* Top edge shine — intensifies on hover */}
+            <div className="cat-edge-shine" style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 80%, transparent 95%)",zIndex:3,opacity:0.5,transition:"opacity 0.4s ease"}}/>
+            {/* Colored spotlight — intensifies on hover */}
+            <div className="cat-glow" style={{position:"absolute",top:"-35%",left:"50%",transform:"translateX(-50%)",width:"160%",height:"75%",background:`radial-gradient(ellipse 50% 40%, ${cc}30 0%, ${cc}10 30%, transparent 65%)`,pointerEvents:"none",opacity:0.6,transition:"opacity 0.4s ease"}}/>
+            {/* Accent bar — glows on hover */}
+            <div className="cat-accent-bar" style={{position:"absolute",top:0,left:"12%",right:"12%",height:2,background:`linear-gradient(90deg, transparent, ${cc}70, transparent)`,boxShadow:`0 0 10px ${cc}25`,zIndex:3,opacity:0.7,transition:"all 0.4s ease"}}/>
 
-          {/* NEW badge */}
-          {isNew && <div style={{position:"absolute",top:10,right:10,zIndex:4}}><NewBadge small={isSmall}/></div>}
+            {/* NEW badge */}
+            {isNew && <div style={{position:"absolute",top:10,right:10,zIndex:4}}><NewBadge small={isSmall}/></div>}
           {/* Image area */}
           <div style={{
             height:imgH,display:"flex",alignItems:"center",justifyContent:"center",
@@ -1071,8 +1075,9 @@ function CatalogScreen({ ctx }) {
             </div>
           </div>
         </button>
-        {/* 3D floor shadow */}
-        {!isSmall && <div style={{height:8,margin:"0 14px",background:`radial-gradient(ellipse, ${cc}08 0%, rgba(0,0,0,0.1) 40%, transparent 70%)`,filter:"blur(6px)",transform:"translateY(-2px)"}}/>}
+        </div>
+        {/* 3D floor shadow — stays on the ground */}
+        {!isSmall && <div style={{height:10,margin:"0 14px",background:`radial-gradient(ellipse, ${cc}0C 0%, rgba(0,0,0,0.12) 40%, transparent 70%)`,filter:"blur(8px)",transform:"translateY(-2px)"}}/>}
       </div>
     );
   };
@@ -1120,7 +1125,7 @@ function CatalogScreen({ ctx }) {
           }}>
             <div style={{display:"flex",alignItems:"center",gap:8,flex:1}}>
               <NewBadge/>
-              <span style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:TC.cream,fontStyle:"italic"}}>Nouveautés {allYears[0]||2026}</span>
+              <span style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,color:"#2C1810",fontStyle:"italic"}}>Nouveautés {allYears[0]||2026}</span>
               <span style={{fontFamily:F.body,fontSize:9,color:"#7c3aed",background:"rgba(124,58,237,0.1)",borderRadius:10,padding:"2px 8px",fontWeight:600}}>{nouveautes2026.length}</span>
             </div>
             <span style={{fontSize:14,color:T.gray2,transition:"transform 0.2s",transform:showNouveautes?"rotate(0deg)":"rotate(-90deg)"}}>{showNouveautes?"▾":"▸"}</span>
@@ -1128,9 +1133,9 @@ function CatalogScreen({ ctx }) {
           {/* Horizontal scroll with arrows */}
           {showNouveautes && <div style={{position:"relative",display:"flex",alignItems:"center",gap:4}}>
             {nouveautes2026.length>2 && <button onClick={()=>scrollNouveautes("left")} style={{
-              width:32,height:32,borderRadius:"50%",border:`1px solid ${TC.border}`,background:TC.card,
-              color:TC.cream,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-              flexShrink:0,transition:"all 0.2s",zIndex:2,
+              width:32,height:32,borderRadius:"50%",border:"1px solid rgba(0,0,0,0.1)",background:"rgba(255,255,255,0.6)",
+              color:"#2C1810",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+              flexShrink:0,transition:"all 0.2s",zIndex:2,backdropFilter:"blur(4px)",
             }}>‹</button>}
             <div ref={nouveautesRef} style={{
               display:"flex",gap:14,overflowX:"auto",paddingBottom:14,paddingRight:14,flex:1,
@@ -1144,13 +1149,13 @@ function CatalogScreen({ ctx }) {
               ))}
             </div>
             {nouveautes2026.length>2 && <button onClick={()=>scrollNouveautes("right")} style={{
-              width:32,height:32,borderRadius:"50%",border:`1px solid ${TC.border}`,background:TC.card,
-              color:TC.cream,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-              flexShrink:0,transition:"all 0.2s",zIndex:2,
+              width:32,height:32,borderRadius:"50%",border:"1px solid rgba(0,0,0,0.1)",background:"rgba(255,255,255,0.6)",
+              color:"#2C1810",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+              flexShrink:0,transition:"all 0.2s",zIndex:2,backdropFilter:"blur(4px)",
             }}>›</button>}
           </div>}
           {/* Separator */}
-          <div style={{height:1,background:`linear-gradient(90deg, transparent, ${TC.border}, transparent)`,margin:"4px 12px 0"}}/>
+          <div style={{height:1,background:"linear-gradient(90deg, transparent, rgba(44,24,16,0.12), transparent)",margin:"4px 12px 0"}}/>
         </div>
       )}
 
@@ -1183,10 +1188,10 @@ function CatalogScreen({ ctx }) {
         </button>
         <button onClick={()=>setShowFilters(!showFilters)} style={{
           padding:"6px 14px",borderRadius:20,fontSize:10,fontWeight:600,cursor:"pointer",
-          background:activeCount>0?TC.accentSoft:TC.card,
-          border:`1px solid ${activeCount>0?TC.accent+"40":TC.border}`,
-          color:activeCount>0?TC.accent:TC.gray1,fontFamily:F.body,whiteSpace:"nowrap",
-          display:"flex",alignItems:"center",gap:4,transition:"all 0.2s",
+          background:activeCount>0?"rgba(44,24,16,0.08)":"rgba(255,255,255,0.5)",
+          border:`1px solid ${activeCount>0?"rgba(44,24,16,0.2)":"rgba(0,0,0,0.08)"}`,
+          color:activeCount>0?"#2C1810":"#7A6E5C",fontFamily:F.body,whiteSpace:"nowrap",
+          display:"flex",alignItems:"center",gap:4,transition:"all 0.2s",backdropFilter:"blur(4px)",
         }}>
           ⚙ Filtres {activeCount>0?`(${activeCount})`:""}
         </button>
@@ -1198,7 +1203,7 @@ function CatalogScreen({ ctx }) {
       </div>
 
       {/* Filters panel */}
-      {showFilters&&<div style={{marginBottom:14,background:TC.card,borderRadius:16,border:`1px solid ${TC.border}`,padding:"12px 14px",margin:"0 4px 14px"}}>
+      {showFilters&&<div style={{marginBottom:14,background:"rgba(255,255,255,0.5)",borderRadius:16,border:"1px solid rgba(0,0,0,0.06)",padding:"12px 14px",margin:"0 4px 14px",backdropFilter:"blur(8px)"}}>
         {/* Niveau */}
         <div style={{marginBottom:10}}>
           <div style={{fontSize:9,color:T.gray2,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:6}}>Niveau</div>
@@ -1248,9 +1253,9 @@ function CatalogScreen({ ctx }) {
           return (
           <div key={brand} style={{marginBottom:28,padding:"0 4px"}}>
             {/* Brand header — editorial */}
-            <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:14,paddingBottom:8,borderBottom:`1px solid ${TC.border}`}}>
-              <span style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:TC.cream,fontStyle:"italic"}}>{brand}</span>
-              <span style={{fontFamily:F.body,fontSize:10,color:TC.gray2}}>{byBrand[brand].length} modèle{byBrand[brand].length>1?"s":""}</span>
+            <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:14,paddingBottom:8,borderBottom:"1px solid rgba(44,24,16,0.1)"}}>
+              <span style={{fontFamily:F.editorial,fontSize:22,fontWeight:700,color:"#2C1810",fontStyle:"italic"}}>{brand}</span>
+              <span style={{fontFamily:F.body,fontSize:10,color:"#9A8E7C"}}>{byBrand[brand].length} modèle{byBrand[brand].length>1?"s":""}</span>
               {brandHasNew && <span style={{fontSize:8,fontWeight:700,color:"#a78bfa",background:"rgba(124,58,237,0.1)",padding:"2px 8px",borderRadius:6,fontFamily:F.body}}>NEW</span>}
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(160px, 1fr))",gap:20}}>
