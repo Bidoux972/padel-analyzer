@@ -6569,26 +6569,53 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* ============================================================ */}
       {/* SCAN VISUEL SCREEN */}
       {/* ============================================================ */}
-      {screen==="scan"&&<div className="pa-screen-fade" style={{minHeight:"100dvh",background:`radial-gradient(ellipse at 50% 0%, ${T.surface} 0%, ${T.bg} 50%, #080c14 100%)`,padding:"20px 16px",display:"flex",flexDirection:"column",alignItems:"center"}}>
+      {screen==="scan"&&<div className="pa-screen-fade" style={{minHeight:"100dvh",background:"linear-gradient(180deg, #020808 0%, #040C0A 20%, #030A08 50%, #020806 80%, #010604 100%)",padding:"20px 16px",display:"flex",flexDirection:"column",alignItems:"center",position:"relative",overflow:"hidden"}}>
         <FontLoader/>
-        {/* Header */}
-        <div style={{width:"100%",maxWidth:500,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24}}>
-          <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Accueil</button>
-          <span style={{fontSize:11,color:T.gray2,fontFamily:F.body}}>Scan visuel</span>
+        <style>{`
+          @keyframes scanCRTflicker{0%,92%{opacity:1}93%{opacity:0.4}94%{opacity:0.9}95%{opacity:0.3}96%{opacity:1}97%{opacity:0.6}98%{opacity:1}99%{opacity:0.8}100%{opacity:1}}
+          @keyframes scanSignalLost{0%,75%{opacity:1;transform:translateX(0);clip-path:inset(0 0 0 0)}76%{opacity:0.6;transform:translateX(-3px);clip-path:inset(0 0 40% 0)}78%{opacity:0;clip-path:inset(30% 0 30% 0)}80%{opacity:0.4;transform:translateX(4px);clip-path:inset(0 0 0 0)}82%{opacity:0;clip-path:inset(50% 0 0 0)}85%{opacity:0.7;transform:translateX(-2px);clip-path:inset(0 20% 0 0)}88%{opacity:0;clip-path:inset(0 0 60% 0)}92%{opacity:0.5;transform:translateX(2px);clip-path:inset(0 0 0 0)}95%{opacity:1;transform:translateX(0);clip-path:inset(0 0 0 0)}100%{opacity:1;transform:translateX(0);clip-path:inset(0 0 0 0)}}
+          @keyframes scanCornerPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
+          @keyframes scanUploadGlow{0%,100%{box-shadow:0 0 20px rgba(0,255,120,0.05)}50%{box-shadow:0 0 40px rgba(0,255,120,0.15),0 0 80px rgba(0,255,120,0.05)}}
+          @keyframes scanLiveDot{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+          @keyframes scanDataFade{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+          .scan-mono{font-family:'JetBrains Mono','Courier New',monospace}
+        `}</style>
+        {/* CRT scanlines */}
+        <div style={{position:"absolute",inset:0,opacity:0.035,backgroundImage:"repeating-linear-gradient(0deg, rgba(0,255,120,0.1) 0px, rgba(0,255,120,0.1) 1px, transparent 1px, transparent 3px)",pointerEvents:"none"}}/>
+        {/* Vignette */}
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)",pointerEvents:"none"}}/>
+        {/* Corner brackets */}
+        {[[0,0],[1,0],[0,1],[1,1]].map(([x,y],i)=><div key={i} style={{position:"absolute",[y?"bottom":"top"]:12,[x?"right":"left"]:12,width:20,height:20,zIndex:3,borderTop:!y?"1.5px solid rgba(0,255,120,0.3)":"none",borderBottom:y?"1.5px solid rgba(0,255,120,0.3)":"none",borderLeft:!x?"1.5px solid rgba(0,255,120,0.3)":"none",borderRight:x?"1.5px solid rgba(0,255,120,0.3)":"none",animation:`scanCornerPulse 2s ease-in-out ${i*0.3}s infinite`}}/>)}
+
+        {/* Header — mission status */}
+        <div style={{width:"100%",maxWidth:500,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,paddingBottom:10,borderBottom:"1px solid rgba(0,255,120,0.08)",position:"relative",zIndex:2}}>
+          <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:"rgba(0,255,120,0.5)",fontSize:12,cursor:"pointer",fontWeight:700,fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em"}}>← RETOUR</button>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div style={{display:"flex",alignItems:"center",gap:5}}>
+              <div style={{width:6,height:6,borderRadius:3,background:"#00FF78",boxShadow:"0 0 8px #00FF78",animation:"scanLiveDot 1.5s ease-in-out infinite"}}/>
+              <span className="scan-mono" style={{fontSize:8,color:"rgba(0,255,120,0.5)",letterSpacing:"0.1em"}}>LIVE</span>
+            </div>
+            <span className="scan-mono" style={{fontSize:10,color:"rgba(0,255,120,0.4)",letterSpacing:"0.06em"}}>Scan visuel</span>
+          </div>
         </div>
 
-        {/* Title */}
-        <div style={{textAlign:"center",marginBottom:28,maxWidth:400}}>
-          <h2 style={{fontFamily:F.editorial,fontSize:26,fontWeight:700,color:T.cream,margin:"0 0 6px"}}>📷 Scanner une raquette</h2>
-          <p style={{fontFamily:F.body,fontSize:12,color:T.gray1,lineHeight:1.5,margin:0}}>
+        {/* Title — IDENTIFICATION with signal-lost glitch */}
+        <div style={{textAlign:"center",marginBottom:24,maxWidth:400,position:"relative",zIndex:2}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:10}}>
+            <div style={{height:0.5,width:40,background:"linear-gradient(90deg, transparent, rgba(0,255,120,0.2))"}}/>
+            <span className="scan-mono" style={{fontSize:7,color:"rgba(0,255,120,0.3)",letterSpacing:"0.3em"}}>CLASSIFIED · LEVEL 5</span>
+            <div style={{height:0.5,width:40,background:"linear-gradient(90deg, rgba(0,255,120,0.2), transparent)"}}/>
+          </div>
+          <h2 style={{fontFamily:F.legacy,fontSize:28,fontWeight:800,color:"rgba(0,255,120,0.85)",margin:"0 0 6px",letterSpacing:"0.08em",textShadow:"0 0 30px rgba(0,255,120,0.15), 0 0 60px rgba(0,255,120,0.05)",animation:"scanSignalLost 8s ease-in-out infinite"}}>IDENTIFICATION</h2>
+          <p className="scan-mono" style={{fontSize:10,color:"rgba(0,255,120,0.3)",lineHeight:1.5,margin:0,letterSpacing:"0.06em",animation:"scanCRTflicker 6s infinite"}}>
             {profileName
-              ? `Prends en photo une raquette — on te dit si elle correspond au profil de ${profileName}.`
-              : `Prends en photo une raquette de padel et notre IA l'identifie instantanément parmi ${totalDBCount} modèles.`}
+              ? `CIBLE: profil ${profileName} · ${totalDBCount} modèles en base`
+              : `VISUAL PATTERN MATCHING · ${totalDBCount} TARGETS`}
           </p>
         </div>
 
-        {/* Upload zone */}
-        {(scanStatus==="idle"||scanStatus==="error")&&<div style={{width:"100%",maxWidth:400}}>
+        {/* Upload zone — 24h Chrono style */}
+        {(scanStatus==="idle"||scanStatus==="error")&&<div style={{width:"100%",maxWidth:400,position:"relative",zIndex:2}}>
           <input ref={scanFileRef} type="file" accept="image/*" capture="environment" style={{display:"none"}} onChange={e=>{
             const f = e.target.files?.[0];
             if(f){
@@ -6598,43 +6625,57 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             e.target.value = "";
           }}/>
 
-          {/* Main upload / preview */}
-          {scanPreview?<div style={{width:"100%",borderRadius:20,overflow:"hidden",background:T.card,border:`1px solid ${T.accent}40`}}>
-            <div style={{position:"relative",display:"flex",justifyContent:"center",padding:16,background:T.surface}}>
+          {/* Preview with green HUD frame */}
+          {scanPreview?<div style={{width:"100%",borderRadius:20,overflow:"hidden",background:"rgba(0,255,120,0.02)",border:"1px solid rgba(0,255,120,0.15)"}}>
+            <div style={{position:"relative",display:"flex",justifyContent:"center",padding:16,background:"rgba(0,10,5,0.5)"}}>
               <img src={scanPreview} alt="Preview" style={{maxWidth:"100%",maxHeight:280,borderRadius:12,objectFit:"contain"}}/>
+              {/* Scan grid overlay on preview */}
+              <div style={{position:"absolute",inset:16,borderRadius:12,opacity:0.04,backgroundImage:"linear-gradient(rgba(0,255,120,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,120,0.5) 1px, transparent 1px)",backgroundSize:"20px 20px",pointerEvents:"none"}}/>
             </div>
             <div style={{padding:"12px 16px",display:"flex",gap:10,justifyContent:"center"}}>
-              <button onClick={()=>{setScanPreview(null);setScanPreviewFile(null);}} style={{flex:1,padding:"12px",background:"rgba(255,255,255,0.04)",border:`1px solid ${T.border}`,borderRadius:12,color:T.gray1,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F.body}}>✕ Annuler</button>
-              <button onClick={()=>{if(scanPreviewFile){handleScan(scanPreviewFile);}}} className="pa-cta" style={{flex:2,padding:"12px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:F.body,boxShadow:`0 4px 16px ${T.accentGlow}`}}>🔍 Lancer le scan</button>
+              <button onClick={()=>{setScanPreview(null);setScanPreviewFile(null);}} style={{flex:1,padding:"12px",background:"rgba(255,60,60,0.06)",border:"1px solid rgba(255,60,60,0.2)",borderRadius:12,color:"rgba(255,100,100,0.7)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace"}}>ANNULER</button>
+              <button onClick={()=>{if(scanPreviewFile){handleScan(scanPreviewFile);}}} style={{flex:2,padding:"12px",background:"rgba(0,255,120,0.1)",border:"1px solid rgba(0,255,120,0.3)",borderRadius:12,color:"rgba(0,255,120,0.8)",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace",boxShadow:"0 0 20px rgba(0,255,120,0.1)"}}>LANCER L'IDENTIFICATION</button>
             </div>
           </div>
-          :<button onClick={()=>scanFileRef.current?.click()} className="pa-cta" style={{
-            width:"100%",padding:"28px 20px",borderRadius:20,cursor:"pointer",
-            background:`linear-gradient(135deg, ${T.card} 0%, ${T.surface} 100%)`,
-            border:`2px dashed ${T.accent}50`,display:"flex",flexDirection:"column",alignItems:"center",gap:12,
-            transition:"all 0.3s",
+          :<button onClick={()=>scanFileRef.current?.click()} style={{
+            width:"100%",padding:"32px 20px",borderRadius:20,cursor:"pointer",
+            background:"rgba(0,255,120,0.02)",
+            border:"1.5px dashed rgba(0,255,120,0.15)",
+            display:"flex",flexDirection:"column",alignItems:"center",gap:14,
+            transition:"all 0.3s",position:"relative",overflow:"hidden",
+            animation:"scanUploadGlow 3s ease-in-out infinite",
           }}>
-            <div style={{width:64,height:64,borderRadius:"50%",background:`linear-gradient(135deg,${T.accent},#d4541e)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 8px 32px ${T.accentGlow}`}}>
-              <span style={{fontSize:28}}>📸</span>
+            {/* Grid overlay */}
+            <div style={{position:"absolute",inset:0,opacity:0.03,backgroundImage:"linear-gradient(rgba(0,255,120,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,120,0.3) 1px, transparent 1px)",backgroundSize:"20px 20px",pointerEvents:"none"}}/>
+            <div style={{width:64,height:64,borderRadius:32,border:"2px solid rgba(0,255,120,0.25)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+              <div style={{position:"absolute",inset:-6,borderRadius:38,border:"1px solid rgba(0,255,120,0.08)",animation:"scanLiveDot 2s ease-in-out infinite"}}/>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="8" stroke="rgba(0,255,120,0.4)" strokeWidth="1.5"/>
+                <circle cx="14" cy="14" r="2.5" fill="rgba(0,255,120,0.3)"/>
+                <line x1="14" y1="2" x2="14" y2="8" stroke="rgba(0,255,120,0.25)" strokeWidth="1"/>
+                <line x1="14" y1="20" x2="14" y2="26" stroke="rgba(0,255,120,0.25)" strokeWidth="1"/>
+                <line x1="2" y1="14" x2="8" y2="14" stroke="rgba(0,255,120,0.25)" strokeWidth="1"/>
+                <line x1="20" y1="14" x2="26" y2="14" stroke="rgba(0,255,120,0.25)" strokeWidth="1"/>
+              </svg>
             </div>
-            <div style={{fontFamily:F.body,fontSize:15,fontWeight:700,color:T.cream}}>Choisir une photo</div>
-            <div style={{fontFamily:F.body,fontSize:11,color:T.gray2}}>Appareil photo ou galerie</div>
+            <div style={{fontFamily:F.legacy,fontSize:16,fontWeight:700,color:"rgba(0,255,120,0.7)",letterSpacing:"0.06em",position:"relative",zIndex:1}}>CAPTURER LA CIBLE</div>
+            <div className="scan-mono" style={{fontSize:9,color:"rgba(0,255,120,0.25)",letterSpacing:"0.08em",position:"relative",zIndex:1}}>APPAREIL PHOTO OU GALERIE</div>
           </button>}
 
-          {/* Error display */}
-          {scanStatus==="error"&&scanError&&<div style={{marginTop:16,padding:"12px 16px",background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:12,color:"#fca5a5",fontSize:12,fontFamily:F.body,textAlign:"center"}}>
-            ⚠️ {scanError}
-            <button onClick={()=>{setScanStatus("idle");setScanError("");}} style={{display:"block",margin:"8px auto 0",background:"none",border:"1px solid rgba(239,68,68,0.3)",borderRadius:8,padding:"6px 16px",color:"#fca5a5",fontSize:11,cursor:"pointer",fontFamily:F.body}}>Réessayer</button>
+          {/* Error */}
+          {scanStatus==="error"&&scanError&&<div style={{marginTop:16,padding:"12px 16px",background:"rgba(255,60,60,0.06)",border:"1px solid rgba(255,60,60,0.2)",borderRadius:12,color:"rgba(255,100,100,0.7)",fontSize:12,fontFamily:"'JetBrains Mono',monospace",textAlign:"center"}}>
+            {scanError}
+            <button onClick={()=>{setScanStatus("idle");setScanError("");}} style={{display:"block",margin:"8px auto 0",background:"none",border:"1px solid rgba(255,60,60,0.2)",borderRadius:8,padding:"6px 16px",color:"rgba(255,100,100,0.6)",fontSize:11,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace"}}>RÉESSAYER</button>
           </div>}
 
-          {/* Tips */}
-          <div style={{marginTop:24,padding:"16px",background:`${T.card}`,border:`1px solid ${T.border}`,borderRadius:14}}>
-            <div style={{fontFamily:F.body,fontSize:11,fontWeight:600,color:T.gray1,marginBottom:8}}>💡 Conseils pour un bon scan</div>
-            <div style={{fontFamily:F.body,fontSize:10,color:T.gray2,lineHeight:1.6}}>
-              • Photo nette de la face avant de la raquette<br/>
-              • Marque et modèle bien visibles<br/>
-              • Bonne luminosité, éviter les reflets<br/>
-              • Une seule raquette par photo
+          {/* Briefing — classified intel */}
+          <div style={{marginTop:24,padding:"14px 16px",background:"rgba(0,255,120,0.02)",border:"1px solid rgba(0,255,120,0.06)",borderRadius:14}}>
+            <div className="scan-mono" style={{fontSize:7,color:"rgba(0,255,120,0.35)",letterSpacing:"0.2em",marginBottom:8}}>BRIEFING OPÉRATIONNEL</div>
+            <div className="scan-mono" style={{fontSize:9,color:"rgba(0,255,120,0.25)",lineHeight:1.8}}>
+              <span style={{color:"rgba(0,255,120,0.15)"}}>01</span> Photo nette de la face avant de la cible<br/>
+              <span style={{color:"rgba(0,255,120,0.15)"}}>02</span> Marque et modèle visibles<br/>
+              <span style={{color:"rgba(0,255,120,0.15)"}}>03</span> Bonne luminosité, éviter les reflets<br/>
+              <span style={{color:"rgba(0,255,120,0.15)"}}>04</span> Une seule cible par acquisition
             </div>
           </div>
         </div>}
