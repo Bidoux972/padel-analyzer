@@ -1002,11 +1002,11 @@ function CatalogScreen({ ctx }) {
     const priceStr = r.price ? String(r.price).replace(/[^\d.,€]/g,"") : "";
     const score = avgScore(r);
     const cc = catColor(r.category);
-    const staggerDelay = isSmall ? 0 : (idx * 0.08);
+    const staggerDelay = isSmall ? 0 : (idx * 0.2);
     return (
       <div style={{
         ...(isSmall ? {minWidth:cardW,maxWidth:cardW,flexShrink:0} : {}),
-        animation: isSmall ? "none" : `catCardReveal 0.7s cubic-bezier(.22,1,.36,1) ${staggerDelay}s both`,
+        animation: isSmall ? "none" : `catCardReveal 1s cubic-bezier(.22,1,.36,1) ${staggerDelay}s both`,
       }}>
         {/* Outer wrapper — handles levitation only */}
         <div style={{animation: isSmall ? "none" : `catCardLevitate 5.5s ease-in-out ${idx*0.7}s infinite`}}>
@@ -1017,6 +1017,7 @@ function CatalogScreen({ ctx }) {
             display:"flex",flexDirection:"column",position:"relative",width:"100%",
             "--card-color": cc,
             boxShadow:`0 4px 6px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.12), 0 25px 45px rgba(0,0,0,0.14), 0 50px 80px rgba(0,0,0,0.10), 0 2px 0 rgba(255,255,255,0.04) inset`,
+            animationDelay: `${idx * 0.5}s`,
           }}>
             {/* Top edge shine — intensifies on hover */}
             <div className="cat-edge-shine" style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 80%, transparent 95%)",zIndex:3,opacity:0.5,transition:"opacity 0.4s ease"}}/>
@@ -1088,13 +1089,15 @@ function CatalogScreen({ ctx }) {
       <style>{`
         @keyframes catCardLevitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
         @keyframes catSpotPulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:0.8;transform:scale(1.08)}}
-        @keyframes catCardReveal{from{opacity:0;transform:translateY(40px) scale(0.94);filter:blur(4px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+        @keyframes catCardReveal{from{opacity:0;transform:translateY(45px) scale(0.92);filter:blur(6px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+        @keyframes catCardPulse{0%,100%{outline-color:transparent;box-shadow:0 4px 6px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.12), 0 25px 45px rgba(0,0,0,0.14), 0 50px 80px rgba(0,0,0,0.10), 0 2px 0 rgba(255,255,255,0.04) inset}50%{outline-color:var(--card-color,rgba(255,255,255,0.2));box-shadow:0 4px 6px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.12), 0 25px 45px rgba(0,0,0,0.14), 0 50px 80px rgba(0,0,0,0.10), 0 0 20px var(--card-color,rgba(255,255,255,0.1)), 0 2px 0 rgba(255,255,255,0.04) inset}}
         .cat-3d-card{transition:all 0.4s cubic-bezier(.22,1,.36,1)!important;outline:2px solid transparent;outline-offset:-2px}
         .cat-3d-card:hover{transform:translateY(-10px) scale(1.04)!important;outline-color:var(--card-color,#fff)!important;box-shadow:0 6px 8px rgba(0,0,0,0.1), 0 14px 28px rgba(0,0,0,0.15), 0 30px 55px rgba(0,0,0,0.2), 0 55px 90px rgba(0,0,0,0.15), 0 0 30px var(--card-color,rgba(255,255,255,0.1)), 0 2px 0 rgba(255,255,255,0.08) inset!important}
         .cat-3d-card:hover .cat-glow{opacity:1!important}
         .cat-3d-card:hover .cat-accent-bar{box-shadow:0 0 25px var(--card-color,#fff)!important;opacity:1!important;height:3px!important}
         .cat-3d-card:hover .cat-edge-shine{opacity:1!important;background:linear-gradient(90deg, transparent 2%, rgba(255,255,255,0.25) 15%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.25) 85%, transparent 98%)!important}
         .cat-3d-card:active{transform:translateY(-3px) scale(0.98)!important}
+        @media(hover:none){.cat-3d-card{animation:catCardPulse 3s ease-in-out infinite!important}}
       `}</style>
       {/* Showroom stage lighting */}
       <div style={{position:"absolute",top:"-8%",left:"50%",transform:"translateX(-50%)",width:"100%",height:"40%",background:"radial-gradient(ellipse 70% 60% at 50% 0%, rgba(255,240,200,0.22) 0%, rgba(255,230,180,0.06) 40%, transparent 70%)",pointerEvents:"none",animation:"catSpotPulse 8s ease-in-out infinite"}}/>
