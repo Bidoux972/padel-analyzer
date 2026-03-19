@@ -1089,11 +1089,11 @@ function CatalogScreen({ ctx }) {
         @keyframes catCardLevitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
         @keyframes catSpotPulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:0.8;transform:scale(1.08)}}
         @keyframes catCardReveal{from{opacity:0;transform:translateY(40px) scale(0.94);filter:blur(4px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
-        .cat-3d-card{transition:all 0.4s cubic-bezier(.22,1,.36,1)!important}
-        .cat-3d-card:hover{transform:translateY(-10px) scale(1.03)!important;box-shadow:0 6px 8px rgba(0,0,0,0.1), 0 14px 28px rgba(0,0,0,0.15), 0 30px 55px rgba(0,0,0,0.18), 0 55px 90px rgba(0,0,0,0.14), 0 2px 0 rgba(255,255,255,0.06) inset!important}
+        .cat-3d-card{transition:all 0.4s cubic-bezier(.22,1,.36,1)!important;outline:2px solid transparent;outline-offset:-2px}
+        .cat-3d-card:hover{transform:translateY(-10px) scale(1.04)!important;outline-color:var(--card-color,#fff)!important;box-shadow:0 6px 8px rgba(0,0,0,0.1), 0 14px 28px rgba(0,0,0,0.15), 0 30px 55px rgba(0,0,0,0.2), 0 55px 90px rgba(0,0,0,0.15), 0 0 30px var(--card-color,rgba(255,255,255,0.1)), 0 2px 0 rgba(255,255,255,0.08) inset!important}
         .cat-3d-card:hover .cat-glow{opacity:1!important}
-        .cat-3d-card:hover .cat-accent-bar{box-shadow:0 0 20px var(--card-color,#fff)!important;opacity:1!important}
-        .cat-3d-card:hover .cat-edge-shine{opacity:1!important}
+        .cat-3d-card:hover .cat-accent-bar{box-shadow:0 0 25px var(--card-color,#fff)!important;opacity:1!important;height:3px!important}
+        .cat-3d-card:hover .cat-edge-shine{opacity:1!important;background:linear-gradient(90deg, transparent 2%, rgba(255,255,255,0.25) 15%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.25) 85%, transparent 98%)!important}
         .cat-3d-card:active{transform:translateY(-3px) scale(0.98)!important}
       `}</style>
       {/* Showroom stage lighting */}
