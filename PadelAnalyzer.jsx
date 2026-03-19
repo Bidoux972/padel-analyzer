@@ -6574,8 +6574,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <style>{`
           @keyframes scanCRTflicker{0%,92%{opacity:1}93%{opacity:0.4}94%{opacity:0.9}95%{opacity:0.3}96%{opacity:1}97%{opacity:0.6}98%{opacity:1}99%{opacity:0.8}100%{opacity:1}}
           @keyframes scanSignalLost{0%,60%{opacity:1;transform:translateX(0)}62%{opacity:0.7}63%{opacity:1}65%{opacity:0.5}66%{opacity:0.9}67%{opacity:0.3}68%{opacity:0.8}70%{opacity:0.15}71%{opacity:0.6}73%{opacity:0.1}75%{opacity:0}76%{opacity:0}78%{opacity:0}80%{opacity:0}82%{opacity:0}84%{opacity:0}86%{opacity:0.05;transform:translateX(2px)}87%{opacity:0}88%{opacity:0.15;transform:translateX(-1px)}89%{opacity:0}90%{opacity:0.4}91%{opacity:0.1}92%{opacity:0.7}93%{opacity:0.3}94%{opacity:0.9}95%{opacity:1;transform:translateX(0)}100%{opacity:1;transform:translateX(0)}}
-          @keyframes scanTypewriter{from{width:0}to{width:14ch}}
+          @keyframes scanTypewriter{from{max-width:0}to{max-width:20em}}
           @keyframes scanCursorBlink{0%,100%{border-color:rgba(0,255,120,0.7)}50%{border-color:transparent}}
+          .scan-crt-text{background:repeating-linear-gradient(0deg, rgba(0,255,120,0.9) 0px, rgba(0,255,120,0.9) 2px, rgba(0,255,120,0.25) 2px, rgba(0,255,120,0.25) 4px);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
           @keyframes scanCornerPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
           @keyframes scanUploadGlow{0%,100%{box-shadow:0 0 20px rgba(0,255,120,0.05)}50%{box-shadow:0 0 40px rgba(0,255,120,0.15),0 0 80px rgba(0,255,120,0.05)}}
           @keyframes scanLiveDot{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
@@ -6609,8 +6610,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{height:0.5,width:40,background:"linear-gradient(90deg, rgba(0,255,120,0.2), transparent)"}}/>
           </div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:0,margin:"0 0 6px"}}>
-            <span style={{fontFamily:"'JetBrains Mono','Courier New',monospace",fontSize:26,fontWeight:800,color:"rgba(0,255,120,0.4)",animation:"scanSignalLost 10s ease-in-out 4s infinite"}}>{">"}_</span>
-            <h2 style={{fontFamily:"'JetBrains Mono','Courier New',monospace",fontSize:26,fontWeight:800,color:"rgba(0,255,120,0.85)",margin:0,letterSpacing:"0.12em",textShadow:"0 0 30px rgba(0,255,120,0.15), 0 0 60px rgba(0,255,120,0.05)",display:"inline-block",overflow:"hidden",whiteSpace:"nowrap",borderRight:"3px solid rgba(0,255,120,0.7)",width:"14ch",animation:"scanTypewriter 2s steps(14) 0.5s both, scanCursorBlink 0.7s step-end infinite, scanSignalLost 10s ease-in-out 4s infinite"}}>IDENTIFICATION</h2>
+            <span className="scan-crt-text" style={{fontFamily:"'JetBrains Mono','Courier New',monospace",fontSize:26,fontWeight:800,animation:"scanSignalLost 10s ease-in-out 4s infinite"}}>{">"}_</span>
+            <h2 className="scan-crt-text" style={{fontFamily:"'JetBrains Mono','Courier New',monospace",fontSize:26,fontWeight:800,margin:0,letterSpacing:"0.12em",textShadow:"0 0 30px rgba(0,255,120,0.15), 0 0 60px rgba(0,255,120,0.05)",display:"inline-block",overflow:"hidden",whiteSpace:"nowrap",borderRight:"3px solid rgba(0,255,120,0.7)",maxWidth:"20em",animation:"scanTypewriter 2s steps(14) 0.5s both, scanCursorBlink 0.7s step-end infinite, scanSignalLost 10s ease-in-out 4s infinite"}}>IDENTIFICATION</h2>
           </div>
           <p className="scan-mono" style={{fontSize:10,color:"rgba(0,255,120,0.3)",lineHeight:1.5,margin:0,letterSpacing:"0.06em",animation:"scanCRTflicker 6s infinite"}}>
             {profileName
