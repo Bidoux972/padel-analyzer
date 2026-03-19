@@ -529,7 +529,7 @@ function MagazineScreen({ ctx }) {
           <span style={{fontFamily:F.body,fontSize:9,fontWeight:700,color:TM.accent,letterSpacing:"0.1em",textTransform:"uppercase",background:TM.accentSoft,padding:"3px 10px",borderRadius:4}}>{r.brand}</span>
           <span style={{fontFamily:F.mono,fontSize:9,fontWeight:700,color:catColor(r.category),letterSpacing:"0.1em",textTransform:"uppercase",background:`${catColor(r.category)}12`,padding:"3px 10px",borderRadius:4}}>{CAT_LABELS[r.category]||r.category}</span>
         </div>
-        <h2 style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:T.white,lineHeight:1.05,margin:"0 0 6px"}}>{r.name}</h2>
+        <h2 style={{fontFamily:F.editorial,fontSize:32,fontWeight:700,color:TM.accent,lineHeight:1.05,margin:"0 0 6px"}}>{r.name}</h2>
         <div style={{fontFamily:F.body,fontSize:12,color:T.gray2,marginBottom:12}}>{r.shape} · {r.weight} · {r.price}</div>
         {r.proPlayerInfo?.name&&<div style={{display:"flex",gap:10,alignItems:"center",padding:"12px 14px",borderRadius:12,background:T.goldSoft,border:`1px solid ${T.gold}30`,marginBottom:20}}>
           <span style={{fontSize:18}}>🎾</span>
@@ -726,7 +726,7 @@ function MagazineScreen({ ctx }) {
                   {/* Right — text content */}
                   <div style={{flex:1,padding:"14px 16px",display:"flex",flexDirection:"column",justifyContent:"center",gap:5,minWidth:0}}>
                     <div style={{fontFamily:F.body,fontSize:9,fontWeight:600,color:T.accent,textTransform:"uppercase",letterSpacing:"0.06em"}}>{r.brand}</div>
-                    <div style={{fontFamily:F.editorial,fontSize:17,fontWeight:700,fontStyle:"italic",color:T.cream,lineHeight:1.2,
+                    <div style={{fontFamily:F.editorial,fontSize:17,fontWeight:700,fontStyle:"italic",color:TM.accent,lineHeight:1.2,
                       overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.shortName||r.name}</div>
                     {r.verdict && <p style={{fontFamily:F.body,fontSize:11,color:T.gray2,lineHeight:1.4,margin:0,
                       overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",
