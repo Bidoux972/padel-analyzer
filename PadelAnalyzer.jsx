@@ -6591,6 +6591,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {[[0,0],[1,0],[0,1],[1,1]].map(([x,y],i)=><div key={i} style={{position:"absolute",[y?"bottom":"top"]:12,[x?"right":"left"]:12,width:20,height:20,zIndex:3,borderTop:!y?"1.5px solid rgba(0,255,120,0.3)":"none",borderBottom:y?"1.5px solid rgba(0,255,120,0.3)":"none",borderLeft:!x?"1.5px solid rgba(0,255,120,0.3)":"none",borderRight:x?"1.5px solid rgba(0,255,120,0.3)":"none",animation:`scanCornerPulse 2s ease-in-out ${i*0.3}s infinite`}}/>)}
 
         {/* Header — mission status */}
+        {(() => {
+          // ScanClock inline — self-contained with own state
+          const ScanClock = () => {
+            const [t, setT] = useState("00:00:00");
+            const startRef = useRef(Date.now());
+            useEffect(() => {
+              const iv = setInterval(() => {
+                const e = Date.now() - startRef.current;
+                const m = String(Math.floor(e/60000)%60).padStart(2,"0");
+                const s = String(Math.floor(e/1000)%60).padStart(2,"0");
+                const cs = String(Math.floor((e%1000)/10)).padStart(2,"0");
+                setT(`${m}:${s}:${cs}`);
+              }, 50);
+              return () => clearInterval(iv);
+            }, []);
+            return <span className="scan-mono" style={{fontSize:11,color:"rgba(0,255,120,0.6)",letterSpacing:"0.08em",animation:"scanCRTflicker 4s infinite"}}>{t}</span>;
+          };
+          return (
         <div style={{width:"100%",maxWidth:500,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,paddingBottom:10,borderBottom:"1px solid rgba(0,255,120,0.08)",position:"relative",zIndex:2}}>
           <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",color:"rgba(0,255,120,0.5)",fontSize:12,cursor:"pointer",fontWeight:700,fontFamily:"'JetBrains Mono',monospace",letterSpacing:"0.05em"}}>← RETOUR</button>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -6598,9 +6616,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{width:6,height:6,borderRadius:3,background:"#00FF78",boxShadow:"0 0 8px #00FF78",animation:"scanLiveDot 1.5s ease-in-out infinite"}}/>
               <span className="scan-mono" style={{fontSize:8,color:"rgba(0,255,120,0.5)",letterSpacing:"0.1em"}}>LIVE</span>
             </div>
-            <span className="scan-mono" style={{fontSize:10,color:"rgba(0,255,120,0.4)",letterSpacing:"0.06em"}}>Scan visuel</span>
+            <ScanClock/>
           </div>
         </div>
+          );
+        })()}
 
         {/* Title — IDENTIFICATION with signal-lost glitch */}
         <div style={{textAlign:"center",marginBottom:24,maxWidth:400,position:"relative",zIndex:2}}>
