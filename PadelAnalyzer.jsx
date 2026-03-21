@@ -1286,7 +1286,7 @@ function CatalogScreen({ ctx }) {
 function RacketSheetScreen({ ctx }) {
   const {
     racketSheet, setRacketSheet, racketSheetFrom, setScreen,
-    profileName, profile, generateDynamicTargetProfile,
+    profileName, profile, generateDynamicTargetProfile, getMergedDB,
   } = ctx;
 
   const r = racketSheet;
@@ -1294,8 +1294,6 @@ function RacketSheetScreen({ ctx }) {
 
   const sc = r.scores||{};
   const ths = r.techHighlights||[];
-  const leftThs = ths.filter((_,i)=>i%2===0);
-  const rightThs = ths.filter((_,i)=>i%2===1);
   const avgScore = ATTRS.map(a=>sc[a]||0).reduce((a,b)=>a+b,0)/6;
   const cc = catColor(r.category);
   const catLabel = CAT_LABELS[r.category]||r.category;
@@ -1335,199 +1333,248 @@ function RacketSheetScreen({ ctx }) {
     setTimeout(()=>printWin.print(), 500);
   };
 
+  // Scroll tracking for chapter 1 parallax
+  const scrollRef = useRef(null);
+  const [sY, setSY] = useState(0);
+  useEffect(() => {
+    const el = scrollRef.current; if (!el) return;
+    const h = () => setSY(el.scrollTop);
+    el.addEventListener("scroll", h, {passive:true});
+    return () => el.removeEventListener("scroll", h);
+  }, []);
+
+  // Scroll reveal — toggles on/off for replay
+  const useVis = (th=0.2) => {
+    const ref = useRef(null); const [v, setV] = useState(false);
+    useEffect(() => { const el=ref.current; if(!el) return; const o=new IntersectionObserver(([e])=>setV(e.isIntersecting),{threshold:th,root:scrollRef.current}); o.observe(el); return ()=>o.disconnect(); }, [th]);
+    return [ref, v];
+  };
+  const [ch2Ref, ch2V] = useVis(0.15);
+  const [ch3Ref, ch3V] = useVis(0.12);
+  const [ch4Ref, ch4V] = useVis(0.12);
+  const [ch5Ref, ch5V] = useVis(0.1);
+
+  // Fullscreen photo
+  const [photoOpen, setPhotoOpen] = useState(false);
+
+  // Similar rackets
+  const similar = useMemo(() => {
+    const all = getMergedDB();
+    return all.filter(x => x.id !== r.id && x.category === r.category).sort((a,b) => {
+      const sa = ATTRS.map(at=>a.scores?.[at]||0).reduce((x,y)=>x+y,0)/6;
+      const sb = ATTRS.map(at=>b.scores?.[at]||0).reduce((x,y)=>x+y,0)/6;
+      return sb - sa;
+    }).slice(0, 3);
+  }, [r.id]);
+
+  // Parallax values
+  const heroScale = Math.max(0.6, 1 - sY/1000);
+  const heroOp = Math.max(0, 1 - sY/500);
+  const nameShift = Math.min(sY * 0.35, 90);
+  const scoreProg = Math.min(1, Math.max(0, (sY - 80)/250));
+
+  // Scan pertinence
+  const scanPert = racketSheetFrom==="scan"&&profileName ? computeGlobalScore(r.scores, profile, r) : null;
+
+  // Target profile
+  const fromProfile = racketSheetFrom==="dashboard"||racketSheetFrom==="app"||racketSheetFrom==="admin"||racketSheetFrom==="scan";
+  const dynTarget = fromProfile && profileName && generateDynamicTargetProfile ? generateDynamicTargetProfile(r, {...(profile||{}), _name: profileName}) : null;
+  const targetText = dynTarget || r.targetProfile;
+
+  // Radar animation
+  const [radarP, setRadarP] = useState(0);
+  useEffect(() => { if (!ch3V) { setRadarP(0); return; } let s=null; const t=(ts)=>{if(!s)s=ts;const v=Math.min((ts-s)/2000,1);setRadarP(v);if(v<1)requestAnimationFrame(t);}; requestAnimationFrame(t); }, [ch3V]);
+
+  const tr = "all 0.9s cubic-bezier(.22,1,.36,1)";
+  const trd = (d) => `all 0.9s cubic-bezier(.22,1,.36,1) ${d}s`;
+
   return (
-    <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",fontFamily:F.body,animation:"fadeIn 0.3s ease",maxWidth:540,margin:"0 auto",padding:"0 16px",background:T.bg}}>
+    <div ref={scrollRef} style={{position:"fixed",inset:0,zIndex:100,overflowY:"auto",overflowX:"hidden",background:"#F2EEE8",fontFamily:F.body}}>
       <FontLoader/>
+      <style>{`
+        @keyframes stLineGrow{from{width:0}to{width:100%}}
+      `}</style>
 
-      {/* Header */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 8px",zIndex:10}}>
-        <button onClick={handleBack} style={{background:"none",border:"none",color:T.accent,fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.legacy}}>← Retour</button>
-        <button onClick={handleShare} style={{padding:"6px 14px",borderRadius:10,cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:F.legacy,
-          background:T.accentSoft,border:`1px solid ${T.accent}40`,color:T.accent}}>📄 PDF</button>
-      </div>
+      {/* ═══ CHAPTER 1 — REVELATION (sticky hero + parallax) ═══ */}
+      <div style={{height:"145vh",position:"relative"}}>
+        <div style={{position:"sticky",top:0,height:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",overflow:"hidden",background:"linear-gradient(180deg, #F2EEE8 0%, #EBE6DE 100%)"}}>
+          {/* Header bar */}
+          <div style={{position:"absolute",top:0,left:0,right:0,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 20px",zIndex:10}}>
+            <button onClick={handleBack} style={{background:"none",border:"none",color:"#7A2E34",fontSize:13,cursor:"pointer",fontWeight:700,fontFamily:F.body}}>← Retour</button>
+            <button onClick={handleShare} style={{padding:"6px 14px",borderRadius:10,cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:F.body,background:"rgba(122,46,52,0.06)",border:"1px solid rgba(122,46,52,0.12)",color:"#7A2E34"}}>📄 PDF</button>
+          </div>
 
-      {/* PRINTABLE CONTENT */}
-      <div id="racket-sheet-print">
+          {/* Brand */}
+          <div style={{opacity:heroOp,fontSize:11,fontWeight:900,color:"rgba(44,24,16,0.15)",letterSpacing:"0.4em",marginBottom:16}}>{r.brand}</div>
 
-      {/* Hero Image */}
-      <div style={{textAlign:"center",position:"relative",marginBottom:8}}>
-        <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:200,height:200,borderRadius:"50%",
-          background:`radial-gradient(circle, ${T.accent}10 0%, transparent 70%)`,pointerEvents:"none"}}/>
-        <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{width:180,height:180,objectFit:"contain",position:"relative",zIndex:1,
-          filter:"drop-shadow(0 12px 32px rgba(0,0,0,0.5))"}} fallbackSize={120}/>
-        {/* Score badge */}
-        <div style={{display:"inline-flex",alignItems:"baseline",gap:2,marginTop:12,padding:"6px 24px",borderRadius:20,
-          background:"rgba(11,14,13,0.9)",border:`2px solid ${T.accent}50`,backdropFilter:"blur(8px)",position:"relative",zIndex:2}}>
-          <span style={{fontSize:36,fontWeight:700,color:T.accent,fontFamily:F.mono}}>{avgScore.toFixed(1)}</span>
-          <span style={{fontSize:12,color:T.gray2}}>/10</span>
-        </div>
-      </div>
+          {/* Photo — clickable */}
+          <div onClick={()=>setPhotoOpen(true)} style={{transform:`scale(${heroScale})`,cursor:"pointer",position:"relative",transition:"transform 0.05s linear"}}>
+            <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{width:170,height:240,objectFit:"contain",filter:"drop-shadow(0 25px 50px rgba(44,24,16,0.12))"}} fallbackSize={140}/>
+            <div style={{position:"absolute",bottom:-10,left:"50%",transform:"translateX(-50%)",fontSize:8,color:"rgba(44,24,16,0.2)",whiteSpace:"nowrap"}}>Taper pour agrandir</div>
+          </div>
 
-      {/* Name + Meta */}
-      <div style={{textAlign:"center",marginBottom:14}}>
-        <h1 className="fs-title" style={{fontFamily:F.editorial,fontSize:28,fontWeight:700,color:T.white,margin:"0 0 4px",letterSpacing:"-0.02em"}}>{r.name}</h1>
-        <p className="fs-sub" style={{fontSize:12,color:T.gray2,margin:"0 0 8px"}}>{r.brand} · {r.shape} · {r.weight} · {r.year}</p>
-        <div style={{display:"flex",gap:6,justifyContent:"center",flexWrap:"wrap",alignItems:"center"}}>
-          {r.year===2026&&<NewBadge/>}
-          <span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:`${cc}15`,border:`1px solid ${cc}30`,color:cc,fontWeight:700}}>{catLabel}</span>
-          {r.price&&r.price!=="—"&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:T.surface,border:`1px solid ${T.border}`,color:T.gray1,fontWeight:600}}>💰 {r.price}</span>}
-          {r.junior&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",color:"#3b82f6",fontWeight:600}}>👦 Junior</span>}
-          {r.womanLine&&<span style={{fontSize:10,padding:"3px 12px",borderRadius:12,background:"rgba(236,72,153,0.1)",border:"1px solid rgba(236,72,153,0.2)",color:"#ec4899",fontWeight:600}}>♀ Ligne femme</span>}
-        </div>
-      </div>
-
-      {/* ★ premiumEdge — argument vendeur clé */}
-      {r.premiumEdge&&<div style={{margin:"0 0 14px",padding:"12px 16px",borderRadius:14,background:"linear-gradient(135deg, rgba(212,168,86,0.12) 0%, rgba(212,168,86,0.06) 100%)",border:`1px solid ${T.gold}30`,display:"flex",alignItems:"flex-start",gap:10}}>
-        <span style={{fontSize:16,flexShrink:0,marginTop:1}}>★</span>
-        <div>
-          <div style={{fontSize:8,fontWeight:700,color:T.gold,letterSpacing:"0.15em",marginBottom:3}}>ARGUMENT CLÉ</div>
-          <div style={{fontSize:13,fontWeight:600,color:T.cream,lineHeight:1.45,fontFamily:F.body}}>{r.premiumEdge}</div>
-        </div>
-      </div>}
-
-      {/* Scan Pertinence Badge — when opened from scan with active profile */}
-      {racketSheetFrom==="scan"&&profileName&&(()=>{
-        const pert = computeGlobalScore(r.scores, profile, r);
-        if (!pert || pert <= 0) return null;
-        const pct = (pert * 10).toFixed(0);
-        const col = pert >= 7 ? T.accent : pert >= 5 ? "#fbbf24" : "#f87171";
-        const bg = pert >= 7 ? T.accentSoft : pert >= 5 ? "rgba(251,191,36,0.12)" : "rgba(239,68,68,0.08)";
-        return <div style={{textAlign:"center",marginBottom:14}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:10,padding:"10px 20px",borderRadius:16,background:bg,border:`1px solid ${col}40`}}>
-            <span style={{fontSize:28,fontWeight:800,color:col,fontFamily:F.mono}}>{pct}%</span>
-            <div style={{textAlign:"left"}}>
-              <div style={{fontSize:11,fontWeight:700,color:col}}>Pertinence pour {profileName}</div>
-              <div style={{fontSize:9,color:T.gray2}}>{pert>=7?"Excellente compatibilité":pert>=5?"Compatibilité correcte":"Peu adapté à votre profil"}</div>
+          {/* Name + meta — shifts up on scroll */}
+          <div style={{transform:`translateY(${-nameShift}px)`,opacity:heroOp,textAlign:"center",marginTop:24,transition:"all 0.05s linear"}}>
+            <h1 style={{fontFamily:F.editorial,fontSize:48,fontWeight:700,fontStyle:"italic",color:"#1A1410",margin:"0 0 4px",lineHeight:0.95,letterSpacing:"-0.03em"}}>{r.shortName||r.name}</h1>
+            <p style={{fontSize:12,color:"rgba(44,24,16,0.25)",margin:"0 0 8px",letterSpacing:"0.06em"}}>{r.shape} · {r.weight} · {r.price}</p>
+            <div style={{display:"flex",gap:6,justifyContent:"center",flexWrap:"wrap",alignItems:"center"}}>
+              {r.year===2026&&<NewBadge/>}
+              <span style={{fontSize:9,padding:"3px 10px",borderRadius:10,background:`${cc}12`,border:`1px solid ${cc}25`,color:cc,fontWeight:700}}>{catLabel}</span>
+              {r.junior&&<span style={{fontSize:9,padding:"3px 10px",borderRadius:10,background:"rgba(59,130,246,0.08)",border:"1px solid rgba(59,130,246,0.15)",color:"#3b82f6",fontWeight:600}}>👦 Junior</span>}
+              {r.womanLine&&<span style={{fontSize:9,padding:"3px 10px",borderRadius:10,background:"rgba(236,72,153,0.08)",border:"1px solid rgba(236,72,153,0.15)",color:"#ec4899",fontWeight:600}}>♀ Ligne femme</span>}
             </div>
           </div>
-        </div>;
-      })()}
 
-      {/* Pro Player */}
-      {r.proPlayerInfo?.name&&<div style={{textAlign:"center",marginBottom:14}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"10px 18px",borderRadius:14,background:T.goldSoft,border:`1px solid ${T.gold}25`}}>
-          <span style={{fontSize:18}}>🎾</span>
-          <div style={{textAlign:"left"}}>
-            <div style={{fontSize:13,fontWeight:700,color:T.gold,fontFamily:F.body}}>{r.proPlayerInfo.name}</div>
-            {r.proPlayerInfo.context&&<div style={{fontSize:10,color:T.gray1,marginTop:1,lineHeight:1.4,maxWidth:280}}>{r.proPlayerInfo.context}</div>}
-            {r.proPlayerInfo.rank&&<div style={{fontSize:9,color:T.gold,marginTop:1}}>Classement: {r.proPlayerInfo.rank}</div>}
+          {/* Score — rises on scroll */}
+          <div style={{position:"absolute",bottom:50,left:"50%",transform:`translateX(-50%) scale(${scoreProg})`,opacity:scoreProg,transition:"all 0.05s linear"}}>
+            <div style={{width:84,height:84,borderRadius:"50%",background:"linear-gradient(135deg, #1A1410, #2C1810)",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",boxShadow:"0 10px 40px rgba(44,24,16,0.2)"}}>
+              <span style={{fontSize:34,fontWeight:900,color:"#F2EEE8",fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{avgScore.toFixed(1)}</span>
+              <span style={{fontSize:8,color:"rgba(242,238,232,0.4)"}}>/ 10</span>
+            </div>
+          </div>
+
+          {/* Scroll hint */}
+          <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",opacity:Math.max(0,1-sY/80),display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+            <span style={{fontSize:8,color:"rgba(44,24,16,0.15)",letterSpacing:"0.15em",fontWeight:600}}>DÉCOUVRIR</span>
+            <div style={{width:1,height:24,background:"linear-gradient(180deg, rgba(44,24,16,0.12), transparent)"}}/>
           </div>
         </div>
-      </div>}
+      </div>
 
-      {/* Scores Radar */}
-      <div className="fs-section" style={{background:T.card,borderRadius:16,border:`1px solid ${T.border}`,padding:"14px 8px 8px",marginBottom:14}}>
-        <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",textAlign:"center",marginBottom:6}}>📊 PROFIL DE PERFORMANCE</div>
-        <div style={{display:"flex",justifyContent:"center"}}>
-          <SvgRadar scores={sc} size={220}/>
+      {/* Hidden print zone for PDF */}
+      <div id="racket-sheet-print" style={{display:"none"}}>
+        <div className="fs-hero" style={{textAlign:"center"}}><RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{width:160,height:160,objectFit:"contain"}} fallbackSize={120}/></div>
+        <div className="fs-title">{r.name}</div><div className="fs-sub">{r.brand} · {r.shape} · {r.weight} · {r.year}</div>
+        <div className="fs-score">{avgScore.toFixed(1)}</div>
+        {r.premiumEdge&&<div className="fs-section"><div className="fs-section-title">★ ARGUMENT CLÉ</div><div style={{fontSize:13,color:"#F2F0ED"}}>{r.premiumEdge}</div></div>}
+        {r.verdict&&<div className="fs-section"><div className="fs-section-title">VERDICT</div><div className="fs-editorial">{r.verdict}</div></div>}
+        {r.editorial&&<div className="fs-section"><div className="fs-section-title">ANALYSE</div><div className="fs-editorial">{r.editorial}</div></div>}
+        <div className="fs-section"><div className="fs-section-title">SCORES</div><div className="fs-grid">{ATTRS.map(a=><div key={a} className="fs-score-cell"><div className="fs-score-val" style={{color:sc[a]>=8?"#4CAF50":"#F2F0ED"}}>{sc[a]||0}</div><div className="fs-score-label">{a}</div></div>)}</div></div>
+        <div className="fs-section"><div className="fs-section-title">CARACTÉRISTIQUES</div><div className="fs-specs">{[["Forme",r.shape],["Poids",r.weight],["Équilibre",r.balance],["Surface",r.surface],["Noyau",r.core],["Anti-vibration",r.antivib],["Joueur",r.player],["Année",r.year]].filter(([,v])=>v&&v!=="—"&&v!==undefined).map(([l,v])=><div key={l}><span className="fs-spec-label">{l}: </span><span className="fs-spec-val">{v}</span></div>)}</div></div>
+      </div>
+
+      {/* ═══ CHAPTER 2 — THE VERDICT (deep navy) ═══ */}
+      <div ref={ch2Ref} style={{minHeight:"80vh",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 28px",background:"linear-gradient(180deg, #0C1420 0%, #0E1828 50%, #101C30 100%)",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:"linear-gradient(90deg, #C4973A, #D4A856, #C4973A)"}}/>
+
+        {/* Scan pertinence */}
+        {scanPert&&scanPert>0&&(()=>{const pct=(scanPert*10).toFixed(0);const col=scanPert>=7?"#4CAF50":scanPert>=5?"#fbbf24":"#f87171";return <div style={{display:"inline-flex",alignItems:"center",gap:10,padding:"10px 20px",borderRadius:16,background:`${col}12`,border:`1px solid ${col}30`,marginBottom:20,alignSelf:"flex-start",opacity:ch2V?1:0,transform:ch2V?"translateY(0)":"translateY(30px)",transition:tr}}>
+          <span style={{fontSize:28,fontWeight:800,color:col,fontFamily:"'Outfit',sans-serif"}}>{pct}%</span>
+          <div><div style={{fontSize:11,fontWeight:700,color:col}}>Pertinence pour {profileName}</div><div style={{fontSize:9,color:"rgba(240,235,225,0.35)"}}>{scanPert>=7?"Excellente compatibilité":scanPert>=5?"Compatibilité correcte":"Peu adapté"}</div></div>
+        </div>;})()}
+
+        {/* Player */}
+        {r.proPlayerInfo?.name&&<div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"7px 16px",borderRadius:10,alignSelf:"flex-start",background:"rgba(196,151,58,0.08)",border:"1px solid rgba(196,151,58,0.15)",marginBottom:20,opacity:ch2V?1:0,transform:ch2V?"translateY(0)":"translateY(30px)",transition:tr}}>
+          <span style={{fontSize:13}}>🎾</span>
+          <div><div style={{fontSize:12,fontWeight:600,color:"#C4973A"}}>{r.proPlayerInfo.name}</div>
+          {r.proPlayerInfo.rank&&<div style={{fontSize:9,color:"rgba(196,151,58,0.45)"}}>{r.proPlayerInfo.rank}</div>}
+          {r.proPlayerInfo.context&&<div style={{fontSize:9,color:"rgba(240,235,225,0.3)",marginTop:2,maxWidth:260,lineHeight:1.4}}>{r.proPlayerInfo.context}</div>}</div>
+        </div>}
+
+        {/* premiumEdge */}
+        {r.premiumEdge&&<div style={{padding:"16px 20px",borderRadius:16,marginBottom:32,background:"rgba(196,151,58,0.06)",border:"1px solid rgba(196,151,58,0.1)",opacity:ch2V?1:0,transform:ch2V?"translateY(0)":"translateY(30px)",transition:trd(0.12)}}>
+          <div style={{fontSize:7,fontWeight:700,color:"#C4973A",letterSpacing:"0.25em",marginBottom:6}}>★ ARGUMENT CLÉ</div>
+          <div style={{fontSize:14,fontWeight:500,color:"rgba(240,235,225,0.7)",lineHeight:1.5}}>{r.premiumEdge}</div>
+        </div>}
+
+        {/* Verdict */}
+        {r.verdict&&r.verdict!=="—"&&r.verdict!=="Analyse non disponible"&&<div style={{borderLeft:"3px solid #C4973A",paddingLeft:24,opacity:ch2V?1:0,transform:ch2V?"translateX(0)":"translateX(-50px)",transition:trd(0.25)}}>
+          <p style={{fontFamily:F.editorial,fontSize:28,fontStyle:"italic",color:"#F0EBE0",lineHeight:1.45,margin:0}}>« {r.verdict} »</p>
+        </div>}
+      </div>
+
+      {/* ═══ CHAPTER 3 — RADAR (teal on light) ═══ */}
+      <div ref={ch3Ref} style={{minHeight:"75vh",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"40px 16px",background:"linear-gradient(180deg, #F2EEE8 0%, #EDE8E0 100%)"}}>
+        <div style={{fontSize:8,fontWeight:700,color:"rgba(0,160,140,0.5)",letterSpacing:"0.3em",marginBottom:10,opacity:ch3V?1:0,transition:tr}}>PROFIL TECHNIQUE</div>
+        <div style={{opacity:ch3V?1:0,transform:ch3V?"scale(1)":"scale(0.7)",transition:trd(0.15),marginBottom:4}}>
+          <SvgRadar scores={sc} size={250} color="#00A08C"/>
         </div>
         {/* Score grid */}
-        <div className="fs-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5,marginTop:4}}>
-          {ATTRS.map(a=>{
-            const val = sc[a]||0;
-            const best = Math.max(...ATTRS.map(a2=>sc[a2]||0));
-            const isBest = val===best && val>0;
-            return <div key={a} className="fs-score-cell" style={{textAlign:"center",padding:"8px 4px",borderRadius:10,
-              background:isBest?T.accentSoft:T.surface,border:`1px solid ${isBest?T.accent+"30":T.border}`}}>
-              <div className="fs-score-val" style={{fontSize:22,fontWeight:700,color:val>=8?T.green:val>=6?T.white:T.accent,fontFamily:F.mono}}>{val}</div>
-              <div className="fs-score-label" style={{fontSize:8,color:isBest?T.accent:T.gray2,fontWeight:isBest?700:500,marginTop:1}}>{a}</div>
-            </div>;
-          })}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,width:"100%",maxWidth:360,marginBottom:20,opacity:ch3V?1:0,transform:ch3V?"translateY(0)":"translateY(15px)",transition:trd(0.4)}}>
+          {ATTRS.map(a=>{const val=sc[a]||0;const best=Math.max(...ATTRS.map(a2=>sc[a2]||0));const isBest=val===best&&val>0;return <div key={a} style={{textAlign:"center",padding:"10px 6px",borderRadius:12,background:isBest?"rgba(0,180,160,0.06)":"#F8F5F0",border:`1px solid ${isBest?"rgba(0,180,160,0.15)":"#EDE7DD"}`}}>
+            <div style={{fontSize:24,fontWeight:800,color:val>=8?"#00A08C":val>=6?"#2C1810":"#A09080",fontFamily:"'Outfit',sans-serif"}}>{val}</div>
+            <div style={{fontSize:8,color:isBest?"rgba(0,160,140,0.6)":"#A09080",fontWeight:isBest?700:500,marginTop:1}}>{a}</div>
+          </div>;})}
+        </div>
+        {/* Specs */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"14px 30px",width:"100%",maxWidth:340,opacity:ch3V?1:0,transform:ch3V?"translateY(0)":"translateY(15px)",transition:trd(0.55)}}>
+          {[["Forme",r.shape],["Poids",r.weight],["Balance",r.balance],["Surface",r.surface],["Noyau",r.core],["Prix",r.price],["Anti-vibration",r.antivib],["Année",r.year]].filter(([,v])=>v&&v!=="—"&&v!==undefined).map(([l,v])=><div key={l} style={{textAlign:"center"}}><div style={{fontSize:9,color:"rgba(0,130,110,0.4)",marginBottom:2,fontWeight:600}}>{l}</div><div style={{fontSize:14,fontWeight:700,color:"#1A1410"}}>{v}</div></div>)}
         </div>
       </div>
 
-      {/* Tech Highlights */}
-      {ths.length>0&&<div style={{marginBottom:14}}>
-        <div style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",textAlign:"center",marginBottom:10}}>🔬 TECHNOLOGIES</div>
-        <div style={{display:"flex",alignItems:"stretch",gap:0,position:"relative"}}>
-          <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingRight:6}}>
-            {leftThs.map((h,i)=>(
-              <div key={i} style={{padding:"10px",borderRadius:12,textAlign:"right",background:T.card,border:`1px solid ${T.accent}18`,borderRight:`3px solid ${T.accent}50`}}>
-                <div style={{fontSize:11,color:T.white,fontWeight:700,fontFamily:F.body}}>{h.value}</div>
-                <div style={{fontSize:8,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:2}}>{h.label}</div>
-                <p style={{fontSize:9,color:T.gray2,margin:"4px 0 0",lineHeight:1.5}}>{h.detail}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{width:2,background:`linear-gradient(to bottom, transparent, ${T.accent}30, transparent)`,margin:"0 4px",flexShrink:0}}/>
-          <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",gap:8,paddingLeft:6}}>
-            {rightThs.map((h,i)=>(
-              <div key={i} style={{padding:"10px",borderRadius:12,textAlign:"left",background:T.card,border:`1px solid ${T.accent}18`,borderLeft:`3px solid ${T.accent}50`}}>
-                <div style={{fontSize:11,color:T.white,fontWeight:700,fontFamily:F.body}}>{h.value}</div>
-                <div style={{fontSize:8,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.03em",marginTop:2}}>{h.label}</div>
-                <p style={{fontSize:9,color:T.gray2,margin:"4px 0 0",lineHeight:1.5}}>{h.detail}</p>
-              </div>
-            ))}
-          </div>
+      {/* ═══ CHAPTER 4 — ANALYSE + TECH (white) ═══ */}
+      <div ref={ch4Ref} style={{padding:"60px 28px",background:"#FFFFFF"}}>
+        {/* Editorial */}
+        {r.editorial&&<div style={{opacity:ch4V?1:0,transform:ch4V?"translateY(0)":"translateY(30px)",transition:tr}}>
+          <div style={{fontSize:8,fontWeight:700,color:"rgba(44,24,16,0.2)",letterSpacing:"0.25em",marginBottom:14}}>ANALYSE ÉDITORIALE</div>
+          <p style={{fontSize:15,color:"#3A3028",lineHeight:1.9,margin:"0 0 40px"}}>{r.editorial}</p>
+        </div>}
+
+        {/* Tech highlights */}
+        {ths.length>0&&<>
+          <div style={{fontSize:8,fontWeight:700,color:"rgba(44,24,16,0.2)",letterSpacing:"0.25em",marginBottom:16}}>TECHNOLOGIES</div>
+          {ths.map((th,i)=><div key={i} style={{padding:"18px 20px",borderRadius:16,marginBottom:12,background:"#F8F5F0",border:"1px solid #EDE7DD",opacity:ch4V?1:0,transform:ch4V?"translateX(0)":(i%2===0?"translateX(-30px)":"translateX(30px)"),transition:trd(0.15+i*0.12)}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:4}}>
+              <span style={{fontSize:10,fontWeight:700,color:"rgba(44,24,16,0.25)",letterSpacing:"0.1em"}}>{th.label}</span>
+              <span style={{fontSize:15,fontWeight:800,color:"#1A1410"}}>{th.value}</span>
+            </div>
+            <div style={{fontSize:11,color:"#A09080",lineHeight:1.5}}>{th.detail}</div>
+          </div>)}
+        </>}
+
+        {/* Target profile */}
+        {targetText&&<div style={{padding:"16px 20px",borderRadius:16,marginTop:20,background:dynTarget?"rgba(122,46,52,0.04)":"rgba(76,175,80,0.04)",border:`1px solid ${dynTarget?"rgba(122,46,52,0.1)":"rgba(76,175,80,0.1)"}`,opacity:ch4V?1:0,transform:ch4V?"translateY(0)":"translateY(20px)",transition:trd(0.5)}}>
+          <div style={{fontSize:8,fontWeight:700,color:dynTarget?"#7A2E34":"#4CAF50",letterSpacing:"0.15em",marginBottom:6}}>{dynTarget?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 PROFIL CIBLE"}</div>
+          <p style={{fontSize:12,color:"#4A3C30",lineHeight:1.7,margin:0}} dangerouslySetInnerHTML={{__html:targetText.replace(/\*\*([^*]+)\*\*/g,`<strong style="color:#1A1410">$1</strong>`)}}/>
+        </div>}
+      </div>
+
+      {/* ═══ CHAPTER 5 — SIMILAR + CTA ═══ */}
+      <div ref={ch5Ref} style={{padding:"40px 28px 60px",background:"#F2EEE8"}}>
+        {/* CTA */}
+        <div style={{textAlign:"center",marginBottom:36,opacity:ch5V?1:0,transform:ch5V?"translateY(0)":"translateY(20px)",transition:tr}}>
+          <button style={{padding:"16px 40px",borderRadius:60,border:"none",background:"#1A1410",color:"#F2EEE8",fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:"0 6px 24px rgba(26,20,16,0.15)",width:"100%",maxWidth:340}}>🏓 Essayer en magasin</button>
+          <div style={{fontSize:10,color:"rgba(44,24,16,0.25)",marginTop:8}}>Disponible au Padel Center & Santé</div>
         </div>
+
+        {/* Similar rackets */}
+        {similar.length>0&&<>
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24,opacity:ch5V?1:0,transition:tr}}>
+            <div style={{flex:1,height:0.5,background:"linear-gradient(90deg, transparent, rgba(44,24,16,0.08))"}}/>
+            <span style={{fontSize:8,color:"rgba(44,24,16,0.2)",letterSpacing:"0.2em",fontWeight:700}}>VOIR AUSSI</span>
+            <div style={{flex:1,height:0.5,background:"linear-gradient(90deg, rgba(44,24,16,0.08), transparent)"}}/>
+          </div>
+          {similar.map((s,i)=>{const sAvg=(ATTRS.map(a=>s.scores?.[a]||0).reduce((x,y)=>x+y,0)/6).toFixed(1);const scc=catColor(s.category);return <div key={s.id||s.name} onClick={()=>{const allDB=getMergedDB();const full=allDB.find(x=>x.id===s.id)||s;setRacketSheet(full);setSY(0);if(scrollRef.current)scrollRef.current.scrollTop=0;}} style={{
+            display:"flex",alignItems:"center",gap:14,padding:"14px 18px",borderRadius:18,marginBottom:10,cursor:"pointer",
+            background:"#FFFFFF",border:"1px solid #EDE7DD",boxShadow:"0 2px 8px rgba(0,0,0,0.03)",
+            opacity:ch5V?1:0,transform:ch5V?"translateY(0)":"translateY(24px)",transition:`all 0.8s cubic-bezier(.22,1,.36,1) ${0.15+i*0.12}s`,
+          }}>
+            <div style={{width:50,height:62,borderRadius:12,background:"#F8F5F0",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+              <RacketImg src={s.imageUrl} alt={s.name} brand={s.brand} style={{width:40,height:52,objectFit:"contain"}} fallbackSize={30}/>
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:8,fontWeight:700,color:scc,letterSpacing:"0.1em"}}>{s.brand}</div>
+              <div style={{fontFamily:F.editorial,fontSize:17,fontWeight:700,fontStyle:"italic",color:"#1A1410",lineHeight:1.15}}>{s.shortName||s.name}</div>
+              <div style={{fontSize:10,color:"#B0A494",marginTop:2}}>{s.price}</div>
+            </div>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:22,fontWeight:900,color:"#1A1410",fontFamily:"'Outfit',sans-serif"}}>{sAvg}</div>
+              <div style={{fontSize:7,color:"#B0A494"}}>/ 10</div>
+            </div>
+            <span style={{fontSize:18,color:"#D5CCBF"}}>›</span>
+          </div>;})}
+        </>}
+
+        <div style={{textAlign:"center",padding:"28px 0 0"}}>
+          <div style={{fontSize:8,color:"rgba(44,24,16,0.1)",letterSpacing:"0.15em"}}><span style={{fontWeight:700}}>PADEL ANALYZER</span> · padelanalyzer.fr</div>
+        </div>
+      </div>
+
+      {/* ═══ FULLSCREEN PHOTO ═══ */}
+      {photoOpen&&<div onClick={()=>setPhotoOpen(false)} style={{position:"fixed",inset:0,zIndex:200,background:"rgba(242,238,232,0.97)",backdropFilter:"blur(20px)",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:16,cursor:"pointer"}}>
+        <RacketImg src={r.imageUrl} alt={r.name} brand={r.brand} style={{maxWidth:"85%",maxHeight:"70vh",objectFit:"contain",filter:"drop-shadow(0 20px 60px rgba(44,24,16,0.1))"}} fallbackSize={200}/>
+        <div style={{fontSize:12,color:"rgba(44,24,16,0.25)"}}>Taper pour fermer</div>
       </div>}
-
-      {/* Verdict */}
-      {r.verdict&&r.verdict!=="—"&&r.verdict!=="Analyse non disponible"&&
-        <div className="fs-section" style={{padding:"14px 18px",marginBottom:14,
-          background:`linear-gradient(135deg, ${T.accent}08, ${T.card})`,borderRadius:16,border:`1px solid ${T.accent}18`}}>
-          <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>⚖️ VERDICT</div>
-          <p style={{fontFamily:F.editorial,fontSize:18,fontStyle:"italic",color:T.cream,lineHeight:1.6,margin:0}}>{r.verdict}</p>
-        </div>
-      }
-
-      {/* Editorial */}
-      {r.editorial&&
-        <div className="fs-section" style={{position:"relative",padding:"18px 20px 18px 32px",marginBottom:14,background:T.card,borderRadius:16,border:`1px solid ${T.border}`}}>
-          <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8}}>📝 ANALYSE ÉDITORIALE</div>
-          <div style={{position:"absolute",top:28,left:12,fontSize:40,color:`${T.accent}18`,fontFamily:"Georgia",lineHeight:1}}>"</div>
-          <p className="fs-editorial" style={{fontFamily:F.body,fontSize:13,color:T.gray1,lineHeight:1.9,margin:0,fontStyle:"italic"}}>{r.editorial}</p>
-        </div>
-      }
-
-      {/* Target Profile */}
-      {(()=>{
-        const fromProfile = racketSheetFrom==="dashboard"||racketSheetFrom==="app"||racketSheetFrom==="admin"||racketSheetFrom==="scan";
-        const dynText = fromProfile && profileName && generateDynamicTargetProfile ? generateDynamicTargetProfile(r, {...(profile||{}), _name: profileName}) : null;
-        const text = dynText || r.targetProfile;
-        if (!text) return null;
-        const isDynamic = !!dynText;
-        return <div style={{padding:"14px 18px",background:isDynamic?T.accentSoft:T.greenSoft,borderRadius:16,
-          border:`1px solid ${isDynamic?T.accent+"20":T.green+"20"}`,marginBottom:14}}>
-          <div style={{fontSize:9,color:isDynamic?T.accent:T.green,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:6}}>
-            {isDynamic?`🎯 POUR ${(profileName||"toi").toUpperCase()}`:"🎯 PROFIL CIBLE"}
-          </div>
-          <p style={{fontSize:12,color:T.gray1,lineHeight:1.7,margin:0}} dangerouslySetInnerHTML={{__html: text.replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${T.white}">$1</strong>`)}}/>
-        </div>;
-      })()}
-
-      {/* Specs Table */}
-      <div className="fs-section" style={{padding:"14px 18px",marginBottom:14,background:T.card,borderRadius:16,border:`1px solid ${T.border}`}}>
-        <div className="fs-section-title" style={{fontSize:9,color:T.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:10}}>📋 CARACTÉRISTIQUES</div>
-        <div className="fs-specs" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px 20px"}}>
-          {[["Forme",r.shape],["Poids",r.weight],["Équilibre",r.balance],["Surface",r.surface],["Noyau",r.core],["Anti-vibration",r.antivib],["Joueur",r.player],["Année",r.year]]
-            .filter(([,v])=>v&&v!=="—"&&v!==undefined).map(([label,val])=>(
-              <div key={label} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${T.border}`}}>
-                <span className="fs-spec-label" style={{fontSize:11,color:T.gray2}}>{label}</span>
-                <span className="fs-spec-val" style={{fontSize:11,color:T.white,fontWeight:600,textAlign:"right"}}>{val}</span>
-              </div>
-          ))}
-        </div>
-      </div>
-
-      </div>{/* end print zone */}
-
-      {/* CTA */}
-      <div style={{textAlign:"center",padding:"8px 0 16px"}}>
-        <button style={{padding:"14px 40px",borderRadius:60,border:"none",background:T.accent,color:"#fff",
-          fontFamily:F.body,fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 24px ${T.accentGlow}`,
-          width:"100%",maxWidth:320}}>
-          🏓 Essayer en magasin
-        </button>
-        <div style={{fontFamily:F.body,fontSize:10,color:T.gray2,marginTop:8}}>Disponible au Padel Center & Santé</div>
-      </div>
-
-      {/* Footer */}
-      <div style={{textAlign:"center",padding:"12px 0 30px"}}>
-        <div style={{fontSize:8,color:T.gray3,letterSpacing:"0.05em"}}>
-          <span style={{fontFamily:F.legacy,fontWeight:600}}>PADEL ANALYZER</span> · padelanalyzer.fr
-        </div>
-      </div>
     </div>
   );
 }
@@ -7061,7 +7108,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
       {screen==="racketSheet"&&racketSheet&&<RacketSheetScreen ctx={{
         racketSheet, setRacketSheet, racketSheetFrom, setScreen,
-        profileName, profile, generateDynamicTargetProfile,
+        profileName, profile, generateDynamicTargetProfile, getMergedDB,
       }}/>}
 
       {/* ============================================================ */}
