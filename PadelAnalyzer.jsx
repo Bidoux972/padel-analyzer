@@ -4743,8 +4743,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         @keyframes slideIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         @keyframes subtlePulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
-        @keyframes glowPulse { 0%,100% { box-shadow: 0 0 12px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 24px rgba(249,115,22,0.3); } }
-        @keyframes ctaBreath { 0%,100% { box-shadow: 0 6px 24px rgba(232,98,42,0.25), 0 0 0 0 rgba(232,98,42,0); } 50% { box-shadow: 0 8px 32px rgba(232,98,42,0.4), 0 0 0 8px rgba(232,98,42,0.08); } }
+        @keyframes glowPulse { 0%,100% { box-shadow: 0 0 12px rgba(122,46,52,0.15); } 50% { box-shadow: 0 0 24px rgba(122,46,52,0.3); } }
+        @keyframes ctaBreath { 0%,100% { box-shadow: 0 6px 24px rgba(122,46,52,0.25), 0 0 0 0 rgba(122,46,52,0); } 50% { box-shadow: 0 8px 32px rgba(122,46,52,0.4), 0 0 0 8px rgba(122,46,52,0.08); } }
 
         /* Screen entrance variants */
         .pa-screen-fade { animation: fadeInScale 0.4s cubic-bezier(.22,1,.36,1); }
@@ -4762,9 +4762,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         /* CTA buttons */
         .pa-cta { transition: all 0.2s cubic-bezier(.4,0,.2,1); }
-        .pa-cta:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(249,115,22,0.25); }
+        .pa-cta:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 6px 20px rgba(122,46,52,0.25); }
         .pa-cta:active { transform: translateY(1px) scale(0.98); filter: brightness(0.95); }
-        @keyframes pulseGlow { 0%,100%{box-shadow:0 6px 24px rgba(249,115,22,0.25)} 50%{box-shadow:0 6px 36px rgba(249,115,22,0.55), 0 0 60px rgba(249,115,22,0.15)} }
+        @keyframes pulseGlow { 0%,100%{box-shadow:0 6px 24px rgba(122,46,52,0.25)} 50%{box-shadow:0 6px 36px rgba(122,46,52,0.55), 0 0 60px rgba(122,46,52,0.15)} }
         @keyframes shimmerGrad { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
         /* Ghost buttons */
@@ -4775,7 +4775,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         /* Tabs */
         .pa-tab { position: relative; transition: all 0.2s ease; }
         .pa-tab:hover { color: #f1f5f9 !important; }
-        .pa-tab::after { content: ''; position: absolute; bottom: -1px; left: 50%; width: 0; height: 2px; background: #f97316; border-radius: 1px; transition: all 0.25s cubic-bezier(.4,0,.2,1); transform: translateX(-50%); }
+        .pa-tab::after { content: ''; position: absolute; bottom: -1px; left: 50%; width: 0; height: 2px; background: #7A2E34; border-radius: 1px; transition: all 0.25s cubic-bezier(.4,0,.2,1); transform: translateX(-50%); }
         .pa-tab-active::after { width: 60%; }
 
         .pa-badge { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
@@ -4799,7 +4799,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         .pa-stagger > *:nth-child(n+9) { animation-delay: 480ms; }
 
         /* Input focus glow */
-        input:focus, select:focus { border-color: rgba(249,115,22,0.5) !important; box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+        input:focus, select:focus { border-color: rgba(122,46,52,0.5) !important; box-shadow: 0 0 0 3px rgba(122,46,52,0.1); }
 
         /* Smooth scrolling */
         html { scroll-behavior: smooth; }
@@ -8140,17 +8140,17 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="3.2" fill="none"/><path d="M22 53 L25 58 L28 53Z" stroke="#fff" strokeWidth="1.4" fill="none" opacity="0.3"/><circle cx="18" cy="11" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="10" r="2" fill="#fff" opacity="0.2"/><circle cx="32" cy="11" r="2" fill="#fff" opacity="0.2"/><circle cx="12" cy="18" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="18" r="2" fill="#fff" opacity="0.2"/><circle cx="38" cy="18" r="2" fill="#fff" opacity="0.2"/><circle cx="10" cy="25" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="25" r="2" fill="#fff" opacity="0.2"/><circle cx="40" cy="25" r="2" fill="#fff" opacity="0.2"/><circle cx="25" cy="32" r="2" fill="#fff" opacity="0.2"/><circle cx="22" cy="39" r="2" fill="#fff" opacity="0.2"/><circle cx="28" cy="39" r="2" fill="#fff" opacity="0.2"/></g></g>
             <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
           </svg>
-          <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
+          <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#7A2E34,#C4973A)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
         <p style={{color:"#7A6E5C",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#5A4D40",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V12</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {totalDBCount}</span></div>
+        <div style={{fontSize:8,color:"#5A4D40",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V12</span><span style={{background:"rgba(122,46,52,0.1)",border:"1px solid rgba(122,46,52,0.2)",borderRadius:10,padding:"1px 7px",color:"#7A2E34",fontSize:8,fontWeight:600}}>🗃️ {totalDBCount}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(44,24,16,0.03)",border:"1px solid rgba(44,24,16,0.08)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
-            <div style={{width:22,height:22,borderRadius:7,background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,color:"#f97316",flexShrink:0}}>{profileName.charAt(0).toUpperCase()}</div>
+            <div style={{width:22,height:22,borderRadius:7,background:"linear-gradient(135deg,rgba(122,46,52,0.25),rgba(122,46,52,0.15))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,color:"#7A2E34",flexShrink:0}}>{profileName.charAt(0).toUpperCase()}</div>
             <span style={{fontSize:11,fontWeight:600,color:"#2C1810"}}>{profileName}</span>
           </div>
-          <button onClick={goToDashboard} style={{background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:20,padding:"4px 10px",color:"#f97316",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
+          <button onClick={goToDashboard} style={{background:"rgba(122,46,52,0.08)",border:"1px solid rgba(122,46,52,0.2)",borderRadius:20,padding:"4px 10px",color:"#7A2E34",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
             <span style={{fontSize:11}}>🏠</span> Dashboard
           </button>
           <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(44,24,16,0.08)",borderRadius:20,padding:"4px 10px",color:"rgba(44,24,16,0.35)",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
@@ -8171,16 +8171,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* ============================================================ */}
       {panel==="suggest"&&<div style={S.card}>
         <div style={S.title}>🎯 RAQUETTES SUGGÉRÉES POUR TON PROFIL</div>
-        <div style={{background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:10,padding:10,marginBottom:10}}>
-          <p style={{fontSize:10,color:"#f97316",fontWeight:700,margin:"0 0 4px"}}>Ton profil :</p>
+        <div style={{background:"rgba(122,46,52,0.06)",border:"1px solid rgba(122,46,52,0.15)",borderRadius:10,padding:10,marginBottom:10}}>
+          <p style={{fontSize:10,color:"#7A2E34",fontWeight:700,margin:"0 0 4px"}}>Ton profil :</p>
           <p style={{fontSize:9,color:"rgba(44,24,16,0.35)",margin:0,lineHeight:1.5}}>{profileText}</p>
         </div>
 
         {!suggestResults&&!loading&&<div>
-          <p style={{fontSize:10,color:"rgba(44,24,16,0.25)",margin:"0 0 10px",lineHeight:1.4}}>Recherche des raquettes les plus adaptées à ton profil : <span style={{color:"#f97316",fontWeight:600}}>⭐ Coups de cœur</span> (meilleures correspondances) et <span style={{color:"#fbbf24",fontWeight:600}}>⚡ Alternatives {profile.expertToucher?"Sensations":"Priorité"}</span> (orientées {profile.expertToucher?`toucher ${profile.expertToucher}, réactivité ${profile.expertReactivite||"explosive"}`:profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean).join(', ')||"tes priorités"}). Coche celles qui t'intéressent puis valide en un clic.</p>
+          <p style={{fontSize:10,color:"rgba(44,24,16,0.25)",margin:"0 0 10px",lineHeight:1.4}}>Recherche des raquettes les plus adaptées à ton profil : <span style={{color:"#7A2E34",fontWeight:600}}>⭐ Coups de cœur</span> (meilleures correspondances) et <span style={{color:"#fbbf24",fontWeight:600}}>⚡ Alternatives {profile.expertToucher?"Sensations":"Priorité"}</span> (orientées {profile.expertToucher?`toucher ${profile.expertToucher}, réactivité ${profile.expertReactivite||"explosive"}`:profile.priorityTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean).join(', ')||"tes priorités"}). Coche celles qui t'intéressent puis valide en un clic.</p>
           <button onClick={suggestRackets} style={S.btnGreen}>🔍 Lancer la recherche</button>
         </div>}
-        {loadMsg&&<div style={{fontSize:11,color:"#f97316",marginTop:10,display:"flex",alignItems:"center",gap:6}}>
+        {loadMsg&&<div style={{fontSize:11,color:"#7A2E34",marginTop:10,display:"flex",alignItems:"center",gap:6}}>
           <span style={{display:"inline-block",animation:"pulse 1.5s ease-in-out infinite"}}>⏳</span>
           <span>{loadMsg}</span>
           <style>{`@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }`}</style>
@@ -8201,22 +8201,42 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const isExpertFeelS = !!profile.expertToucher;
             return <>
               {topPicks.length>0&&<>
-                <p style={{fontSize:11,color:"#f97316",fontWeight:700,marginBottom:6}}>⭐ Coups de cœur — meilleures correspondances :</p>
+                <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",marginBottom:10,background:"rgba(122,46,52,0.05)",borderRadius:12,borderLeft:"3px solid #7A2E34"}}>
+                  <span style={{fontSize:18}}>⭐</span>
+                  <div>
+                    <div style={{fontSize:12,fontWeight:700,color:"#7A2E34",letterSpacing:"-0.01em"}}>Coups de cœur</div>
+                    <div style={{fontSize:9,color:"#9A8E7C",marginTop:1}}>Meilleures correspondances avec ton profil</div>
+                  </div>
+                  <div style={{marginLeft:"auto",fontSize:10,fontWeight:700,color:"#7A2E34",background:"rgba(122,46,52,0.08)",borderRadius:8,padding:"3px 10px"}}>{topPicks.length}</div>
+                </div>
                 {topPicks.map(s=>{
                   const ri = suggestResults.indexOf(s);
                   return renderSuggestCard(s, ri, suggestChecked.has(ri), true);
                 })}
               </>}
               {prioAlts.length>0&&<>
-                <p style={{fontSize:11,color:"#fbbf24",fontWeight:700,marginBottom:4,marginTop:14}}>⚡ Alternatives {isExpertFeelS?"Sensations":"Priorité"} — {isExpertFeelS?`toucher ${profile.expertToucher}`:prioLabels.join(', ')} :</p>
-                <p style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginBottom:6}}>Raquettes orientées vers tes priorités, confort parfois limité — à tester avant d'acheter.</p>
+                <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",marginBottom:10,marginTop:16,background:"rgba(217,119,6,0.05)",borderRadius:12,borderLeft:"3px solid #D97706"}}>
+                  <span style={{fontSize:18}}>⚡</span>
+                  <div>
+                    <div style={{fontSize:12,fontWeight:700,color:"#D97706",letterSpacing:"-0.01em"}}>Alternatives {isExpertFeelS?"Sensations":"Priorité"}</div>
+                    <div style={{fontSize:9,color:"#9A8E7C",marginTop:1}}>{isExpertFeelS?`Toucher ${profile.expertToucher}`:prioLabels.join(', ')} · à tester avant d'acheter</div>
+                  </div>
+                  <div style={{marginLeft:"auto",fontSize:10,fontWeight:700,color:"#D97706",background:"rgba(217,119,6,0.08)",borderRadius:8,padding:"3px 10px"}}>{prioAlts.length}</div>
+                </div>
                 {prioAlts.map(s=>{
                   const ri = suggestResults.indexOf(s);
                   return renderSuggestCard(s, ri, suggestChecked.has(ri), false);
                 })}
               </>}
               {others.length>0&&<>
-                <p style={{fontSize:11,color:"rgba(44,24,16,0.35)",fontWeight:700,marginBottom:6,marginTop:12}}>📋 Autres suggestions :</p>
+                <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",marginBottom:10,marginTop:16,background:"rgba(44,24,16,0.02)",borderRadius:12,borderLeft:"3px solid rgba(44,24,16,0.15)"}}>
+                  <span style={{fontSize:18}}>📋</span>
+                  <div>
+                    <div style={{fontSize:12,fontWeight:700,color:"#5A4D40",letterSpacing:"-0.01em"}}>Autres suggestions</div>
+                    <div style={{fontSize:9,color:"#9A8E7C",marginTop:1}}>Pistes complémentaires à explorer</div>
+                  </div>
+                  <div style={{marginLeft:"auto",fontSize:10,fontWeight:700,color:"#5A4D40",background:"rgba(44,24,16,0.04)",borderRadius:8,padding:"3px 10px"}}>{others.length}</div>
+                </div>
                 {others.map(s=>{
                   const ri = suggestResults.indexOf(s);
                   return renderSuggestCard(s, ri, suggestChecked.has(ri), false);
@@ -8239,7 +8259,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               ✅ Ajouter {suggestChecked.size} raquette{suggestChecked.size>1?"s":""} au comparateur
             </button>}
           </div>}
-          {addingBatch&&<div style={{textAlign:"center",padding:"12px 0",color:"#f97316",fontSize:12,fontWeight:600}}>{batchProgress}</div>}
+          {addingBatch&&<div style={{textAlign:"center",padding:"12px 0",color:"#7A2E34",fontSize:12,fontWeight:600}}>{batchProgress}</div>}
 
           <button onClick={()=>{setSuggestResults(null);setSuggestChecked(new Set());setError("");}} style={{...S.btn(false),marginTop:8,width:"100%",padding:"8px 0",fontSize:11}}>🔄 Relancer une nouvelle recherche</button>
         </div>}
@@ -8255,10 +8275,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <input value={searchQ} onChange={e=>setSearchQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!loading&&searchRackets()} placeholder="Ex: nox tapia 12k, adidas metalbone..." style={{...S.input,flex:1}}/>
           <button onClick={searchRackets} disabled={loading||!searchQ.trim()} style={{...S.btn(true),opacity:loading?0.5:1,minWidth:80}}>{loading&&!suggestions?"...":"Chercher"}</button>
         </div>
-        {loadMsg&&<div style={{fontSize:11,color:"#f97316",marginTop:8}}>{loadMsg}</div>}
+        {loadMsg&&<div style={{fontSize:11,color:"#7A2E34",marginTop:8}}>{loadMsg}</div>}
         {error&&<div style={{fontSize:11,color:"#ef4444",marginTop:8}}>{error}</div>}
         {suggestions&&<div style={{marginTop:10}}>
-          <p style={{fontSize:11,color:"#f97316",fontWeight:700,marginBottom:8}}>📋 Résultats — clique pour voir la fiche technique :</p>
+          <p style={{fontSize:11,color:"#7A2E34",fontWeight:700,marginBottom:8}}>📋 Résultats — clique pour voir la fiche technique :</p>
           {suggestions.map((s,i)=>{
             const isExpanded = addDetail === i;
             // Try to match with DB
@@ -8271,8 +8291,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:fyConfig==="no"?{text:"PEU ADAPTÉ",color:"rgba(44,24,16,0.25)"}:null;
             return (
             <div key={i} style={{
-              background:s._selected?"rgba(249,115,22,0.15)":isExpanded?"rgba(44,24,16,0.04)":"rgba(44,24,16,0.03)",
-              border:`1px solid ${s._selected?"#f97316":isExpanded?"rgba(249,115,22,0.2)":"rgba(44,24,16,0.06)"}`,
+              background:s._selected?"rgba(122,46,52,0.15)":isExpanded?"rgba(44,24,16,0.04)":"rgba(44,24,16,0.03)",
+              border:`1px solid ${s._selected?"#7A2E34":isExpanded?"rgba(122,46,52,0.2)":"rgba(44,24,16,0.06)"}`,
               borderRadius:12,marginBottom:8,overflow:"hidden",
               cursor:s._disabled?"default":"pointer",opacity:s._disabled&&!s._selected?0.3:1,
               transition:"all 0.2s",
@@ -8285,7 +8305,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <div style={{fontSize:10,color:"rgba(44,24,16,0.35)",marginTop:2}}>{s.brand} · {s.shape} · {s.weight}</div>
                 </div>
                 {gs!==null&&<div style={{textAlign:"right",flexShrink:0}}>
-                  <div style={{fontSize:18,fontWeight:800,fontFamily:"'Outfit'",color:gs>=7?"#4CAF50":gs>=5?"#f97316":"#ef4444"}}>{(gs*10).toFixed(0)}%</div>
+                  <div style={{fontSize:18,fontWeight:800,fontFamily:"'Outfit'",color:gs>=7?"#4CAF50":gs>=5?"#7A2E34":"#ef4444"}}>{(gs*10).toFixed(0)}%</div>
                   <div style={{fontSize:7,color:"rgba(44,24,16,0.25)",textTransform:"uppercase"}}>pertinence</div>
                 </div>}
                 <span style={{fontSize:12,color:"#7A6E5C",flexShrink:0,transition:"transform 0.2s",transform:isExpanded?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
@@ -8305,9 +8325,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     {ATTRS.map(a=>{
                       const val = sc[a]||0;
                       const isPrio = (profile.priorityTags||[]).some(pid=>{const m={puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort'};return m[pid]===a;});
-                      return <div key={a} style={{textAlign:"center",padding:"6px 4px",borderRadius:8,background:isPrio?"rgba(249,115,22,0.1)":"#F8F5F0"}}>
-                        <div style={{fontSize:16,fontWeight:800,color:val>=8?"#4CAF50":val>=6?"#2C1810":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
-                        <div style={{fontSize:8,color:isPrio?"#f97316":"rgba(44,24,16,0.25)",fontWeight:isPrio?700:500,marginTop:2}}>{isPrio?"★ ":""}{a}</div>
+                      return <div key={a} style={{textAlign:"center",padding:"6px 4px",borderRadius:8,background:isPrio?"rgba(122,46,52,0.1)":"#F8F5F0"}}>
+                        <div style={{fontSize:16,fontWeight:800,color:val>=8?"#4CAF50":val>=6?"#2C1810":"#7A2E34",fontFamily:"'Outfit'"}}>{val}</div>
+                        <div style={{fontSize:8,color:isPrio?"#7A2E34":"rgba(44,24,16,0.25)",fontWeight:isPrio?700:500,marginTop:2}}>{isPrio?"★ ":""}{a}</div>
                       </div>;
                     })}
                   </div>
@@ -8322,8 +8342,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </div>
 
                   {/* Pour qui ? */}
-                  {dbMatch.editorial&&<div style={{position:"relative",padding:"12px 14px 12px 24px",background:"#F8F5F0",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)",marginBottom:8}}>
-                    <div style={{position:"absolute",top:4,left:8,fontSize:20,color:"rgba(249,115,22,0.15)",fontFamily:"Georgia"}}>"</div>
+                  {dbMatch.editorial&&<div style={{position:"relative",padding:"12px 14px 12px 24px",background:"#F8F5F0",borderRadius:10,borderLeft:"3px solid rgba(122,46,52,0.3)",marginBottom:8}}>
+                    <div style={{position:"absolute",top:4,left:8,fontSize:20,color:"rgba(122,46,52,0.15)",fontFamily:"Georgia"}}>"</div>
                     <p style={{fontSize:11,color:"#5A4D40",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{dbMatch.editorial}</p>
                   </div>}
 
@@ -8334,8 +8354,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const isDyn = !!dynText;
                     // In compact view, show only first 2 sentences
                     const shortText = isDyn ? text.split('. ').slice(0, 2).join('. ') + '.' : text;
-                    return <div style={{padding:"8px 12px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:10,border:`1px solid ${isDyn?"rgba(249,115,22,0.1)":"rgba(76,175,80,0.1)"}`,marginBottom:8}}>
-                      <span style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>{isDyn?`🎯 Pour ${profileName} : `:"🎯 S'adresse à : "}</span>
+                    return <div style={{padding:"8px 12px",background:isDyn?"rgba(122,46,52,0.05)":"rgba(76,175,80,0.05)",borderRadius:10,border:`1px solid ${isDyn?"rgba(122,46,52,0.1)":"rgba(76,175,80,0.1)"}`,marginBottom:8}}>
+                      <span style={{fontSize:8,color:isDyn?"#7A2E34":"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>{isDyn?`🎯 Pour ${profileName} : `:"🎯 S'adresse à : "}</span>
                       <span style={{fontSize:10,color:"rgba(44,24,16,0.35)"}} dangerouslySetInnerHTML={{__html: shortText.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#5A4D40">$1</strong>')}}/>
                     </div>;
                   })()}
@@ -8349,7 +8369,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     ))}
                   </div>}
 
-                  {!dbMatch.editorial&&<p style={{fontSize:11,color:"rgba(44,24,16,0.35)",lineHeight:1.6,margin:"0 0 8px",padding:"10px 12px",background:"#F8F5F0",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)"}}>
+                  {!dbMatch.editorial&&<p style={{fontSize:11,color:"rgba(44,24,16,0.35)",lineHeight:1.6,margin:"0 0 8px",padding:"10px 12px",background:"#F8F5F0",borderRadius:10,borderLeft:"3px solid rgba(122,46,52,0.3)"}}>
                     🎯 {generateRacketDescription(dbMatch)}
                   </p>}
                 </> : <p style={{fontSize:10,color:"rgba(44,24,16,0.25)",margin:"10px 0 8px",lineHeight:1.4}}>{s.description||"Raquette non référencée dans la base locale. Les scores ne sont pas disponibles."}</p>}
@@ -8357,8 +8377,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 {/* Add button */}
                 {!s._selected&&!s._disabled&&<button onClick={(e)=>{e.stopPropagation();selectSuggestion(i);setAddDetail(null);}} style={{
                   width:"100%",padding:"10px",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-                  background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.12))",
-                  border:"1px solid rgba(249,115,22,0.4)",color:"#f97316",transition:"all 0.2s",marginTop:4,
+                  background:"linear-gradient(135deg,rgba(122,46,52,0.2),rgba(239,68,68,0.12))",
+                  border:"1px solid rgba(122,46,52,0.4)",color:"#7A2E34",transition:"all 0.2s",marginTop:4,
                 }}>+ Ajouter au comparateur</button>}
                 {s._selected&&<div style={{textAlign:"center",padding:"8px",fontSize:11,color:"#4CAF50",fontWeight:600}}>✅ Ajoutée au comparateur</div>}
               </div>}
@@ -8384,21 +8404,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",position:"relative",padding:"0 4px"}}>
               {/* Connecting line */}
               <div style={{position:"absolute",top:16,left:24,right:24,height:2,background:"rgba(44,24,16,0.04)",borderRadius:1,zIndex:0}}/>
-              <div style={{position:"absolute",top:16,left:24,height:2,background:"linear-gradient(90deg,#f97316,#ef4444)",borderRadius:1,zIndex:1,transition:"width 0.4s cubic-bezier(.4,0,.2,1)",width:`${(wizardStep/(STEPS.length-1))*Math.max(0,(100-16))}%`}}/>
+              <div style={{position:"absolute",top:16,left:24,height:2,background:"linear-gradient(90deg,#7A2E34,#ef4444)",borderRadius:1,zIndex:1,transition:"width 0.4s cubic-bezier(.4,0,.2,1)",width:`${(wizardStep/(STEPS.length-1))*Math.max(0,(100-16))}%`}}/>
               {STEPS.map((s,i)=>(
                 <button key={i} onClick={()=>setWizardStep(i)} style={{
                   display:"flex",flexDirection:"column",alignItems:"center",gap:4,background:"none",border:"none",cursor:"pointer",padding:0,zIndex:2,fontFamily:"inherit",
                 }}>
                   <div style={{
                     width:32,height:32,borderRadius:10,
-                    background:i<=wizardStep?"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))":"rgba(44,24,16,0.03)",
-                    border:`2px solid ${i<=wizardStep?"#f97316":"rgba(44,24,16,0.06)"}`,
+                    background:i<=wizardStep?"linear-gradient(135deg,rgba(122,46,52,0.25),rgba(239,68,68,0.2))":"rgba(44,24,16,0.03)",
+                    border:`2px solid ${i<=wizardStep?"#7A2E34":"rgba(44,24,16,0.06)"}`,
                     display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,
                     transition:"all 0.3s ease",
-                    boxShadow:i===wizardStep?"0 0 12px rgba(249,115,22,0.3)":"none",
+                    boxShadow:i===wizardStep?"0 0 12px rgba(122,46,52,0.3)":"none",
                     transform:i===wizardStep?"scale(1.1)":"scale(1)",
                   }}>{s.icon}</div>
-                  <span style={{fontSize:9,fontWeight:i===wizardStep?700:500,color:i<=wizardStep?"#f97316":"#7A6E5C",transition:"color 0.3s ease"}}>{s.label}</span>
+                  <span style={{fontSize:9,fontWeight:i===wizardStep?700:500,color:i<=wizardStep?"#7A2E34":"#7A6E5C",transition:"color 0.3s ease"}}>{s.label}</span>
                 </button>
               ))}
             </div>
@@ -8508,9 +8528,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const sel = profile.styleTags.includes(t.id);
               return <button key={t.id} onClick={()=>toggleTag("styleTags",t.id)} className="pa-tag" style={{
                 padding:"10px 14px",borderRadius:12,
-                background:sel?"rgba(249,115,22,0.15)":"#FFFFFF",
-                border:`1.5px solid ${sel?"#f97316":"rgba(44,24,16,0.06)"}`,
-                color:sel?"#f97316":"rgba(44,24,16,0.35)",fontSize:12,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
+                background:sel?"rgba(122,46,52,0.15)":"#FFFFFF",
+                border:`1.5px solid ${sel?"#7A2E34":"rgba(44,24,16,0.06)"}`,
+                color:sel?"#7A2E34":"rgba(44,24,16,0.35)",fontSize:12,fontWeight:sel?700:500,cursor:"pointer",fontFamily:"inherit",
                 transition:"all 0.2s ease",textAlign:"left",
               }}>
                 <div>{t.label}</div>
@@ -8635,8 +8655,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             setWizardStep(s=>s+1);
           }} style={{
             flex:2,padding:"12px 0",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-            background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",
-            border:"1px solid rgba(249,115,22,0.35)",color:"#f97316",transition:"all 0.2s ease",
+            background:"linear-gradient(135deg,rgba(122,46,52,0.2),rgba(239,68,68,0.15))",
+            border:"1px solid rgba(122,46,52,0.35)",color:"#7A2E34",transition:"all 0.2s ease",
           }}>
             Suivant →
           </button>}
@@ -8680,7 +8700,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div style={{display:"flex",gap:6,alignItems:"center",marginBottom:8}}>
             <div style={{flex:1,background:"#FFFFFF",borderRadius:8,padding:"6px 10px",border:"1px solid rgba(44,24,16,0.04)"}}>
               <div style={{fontSize:9,color:"rgba(44,24,16,0.25)"}}>Embarquées</div>
-              <div style={{fontSize:16,fontWeight:700,color:"#f97316",fontFamily:"'Outfit'"}}>{RACKETS_DB.length}</div>
+              <div style={{fontSize:16,fontWeight:700,color:"#7A2E34",fontFamily:"'Outfit'"}}>{RACKETS_DB.length}</div>
             </div>
             <div style={{fontSize:14,color:"#5A4D40"}}>+</div>
             <div style={{flex:1,background:"#FFFFFF",borderRadius:8,padding:"6px 10px",border:"1px solid rgba(44,24,16,0.04)"}}>
@@ -8688,9 +8708,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{fontSize:16,fontWeight:700,color:localDBCount>0?"#22c55e":"#5A4D40",fontFamily:"'Outfit'"}}>{localDBCount}</div>
             </div>
             <div style={{fontSize:14,color:"#5A4D40"}}>=</div>
-            <div style={{flex:1,background:"rgba(249,115,22,0.05)",borderRadius:8,padding:"6px 10px",border:"1px solid rgba(249,115,22,0.15)"}}>
-              <div style={{fontSize:9,color:"#f97316"}}>Total</div>
-              <div style={{fontSize:16,fontWeight:700,color:"#f97316",fontFamily:"'Outfit'"}}>{totalDBCount}</div>
+            <div style={{flex:1,background:"rgba(122,46,52,0.05)",borderRadius:8,padding:"6px 10px",border:"1px solid rgba(122,46,52,0.15)"}}>
+              <div style={{fontSize:9,color:"#7A2E34"}}>Total</div>
+              <div style={{fontSize:16,fontWeight:700,color:"#7A2E34",fontFamily:"'Outfit'"}}>{totalDBCount}</div>
             </div>
           </div>
           <div style={{display:"flex",gap:6}}>
@@ -8712,23 +8732,25 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         </div>}
         {rackets.map(r=>{
           const isSel=selected.includes(r.id); const fy=fyConfig[computeForYou(r.scores, profile, r)]||fyConfig.partial;
+          const gs = profileName ? computeGlobalScore(r.scores, profile, r) : null;
           return(<button key={r.id} className="pa-card" onClick={()=>toggleRacket(r.id)}
             onMouseEnter={()=>setHoveredRacket(r.id)} onMouseLeave={()=>setHoveredRacket(null)}
             style={{
-            background:isSel?`linear-gradient(165deg,${r.color}18,${r.color}08,transparent)`:"#F8F5F0",
-            border:`2px solid ${isSel?r.color+"cc":"rgba(44,24,16,0.04)"}`,borderRadius:14,padding:"12px 10px",cursor:"pointer",textAlign:"left",position:"relative",fontFamily:"'Inter',sans-serif",
-            boxShadow:isSel?`0 4px 16px ${r.color}22`:"0 2px 8px rgba(0,0,0,0.15)",
+            background:isSel?`linear-gradient(165deg,${r.color}18,${r.color}08,#FFFFFF)`:"#FFFFFF",
+            border:`2px solid ${isSel?r.color+"cc":"rgba(44,24,16,0.06)"}`,borderRadius:16,padding:"14px 10px 12px",cursor:"pointer",textAlign:"center",position:"relative",fontFamily:"'Inter',sans-serif",
+            boxShadow:isSel?`0 4px 16px ${r.color}22`:"0 2px 8px rgba(0,0,0,0.04)",
             transform:hoveredRacket===r.id?"translateY(-3px) scale(1.02)":"none",
             transition:"all 0.2s ease",
           }}>
             <div className="pa-badge" style={{position:"absolute",top:-8,right:8,background:fy.bg+"dd",border:`1px solid ${fy.border}`,borderRadius:20,padding:"2px 8px",fontSize:7,fontWeight:700,color:"#fff",letterSpacing:"0.03em",boxShadow:`0 2px 8px ${fy.bg}44`}}>{fy.text}</div>
-            {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:38,height:38,objectFit:"contain",borderRadius:6,marginBottom:4,background:"rgba(44,24,16,0.04)"}} onError={e=>{e.target.style.display='none'}}/>}
-            <div style={{width:8,height:8,borderRadius:"50%",background:r.color,marginBottom:6,boxShadow:isSel?`0 0 8px ${r.color}`:"none",transition:"box-shadow 0.2s ease"}}/>
-            <div style={{fontSize:11,fontWeight:700,color:isSel?"#1A1410":"#5A4D40",lineHeight:1.3,transition:"color 0.2s ease"}}>{r.shortName}</div>
-            <div style={{fontSize:9,color:"#7A6E5C",marginTop:3}}>{r.shape} · {r.weight}</div>
-            <div style={{fontSize:9,color:"#7A6E5C"}}>{r.brand} · {r.price}</div>
-            {r._incomplete&&<div onClick={e=>{e.stopPropagation();rescoreRacket(r.id)}} style={{position:"absolute",bottom:4,right:4,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.4)",borderRadius:6,padding:"2px 6px",fontSize:8,color:"#f97316",fontWeight:700,cursor:"pointer"}}>🔄 Re-scorer</div>}
-            <div onClick={e=>{e.stopPropagation();openRacketSheet(r,"app")}} style={{fontSize:8,color:"#f97316",marginTop:4,cursor:"pointer",fontWeight:600,opacity:0.7}}>📋 Fiche</div>
+            {r.imageUrl?<img src={proxyImg(r.imageUrl)} alt="" style={{width:56,height:70,objectFit:"contain",margin:"0 auto 6px",display:"block",filter:isSel?`drop-shadow(0 4px 8px ${r.color}30)`:"none"}} onError={e=>{e.target.style.display='none'}}/>:<div style={{width:56,height:70,margin:"0 auto 6px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(44,24,16,0.02)",borderRadius:8}}><span style={{fontSize:24,opacity:0.2}}>🏸</span></div>}
+            <div style={{width:8,height:8,borderRadius:"50%",background:r.color,margin:"0 auto 4px",boxShadow:isSel?`0 0 8px ${r.color}`:"none",transition:"box-shadow 0.2s ease"}}/>
+            <div style={{fontSize:11,fontWeight:700,color:"#7A2E34",lineHeight:1.3}}>{r.shortName}</div>
+            <div style={{fontSize:9,color:"#7A6E5C",marginTop:2}}>{r.brand}</div>
+            {gs!==null&&<div style={{marginTop:4,fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:gs>=7?"#059669":gs>=5?"#D97706":"#DC2626"}}>{(gs*10).toFixed(0)}<span style={{fontSize:8,color:"#9A8E7C",fontWeight:500}}>%</span></div>}
+            <div style={{fontSize:8,color:"#9A8E7C",marginTop:2}}>{r.price&&r.price!=="—"?r.price:""}</div>
+            {r._incomplete&&<div onClick={e=>{e.stopPropagation();rescoreRacket(r.id)}} style={{position:"absolute",bottom:4,right:4,background:"rgba(122,46,52,0.15)",border:"1px solid rgba(122,46,52,0.4)",borderRadius:6,padding:"2px 6px",fontSize:8,color:"#7A2E34",fontWeight:700,cursor:"pointer"}}>🔄 Re-scorer</div>}
+            <div onClick={e=>{e.stopPropagation();openRacketSheet(r,"app")}} style={{fontSize:8,color:"#7A2E34",marginTop:4,cursor:"pointer",fontWeight:600,opacity:0.6}}>Voir la fiche →</div>
           </button>);
         })}
       </div>
@@ -8841,7 +8863,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(44,24,16,0.03)"/>
             <XAxis type="number" domain={[0,10]} tick={{fill:"#7A6E5C",fontSize:9,fontFamily:"Inter"}}/>
             <YAxis dataKey="attribute" type="category" tick={{fill:"rgba(44,24,16,0.35)",fontSize:10,fontWeight:600,fontFamily:"Inter"}} width={75}/>
-            <Tooltip contentStyle={{background:"#1a2236",border:"1px solid rgba(44,24,16,0.06)",borderRadius:10,fontSize:11,fontFamily:"Inter",boxShadow:"0 8px 24px rgba(0,0,0,0.4)"}}/>
+            <Tooltip contentStyle={{background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.08)",borderRadius:10,fontSize:11,fontFamily:"Inter",boxShadow:"0 8px 24px rgba(0,0,0,0.08)"}}/>
             {selRackets.map(r=>(<Bar key={r.id} dataKey={r.shortName} fill={r.color} radius={[0,5,5,0]} barSize={10}/>))}
           </BarChart>
         </ResponsiveContainer>
@@ -8860,7 +8882,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 {selRackets.map(r=>(<td key={r.id} style={{padding:"6px 4px",textAlign:"center",color:"#5A4D40",fontSize:10}}>{r[row.k]}</td>))}
               </tr>
             ))}
-            <tr><td colSpan={selRackets.length+1} style={{padding:"12px 6px 4px",color:"#f97316",fontWeight:700,fontSize:10,borderTop:"2px solid rgba(249,115,22,0.15)",fontFamily:"'Outfit'",letterSpacing:"0.04em",textTransform:"uppercase"}}>Notes brutes /10</td></tr>
+            <tr><td colSpan={selRackets.length+1} style={{padding:"12px 6px 4px",color:"#7A2E34",fontWeight:700,fontSize:10,borderTop:"2px solid rgba(122,46,52,0.15)",fontFamily:"'Outfit'",letterSpacing:"0.04em",textTransform:"uppercase"}}>Notes brutes /10</td></tr>
             {selRackets.some(r=>r.refSource)&&<tr><td style={{padding:"2px 6px",fontSize:8,color:"#5A4D40",fontStyle:"italic"}}>Source</td>
               {selRackets.map(r=>(<td key={r.id} style={{padding:"2px 4px",textAlign:"center",fontSize:7,color:"#5A4D40",fontStyle:"italic"}}>{r.refSource||"Règles méca."}</td>))}
             </tr>}
@@ -8882,10 +8904,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {(()=>{
               const avgs = selRackets.map(r=>Math.round((ATTRS.reduce((s,a)=>s+r.scores[a],0)/ATTRS.length)*10)/10);
               const mxA = Math.max(...avgs);
-              return(<tr style={{borderTop:"2px solid rgba(249,115,22,0.2)",background:"rgba(249,115,22,0.04)"}}>
-                <td style={{padding:"10px 6px",color:"#f97316",fontWeight:800,fontSize:11,fontFamily:"'Outfit'"}}>⭐ MOYENNE</td>
+              return(<tr style={{borderTop:"2px solid rgba(122,46,52,0.2)",background:"rgba(122,46,52,0.04)"}}>
+                <td style={{padding:"10px 6px",color:"#7A2E34",fontWeight:800,fontSize:11,fontFamily:"'Outfit'"}}>⭐ MOYENNE</td>
                 {selRackets.map((r,i)=>{const a=avgs[i];const best=a===mxA&&selRackets.length>1;
-                  return(<td key={r.id} style={{padding:"10px 4px",textAlign:"center",color:best?"#4ade80":"#f97316",fontWeight:800,fontSize:14,fontFamily:"'Outfit'"}}>{a}<span style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:500}}>/10</span></td>);})}
+                  return(<td key={r.id} style={{padding:"10px 4px",textAlign:"center",color:best?"#4ade80":"#7A2E34",fontWeight:800,fontSize:14,fontFamily:"'Outfit'"}}>{a}<span style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:500}}>/10</span></td>);})}
               </tr>);
             })()}
           </tbody>
@@ -8956,9 +8978,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-score-red { color: #dc2626 !important; }
             #print-pertinence .print-badge { border: 1px solid #666 !important; padding: 3px 8px !important; border-radius: 6px !important; font-size: 8px !important; font-weight: 700 !important; }
             #print-pertinence .print-badge-green { background: #dcfce7 !important; color: #166534 !important; border-color: #22c55e !important; }
-            #print-pertinence .print-badge-orange { background: #fff7ed !important; color: #9a3412 !important; border-color: #f97316 !important; }
+            #print-pertinence .print-badge-orange { background: #fff7ed !important; color: #9a3412 !important; border-color: #7A2E34 !important; }
             #print-pertinence .print-badge-red { background: #fef2f2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
-            #print-pertinence .print-profile-box { border: 1.5px solid #f97316 !important; background: #fff7ed !important; padding: 12px !important; border-radius: 10px !important; }
+            #print-pertinence .print-profile-box { border: 1.5px solid #7A2E34 !important; background: #fff7ed !important; padding: 12px !important; border-radius: 10px !important; }
             #print-pertinence .print-warn { color: #dc2626 !important; }
             #print-pertinence .print-verdict { color: #5A4D40 !important; font-style: normal !important; }
             #print-pertinence .print-deep-analysis { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; page-break-inside: avoid; break-inside: avoid; }
@@ -8978,15 +9000,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div id="print-pertinence" style={S.card}>
           {/* ===== PRINT HEADER — professional branding ===== */}
           <div className="print-header" style={{display:"none",marginBottom:14}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",borderBottom:"3px solid #f97316",paddingBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",borderBottom:"3px solid #7A2E34",paddingBottom:10}}>
               <div style={{display:"flex",alignItems:"center",gap:10}}>
                 <svg width="44" height="44" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
-                  <rect width="50" height="50" rx="11" fill="#f97316"/>
+                  <rect width="50" height="50" rx="11" fill="#7A2E34"/>
                   <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="3.2" fill="none"/><circle cx="25" cy="10" r="2" fill="#fff" opacity="0.25"/><circle cx="25" cy="18" r="2" fill="#fff" opacity="0.25"/><circle cx="25" cy="25" r="2" fill="#fff" opacity="0.25"/><circle cx="12" cy="18" r="2" fill="#fff" opacity="0.25"/><circle cx="38" cy="18" r="2" fill="#fff" opacity="0.25"/></g></g>
                   <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
                 <div>
-                  <div style={{fontSize:18,fontWeight:800,color:"#f97316",fontFamily:"'Outfit'",letterSpacing:"-0.01em"}}>PADEL ANALYZER</div>
+                  <div style={{fontSize:18,fontWeight:800,color:"#7A2E34",fontFamily:"'Outfit'",letterSpacing:"-0.01em"}}>PADEL ANALYZER</div>
                   <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginTop:1}}>Analyse de pertinence personnalisée</div>
                 </div>
               </div>
@@ -9000,12 +9022,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* ===== SCREEN: Print button + profile name ===== */}
           <div style={{display:"flex",gap:8,marginBottom:10,alignItems:"center"}} className="no-print">
             <div style={{flex:1,fontSize:12,fontWeight:700,color:"#2C1810"}}>{profileName ? `👤 ${profileName}` : <span style={{color:"#7A6E5C",fontWeight:400,fontSize:11}}>Définis un nom dans 👤 Profil → 💾 Sauvegarder</span>}</div>
-            <button onClick={()=>window.print()} style={{padding:"8px 16px",background:"rgba(249,115,22,0.2)",border:"1px solid #f97316",borderRadius:8,color:"#f97316",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>🖨 Imprimer</button>
+            <button onClick={()=>window.print()} style={{padding:"8px 16px",background:"rgba(122,46,52,0.2)",border:"1px solid #7A2E34",borderRadius:8,color:"#7A2E34",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>🖨 Imprimer</button>
           </div>
 
           {/* ===== PROFILE BOX ===== */}
-          <div className="print-profile-box" style={{background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:10,padding:12,marginBottom:12,boxSizing:"border-box"}}>
-            <p style={{fontSize:10,color:"#f97316",fontWeight:700,margin:"0 0 3px"}}>👤 Profil actif :</p>
+          <div className="print-profile-box" style={{background:"rgba(122,46,52,0.06)",border:"1px solid rgba(122,46,52,0.15)",borderRadius:10,padding:12,marginBottom:12,boxSizing:"border-box"}}>
+            <p style={{fontSize:10,color:"#7A2E34",fontWeight:700,margin:"0 0 3px"}}>👤 Profil actif :</p>
             <p style={{fontSize:9,color:"rgba(44,24,16,0.35)",margin:0,lineHeight:1.5}}>{profileText}</p>
             <p style={{fontSize:8,color:"#7A6E5C",margin:"4px 0 0"}}>{(()=>{
               const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
@@ -9061,7 +9083,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <PolarAngleAxis dataKey="attribute" tick={{fill:"rgba(44,24,16,0.35)",fontSize:8}}/>
                     <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
                     <Radar name="Raquette idéale" dataKey="Raquette idéale" stroke="#6366f1" fill="#6366f1" fillOpacity={0.12} strokeWidth={2} strokeDasharray="6 3"/>
-                    {ranked.length>0&&<Radar name={"🥇 "+bestShort} dataKey={"🥇 "+bestShort} stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>}
+                    {ranked.length>0&&<Radar name={"🥇 "+bestShort} dataKey={"🥇 "+bestShort} stroke="#7A2E34" fill="#7A2E34" fillOpacity={0.15} strokeWidth={2}/>}
                     <Legend wrapperStyle={{fontSize:8,color:"rgba(44,24,16,0.35)",paddingTop:2}}/>
                 </RadarChart>
               </div>
@@ -9072,7 +9094,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   const gs = r.globalScore;
                   const fy2 = computeForYou(r.scores, profile, r);
                   const fyC = fy2==="recommended"?"#22c55e":fy2==="no"?"#ef4444":"#FF9800";
-                  return <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:i===0?"rgba(249,115,22,0.06)":"#F8F5F0",border:`1px solid ${i===0?"rgba(249,115,22,0.2)":"rgba(44,24,16,0.04)"}`,borderRadius:10,flex:1}}>
+                  return <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:i===0?"rgba(122,46,52,0.06)":"#F8F5F0",border:`1px solid ${i===0?"rgba(122,46,52,0.2)":"rgba(44,24,16,0.04)"}`,borderRadius:10,flex:1}}>
                     <span style={{fontSize:18}}>{medals[i]}</span>
                     {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className="print-racket-img-sm" style={{width:32,height:40,objectFit:"contain",borderRadius:6,background:"rgba(44,24,16,0.04)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
                     <div style={{flex:1,minWidth:0}}>
@@ -9298,7 +9320,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const barClass = low?"print-bar-fill-red":v>=7.5?"print-bar-fill-green":v>=6?"print-bar-fill-gray":"print-bar-fill-yellow";
                     return(<div key={attr} style={{minWidth:0}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <span style={{fontSize:isPodium?9:8,color:isKey?"#f97316":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
+                        <span style={{fontSize:isPodium?9:8,color:isKey?"#7A2E34":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
                         <span style={{fontSize:isPodium?10:9,color:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#5A4D40":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
                       </div>
                       <div className="print-bar-bg" style={{height:barH,background:"rgba(44,24,16,0.04)",borderRadius:barH/2,marginTop:2}}>
@@ -9371,9 +9393,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const prioTitle = prioLabels.join(' & ');
             
             return <>
-              <div className="print-section-divider" style={{borderTop:"2px solid rgba(249,115,22,0.15)",margin:"16px 0 8px",paddingTop:8}}>
-                <div className="no-print" style={{fontSize:12,fontWeight:800,color:"#f97316",marginBottom:4}}>🎯 À DÉCOUVRIR — Top {prioTitle}</div>
-                <div className="print-section-title" style={{display:"none",fontSize:11,fontWeight:700,color:"#f97316",marginBottom:4}}>🎯 À DÉCOUVRIR — Top {prioTitle}</div>
+              <div className="print-section-divider" style={{borderTop:"2px solid rgba(122,46,52,0.15)",margin:"16px 0 8px",paddingTop:8}}>
+                <div className="no-print" style={{fontSize:12,fontWeight:800,color:"#7A2E34",marginBottom:4}}>🎯 À DÉCOUVRIR — Top {prioTitle}</div>
+                <div className="print-section-title" style={{display:"none",fontSize:11,fontWeight:700,color:"#7A2E34",marginBottom:4}}>🎯 À DÉCOUVRIR — Top {prioTitle}</div>
                 <div className="no-print" style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginBottom:8}}>Raquettes de la base hors sélection, classées par {prioLabels.join(' + ')}</div>
               </div>
               {picks.map((r,idx)=>{
@@ -9382,9 +9404,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 const fy = fyConfig[forYouVal]||fyConfig.partial;
                 const badgeClass = forYouVal==="recommended"?"print-badge-green":forYouVal==="no"?"print-badge-red":"print-badge-orange";
                 return <div key={"disco-"+r.id} className="print-card" style={{
-                  background:"rgba(249,115,22,0.04)", border:"1px solid rgba(249,115,22,0.2)",
+                  background:"rgba(122,46,52,0.04)", border:"1px solid rgba(122,46,52,0.2)",
                   borderRadius:12, padding:"12px 14px", marginBottom:8, boxSizing:"border-box", overflow:"hidden",
-                  borderLeft:"5px solid rgba(249,115,22,0.5)", pageBreakInside:"avoid", breakInside:"avoid",
+                  borderLeft:"5px solid rgba(122,46,52,0.5)", pageBreakInside:"avoid", breakInside:"avoid",
                 }}>
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
                     <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:28}}>
@@ -9395,7 +9417,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
                         <span style={{fontSize:12,fontWeight:700,color:"#2C1810"}}>{r.name}</span>
                         <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
-                        <span style={{background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#f97316",flexShrink:0,whiteSpace:"nowrap"}}>★ {r._prioAvg}/10</span>
+                        <span style={{background:"rgba(122,46,52,0.15)",border:"1px solid rgba(122,46,52,0.3)",borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#7A2E34",flexShrink:0,whiteSpace:"nowrap"}}>★ {r._prioAvg}/10</span>
                       </div>
                       <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginTop:3}}>
                         {r.shape} · {r.weight} · {r.brand}{r.player && r.player !== "—" ? ` · 🎾 ${r.player}` : ""}{r.price && r.price !== "—" ? ` · ${r.price}` : ""}
@@ -9411,7 +9433,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       const isKey = prioAttrs.includes(attr);
                       return <div key={attr} style={{minWidth:0}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                          <span style={{fontSize:9,color:isKey?"#f97316":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
+                          <span style={{fontSize:9,color:isKey?"#7A2E34":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
                           <span style={{fontSize:10,color:v>=7.5?"#4ade80":v>=6?"#5A4D40":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
                         </div>
                         <div className="print-bar-bg" style={{height:6,background:"rgba(44,24,16,0.04)",borderRadius:3,marginTop:2}}>
@@ -9432,11 +9454,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="18" height="18" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="50" height="50" rx="11" fill="#f97316"/>
+                  <rect width="50" height="50" rx="11" fill="#7A2E34"/>
                   <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="4" fill="none"/></g></g>
                   <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
                 </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#f97316",fontWeight:700}}>Padel Analyzer</span> V13 · Scoring hybride calibré</span>
+                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#7A2E34",fontWeight:700}}>Padel Analyzer</span> V13 · Scoring hybride calibré</span>
               </div>
               <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
                 {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
@@ -9452,7 +9474,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* ============================================================ */}
       <div style={{...S.card,marginTop:4}}>
         <div style={S.title}>📖 Lexique des critères</div>
-        {ATTRS.map(a=>(<div key={a} onClick={()=>setOpenAttr(o=>o===a?null:a)} style={{padding:"8px 10px",marginBottom:3,borderRadius:10,background:openAttr===a?"rgba(249,115,22,0.06)":"transparent",cursor:"pointer",transition:"background 0.15s ease"}}>
+        {ATTRS.map(a=>(<div key={a} onClick={()=>setOpenAttr(o=>o===a?null:a)} style={{padding:"8px 10px",marginBottom:3,borderRadius:10,background:openAttr===a?"rgba(122,46,52,0.06)":"transparent",cursor:"pointer",transition:"background 0.15s ease"}}>
           <div style={{fontSize:11,fontWeight:700,color:"#2C1810",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span>{a}</span><span style={{fontSize:9,color:"#7A6E5C",transition:"transform 0.2s ease",transform:openAttr===a?"rotate(90deg)":"none"}}>▸</span></div>
           {openAttr===a&&<div style={{fontSize:10,color:"#94a3b8",marginTop:5,lineHeight:1.6,animation:"fadeIn 0.2s ease"}}>{explanations[a]}</div>}
         </div>))}
