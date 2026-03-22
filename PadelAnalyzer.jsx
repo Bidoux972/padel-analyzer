@@ -4722,15 +4722,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
   // STYLES
   // ============================================================
   const S = {
-    root:{fontFamily:"'Inter',sans-serif",background:"linear-gradient(160deg,#080c14,#0f1623,#0d1520,#0a0f1a)",color:"#e2e8f0",minHeight:"100vh",padding:"24px 16px",letterSpacing:"-0.01em"},
-    card:{background:"rgba(255,255,255,0.025)",borderRadius:16,padding:18,border:"1px solid rgba(255,255,255,0.06)",marginBottom:18,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"fadeIn 0.3s ease"},
-    title:{fontFamily:"'Outfit'",fontSize:12,fontWeight:700,color:"#f97316",marginBottom:12,letterSpacing:"0.04em",textTransform:"uppercase"},
-    btn:(a)=>({padding:"8px 16px",background:a?"rgba(249,115,22,0.15)":"rgba(255,255,255,0.04)",border:`1px solid ${a?"#f97316":"rgba(255,255,255,0.08)"}`,borderRadius:10,color:a?"#f97316":"#94a3b8",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s cubic-bezier(.4,0,.2,1)",letterSpacing:"-0.01em"}),
-    btnGreen:{padding:"12px 16px",background:"linear-gradient(135deg,rgba(76,175,80,0.2),rgba(76,175,80,0.1))",border:"1px solid rgba(76,175,80,0.4)",borderRadius:12,color:"#4CAF50",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",width:"100%",transition:"all 0.2s ease",letterSpacing:"-0.01em"},
-    input:{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:10,color:"#e2e8f0",fontSize:12,outline:"none",boxSizing:"border-box",fontFamily:"'Inter',sans-serif",transition:"border-color 0.2s ease"},
-    select:{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:10,color:"#e2e8f0",fontSize:12,outline:"none",boxSizing:"border-box",fontFamily:"'Inter',sans-serif",appearance:"auto",transition:"border-color 0.2s ease"},
-    label:{fontSize:10,color:"#64748b",fontWeight:600,marginBottom:4,display:"block",letterSpacing:"0.02em",textTransform:"uppercase"},
-    sectionLabel:{fontSize:12,color:"#e2e8f0",fontWeight:700,marginTop:14,marginBottom:3},
+    root:{fontFamily:"'Inter',sans-serif",background:"#F4F0E8",color:"#2C1810",minHeight:"100vh",padding:"24px 16px",letterSpacing:"-0.01em"},
+    card:{background:"#FFFFFF",borderRadius:18,padding:18,border:"1px solid #EDE7DD",marginBottom:18,boxShadow:"0 2px 8px rgba(0,0,0,0.03)",animation:"fadeIn 0.3s ease"},
+    title:{fontFamily:"'Outfit'",fontSize:12,fontWeight:700,color:"#7A2E34",marginBottom:12,letterSpacing:"0.04em",textTransform:"uppercase"},
+    btn:(a)=>({padding:"8px 16px",background:a?"rgba(122,46,52,0.08)":"rgba(255,255,255,0.6)",border:`1px solid ${a?"rgba(122,46,52,0.2)":"rgba(44,24,16,0.06)"}`,borderRadius:10,color:a?"#7A2E34":"#7A6E5C",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s cubic-bezier(.4,0,.2,1)",letterSpacing:"-0.01em",backdropFilter:"blur(4px)"}),
+    btnGreen:{padding:"12px 16px",background:"linear-gradient(135deg,rgba(5,150,105,0.1),rgba(5,150,105,0.05))",border:"1px solid rgba(5,150,105,0.2)",borderRadius:12,color:"#059669",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",width:"100%",transition:"all 0.2s ease",letterSpacing:"-0.01em"},
+    input:{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.6)",border:"1px solid rgba(44,24,16,0.08)",borderRadius:10,color:"#2C1810",fontSize:12,outline:"none",boxSizing:"border-box",fontFamily:"'Inter',sans-serif",transition:"border-color 0.2s ease"},
+    select:{width:"100%",padding:"9px 12px",background:"rgba(255,255,255,0.6)",border:"1px solid rgba(44,24,16,0.08)",borderRadius:10,color:"#2C1810",fontSize:12,outline:"none",boxSizing:"border-box",fontFamily:"'Inter',sans-serif",appearance:"auto",transition:"border-color 0.2s ease"},
+    label:{fontSize:10,color:"#9A8E7C",fontWeight:600,marginBottom:4,display:"block",letterSpacing:"0.02em",textTransform:"uppercase"},
+    sectionLabel:{fontSize:12,color:"#2C1810",fontWeight:700,marginTop:14,marginBottom:3},
   };
 
   return (
@@ -4752,7 +4752,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         /* Cards */
         .pa-card { transition: all 0.25s cubic-bezier(.4,0,.2,1); }
-        .pa-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.35); }
+        .pa-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
         .pa-card:active { transform: translateY(-1px) scale(0.99); }
 
         /* Tags */
@@ -7973,13 +7973,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         return (
         <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",background:"#F4F0E8",minHeight:"100dvh"}} className="pa-screen-fade">
           {/* Header — level gradient band */}
-          <div style={{background:({Expert:"linear-gradient(135deg,#92400E,#B45309,#D97706)",Avancé:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Intermédiaire:"linear-gradient(135deg,#1E3A5F,#1D4ED8,#2563EB)",Compétition:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Débutant:"linear-gradient(135deg,#064E3B,#047857,#059669)"})[profile.level]||"linear-gradient(135deg,#475569,#64748b)",borderRadius:"0 0 22px 22px",padding:"16px 22px 20px",marginBottom:20}}>
+          <div style={{background:({Expert:"linear-gradient(135deg,#92400E,#B45309,#D97706)",Avancé:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Intermédiaire:"linear-gradient(135deg,#1E3A5F,#1D4ED8,#2563EB)",Compétition:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Débutant:"linear-gradient(135deg,#064E3B,#047857,#059669)"})[profile.level]||"linear-gradient(135deg,#7A6E5C,#64748b)",borderRadius:"0 0 22px 22px",padding:"16px 22px 20px",marginBottom:20}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-              <button onClick={()=>{if(cameFromAdminRef.current){cameFromAdminRef.current=false;setScreen("admin");}else{setScreen("home");}}} style={{background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:10,padding:"6px 14px",color:"rgba(255,255,255,0.7)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit",backdropFilter:"blur(4px)"}}>{cameFromAdminRef.current?"🔙 Admin":"👥 Profils"}</button>
+              <button onClick={()=>{if(cameFromAdminRef.current){cameFromAdminRef.current=false;setScreen("admin");}else{setScreen("home");}}} style={{background:"rgba(44,24,16,0.08)",border:"1px solid rgba(44,24,16,0.1)",borderRadius:10,padding:"6px 14px",color:"rgba(255,255,255,0.7)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit",backdropFilter:"blur(4px)"}}>{cameFromAdminRef.current?"🔙 Admin":"👥 Profils"}</button>
               <span style={{fontSize:8,color:"rgba(255,255,255,0.3)",letterSpacing:"0.15em",fontWeight:600}}>COACHING</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
-              <div style={{width:52,height:52,borderRadius:16,background:"rgba(255,255,255,0.15)",border:"2px solid rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,color:"#fff",flexShrink:0}}>
+              <div style={{width:52,height:52,borderRadius:16,background:"rgba(44,24,16,0.1)",border:"2px solid rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,color:"#fff",flexShrink:0}}>
                 {profileName.charAt(0).toUpperCase()}
               </div>
               <div style={{flex:1,minWidth:0}}>
@@ -7988,8 +7988,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <span style={{fontSize:11,color:"rgba(255,255,255,0.55)"}}>{hand} · {role}</span>
                 </div>
                 <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:6}}>
-                  {styles.map(s=><span key={s} style={{fontSize:9,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:8,padding:"2px 8px",color:"rgba(255,255,255,0.65)"}}>{s}</span>)}
-                  {priorities.slice(0,2).map(p=><span key={p} style={{fontSize:9,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:8,padding:"2px 8px",color:"rgba(255,255,255,0.65)"}}>{p}</span>)}
+                  {styles.map(s=><span key={s} style={{fontSize:9,background:"rgba(44,24,16,0.06)",border:"1px solid rgba(44,24,16,0.1)",borderRadius:8,padding:"2px 8px",color:"rgba(255,255,255,0.65)"}}>{s}</span>)}
+                  {priorities.slice(0,2).map(p=><span key={p} style={{fontSize:9,background:"rgba(44,24,16,0.06)",border:"1px solid rgba(44,24,16,0.1)",borderRadius:8,padding:"2px 8px",color:"rgba(255,255,255,0.65)"}}>{p}</span>)}
                   {injuries.map(inj=><span key={inj} style={{fontSize:9,background:"rgba(239,68,68,0.2)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:8,padding:"2px 8px",color:"#fca5a5"}}>🩹 {inj}</span>)}
                 </div>
               </div>
@@ -8007,9 +8007,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <ResponsiveContainer width="100%" height={195}>
                   <RadarChart data={idealRadar} margin={{top:10,right:34,bottom:8,left:34}}>
                     <PolarGrid stroke="rgba(44,24,16,0.06)"/>
-                    <PolarAngleAxis dataKey="attribute" tick={{fill:"rgba(44,24,16,0.35)",fontSize:10}}/>
+                    <PolarAngleAxis dataKey="attribute" tick={{fill:"#5A4D40",fontSize:10}}/>
                     <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
-                    <Radar name="Idéal" dataKey="Idéal" stroke="#f97316" fill="#f97316" fillOpacity={0.15} strokeWidth={2}/>
+                    <Radar name="Idéal" dataKey="Idéal" stroke="#7A2E34" fill="#7A2E34" fillOpacity={0.15} strokeWidth={2}/>
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
@@ -8033,7 +8033,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {/* RIGHT COLUMN — Top 3 + Explanation */}
             <div style={{flex:1,background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:18,padding:"18px 20px",animation:"fadeIn 0.5s ease",display:"flex",flexDirection:"column"}}>
               <p style={{fontSize:11,fontWeight:700,color:"rgba(44,24,16,0.35)",letterSpacing:"0.06em",textTransform:"uppercase",textAlign:"center",marginTop:0,marginBottom:4}}>Top 3 pour {profileName}</p>
-              <p style={{fontSize:10,color:"#475569",textAlign:"center",margin:"0 0 14px",lineHeight:1.4}}>Classement sur {scored.length} raquettes compatibles{brandPref.length>0?<span> · toutes marques</span>:""}</p>
+              <p style={{fontSize:10,color:"#7A6E5C",textAlign:"center",margin:"0 0 14px",lineHeight:1.4}}>Classement sur {scored.length} raquettes compatibles{brandPref.length>0?<span> · toutes marques</span>:""}</p>
               <div style={{display:"flex",flexDirection:"column",gap:10,flex:1}}>
                 {top3.map((r, i)=>{
                   const fy = fyConfig2[r._fy]||fyConfig2.partial;
@@ -8051,7 +8051,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                         </div>
                       </div>
                       <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0}}>
-                        <div style={{fontSize:22,fontWeight:800,color: i===0?"#f97316":"#cbd5e1",fontFamily:"'Outfit'"}}>{r._gs.toFixed(1)}</div>
+                        <div style={{fontSize:22,fontWeight:800,color: i===0?"#f97316":"#5A4D40",fontFamily:"'Outfit'"}}>{r._gs.toFixed(1)}</div>
                         <div style={{fontSize:8,color:"rgba(44,24,16,0.25)",textTransform:"uppercase"}}>Score</div>
                       </div>
                     </div>
@@ -8079,7 +8079,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <div style={{fontSize:12,fontWeight:700,color:note.severity==="high"?"#fbbf24":"#2C1810",marginBottom:6,letterSpacing:"-0.01em"}}>
                   {note.severity==="high"?"⚡":"💡"} Note du coach
                 </div>
-                <p style={{fontSize:11,color:"#cbd5e1",margin:0,lineHeight:1.5}}>{note.text}</p>
+                <p style={{fontSize:11,color:"#5A4D40",margin:0,lineHeight:1.5}}>{note.text}</p>
               </div>)}
             </div>;
           })()}
@@ -8097,7 +8097,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div>{hasSession ? "📊 Reprendre l'analyse" : "📊 Explorer la base"}</div>
               <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:400,marginTop:3}}>{hasSession?"Session en cours":"Comparer, radars, PDF"}</div>
             </button>
-            <button onClick={()=>{setWizardStep(0);setPanel("profile");setScreen("app");}} style={{flex:"0 1 150px",padding:"14px 16px",background:"#FFFFFF",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,color:"rgba(44,24,16,0.35)",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
+            <button onClick={()=>{setWizardStep(0);setPanel("profile");setScreen("app");}} style={{flex:"0 1 150px",padding:"14px 16px",background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:14,color:"rgba(44,24,16,0.35)",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
               <div>✏️ Modifier profil</div>
               <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:400,marginTop:3}}>Affiner les résultats</div>
             </button>
@@ -8105,7 +8105,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* ===== KIOSK MODE — QR code + actions ===== */}
           {isKiosk && top3.length > 0 && <div style={{background:"linear-gradient(135deg, rgba(124,58,237,0.08), rgba(168,85,247,0.04))",border:"1px solid rgba(124,58,237,0.25)",borderRadius:18,padding:"24px 20px",marginTop:20,textAlign:"center",animation:"fadeIn 0.5s ease"}}>
-            <div style={{fontSize:14,fontWeight:700,color:"#c4b5fd",marginBottom:6,fontFamily:F.body||"'Inter',sans-serif"}}>📱 Retrouvez vos résultats</div>
+            <div style={{fontSize:14,fontWeight:700,color:"#5B21B6",marginBottom:6,fontFamily:F.body||"'Inter',sans-serif"}}>📱 Retrouvez vos résultats</div>
             <p style={{fontSize:11,color:"rgba(44,24,16,0.35)",margin:"0 0 16px",lineHeight:1.5}}>Scannez ce QR code pour retrouver vos recommandations sur votre téléphone</p>
             <div style={{display:"inline-block",background:"#fff",borderRadius:12,padding:12,boxShadow:"0 4px 24px rgba(0,0,0,0.3)"}}>
               <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`https://padelanalyzer.fr/?top=${top3.map(r=>r.id).join(',')}&p=${encodeURIComponent(profileName)}`)}`} alt="QR Code" style={{width:180,height:180,display:"block"}} onError={e=>{e.target.style.display="none";}}/>
@@ -8114,14 +8114,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <button onClick={()=>{setKioskIdle(false);createNewProfile();}} className="pa-cta" style={{padding:"12px 24px",background:`linear-gradient(135deg,${T.accent},#d4541e)`,border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:`0 4px 16px ${T.accentGlow}`}}>
                 🔄 Nouveau test
               </button>
-              <button onClick={()=>{setScreen("login");setFamilyCode("");setFamilyCodeLS("");}} className="pa-ghost" style={{padding:"12px 24px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:12,color:"#c4b5fd",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
+              <button onClick={()=>{setScreen("login");setFamilyCode("");setFamilyCodeLS("");}} className="pa-ghost" style={{padding:"12px 24px",background:"rgba(44,24,16,0.03)",border:"1px solid rgba(44,24,16,0.08)",borderRadius:12,color:"#5B21B6",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
                 💾 Créer un compte
               </button>
             </div>
           </div>}
 
           {/* Footer */}
-          <div style={{fontSize:7,color:"#334155",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
+          <div style={{fontSize:7,color:"#5A4D40",letterSpacing:"0.05em",textAlign:"center",marginTop:8}}>
             <span style={{fontFamily:"'Outfit'",fontWeight:600}}>PADEL ANALYZER</span> V13 · {totalDBCount} raquettes · Scoring hybride calibré
           </div>
         </div>
@@ -8142,8 +8142,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </svg>
           <h1 style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,background:"linear-gradient(135deg,#f97316,#ef4444,#ec4899)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0,letterSpacing:"-0.02em"}}>PADEL ANALYZER</h1>
         </div>
-        <p style={{color:"#475569",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
-        <div style={{fontSize:8,color:"#334155",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V12</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {totalDBCount}</span></div>
+        <p style={{color:"#7A6E5C",fontSize:10,margin:0,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:500}}>Recherche web · Notation calibrée · Profil personnalisable</p>
+        <div style={{fontSize:8,color:"#5A4D40",marginTop:4,fontFamily:"'Outfit'",fontWeight:500,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><span>V12</span><span style={{background:"rgba(249,115,22,0.1)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:10,padding:"1px 7px",color:"#f97316",fontSize:8,fontWeight:600}}>🗃️ {totalDBCount}</span></div>
         {/* Profile bar */}
         {profileName&&<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
           <div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(44,24,16,0.03)",border:"1px solid rgba(44,24,16,0.08)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
@@ -8153,7 +8153,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <button onClick={goToDashboard} style={{background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.2)",borderRadius:20,padding:"4px 10px",color:"#f97316",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
             <span style={{fontSize:11}}>🏠</span> Dashboard
           </button>
-          <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(255,255,255,0.12)",borderRadius:20,padding:"4px 10px",color:"rgba(44,24,16,0.35)",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
+          <button onClick={disconnect} style={{background:"none",border:"1px solid rgba(44,24,16,0.08)",borderRadius:20,padding:"4px 10px",color:"rgba(44,24,16,0.35)",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s",display:"flex",alignItems:"center",gap:4}}>
             <span style={{fontSize:12}}>⏻</span> Déconnexion
           </button>
         </div>}
@@ -8271,24 +8271,24 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:fyConfig==="no"?{text:"PEU ADAPTÉ",color:"rgba(44,24,16,0.25)"}:null;
             return (
             <div key={i} style={{
-              background:s._selected?"rgba(249,115,22,0.15)":isExpanded?"rgba(44,24,16,0.04)":"rgba(255,255,255,0.04)",
-              border:`1px solid ${s._selected?"#f97316":isExpanded?"rgba(249,115,22,0.2)":"rgba(255,255,255,0.1)"}`,
+              background:s._selected?"rgba(249,115,22,0.15)":isExpanded?"rgba(44,24,16,0.04)":"rgba(44,24,16,0.03)",
+              border:`1px solid ${s._selected?"#f97316":isExpanded?"rgba(249,115,22,0.2)":"rgba(44,24,16,0.06)"}`,
               borderRadius:12,marginBottom:8,overflow:"hidden",
               cursor:s._disabled?"default":"pointer",opacity:s._disabled&&!s._selected?0.3:1,
               transition:"all 0.2s",
             }}>
               {/* Header row — click to expand */}
               <div onClick={()=>!s._disabled&&setAddDetail(isExpanded?null:i)} style={{padding:"10px 12px",display:"flex",alignItems:"center",gap:10}}>
-                {dbMatch?.imageUrl&&<img src={dbMatch.imageUrl} alt={s.name} style={{width:38,height:38,objectFit:"contain",borderRadius:6,flexShrink:0,background:"rgba(255,255,255,0.04)"}} onError={e=>{e.target.style.display="none";}}/>}
+                {dbMatch?.imageUrl&&<img src={dbMatch.imageUrl} alt={s.name} style={{width:38,height:38,objectFit:"contain",borderRadius:6,flexShrink:0,background:"rgba(44,24,16,0.03)"}} onError={e=>{e.target.style.display="none";}}/>}
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{s.name}</div>
+                  <div style={{fontSize:12,fontWeight:700,color:"#2C1810"}}>{s.name}</div>
                   <div style={{fontSize:10,color:"rgba(44,24,16,0.35)",marginTop:2}}>{s.brand} · {s.shape} · {s.weight}</div>
                 </div>
                 {gs!==null&&<div style={{textAlign:"right",flexShrink:0}}>
                   <div style={{fontSize:18,fontWeight:800,fontFamily:"'Outfit'",color:gs>=7?"#4CAF50":gs>=5?"#f97316":"#ef4444"}}>{(gs*10).toFixed(0)}%</div>
                   <div style={{fontSize:7,color:"rgba(44,24,16,0.25)",textTransform:"uppercase"}}>pertinence</div>
                 </div>}
-                <span style={{fontSize:12,color:"#475569",flexShrink:0,transition:"transform 0.2s",transform:isExpanded?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
+                <span style={{fontSize:12,color:"#7A6E5C",flexShrink:0,transition:"transform 0.2s",transform:isExpanded?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
               </div>
 
               {/* Expanded tech sheet */}
@@ -8306,7 +8306,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       const val = sc[a]||0;
                       const isPrio = (profile.priorityTags||[]).some(pid=>{const m={puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort'};return m[pid]===a;});
                       return <div key={a} style={{textAlign:"center",padding:"6px 4px",borderRadius:8,background:isPrio?"rgba(249,115,22,0.1)":"#F8F5F0"}}>
-                        <div style={{fontSize:16,fontWeight:800,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
+                        <div style={{fontSize:16,fontWeight:800,color:val>=8?"#4CAF50":val>=6?"#2C1810":"#f97316",fontFamily:"'Outfit'"}}>{val}</div>
                         <div style={{fontSize:8,color:isPrio?"#f97316":"rgba(44,24,16,0.25)",fontWeight:isPrio?700:500,marginTop:2}}>{isPrio?"★ ":""}{a}</div>
                       </div>;
                     })}
@@ -8316,7 +8316,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,marginBottom:8}}>
                     {[["Forme",dbMatch.shape],["Poids",dbMatch.weight],["Équilibre",dbMatch.balance],["Surface",dbMatch.surface],["Noyau",dbMatch.core],["Prix",dbMatch.price],["Année",dbMatch.year]].map(([k,v])=>
                       v&&v!=="—"&&<div key={k} style={{fontSize:9,color:"rgba(44,24,16,0.35)",padding:"2px 0"}}>
-                        <span style={{color:"rgba(44,24,16,0.25)"}}>{k}:</span> <span style={{fontWeight:600,color:"#cbd5e1"}}>{v}</span>
+                        <span style={{color:"rgba(44,24,16,0.25)"}}>{k}:</span> <span style={{fontWeight:600,color:"#5A4D40"}}>{v}</span>
                       </div>
                     )}
                   </div>
@@ -8324,7 +8324,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   {/* Pour qui ? */}
                   {dbMatch.editorial&&<div style={{position:"relative",padding:"12px 14px 12px 24px",background:"#F8F5F0",borderRadius:10,borderLeft:"3px solid rgba(249,115,22,0.3)",marginBottom:8}}>
                     <div style={{position:"absolute",top:4,left:8,fontSize:20,color:"rgba(249,115,22,0.15)",fontFamily:"Georgia"}}>"</div>
-                    <p style={{fontSize:11,color:"#cbd5e1",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{dbMatch.editorial}</p>
+                    <p style={{fontSize:11,color:"#5A4D40",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{dbMatch.editorial}</p>
                   </div>}
 
                   {(()=>{
@@ -8336,7 +8336,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const shortText = isDyn ? text.split('. ').slice(0, 2).join('. ') + '.' : text;
                     return <div style={{padding:"8px 12px",background:isDyn?"rgba(249,115,22,0.05)":"rgba(76,175,80,0.05)",borderRadius:10,border:`1px solid ${isDyn?"rgba(249,115,22,0.1)":"rgba(76,175,80,0.1)"}`,marginBottom:8}}>
                       <span style={{fontSize:8,color:isDyn?"#f97316":"#4CAF50",fontWeight:700,textTransform:"uppercase"}}>{isDyn?`🎯 Pour ${profileName} : `:"🎯 S'adresse à : "}</span>
-                      <span style={{fontSize:10,color:"rgba(44,24,16,0.35)"}} dangerouslySetInnerHTML={{__html: shortText.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#cbd5e1">$1</strong>')}}/>
+                      <span style={{fontSize:10,color:"rgba(44,24,16,0.35)"}} dangerouslySetInnerHTML={{__html: shortText.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#5A4D40">$1</strong>')}}/>
                     </div>;
                   })()}
 
@@ -8344,7 +8344,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     {dbMatch.techHighlights.slice(0,3).map((h,hi)=>(
                       <div key={hi} style={{padding:"4px 10px",marginBottom:2,borderRadius:6,background:"#F8F5F0",display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:8}}>
                         <span style={{fontSize:8,color:"rgba(44,24,16,0.25)",fontWeight:600}}>{h.label}</span>
-                        <span style={{fontSize:9,color:"#e2e8f0",fontWeight:700,fontFamily:"'Outfit'",whiteSpace:"nowrap"}}>{h.value}</span>
+                        <span style={{fontSize:9,color:"#2C1810",fontWeight:700,fontFamily:"'Outfit'",whiteSpace:"nowrap"}}>{h.value}</span>
                       </div>
                     ))}
                   </div>}
@@ -8391,14 +8391,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 }}>
                   <div style={{
                     width:32,height:32,borderRadius:10,
-                    background:i<=wizardStep?"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))":"rgba(255,255,255,0.04)",
-                    border:`2px solid ${i<=wizardStep?"#f97316":"rgba(255,255,255,0.1)"}`,
+                    background:i<=wizardStep?"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.2))":"rgba(44,24,16,0.03)",
+                    border:`2px solid ${i<=wizardStep?"#f97316":"rgba(44,24,16,0.06)"}`,
                     display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,
                     transition:"all 0.3s ease",
                     boxShadow:i===wizardStep?"0 0 12px rgba(249,115,22,0.3)":"none",
                     transform:i===wizardStep?"scale(1.1)":"scale(1)",
                   }}>{s.icon}</div>
-                  <span style={{fontSize:9,fontWeight:i===wizardStep?700:500,color:i<=wizardStep?"#f97316":"#475569",transition:"color 0.3s ease"}}>{s.label}</span>
+                  <span style={{fontSize:9,fontWeight:i===wizardStep?700:500,color:i<=wizardStep?"#f97316":"#7A6E5C",transition:"color 0.3s ease"}}>{s.label}</span>
                 </button>
               ))}
             </div>
@@ -8408,7 +8408,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         {/* STEP 0: Identité */}
         {wizardStep===0&&<div style={{animation:"fadeIn 0.3s ease"}}>
-          <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>👤 Qui es-tu ?</div>
+          <div style={{fontSize:18,fontWeight:800,color:"#2C1810",marginBottom:4,fontFamily:"'Outfit'"}}>👤 Qui es-tu ?</div>
           <p style={{fontSize:11,color:"rgba(44,24,16,0.25)",margin:"0 0 14px",lineHeight:1.5}}>{groupRole==="vendeur"?"Ces infos permettent d'adapter les recommandations au gabarit et au niveau du joueur.":"Ces infos permettent d'adapter les recommandations à ton gabarit et ton niveau."}</p>
           
           <div style={{marginBottom:12}}>
@@ -8459,7 +8459,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* Expert mode hint */}
           {(profile.fitness||"").toLowerCase()==="athletique"&&!(profile.level||"").includes("Expert")&&Number(profile.age)>=15&&
-            <div style={{background:"rgba(168,85,247,0.06)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:8,padding:"6px 10px",marginBottom:12,fontSize:10,color:"#c084fc",fontWeight:500,cursor:"pointer"}}
+            <div style={{background:"rgba(168,85,247,0.06)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:8,padding:"6px 10px",marginBottom:12,fontSize:10,color:"#6D28D9",fontWeight:500,cursor:"pointer"}}
               onClick={()=>setProfile(p=>({...p,level:"Expert"}))}>
               💡 Condition Athlétique détectée → le <strong>Mode Expert</strong> est disponible ! <span style={{textDecoration:"underline"}}>Activer</span>
             </div>
@@ -8492,7 +8492,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
           }
           {detectPlayerMode(profile)==="expert"&&
-            <div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#c084fc",fontWeight:700}}>
+            <div style={{background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.3)",borderRadius:8,padding:"8px 10px",marginTop:12,fontSize:10,color:"#6D28D9",fontWeight:700}}>
               ⚡ Mode Expert (Tapia) — priorités dominent
             </div>
           }
@@ -8500,7 +8500,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         {/* STEP 1: Style de jeu */}
         {wizardStep===1&&<div style={{animation:"fadeIn 0.3s ease"}}>
-          <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>🎾 Comment tu joues ?</div>
+          <div style={{fontSize:18,fontWeight:800,color:"#2C1810",marginBottom:4,fontFamily:"'Outfit'"}}>🎾 Comment tu joues ?</div>
           <p style={{fontSize:11,color:"rgba(44,24,16,0.25)",margin:"0 0 14px",lineHeight:1.5}}>Ton style de jeu influence directement quels critères sont prioritaires dans le scoring. Sélectionne tout ce qui te correspond.</p>
           
           <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:14}}>
@@ -8514,7 +8514,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 transition:"all 0.2s ease",textAlign:"left",
               }}>
                 <div>{t.label}</div>
-                <div style={{fontSize:9,color:sel?"#fb923c":"#475569",marginTop:2,fontWeight:400}}>{t.tip}</div>
+                <div style={{fontSize:9,color:sel?"#fb923c":"#7A6E5C",marginTop:2,fontWeight:400}}>{t.tip}</div>
               </button>;
             })}
           </div>
@@ -8525,7 +8525,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         {/* STEP 2: Corps / Blessures */}
         {wizardStep===2&&<div style={{animation:"fadeIn 0.3s ease"}}>
-          <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>🩹 Ton corps</div>
+          <div style={{fontSize:18,fontWeight:800,color:"#2C1810",marginBottom:4,fontFamily:"'Outfit'"}}>🩹 Ton corps</div>
           <p style={{fontSize:11,color:"rgba(44,24,16,0.25)",margin:"0 0 14px",lineHeight:1.5}}>Les blessures et contraintes physiques impactent directement le critère <strong style={{color:"#ef4444"}}>Confort</strong> dans les verdicts. Une raquette inadaptée peut aggraver les douleurs.</p>
           
           <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:14}}>
@@ -8551,43 +8551,43 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {/* STEP 3: Priorités / Expert Feel + Marques */}
         {wizardStep===3&&<div style={{animation:"fadeIn 0.3s ease"}}>
           {detectPlayerMode(profile)==="expert" ? (<>
-          <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>🎾 Tes sensations raquette</div>
+          <div style={{fontSize:18,fontWeight:800,color:"#2C1810",marginBottom:4,fontFamily:"'Outfit'"}}>🎾 Tes sensations raquette</div>
           <p style={{fontSize:11,color:"#a855f7",margin:"0 0 14px",lineHeight:1.5,fontWeight:600}}>⚡ Mode Pro — matching par propriétés physiques</p>
 
           {/* Toucher */}
-          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>🤚 Toucher</div>
+          <div style={{fontSize:10,fontWeight:700,color:"#6D28D9",marginBottom:4,textTransform:"uppercase"}}>🤚 Toucher</div>
           <div style={{display:"flex",gap:6,marginBottom:10}}>
             {[{v:"sec",l:"Sec"},{v:"medium",l:"Medium"},{v:"souple",l:"Souple"}].map(o=>{
               const sel=profile.expertToucher===o.v;
-              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertToucher:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#c084fc":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertToucher:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#6D28D9":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
             })}
           </div>
           {/* Réactivité */}
-          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>⚡ Réactivité</div>
+          <div style={{fontSize:10,fontWeight:700,color:"#6D28D9",marginBottom:4,textTransform:"uppercase"}}>⚡ Réactivité</div>
           <div style={{display:"flex",gap:6,marginBottom:10}}>
             {[{v:"explosive",l:"Explosive"},{v:"progressive",l:"Progressive"}].map(o=>{
               const sel=profile.expertReactivite===o.v;
-              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertReactivite:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#c084fc":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertReactivite:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#6D28D9":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
             })}
           </div>
           {/* Poids */}
-          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>⚖️ Poids en main</div>
+          <div style={{fontSize:10,fontWeight:700,color:"#6D28D9",marginBottom:4,textTransform:"uppercase"}}>⚖️ Poids en main</div>
           <div style={{display:"flex",gap:6,marginBottom:10}}>
             {[{v:"lourd",l:"Lourd"},{v:"equilibre",l:"Équilibré"},{v:"leger",l:"Léger"}].map(o=>{
               const sel=profile.expertPoids===o.v;
-              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertPoids:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#c084fc":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertPoids:o.v}))} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#6D28D9":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
             })}
           </div>
           {/* Forme */}
-          <div style={{fontSize:10,fontWeight:700,color:"#c084fc",marginBottom:4,textTransform:"uppercase"}}>🔷 Forme</div>
+          <div style={{fontSize:10,fontWeight:700,color:"#6D28D9",marginBottom:4,textTransform:"uppercase"}}>🔷 Forme</div>
           <div style={{display:"flex",gap:6,marginBottom:14}}>
             {[{v:"diamant",l:"Diamant"},{v:"goutte",l:"Goutte"},{v:"ronde",l:"Ronde"},{v:"indifferent",l:"Indiff."}].map(o=>{
               const sel=profile.expertForme===o.v;
-              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertForme:o.v}))} style={{flex:1,padding:"8px 4px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:10,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#c084fc":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
+              return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertForme:o.v}))} style={{flex:1,padding:"8px 4px",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:10,fontWeight:sel?700:500,background:sel?"rgba(168,85,247,0.15)":"#FFFFFF",border:`1.5px solid ${sel?"#a855f7":"rgba(44,24,16,0.06)"}`,color:sel?"#6D28D9":"rgba(44,24,16,0.35)",transition:"all 0.2s"}}>{o.l}</button>;
             })}
           </div>
           </>) : (<>
-          <div style={{fontSize:18,fontWeight:800,color:"#e2e8f0",marginBottom:4,fontFamily:"'Outfit'"}}>🎯 Qu'est-ce que tu cherches ?</div>
+          <div style={{fontSize:18,fontWeight:800,color:"#2C1810",marginBottom:4,fontFamily:"'Outfit'"}}>🎯 Qu'est-ce que tu cherches ?</div>
           <p style={{fontSize:11,color:"rgba(44,24,16,0.25)",margin:"0 0 14px",lineHeight:1.5}}>Ces critères pondèrent le score global. Les suggestions seront triées en fonction de tes priorités.</p>
           
           <div style={{fontSize:11,fontWeight:700,color:"#4CAF50",marginBottom:6}}>Priorités dans ta raquette</div>
@@ -8664,10 +8664,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         <div style={S.title}>🗑 GÉRER LES RAQUETTES</div>
         {rackets.length===0&&<p style={{color:"rgba(44,24,16,0.25)",fontSize:11,textAlign:"center",padding:"12px 0"}}>Aucune raquette. Utilise "🎯 Suggère-moi" ou "+ Ajouter" pour commencer.</p>}
         {rackets.map(r=>(
-          <div key={r.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 0",borderBottom:"1px solid rgba(255,255,255,0.05)"}}>
+          <div key={r.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid #EDE7DD"}}>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:r.color}}/>
-              <span style={{fontSize:11,color:"#e2e8f0"}}>{r.name}</span>
+              <span style={{fontSize:11,color:"#2C1810"}}>{r.name}</span>
             </div>
             <button onClick={()=>removeRacket(r.id)} style={{background:"rgba(239,68,68,0.15)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:6,padding:"3px 8px",color:"#ef4444",fontSize:10,cursor:"pointer",fontWeight:600,fontFamily:"inherit"}}>Supprimer</button>
           </div>
@@ -8682,22 +8682,22 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{fontSize:9,color:"rgba(44,24,16,0.25)"}}>Embarquées</div>
               <div style={{fontSize:16,fontWeight:700,color:"#f97316",fontFamily:"'Outfit'"}}>{RACKETS_DB.length}</div>
             </div>
-            <div style={{fontSize:14,color:"#334155"}}>+</div>
+            <div style={{fontSize:14,color:"#5A4D40"}}>+</div>
             <div style={{flex:1,background:"#FFFFFF",borderRadius:8,padding:"6px 10px",border:"1px solid rgba(44,24,16,0.04)"}}>
               <div style={{fontSize:9,color:"rgba(44,24,16,0.25)"}}>Apprises (local)</div>
-              <div style={{fontSize:16,fontWeight:700,color:localDBCount>0?"#22c55e":"#334155",fontFamily:"'Outfit'"}}>{localDBCount}</div>
+              <div style={{fontSize:16,fontWeight:700,color:localDBCount>0?"#22c55e":"#5A4D40",fontFamily:"'Outfit'"}}>{localDBCount}</div>
             </div>
-            <div style={{fontSize:14,color:"#334155"}}>=</div>
+            <div style={{fontSize:14,color:"#5A4D40"}}>=</div>
             <div style={{flex:1,background:"rgba(249,115,22,0.05)",borderRadius:8,padding:"6px 10px",border:"1px solid rgba(249,115,22,0.15)"}}>
               <div style={{fontSize:9,color:"#f97316"}}>Total</div>
-              <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:"'Outfit'"}}>{totalDBCount}</div>
+              <div style={{fontSize:16,fontWeight:700,color:"#f97316",fontFamily:"'Outfit'"}}>{totalDBCount}</div>
             </div>
           </div>
           <div style={{display:"flex",gap:6}}>
             <button onClick={exportLocalDB} disabled={localDBCount===0} style={{...S.btn(false),flex:1,padding:"7px 0",fontSize:10,opacity:localDBCount===0?0.4:1,cursor:localDBCount===0?"default":"pointer"}}>📤 Exporter local ({localDBCount})</button>
             <button onClick={clearLocalDB} disabled={localDBCount===0} style={{...S.btn(false),flex:1,padding:"7px 0",fontSize:10,color:"#ef4444",borderColor:"rgba(239,68,68,0.2)",opacity:localDBCount===0?0.4:1,cursor:localDBCount===0?"default":"pointer"}}>🧹 Vider local</button>
           </div>
-          <p style={{fontSize:8,color:"#475569",margin:"6px 0 0",lineHeight:1.4}}>Les raquettes « apprises » sont celles trouvées via recherche web. Exporte-les pour les intégrer à la base embarquée.</p>
+          <p style={{fontSize:8,color:"#7A6E5C",margin:"6px 0 0",lineHeight:1.4}}>Les raquettes « apprises » sont celles trouvées via recherche web. Exporte-les pour les intégrer à la base embarquée.</p>
         </div>
       </div>}
 
@@ -8724,9 +8724,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div className="pa-badge" style={{position:"absolute",top:-8,right:8,background:fy.bg+"dd",border:`1px solid ${fy.border}`,borderRadius:20,padding:"2px 8px",fontSize:7,fontWeight:700,color:"#fff",letterSpacing:"0.03em",boxShadow:`0 2px 8px ${fy.bg}44`}}>{fy.text}</div>
             {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:38,height:38,objectFit:"contain",borderRadius:6,marginBottom:4,background:"rgba(44,24,16,0.04)"}} onError={e=>{e.target.style.display='none'}}/>}
             <div style={{width:8,height:8,borderRadius:"50%",background:r.color,marginBottom:6,boxShadow:isSel?`0 0 8px ${r.color}`:"none",transition:"box-shadow 0.2s ease"}}/>
-            <div style={{fontSize:11,fontWeight:700,color:isSel?"#fff":"rgba(44,24,16,0.35)",lineHeight:1.3,transition:"color 0.2s ease"}}>{r.shortName}</div>
-            <div style={{fontSize:9,color:"#475569",marginTop:3}}>{r.shape} · {r.weight}</div>
-            <div style={{fontSize:9,color:"#475569"}}>{r.brand} · {r.price}</div>
+            <div style={{fontSize:11,fontWeight:700,color:isSel?"#1A1410":"#5A4D40",lineHeight:1.3,transition:"color 0.2s ease"}}>{r.shortName}</div>
+            <div style={{fontSize:9,color:"#7A6E5C",marginTop:3}}>{r.shape} · {r.weight}</div>
+            <div style={{fontSize:9,color:"#7A6E5C"}}>{r.brand} · {r.price}</div>
             {r._incomplete&&<div onClick={e=>{e.stopPropagation();rescoreRacket(r.id)}} style={{position:"absolute",bottom:4,right:4,background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.4)",borderRadius:6,padding:"2px 6px",fontSize:8,color:"#f97316",fontWeight:700,cursor:"pointer"}}>🔄 Re-scorer</div>}
             <div onClick={e=>{e.stopPropagation();openRacketSheet(r,"app")}} style={{fontSize:8,color:"#f97316",marginTop:4,cursor:"pointer",fontWeight:600,opacity:0.7}}>📋 Fiche</div>
           </button>);
@@ -8736,25 +8736,25 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* Arena button — only when 2+ rackets selected */}
       {selRackets.length>=2&&<button onClick={()=>setShowArena(true)} style={{
         display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",
-        padding:"14px 20px",marginBottom:18,borderRadius:14,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-        background:"linear-gradient(135deg,rgba(124,58,237,0.15),rgba(79,70,229,0.1),rgba(236,72,153,0.08))",
-        border:"1.5px solid rgba(124,58,237,0.35)",
+        padding:"16px 20px",marginBottom:18,borderRadius:16,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
+        background:"linear-gradient(135deg,#5B21B6,#7C3AED)",
+        border:"none",
         transition:"all 0.3s ease",
-        boxShadow:"0 4px 24px rgba(124,58,237,0.15)",
+        boxShadow:"0 6px 24px rgba(91,33,182,0.2)",
       }}
-      onMouseEnter={e=>{e.currentTarget.style.background="linear-gradient(135deg,rgba(124,58,237,0.25),rgba(79,70,229,0.18),rgba(236,72,153,0.12))";e.currentTarget.style.boxShadow="0 6px 32px rgba(124,58,237,0.25)";e.currentTarget.style.transform="translateY(-1px)";}}
-      onMouseLeave={e=>{e.currentTarget.style.background="linear-gradient(135deg,rgba(124,58,237,0.15),rgba(79,70,229,0.1),rgba(236,72,153,0.08))";e.currentTarget.style.boxShadow="0 4px 24px rgba(124,58,237,0.15)";e.currentTarget.style.transform="none";}}>
+      onMouseEnter={e=>{e.currentTarget.style.boxShadow="0 8px 32px rgba(91,33,182,0.3)";e.currentTarget.style.transform="translateY(-2px)";}}
+      onMouseLeave={e=>{e.currentTarget.style.boxShadow="0 6px 24px rgba(91,33,182,0.2)";e.currentTarget.style.transform="none";}}>
         <span style={{fontSize:18}}>⚔️</span>
-        <span style={{fontSize:13,fontWeight:700,color:"#c4b5fd",letterSpacing:"-0.01em"}}>Entrer dans l'Arène</span>
-        <span style={{fontSize:10,color:"#7c3aed",fontWeight:600,background:"rgba(124,58,237,0.15)",padding:"2px 8px",borderRadius:8}}>{selRackets.length} raquettes</span>
+        <span style={{fontSize:14,fontWeight:700,color:"#FFFFFF"}}>Entrer dans l'Arène</span>
+        <span style={{fontSize:10,color:"rgba(255,255,255,0.7)",fontWeight:600,background:"rgba(255,255,255,0.15)",padding:"3px 10px",borderRadius:8}}>{selRackets.length} raquettes</span>
       </button>}
 
       {/* ============================================================ */}
       {/* CHART TABS */}
       {/* ============================================================ */}
-      <div style={{display:"flex",gap:2,marginBottom:18,background:"#FFFFFF",borderRadius:12,padding:4,border:"1px solid rgba(255,255,255,0.04)"}}>
+      <div style={{display:"flex",gap:2,marginBottom:18,background:"#FFFFFF",borderRadius:12,padding:4,border:"1px solid rgba(44,24,16,0.03)"}}>
         {[["radar","🕸 Radar"],["bars","📊 Barres"],["table","📋 Détails"],["fit","🎯 Pertinence"]].map(([k,l])=>(
-          <button key={k} className={`pa-tab ${tab===k?"pa-tab-active":""}`} onClick={()=>setTab(k)} style={{flex:1,padding:"9px 0",background:tab===k?"rgba(44,24,16,0.04)":"transparent",border:"none",borderRadius:9,color:tab===k?"#fff":"rgba(44,24,16,0.25)",fontSize:11,fontWeight:tab===k?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",letterSpacing:"-0.01em",transition:"all 0.2s ease"}}>{l}</button>
+          <button key={k} className={`pa-tab ${tab===k?"pa-tab-active":""}`} onClick={()=>setTab(k)} style={{flex:1,padding:"9px 0",background:tab===k?"rgba(44,24,16,0.04)":"transparent",border:"none",borderRadius:9,color:tab===k?"#1A1410":"rgba(44,24,16,0.25)",fontSize:11,fontWeight:tab===k?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",letterSpacing:"-0.01em",transition:"all 0.2s ease"}}>{l}</button>
         ))}
       </div>
 
@@ -8776,10 +8776,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             {(()=>{
               const hr = hoveredRacket ? selRackets.find(r=>r.id===hoveredRacket) : null;
               if(!hr || !hr.imageUrl) return <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",opacity:0.3}}>
-                <div style={{width:100,height:100,borderRadius:"50%",border:"2px dashed rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>
+                <div style={{width:100,height:100,borderRadius:"50%",border:"2px dashed rgba(44,24,16,0.06)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:10}}>
                   <span style={{fontSize:32,opacity:0.4}}>👆</span>
                 </div>
-                <div style={{fontSize:10,color:"#334155",textAlign:"center",lineHeight:1.4}}>Survole une raquette<br/>pour voir son visuel</div>
+                <div style={{fontSize:10,color:"#5A4D40",textAlign:"center",lineHeight:1.4}}>Survole une raquette<br/>pour voir son visuel</div>
               </div>;
               return <div key={hr.id} style={{animation:"racketFadeIn 0.3s ease-out",textAlign:"center"}}>
                 <div style={{
@@ -8797,7 +8797,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <div style={{fontSize:13,fontWeight:700,color:hr.color,lineHeight:1.2}}>{hr.name}</div>
                   <div style={{fontSize:10,color:"rgba(44,24,16,0.25)",marginTop:4}}>{hr.shape} · {hr.weight}</div>
                   <div style={{fontSize:10,color:"rgba(44,24,16,0.25)"}}>{hr.brand}{hr.price&&hr.price!=="—"?` · ${hr.price}`:""}</div>
-                  {hr.player&&hr.player!=="—"&&<div style={{fontSize:9,color:"#475569",marginTop:3}}>🎾 {hr.player}</div>}
+                  {hr.player&&hr.player!=="—"&&<div style={{fontSize:9,color:"#7A6E5C",marginTop:3}}>🎾 {hr.player}</div>}
                 </div>
               </div>;
             })()}
@@ -8807,7 +8807,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div className="pa-radar-chart" style={{flex:1,minWidth:0,position:"relative"}}>
             <ResponsiveContainer width="100%" height={400}>
               <RadarChart data={radarData} cx="50%" cy="48%" outerRadius="68%">
-                <PolarGrid stroke="rgba(255,255,255,0.12)" strokeDasharray="3 3" gridType="polygon"/>
+                <PolarGrid stroke="rgba(44,24,16,0.08)" strokeDasharray="3 3" gridType="polygon"/>
                 <PolarAngleAxis dataKey="attribute" tick={{fill:"rgba(44,24,16,0.35)",fontSize:10,fontWeight:600,fontFamily:"Inter"}}/>
                 <PolarRadiusAxis angle={90} domain={[0,10]} tick={{fill:"rgba(44,24,16,0.25)",fontSize:9,fontWeight:500}} tickCount={6} axisLine={false}/>
                 {/* Perfect 10/10 reference hexagon */}
@@ -8827,7 +8827,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </RadarChart>
             </ResponsiveContainer>
             {/* Legend hint for the reference hexagon */}
-            <div style={{position:"absolute",top:8,right:12,fontSize:9,color:"#475569",display:"flex",alignItems:"center",gap:5}}>
+            <div style={{position:"absolute",top:8,right:12,fontSize:9,color:"#7A6E5C",display:"flex",alignItems:"center",gap:5}}>
               <svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeDasharray="4 2"/></svg>
               <span>Score parfait 10/10</span>
             </div>
@@ -8838,8 +8838,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {tab==="bars"&&<div style={{...S.card,padding:20}}>
         <ResponsiveContainer width="100%" height={360}>
           <BarChart data={radarData} layout="vertical" margin={{left:80,right:20}}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)"/>
-            <XAxis type="number" domain={[0,10]} tick={{fill:"#475569",fontSize:9,fontFamily:"Inter"}}/>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(44,24,16,0.03)"/>
+            <XAxis type="number" domain={[0,10]} tick={{fill:"#7A6E5C",fontSize:9,fontFamily:"Inter"}}/>
             <YAxis dataKey="attribute" type="category" tick={{fill:"rgba(44,24,16,0.35)",fontSize:10,fontWeight:600,fontFamily:"Inter"}} width={75}/>
             <Tooltip contentStyle={{background:"#1a2236",border:"1px solid rgba(44,24,16,0.06)",borderRadius:10,fontSize:11,fontFamily:"Inter",boxShadow:"0 8px 24px rgba(0,0,0,0.4)"}}/>
             {selRackets.map(r=>(<Bar key={r.id} dataKey={r.shortName} fill={r.color} radius={[0,5,5,0]} barSize={10}/>))}
@@ -8850,19 +8850,19 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {tab==="table"&&<div style={{...S.card,overflowX:"auto"}}>
         <table style={{width:"100%",borderCollapse:"separate",borderSpacing:0,fontSize:10}}>
           <thead><tr>
-            <th style={{textAlign:"left",padding:"8px 6px",color:"#475569",borderBottom:"2px solid rgba(44,24,16,0.04)",fontSize:9,letterSpacing:"0.03em"}}/>
+            <th style={{textAlign:"left",padding:"8px 6px",color:"#7A6E5C",borderBottom:"2px solid rgba(44,24,16,0.04)",fontSize:9,letterSpacing:"0.03em"}}/>
             {selRackets.map(r=>(<th key={r.id} style={{textAlign:"center",padding:"8px 4px",color:r.color,fontWeight:700,borderBottom:"2px solid rgba(44,24,16,0.04)",fontSize:9,minWidth:85,fontFamily:"'Outfit'",letterSpacing:"0.02em"}}>{r.shortName}</th>))}
           </tr></thead>
           <tbody>
             {[{l:"Marque",k:"brand"},{l:"Forme",k:"shape"},{l:"Poids",k:"weight"},{l:"Équilibre",k:"balance"},{l:"Surface",k:"surface"},{l:"Mousse",k:"core"},{l:"Joueur",k:"player"},{l:"Prix indicatif",k:"price"}].map((row,i)=>(
               <tr key={row.k} className="pa-row" style={{background:i%2===0?"rgba(255,255,255,0.015)":"transparent"}}>
                 <td style={{padding:"6px 6px",color:"rgba(44,24,16,0.35)",fontWeight:600,fontSize:10}}>{row.l}</td>
-                {selRackets.map(r=>(<td key={r.id} style={{padding:"6px 4px",textAlign:"center",color:"#cbd5e1",fontSize:10}}>{r[row.k]}</td>))}
+                {selRackets.map(r=>(<td key={r.id} style={{padding:"6px 4px",textAlign:"center",color:"#5A4D40",fontSize:10}}>{r[row.k]}</td>))}
               </tr>
             ))}
             <tr><td colSpan={selRackets.length+1} style={{padding:"12px 6px 4px",color:"#f97316",fontWeight:700,fontSize:10,borderTop:"2px solid rgba(249,115,22,0.15)",fontFamily:"'Outfit'",letterSpacing:"0.04em",textTransform:"uppercase"}}>Notes brutes /10</td></tr>
-            {selRackets.some(r=>r.refSource)&&<tr><td style={{padding:"2px 6px",fontSize:8,color:"#334155",fontStyle:"italic"}}>Source</td>
-              {selRackets.map(r=>(<td key={r.id} style={{padding:"2px 4px",textAlign:"center",fontSize:7,color:"#334155",fontStyle:"italic"}}>{r.refSource||"Règles méca."}</td>))}
+            {selRackets.some(r=>r.refSource)&&<tr><td style={{padding:"2px 6px",fontSize:8,color:"#5A4D40",fontStyle:"italic"}}>Source</td>
+              {selRackets.map(r=>(<td key={r.id} style={{padding:"2px 4px",textAlign:"center",fontSize:7,color:"#5A4D40",fontStyle:"italic"}}>{r.refSource||"Règles méca."}</td>))}
             </tr>}
             {ATTRS.map((attr,i)=>{
               const mx=Math.max(...selRackets.map(r=>r.scores[attr]));
@@ -8871,7 +8871,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 {selRackets.map(r=>{const v=r.scores[attr];const best=v===mx&&selRackets.length>1;
                   return(<td key={r.id} style={{padding:"6px 4px",textAlign:"center"}}>
                     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-                      <span style={{color:best?"#4ade80":"#cbd5e1",fontWeight:best?700:500,fontFamily:"'Outfit'",fontSize:12}}>{v}</span>
+                      <span style={{color:best?"#4ade80":"#5A4D40",fontWeight:best?700:500,fontFamily:"'Outfit'",fontSize:12}}>{v}</span>
                       <div style={{width:"70%",height:3,borderRadius:2,background:"rgba(44,24,16,0.04)",overflow:"hidden"}}>
                         <div style={{width:`${v*10}%`,height:"100%",borderRadius:2,background:v>=8?r.color:v>=6.5?"rgba(44,24,16,0.25)":"#ef444466",transition:"width 0.4s ease"}}/>
                       </div>
@@ -8919,9 +8919,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-radar-section .recharts-polar-grid polygon,
             #print-pertinence .print-radar-section .recharts-polar-grid-concentric-polygon { stroke: #c7d2fe !important; stroke-opacity: 1 !important; }
             #print-pertinence .print-radar-section .recharts-polygon { stroke-width: 2.5px !important; fill-opacity: 0.25 !important; print-color-adjust: exact !important; -webkit-print-color-adjust: exact !important; }
-            #print-pertinence .print-radar-section .recharts-polar-angle-axis-tick text { fill: #374151 !important; }
+            #print-pertinence .print-radar-section .recharts-polar-angle-axis-tick text { fill: #5A4D40 !important; }
             #print-pertinence .print-card {
-              border: 1px solid #e2e8f0 !important; background: #fafafa !important;
+              border: 1px solid #2C1810 !important; background: #fafafa !important;
               color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
               overflow: hidden !important; max-width: 100% !important;
               margin-bottom: 8px !important; border-radius: 10px !important;
@@ -8946,7 +8946,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-card-gold .print-medal-label { color: #8b6914 !important; }
             #print-pertinence .print-card-silver .print-medal-label { color: rgba(44,24,16,0.25) !important; }
             #print-pertinence .print-card-bronze .print-medal-label { color: #92400e !important; }
-            #print-pertinence .print-bar-bg { background: #e5e7eb !important; height: 6px !important; border-radius: 3px !important; }
+            #print-pertinence .print-bar-bg { background: #5A4D40 !important; height: 6px !important; border-radius: 3px !important; }
             #print-pertinence .print-bar-fill-green { background: #22c55e !important; }
             #print-pertinence .print-bar-fill-gray { background: #9ca3af !important; }
             #print-pertinence .print-bar-fill-red { background: #ef4444 !important; }
@@ -8960,15 +8960,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-badge-red { background: #fef2f2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
             #print-pertinence .print-profile-box { border: 1.5px solid #f97316 !important; background: #fff7ed !important; padding: 12px !important; border-radius: 10px !important; }
             #print-pertinence .print-warn { color: #dc2626 !important; }
-            #print-pertinence .print-verdict { color: #374151 !important; font-style: normal !important; }
+            #print-pertinence .print-verdict { color: #5A4D40 !important; font-style: normal !important; }
             #print-pertinence .print-deep-analysis { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; page-break-inside: avoid; break-inside: avoid; }
-            #print-pertinence .print-deep-analysis * { color: #374151 !important; }
+            #print-pertinence .print-deep-analysis * { color: #5A4D40 !important; }
             #print-pertinence .print-smart-verdict { background: #f0fdf4 !important; border: 1.5px solid #22c55e !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; font-size: 10px !important; line-height: 1.7 !important; }
-            #print-pertinence .print-smart-verdict, #print-pertinence .print-smart-verdict * { color: #374151 !important; }
+            #print-pertinence .print-smart-verdict, #print-pertinence .print-smart-verdict * { color: #5A4D40 !important; }
             #print-pertinence .print-smart-verdict strong { color: #111827 !important; font-weight: 700 !important; }
             #print-pertinence .print-smart-verdict p { margin: 0 !important; }
             #print-pertinence .print-deep-analysis .deep-title { color: #4338ca !important; font-weight: 700 !important; font-size: 11px !important; margin-bottom: 6px !important; }
-            #print-pertinence .print-section-divider { border-top: 2px solid #e5e7eb !important; margin: 16px 0 10px !important; padding-top: 8px !important; }
+            #print-pertinence .print-section-divider { border-top: 2px solid #5A4D40 !important; margin: 16px 0 10px !important; padding-top: 8px !important; }
             #print-pertinence .print-footer-wrap { page-break-before: avoid; break-before: avoid; page-break-inside: avoid; break-inside: avoid; }
             #print-pertinence .print-racket-img { width: 60px !important; height: 72px !important; object-fit: contain !important; border-radius: 8px !important; background: #1A1410 !important; padding: 4px !important; }
             #print-pertinence .print-racket-img-sm { width: 40px !important; height: 48px !important; }
@@ -8999,7 +8999,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* ===== SCREEN: Print button + profile name ===== */}
           <div style={{display:"flex",gap:8,marginBottom:10,alignItems:"center"}} className="no-print">
-            <div style={{flex:1,fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{profileName ? `👤 ${profileName}` : <span style={{color:"#475569",fontWeight:400,fontSize:11}}>Définis un nom dans 👤 Profil → 💾 Sauvegarder</span>}</div>
+            <div style={{flex:1,fontSize:12,fontWeight:700,color:"#2C1810"}}>{profileName ? `👤 ${profileName}` : <span style={{color:"#7A6E5C",fontWeight:400,fontSize:11}}>Définis un nom dans 👤 Profil → 💾 Sauvegarder</span>}</div>
             <button onClick={()=>window.print()} style={{padding:"8px 16px",background:"rgba(249,115,22,0.2)",border:"1px solid #f97316",borderRadius:8,color:"#f97316",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>🖨 Imprimer</button>
           </div>
 
@@ -9007,7 +9007,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div className="print-profile-box" style={{background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:10,padding:12,marginBottom:12,boxSizing:"border-box"}}>
             <p style={{fontSize:10,color:"#f97316",fontWeight:700,margin:"0 0 3px"}}>👤 Profil actif :</p>
             <p style={{fontSize:9,color:"rgba(44,24,16,0.35)",margin:0,lineHeight:1.5}}>{profileText}</p>
-            <p style={{fontSize:8,color:"#475569",margin:"4px 0 0"}}>{(()=>{
+            <p style={{fontSize:8,color:"#7A6E5C",margin:"4px 0 0"}}>{(()=>{
               const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
               const prioMap = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
               const styleMap = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
@@ -9076,7 +9076,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <span style={{fontSize:18}}>{medals[i]}</span>
                     {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className="print-racket-img-sm" style={{width:32,height:40,objectFit:"contain",borderRadius:6,background:"rgba(44,24,16,0.04)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.shortName}</div>
+                      <div style={{fontSize:10,fontWeight:700,color:"#2C1810",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.shortName}</div>
                       <div style={{fontSize:8,color:"rgba(44,24,16,0.25)"}}>{r.brand} · {r.shape}</div>
                     </div>
                     <div style={{textAlign:"right",flexShrink:0}}>
@@ -9209,7 +9209,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const renderBold = (text, idx) => {
               const parts = text.split(/(\*\*[^*]+\*\*)/g);
               return <p key={idx} style={{margin:"0 0 6px",fontSize:9,color:"rgba(44,24,16,0.35)",lineHeight:1.6}}>
-                {parts.map((p,j) => p.startsWith("**") ? <strong key={j} style={{color:"#e2e8f0"}}>{p.replace(/\*\*/g,"")}</strong> : p)}
+                {parts.map((p,j) => p.startsWith("**") ? <strong key={j} style={{color:"#2C1810"}}>{p.replace(/\*\*/g,"")}</strong> : p)}
               </p>;
             };
             return <div className="print-deep-analysis" style={{background:"rgba(99,102,241,0.05)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:8,padding:"10px 12px",marginBottom:12}}>
@@ -9268,13 +9268,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   </div>}
                   {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className={isPodium?"print-racket-img":"print-racket-img-sm"} style={{
                     width:isPodium?60:36, height:isPodium?72:44, objectFit:"contain", borderRadius:isPodium?10:6, flexShrink:0,
-                    background:isPodium?"rgba(44,24,16,0.04)":"rgba(255,255,255,0.04)", padding:isPodium?4:2,
+                    background:isPodium?"rgba(44,24,16,0.04)":"rgba(44,24,16,0.03)", padding:isPodium?4:2,
                     border:isPodium?`1px solid ${i===0?"rgba(250,204,21,0.3)":i===1?"rgba(148,163,184,0.2)":"rgba(217,119,6,0.2)"}`:"none",
                   }} onError={e=>{e.target.style.display='none'}}/>}
                   {!medal&&!r.imageUrl&&<div style={{width:10,height:10,borderRadius:"50%",background:r.color,border:"1px solid #999",flexShrink:0,printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>}
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-                      <span style={{fontSize: i===0 ? 15 : isPodium ? 13 : 11,fontWeight:800,color:"#e2e8f0"}}>{r.name}</span>
+                      <span style={{fontSize: i===0 ? 15 : isPodium ? 13 : 11,fontWeight:800,color:"#2C1810"}}>{r.name}</span>
                       <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
                     </div>
                     <div style={{fontSize:isPodium?9:8,color:"rgba(44,24,16,0.25)",marginTop:3}}>
@@ -9299,7 +9299,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     return(<div key={attr} style={{minWidth:0}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                         <span style={{fontSize:isPodium?9:8,color:isKey?"#f97316":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
-                        <span style={{fontSize:isPodium?10:9,color:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#cbd5e1":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
+                        <span style={{fontSize:isPodium?10:9,color:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#5A4D40":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
                       </div>
                       <div className="print-bar-bg" style={{height:barH,background:"rgba(44,24,16,0.04)",borderRadius:barH/2,marginTop:2}}>
                         <div className={barClass} style={{height:barH,borderRadius:barH/2,width:`${v*10}%`,background:low?"#f87171":v>=7.5?"#4ade80":v>=6?"rgba(44,24,16,0.25)":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
@@ -9393,7 +9393,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className="print-racket-img-sm" style={{width:40,height:48,objectFit:"contain",borderRadius:8,flexShrink:0,background:"rgba(44,24,16,0.04)",padding:2}} onError={e=>{e.target.style.display='none'}}/>}
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-                        <span style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>{r.name}</span>
+                        <span style={{fontSize:12,fontWeight:700,color:"#2C1810"}}>{r.name}</span>
                         <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
                         <span style={{background:"rgba(249,115,22,0.15)",border:"1px solid rgba(249,115,22,0.3)",borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#f97316",flexShrink:0,whiteSpace:"nowrap"}}>★ {r._prioAvg}/10</span>
                       </div>
@@ -9412,7 +9412,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       return <div key={attr} style={{minWidth:0}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                           <span style={{fontSize:9,color:isKey?"#f97316":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
-                          <span style={{fontSize:10,color:v>=7.5?"#4ade80":v>=6?"#cbd5e1":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
+                          <span style={{fontSize:10,color:v>=7.5?"#4ade80":v>=6?"#5A4D40":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
                         </div>
                         <div className="print-bar-bg" style={{height:6,background:"rgba(44,24,16,0.04)",borderRadius:3,marginTop:2}}>
                           <div className={v>=7.5?"print-bar-fill-green":v>=6?"print-bar-fill-gray":"print-bar-fill-yellow"} style={{height:6,borderRadius:3,width:`${v*10}%`,background:v>=7.5?"#4ade80":v>=6?"rgba(44,24,16,0.25)":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
@@ -9428,7 +9428,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           })()}
 
           {/* ===== PRINT FOOTER ===== */}
-          <div className="print-footer-wrap print-header" style={{display:"none",marginTop:16,borderTop:"2px solid #e5e7eb",paddingTop:8}}>
+          <div className="print-footer-wrap print-header" style={{display:"none",marginTop:16,borderTop:"2px solid #5A4D40",paddingTop:8}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <svg width="18" height="18" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -9453,7 +9453,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       <div style={{...S.card,marginTop:4}}>
         <div style={S.title}>📖 Lexique des critères</div>
         {ATTRS.map(a=>(<div key={a} onClick={()=>setOpenAttr(o=>o===a?null:a)} style={{padding:"8px 10px",marginBottom:3,borderRadius:10,background:openAttr===a?"rgba(249,115,22,0.06)":"transparent",cursor:"pointer",transition:"background 0.15s ease"}}>
-          <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span>{a}</span><span style={{fontSize:9,color:"#475569",transition:"transform 0.2s ease",transform:openAttr===a?"rotate(90deg)":"none"}}>▸</span></div>
+          <div style={{fontSize:11,fontWeight:700,color:"#2C1810",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span>{a}</span><span style={{fontSize:9,color:"#7A6E5C",transition:"transform 0.2s ease",transform:openAttr===a?"rotate(90deg)":"none"}}>▸</span></div>
           {openAttr===a&&<div style={{fontSize:10,color:"#94a3b8",marginTop:5,lineHeight:1.6,animation:"fadeIn 0.2s ease"}}>{explanations[a]}</div>}
         </div>))}
       </div>
@@ -10032,35 +10032,36 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
   // ============================================================
   function renderSuggestCard(s, realIdx, checked, isTopPick) {
     const isPrio = s.category === "priority";
-    const accentColor = isPrio ? "#fbbf24" : "#f97316";
+    const accentColor = isPrio ? "#D97706" : "#7A2E34";
     return (
       <div key={realIdx} onClick={()=>!s._added&&toggleSuggestCheck(realIdx)} style={{
-        background:s._added?"rgba(76,175,80,0.08)":checked?`${isPrio?"rgba(251,191,36,0.12)":"rgba(249,115,22,0.12)"}`:"rgba(255,255,255,0.04)",
-        border:`1px solid ${s._added?"#4CAF50":checked?accentColor:"rgba(255,255,255,0.1)"}`,
-        borderRadius:10,padding:"10px 12px",marginBottom:6,
+        background:s._added?"rgba(5,150,105,0.04)":checked?"rgba(122,46,52,0.04)":"#FFFFFF",
+        border:`1.5px solid ${s._added?"rgba(5,150,105,0.2)":checked?accentColor+"30":"#EDE7DD"}`,
+        borderRadius:16,padding:"14px 16px",marginBottom:8,
         cursor:s._added?"default":"pointer",opacity:s._added?0.7:1,
-        transition:"all 0.2s",
+        transition:"all 0.25s",
+        boxShadow:checked?"0 4px 12px rgba(122,46,52,0.06)":"0 1px 4px rgba(0,0,0,0.02)",
       }}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
             {!s._added&&<div style={{
-              width:18,height:18,borderRadius:4,
-              border:`2px solid ${checked?accentColor:"rgba(255,255,255,0.2)"}`,
-              background:checked?`${accentColor}33`:"transparent",
+              width:20,height:20,borderRadius:6,
+              border:`2px solid ${checked?accentColor:"rgba(44,24,16,0.12)"}`,
+              background:checked?`${accentColor}15`:"transparent",
               display:"flex",alignItems:"center",justifyContent:"center",
               fontSize:11,color:accentColor,fontWeight:700,flexShrink:0,
             }}>{checked?"✓":""}</div>}
             <div>
-              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0"}}>
+              <div style={{fontSize:13,fontWeight:700,color:"#1A1410",fontFamily:F.editorial,fontStyle:"italic"}}>
                 {isTopPick&&!s._added?"⭐ ":isPrio&&!s._added?"⚡ ":""}{s.name}
               </div>
-              <div style={{fontSize:10,color:"#94a3b8",marginTop:1}}>{s.brand} · {s.shape} · {s.weight} · {s.price}</div>
+              <div style={{fontSize:10,color:"#9A8E7C",marginTop:2}}>{s.brand} · {s.shape} · {s.weight} · {s.price}</div>
             </div>
           </div>
-          {s._added&&<span style={{fontSize:9,background:"#1B5E20",border:"1px solid #4CAF50",borderRadius:4,padding:"2px 6px",color:"#fff",fontWeight:700,flexShrink:0}}>AJOUTÉE ✓</span>}
+          {s._added&&<span style={{fontSize:9,background:"rgba(5,150,105,0.08)",border:"1px solid rgba(5,150,105,0.2)",borderRadius:6,padding:"3px 8px",color:"#059669",fontWeight:700,flexShrink:0}}>AJOUTÉE ✓</span>}
         </div>
-        <div style={{fontSize:10,color:"#cbd5e1",marginTop:5,lineHeight:1.4,fontStyle:"italic",marginLeft:s._added?0:26}}>{s.description}</div>
-        {s._error&&<div style={{fontSize:9,color:"#ef4444",marginTop:3,marginLeft:26}}>⚠ Erreur: {s._error}</div>}
+        <div style={{fontSize:10,color:"#7A6E5C",marginTop:6,lineHeight:1.5,fontStyle:"italic",marginLeft:s._added?0:30}}>{s.description}</div>
+        {s._error&&<div style={{fontSize:9,color:"#DC2626",marginTop:3,marginLeft:30}}>⚠ Erreur: {s._error}</div>}
       </div>
     );
   }
