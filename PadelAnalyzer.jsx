@@ -7226,22 +7226,22 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 } else onChange(o.value);
               }} style={{
                 padding:"16px 12px",borderRadius:14,cursor:disabled?"not-allowed":"pointer",textAlign:"center",fontFamily:"'Inter',sans-serif",
-                background:disabled?"rgba(255,255,255,0.01)":sel?"rgba(249,115,22,0.12)":"rgba(255,255,255,0.03)",
-                border:`2px solid ${disabled?"rgba(255,255,255,0.04)":sel?"#f97316":"rgba(255,255,255,0.08)"}`,
+                background:disabled?"rgba(44,24,16,0.01)":sel?"rgba(122,46,52,0.08)":"rgba(44,24,16,0.03)",
+                border:`2px solid ${disabled?"rgba(44,24,16,0.04)":sel?"#7A2E34":"rgba(44,24,16,0.08)"}`,
                 transition:"all 0.25s ease",transform:sel?"scale(1.02)":"scale(1)",
-                boxShadow:sel?"0 4px 16px rgba(249,115,22,0.15)":"none",
+                boxShadow:sel?"0 4px 16px rgba(122,46,52,0.1)":"none",
                 opacity:disabled?0.35:1,
               }}>
                 {o.icon&&<div style={{fontSize:24,marginBottom:4}}>{o.icon}</div>}
-                <div style={{fontSize:14,fontWeight:700,color:disabled?"#475569":sel?"#f97316":"#e2e8f0"}}>{o.label}</div>
-                {o.desc&&<div style={{fontSize:10,color:disabled?"#334155":"#64748b",marginTop:2}}>{o.desc}</div>}
+                <div style={{fontSize:14,fontWeight:700,color:disabled?"#9A8E7C":sel?"#7A2E34":"#5A4D40"}}>{o.label}</div>
+                {o.desc&&<div style={{fontSize:10,color:disabled?"#9A8E7C":"#7A6E5C",marginTop:2}}>{o.desc}</div>}
               </button>;
             })}
           </div>
         );
 
         const TagSelect = ({tags, field, colors}) => {
-          const c = colors || {on:"#f97316",bg:"rgba(249,115,22,0.12)",border:"#f97316"};
+          const c = colors || {on:"#7A2E34",bg:"rgba(122,46,52,0.08)",border:"#7A2E34"};
           return <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",maxWidth:460,margin:"0 auto"}}>
             {tags.map(t=>{
               const sel = (profile[field]||[]).includes(t.id);
@@ -7253,9 +7253,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 });
               }} title={t.tip||""} style={{
                 padding:"8px 16px",borderRadius:20,fontSize:12,fontWeight:600,cursor:"pointer",
-                background:sel?c.bg:"rgba(255,255,255,0.03)",
-                border:`1.5px solid ${sel?c.border:"rgba(255,255,255,0.08)"}`,
-                color:sel?c.on:"#64748b",fontFamily:"'Inter',sans-serif",
+                background:sel?c.bg:"rgba(44,24,16,0.03)",
+                border:`1.5px solid ${sel?c.border:"rgba(44,24,16,0.08)"}`,
+                color:sel?c.on:"#7A6E5C",fontFamily:"'Inter',sans-serif",
                 boxShadow:sel?`0 2px 8px ${c.on}22`:"none",transition:"all 0.2s ease",
               }}>{sel?"✓ ":""}{t.label}</button>;
             })}
@@ -7273,16 +7273,16 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const stepContent = [
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>👋</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Prénom du joueur":"Salut ! C'est quoi ton prénom ?"}</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Prénom du joueur":"Salut ! C'est quoi ton prénom ?"}</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>{groupRole==="vendeur"?"Le prénom ou pseudo du client.":"On va trouver LA raquette faite pour toi."}</p>
             <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder={groupRole==="vendeur"?"Ex: Manon, Noah...":"Ex: Bidou, Manon, Noah..."}
               onKeyDown={e=>{if(e.key==="Enter"&&canNext)nextStep();}}
-              autoFocus style={{width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,background:"rgba(255,255,255,0.05)",border:"2px solid rgba(249,115,22,0.3)",color:"#f1f5f9",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
+              autoFocus style={{width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,background:"rgba(44,24,16,0.03)",border:"2px solid rgba(122,46,52,0.2)",color:"#2C1810",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
           </div>,
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>{isFemme?"👩":"👨"}</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Tu es…</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Tu es…</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>On adapte les gammes, le poids cible et les modèles WomanLine.</p>
             <CardSelect options={[
               {value:"Homme",label:"Homme",icon:"♂️",desc:"Gammes standard"},
@@ -7292,14 +7292,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>📐</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Ton gabarit</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Ton gabarit</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Le poids {g("idéal","idéale")} de ta raquette dépend directement de ton physique.</p>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,maxWidth:400,margin:"0 auto"}}>
-              {[{key:"age",label:"Âge",ph:"30",unit:"ans"},{key:"height",label:"Taille",ph:"170",unit:"cm"},{key:"weight",label:"Poids",ph:"70",unit:"kg"}].map(f=>
+              {[{key:"age",label:"Âge",ph:"30",unit:"ans",min:5,max:99},{key:"height",label:"Taille",ph:"170",unit:"cm",min:100,max:220},{key:"weight",label:"Poids",ph:"70",unit:"kg",min:25,max:200}].map(f=>
                 <div key={f.key} style={{textAlign:"center"}}>
                   <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:6}}>{f.label}</label>
-                  <input type="number" value={profile[f.key]} onChange={e=>setProfile(p=>({...p,[f.key]:Number(e.target.value)}))}
-                    placeholder={f.ph} style={{width:"100%",padding:"14px 8px",borderRadius:12,fontSize:22,fontWeight:700,background:"rgba(255,255,255,0.05)",border:"2px solid rgba(255,255,255,0.1)",color:"#f1f5f9",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
+                  <input type="number" min={f.min} max={f.max} value={profile[f.key]} onChange={e=>{const v=Number(e.target.value);if(v>=0&&v<=f.max)setProfile(p=>({...p,[f.key]:v}));}}
+                    placeholder={f.ph} style={{width:"100%",padding:"14px 8px",borderRadius:12,fontSize:22,fontWeight:700,background:"rgba(44,24,16,0.03)",border:"2px solid rgba(44,24,16,0.08)",color:"#2C1810",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
                   <div style={{fontSize:9,color:"#475569",marginTop:4}}>{f.unit}</div>
                 </div>
               )}
@@ -7318,7 +7318,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>💪</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>En quelle forme ?</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>En quelle forme ?</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Ça débloque les gammes avancées et calibre la tolérance au poids.</p>
             <CardSelect columns={1} options={FITNESS_OPTIONS.map(o=>({value:o.value,label:o.label,icon:o.icon,desc:o.desc}))} value={profile.fitness||"actif"} onChange={v=>{
               setProfile(p=>{
@@ -7334,7 +7334,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const expertBlocked = !expertAllowed;
             return <div style={{textAlign:"center"}}>
               <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🏆</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Quel est son niveau ?":"Ton niveau de jeu"}</h2>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Quel est son niveau ?":"Ton niveau de jeu"}</h2>
               <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>On sélectionne les gammes de raquettes adaptées à ton expérience.</p>
               <CardSelect options={levelOptions} value={profile.level} onChange={v=>{setProfile(p=>({...p,level:v}));setTimeout(nextStep,300);}}/>
               {expertBlocked&&<div style={{background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 14px",marginTop:16,fontSize:11,color:"#fbbf24",fontWeight:600,maxWidth:400,margin:"16px auto 0"}}>💡 Le niveau Expert nécessite une condition physique Athlétique</div>}
@@ -7351,7 +7351,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const roleColor=atk?"#f97316":cst?"#6366f1":"#94a3b8";
             return <div style={{textAlign:"center"}}>
               <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🤚</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Ton placement</h2>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Ton placement</h2>
               <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Main dominante + côté du terrain = ton rôle de jeu.</p>
               <div style={{maxWidth:400,margin:"0 auto"}}>
                 <label style={{fontSize:10,color:"#94a3b8",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.05em",display:"block",marginBottom:8}}>Main dominante</label>
@@ -7366,7 +7366,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🔥</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Tu joues combien ?</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Tu joues combien ?</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Plus tu joues, plus la durabilité et le confort comptent.</p>
             <CardSelect options={FREQ_OPTIONS.map(o=>({value:o.value,label:o.label,desc:o.desc,icon:{Occasionnel:"🌙",Régulier:"☀️",Assidu:"🔥",Intensif:"⚡"}[o.label]}))} value={profile.frequency} onChange={v=>setProfile(p=>({...p,frequency:v}))}/>
             <div style={{marginTop:24,maxWidth:460,margin:"24px auto 0"}}>
@@ -7377,7 +7377,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>⚔️</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Comment joue-t-il/elle ?":"Ton ADN de joueur"}</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Comment joue-t-il/elle ?":"Ton ADN de joueur"}</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Sélectionne tout ce qui te correspond — ça pèse dans le scoring.</p>
             <TagSelect tags={STYLE_TAGS} field="styleTags"/>
             {(()=>{
@@ -7397,7 +7397,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🛡️</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Protège ton corps</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Protège ton corps</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Chaque zone sensible booste le Confort dans nos recommandations.</p>
             <TagSelect tags={INJURY_TAGS} field="injuryTags" colors={{on:"#ef4444",bg:"rgba(239,68,68,0.12)",border:"#ef4444"}}/>
             {(()=>{
@@ -7418,7 +7418,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           ()=><div style={{textAlign:"center"}}>
             {isExpertMode ? (<>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>⚡</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Tes sensations raquette</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Tes sensations raquette</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>{groupRole==="vendeur"?"À ce niveau, le ressenti guide. Quelles sont ses préférences ?":"À ton niveau, c'est le ressenti qui guide. Dis-nous ce que tu cherches."}</p>
             <p style={{fontSize:11,color:"#a855f7",margin:"0 0 22px",fontWeight:600}}>⚡ Mode Pro — matching par propriétés physiques</p>
 
@@ -7431,8 +7431,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const sel = profile.expertToucher===o.v;
                     return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertToucher:o.v}))} style={{
                       flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
-                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
-                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(44,24,16,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(44,24,16,0.08)"}`,transition:"all 0.2s",
                     }}>
                       <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
                       <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
@@ -7449,8 +7449,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const sel = profile.expertReactivite===o.v;
                     return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertReactivite:o.v}))} style={{
                       flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
-                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
-                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(44,24,16,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(44,24,16,0.08)"}`,transition:"all 0.2s",
                     }}>
                       <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
                       <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
@@ -7467,8 +7467,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const sel = profile.expertPoids===o.v;
                     return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertPoids:o.v}))} style={{
                       flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
-                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
-                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(44,24,16,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(44,24,16,0.08)"}`,transition:"all 0.2s",
                     }}>
                       <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
                       <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
@@ -7485,8 +7485,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     const sel = profile.expertForme===o.v;
                     return <button key={o.v} onClick={()=>setProfile(p=>({...p,expertForme:o.v}))} style={{
                       flex:1,padding:"12px 8px",borderRadius:12,cursor:"pointer",textAlign:"center",fontFamily:"inherit",
-                      background:sel?"rgba(168,85,247,0.15)":"rgba(255,255,255,0.03)",
-                      border:`2px solid ${sel?"#a855f7":"rgba(255,255,255,0.08)"}`,transition:"all 0.2s",
+                      background:sel?"rgba(168,85,247,0.15)":"rgba(44,24,16,0.03)",
+                      border:`2px solid ${sel?"#a855f7":"rgba(44,24,16,0.08)"}`,transition:"all 0.2s",
                     }}>
                       <div style={{fontSize:13,fontWeight:700,color:sel?"#c084fc":"#e2e8f0"}}>{o.l}</div>
                       <div style={{fontSize:9,color:sel?"#a855f7":"#64748b",marginTop:3}}>{o.d}</div>
@@ -7497,7 +7497,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
             </>) : (<>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🎯</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Ce qui compte pour toi</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Ce qui compte pour toi</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 6px"}}>Clique dans l'ordre d'importance — la 1ère pèse le plus lourd.</p>
             <p style={{fontSize:11,color:"#475569",margin:"0 0 22px"}}>1️⃣ = priorité forte · 2️⃣ = importante · 3️⃣+ = secondaire</p>
             <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",maxWidth:460,margin:"0 auto"}}>
@@ -7507,7 +7507,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 const isOn = idx >= 0;
                 const rank = idx + 1;
                 const rankColors = ["#4CAF50","#8BC34A","#FFC107","#FF9800","#f97316"];
-                const c = isOn ? (rankColors[Math.min(idx,rankColors.length-1)]) : "rgba(255,255,255,0.08)";
+                const c = isOn ? (rankColors[Math.min(idx,rankColors.length-1)]) : "rgba(44,24,16,0.08)";
                 return <button key={t.id} onClick={()=>{
                   setProfile(p=>{
                     const cur = [...(p.priorityTags||[])];
@@ -7516,8 +7516,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   });
                 }} style={{
                   padding:"10px 18px",borderRadius:14,fontSize:12,fontWeight:700,cursor:"pointer",
-                  background:isOn?`${c}20`:"rgba(255,255,255,0.03)",
-                  border:`2px solid ${isOn?c:"rgba(255,255,255,0.08)"}`,
+                  background:isOn?`${c}20`:"rgba(44,24,16,0.03)",
+                  border:`2px solid ${isOn?c:"rgba(44,24,16,0.08)"}`,
                   color:isOn?c:"#94a3b8",fontFamily:"inherit",transition:"all 0.2s",
                   position:"relative",minWidth:110,
                 }}>
@@ -7538,7 +7538,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           ()=><div style={{textAlign:"center"}}>
             <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🏷️</div>
-            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>Des marques préférées ?</h2>
+            <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>Des marques préférées ?</h2>
             <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>Optionnel — laisse vide pour explorer tout le catalogue.</p>
             <TagSelect tags={BRAND_TAGS} field="brandTags" colors={{on:"#CE93D8",bg:"rgba(156,39,176,0.12)",border:"#9C27B0"}}/>
           </div>,
@@ -7566,7 +7566,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             const phaseIdx = phases.indexOf(phase);
             return <div style={{position:"fixed",top:0,left:0,right:0,zIndex:10,padding:"0"}}>
               {/* Bar */}
-              <div style={{height:3,background:"rgba(255,255,255,0.06)"}}>
+              <div style={{height:3,background:"rgba(44,24,16,0.04)"}}>
                 <div style={{height:"100%",background:`linear-gradient(90deg,${phase.color},${phase.color}aa)`,borderRadius:"0 2px 2px 0",transition:"width 0.6s cubic-bezier(.4,0,.2,1)",width:`${progress*100}%`}}/>
               </div>
               {/* Phase label row */}
@@ -7579,7 +7579,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               <div style={{display:"flex",justifyContent:"center",gap:4,paddingBottom:8}}>
                 {phases.map((p,i)=><div key={i} style={{
                   width:i===phaseIdx?16:6,height:4,borderRadius:2,
-                  background:i<phaseIdx?p.color:i===phaseIdx?phase.color:"rgba(255,255,255,0.08)",
+                  background:i<phaseIdx?p.color:i===phaseIdx?phase.color:"rgba(44,24,16,0.08)",
                   opacity:i<=phaseIdx?1:0.4,transition:"all 0.4s cubic-bezier(.4,0,.2,1)",
                 }}/>)}
               </div>
@@ -7587,7 +7587,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           })()}
 
           {/* Back button */}
-          {wizardStep>0&&<button onClick={prevStep} style={{position:"fixed",top:14,left:16,background:"none",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,padding:"6px 14px",color:"#94a3b8",fontSize:11,cursor:"pointer",fontFamily:"inherit",zIndex:10}}>
+          {wizardStep>0&&<button onClick={prevStep} style={{position:"fixed",top:14,left:16,background:"rgba(255,255,255,0.8)",border:"1px solid rgba(44,24,16,0.08)",borderRadius:10,padding:"6px 14px",color:"#5A4D40",fontSize:11,cursor:"pointer",fontFamily:"inherit",zIndex:10,backdropFilter:"blur(4px)"}}>
             ← Retour
           </button>}
 
@@ -7604,9 +7604,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             return <div style={{marginTop:32,display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
               <button onClick={isLast?goRecap:nextStep} disabled={!canNext} className={canNext?"pa-cta":""} style={{
                 padding:"15px 44px",borderRadius:14,fontSize:15,fontWeight:800,cursor:canNext?"pointer":"not-allowed",fontFamily:"'Outfit',sans-serif",
-                background:canNext?(isLast?"linear-gradient(135deg,rgba(76,175,80,0.3),rgba(76,175,80,0.15))":"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))"):"rgba(255,255,255,0.03)",
-                border:`1.5px solid ${canNext?(isLast?"rgba(76,175,80,0.5)":"rgba(249,115,22,0.4)"):"rgba(255,255,255,0.06)"}`,
-                color:canNext?(isLast?"#4CAF50":"#f97316"):"#334155",
+                background:canNext?(isLast?"linear-gradient(135deg,rgba(76,175,80,0.15),rgba(76,175,80,0.08))":"linear-gradient(135deg,rgba(122,46,52,0.15),rgba(122,46,52,0.08))"):"rgba(44,24,16,0.03)",
+                border:`1.5px solid ${canNext?(isLast?"rgba(76,175,80,0.4)":"rgba(122,46,52,0.3)"):"rgba(44,24,16,0.06)"}`,
+                color:canNext?(isLast?"#059669":"#7A2E34"):"#9A8E7C",
                 opacity:canNext?1:0.5,
                 boxShadow:canNext?`0 4px 16px ${isLast?"rgba(76,175,80,0.2)":"rgba(249,115,22,0.15)"}`:"none",
                 minWidth:200,
@@ -7645,31 +7645,31 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           <div style={{width:"100%",maxWidth:480}}>
             <div style={{textAlign:"center",marginBottom:24}}>
               <div style={{fontSize:48,marginBottom:12}}>✅</div>
-              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#f1f5f9",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Profil prêt à analyser":"Ton profil est prêt"}</h2>
+              <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Profil prêt à analyser":"Ton profil est prêt"}</h2>
               <p style={{fontSize:13,color:"#64748b",margin:0}}>{groupRole==="vendeur"?"Dernière vérification avant de lancer le matching.":"Un dernier coup d'œil, puis on lance le matching sur "+totalDBCount+" raquettes."}</p>
             </div>
 
-            <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:"24px 22px",marginBottom:24}}>
+            <div style={{background:"rgba(44,24,16,0.03)",border:"1px solid rgba(44,24,16,0.08)",borderRadius:20,padding:"24px 22px",marginBottom:24}}>
               {/* Name + Avatar */}
               <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:18}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,rgba(249,115,22,0.35),rgba(239,68,68,0.25))",border:"2px solid rgba(249,115,22,0.5)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,fontWeight:700,color:"#f97316",flexShrink:0}}>
                   {profileName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <div style={{fontSize:22,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit'"}}>{profileName}</div>
+                  <div style={{fontSize:22,fontWeight:800,color:"#2C1810",fontFamily:"'Outfit'"}}>{profileName}</div>
                   <div style={{display:"flex",gap:8,alignItems:"center",marginTop:4}}>
                     {profile.level&&<span style={{fontSize:10,fontWeight:600,color:levelColors[profile.level],background:`${levelColors[profile.level]}18`,padding:"3px 10px",borderRadius:8,textTransform:"uppercase"}}>{profile.level}</span>}
-                    <span style={{fontSize:11,color:"#94a3b8"}}>{hand} · Côté {side}</span>
+                    <span style={{fontSize:11,color:"#5A4D40"}}>{hand} · Côté {side}</span>
                   </div>
                 </div>
               </div>
 
               {/* Details grid */}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-                {profile.age&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Gabarit</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{profile.age} ans{profile.height?`, ${profile.height}cm`:""}{profile.weight?`, ${profile.weight}kg`:""}</div></div>}
-                <div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Rôle</div><div style={{fontSize:12,color:isAttacker?"#f97316":"#a5b4fc",fontWeight:600}}>🎯 {role}</div></div>
-                {profile.frequency&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Fréquence</div><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{FREQ_OPTIONS.find(f=>f.value===profile.frequency)?.label||profile.frequency}{profile.competition?" · 🏅 Compétition":""}</div></div>}
-                {styles.length>0&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Style</div><div style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>{styles.join(", ")}</div></div>}
+                {profile.age&&<div style={{background:"rgba(44,24,16,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Gabarit</div><div style={{fontSize:12,color:"#2C1810",fontWeight:600}}>{profile.age} ans{profile.height?`, ${profile.height}cm`:""}{profile.weight?`, ${profile.weight}kg`:""}</div></div>}
+                <div style={{background:"rgba(44,24,16,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Rôle</div><div style={{fontSize:12,color:isAttacker?"#f97316":"#a5b4fc",fontWeight:600}}>🎯 {role}</div></div>
+                {profile.frequency&&<div style={{background:"rgba(44,24,16,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Fréquence</div><div style={{fontSize:12,color:"#2C1810",fontWeight:600}}>{FREQ_OPTIONS.find(f=>f.value===profile.frequency)?.label||profile.frequency}{profile.competition?" · 🏅 Compétition":""}</div></div>}
+                {styles.length>0&&<div style={{background:"rgba(44,24,16,0.03)",borderRadius:10,padding:"10px 12px"}}><div style={{fontSize:9,color:"#64748b",textTransform:"uppercase",fontWeight:600,marginBottom:3}}>Style</div><div style={{fontSize:11,color:"#a5b4fc",fontWeight:600}}>{styles.join(", ")}</div></div>}
               </div>
 
               {/* Tags */}
@@ -7693,7 +7693,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{display:"flex",gap:12}}>
               <button onClick={()=>{setWizardStep(0);setScreen("wizard");}} style={{
                 flex:1,padding:"14px",borderRadius:14,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-                background:"rgba(255,255,255,0.03)",border:"1.5px solid rgba(255,255,255,0.1)",color:"#94a3b8",
+                background:"rgba(44,24,16,0.03)",border:"1.5px solid rgba(44,24,16,0.08)",color:"#5A4D40",
               }}>
                 ✏️ Modifier
               </button>
