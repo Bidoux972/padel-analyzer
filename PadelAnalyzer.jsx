@@ -8109,7 +8109,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           {/* Header — level gradient band */}
           <div style={{background:({Expert:"linear-gradient(135deg,#92400E,#B45309,#D97706)",Avancé:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Intermédiaire:"linear-gradient(135deg,#1E3A5F,#1D4ED8,#2563EB)",Compétition:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Débutant:"linear-gradient(135deg,#064E3B,#047857,#059669)"})[profile.level]||"linear-gradient(135deg,#7A6E5C,#64748b)",borderRadius:"0 0 22px 22px",padding:"16px 22px 20px",marginBottom:20}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-              <button onClick={()=>{if(cameFromAdminRef.current){cameFromAdminRef.current=false;setScreen("admin");}else{setScreen("home");}}} style={{background:"rgba(44,24,16,0.08)",border:"1px solid rgba(44,24,16,0.1)",borderRadius:10,padding:"6px 14px",color:"rgba(255,255,255,0.7)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit",backdropFilter:"blur(4px)"}}>{cameFromAdminRef.current?"🔙 Admin":"👥 Profils"}</button>
+              <button onClick={()=>{if(cameFromAdminRef.current){cameFromAdminRef.current=false;setScreen("admin");}else{setScreen("profiles");}}} style={{background:"rgba(44,24,16,0.08)",border:"1px solid rgba(44,24,16,0.1)",borderRadius:10,padding:"6px 14px",color:"rgba(255,255,255,0.7)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit",backdropFilter:"blur(4px)"}}>{cameFromAdminRef.current?"🔙 Admin":"👥 Profils"}</button>
               <span style={{fontSize:8,color:"rgba(255,255,255,0.3)",letterSpacing:"0.15em",fontWeight:600}}>COACHING</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
@@ -9343,6 +9343,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <span style={{fontSize:8,color:"#5A4D40"}}>{(profile.styleTags||[]).includes("offensif")?"Offensif":""}{profile.side?` · Côté ${profile.side}`:""}</span>
             {(profile.injuryTags||[]).filter(t=>t!=="aucune").length>0&&<span style={{fontSize:8,padding:"2px 8px",borderRadius:6,background:"rgba(220,38,38,0.06)",color:"#DC2626",fontWeight:600}}>🩹 {(profile.injuryTags||[]).filter(t=>t!=="aucune").map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(", ")}</span>}
             <span style={{fontSize:8,color:"#9A8E7C"}}>Priorités : {(profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean).join(", ")}</span>
+          </div>
+
+          {/* ===== DETAILED PROFILE ===== */}
+          <div style={{padding:"10px 14px",background:"#FFFFFF",borderRadius:10,marginBottom:14,border:"1px solid #EDE7DD"}}>
+            <div style={{fontSize:8,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.08em",marginBottom:4}}>PROFIL COMPLET</div>
+            <p style={{fontSize:8,color:"#5A4D40",margin:0,lineHeight:1.6}}>{profileText}</p>
           </div>
 
           {/* ===== PRINT BUTTON (screen only) ===== */}
