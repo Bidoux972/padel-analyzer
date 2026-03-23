@@ -8337,7 +8337,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:3,lineHeight:1.4}}>Celle que tu tiens en main — est-elle faite pour toi ?</div>
               </button>
               {/* Recherche */}
-              <button onClick={()=>{goToApp();setTimeout(()=>setPanel("add"),50);}} style={{
+              <button onClick={()=>{if(!rackets.length)launchAnalysis(top3);else goToApp();setTimeout(()=>setPanel("add"),50);}} style={{
                 padding:"16px 14px",borderRadius:16,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
                 background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.08)",
                 transition:"all 0.2s",boxShadow:"0 4px 16px rgba(0,0,0,0.04)",
@@ -8347,7 +8347,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <div style={{fontSize:9,color:"#9A8E7C",marginTop:3,lineHeight:1.4}}>Tape un nom et teste-la contre ton profil</div>
               </button>
               {/* Suggestions IA */}
-              <button onClick={()=>{launchAnalysis(top3);setTimeout(()=>setPanel("suggest"),50);}} style={{
+              <button onClick={()=>{if(!rackets.length)launchAnalysis(top3);else goToApp();setTimeout(()=>setPanel("suggest"),50);}} style={{
                 padding:"16px 14px",borderRadius:16,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
                 background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.08)",
                 transition:"all 0.2s",boxShadow:"0 4px 16px rgba(0,0,0,0.04)",
@@ -8357,14 +8357,14 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <div style={{fontSize:9,color:"#9A8E7C",marginTop:3,lineHeight:1.4}}>L'IA te propose d'autres raquettes adaptées</div>
               </button>
               {/* Analyse */}
-              <button onClick={()=>{goToApp();setTimeout(()=>setTab("fit"),50);}} style={{
+              <button onClick={()=>{if(!rackets.length)launchAnalysis(top3);else goToApp();setTimeout(()=>setTab("fit"),50);}} style={{
                 padding:"16px 14px",borderRadius:16,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
                 background:"linear-gradient(165deg, #0C0E14, #12101E)",border:"1px solid rgba(196,151,58,0.15)",
                 transition:"all 0.2s",boxShadow:"0 4px 16px rgba(0,0,0,0.08)",
               }}>
                 <div style={{fontSize:22,marginBottom:6}}>🔬</div>
                 <div style={{fontSize:12,fontWeight:700,color:"#C4973A"}}>Voir l'analyse</div>
-                <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:3,lineHeight:1.4}}>{rackets.length} raquette{rackets.length>1?"s":""} — compare et imprime ton bilan</div>
+                <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:3,lineHeight:1.4}}>{rackets.length||top3.length} raquette{(rackets.length||top3.length)>1?"s":""} — compare et imprime ton bilan</div>
               </button>
             </div>
             {/* Secondary: modifier profil */}
