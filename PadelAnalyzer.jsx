@@ -8254,6 +8254,54 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>;
           })()}
 
+          {/* CONTEXTUAL MESSAGE — adapted to player level */}
+          {(()=>{
+            const lvl = profile.level||"Débutant";
+            const hasInjuries = (profile.injuryTags||[]).some(t=>t!=="aucune");
+            const racketsCount = rackets.length;
+            
+            // Different message based on context
+            let icon, title, text;
+            if(racketsCount > 3) {
+              // Already added rackets — encourage analysis
+              icon = "📊";
+              title = `${racketsCount} raquettes dans ton analyse`;
+              text = "Ton bilan évolue à chaque ajout. Compare, retire, ajuste — chaque changement recalcule tes résultats.";
+            } else if(lvl==="Débutant") {
+              icon = "🎓";
+              title = "C'est ta première pala ?";
+              text = "Ton Top 3 est ton guide d'achat. Chaque raquette est choisie pour ton profil de débutant. Explore les fiches pour comprendre les différences, ou demande conseil à nos experts.";
+            } else if(lvl==="Expert"||lvl==="Compétition") {
+              icon = "🔬";
+              title = "Envie de challenger le résultat ?";
+              text = "Tu connais le matériel — teste d'autres modèles contre ton profil. Ajoute ta raquette actuelle pour voir comment elle se positionne face aux recommandations.";
+            } else if(hasInjuries) {
+              icon = "🛡️";
+              title = "Tes recommandations tiennent compte de ton corps";
+              text = "Les raquettes sont filtrées pour protéger tes articulations. Ajoute ta raquette actuelle pour vérifier si elle est encore adaptée à ta condition.";
+            } else {
+              // Intermédiaire / Avancé standard
+              icon = "🏸";
+              title = "Tu as déjà une raquette ?";
+              text = "Ajoute-la pour voir comment elle se positionne face à tes recommandations. Tu sauras si elle te correspond encore — ou s'il est temps de changer.";
+            }
+
+            return <div style={{
+              display:"flex",alignItems:"flex-start",gap:12,
+              padding:"14px 16px",marginBottom:16,
+              background:"#FFFFFF",borderRadius:14,
+              border:"1px solid rgba(44,24,16,0.06)",
+              boxShadow:"0 2px 8px rgba(0,0,0,0.02)",
+              animation:"fadeIn 0.5s ease 0.3s both",
+            }}>
+              <div style={{fontSize:22,flexShrink:0,marginTop:2}}>{icon}</div>
+              <div>
+                <div style={{fontSize:12,fontWeight:700,color:"#2C1810",marginBottom:3}}>{title}</div>
+                <div style={{fontSize:10,color:"#7A6E5C",lineHeight:1.5}}>{text}</div>
+              </div>
+            </div>;
+          })()}
+
           {/* ET MAINTENANT — Guided next steps */}
           <div style={{marginBottom:14,animation:"fadeIn 0.6s ease"}}>
             <div style={{fontSize:9,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.12em",textAlign:"center",marginBottom:12}}>ET MAINTENANT ?</div>
