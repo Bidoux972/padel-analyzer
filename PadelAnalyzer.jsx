@@ -3340,7 +3340,8 @@ export default function PadelAnalyzer() {
   const [showArena, setShowArena] = useState(false);
   const [showDiscovery, setShowDiscovery] = useState(false);
   const [analysisToast, setAnalysisToast] = useState(null);
-  const [fitActiveIdx, setFitActiveIdx] = useState(0); // {text, type: 'good'|'warn'|'bad'}
+  const [fitActiveIdx, setFitActiveIdx] = useState(0);
+  const [welcomeBack, setWelcomeBack] = useState(null); // {text, type: 'good'|'warn'|'bad'}
   const [openAttr, setOpenAttr] = useState(null);
   const [profile, setProfile] = useState(()=>loadSavedProfile());
   const [panel, setPanel] = useState(null);
@@ -4198,6 +4199,20 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setProfile({...INITIAL_PROFILE,...sp.profile});
     setProfileName(sp.name);
     setPanel(null);
+    setFitActiveIdx(0);
+    // Welcome back — calculate time since last visit
+    const lastTs = sp.lastVisit || sp.savedAt || 0;
+    if(lastTs) {
+      const days = Math.floor((Date.now() - lastTs) / (1000*60*60*24));
+      const timeLabel = days === 0 ? "aujourd'hui" : days === 1 ? "hier" : days < 7 ? `il y a ${days} jours` : days < 30 ? `il y a ${Math.floor(days/7)} semaine${Math.floor(days/7)>1?"s":""}` : `il y a ${Math.floor(days/30)} mois`;
+      setWelcomeBack({name:sp.name, days, timeLabel, profile:sp.profile});
+    } else {
+      setWelcomeBack({name:sp.name, days:0, timeLabel:"", profile:sp.profile});
+    }
+    // Update lastVisit
+    const list = loadProfilesList();
+    const idx = list.findIndex(p=>p.name===sp.name);
+    if(idx>=0) { list[idx].lastVisit = Date.now(); saveProfilesList(list); }
     setScreen("dashboard");
   };
   // Home screen: create new profile → wizard flow
@@ -4206,6 +4221,7 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setProfileName("");
     setWizardStep(0);
     setPanel(null);
+    setWelcomeBack(null);
     setScreen("wizard");
   };
   // Disconnect: clear session and back to home
@@ -4216,6 +4232,7 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setSuggestResults(null);
     setSuggestChecked(new Set());
     setError("");
+    setWelcomeBack(null);
     setScreen("home");
   };
   // Dashboard → App with Top 3 loaded
@@ -8185,6 +8202,41 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
             </div>
           </div>
+
+          {/* ===== WELCOME BACK — shown when returning user ===== */}
+          {welcomeBack&&welcomeBack.name===profileName&&<div style={{
+            background:"#FFFFFF",borderRadius:16,padding:"16px 18px",marginBottom:16,
+            border:"1px solid rgba(44,24,16,0.06)",boxShadow:"0 2px 12px rgba(0,0,0,0.03)",
+            animation:"fadeIn 0.5s ease",position:"relative",
+          }}>
+            <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:10,right:12,background:"none",border:"none",color:"#9A8E7C",fontSize:14,cursor:"pointer",padding:4}}>✕</button>
+            <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
+              <div style={{fontSize:28,flexShrink:0}}>👋</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#2C1810",marginBottom:2}}>De retour, {welcomeBack.name} !</div>
+                {welcomeBack.timeLabel&&<div style={{fontSize:10,color:"#9A8E7C",marginBottom:8}}>Dernière visite : {welcomeBack.timeLabel}</div>}
+                <div style={{fontSize:11,color:"#5A4D40",lineHeight:1.5,marginBottom:12}}>Quelque chose a changé depuis ? Une blessure, un changement de forme, de nouvelles sensations ? Tes recommandations s'adaptent à chaque évolution.</div>
+                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{
+                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                    background:"rgba(239,68,68,0.06)",border:"1px solid rgba(239,68,68,0.15)",color:"#DC2626",
+                  }}>🩹 Blessure</button>
+                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{
+                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                    background:"rgba(59,130,246,0.06)",border:"1px solid rgba(59,130,246,0.15)",color:"#2563EB",
+                  }}>⚖️ Poids / forme</button>
+                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(3);setPanel("profile");setScreen("app");}} style={{
+                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                    background:"rgba(124,58,237,0.06)",border:"1px solid rgba(124,58,237,0.15)",color:"#7C3AED",
+                  }}>📈 Niveau</button>
+                  <button onClick={()=>setWelcomeBack(null)} style={{
+                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                    background:"rgba(5,150,105,0.06)",border:"1px solid rgba(5,150,105,0.15)",color:"#059669",
+                  }}>✅ Rien, tout va bien</button>
+                </div>
+              </div>
+            </div>
+          </div>}
 
           {/* ===== MAIN 2-COLUMN LAYOUT ===== */}
           <div style={{display:"flex",gap:20,marginBottom:20,alignItems:"stretch"}}>
