@@ -2095,8 +2095,44 @@ Write verdict in French, 2 sentences max. Be direct and honest about risks for t
 Return ONLY valid JSON, no markdown, no backticks.`;
 
 function getNextColor(rks) {
-  const used = new Set(rks.map(r=>r.color));
-  return COLORS_POOL.find(c=>!used.has(c)) || '#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+  const PALETTE=["#E63946","#2A9D8F","#457B9D","#E9C46A","#F4A261","#6D6875","#264653","#8338EC","#FF6B6B","#06D6A0","#118AB2","#073B4C"];
+  const used=new Set((rks||[]).map(r=>r.color));
+  return PALETTE.find(c=>!used.has(c))||PALETTE[rks.length%PALETTE.length];
+}
+
+// === RACKET BADGES — crédibilité et contexte ===
+function getRacketBadges(racket, allDB, year=2026) {
+  const badges = [];
+  if (!racket) return badges;
+  const name = racket.name||"";
+  const id = racket.id;
+
+  // Top 3 par attribut du Magazine
+  const CATS_WITH_ATTR = [
+    {id:"puissance",label:"Puissance",attr:"Puissance",emoji:"💥"},
+    {id:"controle",label:"Contrôle",attr:"Contrôle",emoji:"🎯"},
+    {id:"confort",label:"Confort",attr:"Confort",emoji:"🛡"},
+    {id:"spin",label:"Spin",attr:"Spin",emoji:"🌀"},
+  ];
+  CATS_WITH_ATTR.forEach(cat=>{
+    const pool = allDB.filter(r=>r.year===year).map(r=>({id:r.id,name:r.name,score:(r.scores||{})[cat.attr]||0})).sort((a,b)=>b.score-a.score);
+    const rank = pool.findIndex(r=>r.name===name||r.id===id);
+    if(rank>=0&&rank<3) badges.push({type:"ranking",text:`Top ${rank+1} ${cat.label} ${year}`,emoji:cat.emoji,color:"#8B6914",bg:"rgba(196,151,58,0.08)",border:"rgba(196,151,58,0.2)"});
+  });
+  // Polyvalence Top 3
+  const polyPool = allDB.filter(r=>r.year===year).map(r=>{const sc=r.scores||{};const vals=ATTRS.map(a=>sc[a]||0);return{id:r.id,name:r.name,score:Math.min(...vals)*0.6+(vals.reduce((a,b)=>a+b,0)/vals.length)*0.4};}).sort((a,b)=>b.score-a.score);
+  const polyRank = polyPool.findIndex(r=>r.name===name||r.id===id);
+  if(polyRank>=0&&polyRank<3) badges.push({type:"ranking",text:`Top ${polyRank+1} Polyvalence ${year}`,emoji:"⚖️",color:"#8B6914",bg:"rgba(196,151,58,0.08)",border:"rgba(196,151,58,0.2)"});
+
+  // Breaking News
+  if(racket.featured) badges.push({type:"featured",text:"Breaking News",emoji:"⭐",color:"#D97706",bg:"rgba(217,119,6,0.08)",border:"rgba(217,119,6,0.2)"});
+  // Pro player
+  if(racket.proPlayerInfo&&racket.proPlayerInfo.name) badges.push({type:"player",text:`Signature ${racket.proPlayerInfo.name}`,emoji:"🎾",color:"#2563EB",bg:"rgba(37,99,235,0.06)",border:"rgba(37,99,235,0.15)"});
+  else if(racket.player&&racket.player!=="—") badges.push({type:"player",text:`Signature ${racket.player}`,emoji:"🎾",color:"#2563EB",bg:"rgba(37,99,235,0.06)",border:"rgba(37,99,235,0.15)"});
+  // Nouveauté
+  if(racket.year===year) badges.push({type:"new",text:`Nouveauté ${year}`,emoji:"🆕",color:"#059669",bg:"rgba(5,150,105,0.06)",border:"rgba(5,150,105,0.15)"});
+
+  return badges;
 }
 
 function buildProfileText(p) {
@@ -8218,23 +8254,57 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>;
           })()}
 
-          {/* BOTTOM ROW — Analyze button + Action buttons */}
-          <div style={{display:"flex",gap:12,marginBottom:14,animation:"fadeIn 0.6s ease"}}>
-            <button onClick={()=>launchAnalysis(top3)} style={{flex:"1 1 220px",padding:"14px",background:"linear-gradient(135deg,rgba(249,115,22,0.2),rgba(239,68,68,0.15))",border:"1px solid rgba(249,115,22,0.35)",borderRadius:14,color:"#f97316",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",letterSpacing:"-0.01em",textAlign:"center"}}>
-              📊 Analyser ce Top 3 en détail
-            </button>
-            <button onClick={()=>{launchAnalysis(top3);setTimeout(()=>setPanel("suggest"),50);}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(76,175,80,0.08)",border:"1px solid rgba(76,175,80,0.25)",borderRadius:14,color:"#4CAF50",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
-              <div>🎯 Suggère-moi d'autres</div>
-              <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:400,marginTop:3}}>{brandPref.length>0?`Priorité ${brandPref.join(", ")}`:"Recommandations IA"}</div>
-            </button>
-            <button onClick={()=>{goToApp();}} style={{flex:"1 1 180px",padding:"14px 16px",background:"rgba(44,24,16,0.03)",border:"1px solid rgba(44,24,16,0.1)",borderRadius:14,color:"#2C1810",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
-              <div>{hasSession ? "📊 Reprendre l'analyse" : "📊 Explorer la base"}</div>
-              <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:400,marginTop:3}}>{hasSession?"Session en cours":"Comparer, radars, PDF"}</div>
-            </button>
-            <button onClick={()=>{setWizardStep(0);setPanel("profile");setScreen("app");}} style={{flex:"0 1 150px",padding:"14px 16px",background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:14,color:"rgba(44,24,16,0.35)",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.2s",textAlign:"center"}}>
-              <div>✏️ Modifier profil</div>
-              <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:400,marginTop:3}}>Affiner les résultats</div>
-            </button>
+          {/* ET MAINTENANT — Guided next steps */}
+          <div style={{marginBottom:14,animation:"fadeIn 0.6s ease"}}>
+            <div style={{fontSize:9,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.12em",textAlign:"center",marginBottom:12}}>ET MAINTENANT ?</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {/* Scan */}
+              <button onClick={()=>{setScanStatus("idle");setScanResult(null);setScanError("");setScanConfirmCandidates(null);setScreen("scan");}} style={{
+                padding:"16px 14px",borderRadius:16,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
+                background:"linear-gradient(165deg, #020808, #040C0A)",border:"1px solid rgba(0,255,120,0.15)",
+                transition:"all 0.2s",boxShadow:"0 4px 16px rgba(0,0,0,0.08)",
+              }}>
+                <div style={{fontSize:22,marginBottom:6}}>📷</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#00FF78"}}>Scanne une raquette</div>
+                <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:3,lineHeight:1.4}}>Celle que tu tiens en main — est-elle faite pour toi ?</div>
+              </button>
+              {/* Recherche */}
+              <button onClick={()=>{goToApp();setTimeout(()=>setPanel("add"),50);}} style={{
+                padding:"16px 14px",borderRadius:16,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
+                background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.08)",
+                transition:"all 0.2s",boxShadow:"0 4px 16px rgba(0,0,0,0.04)",
+              }}>
+                <div style={{fontSize:22,marginBottom:6}}>🔍</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#2C1810"}}>Cherche un modèle</div>
+                <div style={{fontSize:9,color:"#9A8E7C",marginTop:3,lineHeight:1.4}}>Tape un nom et teste-la contre ton profil</div>
+              </button>
+              {/* Suggestions IA */}
+              <button onClick={()=>{launchAnalysis(top3);setTimeout(()=>setPanel("suggest"),50);}} style={{
+                padding:"16px 14px",borderRadius:16,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
+                background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.08)",
+                transition:"all 0.2s",boxShadow:"0 4px 16px rgba(0,0,0,0.04)",
+              }}>
+                <div style={{fontSize:22,marginBottom:6}}>🎯</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#2C1810"}}>Suggère-moi</div>
+                <div style={{fontSize:9,color:"#9A8E7C",marginTop:3,lineHeight:1.4}}>L'IA te propose d'autres raquettes adaptées</div>
+              </button>
+              {/* Analyse */}
+              <button onClick={()=>{goToApp();setTimeout(()=>setTab("fit"),50);}} style={{
+                padding:"16px 14px",borderRadius:16,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
+                background:"linear-gradient(165deg, #0C0E14, #12101E)",border:"1px solid rgba(196,151,58,0.15)",
+                transition:"all 0.2s",boxShadow:"0 4px 16px rgba(0,0,0,0.08)",
+              }}>
+                <div style={{fontSize:22,marginBottom:6}}>🔬</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#C4973A"}}>Voir l'analyse</div>
+                <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:3,lineHeight:1.4}}>{rackets.length} raquette{rackets.length>1?"s":""} — compare et imprime ton bilan</div>
+              </button>
+            </div>
+            {/* Secondary: modifier profil */}
+            <div style={{display:"flex",justifyContent:"center",marginTop:10}}>
+              <button onClick={()=>{setWizardStep(0);setPanel("profile");setScreen("app");}} style={{background:"none",border:"none",color:"#9A8E7C",fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",padding:"6px 12px"}}>
+                ✏️ Modifier mon profil
+              </button>
+            </div>
           </div>
 
           {/* ===== KIOSK MODE — QR code + actions ===== */}
@@ -8882,6 +8952,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         {rackets.map(r=>{
           const isSel=selected.includes(r.id); const fy=fyConfig[computeForYou(r.scores, profile, r)]||fyConfig.partial;
           const gs = profileName ? computeGlobalScore(r.scores, profile, r) : null;
+          const rBadges = getRacketBadges(r, getMergedDB()).slice(0,2);
           return(<button key={r.id} className="pa-card" onClick={()=>toggleRacket(r.id)}
             onMouseEnter={()=>setHoveredRacket(r.id)} onMouseLeave={()=>setHoveredRacket(null)}
             style={{
@@ -8896,6 +8967,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             <div style={{width:8,height:8,borderRadius:"50%",background:r.color,margin:"0 auto 4px",boxShadow:isSel?`0 0 8px ${r.color}`:"none",transition:"box-shadow 0.2s ease"}}/>
             <div style={{fontSize:11,fontWeight:700,color:"#7A2E34",lineHeight:1.3}}>{r.shortName}</div>
             <div style={{fontSize:9,color:"#7A6E5C",marginTop:2}}>{r.brand}</div>
+            {rBadges.length>0&&<div style={{display:"flex",gap:3,flexWrap:"wrap",justifyContent:"center",marginTop:3}}>
+              {rBadges.map((b,bi)=><span key={bi} style={{fontSize:7,padding:"1px 5px",borderRadius:4,background:b.bg,border:`1px solid ${b.border}`,color:b.color,fontWeight:600,whiteSpace:"nowrap"}}>{b.emoji} {b.text}</span>)}
+            </div>}
             {gs!==null&&<div style={{marginTop:4,fontSize:16,fontWeight:800,fontFamily:"'Outfit'",color:gs>=7?"#059669":gs>=5?"#D97706":"#DC2626"}}>{(gs*10).toFixed(0)}<span style={{fontSize:8,color:"#9A8E7C",fontWeight:500}}>%</span></div>}
             <div style={{fontSize:8,color:"#9A8E7C",marginTop:2}}>{r.price&&r.price!=="—"?r.price:""}</div>
             {r._incomplete&&<div onClick={e=>{e.stopPropagation();rescoreRacket(r.id)}} style={{position:"absolute",bottom:4,right:4,background:"rgba(122,46,52,0.15)",border:"1px solid rgba(122,46,52,0.4)",borderRadius:6,padding:"2px 6px",fontSize:8,color:"#7A2E34",fontWeight:700,cursor:"pointer"}}>🔄 Re-scorer</div>}
@@ -9227,6 +9301,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   {r.imageUrl&&<div style={{width:100,height:125,margin:"0 auto 12px"}}><img src={proxyImg(r.imageUrl)} alt="" style={{width:"100%",height:"100%",objectFit:"contain",filter:`drop-shadow(0 8px 20px rgba(0,0,0,0.5))`}} onError={e=>{e.target.style.display='none'}}/></div>}
                   <div style={{fontFamily:"'Outfit'",fontSize:17,fontWeight:800,color:"#fff",lineHeight:1.2,marginBottom:3}}>{r.name}</div>
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.25)"}}>{r.brand} · {r.shape} · {r.weight}{r.player&&r.player!=="—"?` · 🎾 ${r.player}`:""}</div>
+                  {/* Badges */}
+                  {(()=>{const bgs=getRacketBadges(r,getMergedDB()).slice(0,3);if(!bgs.length)return null;return<div style={{display:"flex",gap:4,flexWrap:"wrap",justifyContent:"center",marginTop:6}}>
+                    {bgs.map((b,bi)=><span key={bi} style={{fontSize:7,padding:"2px 7px",borderRadius:5,background:`${b.color}12`,border:`1px solid ${b.color}25`,color:b.color,fontWeight:600,whiteSpace:"nowrap"}}>{b.emoji} {b.text}</span>)}
+                  </div>;})()}
 
                   {/* Score ring */}
                   <div style={{margin:"18px auto 6px",position:"relative",width:ringSize,height:ringSize}}>
@@ -9417,6 +9495,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                       <span style={{fontSize:7,fontWeight:700,color:fyColor,background:`${fyColor}12`,border:`1px solid ${fyColor}25`,borderRadius:5,padding:"2px 6px"}}>{fyText}</span>
                     </div>
                     <div style={{fontSize:isPodium?9:8,color:"#9A8E7C"}}>{r.brand} · {r.shape} · {r.weight}{r.player&&r.player!=="—"?` · 🎾 ${r.player}`:""}{r.price&&r.price!=="—"?` · ${r.price}`:""}</div>
+                    {/* Badges */}
+                    {(()=>{const bgs=getRacketBadges(r,getMergedDB()).slice(0,3);if(!bgs.length)return null;return<div style={{display:"flex",gap:3,flexWrap:"wrap",marginTop:3}}>
+                      {bgs.map((b,bi)=><span key={bi} style={{fontSize:6,padding:"1px 5px",borderRadius:3,background:b.bg,border:`1px solid ${b.border}`,color:b.color,fontWeight:600}}>{b.emoji} {b.text}</span>)}
+                    </div>;})()}
                   </div>
                   {/* Ring */}
                   <div style={{position:"relative",width:rSize,height:rSize,flexShrink:0}}>
@@ -10098,6 +10180,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               {isTopPick&&!s._added?"⭐ ":isPrio&&!s._added?"⚡ ":""}{s.name}
             </div>
             <div style={{fontSize:9,color:"#9A8E7C",marginTop:2}}>{s.brand} · {s.shape}{price?` · ${price}`:""}</div>
+            {dbMatch&&(()=>{const bgs=getRacketBadges(dbMatch,getMergedDB()).slice(0,2);if(!bgs.length)return null;return<div style={{display:"flex",gap:3,flexWrap:"wrap",marginTop:3}}>
+              {bgs.map((b,bi)=><span key={bi} style={{fontSize:7,padding:"1px 5px",borderRadius:4,background:b.bg,border:`1px solid ${b.border}`,color:b.color,fontWeight:600}}>{b.emoji} {b.text}</span>)}
+            </div>;})()}
           </div>
           {/* Score */}
           {gs!==null&&<div style={{textAlign:"center",flexShrink:0}}>
