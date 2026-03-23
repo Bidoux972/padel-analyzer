@@ -3283,7 +3283,8 @@ export default function PadelAnalyzer() {
   const [tab, setTab] = useState("radar");
   const [showArena, setShowArena] = useState(false);
   const [showDiscovery, setShowDiscovery] = useState(false);
-  const [analysisToast, setAnalysisToast] = useState(null); // {text, type: 'good'|'warn'|'bad'}
+  const [analysisToast, setAnalysisToast] = useState(null);
+  const [fitActiveIdx, setFitActiveIdx] = useState(0); // {text, type: 'good'|'warn'|'bad'}
   const [openAttr, setOpenAttr] = useState(null);
   const [profile, setProfile] = useState(()=>loadSavedProfile());
   const [panel, setPanel] = useState(null);
@@ -9179,7 +9180,206 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             #print-pertinence .print-racket-img-sm { width: 40px !important; height: 48px !important; }
             @page { margin: 8mm 6mm; size: A4; }
           }
+          @media screen { #print-pertinence { display: none !important; } }
         `}</style>
+
+        {/* ═══════════════════════════════════════════════════════ */}
+        {/* PREMIUM SCREEN — Carousel Analysis (hidden in print) */}
+        {/* ═══════════════════════════════════════════════════════ */}
+        {(()=>{
+          try {
+          const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
+          if(!ranked.length) return <div className="no-print" style={{textAlign:"center",padding:"40px 16px",color:"#7A6E5C",fontSize:12}}>Ajoute des raquettes pour voir l'analyse personnalisée.</div>;
+          const safeIdx = Math.min(fitActiveIdx, ranked.length-1);
+          const r = ranked[safeIdx];
+          const pct = (r.globalScore*10);
+          const forYouVal = computeForYou(r.scores, profile, r);
+          const fyColor = forYouVal==="recommended"?"#4ade80":forYouVal==="no"?"#f87171":"#fbbf24";
+          const fyText = forYouVal==="recommended"?"RECOMMANDÉ":forYouVal==="no"?"DÉCONSEILLÉ":"JOUABLE";
+          const medals = ["🥇","🥈","🥉"];
+
+          // Profile reasons with varied phrases
+          const prioAttrMap = {puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort',reprise:'Confort',polyvalence:'Contrôle'};
+          const prioAs = [...new Set((profile.priorityTags||[]).map(t=>prioAttrMap[t]).filter(Boolean))];
+          const ARM_I = ["dos","poignet","coude","epaule"];
+          const LEG_I = ["genou","cheville","mollet","hanche","achille"];
+          const ptags = profile.injuryTags||[];
+          const hasArmI = ptags.some(t=>ARM_I.includes(t));
+          const hasLegI = ptags.some(t=>LEG_I.includes(t));
+
+          const reasons = [];
+          const uH = {}, uM = new Set(), uL = new Set(), uIA={safe:new Set(),caution:new Set()}, uIL={safe:new Set(),caution:new Set()};
+          prioAs.forEach(attr=>{
+            const v = r.scores[attr]||0;
+            if(v>=8){
+              const pool = REASON_PHRASES.highPrio[attr]||REASON_PHRASES.highPrio.Puissance;
+              if(!uH[attr]) uH[attr]=new Set();
+              const fn = pickPhrase(pool, uH[attr]);
+              reasons.push({icon:"✅",text:fn(v,profile),color:"#4ade80"});
+            } else if(v>=6.5){
+              const fn = pickPhrase(REASON_PHRASES.midPrio, uM);
+              reasons.push({icon:"➖",text:fn(attr,v),color:"rgba(255,255,255,0.35)"});
+            } else {
+              const fn = pickPhrase(REASON_PHRASES.lowPrio, uL);
+              reasons.push({icon:"⬇️",text:fn(attr,v),color:"#fbbf24"});
+            }
+          });
+          if(hasArmI){
+            const c = r.scores.Confort||0;
+            const injLabel = ptags.filter(t=>ARM_I.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/");
+            if(c>=7.5){const fn=pickPhrase(REASON_PHRASES.injArm.safe,uIA.safe);reasons.push({icon:"🛡️",text:fn(c,injLabel),color:"#4ade80"});}
+            else if(c>=6){const fn=pickPhrase(REASON_PHRASES.injArm.caution,uIA.caution);reasons.push({icon:"⚠️",text:fn(c,injLabel),color:"#fbbf24"});}
+            else reasons.push({icon:"🚨",text:`Confort ${c} — risque pour ton ${injLabel}`,color:"#f87171"});
+          }
+          if(hasLegI){
+            const m = r.scores["Maniabilité"]||0;
+            const legLabel = ptags.filter(t=>LEG_I.includes(t)).map(t=>({genou:"Genou",cheville:"Cheville",mollet:"Mollet",hanche:"Hanche",achille:"Achille"}[t])).join("/");
+            if(m>=7){const fn=pickPhrase(REASON_PHRASES.injLeg.safe,uIL.safe);reasons.push({icon:"🛡️",text:fn(m,legLabel),color:"#4ade80"});}
+            else{const fn=pickPhrase(REASON_PHRASES.injLeg.caution,uIL.caution);reasons.push({icon:"⚠️",text:fn(m,legLabel),color:"#fbbf24"});}
+          }
+
+          // Score ring SVG
+          const ringSize=100, ringStroke=6, ringR=(ringSize-ringStroke)/2, ringCirc=2*Math.PI*ringR;
+          const ringOffset = ringCirc - (pct/100)*ringCirc;
+
+          return <div className="no-print" style={{
+            background:"linear-gradient(180deg, #0C0E14 0%, #12101E 50%, #0C0E14 100%)",
+            borderRadius:22,overflow:"hidden",marginBottom:16,
+            border:"1px solid rgba(255,255,255,0.06)",
+            boxShadow:"0 8px 40px rgba(0,0,0,0.3)",
+          }}>
+            <style>{`
+              @keyframes fitRingFill{from{stroke-dashoffset:${ringCirc}}}
+              @keyframes fitFadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+              @keyframes fitShimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+              @keyframes fitBadgePop{from{opacity:0;transform:scale(0.6)}to{opacity:1;transform:scale(1)}}
+            `}</style>
+
+            {/* Gold shimmer top */}
+            <div style={{height:2,background:"linear-gradient(90deg, transparent 15%, #C4973A 50%, transparent 85%)",backgroundSize:"200% 100%",animation:"fitShimmer 3s ease-in-out infinite"}}/>
+
+            {/* Header — Player name */}
+            <div style={{textAlign:"center",padding:"24px 20px 16px"}}>
+              <div style={{fontSize:8,fontWeight:700,color:"rgba(196,151,58,0.4)",letterSpacing:"0.35em",marginBottom:6}}>PADEL ANALYZER</div>
+              <div style={{fontFamily:"'Cormorant Garamond'",fontSize:15,color:"rgba(255,255,255,0.3)",fontStyle:"italic",marginBottom:2}}>Résultats de</div>
+              <div style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#fff",letterSpacing:"-0.02em"}}>{profileName||"Joueur"}</div>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginTop:8,flexWrap:"wrap"}}>
+                {profile.level&&<span style={{fontSize:8,padding:"3px 10px",borderRadius:20,background:"rgba(124,58,237,0.12)",border:"1px solid rgba(124,58,237,0.25)",color:"#a78bfa",fontWeight:600}}>{profile.level}</span>}
+                {profile.side&&<span style={{fontSize:8,padding:"3px 10px",borderRadius:20,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",color:"rgba(255,255,255,0.35)",fontWeight:600}}>{(profile.styleTags||[]).includes("offensif")?"Offensif":"Jeu"} · Côté {profile.side}</span>}
+                {ptags.filter(t=>t!=="aucune").length>0&&<span style={{fontSize:8,padding:"3px 10px",borderRadius:20,background:"rgba(248,113,113,0.08)",border:"1px solid rgba(248,113,113,0.15)",color:"#f87171",fontWeight:600}}>🩹 {ptags.filter(t=>t!=="aucune").map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(", ")}</span>}
+              </div>
+            </div>
+
+            {/* Racket card */}
+            <div key={r.id} style={{padding:"0 20px"}}>
+              <div style={{
+                background:"linear-gradient(165deg, #1A1824 0%, #16142A 60%, #1A1824 100%)",
+                borderRadius:20,overflow:"hidden",
+                border:"1px solid rgba(196,151,58,0.12)",
+                boxShadow:"0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)",
+              }}>
+                {/* Medal + Racket hero */}
+                <div style={{textAlign:"center",padding:"24px 16px 0",position:"relative"}}>
+                  <div style={{position:"absolute",top:"40%",left:"50%",transform:"translate(-50%,-50%)",width:140,height:140,borderRadius:"50%",background:`radial-gradient(circle, ${fyColor}08 0%, transparent 70%)`,pointerEvents:"none"}}/>
+                  {safeIdx<3&&<div style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:32,height:32,borderRadius:"50%",background:"linear-gradient(145deg,#C4973A,#8B6914)",boxShadow:"0 4px 12px rgba(196,151,58,0.25)",marginBottom:6,animation:"fitBadgePop 0.4s ease 0.2s both"}}>
+                    <span style={{fontSize:14}}>{medals[safeIdx]}</span>
+                  </div>}
+                  {safeIdx>=3&&<div style={{fontSize:11,color:"rgba(255,255,255,0.2)",fontWeight:700,marginBottom:6}}>#{safeIdx+1}</div>}
+                  {r.imageUrl&&<div style={{width:100,height:125,margin:"0 auto 12px"}}><img src={proxyImg(r.imageUrl)} alt="" style={{width:"100%",height:"100%",objectFit:"contain",filter:`drop-shadow(0 8px 20px rgba(0,0,0,0.5))`}} onError={e=>{e.target.style.display='none'}}/></div>}
+                  <div style={{fontFamily:"'Outfit'",fontSize:17,fontWeight:800,color:"#fff",lineHeight:1.2,marginBottom:3}}>{r.name}</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.25)"}}>{r.brand} · {r.shape} · {r.weight}{r.player&&r.player!=="—"?` · 🎾 ${r.player}`:""}</div>
+
+                  {/* Score ring */}
+                  <div style={{margin:"18px auto 6px",position:"relative",width:ringSize,height:ringSize}}>
+                    <svg width={ringSize} height={ringSize} viewBox={`0 0 ${ringSize} ${ringSize}`} style={{transform:"rotate(-90deg)"}}>
+                      <circle cx={ringSize/2} cy={ringSize/2} r={ringR} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={ringStroke}/>
+                      <circle cx={ringSize/2} cy={ringSize/2} r={ringR} fill="none" stroke={fyColor} strokeWidth={ringStroke} strokeLinecap="round"
+                        strokeDasharray={ringCirc} strokeDashoffset={ringOffset} style={{animation:`fitRingFill 1.2s cubic-bezier(.22,1,.36,1) 0.3s both`}}/>
+                    </svg>
+                    <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                      <span style={{fontSize:28,fontWeight:800,fontFamily:"'Outfit'",color:"#fff",lineHeight:1}}>{pct.toFixed(0)}</span>
+                      <span style={{fontSize:9,color:"rgba(255,255,255,0.3)",fontWeight:600}}>%</span>
+                    </div>
+                  </div>
+                  <div style={{display:"inline-block",padding:"4px 14px",borderRadius:20,fontSize:9,fontWeight:700,letterSpacing:"0.08em",
+                    background:`${fyColor}15`,border:`1px solid ${fyColor}30`,color:fyColor,
+                    animation:"fitBadgePop 0.3s ease 0.8s both",marginBottom:16,
+                  }}>{fyText}</div>
+                </div>
+
+                {/* Scores grid */}
+                <div style={{padding:"0 16px 12px"}}>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+                    {ATTRS.map(attr=>{
+                      const v = r.scores[attr]||0;
+                      const isPrio = prioAs.includes(attr);
+                      const isInj = (attr==="Confort"&&hasArmI)||(attr==="Maniabilité"&&hasLegI);
+                      return <div key={attr} style={{
+                        display:"flex",alignItems:"center",justifyContent:"space-between",
+                        padding:"7px 12px",borderRadius:10,
+                        background:isPrio?"rgba(196,151,58,0.06)":isInj?"rgba(248,113,113,0.04)":"rgba(255,255,255,0.02)",
+                        border:isPrio?"1px solid rgba(196,151,58,0.1)":isInj?"1px solid rgba(248,113,113,0.08)":"1px solid rgba(255,255,255,0.03)",
+                      }}>
+                        <span style={{fontSize:10,color:isPrio?"#C4973A":isInj?"#f87171":"rgba(255,255,255,0.35)",fontWeight:isPrio||isInj?700:500}}>
+                          {isPrio?"★ ":isInj?"🩹 ":""}{attr}
+                        </span>
+                        <span style={{fontSize:13,fontWeight:800,fontFamily:"'Outfit'",color:v>=8?"#4ade80":v>=6.5?"#fff":"#fbbf24"}}>{v}</span>
+                      </div>;
+                    })}
+                  </div>
+                </div>
+
+                {/* Verdict */}
+                <div style={{padding:"0 16px 16px"}}>
+                  <p style={{fontSize:10,color:"rgba(255,255,255,0.3)",lineHeight:1.6,margin:0,textAlign:"center"}}>{r.verdict}</p>
+                  {r.price&&r.price!=="—"&&<div style={{textAlign:"center",marginTop:6}}><span style={{fontSize:10,color:"rgba(196,151,58,0.5)",fontWeight:600}}>💰 {r.price}</span></div>}
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation dots */}
+            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:14,padding:"16px 0"}}>
+              <button onClick={()=>setFitActiveIdx(p=>p>0?p-1:ranked.length-1)} style={{width:32,height:32,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.08)",background:"rgba(255,255,255,0.03)",color:"rgba(255,255,255,0.3)",fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>‹</button>
+              <div style={{display:"flex",gap:5}}>
+                {ranked.map((_,idx)=><div key={idx} onClick={()=>setFitActiveIdx(idx)} style={{
+                  width:idx===safeIdx?20:8,height:8,borderRadius:4,cursor:"pointer",transition:"all 0.3s",
+                  background:idx===safeIdx?"#C4973A":"rgba(255,255,255,0.08)",
+                }}/>)}
+              </div>
+              <button onClick={()=>setFitActiveIdx(p=>p<ranked.length-1?p+1:0)} style={{width:32,height:32,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.08)",background:"rgba(255,255,255,0.03)",color:"rgba(255,255,255,0.3)",fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>›</button>
+            </div>
+
+            {/* Profile reasons */}
+            {reasons.length>0&&<div style={{padding:"0 20px 16px"}}>
+              <div style={{background:"rgba(255,255,255,0.02)",borderRadius:16,padding:"14px 16px",border:"1px solid rgba(255,255,255,0.04)"}}>
+                <div style={{fontSize:8,fontWeight:700,color:"rgba(255,255,255,0.2)",letterSpacing:"0.1em",marginBottom:8}}>POUR TON PROFIL</div>
+                {reasons.map((rr,ri)=><div key={ri} style={{
+                  display:"flex",alignItems:"center",gap:10,padding:"8px 12px",marginBottom:4,borderRadius:10,
+                  background:rr.color==="#4ade80"?"rgba(74,222,128,0.04)":rr.color==="#f87171"?"rgba(248,113,113,0.04)":rr.color==="#fbbf24"?"rgba(251,191,36,0.04)":"rgba(255,255,255,0.02)",
+                  borderLeft:`3px solid ${rr.color}`,
+                  animation:`fitFadeUp 0.3s ease ${0.4+ri*0.1}s both`,
+                }}>
+                  <span style={{fontSize:14,flexShrink:0}}>{rr.icon}</span>
+                  <span style={{fontSize:11,color:"rgba(255,255,255,0.65)",fontWeight:500}}>{rr.text}</span>
+                </div>)}
+              </div>
+            </div>}
+
+            {/* CTA buttons */}
+            <div style={{display:"flex",gap:10,padding:"0 20px 20px"}}>
+              <button onClick={()=>openRacketSheet(r,"app")} style={{flex:1,padding:"12px",borderRadius:12,cursor:"pointer",
+                background:"linear-gradient(135deg,rgba(196,151,58,0.15),rgba(196,151,58,0.06))",border:"1px solid rgba(196,151,58,0.2)",
+                color:"#C4973A",fontSize:11,fontWeight:700,fontFamily:"'DM Sans',sans-serif",
+              }}>📋 Fiche complète</button>
+              <button onClick={()=>window.print()} style={{flex:1,padding:"12px",borderRadius:12,cursor:"pointer",
+                background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",
+                color:"rgba(255,255,255,0.35)",fontSize:11,fontWeight:700,fontFamily:"'DM Sans',sans-serif",
+              }}>🖨 Imprimer le bilan</button>
+            </div>
+          </div>;
+          } catch(e) { console.error("[Fit:carousel]", e); return null; }
+        })()}
+
         <div id="print-pertinence" style={S.card}>
           {/* ===== PRINT HEADER — professional branding ===== */}
           <div className="print-header" style={{display:"none",marginBottom:14}}>
