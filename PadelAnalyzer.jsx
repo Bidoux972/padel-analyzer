@@ -9309,9 +9309,13 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             // Render as plain text — no inline <strong> tags that Chrome PDF fragments
             const plainText = lines.map(l => l.replace(/\*\*/g, "")).join(" ");
             
-            return <div className="print-smart-verdict" style={{background:"rgba(34,197,94,0.06)",border:"1px solid rgba(34,197,94,0.15)",borderRadius:8,padding:"10px 12px",marginBottom:12,fontSize:10,color:"rgba(44,24,16,0.35)",lineHeight:1.6}}>
-              <div style={{fontWeight:700,color:"#4ade80",marginBottom:4,fontSize:11}}>🎯 Notre verdict</div>
-              <p style={{margin:0}}>{plainText}</p>
+            return <div className="print-smart-verdict" style={{background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:14,padding:"16px 18px",marginBottom:14,position:"relative",overflow:"hidden"}}>
+              <div style={{position:"absolute",top:10,right:14,fontSize:40,color:"rgba(44,24,16,0.03)",fontFamily:"Georgia",lineHeight:1}}>"</div>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                <div style={{width:3,height:18,borderRadius:2,background:"linear-gradient(180deg,#059669,#4ade80)"}}/>
+                <span style={{fontWeight:700,color:"#059669",fontSize:11,letterSpacing:"0.04em"}}>NOTRE VERDICT</span>
+              </div>
+              <p style={{margin:0,fontSize:11,color:"#2C1810",lineHeight:1.7}}>{plainText}</p>
             </div>;
             } catch(e) { console.error("[Pertinence:verdict]", e); return null; }
           })()}
@@ -9329,8 +9333,11 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 {parts.map((p,j) => p.startsWith("**") ? <strong key={j} style={{color:"#2C1810"}}>{p.replace(/\*\*/g,"")}</strong> : p)}
               </p>;
             };
-            return <div className="print-deep-analysis" style={{background:"rgba(99,102,241,0.05)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:8,padding:"10px 12px",marginBottom:12}}>
-              <div className="deep-title" style={{fontWeight:700,color:"#2C1810",marginBottom:6,fontSize:11}}>🔬 Analyse du profil</div>
+            return <div className="print-deep-analysis" style={{background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:14,padding:"16px 18px",marginBottom:14}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                <div style={{width:3,height:18,borderRadius:2,background:"linear-gradient(180deg,#6366f1,#818cf8)"}}/>
+                <span className="deep-title" style={{fontWeight:700,color:"#4338ca",fontSize:11,letterSpacing:"0.04em"}}>ANALYSE DU PROFIL</span>
+              </div>
               {deepLines.map((l,i) => renderBold(l,i))}
             </div>;
             } catch(e) { console.error("[Pertinence:deep]", e); return null; }
@@ -9426,8 +9433,55 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </div>
                 
                 {/* Warnings and verdict */}
-                {criticalLow&&<div className="print-warn" style={{fontSize:9,color:"#f87171",fontWeight:600,marginBottom:3}}>⚠ Confort insuffisant ({r.scores.Confort}/10) pour blessures {ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/")} — risque de douleurs</div>}
-                <div className="print-verdict" style={{fontSize:isPodium?10:9,color:"rgba(44,24,16,0.35)",lineHeight:1.6}}>{r.verdict}</div>
+                {criticalLow&&<div style={{
+                  display:"flex",alignItems:"center",gap:10,padding:"10px 14px",marginBottom:8,
+                  background:"rgba(220,38,38,0.06)",borderRadius:10,borderLeft:"3px solid #DC2626",
+                  animation:"fadeIn 0.3s ease",
+                }}>
+                  <span style={{fontSize:18,flexShrink:0}}>🚨</span>
+                  <div>
+                    <div style={{fontSize:10,fontWeight:700,color:"#DC2626"}}>Confort insuffisant ({r.scores.Confort}/10)</div>
+                    <div style={{fontSize:9,color:"#5A4D40",marginTop:1}}>Risque pour ton {ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/")} — à tester avec prudence</div>
+                  </div>
+                </div>}
+                {/* Profile compatibility — personalized reasons */}
+                {isPodium&&(()=>{
+                  const prioAttrMap = {puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort',reprise:'Confort',polyvalence:'Contrôle'};
+                  const prioAs = [...new Set((profile.priorityTags||[]).map(t=>prioAttrMap[t]).filter(Boolean))];
+                  const reasons = [];
+                  prioAs.forEach(attr=>{
+                    const v = r.scores[attr]||0;
+                    if(v>=8) reasons.push({icon:"✅",text:`${attr} à ${v} — dans tes priorités`,color:"#059669",bg:"rgba(5,150,105,0.05)"});
+                    else if(v>=6.5) reasons.push({icon:"➖",text:`${attr} à ${v} — correct, sans plus`,color:"#9A8E7C",bg:"rgba(44,24,16,0.02)"});
+                    else reasons.push({icon:"⬇️",text:`${attr} à ${v} — en dessous de tes attentes`,color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                  });
+                  if(hasArmInj && !criticalLow) {
+                    const c = r.scores.Confort||0;
+                    const injLabel = ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/");
+                    if(c>=7.5) reasons.push({icon:"🛡️",text:`Confort ${c} — rassurant pour ton ${injLabel}`,color:"#059669",bg:"rgba(5,150,105,0.05)"});
+                    else if(c>=6) reasons.push({icon:"⚠️",text:`Confort ${c} — surveille ton ${injLabel}`,color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                  }
+                  if(hasLegInj) {
+                    const m = r.scores["Maniabilité"]||0;
+                    const legLabel = ptags.filter(t=>LEG_INJ.includes(t)).map(t=>({genou:"Genou",cheville:"Cheville",mollet:"Mollet",hanche:"Hanche",achille:"Achille"}[t])).join("/");
+                    if(m>=7) reasons.push({icon:"🛡️",text:`Maniabilité ${m} — ok pour ton ${legLabel}`,color:"#059669",bg:"rgba(5,150,105,0.05)"});
+                    else reasons.push({icon:"⚠️",text:`Maniabilité ${m} — effort supplémentaire (${legLabel})`,color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                  }
+                  if(!reasons.length) return null;
+                  return <div style={{marginBottom:8}}>
+                    <div style={{fontSize:8,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.06em",marginBottom:5}}>POUR TON PROFIL</div>
+                    {reasons.map((rr,ri)=><div key={ri} style={{
+                      display:"flex",alignItems:"center",gap:8,padding:"6px 10px",marginBottom:3,
+                      borderRadius:8,background:rr.bg,
+                    }}>
+                      <span style={{fontSize:12,flexShrink:0}}>{rr.icon}</span>
+                      <span style={{fontSize:10,color:rr.color,fontWeight:600}}>{rr.text}</span>
+                    </div>)}
+                  </div>;
+                })()}
+                <div style={{padding:isPodium?"10px 12px":"6px 10px",background:"rgba(44,24,16,0.02)",borderRadius:10,borderLeft:"3px solid rgba(44,24,16,0.08)"}}>
+                  <div className="print-verdict" style={{fontSize:isPodium?10:9,color:"#5A4D40",lineHeight:1.6,margin:0}}>{r.verdict}</div>
+                </div>
               </div>);
             });
             return cards;
