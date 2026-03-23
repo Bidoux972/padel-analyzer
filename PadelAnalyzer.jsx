@@ -3192,7 +3192,7 @@ export default function PadelAnalyzer() {
     const saved = loadSavedRackets();
     return saved.length ? saved.slice(0,Math.min(saved.length,4)).map(r=>r.id) : [];
   });
-  const [tab, setTab] = useState("fit");
+  const [tab, setTab] = useState("radar");
   const [showArena, setShowArena] = useState(false);
   const [showDiscovery, setShowDiscovery] = useState(false);
   const [analysisToast, setAnalysisToast] = useState(null); // {text, type: 'good'|'warn'|'bad'}
