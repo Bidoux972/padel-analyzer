@@ -939,7 +939,7 @@ function MagazineScreen({ ctx }) {
 function CatalogScreen({ ctx }) {
   const {
     catalogSearch, setCatalogSearch, catFilters, setCatFilters, toggleCatFilter, resetCatFilters,
-    getMergedDB, openRacketSheet, setScreen, totalDBCount,
+    getMergedDB, openRacketSheet, setScreen, totalDBCount, profile, profileName,
   } = ctx;
 
   const allDB = getMergedDB();
@@ -1064,9 +1064,29 @@ function CatalogScreen({ ctx }) {
             <div style={{flex:1}}/>
 
             <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginTop:6}}>
-              <div style={{display:"flex",alignItems:"baseline",gap:2}}>
-                <span style={{fontSize:isSmall?20:24,fontWeight:800,color:TC.cream,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{score}</span>
-                <span style={{fontSize:8,color:"rgba(240,236,228,0.3)"}}>/10</span>
+              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                <div style={{display:"flex",alignItems:"baseline",gap:2}}>
+                  <span style={{fontSize:isSmall?20:24,fontWeight:800,color:TC.cream,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{score}</span>
+                  <span style={{fontSize:8,color:"rgba(240,236,228,0.3)"}}>/10</span>
+                </div>
+                {profileName&&(()=>{
+                  const gs=computeGlobalScore(r.scores,profile,r);
+                  const pct=gs*10;
+                  const mc=pct>=70?"#4ade80":pct>=55?"#fbbf24":"#f87171";
+                  const sz=isSmall?22:26;
+                  const sR=(sz-2.5)/2;
+                  const sC=2*Math.PI*sR;
+                  const sO=sC-(pct/100)*sC;
+                  return <div style={{position:"relative",width:sz,height:sz}} title={`${pct.toFixed(0)}% match pour ton profil`}>
+                    <svg width={sz} height={sz} viewBox={`0 0 ${sz} ${sz}`} style={{transform:"rotate(-90deg)"}}>
+                      <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={2.5}/>
+                      <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke={mc} strokeWidth={2.5} strokeLinecap="round" strokeDasharray={sC} strokeDashoffset={sO}/>
+                    </svg>
+                    <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <span style={{fontSize:sz*0.32,fontWeight:800,color:mc,fontFamily:"'Outfit'"}}>{pct.toFixed(0)}</span>
+                    </div>
+                  </div>;
+                })()}
               </div>
               {priceStr && <span style={{fontSize:isSmall?12:14,fontWeight:700,color:TC.gray1,fontFamily:"'Outfit',sans-serif"}}>{priceStr}</span>}
             </div>
@@ -6767,7 +6787,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* ============================================================ */}
       {screen==="catalog"&&<CatalogScreen ctx={{
         catalogSearch, setCatalogSearch, catFilters, setCatFilters, toggleCatFilter, resetCatFilters,
-        getMergedDB, openRacketSheet, setScreen, totalDBCount,
+        getMergedDB, openRacketSheet, setScreen, totalDBCount, profile, profileName,
       }}/>}
 
       {/* ============================================================ */}
