@@ -9104,7 +9104,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {tab==="fit"&&<>
         <style>{`
           @media print {
-            * { box-sizing: border-box !important; }
+            * { box-sizing: border-box !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             html, body { background: white !important; margin: 0 !important; padding: 0 !important; }
             body * { visibility: hidden !important; }
             #print-pertinence, #print-pertinence * { visibility: visible !important; }
@@ -9113,71 +9113,10 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               width: 100% !important; max-width: 100% !important;
               padding: 8mm 8mm !important;
               background: white !important; color: #1a1a1a !important;
-              overflow: visible !important; font-size: 10px !important;
-              -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+              overflow: visible !important;
             }
-            #print-pertinence .print-header { display: block !important; }
-            #print-pertinence .print-section-title { display: block !important; }
             #print-pertinence .no-print { display: none !important; }
-            #print-pertinence .print-radar-section { display: flex !important; gap: 12px !important; align-items: stretch !important; }
-            #print-pertinence .print-radar-section > div:first-child { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 10px !important; padding: 8px 0 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; }
-            #print-pertinence .print-radar-section .recharts-polar-grid line,
-            #print-pertinence .print-radar-section .recharts-polar-grid polygon,
-            #print-pertinence .print-radar-section .recharts-polar-grid-concentric-polygon { stroke: #c7d2fe !important; stroke-opacity: 1 !important; }
-            #print-pertinence .print-radar-section .recharts-polygon { stroke-width: 2.5px !important; fill-opacity: 0.25 !important; print-color-adjust: exact !important; -webkit-print-color-adjust: exact !important; }
-            #print-pertinence .print-radar-section .recharts-polar-angle-axis-tick text { fill: #5A4D40 !important; }
-            #print-pertinence .print-card {
-              border: 1px solid #2C1810 !important; background: #fafafa !important;
-              color: #1a1a1a !important; page-break-inside: avoid; break-inside: avoid;
-              overflow: hidden !important; max-width: 100% !important;
-              margin-bottom: 8px !important; border-radius: 10px !important;
-            }
-            #print-pertinence .print-card-gold {
-              background: linear-gradient(135deg, #fffbeb, #fef3c7) !important;
-              border: 2px solid #d4a017 !important;
-              box-shadow: 0 2px 12px rgba(184,134,11,0.12) !important;
-              margin-bottom: 12px !important;
-            }
-            #print-pertinence .print-card-silver {
-              background: #f8fafc !important;
-              border: 1.5px solid rgba(44,24,16,0.35) !important;
-              margin-bottom: 10px !important;
-            }
-            #print-pertinence .print-card-bronze {
-              background: #fefaf5 !important;
-              border: 1.5px solid #cd7f32 !important;
-              margin-bottom: 10px !important;
-            }
-            #print-pertinence .print-card * { color: #1a1a1a !important; }
-            #print-pertinence .print-card-gold .print-medal-label { color: #8b6914 !important; }
-            #print-pertinence .print-card-silver .print-medal-label { color: rgba(44,24,16,0.25) !important; }
-            #print-pertinence .print-card-bronze .print-medal-label { color: #92400e !important; }
-            #print-pertinence .print-bar-bg { background: #5A4D40 !important; height: 6px !important; border-radius: 3px !important; }
-            #print-pertinence .print-bar-fill-green { background: #22c55e !important; }
-            #print-pertinence .print-bar-fill-gray { background: #9ca3af !important; }
-            #print-pertinence .print-bar-fill-red { background: #ef4444 !important; }
-            #print-pertinence .print-bar-fill-yellow { background: #f59e0b !important; }
-            #print-pertinence .print-score-green { color: #16a34a !important; }
-            #print-pertinence .print-score-yellow { color: #d97706 !important; }
-            #print-pertinence .print-score-red { color: #dc2626 !important; }
-            #print-pertinence .print-badge { border: 1px solid #666 !important; padding: 3px 8px !important; border-radius: 6px !important; font-size: 8px !important; font-weight: 700 !important; }
-            #print-pertinence .print-badge-green { background: #dcfce7 !important; color: #166534 !important; border-color: #22c55e !important; }
-            #print-pertinence .print-badge-orange { background: #fff7ed !important; color: #9a3412 !important; border-color: #7A2E34 !important; }
-            #print-pertinence .print-badge-red { background: #fef2f2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
-            #print-pertinence .print-profile-box { border: 1.5px solid #7A2E34 !important; background: #fff7ed !important; padding: 12px !important; border-radius: 10px !important; }
-            #print-pertinence .print-warn { color: #dc2626 !important; }
-            #print-pertinence .print-verdict { color: #5A4D40 !important; font-style: normal !important; }
-            #print-pertinence .print-deep-analysis { background: #f0f4ff !important; border: 1.5px solid #818cf8 !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; page-break-inside: avoid; break-inside: avoid; }
-            #print-pertinence .print-deep-analysis * { color: #5A4D40 !important; }
-            #print-pertinence .print-smart-verdict { background: #f0fdf4 !important; border: 1.5px solid #22c55e !important; border-radius: 8px !important; padding: 10px 12px !important; margin-bottom: 12px !important; font-size: 10px !important; line-height: 1.7 !important; }
-            #print-pertinence .print-smart-verdict, #print-pertinence .print-smart-verdict * { color: #5A4D40 !important; }
-            #print-pertinence .print-smart-verdict strong { color: #111827 !important; font-weight: 700 !important; }
-            #print-pertinence .print-smart-verdict p { margin: 0 !important; }
-            #print-pertinence .print-deep-analysis .deep-title { color: #4338ca !important; font-weight: 700 !important; font-size: 11px !important; margin-bottom: 6px !important; }
-            #print-pertinence .print-section-divider { border-top: 2px solid #5A4D40 !important; margin: 16px 0 10px !important; padding-top: 8px !important; }
-            #print-pertinence .print-footer-wrap { page-break-before: avoid; break-before: avoid; page-break-inside: avoid; break-inside: avoid; }
-            #print-pertinence .print-racket-img { width: 60px !important; height: 72px !important; object-fit: contain !important; border-radius: 8px !important; background: #1A1410 !important; padding: 4px !important; }
-            #print-pertinence .print-racket-img-sm { width: 40px !important; height: 48px !important; }
+            #print-pertinence svg circle { print-color-adjust: exact !important; -webkit-print-color-adjust: exact !important; }
             @page { margin: 8mm 6mm; size: A4; }
           }
           @media screen { #print-pertinence { display: none !important; } }
@@ -9380,565 +9319,150 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           } catch(e) { console.error("[Fit:carousel]", e); return null; }
         })()}
 
-        <div id="print-pertinence" style={S.card}>
-          {/* ===== PRINT HEADER — professional branding ===== */}
-          <div className="print-header" style={{display:"none",marginBottom:14}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",borderBottom:"3px solid #7A2E34",paddingBottom:10}}>
-              <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <svg width="44" height="44" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
-                  <rect width="50" height="50" rx="11" fill="#7A2E34"/>
-                  <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="3.2" fill="none"/><circle cx="25" cy="10" r="2" fill="#fff" opacity="0.25"/><circle cx="25" cy="18" r="2" fill="#fff" opacity="0.25"/><circle cx="25" cy="25" r="2" fill="#fff" opacity="0.25"/><circle cx="12" cy="18" r="2" fill="#fff" opacity="0.25"/><circle cx="38" cy="18" r="2" fill="#fff" opacity="0.25"/></g></g>
-                  <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
-                </svg>
-                <div>
-                  <div style={{fontSize:18,fontWeight:800,color:"#7A2E34",fontFamily:"'Outfit'",letterSpacing:"-0.01em"}}>PADEL ANALYZER</div>
-                  <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginTop:1}}>Analyse de pertinence personnalisée</div>
-                </div>
+        <div id="print-pertinence">
+          {/* ===== PRINT HEADER ===== */}
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",paddingBottom:14,borderBottom:"2px solid #1A1410",marginBottom:20}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <PalaIcon size={20}/>
+              <div>
+                <div style={{fontFamily:"'Outfit'",fontSize:16,fontWeight:800,color:"#1A1410"}}>PADEL ANALYZER</div>
+                <div style={{fontSize:8,color:"#9A8E7C"}}>Analyse de pertinence personnalisée</div>
               </div>
-              <div style={{textAlign:"right"}}>
-                <div style={{fontSize:12,fontWeight:700,color:"#1a1a1a"}}>{profileName || "Analyse joueur"}</div>
-                <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginTop:2}}>{new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})}</div>
-              </div>
+            </div>
+            <div style={{textAlign:"right"}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#1A1410"}}>{profileName||"Analyse joueur"}</div>
+              <div style={{fontSize:8,color:"#9A8E7C",marginTop:2}}>{new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})}</div>
             </div>
           </div>
 
-          {/* ===== SCREEN: Print button + profile name ===== */}
-          <div style={{display:"flex",gap:8,marginBottom:10,alignItems:"center"}} className="no-print">
-            <div style={{flex:1,fontSize:12,fontWeight:700,color:"#2C1810"}}>{profileName ? `👤 ${profileName}` : <span style={{color:"#7A6E5C",fontWeight:400,fontSize:11}}>Définis un nom dans 👤 Profil → 💾 Sauvegarder</span>}</div>
-            <button onClick={()=>window.print()} style={{padding:"8px 16px",background:"rgba(122,46,52,0.2)",border:"1px solid #7A2E34",borderRadius:8,color:"#7A2E34",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>🖨 Imprimer</button>
+          {/* ===== PROFILE SUMMARY BAR ===== */}
+          <div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",background:"#F8F5F0",borderRadius:10,marginBottom:18,border:"1px solid #EDE7DD",flexWrap:"wrap"}}>
+            <div style={{width:26,height:26,borderRadius:7,background:"#1A1410",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,color:"#C4973A",fontSize:11,flexShrink:0}}>{(profileName||"?").charAt(0).toUpperCase()}</div>
+            <span style={{fontSize:11,fontWeight:700,color:"#1A1410"}}>{profileName}</span>
+            {profile.level&&<span style={{fontSize:8,padding:"2px 8px",borderRadius:6,background:"rgba(124,58,237,0.08)",color:"#7C3AED",fontWeight:600}}>{profile.level}</span>}
+            <span style={{fontSize:8,color:"#5A4D40"}}>{(profile.styleTags||[]).includes("offensif")?"Offensif":""}{profile.side?` · Côté ${profile.side}`:""}</span>
+            {(profile.injuryTags||[]).filter(t=>t!=="aucune").length>0&&<span style={{fontSize:8,padding:"2px 8px",borderRadius:6,background:"rgba(220,38,38,0.06)",color:"#DC2626",fontWeight:600}}>🩹 {(profile.injuryTags||[]).filter(t=>t!=="aucune").map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(", ")}</span>}
+            <span style={{fontSize:8,color:"#9A8E7C"}}>Priorités : {(profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean).join(", ")}</span>
           </div>
 
-          {/* ===== PROFILE BOX ===== */}
-          <div className="print-profile-box" style={{background:"rgba(122,46,52,0.06)",border:"1px solid rgba(122,46,52,0.15)",borderRadius:10,padding:12,marginBottom:12,boxSizing:"border-box"}}>
-            <p style={{fontSize:10,color:"#7A2E34",fontWeight:700,margin:"0 0 3px"}}>👤 Profil actif :</p>
-            <p style={{fontSize:9,color:"rgba(44,24,16,0.35)",margin:0,lineHeight:1.5}}>{profileText}</p>
-            <p style={{fontSize:8,color:"#7A6E5C",margin:"4px 0 0"}}>{(()=>{
-              const w = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
-              const prioMap = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
-              const styleMap = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
-              const ordM3 = [1.4, 1.0, 0.7, 0.5, 0.5];
-              (profile.priorityTags||[]).forEach((tag,idx)=>{ const b=prioMap[tag]; const m=ordM3[Math.min(idx,ordM3.length-1)]; if(b) for(const[k,v] of Object.entries(b)) w[k]=(w[k]||1)+v*m; });
-              for (const tag of (profile.styleTags||[])) { const b=styleMap[tag]; if(b) for(const[k,v] of Object.entries(b)) w[k]=(w[k]||1)+v; }
-              const ARM=["dos","poignet","coude","epaule"]; const LEG=["genou","cheville","mollet","hanche","achille"];
-              if((profile.injuryTags||[]).some(t=>ARM.includes(t))) w.Confort+=2;
-              if((profile.injuryTags||[]).some(t=>LEG.includes(t))) w.Maniabilité+=1.5;
-              const h=Number(profile.height)||0;
-              if(h>0&&h<170) w.Maniabilité+=0.5;
-              if(h>=185) w.Puissance+=0.3;
-              const age=Number(profile.age)||0;
-              if(age>=40){w.Confort+=0.5;w.Tolérance+=0.3;}
-              if(age>=50){w.Confort+=0.5;w.Maniabilité+=0.5;w.Tolérance+=0.3;}
-              if(age>=60){w.Confort+=0.5;w.Tolérance+=0.5;}
-              const hand=profile.hand||"Droitier"; const side=profile.side||"Droite";
-              const isAtk=(hand==="Droitier"&&side==="Gauche")||(hand==="Gaucher"&&side==="Droite");
-              const isCon=(hand==="Droitier"&&side==="Droite")||(hand==="Gaucher"&&side==="Gauche");
-              if(isAtk){w.Puissance+=0.5;w.Spin+=0.3;}
-              if(isCon){w.Contrôle+=0.5;w.Tolérance+=0.3;}
-              const sorted = Object.entries(w).sort((a,b)=>b[1]-a[1]);
-              const top = sorted.filter(([,v])=>v>1.5).map(([k,v])=>`${k} ~${Math.round(v)}x`);
-              return top.length ? `Critères renforcés : ${top.join(", ")}.` : "";
-            })()}</p>
+          {/* ===== PRINT BUTTON (screen only) ===== */}
+          <div className="no-print" style={{display:"flex",justifyContent:"flex-end",marginBottom:12}}>
+            <button onClick={()=>window.print()} style={{padding:"8px 16px",background:"#1A1410",border:"none",borderRadius:8,color:"#F4F0E8",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>🖨 Imprimer</button>
           </div>
 
-          {/* ===== IDEAL PROFILE RADAR + BEST RACKET OVERLAY ===== */}
-          {(()=>{
-            try {
-            const w2 = { Puissance:1, Contrôle:1, Confort:1, Spin:1, Maniabilité:1, Tolérance:1 };
-            const prioMap2 = { confort:{Confort:1.5}, polyvalence:{Contrôle:0.5,Maniabilité:0.5,Tolérance:0.5}, puissance:{Puissance:1.5}, controle:{Contrôle:1.5}, spin:{Spin:1.5}, legerete:{Maniabilité:1.5}, protection:{Confort:1.5}, reprise:{Confort:1.5,Tolérance:1.0,Maniabilité:0.5} };
-            const styleMap2 = { offensif:{Puissance:0.5}, defensif:{Contrôle:0.5,Tolérance:0.5}, tactique:{Contrôle:0.5,Maniabilité:0.3}, puissant:{Puissance:0.5,Spin:0.3}, veloce:{Maniabilité:0.8}, endurant:{Confort:0.5,Tolérance:0.3}, contre:{Tolérance:0.5,Contrôle:0.3}, polyvalent:{Contrôle:0.3,Tolérance:0.3}, technique:{Contrôle:0.5,Spin:0.3} };
-            for (const tag of (profile.priorityTags||[])) { const b=prioMap2[tag]; if(b) for(const[k,v] of Object.entries(b)) w2[k]=(w2[k]||1)+v; }
-            for (const tag of (profile.styleTags||[])) { const b=styleMap2[tag]; if(b) for(const[k,v] of Object.entries(b)) w2[k]=(w2[k]||1)+v; }
-            const maxW2 = Math.max(...Object.values(w2));
-            const idealRadar2 = ATTRS.map(a=>({ attribute: a, "Raquette idéale": Math.round((w2[a]/maxW2)*10*10)/10 }));
-            
-            // Best racket overlay
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
-            const bestShort = ranked.length>0 ? (ranked[0].shortName || ranked[0].name?.slice(0,28) || "N°1") : "";
-            if(ranked.length>0) {
-              idealRadar2.forEach(pt => { pt["🥇 "+bestShort] = Number(ranked[0].scores?.[pt.attribute])||0; });
-            }
-            
-            return <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"stretch"}} className="print-radar-section">
-              <div style={{flex:"1 1 50%",background:"rgba(44,24,16,0.02)",border:"1px solid rgba(99,102,241,0.12)",borderRadius:10,padding:"8px 0 0",minHeight:200,display:"flex",flexDirection:"column",alignItems:"center"}}>
-                <div style={{fontSize:9,fontWeight:700,color:"#2C1810",textAlign:"center",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:2}}>📊 Raquette idéale{ranked.length>0?` vs ${bestShort}`:""}</div>
-                <RadarChart width={340} height={220} data={idealRadar2} margin={{top:10,right:50,bottom:10,left:50}}>
-                    <PolarGrid stroke="rgba(44,24,16,0.06)"/>
-                    <PolarAngleAxis dataKey="attribute" tick={{fill:"rgba(44,24,16,0.35)",fontSize:8}}/>
-                    <PolarRadiusAxis angle={90} domain={[0,10]} tick={false} axisLine={false}/>
-                    <Radar name="Raquette idéale" dataKey="Raquette idéale" stroke="#6366f1" fill="#6366f1" fillOpacity={0.12} strokeWidth={2} strokeDasharray="6 3"/>
-                    {ranked.length>0&&<Radar name={"🥇 "+bestShort} dataKey={"🥇 "+bestShort} stroke="#7A2E34" fill="#7A2E34" fillOpacity={0.15} strokeWidth={2}/>}
-                    <Legend wrapperStyle={{fontSize:8,color:"rgba(44,24,16,0.35)",paddingTop:2}}/>
-                </RadarChart>
-              </div>
-              {/* Quick stats panel */}
-              <div style={{flex:"1 1 50%",display:"flex",flexDirection:"column",gap:8}}>
-                {ranked.slice(0,3).map((r,i)=>{
-                  const medals=["🥇","🥈","🥉"];
-                  const gs = r.globalScore;
-                  const fy2 = computeForYou(r.scores, profile, r);
-                  const fyC = fy2==="recommended"?"#22c55e":fy2==="no"?"#ef4444":"#FF9800";
-                  return <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:i===0?"rgba(122,46,52,0.06)":"#F8F5F0",border:`1px solid ${i===0?"rgba(122,46,52,0.2)":"rgba(44,24,16,0.04)"}`,borderRadius:10,flex:1}}>
-                    <span style={{fontSize:18}}>{medals[i]}</span>
-                    {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className="print-racket-img-sm" style={{width:32,height:40,objectFit:"contain",borderRadius:6,background:"rgba(44,24,16,0.04)",flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:10,fontWeight:700,color:"#2C1810",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.shortName}</div>
-                      <div style={{fontSize:8,color:"rgba(44,24,16,0.25)"}}>{r.brand} · {r.shape}</div>
-                    </div>
-                    <div style={{textAlign:"right",flexShrink:0}}>
-                      <div style={{fontSize:14,fontWeight:800,color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171",fontFamily:"'Outfit'",lineHeight:1}}>{fmtPct(gs)}</div>
-                      <div style={{fontSize:7,color:fyC,fontWeight:700,marginTop:2}}>{fy2==="recommended"?"RECO":fy2==="no"?"NON":"JOUABLE"}</div>
-                    </div>
-                  </div>;
-                })}
-              </div>
-            </div>;
-            } catch(e) { console.error("[Pertinence:radar]", e); return null; }
-          })()}
-
-          {/* ===== SMART COACH VERDICT — "En bref" ===== */}
+          {/* ===== RACKET CARDS ===== */}
           {(()=>{
             try {
             const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             if(!ranked.length) return null;
-            const best = ranked[0];
-            const second = ranked[1];
-            
-            // Priority attribute mapping
+            const medals=["🥇","🥈","🥉"];
+            const medalLabels=["MEILLEUR CHOIX","2ᵉ CHOIX","3ᵉ CHOIX"];
             const prioAttrMap = {puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort',reprise:'Confort',polyvalence:'Contrôle'};
-            const prioTags = profile.priorityTags||[];
-            const prioAttrs = [...new Set(prioTags.map(t=>prioAttrMap[t]).filter(Boolean))];
-            const prioLabels = prioTags.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-            
-            // Injury context
-            const ARM_INJ = ["dos","poignet","coude","epaule"];
-            const LEG_INJ = ["genou","cheville","mollet","hanche","achille"];
-            const injTags = profile.injuryTags||[];
-            const hasArmInj = injTags.some(t=>ARM_INJ.includes(t));
-            const hasLegInj = injTags.some(t=>LEG_INJ.includes(t));
-            const injLabels = injTags.filter(t=>t!=="aucune").map(id=>INJURY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-            
-            // Find best's top 2 priority scores
-            const bestPrioScores = prioAttrs.map(a=>({attr:a, val:best.scores[a]||0})).sort((a,b)=>b.val-a.val);
-            
-            // Find best's weakest score overall
-            const bestWeakest = ATTRS.map(a=>({attr:a, val:best.scores[a]||0})).sort((a,b)=>a.val-b.val)[0];
-            
-            // Gap with #2
-            const gap = second ? (best.globalScore - second.globalScore) : 0;
-            
-            // Build the verdict lines
-            const lines = [];
-            
-            // Line 1: The recommendation with why
-            if (prioLabels.length > 0) {
-              const prioStr = prioLabels.length === 1 ? prioLabels[0] : prioLabels.slice(0,-1).join(", ") + " et " + prioLabels[prioLabels.length-1];
-              if (bestPrioScores.length > 0 && bestPrioScores[0].val >= 7.5) {
-                lines.push(`Avec tes priorités ${prioStr}, la **${best.name}** (${fmtPct(best.globalScore)}) s'impose : elle affiche ${bestPrioScores.map(s=>`${s.attr} à ${s.val}`).join(", ")}.`);
-              } else if (bestPrioScores.length > 0) {
-                lines.push(`Pour tes priorités ${prioStr}, la **${best.name}** (${fmtPct(best.globalScore)}) offre le meilleur compromis du lot avec ${bestPrioScores.map(s=>`${s.attr} à ${s.val}`).join(", ")}.`);
-              } else {
-                lines.push(`La **${best.name}** (${fmtPct(best.globalScore)}) est la plus adaptée à ton profil.`);
-              }
-            } else {
-              lines.push(`La **${best.name}** (${fmtPct(best.globalScore)}) est la plus adaptée à ton profil.`);
-            }
-            
-            // Line 2: Injury warning or comfort note
-            if (hasArmInj) {
-              const comfortBest = best.scores.Confort||0;
-              if (comfortBest >= 7.5) {
-                lines.push(`Bon point pour ton ${injLabels.join("/")} : son Confort à ${comfortBest} devrait ménager tes articulations.`);
-              } else if (comfortBest >= 6) {
-                lines.push(`Attention ${injLabels.join("/")} : son Confort à ${comfortBest} est correct mais pas optimal — surveille tes sensations.`);
-              } else {
-                lines.push(`⚠ Point de vigilance ${injLabels.join("/")} : Confort à ${comfortBest} seulement — risque de douleurs sur longues sessions.`);
-              }
-            } else if (hasLegInj) {
-              const manBest = best.scores["Maniabilité"]||0;
-              if (manBest >= 7) {
-                lines.push(`Avec ta fragilité ${injLabels.join("/")}, sa Maniabilité à ${manBest} te permet de compenser sans forcer.`);
-              } else {
-                lines.push(`Attention ${injLabels.join("/")} : sa Maniabilité à ${manBest} demandera plus d'efforts en déplacement.`);
-              }
-            }
-            
-            // Line 3: Comparison with #2 (if exists and meaningful gap)
-            if (second) {
-              if (gap >= 0.5) {
-                // Clear winner — find what #2 lacks
-                const secondWorse = prioAttrs.length > 0 
-                  ? prioAttrs.map(a=>({attr:a, diff: (best.scores[a]||0)-(second.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0]
-                  : ATTRS.map(a=>({attr:a, diff: (best.scores[a]||0)-(second.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
-                if (secondWorse) {
-                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) suit mais perd du terrain en ${secondWorse.attr} (${second.scores[secondWorse.attr]} vs ${best.scores[secondWorse.attr]}).`);
-                } else {
-                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) est une alternative solide.`);
-                }
-              } else if (gap >= 0.2) {
-                // Close call — find what #2 does better
-                const secondBetter = ATTRS.map(a=>({attr:a, diff: (second.scores[a]||0)-(best.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
-                if (secondBetter) {
-                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) talonne de près et pousse même plus fort en ${secondBetter.attr} (${second.scores[secondBetter.attr]} vs ${best.scores[secondBetter.attr]}) — à essayer aussi.`);
-                } else {
-                  lines.push(`La **${second.name}** (${fmtPct(second.globalScore)}) est au coude-à-coude — les deux méritent un essai.`);
-                }
-              } else {
-                // Virtually tied — find what differentiates them
-                const secondBetter2 = ATTRS.map(a=>({attr:a, diff: (second.scores[a]||0)-(best.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
-                const bestBetter2 = ATTRS.map(a=>({attr:a, diff: (best.scores[a]||0)-(second.scores[a]||0)})).filter(d=>d.diff>0).sort((a,b)=>b.diff-a.diff)[0];
-                if (secondBetter2 && bestBetter2) {
-                  lines.push(`Quasi ex-æquo avec la **${second.name}** (${fmtPct(second.globalScore)}) — elle pousse en ${secondBetter2.attr} (${second.scores[secondBetter2.attr]}), la n°1 domine en ${bestBetter2.attr} (${best.scores[bestBetter2.attr]}). Deux profils complémentaires à tester.`);
-                } else {
-                  lines.push(`Quasi ex-æquo avec la **${second.name}** (${fmtPct(second.globalScore)}) — profils très proches, la différence se jouera au toucher et à l'équilibre en main.`);
-                }
-              }
-            }
-            
-            // Render as plain text — no inline <strong> tags that Chrome PDF fragments
-            const plainText = lines.map(l => l.replace(/\*\*/g, "")).join(" ");
-            
-            return <div className="print-smart-verdict" style={{background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:14,padding:"16px 18px",marginBottom:14,position:"relative",overflow:"hidden"}}>
-              <div style={{position:"absolute",top:10,right:14,fontSize:40,color:"rgba(44,24,16,0.03)",fontFamily:"Georgia",lineHeight:1}}>"</div>
-              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                <div style={{width:3,height:18,borderRadius:2,background:"linear-gradient(180deg,#059669,#4ade80)"}}/>
-                <span style={{fontWeight:700,color:"#059669",fontSize:11,letterSpacing:"0.04em"}}>NOTRE VERDICT</span>
-              </div>
-              <p style={{margin:0,fontSize:11,color:"#2C1810",lineHeight:1.7}}>{plainText}</p>
-            </div>;
-            } catch(e) { console.error("[Pertinence:verdict]", e); return null; }
-          })()}
+            const prioAs = [...new Set((profile.priorityTags||[]).map(t=>prioAttrMap[t]).filter(Boolean))];
+            const ARM_P=["dos","poignet","coude","epaule"],LEG_P=["genou","cheville","mollet","hanche","achille"];
+            const ptP=profile.injuryTags||[];
+            const hasArmP=ptP.some(t=>ARM_P.includes(t)),hasLegP=ptP.some(t=>LEG_P.includes(t));
+            const uHP={},uMP=new Set(),uLP=new Set(),uIAP={safe:new Set(),caution:new Set()},uILP={safe:new Set(),caution:new Set()};
 
-          {/* ===== DEEP ANALYSIS — Profile Intelligence ===== */}
-          {(()=>{
-            try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
-            if(ranked.length<2) return null;
-            const deepLines = generateDeepAnalysis(profile, ranked, ATTRS);
-            if(!deepLines.length) return null;
-            const renderBold = (text, idx) => {
-              const parts = text.split(/(\*\*[^*]+\*\*)/g);
-              return <p key={idx} style={{margin:"0 0 6px",fontSize:9,color:"rgba(44,24,16,0.35)",lineHeight:1.6}}>
-                {parts.map((p,j) => p.startsWith("**") ? <strong key={j} style={{color:"#2C1810"}}>{p.replace(/\*\*/g,"")}</strong> : p)}
-              </p>;
-            };
-            return <div className="print-deep-analysis" style={{background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:14,padding:"16px 18px",marginBottom:14}}>
-              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                <div style={{width:3,height:18,borderRadius:2,background:"linear-gradient(180deg,#6366f1,#818cf8)"}}/>
-                <span className="deep-title" style={{fontWeight:700,color:"#4338ca",fontSize:11,letterSpacing:"0.04em"}}>ANALYSE DU PROFIL</span>
-              </div>
-              {deepLines.map((l,i) => renderBold(l,i))}
-            </div>;
-            } catch(e) { console.error("[Pertinence:deep]", e); return null; }
-          })()}
-
-          {/* ===== PODIUM SECTION TITLE ===== */}
-          {rackets.length>=3&&<div className="print-section-title" style={{display:"none",fontSize:12,fontWeight:800,color:"#1a1a1a",marginBottom:8,paddingBottom:4}}>
-            🏆 PODIUM — Top 3
-          </div>}
-
-          {/* ===== PERTINENCE RANKING ===== */}
-          {(()=>{
-            try {
-            const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
-            const cards = [];
-            const usedHigh = {}, usedMid = new Set(), usedLow = new Set(), usedInjArm = {safe:new Set(),caution:new Set()}, usedInjLeg = {safe:new Set(),caution:new Set()};
-            ranked.forEach((r,i)=>{
-              // Insert section divider after top 3
-              if(i===3 && ranked.length>3) {
-                cards.push(<div key="divider" className="print-section-divider" style={{borderTop:"2px solid rgba(44,24,16,0.04)",margin:"16px 0 10px",paddingTop:8}}>
-                  <div className="print-section-title" style={{display:"none",fontSize:11,fontWeight:700,color:"rgba(44,24,16,0.25)",marginBottom:4}}>📋 AUTRES RAQUETTES ANALYSÉES</div>
-                </div>);
+            return ranked.map((r,i)=>{
+              const isPodium=i<3;
+              const gs=r.globalScore;
+              const pct=gs*10;
+              const forYouVal=computeForYou(r.scores,profile,r);
+              const fyColor=forYouVal==="recommended"?"#059669":forYouVal==="no"?"#DC2626":"#D97706";
+              const fyText=forYouVal==="recommended"?"RECOMMANDÉ":forYouVal==="no"?"DÉCONSEILLÉ":"JOUABLE";
+              const medalAccent=i===0?"#B8860B":i===1?"#6B7280":"#92400E";
+              const cardBg=i===0?"linear-gradient(165deg,#FFFEF8,#FFF9E8)":i===1?"linear-gradient(165deg,#FAFBFD,#F5F7FA)":i===2?"linear-gradient(165deg,#FEFCF8,#FBF5EE)":"#FFFFFF";
+              const cardBorder=i===0?"rgba(196,151,58,0.3)":i===1?"rgba(148,163,184,0.25)":i===2?"rgba(205,127,50,0.2)":"rgba(44,24,16,0.06)";
+              // Ring SVG
+              const rSize=isPodium?64:52,rStk=4,rR=(rSize-rStk)/2,rCirc=2*Math.PI*rR;
+              const rOff=rCirc-(pct/100)*rCirc;
+              // Reasons
+              const reasons=[];
+              prioAs.forEach(attr=>{
+                const v=r.scores[attr]||0;
+                if(v>=8){const pool=REASON_PHRASES.highPrio[attr]||REASON_PHRASES.highPrio.Puissance;if(!uHP[attr])uHP[attr]=new Set();const fn=pickPhrase(pool,uHP[attr]);reasons.push({icon:"✅",text:fn(v,profile),color:"#059669"});}
+                else if(v>=6.5){const fn=pickPhrase(REASON_PHRASES.midPrio,uMP);reasons.push({icon:"➖",text:fn(attr,v),color:"#9A8E7C"});}
+                else{const fn=pickPhrase(REASON_PHRASES.lowPrio,uLP);reasons.push({icon:"⬇️",text:fn(attr,v),color:"#D97706"});}
+              });
+              if(hasArmP){const c=r.scores.Confort||0;const inj=ptP.filter(t=>ARM_P.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/");
+                if(c>=7.5){const fn=pickPhrase(REASON_PHRASES.injArm.safe,uIAP.safe);reasons.push({icon:"🛡️",text:fn(c,inj),color:"#059669"});}
+                else if(c>=6){const fn=pickPhrase(REASON_PHRASES.injArm.caution,uIAP.caution);reasons.push({icon:"⚠️",text:fn(c,inj),color:"#D97706"});}
+                else reasons.push({icon:"🚨",text:`Confort ${c} — risque pour ton ${inj}`,color:"#DC2626"});
+              }
+              if(hasLegP){const m=r.scores["Maniabilité"]||0;const inj=ptP.filter(t=>LEG_P.includes(t)).map(t=>({genou:"Genou",cheville:"Cheville",mollet:"Mollet",hanche:"Hanche",achille:"Achille"}[t])).join("/");
+                if(m>=7){const fn=pickPhrase(REASON_PHRASES.injLeg.safe,uILP.safe);reasons.push({icon:"🛡️",text:fn(m,inj),color:"#059669"});}
+                else{const fn=pickPhrase(REASON_PHRASES.injLeg.caution,uILP.caution);reasons.push({icon:"⚠️",text:fn(m,inj),color:"#D97706"});}
               }
 
-              const forYouVal = computeForYou(r.scores, profile, r);
-              const fy = fyConfig[forYouVal]||fyConfig.partial;
-              const gs = r.globalScore;
-              const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
-              const cardClass = "print-card" + (i===0?" print-card-gold":i===1?" print-card-silver":i===2?" print-card-bronze":"");
-              const badgeClass = forYouVal==="recommended"?"print-badge-green":forYouVal==="no"?"print-badge-red":"print-badge-orange";
-              const scoreClass = gs>=7.5?"print-score-green":gs>=6.5?"print-score-yellow":"print-score-red";
-              
-              const ARM_INJ = ["dos","poignet","coude","epaule"];
-              const LEG_INJ = ["genou","cheville","mollet","hanche","achille"];
-              const ptags = profile.injuryTags||[];
-              const hasArmInj = ptags.some(t=>ARM_INJ.includes(t));
-              const hasLegInj = ptags.some(t=>LEG_INJ.includes(t));
-              const criticalLow = hasArmInj && r.scores.Confort < 7;
-              
-              const isPodium = i<3;
-              
-              cards.push(<div key={r.id} className={cardClass} style={{
-                background: i===0 ? "linear-gradient(165deg, #FFFEF8, #FFF9E8)" : i===1 ? "linear-gradient(165deg, #FAFBFD, #F5F7FA)" : i===2 ? "linear-gradient(165deg, #FEFCF8, #FBF5EE)" : "#FFFFFF",
-                border: i===0 ? "2px solid rgba(196,151,58,0.35)" : i===1 ? "2px solid rgba(148,163,184,0.3)" : i===2 ? "2px solid rgba(205,127,50,0.25)" : "1px solid rgba(44,24,16,0.06)",
-                borderRadius:18, padding: isPodium ? "18px 18px" : "12px 14px", marginBottom: isPodium ? 16 : 8, boxSizing:"border-box", overflow:"hidden",
-                boxShadow: i===0 ? "0 8px 32px rgba(196,151,58,0.1), 0 2px 8px rgba(0,0,0,0.04)" : i===1 ? "0 6px 24px rgba(148,163,184,0.08), 0 2px 6px rgba(0,0,0,0.03)" : i===2 ? "0 6px 24px rgba(205,127,50,0.06), 0 2px 6px rgba(0,0,0,0.03)" : "0 2px 8px rgba(0,0,0,0.03)",
-                pageBreakInside:"avoid", breakInside:"avoid",
-                position:"relative",
-              }}>
-                {/* Subtle top accent for podium */}
-                {isPodium&&<div style={{position:"absolute",top:0,left:0,right:0,height:2,background:i===0?"linear-gradient(90deg,transparent 10%,#C4973A 50%,transparent 90%)":i===1?"linear-gradient(90deg,transparent 10%,#94a3b8 50%,transparent 90%)":"linear-gradient(90deg,transparent 10%,#CD7F32 50%,transparent 90%)",opacity:0.6}}/>}
-                {/* Card header: medal + image + name + badge + score */}
-                <div style={{display:"flex",alignItems:"center",gap:isPodium?12:8,marginBottom:isPodium?10:6}}>
-                  {medal&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:40}}>
-                    <span style={{fontSize:i===0?32:26,lineHeight:1}}>{medal}</span>
-                    <span className="print-medal-label" style={{fontSize:7,fontWeight:800,letterSpacing:"0.02em",color:i===0?"#b8860b":i===1?"#6b7280":"#92400e",marginTop:2,whiteSpace:"nowrap"}}>{i===0?"MEILLEUR":i===1?"2ᵉ choix":"3ᵉ choix"}</span>
+              return <div key={r.id} style={{background:cardBg,border:`1.5px solid ${cardBorder}`,borderRadius:16,marginBottom:isPodium?16:10,overflow:"hidden",boxShadow:"0 2px 12px rgba(0,0,0,0.03)",pageBreakInside:"avoid",breakInside:"avoid",position:"relative"}}>
+                {isPodium&&<div style={{height:2,background:i===0?"linear-gradient(90deg,transparent 15%,#C4973A 50%,transparent 85%)":i===1?"linear-gradient(90deg,transparent 15%,#94a3b8 50%,transparent 85%)":"linear-gradient(90deg,transparent 15%,#CD7F32 50%,transparent 85%)",opacity:0.5}}/>}
+                {/* Header: medal + photo + name + ring */}
+                <div style={{display:"flex",alignItems:"center",gap:isPodium?14:10,padding:isPodium?"16px 18px 10px":"12px 14px 8px"}}>
+                  {isPodium&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:40}}>
+                    <span style={{fontSize:i===0?28:22,lineHeight:1}}>{medals[i]}</span>
+                    <span style={{fontSize:6,fontWeight:800,color:medalAccent,marginTop:2}}>{medalLabels[i]}</span>
                   </div>}
-                  {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className={isPodium?"print-racket-img":"print-racket-img-sm"} style={{
-                    width:isPodium?60:36, height:isPodium?72:44, objectFit:"contain", borderRadius:isPodium?10:6, flexShrink:0,
-                    background:isPodium?"rgba(44,24,16,0.04)":"rgba(44,24,16,0.03)", padding:isPodium?4:2,
-                    border:isPodium?`1px solid ${i===0?"rgba(250,204,21,0.3)":i===1?"rgba(148,163,184,0.2)":"rgba(217,119,6,0.2)"}`:"none",
-                  }} onError={e=>{e.target.style.display='none'}}/>}
-                  {!medal&&!r.imageUrl&&<div style={{width:10,height:10,borderRadius:"50%",background:r.color,border:"1px solid #999",flexShrink:0,printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>}
+                  {!isPodium&&<span style={{fontSize:10,color:"#9A8E7C",fontWeight:700,flexShrink:0}}>#{i+1}</span>}
+                  {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" style={{width:isPodium?50:36,height:isPodium?62:44,objectFit:"contain",borderRadius:8,flexShrink:0}} onError={e=>{e.target.style.display='none'}}/>}
                   <div style={{flex:1,minWidth:0}}>
-                    <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-                      <span style={{fontSize: i===0 ? 15 : isPodium ? 13 : 11,fontWeight:800,color:"#2C1810"}}>{r.name}</span>
-                      <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
+                    <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",marginBottom:2}}>
+                      <span style={{fontFamily:"'Outfit'",fontSize:isPodium?14:11,fontWeight:800,color:"#1A1410"}}>{r.name}</span>
+                      <span style={{fontSize:7,fontWeight:700,color:fyColor,background:`${fyColor}12`,border:`1px solid ${fyColor}25`,borderRadius:5,padding:"2px 6px"}}>{fyText}</span>
                     </div>
-                    <div style={{fontSize:isPodium?9:8,color:"rgba(44,24,16,0.25)",marginTop:3}}>
-                      {r.shape} · {r.weight} · {r.brand}{r.player && r.player !== "—" ? ` · 🎾 ${r.player}` : ""}{r.price && r.price !== "—" ? ` · ${r.price}` : ""}
+                    <div style={{fontSize:isPodium?9:8,color:"#9A8E7C"}}>{r.brand} · {r.shape} · {r.weight}{r.player&&r.player!=="—"?` · 🎾 ${r.player}`:""}{r.price&&r.price!=="—"?` · ${r.price}`:""}</div>
+                  </div>
+                  {/* Ring */}
+                  <div style={{position:"relative",width:rSize,height:rSize,flexShrink:0}}>
+                    <svg width={rSize} height={rSize} viewBox={`0 0 ${rSize} ${rSize}`} style={{transform:"rotate(-90deg)"}}>
+                      <circle cx={rSize/2} cy={rSize/2} r={rR} fill="none" stroke="#EDE7DD" strokeWidth={rStk}/>
+                      <circle cx={rSize/2} cy={rSize/2} r={rR} fill="none" stroke={fyColor} strokeWidth={rStk} strokeLinecap="round" strokeDasharray={rCirc} strokeDashoffset={rOff}/>
+                    </svg>
+                    <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                      <span style={{fontSize:rSize*0.28,fontWeight:800,fontFamily:"'Outfit'",color:"#1A1410",lineHeight:1}}>{pct.toFixed(0)}</span>
+                      <span style={{fontSize:rSize*0.11,color:"#9A8E7C",fontWeight:600}}>%</span>
                     </div>
                   </div>
-                  <div className={scoreClass} style={{fontSize: i===0 ? 28 : isPodium ? 22 : 16, fontWeight:800, color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171", fontFamily:"'Outfit'", lineHeight:1, flexShrink:0, marginLeft:8}}>
-                    {fmtPct(gs)}
-                  </div>
                 </div>
-                
-                {/* Score bars — 2 rows of 3, thicker for podium */}
-                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:isPodium?"6px 14px":"4px 10px",marginBottom:isPodium?8:5}}>
-                  {ATTRS.map(attr=>{
-                    const v = r.scores[attr];
-                    const isKey = (attr==="Confort"&&hasArmInj) || 
-                      (attr==="Maniabilité"&&(hasLegInj||(profile.styleTags||[]).includes("veloce"))) ||
-                      (profile.priorityTags||[]).some(t=>(t==="confort"&&attr==="Confort")||(t==="polyvalence"&&["Contrôle","Tolérance","Maniabilité"].includes(attr))||(t==="puissance"&&attr==="Puissance")||(t==="controle"&&attr==="Contrôle")||(t==="spin"&&attr==="Spin")||(t==="legerete"&&attr==="Maniabilité")||(t==="protection"&&attr==="Confort")||(t==="reprise"&&["Confort","Tolérance","Maniabilité"].includes(attr)));
-                    const low = hasArmInj && attr==="Confort" && v<7;
-                    const barH = isPodium ? 7 : 4;
-                    const barClass = low?"print-bar-fill-red":v>=7.5?"print-bar-fill-green":v>=6?"print-bar-fill-gray":"print-bar-fill-yellow";
-                    return(<div key={attr} style={{minWidth:0}}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <span style={{fontSize:isPodium?9:8,color:isKey?"#7A2E34":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
-                        <span style={{fontSize:isPodium?10:9,color:low?"#f87171":v>=7.5?"#4ade80":v>=6?"#5A4D40":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
-                      </div>
-                      <div className="print-bar-bg" style={{height:barH,background:"rgba(44,24,16,0.04)",borderRadius:barH/2,marginTop:2}}>
-                        <div className={barClass} style={{height:barH,borderRadius:barH/2,width:`${v*10}%`,background:low?"#f87171":v>=7.5?"#4ade80":v>=6?"rgba(44,24,16,0.25)":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
-                      </div>
-                    </div>);
-                  })}
-                </div>
-                
-                {/* Warnings and verdict */}
-                {criticalLow&&<div style={{
-                  display:"flex",alignItems:"center",gap:10,padding:"10px 14px",marginBottom:8,
-                  background:"rgba(220,38,38,0.06)",borderRadius:10,borderLeft:"3px solid #DC2626",
-                  animation:"fadeIn 0.3s ease",
-                }}>
-                  <span style={{fontSize:18,flexShrink:0}}>🚨</span>
-                  <div>
-                    <div style={{fontSize:10,fontWeight:700,color:"#DC2626"}}>Confort insuffisant ({r.scores.Confort}/10)</div>
-                    <div style={{fontSize:9,color:"#5A4D40",marginTop:1}}>Risque pour ton {ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/")} — à tester avec prudence</div>
-                  </div>
-                </div>}
-                {/* Profile compatibility — personalized reasons with varied phrases */}
-                {isPodium&&(()=>{
-                  const prioAttrMap = {puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort',reprise:'Confort',polyvalence:'Contrôle'};
-                  const prioAs = [...new Set((profile.priorityTags||[]).map(t=>prioAttrMap[t]).filter(Boolean))];
-                  const reasons = [];
-                  prioAs.forEach(attr=>{
-                    const v = r.scores[attr]||0;
-                    if(v>=8) {
-                      const pool = REASON_PHRASES.highPrio[attr]||REASON_PHRASES.highPrio.Puissance;
-                      if(!usedHigh[attr]) usedHigh[attr]=new Set();
-                      const fn = pickPhrase(pool, usedHigh[attr]);
-                      reasons.push({icon:"✅",text:fn(v,profile),color:"#059669",bg:"rgba(5,150,105,0.05)"});
-                    } else if(v>=6.5) {
-                      const fn = pickPhrase(REASON_PHRASES.midPrio, usedMid);
-                      reasons.push({icon:"➖",text:fn(attr,v),color:"#9A8E7C",bg:"rgba(44,24,16,0.02)"});
-                    } else {
-                      const fn = pickPhrase(REASON_PHRASES.lowPrio, usedLow);
-                      reasons.push({icon:"⬇️",text:fn(attr,v),color:"#D97706",bg:"rgba(217,119,6,0.04)"});
-                    }
-                  });
-                  if(hasArmInj && !criticalLow) {
-                    const c = r.scores.Confort||0;
-                    const injLabel = ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/");
-                    if(c>=7.5) {
-                      const fn = pickPhrase(REASON_PHRASES.injArm.safe, usedInjArm.safe);
-                      reasons.push({icon:"🛡️",text:fn(c,injLabel),color:"#059669",bg:"rgba(5,150,105,0.05)"});
-                    } else if(c>=6) {
-                      const fn = pickPhrase(REASON_PHRASES.injArm.caution, usedInjArm.caution);
-                      reasons.push({icon:"⚠️",text:fn(c,injLabel),color:"#D97706",bg:"rgba(217,119,6,0.04)"});
-                    }
-                  }
-                  if(hasLegInj) {
-                    const m = r.scores["Maniabilité"]||0;
-                    const legLabel = ptags.filter(t=>LEG_INJ.includes(t)).map(t=>({genou:"Genou",cheville:"Cheville",mollet:"Mollet",hanche:"Hanche",achille:"Achille"}[t])).join("/");
-                    if(m>=7) {
-                      const fn = pickPhrase(REASON_PHRASES.injLeg.safe, usedInjLeg.safe);
-                      reasons.push({icon:"🛡️",text:fn(m,legLabel),color:"#059669",bg:"rgba(5,150,105,0.05)"});
-                    } else {
-                      const fn = pickPhrase(REASON_PHRASES.injLeg.caution, usedInjLeg.caution);
-                      reasons.push({icon:"⚠️",text:fn(m,legLabel),color:"#D97706",bg:"rgba(217,119,6,0.04)"});
-                    }
-                  }
-                  if(!reasons.length) return null;
-                  return <div style={{marginBottom:10,padding:"12px 14px",background:"rgba(44,24,16,0.015)",borderRadius:12,border:"1px solid rgba(44,24,16,0.04)"}}>
-                    <div style={{fontSize:8,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.08em",marginBottom:6}}>POUR TON PROFIL</div>
-                    {reasons.map((rr,ri)=><div key={ri} style={{
-                      display:"flex",alignItems:"center",gap:8,padding:"7px 10px",marginBottom:4,
-                      borderRadius:8,background:rr.bg,borderLeft:`3px solid ${rr.color}30`,
-                    }}>
-                      <span style={{fontSize:13,flexShrink:0}}>{rr.icon}</span>
-                      <span style={{fontSize:10,color:"#2C1810",fontWeight:500}}>{rr.text}</span>
-                    </div>)}
-                  </div>;
-                })()}
-                <div style={{padding:isPodium?"10px 12px":"6px 10px",background:"rgba(44,24,16,0.02)",borderRadius:10,borderLeft:"3px solid rgba(44,24,16,0.08)"}}>
-                  <div className="print-verdict" style={{fontSize:isPodium?10:9,color:"#5A4D40",lineHeight:1.6,margin:0}}>{r.verdict}</div>
-                </div>
-              </div>);
-            });
-            return cards;
-            } catch(e) { console.error("[Pertinence:ranking]", e); return null; }
-          })()}
-
-          {/* ===== 🎯 DISCOVERY: Priority-based picks from DB — COLLAPSIBLE ===== */}
-          {(()=>{
-            try {
-            const prioTagIds = profile.priorityTags||[];
-            if (!prioTagIds.length || !rackets.length) return null;
-            
-            const prioAttrMap = {puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort',reprise:'Confort',polyvalence:'Contrôle'};
-            const prioAttrs = [...new Set(prioTagIds.map(t=>prioAttrMap[t]).filter(Boolean))];
-            const prioLabels = prioTagIds.map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-            if (!prioAttrs.length) return null;
-            
-            const existingNames = new Set(rackets.map(r=>(r.name||"").toLowerCase().trim()));
-            const age = Number(profile.age)||0;
-            const ht = Number(profile.height)||0;
-            const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
-            let pool;
-            if (isJunior) {
-              pool = getMergedDB().filter(r=>r.category==='junior');
-            } else {
-              const lvl = profile.level||'Débutant';
-              const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
-              const cats = catMap[lvl]||['debutant','intermediaire'];
-              pool = getMergedDB().filter(r=>cats.includes(r.category));
-            }
-            pool = pool.filter(r=>!existingNames.has((r.name||"").toLowerCase().trim()));
-            const brandPref = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label?.toLowerCase()).filter(Boolean);
-            if (brandPref.length) {
-              const brandPool = pool.filter(r=>brandPref.includes(r.brand.toLowerCase()));
-              const otherTop = pool.filter(r=>!brandPref.includes(r.brand.toLowerCase()))
-                .map(r=>({...r, _pa: prioAttrs.reduce((s,k)=>(s+(r.scores[k]||0)),0)/prioAttrs.length}))
-                .sort((a,b)=>b._pa-a._pa).slice(0,2);
-              pool = [...brandPool, ...otherTop];
-            }
-            const scored = pool.map(r=>{
-              const prioAvg = prioAttrs.reduce((s,k)=>(s+(r.scores[k]||0)),0)/prioAttrs.length;
-              const gs = computeGlobalScore(r.scores, profile, r);
-              return {...r, _prioAvg: Math.round(prioAvg*10)/10, _prioScore: prioAvg*0.7 + gs*0.3, globalScore: gs};
-            });
-            scored.sort((a,b)=>b.globalScore-a.globalScore);
-            const picks = scored.slice(0, 4);
-            if (!picks.length) return null;
-            
-            const prioTitle = prioLabels.join(' & ');
-            
-            return <>
-              {/* Invitation banner — always visible */}
-              <div onClick={()=>setShowDiscovery(d=>!d)} style={{
-                marginTop:16,cursor:"pointer",
-                display:"flex",alignItems:"center",gap:12,padding:"14px 16px",
-                background:showDiscovery?"rgba(122,46,52,0.05)":"linear-gradient(135deg, rgba(122,46,52,0.04), rgba(196,151,58,0.04))",
-                borderRadius:14,border:"1px solid rgba(122,46,52,0.12)",
-                transition:"all 0.25s",
-              }}>
-                <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#7A2E34,#C4973A)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <span style={{fontSize:18}}>🎯</span>
-                </div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:12,fontWeight:700,color:"#7A2E34"}}>Envie d'aller plus loin ?</div>
-                  <div style={{fontSize:9,color:"#9A8E7C",marginTop:2}}>{picks.length} raquettes de notre catalogue correspondent à tes priorités {prioTitle}</div>
-                </div>
-                <span style={{fontSize:14,color:"#7A2E34",flexShrink:0,transition:"transform 0.3s",transform:showDiscovery?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
-              </div>
-
-              {/* Collapsible cards — only when open */}
-              {showDiscovery&&<div style={{animation:"fadeIn 0.3s ease",marginTop:10}}>
-                <div className="print-section-divider no-print" style={{borderTop:"none",margin:"0 0 8px",paddingTop:0}}>
-                  <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginBottom:8}}>Raquettes de la base hors sélection, classées par {prioLabels.join(' + ')}</div>
-                </div>
-                {/* Print header — only visible in print if section is open */}
-                <div className="print-section-divider" style={{borderTop:"2px solid rgba(122,46,52,0.15)",margin:"0 0 8px",paddingTop:8,display:"none"}}>
-                  <div className="print-section-title" style={{display:"none",fontSize:11,fontWeight:700,color:"#7A2E34",marginBottom:4}}>🎯 À DÉCOUVRIR — Top {prioTitle}</div>
-                </div>
-              {picks.map((r,idx)=>{
-                const gs = r.globalScore;
-                const forYouVal = computeForYou(r.scores, profile, r);
-                const fy = fyConfig[forYouVal]||fyConfig.partial;
-                const badgeClass = forYouVal==="recommended"?"print-badge-green":forYouVal==="no"?"print-badge-red":"print-badge-orange";
-                return <div key={"disco-"+r.id} className="print-card" style={{
-                  background:"rgba(122,46,52,0.04)", border:"1px solid rgba(122,46,52,0.2)",
-                  borderRadius:12, padding:"12px 14px", marginBottom:8, boxSizing:"border-box", overflow:"hidden",
-                  borderLeft:"5px solid rgba(122,46,52,0.5)", pageBreakInside:"avoid", breakInside:"avoid",
-                }}>
-                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:28}}>
-                      <span style={{fontSize:18,lineHeight:1}}>🎯</span>
-                    </div>
-                    {r.imageUrl&&<img src={proxyImg(r.imageUrl)} alt="" className="print-racket-img-sm" style={{width:40,height:48,objectFit:"contain",borderRadius:8,flexShrink:0,background:"rgba(44,24,16,0.04)",padding:2}} onError={e=>{e.target.style.display='none'}}/>}
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-                        <span style={{fontSize:12,fontWeight:700,color:"#2C1810"}}>{r.name}</span>
-                        <span className={`print-badge ${badgeClass}`} style={{background:fy.bg,border:`1px solid ${fy.border}`,borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#fff",flexShrink:0,whiteSpace:"nowrap"}}>{fy.text}</span>
-                        <span style={{background:"rgba(122,46,52,0.15)",border:"1px solid rgba(122,46,52,0.3)",borderRadius:6,padding:"3px 8px",fontSize:7,fontWeight:700,color:"#7A2E34",flexShrink:0,whiteSpace:"nowrap"}}>★ {r._prioAvg}/10</span>
-                      </div>
-                      <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",marginTop:3}}>
-                        {r.shape} · {r.weight} · {r.brand}{r.player && r.player !== "—" ? ` · 🎾 ${r.player}` : ""}{r.price && r.price !== "—" ? ` · ${r.price}` : ""}
-                      </div>
-                    </div>
-                    <div style={{fontSize:18,fontWeight:800,color:gs>=7.5?"#4ade80":gs>=6.5?"#fbbf24":"#f87171",fontFamily:"'Outfit'",lineHeight:1,flexShrink:0,marginLeft:8}}>
-                      {fmtPct(gs)}
-                    </div>
-                  </div>
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"5px 12px",marginBottom:6}}>
-                    {ATTRS.map(attr=>{
-                      const v = r.scores[attr];
-                      const isKey = prioAttrs.includes(attr);
-                      return <div key={attr} style={{minWidth:0}}>
-                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                          <span style={{fontSize:9,color:isKey?"#7A2E34":"rgba(44,24,16,0.25)",fontWeight:isKey?700:500}}>{isKey?"★ ":""}{attr}</span>
-                          <span style={{fontSize:10,color:v>=7.5?"#4ade80":v>=6?"#5A4D40":"#fbbf24",fontWeight:700,flexShrink:0,marginLeft:4}}>{v}</span>
-                        </div>
-                        <div className="print-bar-bg" style={{height:6,background:"rgba(44,24,16,0.04)",borderRadius:3,marginTop:2}}>
-                          <div className={v>=7.5?"print-bar-fill-green":v>=6?"print-bar-fill-gray":"print-bar-fill-yellow"} style={{height:6,borderRadius:3,width:`${v*10}%`,background:v>=7.5?"#4ade80":v>=6?"rgba(44,24,16,0.25)":"#fbbf24",printColorAdjust:"exact",WebkitPrintColorAdjust:"exact"}}/>
-                        </div>
+                {/* Scores grid */}
+                <div style={{padding:"0 18px",marginBottom:10}}>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"4px 10px"}}>
+                    {ATTRS.map(attr=>{const v=r.scores[attr]||0;const isPrio=prioAs.includes(attr);const isInj=(attr==="Confort"&&hasArmP)||(attr==="Maniabilité"&&hasLegP);
+                      return <div key={attr} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"4px 8px",borderRadius:6,background:isPrio?"rgba(196,151,58,0.05)":isInj?"rgba(220,38,38,0.03)":"rgba(44,24,16,0.015)",border:isPrio?"1px solid rgba(196,151,58,0.1)":isInj?"1px solid rgba(220,38,38,0.06)":"1px solid rgba(44,24,16,0.03)"}}>
+                        <span style={{fontSize:8,color:isPrio?"#8B6914":isInj?"#DC2626":"#9A8E7C",fontWeight:isPrio||isInj?700:500}}>{isPrio?"★ ":isInj?"🩹 ":""}{attr}</span>
+                        <span style={{fontSize:10,fontWeight:800,fontFamily:"'Outfit'",color:v>=8?"#059669":v>=6.5?"#2C1810":"#D97706"}}>{v}</span>
                       </div>;
                     })}
                   </div>
-                  <div className="print-verdict" style={{fontSize:10,color:"rgba(44,24,16,0.35)",lineHeight:1.6}}>{r.verdict}</div>
-                </div>;
-              })}
-              </div>}
-            </>;
-            } catch(e) { console.error("[Pertinence:discovery]", e); return null; }
+                </div>
+                {/* Reasons */}
+                {reasons.length>0&&<div style={{padding:"0 18px",marginBottom:10}}>
+                  <div style={{padding:"8px 12px",background:"rgba(44,24,16,0.015)",borderRadius:8,border:"1px solid rgba(44,24,16,0.03)"}}>
+                    <div style={{fontSize:7,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.08em",marginBottom:4}}>POUR TON PROFIL</div>
+                    {reasons.map((rr,ri)=><div key={ri} style={{display:"flex",alignItems:"center",gap:6,padding:"3px 6px",marginBottom:2,borderRadius:4,borderLeft:`2px solid ${rr.color}`}}>
+                      <span style={{fontSize:10,flexShrink:0}}>{rr.icon}</span>
+                      <span style={{fontSize:8,color:"#2C1810",fontWeight:500}}>{rr.text}</span>
+                    </div>)}
+                  </div>
+                </div>}
+                {/* Verdict */}
+                <div style={{padding:"0 18px 14px"}}>
+                  <div style={{padding:"8px 12px",background:"#F8F5F0",borderRadius:8,borderLeft:"2px solid rgba(44,24,16,0.08)"}}>
+                    <p style={{fontSize:9,color:"#5A4D40",lineHeight:1.6,margin:0}}>{r.verdict}</p>
+                  </div>
+                </div>
+              </div>;
+            });
+            } catch(e){console.error("[Print:cards]",e);return null;}
           })()}
 
           {/* ===== PRINT FOOTER ===== */}
-          <div className="print-footer-wrap print-header" style={{display:"none",marginTop:16,borderTop:"2px solid #5A4D40",paddingTop:8}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{display:"flex",alignItems:"center",gap:6}}>
-                <svg width="18" height="18" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="50" height="50" rx="11" fill="#7A2E34"/>
-                  <g transform="rotate(20 24 25)"><g transform="translate(12,2) scale(0.48)"><path d="M25 3 C39 3,47 13,47 25 C47 37,40 47,33 52 C30 54,29 56,29 58 L29 80 C29 81.5,28 82,25 82 C22 82,21 81.5,21 80 L21 58 C21 56,20 54,17 52 C10 47,3 37,3 25 C3 13,11 3,25 3Z" stroke="#fff" strokeWidth="4" fill="none"/></g></g>
-                  <circle cx="43" cy="8" r="3.5" fill="#fff" opacity="0.9"/>
-                </svg>
-                <span style={{fontSize:8,color:"#999"}}><span style={{color:"#7A2E34",fontWeight:700}}>Padel Analyzer</span> V13 · Scoring hybride calibré</span>
-              </div>
-              <div style={{fontSize:8,color:"#999",textAlign:"right"}}>
-                {new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique
-              </div>
+          <div style={{marginTop:16,paddingTop:12,borderTop:"1px solid #EDE7DD",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div style={{display:"flex",alignItems:"center",gap:6}}>
+              <PalaIcon size={10}/>
+              <span style={{fontSize:7,color:"#9A8E7C"}}><span style={{color:"#1A1410",fontWeight:700}}>Padel Analyzer</span> · Scoring hybride calibré</span>
             </div>
+            <div style={{fontSize:7,color:"#9A8E7C"}}>{new Date().toLocaleDateString('fr-FR')} · Prix indicatifs — vérifier en boutique</div>
           </div>
         </div>
       </>}
