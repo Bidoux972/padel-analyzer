@@ -2628,6 +2628,94 @@ function computeGlobalScore(scores, profile, racket) {
 function fmtPct(score) { return (score * 10).toFixed(2) + "%"; }
 
 // === FOR YOU VERDICT ===
+// === VARIED PHRASE POOLS FOR PROFILE REASONS ===
+const REASON_PHRASES = {
+  highPrio: {
+    Puissance: [
+      (v,p)=>`Puissance ${v} — correspond à ton jeu offensif`,
+      (v,p)=>`Puissance ${v} — l'explosivité que ton profil réclame`,
+      (v,p)=>`Puissance ${v} — calibrée pour tes frappes`,
+      (v,p)=>`Puissance ${v} — un vrai atout pour ton style d'attaque`,
+      (v,p)=>`Puissance ${v} — de quoi faire la différence au filet`,
+    ],
+    Contrôle: [
+      (v,p)=>`Contrôle ${v} — la précision que ton profil exige`,
+      (v,p)=>`Contrôle ${v} — l'équilibre idéal pour ton jeu`,
+      (v,p)=>`Contrôle ${v} — chaque balle va où tu veux`,
+      (v,p)=>`Contrôle ${v} — une vraie valeur ajoutée ici`,
+      (v,p)=>`Contrôle ${v} — tu ne perds rien en placement`,
+    ],
+    Confort: [
+      (v,p)=>`Confort ${v} — le confort que tu recherches`,
+      (v,p)=>`Confort ${v} — des sensations agréables garanties`,
+      (v,p)=>`Confort ${v} — pensée pour jouer longtemps`,
+      (v,p)=>`Confort ${v} — idéal pour enchaîner les sets`,
+    ],
+    Spin: [
+      (v,p)=>`Spin ${v} — un atout majeur pour ton style`,
+      (v,p)=>`Spin ${v} — les effets que tu cherches sont là`,
+      (v,p)=>`Spin ${v} — la surface accroche bien, ça tourne`,
+      (v,p)=>`Spin ${v} — tu vas pouvoir varier tes effets`,
+    ],
+    Maniabilité: [
+      (v,p)=>`Maniabilité ${v} — réactive, facile à manier`,
+      (v,p)=>`Maniabilité ${v} — idéale pour ton rythme de jeu`,
+      (v,p)=>`Maniabilité ${v} — elle répond vite, comme toi`,
+      (v,p)=>`Maniabilité ${v} — tu gardes la main en toute situation`,
+    ],
+    Tolérance: [
+      (v,p)=>`Tolérance ${v} — pardonne les frappes décentrées`,
+      (v,p)=>`Tolérance ${v} — un sweet spot généreux`,
+      (v,p)=>`Tolérance ${v} — rassurante sur les coups difficiles`,
+    ],
+  },
+  midPrio: [
+    (attr,v)=>`${attr} ${v} — acceptable, sans être le point fort`,
+    (attr,v)=>`${attr} ${v} — suffisant pour ton profil`,
+    (attr,v)=>`${attr} ${v} — dans la moyenne, pas de souci`,
+    (attr,v)=>`${attr} ${v} — présent mais pas dominant`,
+    (attr,v)=>`${attr} ${v} — correct pour ton niveau`,
+  ],
+  lowPrio: [
+    (attr,v)=>`${attr} ${v} — un compromis à assumer`,
+    (attr,v)=>`${attr} ${v} — en retrait par rapport à tes attentes`,
+    (attr,v)=>`${attr} ${v} — point faible identifié`,
+    (attr,v)=>`${attr} ${v} — exigeante sur ce critère`,
+    (attr,v)=>`${attr} ${v} — à compenser par ta technique`,
+  ],
+  injArm: {
+    safe: [
+      (v,inj)=>`Confort ${v} — compatible avec ton ${inj}, à confirmer en main`,
+      (v,inj)=>`Confort ${v} — rassurant pour ton ${inj}`,
+      (v,inj)=>`Confort ${v} — ton ${inj} devrait apprécier`,
+    ],
+    caution: [
+      (v,inj)=>`Confort ${v} — à surveiller pour ton ${inj}`,
+      (v,inj)=>`Confort ${v} — limite pour ton ${inj}, teste avant d'acheter`,
+      (v,inj)=>`Confort ${v} — ton ${inj} pourrait réagir sur longues sessions`,
+    ],
+  },
+  injLeg: {
+    safe: [
+      (v,inj)=>`Maniabilité ${v} — suffisant pour ton ${inj}`,
+      (v,inj)=>`Maniabilité ${v} — légère et maniable, ok pour ton ${inj}`,
+      (v,inj)=>`Maniabilité ${v} — compatible avec ta mobilité réduite`,
+    ],
+    caution: [
+      (v,inj)=>`Maniabilité ${v} — demandera un effort pour ton ${inj}`,
+      (v,inj)=>`Maniabilité ${v} — compense avec ton placement (${inj})`,
+      (v,inj)=>`Maniabilité ${v} — attention aux déplacements rapides (${inj})`,
+    ],
+  },
+};
+function pickPhrase(pool, used) {
+  const available = pool.filter((_,i)=>!used.has(i));
+  if(!available.length) return pool[Math.floor(Math.random()*pool.length)];
+  const idx = pool.indexOf(available[Math.floor(Math.random()*available.length)]);
+  used.add(idx);
+  return pool[idx];
+}
+
 function computeForYou(scores, profile, racket) {
   if (!scores || typeof scores !== "object") return "no";
   const gsRaw = computeGlobalScore(scores, profile, racket);
@@ -9353,6 +9441,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             try {
             const ranked = rackets.map(r=>({...r, globalScore:computeGlobalScore(r.scores, profile, r)})).sort((a,b)=>b.globalScore-a.globalScore);
             const cards = [];
+            const usedHigh = {}, usedMid = new Set(), usedLow = new Set(), usedInjArm = {safe:new Set(),caution:new Set()}, usedInjLeg = {safe:new Set(),caution:new Set()};
             ranked.forEach((r,i)=>{
               // Insert section divider after top 3
               if(i===3 && ranked.length>3) {
@@ -9379,11 +9468,15 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const isPodium = i<3;
               
               cards.push(<div key={r.id} className={cardClass} style={{
-                background: i===0 ? "rgba(250,204,21,0.08)" : i===1 ? "rgba(148,163,184,0.06)" : i===2 ? "rgba(217,119,6,0.06)" : "#F8F5F0",
-                border: i===0 ? "2px solid rgba(250,204,21,0.5)" : i===1 ? "2px solid rgba(148,163,184,0.4)" : i===2 ? "2px solid rgba(217,119,6,0.35)" : "1px solid rgba(44,24,16,0.04)",
-                borderRadius:12, padding: isPodium ? "14px 16px" : "10px 12px", marginBottom: isPodium ? 12 : 6, boxSizing:"border-box", overflow:"hidden",
+                background: i===0 ? "linear-gradient(165deg, #FFFEF8, #FFF9E8)" : i===1 ? "linear-gradient(165deg, #FAFBFD, #F5F7FA)" : i===2 ? "linear-gradient(165deg, #FEFCF8, #FBF5EE)" : "#FFFFFF",
+                border: i===0 ? "2px solid rgba(196,151,58,0.35)" : i===1 ? "2px solid rgba(148,163,184,0.3)" : i===2 ? "2px solid rgba(205,127,50,0.25)" : "1px solid rgba(44,24,16,0.06)",
+                borderRadius:18, padding: isPodium ? "18px 18px" : "12px 14px", marginBottom: isPodium ? 16 : 8, boxSizing:"border-box", overflow:"hidden",
+                boxShadow: i===0 ? "0 8px 32px rgba(196,151,58,0.1), 0 2px 8px rgba(0,0,0,0.04)" : i===1 ? "0 6px 24px rgba(148,163,184,0.08), 0 2px 6px rgba(0,0,0,0.03)" : i===2 ? "0 6px 24px rgba(205,127,50,0.06), 0 2px 6px rgba(0,0,0,0.03)" : "0 2px 8px rgba(0,0,0,0.03)",
                 pageBreakInside:"avoid", breakInside:"avoid",
+                position:"relative",
               }}>
+                {/* Subtle top accent for podium */}
+                {isPodium&&<div style={{position:"absolute",top:0,left:0,right:0,height:2,background:i===0?"linear-gradient(90deg,transparent 10%,#C4973A 50%,transparent 90%)":i===1?"linear-gradient(90deg,transparent 10%,#94a3b8 50%,transparent 90%)":"linear-gradient(90deg,transparent 10%,#CD7F32 50%,transparent 90%)",opacity:0.6}}/>}
                 {/* Card header: medal + image + name + badge + score */}
                 <div style={{display:"flex",alignItems:"center",gap:isPodium?12:8,marginBottom:isPodium?10:6}}>
                   {medal&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,minWidth:40}}>
@@ -9444,38 +9537,57 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                     <div style={{fontSize:9,color:"#5A4D40",marginTop:1}}>Risque pour ton {ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/")} — à tester avec prudence</div>
                   </div>
                 </div>}
-                {/* Profile compatibility — personalized reasons */}
+                {/* Profile compatibility — personalized reasons with varied phrases */}
                 {isPodium&&(()=>{
                   const prioAttrMap = {puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort',reprise:'Confort',polyvalence:'Contrôle'};
                   const prioAs = [...new Set((profile.priorityTags||[]).map(t=>prioAttrMap[t]).filter(Boolean))];
                   const reasons = [];
                   prioAs.forEach(attr=>{
                     const v = r.scores[attr]||0;
-                    if(v>=8) reasons.push({icon:"✅",text:`${attr} à ${v} — dans tes priorités`,color:"#059669",bg:"rgba(5,150,105,0.05)"});
-                    else if(v>=6.5) reasons.push({icon:"➖",text:`${attr} à ${v} — correct, sans plus`,color:"#9A8E7C",bg:"rgba(44,24,16,0.02)"});
-                    else reasons.push({icon:"⬇️",text:`${attr} à ${v} — en dessous de tes attentes`,color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                    if(v>=8) {
+                      const pool = REASON_PHRASES.highPrio[attr]||REASON_PHRASES.highPrio.Puissance;
+                      if(!usedHigh[attr]) usedHigh[attr]=new Set();
+                      const fn = pickPhrase(pool, usedHigh[attr]);
+                      reasons.push({icon:"✅",text:fn(v,profile),color:"#059669",bg:"rgba(5,150,105,0.05)"});
+                    } else if(v>=6.5) {
+                      const fn = pickPhrase(REASON_PHRASES.midPrio, usedMid);
+                      reasons.push({icon:"➖",text:fn(attr,v),color:"#9A8E7C",bg:"rgba(44,24,16,0.02)"});
+                    } else {
+                      const fn = pickPhrase(REASON_PHRASES.lowPrio, usedLow);
+                      reasons.push({icon:"⬇️",text:fn(attr,v),color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                    }
                   });
                   if(hasArmInj && !criticalLow) {
                     const c = r.scores.Confort||0;
                     const injLabel = ptags.filter(t=>ARM_INJ.includes(t)).map(t=>({dos:"Dos",poignet:"Poignet",coude:"Coude",epaule:"Épaule"}[t])).join("/");
-                    if(c>=7.5) reasons.push({icon:"🛡️",text:`Confort ${c} — rassurant pour ton ${injLabel}`,color:"#059669",bg:"rgba(5,150,105,0.05)"});
-                    else if(c>=6) reasons.push({icon:"⚠️",text:`Confort ${c} — surveille ton ${injLabel}`,color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                    if(c>=7.5) {
+                      const fn = pickPhrase(REASON_PHRASES.injArm.safe, usedInjArm.safe);
+                      reasons.push({icon:"🛡️",text:fn(c,injLabel),color:"#059669",bg:"rgba(5,150,105,0.05)"});
+                    } else if(c>=6) {
+                      const fn = pickPhrase(REASON_PHRASES.injArm.caution, usedInjArm.caution);
+                      reasons.push({icon:"⚠️",text:fn(c,injLabel),color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                    }
                   }
                   if(hasLegInj) {
                     const m = r.scores["Maniabilité"]||0;
                     const legLabel = ptags.filter(t=>LEG_INJ.includes(t)).map(t=>({genou:"Genou",cheville:"Cheville",mollet:"Mollet",hanche:"Hanche",achille:"Achille"}[t])).join("/");
-                    if(m>=7) reasons.push({icon:"🛡️",text:`Maniabilité ${m} — ok pour ton ${legLabel}`,color:"#059669",bg:"rgba(5,150,105,0.05)"});
-                    else reasons.push({icon:"⚠️",text:`Maniabilité ${m} — effort supplémentaire (${legLabel})`,color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                    if(m>=7) {
+                      const fn = pickPhrase(REASON_PHRASES.injLeg.safe, usedInjLeg.safe);
+                      reasons.push({icon:"🛡️",text:fn(m,legLabel),color:"#059669",bg:"rgba(5,150,105,0.05)"});
+                    } else {
+                      const fn = pickPhrase(REASON_PHRASES.injLeg.caution, usedInjLeg.caution);
+                      reasons.push({icon:"⚠️",text:fn(m,legLabel),color:"#D97706",bg:"rgba(217,119,6,0.04)"});
+                    }
                   }
                   if(!reasons.length) return null;
-                  return <div style={{marginBottom:8}}>
-                    <div style={{fontSize:8,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.06em",marginBottom:5}}>POUR TON PROFIL</div>
+                  return <div style={{marginBottom:10,padding:"12px 14px",background:"rgba(44,24,16,0.015)",borderRadius:12,border:"1px solid rgba(44,24,16,0.04)"}}>
+                    <div style={{fontSize:8,fontWeight:700,color:"#9A8E7C",letterSpacing:"0.08em",marginBottom:6}}>POUR TON PROFIL</div>
                     {reasons.map((rr,ri)=><div key={ri} style={{
-                      display:"flex",alignItems:"center",gap:8,padding:"6px 10px",marginBottom:3,
-                      borderRadius:8,background:rr.bg,
+                      display:"flex",alignItems:"center",gap:8,padding:"7px 10px",marginBottom:4,
+                      borderRadius:8,background:rr.bg,borderLeft:`3px solid ${rr.color}30`,
                     }}>
-                      <span style={{fontSize:12,flexShrink:0}}>{rr.icon}</span>
-                      <span style={{fontSize:10,color:rr.color,fontWeight:600}}>{rr.text}</span>
+                      <span style={{fontSize:13,flexShrink:0}}>{rr.icon}</span>
+                      <span style={{fontSize:10,color:"#2C1810",fontWeight:500}}>{rr.text}</span>
                     </div>)}
                   </div>;
                 })()}
