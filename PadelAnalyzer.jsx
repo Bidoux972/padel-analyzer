@@ -4200,14 +4200,14 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setProfileName(sp.name);
     setPanel(null);
     setFitActiveIdx(0);
-    // Welcome back — calculate time since last visit
-    const lastTs = sp.lastVisit || sp.savedAt || 0;
+    // Welcome back — only use real lastVisit, not savedAt
+    const lastTs = sp.lastVisit || 0;
     if(lastTs) {
       const days = Math.floor((Date.now() - lastTs) / (1000*60*60*24));
       const timeLabel = days === 0 ? "aujourd'hui" : days === 1 ? "hier" : days < 7 ? `il y a ${days} jours` : days < 30 ? `il y a ${Math.floor(days/7)} semaine${Math.floor(days/7)>1?"s":""}` : `il y a ${Math.floor(days/30)} mois`;
       setWelcomeBack({name:sp.name, days, timeLabel, profile:sp.profile});
     } else {
-      setWelcomeBack({name:sp.name, days:0, timeLabel:"", profile:sp.profile});
+      setWelcomeBack({name:sp.name, days:-1, timeLabel:"", profile:sp.profile});
     }
     // Update lastVisit
     const list = loadProfilesList();
@@ -8205,36 +8205,38 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
           {/* ===== WELCOME BACK — shown when returning user ===== */}
           {welcomeBack&&welcomeBack.name===profileName&&<div style={{
-            background:"#FFFFFF",borderRadius:16,padding:"16px 18px",marginBottom:16,
-            border:"1px solid rgba(44,24,16,0.06)",boxShadow:"0 2px 12px rgba(0,0,0,0.03)",
-            animation:"fadeIn 0.5s ease",position:"relative",
+            background:"linear-gradient(165deg, #1A1824 0%, #16142A 60%, #1A1824 100%)",
+            borderRadius:20,padding:"24px 24px",marginBottom:20,
+            border:"1px solid rgba(196,151,58,0.15)",
+            boxShadow:"0 8px 32px rgba(0,0,0,0.15), 0 0 0 1px rgba(196,151,58,0.05)",
+            animation:"fadeIn 0.6s ease",position:"relative",overflow:"hidden",
           }}>
-            <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:10,right:12,background:"none",border:"none",color:"#9A8E7C",fontSize:14,cursor:"pointer",padding:4}}>✕</button>
-            <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
-              <div style={{fontSize:28,flexShrink:0}}>👋</div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:700,color:"#2C1810",marginBottom:2}}>De retour, {welcomeBack.name} !</div>
-                {welcomeBack.timeLabel&&<div style={{fontSize:10,color:"#9A8E7C",marginBottom:8}}>Dernière visite : {welcomeBack.timeLabel}</div>}
-                <div style={{fontSize:11,color:"#5A4D40",lineHeight:1.5,marginBottom:12}}>Quelque chose a changé depuis ? Une blessure, un changement de forme, de nouvelles sensations ? Tes recommandations s'adaptent à chaque évolution.</div>
-                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{
-                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                    background:"rgba(239,68,68,0.06)",border:"1px solid rgba(239,68,68,0.15)",color:"#DC2626",
-                  }}>🩹 Blessure</button>
-                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{
-                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                    background:"rgba(59,130,246,0.06)",border:"1px solid rgba(59,130,246,0.15)",color:"#2563EB",
-                  }}>⚖️ Poids / forme</button>
-                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(3);setPanel("profile");setScreen("app");}} style={{
-                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                    background:"rgba(124,58,237,0.06)",border:"1px solid rgba(124,58,237,0.15)",color:"#7C3AED",
-                  }}>📈 Niveau</button>
-                  <button onClick={()=>setWelcomeBack(null)} style={{
-                    padding:"8px 14px",borderRadius:10,fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                    background:"rgba(5,150,105,0.06)",border:"1px solid rgba(5,150,105,0.15)",color:"#059669",
-                  }}>✅ Rien, tout va bien</button>
-                </div>
-              </div>
+            {/* Shimmer top */}
+            <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent 15%,#C4973A 50%,transparent 85%)",backgroundSize:"200% 100%",animation:"fitShimmer 3s ease-in-out infinite"}}/>
+            <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:12,right:14,background:"none",border:"none",color:"rgba(255,255,255,0.2)",fontSize:16,cursor:"pointer",padding:4}}>✕</button>
+            <div style={{textAlign:"center",marginBottom:16}}>
+              <div style={{fontSize:36,marginBottom:6}}>👋</div>
+              <div style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,color:"#fff",marginBottom:4}}>De retour, {welcomeBack.name} !</div>
+              {welcomeBack.timeLabel&&<div style={{fontSize:11,color:"#C4973A",fontWeight:600}}>Dernière visite : {welcomeBack.timeLabel}</div>}
+            </div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,textAlign:"center",marginBottom:20,maxWidth:400,margin:"0 auto 20px"}}>Quelque chose a changé dans ta vie de joueur ? Une blessure, un changement de forme physique, un nouveau niveau ? Tes recommandations s'adaptent.</div>
+            <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+              <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{
+                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.25)",color:"#f87171",
+              }}>🩹 Blessure</button>
+              <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{
+                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.25)",color:"#60a5fa",
+              }}>⚖️ Poids / forme</button>
+              <button onClick={()=>{setWelcomeBack(null);setWizardStep(3);setPanel("profile");setScreen("app");}} style={{
+                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.25)",color:"#c084fc",
+              }}>📈 Niveau</button>
+              <button onClick={()=>setWelcomeBack(null)} style={{
+                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                background:"rgba(74,222,128,0.08)",border:"1px solid rgba(74,222,128,0.2)",color:"#4ade80",
+              }}>✅ Tout va bien</button>
             </div>
           </div>}
 
@@ -8266,8 +8268,8 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                   <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Recommandées</div>
                 </div>
                 <div style={{flex:1,background:"#FFFFFF",border:"1px solid rgba(44,24,16,0.06)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
-                  <div style={{fontSize:20,fontWeight:800,color:"#2C1810",fontFamily:"'Outfit'"}}>{top3.length>0?top3[0]._gs.toFixed(1):"—"}<span style={{fontSize:11,color:"rgba(44,24,16,0.25)"}}>/10</span></div>
-                  <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Meilleur score</div>
+                  <div style={{fontSize:20,fontWeight:800,color:"#059669",fontFamily:"'Outfit'"}}>{top3.length>0?(top3[0]._gs*10).toFixed(0):"—"}<span style={{fontSize:11,color:"rgba(44,24,16,0.25)"}}>%</span></div>
+                  <div style={{fontSize:9,color:"rgba(44,24,16,0.25)",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.04em"}}>Meilleur match</div>
                 </div>
               </div>
             </div>
@@ -8293,8 +8295,21 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                         </div>
                       </div>
                       <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,flexShrink:0}}>
-                        <div style={{fontSize:22,fontWeight:800,color: i===0?"#f97316":"#5A4D40",fontFamily:"'Outfit'"}}>{r._gs.toFixed(1)}</div>
-                        <div style={{fontSize:8,color:"rgba(44,24,16,0.25)",textTransform:"uppercase"}}>Score</div>
+                        {(()=>{
+                          const pct=r._gs*10;
+                          const mc=pct>=70?"#4ade80":pct>=55?"#fbbf24":"#f87171";
+                          const sz=40;const sR=(sz-3)/2;const sC=2*Math.PI*sR;const sO=sC-(pct/100)*sC;
+                          return <div style={{position:"relative",width:sz,height:sz}}>
+                            <svg width={sz} height={sz} viewBox={`0 0 ${sz} ${sz}`} style={{transform:"rotate(-90deg)"}}>
+                              <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke="rgba(44,24,16,0.06)" strokeWidth={3}/>
+                              <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke={mc} strokeWidth={3} strokeLinecap="round" strokeDasharray={sC} strokeDashoffset={sO}/>
+                            </svg>
+                            <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <span style={{fontSize:13,fontWeight:800,color:mc,fontFamily:"'Outfit'"}}>{pct.toFixed(0)}</span>
+                            </div>
+                          </div>;
+                        })()}
+                        <div style={{fontSize:7,color:"rgba(44,24,16,0.25)",textTransform:"uppercase",fontWeight:600}}>Match</div>
                       </div>
                     </div>
                   );
