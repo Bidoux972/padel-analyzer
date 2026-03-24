@@ -8201,77 +8201,80 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             </div>
           </div>
 
-          {/* ===== WELCOME BACK — shown when returning user ===== */}
+          {/* ===== WELCOME BACK — paper aging + 3D perspective ===== */}
           {welcomeBack&&welcomeBack.name===profileName&&(()=>{
             const w = welcomeBack;
             const h = w.hours||0, d = w.days||0, v = w.visits||1;
-            // Dynamic greeting based on timing + frequency
-            let emoji, title, subtitle, accent;
-            if(h >= 0 && h < 2) {
-              // Just visited
-              const pool = ["Un oubli ? On approfondit 😏","Déjà de retour ? Tant mieux","Tu n'as pas pu résister 😄","On ne se quitte plus !"];
-              title = pool[v % pool.length];
-              emoji = "😏"; accent = "#7C3AED"; subtitle = "";
+            // 10 timing tiers with amber-brown palette
+            let emoji, title, subtitle, bg, border, barColor, barH, barOpacity, shadowD;
+            if(h >= 0 && h < 1) {
+              const pool = ["Un oubli ? On approfondit","Tu n'as pas pu résister","On ne se quitte plus"];
+              title=pool[v%pool.length]; emoji="😏"; subtitle=""; bg="#FFFFFF"; border="#E8DDD0"; barColor="#E8CA70"; barH=2; barOpacity=0.3; shadowD=0.03;
             } else if(d === 0) {
-              // Same day
-              const pool = [`Deuxième session aujourd'hui, ${w.name} — on est sérieux`,`Encore toi ? Parfait, on avance`,`La journée n'est pas finie — on continue`];
-              title = pool[v % pool.length];
-              emoji = "⚡"; accent = "#2563EB"; subtitle = "";
+              const pool = [`Deuxième round aujourd'hui — j'adore`,`Encore toi ? Parfait, on avance`,`La journée n'est pas finie — on continue`];
+              title=pool[v%pool.length]; emoji="⚡"; subtitle=""; bg="#FFFEFC"; border="#E0D2C0"; barColor="#DEBB58"; barH=2; barOpacity=0.45; shadowD=0.04;
+            } else if(d === 1) {
+              const pool = [`Content de te revoir, ${w.name}`,`${w.name}, on reprend où on en était`,`De retour dès le lendemain — sérieux`];
+              title=pool[v%pool.length]; emoji="👋"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFFDF8"; border="#D8C8B0"; barColor="#D0A844"; barH=3; barOpacity=0.55; shadowD=0.05;
             } else if(d <= 3) {
-              const pool = [`De retour, ${w.name} !`,`Content de te revoir, ${w.name}`,`${w.name}, on reprend où on en était`];
-              title = pool[v % pool.length];
-              emoji = "👋"; accent = "#059669"; subtitle = w.timeLabel ? `Dernière visite : ${w.timeLabel}` : "";
+              const pool = [`${w.name} reprend du service`,`Salut ${w.name} — ton profil est prêt`,`${w.name} est dans la place`];
+              title=pool[v%pool.length]; emoji="😊"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFFBF2"; border="#D4C0A8"; barColor="#C49538"; barH=3; barOpacity=0.6; shadowD=0.06;
+            } else if(d <= 7) {
+              const pool = [`On reprend les bonnes habitudes, ${w.name}`,`Une semaine et te revoilà`,`${w.name} revient en force`];
+              title=pool[v%pool.length]; emoji="👊"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFF8EB"; border="#CBB498"; barColor="#B88530"; barH=3; barOpacity=0.7; shadowD=0.07;
             } else if(d <= 14) {
-              const pool = [`${w.name}, ça faisait un moment !`,`Trop content de te revoir, ${w.name}`,`${w.name} est de retour — les raquettes tremblent`];
-              title = pool[v % pool.length];
-              emoji = "🎉"; accent = "#D97706"; subtitle = w.timeLabel ? `Dernière visite : ${w.timeLabel}` : "";
+              const pool = [`Ça faisait un moment — prêt à remettre ça ?`,`${w.name}, les raquettes s'impatientaient`,`Deux semaines… on avait gardé ta place`];
+              title=pool[v%pool.length]; emoji="🎉"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFF5E4"; border="#C0A888"; barColor="#AA7528"; barH=4; barOpacity=0.75; shadowD=0.08;
+            } else if(d <= 21) {
+              const pool = [`Le grand retour de ${w.name}`,`Trois semaines sans toi — c'était long`,`${w.name} refait surface`];
+              title=pool[v%pool.length]; emoji="🔥"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFF2DC"; border="#B49A78"; barColor="#986822"; barH=4; barOpacity=0.8; shadowD=0.10;
+            } else if(d <= 30) {
+              const pool = [`Presque un mois — on s'inquiétait, ${w.name}`,`Te revoilà — ça fait plaisir`,`${w.name}, un mois sans nouvelles !`];
+              title=pool[v%pool.length]; emoji="🫡"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFEFD4"; border="#A88C68"; barColor="#886020"; barH=4; barOpacity=0.85; shadowD=0.12;
+            } else if(d <= 90) {
+              const pool = [`Te revoilà enfin — ton profil t'attendait`,`${w.name} ! On gardait tes résultats au chaud`,`Le retour tant attendu de ${w.name}`];
+              title=pool[v%pool.length]; emoji="💎"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFECC8"; border="#9A7E58"; barColor="#785418"; barH=5; barOpacity=0.9; shadowD=0.14;
             } else {
-              const pool = [`${w.name} ! On commençait à s'inquiéter`,`Le retour du champion — ${w.name} est là`,`Enfin ! ${w.name}, tu nous as manqué`];
-              title = pool[v % pool.length];
-              emoji = "🔥"; accent = "#DC2626"; subtitle = w.timeLabel ? `Dernière visite : ${w.timeLabel}` : "";
+              const pool = [`La légende est de retour`,`${w.name} revient d'entre les morts`,`On n'y croyait plus — ${w.name} est là`];
+              title=pool[v%pool.length]; emoji="🏆"; subtitle=w.timeLabel?`Dernière visite : ${w.timeLabel}`:""; bg="#FFE8BC"; border="#806038"; barColor="#684810"; barH=5; barOpacity=0.95; shadowD=0.16;
             }
-            // Frequency bonus
             let freqBadge = null;
-            if(v >= 20) freqBadge = {text:"🏆 Légende", color:"#C4973A"};
-            else if(v >= 10) freqBadge = {text:"⭐ Fidèle", color:"#7C3AED"};
-            else if(v >= 5) freqBadge = {text:"🔥 Habitué", color:"#D97706"};
+            if(v >= 20) freqBadge = {text:"🏆 Légende", color:"#8B6914"};
+            else if(v >= 10) freqBadge = {text:"⭐ Fidèle", color:"#8B6914"};
+            else if(v >= 5) freqBadge = {text:"🔥 Habitué", color:"#8B6914"};
 
-            return <div style={{
-              background:"#FFFFFF",borderRadius:18,padding:"20px 22px",marginBottom:18,
-              border:`2px solid ${accent}25`,boxShadow:`0 4px 20px ${accent}10`,
-              animation:"fadeIn 0.5s ease",position:"relative",overflow:"hidden",
-            }}>
-              <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent 10%,${accent} 50%,transparent 90%)`,opacity:0.4}}/>
-              <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:10,right:12,background:"none",border:"none",color:"#9A8E7C",fontSize:14,cursor:"pointer",padding:4}}>✕</button>
-              <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:14}}>
-                <div style={{fontSize:32,flexShrink:0}}>{emoji}</div>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-                    <span style={{fontFamily:"'Outfit'",fontSize:17,fontWeight:800,color:"#2C1810"}}>{title}</span>
-                    {freqBadge&&<span style={{fontSize:9,padding:"2px 8px",borderRadius:6,background:`${freqBadge.color}10`,border:`1px solid ${freqBadge.color}25`,color:freqBadge.color,fontWeight:700}}>{freqBadge.text}</span>}
+            return <div style={{marginBottom:18}}>
+              <div style={{
+                position:"relative",overflow:"hidden",
+                borderRadius:18,padding:"22px 24px 20px",
+                background:`linear-gradient(178deg, ${bg} 0%, ${bg} 60%, ${border}30 100%)`,
+                border:`${shadowD>0.1?2:1.5}px solid ${border}`,
+                boxShadow:`0 2px 0 rgba(255,255,255,0.9) inset, 0 -1px 3px rgba(0,0,0,0.03) inset, 0 1px 2px rgba(0,0,0,${shadowD*0.8}), 0 4px 8px rgba(0,0,0,${shadowD*1.2}), 0 10px 20px rgba(0,0,0,${shadowD*1.5}), 0 24px 48px rgba(0,0,0,${shadowD*1.8}), 0 40px 80px rgba(0,0,0,${shadowD*2})`,
+                transform:"perspective(800px) rotateX(1.5deg)",transformOrigin:"center bottom",
+                animation:"fadeIn 0.5s ease",
+              }}>
+                <div style={{position:"absolute",top:0,left:0,right:0,height:barH,background:barColor,opacity:barOpacity,borderRadius:"18px 18px 0 0"}}/>
+                <div style={{position:"absolute",top:barH,left:0,right:0,height:20,background:"linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%)",pointerEvents:"none"}}/>
+                <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:10,right:12,background:"rgba(255,255,255,0.5)",border:"none",color:"#9A8E7C",fontSize:13,cursor:"pointer",padding:"3px 7px",borderRadius:6}}>✕</button>
+                <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}>
+                  <div style={{fontSize:30,flexShrink:0,width:52,height:52,borderRadius:16,display:"flex",alignItems:"center",justifyContent:"center",background:`linear-gradient(180deg, #FFFFFF 0%, ${bg} 100%)`,border:`1.5px solid ${border}`,boxShadow:`0 2px 0 rgba(255,255,255,0.9) inset, 0 4px 12px rgba(0,0,0,${shadowD*1.5}), 0 1px 3px rgba(0,0,0,0.06)`}}>{emoji}</div>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                      <span style={{fontFamily:"'Outfit'",fontSize:16,fontWeight:800,color:"#2C1810"}}>{title}</span>
+                      {freqBadge&&<span style={{fontSize:8,padding:"2px 8px",borderRadius:6,background:"rgba(196,151,58,0.12)",border:"1px solid rgba(196,151,58,0.25)",color:freqBadge.color,fontWeight:700}}>{freqBadge.text}</span>}
+                    </div>
+                    {subtitle&&<div style={{fontSize:10,color:"#9A8E7C",fontWeight:600,marginTop:3}}>{subtitle}</div>}
                   </div>
-                  {subtitle&&<div style={{fontSize:10,color:accent,fontWeight:600,marginTop:2}}>{subtitle}</div>}
+                </div>
+                <div style={{fontSize:11,color:"#5A4D40",lineHeight:1.5,marginBottom:14}}>Quelque chose a changé ? Tes recommandations s'adaptent à chaque évolution.</div>
+                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",background:"rgba(239,68,68,0.05)",border:"1px solid rgba(239,68,68,0.15)",color:"#DC2626"}}>🩹 Blessure</button>
+                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",background:"rgba(59,130,246,0.05)",border:"1px solid rgba(59,130,246,0.15)",color:"#2563EB"}}>⚖️ Poids / forme</button>
+                  <button onClick={()=>{setWelcomeBack(null);setWizardStep(3);setPanel("profile");setScreen("app");}} style={{padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",background:"rgba(124,58,237,0.05)",border:"1px solid rgba(124,58,237,0.15)",color:"#7C3AED"}}>📈 Niveau</button>
+                  <button onClick={()=>setWelcomeBack(null)} style={{padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",background:"rgba(5,150,105,0.05)",border:"1px solid rgba(5,150,105,0.15)",color:"#059669"}}>✅ Tout va bien</button>
                 </div>
               </div>
-              <div style={{fontSize:11,color:"#5A4D40",lineHeight:1.5,marginBottom:14}}>Quelque chose a changé ? Tes recommandations s'adaptent à chaque évolution.</div>
-              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{
-                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                  background:"rgba(239,68,68,0.05)",border:"1px solid rgba(239,68,68,0.15)",color:"#DC2626",
-                }}>🩹 Blessure</button>
-                <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{
-                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                  background:"rgba(59,130,246,0.05)",border:"1px solid rgba(59,130,246,0.15)",color:"#2563EB",
-                }}>⚖️ Poids / forme</button>
-                <button onClick={()=>{setWelcomeBack(null);setWizardStep(3);setPanel("profile");setScreen("app");}} style={{
-                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                  background:"rgba(124,58,237,0.05)",border:"1px solid rgba(124,58,237,0.15)",color:"#7C3AED",
-                }}>📈 Niveau</button>
-                <button onClick={()=>setWelcomeBack(null)} style={{
-                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                  background:"rgba(5,150,105,0.05)",border:"1px solid rgba(5,150,105,0.15)",color:"#059669",
-                }}>✅ Tout va bien</button>
-              </div>
+              <div style={{height:18,margin:"0 8px",background:`radial-gradient(ellipse 60% 100%, rgba(0,0,0,${shadowD*3}) 0%, rgba(0,0,0,${shadowD*1.5}) 25%, transparent 65%)`,filter:"blur(8px)",transform:"translateY(-8px) scaleY(0.6)"}}/>
             </div>;
           })()}
 
