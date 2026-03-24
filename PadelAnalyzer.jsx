@@ -8244,29 +8244,30 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             else if(v >= 5) freqBadge = {text:"🔥 Habitué", color:"#8B6914"};
 
             return <div style={{marginBottom:18}}>
+              <style>{`@keyframes wbBounce{0%{opacity:0;transform:perspective(800px) rotateX(1.5deg) translateY(30px) scale(0.96)}40%{opacity:1;transform:perspective(800px) rotateX(1.5deg) translateY(-8px) scale(1.01)}60%{transform:perspective(800px) rotateX(1.5deg) translateY(3px) scale(0.995)}80%{transform:perspective(800px) rotateX(1.5deg) translateY(-2px)}100%{transform:perspective(800px) rotateX(1.5deg) translateY(0) scale(1)}}@keyframes wbEmoji{0%{transform:scale(0) rotate(-20deg)}50%{transform:scale(1.2) rotate(5deg)}70%{transform:scale(0.9) rotate(-2deg)}100%{transform:scale(1) rotate(0)}}`}</style>
               <div style={{
                 position:"relative",overflow:"hidden",
-                borderRadius:18,padding:"22px 24px 20px",
+                borderRadius:18,padding:"28px 28px 22px",
                 background:`linear-gradient(178deg, ${bg} 0%, ${bg} 60%, ${border}30 100%)`,
                 border:`${shadowD>0.1?2:1.5}px solid ${border}`,
                 boxShadow:`0 2px 0 rgba(255,255,255,0.9) inset, 0 -1px 3px rgba(0,0,0,0.03) inset, 0 1px 2px rgba(0,0,0,${shadowD*0.8}), 0 4px 8px rgba(0,0,0,${shadowD*1.2}), 0 10px 20px rgba(0,0,0,${shadowD*1.5}), 0 24px 48px rgba(0,0,0,${shadowD*1.8}), 0 40px 80px rgba(0,0,0,${shadowD*2})`,
-                transform:"perspective(800px) rotateX(1.5deg)",transformOrigin:"center bottom",
-                animation:"fadeIn 0.5s ease",
+                transformOrigin:"center bottom",
+                animation:"wbBounce 0.7s cubic-bezier(.22,1,.36,1) both",
               }}>
                 <div style={{position:"absolute",top:0,left:0,right:0,height:barH,background:barColor,opacity:barOpacity,borderRadius:"18px 18px 0 0"}}/>
                 <div style={{position:"absolute",top:barH,left:0,right:0,height:20,background:"linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%)",pointerEvents:"none"}}/>
                 <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:10,right:12,background:"rgba(255,255,255,0.5)",border:"none",color:"#9A8E7C",fontSize:13,cursor:"pointer",padding:"3px 7px",borderRadius:6}}>✕</button>
-                <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}>
-                  <div style={{fontSize:30,flexShrink:0,width:52,height:52,borderRadius:16,display:"flex",alignItems:"center",justifyContent:"center",background:`linear-gradient(180deg, #FFFFFF 0%, ${bg} 100%)`,border:`1.5px solid ${border}`,boxShadow:`0 2px 0 rgba(255,255,255,0.9) inset, 0 4px 12px rgba(0,0,0,${shadowD*1.5}), 0 1px 3px rgba(0,0,0,0.06)`}}>{emoji}</div>
+                <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:14}}>
+                  <div style={{fontSize:38,flexShrink:0,width:60,height:60,borderRadius:18,display:"flex",alignItems:"center",justifyContent:"center",background:`linear-gradient(180deg, #FFFFFF 0%, ${bg} 100%)`,border:`1.5px solid ${border}`,boxShadow:`0 2px 0 rgba(255,255,255,0.9) inset, 0 4px 12px rgba(0,0,0,${shadowD*1.5}), 0 1px 3px rgba(0,0,0,0.06)`,animation:"wbEmoji 0.6s cubic-bezier(.22,1,.36,1) 0.2s both"}}>{emoji}</div>
                   <div style={{flex:1}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-                      <span style={{fontFamily:"'Outfit'",fontSize:16,fontWeight:800,color:"#2C1810"}}>{title}</span>
-                      {freqBadge&&<span style={{fontSize:8,padding:"2px 8px",borderRadius:6,background:"rgba(196,151,58,0.12)",border:"1px solid rgba(196,151,58,0.25)",color:freqBadge.color,fontWeight:700}}>{freqBadge.text}</span>}
+                    <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+                      <span style={{fontFamily:"'Outfit'",fontSize:20,fontWeight:800,color:"#2C1810"}}>{title}</span>
+                      {freqBadge&&<span style={{fontSize:9,padding:"3px 10px",borderRadius:8,background:"rgba(196,151,58,0.12)",border:"1px solid rgba(196,151,58,0.25)",color:freqBadge.color,fontWeight:700}}>{freqBadge.text}</span>}
                     </div>
-                    {subtitle&&<div style={{fontSize:10,color:"#9A8E7C",fontWeight:600,marginTop:3}}>{subtitle}</div>}
+                    {subtitle&&<div style={{fontSize:11,color:"#9A8E7C",fontWeight:600,marginTop:3}}>{subtitle}</div>}
                   </div>
                 </div>
-                <div style={{fontSize:11,color:"#5A4D40",lineHeight:1.5,marginBottom:14}}>Quelque chose a changé ? Tes recommandations s'adaptent à chaque évolution.</div>
+                <div style={{fontSize:14,fontWeight:600,color:"#2C1810",lineHeight:1.5,marginBottom:16}}>Quelque chose a changé depuis ? <span style={{color:"#7A6E5C",fontWeight:400}}>Tes recommandations s'adaptent à chaque évolution.</span></div>
                 <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
                   <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",background:"rgba(239,68,68,0.05)",border:"1px solid rgba(239,68,68,0.15)",color:"#DC2626"}}>🩹 Blessure</button>
                   <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",background:"rgba(59,130,246,0.05)",border:"1px solid rgba(59,130,246,0.15)",color:"#2563EB"}}>⚖️ Poids / forme</button>
