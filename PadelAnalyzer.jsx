@@ -7432,9 +7432,19 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
 
         const stepContent = [
           ()=><div style={{textAlign:"center"}}>
-            <div style={{fontSize:48,marginBottom:12,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>👋</div>
+            <div style={{fontSize:48,marginBottom:8,animation:"wizardEmojiBounce 0.5s cubic-bezier(.34,1.56,.64,1)"}}>🏸</div>
             <h2 style={{fontFamily:"'Outfit'",fontSize:28,fontWeight:800,color:"#2C1810",margin:"0 0 6px"}}>{groupRole==="vendeur"?"Prénom du joueur":"Salut ! C'est quoi ton prénom ?"}</h2>
-            <p style={{fontSize:13,color:"#64748b",margin:"0 0 28px"}}>{groupRole==="vendeur"?"Le prénom ou pseudo du client.":"On va trouver LA raquette faite pour toi."}</p>
+            <p style={{fontSize:13,color:"#7A6E5C",margin:"0 0 20px"}}>{groupRole==="vendeur"?"Le prénom ou pseudo du client.":"On va trouver LA raquette faite pour toi."}</p>
+            {groupRole!=="vendeur"&&<div style={{display:"flex",flexDirection:"column",gap:8,maxWidth:380,margin:"0 auto 24px",textAlign:"left"}}>
+              {[
+                {icon:"📋",text:"Quelques questions sur ton jeu, ton physique et tes priorités"},
+                {icon:"🏆",text:"Un Top 3 personnalisé parmi 233 raquettes analysées"},
+                {icon:"🔄",text:"Un suivi qui évolue avec toi — blessure, niveau, condition physique"},
+              ].map((p,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",borderRadius:10,background:"rgba(44,24,16,0.02)",border:"1px solid rgba(44,24,16,0.04)",animation:`fadeIn 0.3s ease ${0.3+i*0.15}s both`}}>
+                <span style={{fontSize:16,flexShrink:0}}>{p.icon}</span>
+                <span style={{fontSize:11,color:"#5A4D40",lineHeight:1.4}}>{p.text}</span>
+              </div>)}
+            </div>}
             <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder={groupRole==="vendeur"?"Ex: Manon, Noah...":"Ex: Bidou, Manon, Noah..."}
               onKeyDown={e=>{if(e.key==="Enter"&&canNext)nextStep();}}
               autoFocus style={{width:"100%",maxWidth:360,padding:"16px 20px",borderRadius:14,fontSize:18,fontWeight:600,background:"rgba(44,24,16,0.03)",border:"2px solid rgba(122,46,52,0.2)",color:"#2C1810",fontFamily:"'Inter',sans-serif",outline:"none",textAlign:"center"}}/>
