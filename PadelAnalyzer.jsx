@@ -4200,19 +4200,17 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setProfileName(sp.name);
     setPanel(null);
     setFitActiveIdx(0);
-    // Welcome back — only use real lastVisit, not savedAt
+    // Welcome back — track visits and compute dynamic message
     const lastTs = sp.lastVisit || 0;
-    if(lastTs) {
-      const days = Math.floor((Date.now() - lastTs) / (1000*60*60*24));
-      const timeLabel = days === 0 ? "aujourd'hui" : days === 1 ? "hier" : days < 7 ? `il y a ${days} jours` : days < 30 ? `il y a ${Math.floor(days/7)} semaine${Math.floor(days/7)>1?"s":""}` : `il y a ${Math.floor(days/30)} mois`;
-      setWelcomeBack({name:sp.name, days, timeLabel, profile:sp.profile});
-    } else {
-      setWelcomeBack({name:sp.name, days:-1, timeLabel:"", profile:sp.profile});
-    }
-    // Update lastVisit
+    const visits = (sp.visitCount || 0) + 1;
+    const hours = lastTs ? Math.floor((Date.now() - lastTs) / (1000*60*60)) : -1;
+    const days = lastTs ? Math.floor(hours / 24) : -1;
+    const timeLabel = hours < 0 ? "" : hours < 1 ? "il y a quelques minutes" : hours < 24 ? `il y a ${hours}h` : days === 1 ? "hier" : days < 7 ? `il y a ${days} jours` : days < 30 ? `il y a ${Math.floor(days/7)} semaine${Math.floor(days/7)>1?"s":""}` : `il y a ${Math.floor(days/30)} mois`;
+    setWelcomeBack({name:sp.name, hours, days, visits, timeLabel, profile:sp.profile});
+    // Update lastVisit + visitCount
     const list = loadProfilesList();
     const idx = list.findIndex(p=>p.name===sp.name);
-    if(idx>=0) { list[idx].lastVisit = Date.now(); saveProfilesList(list); }
+    if(idx>=0) { list[idx].lastVisit = Date.now(); list[idx].visitCount = visits; saveProfilesList(list); }
     setScreen("dashboard");
   };
   // Home screen: create new profile → wizard flow
@@ -8204,41 +8202,78 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           </div>
 
           {/* ===== WELCOME BACK — shown when returning user ===== */}
-          {welcomeBack&&welcomeBack.name===profileName&&<div style={{
-            background:"linear-gradient(165deg, #1A1824 0%, #16142A 60%, #1A1824 100%)",
-            borderRadius:20,padding:"24px 24px",marginBottom:20,
-            border:"1px solid rgba(196,151,58,0.15)",
-            boxShadow:"0 8px 32px rgba(0,0,0,0.15), 0 0 0 1px rgba(196,151,58,0.05)",
-            animation:"fadeIn 0.6s ease",position:"relative",overflow:"hidden",
-          }}>
-            {/* Shimmer top */}
-            <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent 15%,#C4973A 50%,transparent 85%)",backgroundSize:"200% 100%",animation:"fitShimmer 3s ease-in-out infinite"}}/>
-            <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:12,right:14,background:"none",border:"none",color:"rgba(255,255,255,0.2)",fontSize:16,cursor:"pointer",padding:4}}>✕</button>
-            <div style={{textAlign:"center",marginBottom:16}}>
-              <div style={{fontSize:36,marginBottom:6}}>👋</div>
-              <div style={{fontFamily:"'Outfit'",fontSize:22,fontWeight:800,color:"#fff",marginBottom:4}}>De retour, {welcomeBack.name} !</div>
-              {welcomeBack.timeLabel&&<div style={{fontSize:11,color:"#C4973A",fontWeight:600}}>Dernière visite : {welcomeBack.timeLabel}</div>}
-            </div>
-            <div style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,textAlign:"center",marginBottom:20,maxWidth:400,margin:"0 auto 20px"}}>Quelque chose a changé dans ta vie de joueur ? Une blessure, un changement de forme physique, un nouveau niveau ? Tes recommandations s'adaptent.</div>
-            <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-              <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{
-                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.25)",color:"#f87171",
-              }}>🩹 Blessure</button>
-              <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{
-                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.25)",color:"#60a5fa",
-              }}>⚖️ Poids / forme</button>
-              <button onClick={()=>{setWelcomeBack(null);setWizardStep(3);setPanel("profile");setScreen("app");}} style={{
-                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                background:"rgba(168,85,247,0.1)",border:"1px solid rgba(168,85,247,0.25)",color:"#c084fc",
-              }}>📈 Niveau</button>
-              <button onClick={()=>setWelcomeBack(null)} style={{
-                padding:"11px 20px",borderRadius:12,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
-                background:"rgba(74,222,128,0.08)",border:"1px solid rgba(74,222,128,0.2)",color:"#4ade80",
-              }}>✅ Tout va bien</button>
-            </div>
-          </div>}
+          {welcomeBack&&welcomeBack.name===profileName&&(()=>{
+            const w = welcomeBack;
+            const h = w.hours||0, d = w.days||0, v = w.visits||1;
+            // Dynamic greeting based on timing + frequency
+            let emoji, title, subtitle, accent;
+            if(h >= 0 && h < 2) {
+              // Just visited
+              const pool = ["Un oubli ? On approfondit 😏","Déjà de retour ? Tant mieux","Tu n'as pas pu résister 😄","On ne se quitte plus !"];
+              title = pool[v % pool.length];
+              emoji = "😏"; accent = "#7C3AED"; subtitle = "";
+            } else if(d === 0) {
+              // Same day
+              const pool = [`Deuxième session aujourd'hui, ${w.name} — on est sérieux`,`Encore toi ? Parfait, on avance`,`La journée n'est pas finie — on continue`];
+              title = pool[v % pool.length];
+              emoji = "⚡"; accent = "#2563EB"; subtitle = "";
+            } else if(d <= 3) {
+              const pool = [`De retour, ${w.name} !`,`Content de te revoir, ${w.name}`,`${w.name}, on reprend où on en était`];
+              title = pool[v % pool.length];
+              emoji = "👋"; accent = "#059669"; subtitle = w.timeLabel ? `Dernière visite : ${w.timeLabel}` : "";
+            } else if(d <= 14) {
+              const pool = [`${w.name}, ça faisait un moment !`,`Trop content de te revoir, ${w.name}`,`${w.name} est de retour — les raquettes tremblent`];
+              title = pool[v % pool.length];
+              emoji = "🎉"; accent = "#D97706"; subtitle = w.timeLabel ? `Dernière visite : ${w.timeLabel}` : "";
+            } else {
+              const pool = [`${w.name} ! On commençait à s'inquiéter`,`Le retour du champion — ${w.name} est là`,`Enfin ! ${w.name}, tu nous as manqué`];
+              title = pool[v % pool.length];
+              emoji = "🔥"; accent = "#DC2626"; subtitle = w.timeLabel ? `Dernière visite : ${w.timeLabel}` : "";
+            }
+            // Frequency bonus
+            let freqBadge = null;
+            if(v >= 20) freqBadge = {text:"🏆 Légende", color:"#C4973A"};
+            else if(v >= 10) freqBadge = {text:"⭐ Fidèle", color:"#7C3AED"};
+            else if(v >= 5) freqBadge = {text:"🔥 Habitué", color:"#D97706"};
+
+            return <div style={{
+              background:"#FFFFFF",borderRadius:18,padding:"20px 22px",marginBottom:18,
+              border:`2px solid ${accent}25`,boxShadow:`0 4px 20px ${accent}10`,
+              animation:"fadeIn 0.5s ease",position:"relative",overflow:"hidden",
+            }}>
+              <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent 10%,${accent} 50%,transparent 90%)`,opacity:0.4}}/>
+              <button onClick={()=>setWelcomeBack(null)} style={{position:"absolute",top:10,right:12,background:"none",border:"none",color:"#9A8E7C",fontSize:14,cursor:"pointer",padding:4}}>✕</button>
+              <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:14}}>
+                <div style={{fontSize:32,flexShrink:0}}>{emoji}</div>
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                    <span style={{fontFamily:"'Outfit'",fontSize:17,fontWeight:800,color:"#2C1810"}}>{title}</span>
+                    {freqBadge&&<span style={{fontSize:9,padding:"2px 8px",borderRadius:6,background:`${freqBadge.color}10`,border:`1px solid ${freqBadge.color}25`,color:freqBadge.color,fontWeight:700}}>{freqBadge.text}</span>}
+                  </div>
+                  {subtitle&&<div style={{fontSize:10,color:accent,fontWeight:600,marginTop:2}}>{subtitle}</div>}
+                </div>
+              </div>
+              <div style={{fontSize:11,color:"#5A4D40",lineHeight:1.5,marginBottom:14}}>Quelque chose a changé ? Tes recommandations s'adaptent à chaque évolution.</div>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                <button onClick={()=>{setWelcomeBack(null);setWizardStep(7);setPanel("profile");setScreen("app");}} style={{
+                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                  background:"rgba(239,68,68,0.05)",border:"1px solid rgba(239,68,68,0.15)",color:"#DC2626",
+                }}>🩹 Blessure</button>
+                <button onClick={()=>{setWelcomeBack(null);setWizardStep(2);setPanel("profile");setScreen("app");}} style={{
+                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                  background:"rgba(59,130,246,0.05)",border:"1px solid rgba(59,130,246,0.15)",color:"#2563EB",
+                }}>⚖️ Poids / forme</button>
+                <button onClick={()=>{setWelcomeBack(null);setWizardStep(3);setPanel("profile");setScreen("app");}} style={{
+                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                  background:"rgba(124,58,237,0.05)",border:"1px solid rgba(124,58,237,0.15)",color:"#7C3AED",
+                }}>📈 Niveau</button>
+                <button onClick={()=>setWelcomeBack(null)} style={{
+                  padding:"9px 16px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",
+                  background:"rgba(5,150,105,0.05)",border:"1px solid rgba(5,150,105,0.15)",color:"#059669",
+                }}>✅ Tout va bien</button>
+              </div>
+            </div>;
+          })()}
 
           {/* ===== MAIN 2-COLUMN LAYOUT ===== */}
           <div style={{display:"flex",gap:20,marginBottom:20,alignItems:"stretch"}}>
