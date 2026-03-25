@@ -4148,7 +4148,15 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
   };
 
   // Auto-save rackets and profile to localStorage
-  useEffect(()=>{ saveRackets(rackets); }, [rackets]);
+  useEffect(()=>{
+    saveRackets(rackets);
+    // Also persist into named profile
+    if(profileName && rackets.length > 0) {
+      const list = loadProfilesList();
+      const idx = list.findIndex(p=>p.name===profileName);
+      if(idx>=0) { list[idx].rackets = rackets; list[idx].selectedIds = selected; saveProfilesList(list); }
+    }
+  }, [rackets, selected, profileName]);
   useEffect(()=>{ try { localStorage.setItem('padel_profile', JSON.stringify({...profile, _name: profileName})); } catch{} }, [profile, profileName]);
 
   // ─── MANEGE — roulette merry-go-round ───
@@ -4234,6 +4242,16 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setProfileName(sp.name);
     setPanel(null);
     setFitActiveIdx(0);
+    // Restore saved rackets from profile, or start fresh
+    if(sp.rackets && sp.rackets.length > 0) {
+      setRackets(sp.rackets);
+      setSelected(sp.selectedIds && sp.selectedIds.length > 0 ? sp.selectedIds : sp.rackets.slice(0,4).map(r=>r.id));
+    } else {
+      setRackets([]);
+      setSelected([]);
+    }
+    setSuggestResults(null);
+    setSuggestChecked(new Set());
     // Welcome back — track visits and compute dynamic message
     const lastTs = sp.lastVisit || 0;
     const visits = (sp.visitCount || 0) + 1;
@@ -4254,10 +4272,19 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     setWizardStep(0);
     setPanel(null);
     setWelcomeBack(null);
+    setRackets([]);
+    setSelected([]);
+    setSuggestResults(null);
     setScreen("wizard");
   };
   // Disconnect: clear session and back to home
   const disconnect = () => {
+    // Save current rackets to profile before clearing
+    if(profileName) {
+      const list = loadProfilesList();
+      const idx = list.findIndex(p=>p.name===profileName);
+      if(idx>=0 && rackets.length>0) { list[idx].rackets = rackets; list[idx].selectedIds = selected; saveProfilesList(list); }
+    }
     setPanel(null);
     setRackets([]);
     setSelected([]);
