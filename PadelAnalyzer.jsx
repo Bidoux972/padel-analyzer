@@ -499,7 +499,7 @@ function BreakingNewsHero({ getMergedDB, openRacketSheet }) {
 function MagazineScreen({ ctx }) {
   const {
     magCat, setMagCat, magYear, setMagYear, magDetail, setMagDetail, magSlide, setMagSlide,
-    getTopByCategory, MAGAZINE_CATEGORIES, openRacketSheet, setScreen, totalDBCount, getMergedDB,
+    getTopByCategory, MAGAZINE_CATEGORIES, openRacketSheet, setScreen, totalDBCount, getMergedDB, profile, profileName,
   } = ctx;
 
   const catIdx = MAGAZINE_CATEGORIES.findIndex(c => c.id === magCat);
@@ -681,7 +681,23 @@ function MagazineScreen({ ctx }) {
                     </div>}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                       <span style={{fontFamily:F.body,fontSize:12,fontWeight:700,color:TM.accent}}>Lire l'article complet →</span>
-                      <span style={{fontFamily:F.body,fontSize:11,color:TM.gray2}}>{r.shape} · {r.price}</span>
+                      <div style={{display:"flex",alignItems:"center",gap:8}}>
+                        {profileName&&(()=>{
+                          const gs=computeGlobalScore(r.scores,profile,r);const pct=gs*10;
+                          const mc=pct>=70?"#4ade80":pct>=55?"#fbbf24":"#f87171";
+                          const sz=30;const sR=(sz-2.5)/2;const sC=2*Math.PI*sR;const sO=sC-(pct/100)*sC;
+                          return <div style={{position:"relative",width:sz,height:sz}} title={`${pct.toFixed(0)}% match pour ton profil`}>
+                            <svg width={sz} height={sz} viewBox={`0 0 ${sz} ${sz}`} style={{transform:"rotate(-90deg)"}}>
+                              <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={2.5}/>
+                              <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke={mc} strokeWidth={2.5} strokeLinecap="round" strokeDasharray={sC} strokeDashoffset={sO}/>
+                            </svg>
+                            <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                              <span style={{fontSize:9,fontWeight:800,color:mc,fontFamily:"'Outfit'"}}>{pct.toFixed(0)}</span>
+                            </div>
+                          </div>;
+                        })()}
+                        <span style={{fontFamily:F.body,fontSize:11,color:TM.gray2}}>{r.shape} · {r.price}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -742,6 +758,20 @@ function MagazineScreen({ ctx }) {
                       <span style={{fontFamily:"'Outfit',sans-serif",fontSize:22,fontWeight:800,
                         color:mainScore>=9?T.accent:mainScore>=8?T.gold:T.gray1,lineHeight:1,
                       }}>{mainScore.toFixed(1)}</span>
+                      {profileName&&(()=>{
+                        const gs=computeGlobalScore(r.scores,profile,r);const pct=gs*10;
+                        const mc=pct>=70?"#4ade80":pct>=55?"#fbbf24":"#f87171";
+                        const sz=24;const sR=(sz-2)/2;const sC=2*Math.PI*sR;const sO=sC-(pct/100)*sC;
+                        return <div style={{position:"relative",width:sz,height:sz}} title={`${pct.toFixed(0)}% match`}>
+                          <svg width={sz} height={sz} viewBox={`0 0 ${sz} ${sz}`} style={{transform:"rotate(-90deg)"}}>
+                            <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={2}/>
+                            <circle cx={sz/2} cy={sz/2} r={sR} fill="none" stroke={mc} strokeWidth={2} strokeLinecap="round" strokeDasharray={sC} strokeDashoffset={sO}/>
+                          </svg>
+                          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                            <span style={{fontSize:7,fontWeight:800,color:mc,fontFamily:"'Outfit'"}}>{pct.toFixed(0)}</span>
+                          </div>
+                        </div>;
+                      })()}
                       <span style={{fontFamily:F.body,fontSize:9,color:T.gray2}}>{r.price}</span>
                       {r.proPlayerInfo?.name && <span style={{fontFamily:F.body,fontSize:8,color:T.gold}}>🎾 {r.proPlayerInfo.name.split(" ").pop()}</span>}
                     </div>
@@ -1273,6 +1303,10 @@ function CatalogScreen({ ctx }) {
 
       {/* ═══ Results by brand — Premium grid ═══ */}
       <div style={{flex:1,overflowY:"auto",paddingBottom:40}}>
+        {profileName&&filtered.length>0&&<div style={{display:"flex",alignItems:"center",gap:12,padding:"8px 14px",margin:"0 4px 14px",background:"rgba(44,24,16,0.02)",borderRadius:10,border:"1px solid rgba(44,24,16,0.04)"}}>
+          <span style={{fontSize:9,color:"#9A8E7C"}}>💡</span>
+          <span style={{fontSize:9,color:"#7A6E5C"}}><strong style={{color:"#2C1810"}}>8.5/10</strong> = note de la raquette · <strong style={{color:"#059669"}}>76%</strong> = ta compatibilité personnelle</span>
+        </div>}
         {!filtered.length&&<div style={{textAlign:"center",padding:"40px 0",color:T.gray2}}>
           <div style={{fontSize:32,marginBottom:8}}>🔍</div>
           <p style={{fontFamily:F.body,fontSize:13}}>Aucune raquette trouvée</p>
@@ -1394,7 +1428,7 @@ function RacketSheetScreen({ ctx }) {
   const scoreProg = Math.min(1, Math.max(0, (sY - 80)/250));
 
   // Scan pertinence
-  const scanPert = racketSheetFrom==="scan"&&profileName ? computeGlobalScore(r.scores, profile, r) : null;
+  const scanPert = profileName ? computeGlobalScore(r.scores, profile, r) : null;
 
   // Target profile
   const fromProfile = racketSheetFrom==="dashboard"||racketSheetFrom==="app"||racketSheetFrom==="admin"||racketSheetFrom==="scan";
@@ -6794,7 +6828,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       {/* ============================================================ */}
       {screen==="magazine"&&<MagazineScreen ctx={{
         magCat, setMagCat, magYear, setMagYear, magDetail, setMagDetail, magSlide, setMagSlide,
-        getTopByCategory, MAGAZINE_CATEGORIES, openRacketSheet, setScreen, totalDBCount, getMergedDB,
+        getTopByCategory, MAGAZINE_CATEGORIES, openRacketSheet, setScreen, totalDBCount, getMergedDB, profile, profileName,
       }}/>}
 
       {/* ============================================================ */}
@@ -8366,8 +8400,23 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               </div>
               {/* Explanation — compact */}
               <div style={{marginTop:12,padding:"10px 14px",background:"rgba(44,24,16,0.02)",border:"1px solid rgba(44,24,16,0.04)",borderRadius:12}}>
-                <p style={{fontSize:10,color:"#2C1810",margin:"0 0 3px",fontWeight:600}}>💡 Comment ça marche ?</p>
-                <p style={{fontSize:10,color:"rgba(44,24,16,0.25)",margin:0,lineHeight:1.6}}>Chaque raquette est scorée sur 6 critères pondérés par ton profil. Clique sur une raquette pour voir sa fiche complète, ou lance l'analyse détaillée ci-dessous.</p>
+                <p style={{fontSize:10,color:"#2C1810",margin:"0 0 5px",fontWeight:600}}>💡 Comprendre les notes</p>
+                <div style={{display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:14,fontWeight:800,color:"#2C1810",fontFamily:"'Outfit'"}}>8.5<span style={{fontSize:9,color:"#9A8E7C"}}>/10</span></span>
+                    <span style={{fontSize:9,color:"#7A6E5C"}}>Note de la raquette</span>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <div style={{position:"relative",width:22,height:22}}>
+                      <svg width={22} height={22} viewBox="0 0 22 22" style={{transform:"rotate(-90deg)"}}>
+                        <circle cx={11} cy={11} r={9} fill="none" stroke="rgba(44,24,16,0.08)" strokeWidth={2}/>
+                        <circle cx={11} cy={11} r={9} fill="none" stroke="#4ade80" strokeWidth={2} strokeLinecap="round" strokeDasharray={56.5} strokeDashoffset={13.6}/>
+                      </svg>
+                      <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:7,fontWeight:800,color:"#4ade80",fontFamily:"'Outfit'"}}>76</span></div>
+                    </div>
+                    <span style={{fontSize:9,color:"#7A6E5C"}}>Ta compatibilité</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
