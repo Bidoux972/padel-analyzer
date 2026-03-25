@@ -4288,6 +4288,7 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
           forYou: "partial",
           refSource: "Base Padel Analyzer",
           _fromDB: true, _incomplete: false,
+          featured: r.featured, proPlayerInfo: r.proPlayerInfo,
         };
       });
       setRackets(loaded);
@@ -4308,6 +4309,42 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
   };
 
   const selRackets = rackets.filter(r=>selected.includes(r.id));
+
+  // Auto-load Top 3 when entering App with empty session
+  useEffect(()=>{
+    if(screen==="app" && rackets.length===0 && profileName) {
+      const age = Number(profile.age)||0;
+      const ht = Number(profile.height)||0;
+      const isJunior = (age>0&&age<15)||(ht>0&&ht<150);
+      let pool = isJunior 
+        ? getMergedDB().filter(r=>r.category==='junior')
+        : (()=>{
+            const lvl = profile.level||'Débutant';
+            const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
+            return getMergedDB().filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
+          })();
+      const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r)})).filter(r=>r._gs>0);
+      scored.sort((a,b)=>b._gs-a._gs);
+      const top3 = scored.slice(0,3);
+      if(top3.length) {
+        const loaded = top3.map((r,i)=>({
+          id: r.id+'-'+Date.now()+'-'+i,
+          name:r.name, shortName:r.shortName||r.name.slice(0,28),
+          brand:r.brand, shape:r.shape, weight:r.weight,
+          balance:r.balance||"—", surface:r.surface||"—", core:r.core||"—",
+          price:r.price||"—", player:r.player||"—",
+          color:COLORS_POOL[i%COLORS_POOL.length],
+          imageUrl:r.imageUrl||null, scores:r.scores,
+          category:r.category||null, junior:r.junior||false, womanLine:r.womanLine||false,
+          year:r.year||null, verdict:r.verdict||"Analyse non disponible",
+          forYou:"partial", refSource:"Base Padel Analyzer", _fromDB:true, _incomplete:false,
+          featured:r.featured, proPlayerInfo:r.proPlayerInfo,
+        }));
+        setRackets(loaded);
+        setSelected(loaded.slice(0,4).map(r=>r.id));
+      }
+    }
+  }, [screen, profileName]);
   const radarData = ATTRS.map(a => { const pt={attribute:a, "— 10/10 —":10}; selRackets.forEach(r=>{pt[r.shortName]=Number(r.scores[a])||0}); return pt; });
   const profileText = buildProfileText(profile);
 
