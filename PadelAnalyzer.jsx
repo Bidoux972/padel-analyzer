@@ -3521,6 +3521,8 @@ export default function PadelAnalyzer() {
   }, []);
   const [wizardStep, setWizardStep] = useState(0);
   const [revealIdx, setRevealIdx] = useState(0);
+  const [revealPhase, setRevealPhase] = useState(1);
+  const [dashFromReveal, setDashFromReveal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(null); // { message, onConfirm }
   const [passwordModal, setPasswordModal] = useState(null); // { mode:'unlock'|'setpin'|'lock', profileName, onSuccess }
   const [pinInput, setPinInput] = useState("");
@@ -4046,7 +4048,7 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
         setSuggestResults(null);
         setWizardStep(0);
         setRevealIdx(0);
-        // Remove LOCAL storage items
+        setRevealPhase(1);
         ['padel_profiles','padel_profile','padel_profileName','padel_rackets','padel_selected','padel_screen'].forEach(k => localStorage.removeItem(k));
         setKioskIdle(true);
         setScreen("home");
@@ -4372,6 +4374,23 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
       }
     }
   }, [screen, profileName]);
+
+  // Reveal Phase 1 auto-advance after 2.5s
+  useEffect(()=>{
+    if(screen==="reveal" && revealPhase===1){
+      const t = setTimeout(()=>setRevealPhase(2), 2500);
+      return ()=>clearTimeout(t);
+    }
+  }, [screen, revealPhase]);
+
+  // Dream-awakening: clear overlay after dashboard animation
+  useEffect(()=>{
+    if(dashFromReveal && screen==="dashboard"){
+      const t = setTimeout(()=>setDashFromReveal(false), 7000);
+      return ()=>clearTimeout(t);
+    }
+  }, [dashFromReveal, screen]);
+
   const radarData = ATTRS.map(a => { const pt={attribute:a, "— 10/10 —":10}; selRackets.forEach(r=>{pt[r.shortName]=Number(r.scores[a])||0}); return pt; });
   const profileText = buildProfileText(profile);
 
@@ -7972,6 +7991,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 cloudSyncProfile(profileName.trim(), profile, false);
                 setScreen("analyzing");
                 setRevealIdx(0);
+                setRevealPhase(1);
               }} className="pa-cta" style={{
                 flex:2,padding:"14px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
                 background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))",
@@ -8103,7 +8123,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
       })()}
 
       {/* ============================================================ */}
-      {/* REVEAL SCREEN — Top 3 carousel (one at a time) */}
+      {/* REVEAL SCREEN — Cinematic 5-phase reveal */}
       {/* ============================================================ */}
       {screen==="reveal"&&(()=>{
         const age = Number(profile.age)||0;
@@ -8116,10 +8136,12 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
               const catMap = {'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};
               return getMergedDB().filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));
             })();
-        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r)}));
+        const scored = pool.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r), _fy: computeForYou(r.scores, profile, r)}));
         scored.sort((a,b)=>b._gs-a._gs);
         const top3 = scored.slice(0, 3);
         const prioLabels = (profile.priorityTags||[]).map(id=>PRIORITY_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        const prioMap = {puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort',polyvalence:'Contrôle',reprise:'Confort'};
+        const isPrio = (a) => (profile.priorityTags||[]).some(pid=>prioMap[pid]===a);
 
         const makeVerdict = (r, rank) => {
           const sc = r.scores||{};
@@ -8130,110 +8152,190 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           return `3ᵉ option à ${pct}%.${best2.length>=2?` Intéressante pour son ${best2[0]} (${sc[best2[0]]}).`:""} À considérer si les deux premières ne sont pas dispo.`;
         };
 
-        const medals = ["🥇","🥈","🥉"];
-        const rankLabels = ["LA PALA IDÉALE","ALTERNATIVE","3ᵉ OPTION"];
-        const rankColors = ["#f97316","#94a3b8","#cd7f32"];
+        const r1 = top3[0], r2 = top3[1], r3 = top3[2];
+        if(!r1) return null;
+        const sc1 = r1.scores||{};
+        const best4_1 = ATTRS.filter(a=>sc1[a]).sort((a,b)=>(sc1[b]||0)-(sc1[a]||0)).slice(0,4);
+        const rankColors = ["#C4973A","#94A3B8","#CD7F32"];
+        const rankBgs = ["rgba(196,151,58,","rgba(148,163,184,","rgba(205,127,50,"];
+        const nameParts = (r) => { const p = r.name.split(" "); if(p.length<=2) return [r.brand, p.slice(1).join(" ")||p[0]]; return [p.slice(0,Math.ceil(p.length/2)).join(" "), p.slice(Math.ceil(p.length/2)).join(" ")]; };
 
-        const r = top3[revealIdx];
-        if(!r) return null;
-        const sc = r.scores||{};
-        const fyConfig = computeForYou(sc, profile, r);
-        const badge = fyConfig==="recommended"?{text:"RECOMMANDÉ",color:"#4CAF50"}:fyConfig==="partial"?{text:"JOUABLE",color:"#FF9800"}:{text:"—",color:"#64748b"};
+        const advanceReveal = () => {
+          if(revealPhase < 4) setRevealPhase(p=>p+1);
+          else { setDashFromReveal(true); setScreen("dashboard"); }
+        };
 
         return (
-        <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",overflow:"hidden"}} className="pa-screen-fade">
+        <div onClick={advanceReveal} style={{position:"fixed",inset:0,background:"#0A0806",zIndex:1000,overflow:"hidden",cursor:"pointer",userSelect:"none"}}>
           <style>{`
-            @keyframes revealCardIn { from { opacity:0; transform:scale(0.9) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
-            @keyframes revealPulse { 0%,100% { box-shadow: 0 0 30px rgba(249,115,22,0.15); } 50% { box-shadow: 0 0 50px rgba(249,115,22,0.35); } }
+            @keyframes rvGlowCore{0%,100%{opacity:.2;transform:translate(-50%,-50%) scale(1)}50%{opacity:.45;transform:translate(-50%,-50%) scale(1.2)}}
+            @keyframes rvSilhouetteIn{0%{opacity:0;transform:scale(1.3);filter:blur(40px) brightness(0)}40%{opacity:.6;filter:blur(20px) brightness(.5)}100%{opacity:1;transform:scale(1);filter:blur(0) brightness(1)}}
+            @keyframes rvLightSweep{0%{opacity:0;transform:translateX(-120%) skewX(-15deg)}50%{opacity:.7}100%{opacity:0;transform:translateX(120%) skewX(-15deg)}}
+            @keyframes rvTitleCrash{0%{opacity:0;transform:translateY(60px) scale(1.3);filter:blur(12px)}60%{filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1)}}
+            @keyframes rvSubDrift{0%{opacity:0;transform:translateX(-30px)}100%{opacity:1;transform:translateX(0)}}
+            @keyframes rvScoreBuild{0%{opacity:0;transform:scale(.6);filter:blur(8px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+            @keyframes rvAttrSlide{0%{opacity:0;transform:translateX(40px)}100%{opacity:1;transform:translateX(0)}}
+            @keyframes rvRunwayIn{0%{opacity:0;transform:translateY(60px) scale(.95);filter:blur(8px)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+            @keyframes rvFadeUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
           `}</style>
 
-          {/* Close button */}
-          <button onClick={()=>setScreen("dashboard")} style={{
-            position:"absolute",top:16,right:16,width:40,height:40,borderRadius:"50%",
-            background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
-            color:"#94a3b8",fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10,
-          }}>✕</button>
+          {/* Skip button */}
+          <button onClick={(e)=>{e.stopPropagation();setDashFromReveal(true);setScreen("dashboard");}} style={{
+            position:"absolute",top:16,right:16,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
+            borderRadius:20,padding:"6px 14px",color:"rgba(255,255,255,0.25)",fontSize:10,fontWeight:600,cursor:"pointer",
+            fontFamily:"'Outfit'",letterSpacing:"0.05em",zIndex:10,
+          }}>PASSER ›</button>
 
-          {/* Title */}
-          <div style={{textAlign:"center",marginBottom:20}}>
-            <div style={{fontSize:16,color:"#f97316",fontWeight:800,fontFamily:"'Outfit'",letterSpacing:"0.04em",textTransform:"uppercase"}}>Résultats de {profileName}</div>
+          {/* Phase indicator */}
+          <div style={{position:"absolute",top:18,left:20,font:"300 10px 'Outfit'",color:"rgba(255,255,255,0.12)",letterSpacing:"0.08em",zIndex:10}}>
+            {revealPhase} / 4
           </div>
 
-          {/* Card container with arrows */}
-          <div style={{display:"flex",alignItems:"center",gap:16,maxWidth:"100vw"}}>
-            {/* Left arrow */}
-            <button onClick={()=>setRevealIdx(i=>Math.max(0,i-1))} disabled={revealIdx===0} style={{
-              width:44,height:44,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",
-              background:revealIdx>0?"rgba(249,115,22,0.1)":"rgba(255,255,255,0.03)",
-              color:revealIdx>0?"#f97316":"#334155",fontSize:22,cursor:revealIdx>0?"pointer":"default",
-              display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.2s",
-            }}>‹</button>
-
-            {/* Single card */}
-            <div key={revealIdx} style={{
-              width:340,maxWidth:"75vw",
-              background:"rgba(255,255,255,0.04)",
-              border:`2px solid ${revealIdx===0?"rgba(249,115,22,0.5)":"rgba(255,255,255,0.1)"}`,
-              borderRadius:24,padding:"28px 24px",
-              display:"flex",flexDirection:"column",alignItems:"center",gap:14,
-              animation:`revealCardIn 0.5s ease both${revealIdx===0?", revealPulse 3s ease infinite":""}`,
-            }}>
-              <div style={{fontSize:44}}>{medals[revealIdx]}</div>
-              <div style={{fontSize:11,fontWeight:700,color:rankColors[revealIdx],textTransform:"uppercase",letterSpacing:"0.08em"}}>{rankLabels[revealIdx]}</div>
-
-              {r.imageUrl&&<img src={r.imageUrl} alt={r.name} style={{width:110,height:110,objectFit:"contain",filter:"drop-shadow(0 4px 16px rgba(0,0,0,0.4))"}} onError={e=>{e.target.style.display="none";}}/>}
-
-              <div style={{textAlign:"center"}}>
-                <div style={{fontSize:19,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit'",lineHeight:1.3}}>{r.name}</div>
-                <div style={{fontSize:11,color:"#64748b",marginTop:4}}>{r.brand} · {r.shape}{r.weight?` · ${r.weight}`:""}</div>
+          {/* ═══ PHASE 1 — TENSION ═══ */}
+          {revealPhase===1&&<div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.4s ease"}}>
+            <div style={{position:"absolute",top:"50%",left:"50%",width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle,rgba(196,151,58,.3) 0%,transparent 70%)",animation:"rvGlowCore 2s ease infinite",pointerEvents:"none"}}/>
+            <div style={{textAlign:"center",position:"relative"}}>
+              <div style={{font:"300 12px 'Outfit'",color:"rgba(196,151,58,.5)",letterSpacing:"0.3em"}}>ANALYSE EN COURS</div>
+              <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>
+                {[0,.25,.5].map(d=><div key={d} style={{width:3,height:3,borderRadius:"50%",background:"#C4973A",animation:`rvGlowCore 1s ease ${d}s infinite`}}/>)}
               </div>
-
-              <div style={{fontSize:48,fontWeight:900,fontFamily:"'Outfit'",color:revealIdx===0?"#f97316":"#e2e8f0",lineHeight:1}}>
-                {(r._gs*10).toFixed(1)}<span style={{fontSize:20}}>%</span>
-              </div>
-
-              <span style={{fontSize:10,fontWeight:700,color:badge.color,background:`${badge.color}18`,border:`1px solid ${badge.color}40`,borderRadius:8,padding:"4px 14px",textTransform:"uppercase"}}>{badge.text}</span>
-
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,width:"100%"}}>
-                {ATTRS.map(a=>{
-                  const val = sc[a]||0;
-                  const isPrio = (profile.priorityTags||[]).some(pid=>{const m={puissance:'Puissance',controle:'Contrôle',confort:'Confort',spin:'Spin',legerete:'Maniabilité',protection:'Confort'};return m[pid]===a;});
-                  return <div key={a} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 10px",borderRadius:8,background:isPrio?"rgba(249,115,22,0.08)":"rgba(255,255,255,0.02)"}}>
-                    <span style={{fontSize:10,color:isPrio?"#f97316":"#94a3b8",fontWeight:isPrio?700:500}}>{isPrio?"★ ":""}{a}</span>
-                    <span style={{fontSize:13,fontWeight:700,color:val>=8?"#4CAF50":val>=6?"#e2e8f0":"#f97316"}}>{val}</span>
-                  </div>;
-                })}
-              </div>
-
-              <p style={{fontSize:11,color:"#94a3b8",lineHeight:1.6,textAlign:"center",margin:0}}>{makeVerdict(r,revealIdx)}</p>
-
-              {r.price&&<div style={{fontSize:10,color:"#475569"}}>💰 {r.price}</div>}
             </div>
+          </div>}
 
-            {/* Right arrow */}
-            <button onClick={()=>setRevealIdx(i=>Math.min(top3.length-1,i+1))} disabled={revealIdx>=top3.length-1} style={{
-              width:44,height:44,borderRadius:"50%",border:"1px solid rgba(255,255,255,0.12)",
-              background:revealIdx<top3.length-1?"rgba(249,115,22,0.1)":"rgba(255,255,255,0.03)",
-              color:revealIdx<top3.length-1?"#f97316":"#334155",fontSize:22,cursor:revealIdx<top3.length-1?"pointer":"default",
-              display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.2s",
-            }}>›</button>
-          </div>
+          {/* ═══ PHASE 2 — RÉVÉLATION N°1 ═══ */}
+          {revealPhase===2&&<div style={{position:"absolute",inset:0,animation:"fadeIn 0.5s ease"}}>
+            {/* Background warm glow */}
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 70% 80% at 50% 40%, rgba(196,151,58,.08) 0%, transparent 60%)",pointerEvents:"none"}}/>
+            {/* Light sweep */}
+            <div style={{position:"absolute",top:0,left:0,width:"60%",height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,240,200,.08),transparent)",animation:"rvLightSweep 1.2s ease 0.5s both",pointerEvents:"none"}}/>
+            {/* Hero racket image */}
+            <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-55%)",animation:"rvSilhouetteIn 1.4s cubic-bezier(.22,1,.36,1) 0.1s both"}}>
+              {r1.imageUrl?<img src={proxyImg(r1.imageUrl)} alt={r1.name} style={{width:200,height:250,objectFit:"contain",filter:"drop-shadow(0 8px 40px rgba(196,151,58,.3))"}} onError={e=>{e.target.style.display="none"}}/>
+              :<div style={{width:200,height:250,display:"flex",alignItems:"center",justifyContent:"center",fontSize:80,filter:"drop-shadow(0 0 40px rgba(196,151,58,.3))"}}>🏸</div>}
+            </div>
+            {/* Name — massive, bottom left */}
+            <div style={{position:"absolute",bottom:130,left:24,right:24,animation:"rvTitleCrash .8s cubic-bezier(.22,1,.36,1) 0.9s both"}}>
+              <div style={{font:"300 12px/1 'Outfit'",color:"rgba(196,151,58,.5)",letterSpacing:"0.15em",marginBottom:8}}>🥇 LA PALA IDÉALE</div>
+              <div style={{fontFamily:F.editorial,fontSize:38,fontWeight:700,fontStyle:"italic",color:"#F5EDE0",lineHeight:1}}>{nameParts(r1)[0]}</div>
+              <div style={{fontFamily:F.editorial,fontSize:30,fontWeight:300,fontStyle:"italic",color:"rgba(245,237,224,.7)",lineHeight:1.05,marginTop:2}}>{nameParts(r1)[1]}</div>
+              <div style={{font:"300 11px 'Outfit'",color:"rgba(196,151,58,.35)",marginTop:8,animation:"rvSubDrift .6s ease 1.4s both"}}>{r1.shape} · {r1.weight||""}{r1.price&&r1.price!=="—"?` · ${r1.price}`:""}</div>
+            </div>
+            {/* Score — giant, right side */}
+            <div style={{position:"absolute",top:"50%",right:20,transform:"translateY(-50%)",textAlign:"right",animation:"rvScoreBuild 1s cubic-bezier(.22,1,.36,1) 1.6s both"}}>
+              <div style={{font:"900 72px/1 'Outfit'",color:"rgba(196,151,58,.7)"}}>{(r1._gs*10).toFixed(1)}<span style={{fontSize:24,color:"rgba(196,151,58,.35)"}}>%</span></div>
+              <div style={{font:"300 10px 'Outfit'",color:"rgba(196,151,58,.3)",letterSpacing:"0.12em",marginTop:4}}>COMPATIBILITÉ</div>
+            </div>
+            {/* Attributes — cinema subtitles, bottom */}
+            <div style={{position:"absolute",bottom:24,left:24,right:24,display:"flex",gap:14,flexWrap:"wrap"}}>
+              {best4_1.map((a,i)=><div key={a} style={{display:"flex",alignItems:"center",gap:6,animation:`rvAttrSlide .5s cubic-bezier(.22,1,.36,1) ${2.4+i*0.3}s both`}}>
+                <span style={{font:`${isPrio(a)?"600":"300"} 11px 'Outfit'`,color:isPrio(a)?"#C4973A":"rgba(245,237,224,.35)"}}>{isPrio(a)?"★ ":""}{a}</span>
+                <span style={{font:"800 13px 'Outfit'",color:isPrio(a)?"#F5EDE0":"rgba(245,237,224,.5)"}}>{sc1[a]}</span>
+              </div>)}
+            </div>
+            <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",font:"300 11px 'Outfit'",color:"rgba(255,255,255,.15)",letterSpacing:"0.08em"}}>tap pour la suite</div>
+          </div>}
 
-          {/* Dot indicators */}
-          <div style={{display:"flex",gap:8,marginTop:16}}>
-            {top3.map((_,i)=><button key={i} onClick={()=>setRevealIdx(i)} style={{
-              width:i===revealIdx?20:8,height:8,borderRadius:4,border:"none",cursor:"pointer",padding:0,
-              background:i===revealIdx?"#f97316":"rgba(255,255,255,0.15)",transition:"all 0.3s",
-            }}/>)}
-          </div>
+          {/* ═══ PHASE 3 — DÉFILÉ N°2 & N°3 ═══ */}
+          {revealPhase===3&&<div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",padding:"20px 20px 40px",animation:"fadeIn 0.5s ease"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 60% 50% at 50% 45%,rgba(148,163,184,.04) 0%,transparent 60%)",pointerEvents:"none"}}/>
+            {/* Recap n°1 */}
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,position:"relative",flexShrink:0,animation:"rvFadeUp .5s ease 0.1s both"}}>
+              <div style={{width:3,height:20,background:"linear-gradient(180deg,#C4973A,transparent)",borderRadius:2,flexShrink:0}}/>
+              <span style={{font:"600 11px 'Outfit'",color:"rgba(196,151,58,.6)"}}>🥇 {r1.name}</span>
+              <span style={{font:"800 11px 'Outfit'",color:"rgba(196,151,58,.35)"}}>{(r1._gs*10).toFixed(0)}%</span>
+            </div>
+            {/* N°2 — center hero */}
+            {r2&&<div style={{textAlign:"center",position:"relative",flexShrink:0,animation:"rvRunwayIn 1s cubic-bezier(.22,1,.36,1) 0.4s both"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:10}}>
+                <span style={{fontSize:32}}>🥈</span>
+                <span style={{font:"200 10px 'Outfit'",color:"rgba(148,163,184,.4)",letterSpacing:"0.18em"}}>ALTERNATIVE</span>
+              </div>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:20,marginBottom:12}}>
+                <div style={{width:100,height:120,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  {r2.imageUrl?<img src={proxyImg(r2.imageUrl)} alt={r2.name} style={{width:100,height:120,objectFit:"contain",opacity:.8,filter:"drop-shadow(0 4px 16px rgba(148,163,184,.15))"}} onError={e=>{e.target.style.display="none"}}/>
+                  :<div style={{fontSize:48,filter:"drop-shadow(0 0 16px rgba(148,163,184,.15))",opacity:.7}}>🏸</div>}
+                </div>
+                <div style={{textAlign:"left"}}>
+                  <div style={{fontFamily:F.editorial,fontSize:24,fontWeight:700,fontStyle:"italic",color:"#E2E8F0",lineHeight:1.1}}>{nameParts(r2)[0]}</div>
+                  <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:300,fontStyle:"italic",color:"rgba(226,232,240,.5)",lineHeight:1,marginTop:2}}>{nameParts(r2)[1]}</div>
+                  <div style={{font:"300 10px 'Outfit'",color:"rgba(148,163,184,.3)",marginTop:6}}>{r2.shape} · {r2.weight||""}</div>
+                  <div style={{font:"900 36px/1 'Outfit'",color:"rgba(148,163,184,.25)",marginTop:10}}>{(r2._gs*10).toFixed(1)}<span style={{fontSize:16}}>%</span></div>
+                </div>
+              </div>
+              {/* N°2 top attrs */}
+              <div style={{display:"flex",justifyContent:"center",gap:18,marginBottom:20,animation:"rvFadeUp .6s ease 1.2s both"}}>
+                {ATTRS.filter(a=>(r2.scores||{})[a]).sort((a,b)=>((r2.scores||{})[b]||0)-((r2.scores||{})[a]||0)).slice(0,3).map((a,i)=><React.Fragment key={a}>
+                  {i>0&&<div style={{width:1,background:"rgba(148,163,184,.1)"}}/>}
+                  <div><div style={{font:"800 16px 'Outfit'",color:"#E2E8F0"}}>{(r2.scores||{})[a]}</div><div style={{font:"300 9px 'Outfit'",color:"rgba(148,163,184,.3)"}}>{a}</div></div>
+                </React.Fragment>)}
+              </div>
+            </div>}
+            {/* Separator */}
+            <div style={{width:60,height:1,background:"linear-gradient(90deg,transparent,rgba(205,127,50,.2),transparent)",marginBottom:20,flexShrink:0}}/>
+            {/* N°3 */}
+            {r3&&<div style={{textAlign:"center",position:"relative",flexShrink:0,animation:"rvRunwayIn .8s cubic-bezier(.22,1,.36,1) 1.8s both"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:10}}>
+                <span style={{fontSize:28}}>🥉</span>
+                <span style={{font:"200 10px 'Outfit'",color:"rgba(205,127,50,.4)",letterSpacing:"0.15em"}}>3ᵉ OPTION</span>
+              </div>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:18}}>
+                <div style={{width:80,height:100,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  {r3.imageUrl?<img src={proxyImg(r3.imageUrl)} alt={r3.name} style={{width:80,height:100,objectFit:"contain",opacity:.6,filter:"drop-shadow(0 4px 12px rgba(205,127,50,.1))"}} onError={e=>{e.target.style.display="none"}}/>
+                  :<div style={{fontSize:40,filter:"drop-shadow(0 0 12px rgba(205,127,50,.1))",opacity:.6}}>🏸</div>}
+                </div>
+                <div style={{textAlign:"left"}}>
+                  <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:700,fontStyle:"italic",color:"#DDB892",lineHeight:1.1}}>{nameParts(r3)[0]}</div>
+                  <div style={{fontFamily:F.editorial,fontSize:17,fontWeight:300,fontStyle:"italic",color:"rgba(221,184,146,.5)",lineHeight:1,marginTop:1}}>{nameParts(r3)[1]}</div>
+                  <div style={{font:"300 10px 'Outfit'",color:"rgba(205,127,50,.3)",marginTop:4}}>{r3.shape} · {r3.weight||""}</div>
+                  <div style={{font:"900 30px/1 'Outfit'",color:"rgba(205,127,50,.2)",marginTop:8}}>{(r3._gs*10).toFixed(1)}<span style={{fontSize:14}}>%</span></div>
+                </div>
+              </div>
+              {/* N°3 top attrs */}
+              <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:12,animation:"rvFadeUp .5s ease 2.4s both"}}>
+                {ATTRS.filter(a=>(r3.scores||{})[a]).sort((a,b)=>((r3.scores||{})[b]||0)-((r3.scores||{})[a]||0)).slice(0,3).map((a,i)=><React.Fragment key={a}>
+                  {i>0&&<div style={{width:1,background:"rgba(205,127,50,.08)"}}/>}
+                  <div><div style={{font:"800 14px 'Outfit'",color:"#DDB892"}}>{(r3.scores||{})[a]}</div><div style={{font:"300 9px 'Outfit'",color:"rgba(205,127,50,.3)"}}>{a}</div></div>
+                </React.Fragment>)}
+              </div>
+            </div>}
+            <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",font:"300 11px 'Outfit'",color:"rgba(255,255,255,.15)",letterSpacing:"0.08em"}}>tap pour la synthèse</div>
+          </div>}
 
-          {/* CTA */}
-          <button onClick={()=>setScreen("dashboard")} className="pa-ghost" style={{
-            marginTop:20,padding:"12px 32px",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-            background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.12)",color:"#94a3b8",
-          }}>
-            Explorer l'analyse complète →
-          </button>
+          {/* ═══ PHASE 4 — PODIUM SYNTHÈSE ═══ */}
+          {revealPhase===4&&<div style={{position:"absolute",inset:0,animation:"fadeIn 0.5s ease"}}>
+            <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 80% 60% at 50% 60%,rgba(196,151,58,.05) 0%,transparent 50%)",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",top:24,left:"50%",transform:"translateX(-50%)",textAlign:"center"}}>
+              <div style={{font:"300 11px 'Outfit'",color:"rgba(196,151,58,.45)",letterSpacing:"0.2em",animation:"rvFadeUp .5s ease 0.1s both"}}>TON TOP 3</div>
+              <div style={{fontFamily:F.editorial,fontSize:20,fontWeight:300,fontStyle:"italic",color:"#F5EDE0",marginTop:6,animation:"rvFadeUp .6s ease 0.3s both"}}>Pourquoi ces trois raquettes</div>
+            </div>
+            {/* Podium — 3 columns */}
+            <div style={{position:"absolute",bottom:56,left:12,right:12,display:"flex",alignItems:"flex-end",justifyContent:"center",gap:6}}>
+              {[{r:r2,i:1,h:150,medal:"🥈",mSz:24},{r:r1,i:0,h:200,medal:"🥇",mSz:30},{r:r3,i:2,h:120,medal:"🥉",mSz:20}].map(({r:rk,i:rank,h,medal,mSz},col)=>{
+                if(!rk) return null;
+                const sck = rk.scores||{};
+                const best = ATTRS.filter(a=>sck[a]).sort((a,b)=>(sck[b]||0)-(sck[a]||0)).slice(0,rank===0?4:3);
+                const rc = rankColors[rank]; const rb = rankBgs[rank];
+                const maxW = rank===0?175:rank===1?155:145;
+                return <div key={rk.id} style={{flex:1,maxWidth:maxW,animation:`rvRunwayIn .8s cubic-bezier(.22,1,.36,1) ${0.6+col*0.25}s both`}}>
+                  <div style={{textAlign:"center",marginBottom:8}}>
+                    <div style={{fontSize:mSz}}>{medal}</div>
+                    <div style={{fontFamily:F.editorial,fontSize:rank===0?14:rank===1?12:11,fontWeight:rank===0?700:600,fontStyle:"italic",color:rank===0?"#F5EDE0":rank===1?"#E2E8F0":"#DDB892",marginTop:3}}>{rk.name.length>20?rk.name.slice(0,18)+"…":rk.name}</div>
+                    <div style={{font:`900 ${rank===0?24:rank===1?20:18}px 'Outfit'`,color:`${rb}0.3)`,marginTop:3}}>{(rk._gs*10).toFixed(0)}%</div>
+                  </div>
+                  <div style={{background:`linear-gradient(0deg,${rb}0.08),${rb}0.02))`,border:`1px solid ${rb}${rank===0?"0.15":"0.1"})`,borderRadius:"12px 12px 4px 4px",padding:rank===0?"12px 10px":"10px 8px",height:h}}>
+                    <div style={{font:"300 10px/1.6 'Outfit'",color:`${rb}0.4)`}}>
+                      {best.map(a=><div key={a} style={{marginBottom:5}}><span style={{color:rank===0?"#F5EDE0":rank===1?"#E2E8F0":"#DDB892",fontWeight:600}}>{a} {sck[a]}</span>{isPrio(a)&&rank===0?<span style={{color:"#C4973A",fontSize:8}}> ★</span>:null}</div>)}
+                      <div style={{borderTop:`1px solid ${rb}0.08)`,paddingTop:6,color:"rgba(255,255,255,"+(rank===0?".3":rank===1?".25":".2")+")",fontStyle:"italic",fontFamily:F.editorial,fontSize:10}}>{makeVerdict(rk,rank).slice(0,rank===0?120:80)}</div>
+                    </div>
+                  </div>
+                </div>;
+              })}
+            </div>
+            {/* CTA */}
+            <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",textAlign:"center",animation:"rvFadeUp .6s ease 1.8s both"}} onClick={(e)=>{e.stopPropagation();setDashFromReveal(true);setScreen("dashboard");}}>
+              <div style={{font:"600 12px 'Outfit'",color:"#C4973A",padding:"10px 28px",border:"1px solid rgba(196,151,58,.2)",borderRadius:12,background:"rgba(196,151,58,.05)",cursor:"pointer"}}>Pour aller plus loin →</div>
+            </div>
+          </div>}
         </div>
         );
       })()}
@@ -8284,7 +8386,28 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const fyConfig2 = {recommended:{text:"RECOMMANDÉ",bg:"#1B5E20",border:"#4CAF50",color:"#4CAF50"},partial:{text:"JOUABLE",bg:"#E65100",border:"#FF9800",color:"#FF9800"},no:{text:"DÉCONSEILLÉ",bg:"#B71C1C",border:"#E53935",color:"#E53935"}};
 
         return (
-        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",background:"#F4F0E8",minHeight:"100dvh"}} className="pa-screen-fade">
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",background:"#F4F0E8",minHeight:"100dvh",position:"relative"}} className="pa-screen-fade">
+          {/* ═══ DREAM AWAKENING OVERLAY ═══ */}
+          {dashFromReveal&&<>
+            <style>{`
+              @keyframes dreamVeil1{0%{opacity:1}100%{opacity:0}}
+              @keyframes dreamVeil2{0%{opacity:1}100%{opacity:0}}
+              @keyframes dreamVeil3{0%{opacity:1}100%{opacity:0}}
+              @keyframes dreamVeil4{0%{opacity:1}100%{opacity:0}}
+              @keyframes dreamVeil5{0%{opacity:1}100%{opacity:0}}
+              @keyframes dreamBase{0%{opacity:1}100%{opacity:0}}
+              @keyframes dreamBlur{0%{filter:blur(16px) brightness(1.8) saturate(0)}100%{filter:blur(0) brightness(1) saturate(1)}}
+            `}</style>
+            <div style={{position:"fixed",inset:0,zIndex:9999,pointerEvents:"none",animation:"dreamBlur 5s cubic-bezier(.25,.46,.45,.94) 1.5s both"}}/>
+            <div style={{position:"fixed",inset:0,zIndex:10000,pointerEvents:"none"}}>
+              <div style={{position:"absolute",inset:"-10%",background:"radial-gradient(ellipse 80% 70% at 30% 40%,#0A0806 40%,transparent 70%)",animation:"dreamVeil1 4s cubic-bezier(.25,.46,.45,.94) 0.5s forwards"}}/>
+              <div style={{position:"absolute",inset:"-10%",background:"radial-gradient(ellipse 70% 80% at 70% 30%,#0A0806 35%,transparent 65%)",animation:"dreamVeil2 3.5s cubic-bezier(.25,.46,.45,.94) 1.8s forwards"}}/>
+              <div style={{position:"absolute",inset:"-10%",background:"radial-gradient(ellipse 60% 90% at 50% 70%,#0A0806 45%,transparent 75%)",animation:"dreamVeil3 3s cubic-bezier(.25,.46,.45,.94) 2.8s forwards"}}/>
+              <div style={{position:"absolute",inset:"-10%",background:"radial-gradient(ellipse 90% 60% at 20% 60%,#0A0806 30%,transparent 60%)",animation:"dreamVeil4 3.5s cubic-bezier(.25,.46,.45,.94) 3.6s forwards"}}/>
+              <div style={{position:"absolute",inset:"-10%",background:"radial-gradient(ellipse 75% 75% at 80% 70%,#0A0806 35%,transparent 65%)",animation:"dreamVeil5 3s cubic-bezier(.25,.46,.45,.94) 4.2s forwards"}}/>
+              <div style={{position:"absolute",inset:0,background:"#0A0806",animation:"dreamBase 3s cubic-bezier(.25,.46,.45,.94) 0.8s forwards"}}/>
+            </div>
+          </>}
           {/* Header — level gradient band */}
           <div style={{background:({Expert:"linear-gradient(135deg,#92400E,#B45309,#D97706)",Avancé:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Intermédiaire:"linear-gradient(135deg,#1E3A5F,#1D4ED8,#2563EB)",Compétition:"linear-gradient(135deg,#4C1D95,#6D28D9,#7C3AED)",Débutant:"linear-gradient(135deg,#064E3B,#047857,#059669)"})[profile.level]||"linear-gradient(135deg,#7A6E5C,#64748b)",borderRadius:"0 0 22px 22px",padding:"16px 22px 20px",marginBottom:20}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
