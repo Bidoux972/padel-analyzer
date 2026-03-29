@@ -4048,7 +4048,7 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
         setSuggestResults(null);
         setWizardStep(0);
         setRevealIdx(0);
-        setRevealPhase(1);
+        setRevealPhase(2);
         ['padel_profiles','padel_profile','padel_profileName','padel_rackets','padel_selected','padel_screen'].forEach(k => localStorage.removeItem(k));
         setKioskIdle(true);
         setScreen("home");
@@ -4375,10 +4375,14 @@ Formes: Diamant=puissance, Goutte d'eau=polyvalent, Ronde=contrôle, Hybride=com
     }
   }, [screen, profileName]);
 
-  // Reveal Phase 1 auto-advance after 2.5s
+  // Reveal auto-advance: Phase 2 → 3 after 7s, Phase 3 → 4 after 6s
   useEffect(()=>{
-    if(screen==="reveal" && revealPhase===1){
-      const t = setTimeout(()=>setRevealPhase(2), 2500);
+    if(screen==="reveal" && revealPhase===2){
+      const t = setTimeout(()=>setRevealPhase(3), 7000);
+      return ()=>clearTimeout(t);
+    }
+    if(screen==="reveal" && revealPhase===3){
+      const t = setTimeout(()=>setRevealPhase(4), 6000);
       return ()=>clearTimeout(t);
     }
   }, [screen, revealPhase]);
@@ -7991,7 +7995,7 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 cloudSyncProfile(profileName.trim(), profile, false);
                 setScreen("analyzing");
                 setRevealIdx(0);
-                setRevealPhase(1);
+                setRevealPhase(2);
               }} className="pa-cta" style={{
                 flex:2,padding:"14px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
                 background:"linear-gradient(135deg,rgba(249,115,22,0.25),rgba(239,68,68,0.15))",
@@ -8022,33 +8026,143 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const isExpertA = detectPlayerMode(profile)==="expert";
 
         // Build analysis lines (different from pertinence!)
+        // Compute pool for narrative numbers
+        const ageA = Number(profile.age)||0;
+        const htA = Number(profile.height)||0;
+        const isJuniorPool = (ageA>0&&ageA<15)||(htA>0&&htA<150);
+        const poolA = isJuniorPool 
+          ? getMergedDB().filter(r=>r.category==='junior')
+          : (()=>{const lvl=profile.level||'Débutant';const catMap={'Débutant':['debutant','intermediaire'],'Intermédiaire':['intermediaire','debutant','avance','expert'],'Avancé':['avance','intermediaire','expert'],'Expert':['expert','avance','intermediaire']};return getMergedDB().filter(r=>(catMap[lvl]||['debutant','intermediaire']).includes(r.category));})();
+        const scoredA = poolA.map(r=>({...r, _gs: computeGlobalScore(r.scores, profile, r), _fy: computeForYou(r.scores, profile, r)})).filter(r=>r._gs>0);
+        const compatCount = scoredA.length;
+        const recoCount = scoredA.filter(r=>r._fy==="recommended").length;
+        const contradictions = detectProfileContradictions(profile);
+        const brandPrefA = (profile.brandTags||[]).map(id=>BRAND_TAGS.find(t=>t.id===id)?.label).filter(Boolean);
+        // Check if preferred brands are in top 3
+        const top3A = scoredA.sort((a,b)=>b._gs-a._gs).slice(0,3);
+        const brandsInTop3 = brandPrefA.filter(b=>top3A.some(r=>r.brand===b));
+        const brandsOut = brandPrefA.filter(b=>!top3A.some(r=>r.brand===b));
+        const upperBlessures = injuries.map(x=>x.toLowerCase());
+
+        // === NARRATIVE ENGINE ===
         const lines = [];
-        lines.push(`Matching en cours pour ${profileName}…`);
-        if(age) lines.push(`${age} ans, ${role.toLowerCase()} côté ${side.toLowerCase()}${profile.competition?" en compétition":""}.`);
-        if(styles.length>0) {
-          const defStyles = styles.filter(s=>["Défensif / Mur","Endurant","Contre-attaquant"].includes(s));
-          const atkStyles = styles.filter(s=>["Offensif","Puissant / Frappeur"].includes(s));
-          if(defStyles.length>0&&atkStyles.length>0) lines.push(`Profil hybride détecté : ${atkStyles.join(", ")} + ${defStyles.join(", ")}. L'algo cherche le compromis idéal.`);
-          else if(atkStyles.length>0) lines.push(`Profil offensif : ${atkStyles.join(", ")}. On cible puissance et rendement.`);
-          else if(defStyles.length>0) lines.push(`Profil défensif : ${defStyles.join(", ")}. Contrôle et tolérance en priorité.`);
-          else lines.push(`Style ${styles.slice(0,3).join(", ")} — profil technique, on équilibre les 6 critères.`);
+
+        // TEMPS 1 — Qui tu es
+        if(isJuniorA) {
+          if(isPepiteA) lines.push(`${ageA} ans, déjà ${isFemme_r?"avancée":"avancé"}. Tu n'es plus un${isFemme_r?"e":""} junior${isFemme_r?"e":""} comme les autres.`);
+          else lines.push(`${ageA} ans, en pleine progression. Il te faut une pala qui grandisse avec toi.`);
+        } else if(profile.level==="Débutant") {
+          lines.push(`Première pala. Le choix compte — il va conditionner tes premiers mois de jeu.`);
+        } else if(profile.level==="Expert"||profile.level==="Compétition") {
+          if(profile.competition) lines.push(`${role} côté ${side.toLowerCase()}, en compétition. Tu sais ce que tu veux — on va voir si le marché suit.`);
+          else lines.push(`${role} côté ${side.toLowerCase()}. Niveau expert. Les détails comptent.`);
+        } else if(profile.level==="Avancé") {
+          if(isAttacker) lines.push(`${role} côté ${side.toLowerCase()}. Tu commences à frapper — tu veux sentir la différence.`);
+          else lines.push(`${role} côté ${side.toLowerCase()}. Tu construis le point — il te faut une pala qui pense avec toi.`);
         } else {
-          lines.push(`Pas de style déclaré — matching basé sur tes priorités et ton physique.`);
+          // Intermédiaire
+          if(isAttacker) lines.push(`${role} côté ${side.toLowerCase()}. Tu montes en puissance — l'exigence aussi.`);
+          else if(side==="Les deux") lines.push(`Tu alternes attaque et construction. La pala doit être à l'aise partout.`);
+          else lines.push(`${role} côté ${side.toLowerCase()}. Tu progresses — il est temps de trouver LA bonne.`);
         }
+        // Add age context for seniors
+        if(ageA >= 50 && !isJuniorA) {
+          const hasOffensiveStyle = (profile.styleTags||[]).some(s=>["offensif","puissant"].includes(s));
+          if(hasOffensiveStyle) lines.push(`L'envie de frapper est là. Le corps demande plus de tolérance qu'avant.`);
+        }
+
+        // Expert feel preferences
         if(isExpertA && profile.expertToucher) {
-          const toucherLabels = {sec:"Sec & Direct",medium:"Medium",souple:"Souple & Enveloppant"};
-          const reactLabels = {explosive:"Explosive",progressive:"Progressive"};
-          const poidsLabels = {lourd:"Lourd & Stable",equilibre:"Équilibré",leger:"Léger & Vif"};
-          const formeLabels = {diamant:"Diamant",goutte:"Goutte d'eau",ronde:"Ronde",indifferent:"Indifférent"};
-          lines.push(`⚡ Mode Pro — Toucher ${toucherLabels[profile.expertToucher]||""}, Réactivité ${reactLabels[profile.expertReactivite]||""}, Poids ${poidsLabels[profile.expertPoids]||""}, Forme ${formeLabels[profile.expertForme]||""}.`);
-          lines.push(`Scoring par propriétés physiques : mousse, surface, balance, poids.`);
-        } else if(priorities.length>0) lines.push(`Tes priorités : ${priorities.map((p,i)=>`${i+1}. ${p}`).join(", ")}. Le poids décroît dans le scoring.`);
-        if(injuries.length>0) lines.push(`⚠ ${injuries.join(", ")} — le Confort devient un critère non négociable.`);
-        if(isJuniorA&&!isPepiteA) lines.push(`Profil junior → filtrage sur les raquettes légères et tolérantes.`);
-        if(isPepiteA) lines.push(`🌟 Jeune Pépite → scan élargi : junior + adultes légères ≤350g.`);
-        if(isExpertA && !profile.expertToucher) lines.push(`⚡ Mode Expert : les priorités dominent le scoring.`);
-        lines.push(`Scoring de ${totalDBCount} raquettes en cours…`);
-        lines.push(`Ton Top 3 est prêt.`);
+          const tL={sec:"sec et direct",medium:"medium",souple:"souple et enveloppant"};
+          const fL={diamant:"diamant",goutte:"goutte d'eau",ronde:"ronde",indifferent:""};
+          const pL={lourd:"lourd et stable",equilibre:"équilibré",leger:"léger et vif"};
+          const parts = [`Toucher ${tL[profile.expertToucher]||""}`, fL[profile.expertForme]?`forme ${fL[profile.expertForme]}`:"", pL[profile.expertPoids]?`poids ${pL[profile.expertPoids]}`:""].filter(Boolean);
+          if(parts.length>=2) lines.push(`${parts.join(", ")}. ${parts.length>=3?"Trois exigences":"Deux exigences"} qui réduisent drastiquement le champ.`);
+        }
+
+        // TEMPS 2 — Ce qui complique
+        const hasInjuriesA = injuries.length > 0;
+        const hasPrioConflict = contradictions.length > 0;
+        const hasOffAtk = (profile.styleTags||[]).some(s=>["offensif","puissant"].includes(s));
+        const hasDefStyle = (profile.styleTags||[]).some(s=>["defensif","contre","endurant"].includes(s));
+
+        if(!hasInjuriesA && !hasPrioConflict && priorities.length<=1) {
+          // Easy profile — pass quickly
+          lines.push(`Pas de blessure, pas de contrainte particulière. Le terrain est ouvert.`);
+        } else {
+          // Injuries
+          if(hasInjuriesA) {
+            if(injuries.length >= 3) {
+              lines.push(`${injuries.join(", ")}. Trois zones à protéger — le confort n'est plus une option, c'est un impératif.`);
+            } else if(injuries.length === 2) {
+              lines.push(`${injuries.join(" et ")}. Deux zones fragiles — ça réduit sérieusement les options.`);
+            } else {
+              // Single injury — specific messages
+              const inj = (profile.injuryTags||[]).find(t=>t!=="aucune");
+              if(inj==="coude" && hasOffAtk) lines.push(`Tu veux frapper fort. Mais ton coude demande de la douceur. C'est un équilibre que peu de raquettes tiennent.`);
+              else if(inj==="epaule" && hasOffAtk) lines.push(`Tu veux smasher. Ton épaule dit non. Il faut trouver la puissance sans l'impact.`);
+              else if(inj==="poignet") lines.push(`Ton poignet est fragile. Ça élimine les palas trop rigides et trop lourdes en tête.`);
+              else if(inj==="dos") lines.push(`Ton dos a besoin de protection. Ça demande un amorti supérieur — pas juste du confort, de l'absorption.`);
+              else lines.push(`${injuries[0]} à surveiller. Le confort devient un critère non négociable.`);
+            }
+          }
+
+          // Priority contradictions — from detectProfileContradictions
+          if(hasPrioConflict) {
+            const c = contradictions[0];
+            const tagLabels = (c.tags||[]).map(t=>(PRIORITY_TAGS.find(p=>p.id===t)||{}).label).filter(Boolean);
+            if(tagLabels.length===2) {
+              if(c.tags.includes("puissance")&&c.tags.includes("controle")) lines.push(`Puissance et contrôle en même temps — c'est presque un oxymore en padel. Plus tu frappes fort, moins tu contrôles.`);
+              else if(c.tags.includes("puissance")&&c.tags.includes("legerete")) lines.push(`Tu veux du punch mais aussi de la légèreté. Plus c'est léger, moins ça frappe. L'équation est serrée.`);
+              else if(c.tags.includes("puissance")&&c.tags.includes("protection")) lines.push(`Frapper fort ET protéger tes articulations. Peu de palas acceptent ce deal.`);
+              else if(c.tags.includes("legerete")&&c.tags.includes("spin")) lines.push(`Légèreté et spin se contredisent : le spin demande du poids en tête et une surface agressive.`);
+              else lines.push(`${tagLabels[0]} et ${tagLabels[1]} tirent dans des directions opposées. L'algo cherche le meilleur compromis.`);
+            }
+          }
+
+          // Style vs priority conflicts
+          if(hasOffAtk && hasInjuriesA && !hasPrioConflict) {
+            // Already covered in injury section
+          } else if(hasOffAtk && hasDefStyle) {
+            lines.push(`Profil hybride — tu attaques et tu défends. La pala doit être aussi versatile que toi.`);
+          }
+
+          // Polyvalent without clear priority
+          if(priorities.length===0 && (profile.styleTags||[]).includes("polyvalent")) {
+            lines.push(`Pas de priorité forte. Tu veux un peu de tout — c'est paradoxalement le profil le plus dur à satisfaire.`);
+          }
+        }
+
+        // TEMPS 3 — La recherche (real numbers)
+        if(compatCount < 15) {
+          lines.push(`${totalDBCount} raquettes passées au crible. ${compatCount} seulement tiennent tes exigences.`);
+        } else if(compatCount < 30) {
+          lines.push(`${totalDBCount} raquettes analysées. ${compatCount} compatibles. ${recoCount} recommandées.`);
+        } else if(compatCount > 80) {
+          lines.push(`${totalDBCount} raquettes analysées. ${compatCount} compatibles. Le choix était large — il fallait trancher.`);
+        } else {
+          lines.push(`${totalDBCount} raquettes analysées. ${compatCount} compatibles. ${recoCount} recommandées.`);
+        }
+
+        // Brand preference mention
+        if(brandPrefA.length > 0 && brandsOut.length > 0 && brandsInTop3.length === 0) {
+          lines.push(`${brandsOut.join(" et ")} n'a pas réussi à se placer. Le classement reste objectif.`);
+        }
+
+        // TEMPS 4 — L'annonce
+        if(compatCount < 15 && (hasInjuriesA || hasPrioConflict)) {
+          lines.push(`Contre toute attente, il y en a une.`);
+        } else if(hasInjuriesA) {
+          lines.push(`Elle protège. Et elle performe.`);
+        } else if(hasPrioConflict) {
+          lines.push(`Celle-ci le fait.`);
+        } else if(isExpertA) {
+          lines.push(`Voici ce qui correspond.`);
+        } else if(compatCount > 80 && !hasInjuriesA) {
+          lines.push(`Et une qui se détache.`);
+        } else {
+          lines.push(`Et une qui se détache.`);
+        };
 
         return (
         <div style={{position:"fixed",inset:0,background:"#0b0f1a",zIndex:1000,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",animation:"fadeIn 0.4s ease"}}>
@@ -8063,56 +8177,51 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
           `}</style>
 
           {/* Background glow */}
-          <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:500,borderRadius:"50%",background:"radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)",animation:"analyzeGlow 3s ease-in-out infinite",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",top:"30%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:500,borderRadius:"50%",background:"radial-gradient(circle, rgba(196,151,58,0.08) 0%, transparent 70%)",animation:"analyzeGlow 3s ease-in-out infinite",pointerEvents:"none"}}/>
 
           {/* Animated rings + Logo */}
           <div style={{position:"relative",width:120,height:120,marginBottom:28}}>
             {/* Outer ring */}
-            <div style={{position:"absolute",inset:-12,borderRadius:"50%",border:"1.5px solid transparent",borderTopColor:"rgba(249,115,22,0.5)",borderRightColor:"rgba(249,115,22,0.2)",animation:"analyzeRing1 3s linear infinite"}}/>
+            <div style={{position:"absolute",inset:-12,borderRadius:"50%",border:"1.5px solid transparent",borderTopColor:"rgba(196,151,58,0.5)",borderRightColor:"rgba(196,151,58,0.2)",animation:"analyzeRing1 3s linear infinite"}}/>
             {/* Mid ring */}
-            <div style={{position:"absolute",inset:-4,borderRadius:"50%",border:"1px solid transparent",borderBottomColor:"rgba(239,68,68,0.4)",borderLeftColor:"rgba(239,68,68,0.15)",animation:"analyzeRing2 2s linear infinite"}}/>
+            <div style={{position:"absolute",inset:-4,borderRadius:"50%",border:"1px solid transparent",borderBottomColor:"rgba(196,151,58,0.4)",borderLeftColor:"rgba(196,151,58,0.15)",animation:"analyzeRing2 2s linear infinite"}}/>
             {/* Inner ring - dashed */}
-            <div style={{position:"absolute",inset:4,borderRadius:"50%",border:"1px dashed rgba(249,115,22,0.15)",animation:"analyzeRing1 8s linear infinite"}}/>
+            <div style={{position:"absolute",inset:4,borderRadius:"50%",border:"1px dashed rgba(196,151,58,0.15)",animation:"analyzeRing1 8s linear infinite"}}/>
             {/* Logo center */}
             <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <div style={{filter:"drop-shadow(0 8px 24px rgba(249,115,22,0.4))"}}><PalaLogo size={52} gid="lgAnalyze"/></div>
+              <div style={{filter:"drop-shadow(0 8px 24px rgba(196,151,58,0.4))"}}><PalaLogo size={52} gid="lgAnalyze"/></div>
             </div>
           </div>
 
           {/* Profile name — hero */}
-          <div style={{fontSize:10,fontWeight:700,color:"#f97316",letterSpacing:"0.1em",textTransform:"uppercase",fontFamily:"'Outfit',sans-serif",marginBottom:4,animation:"analyzeLineIn 0.4s ease both"}}>MATCHING EN COURS</div>
-          <div style={{fontSize:22,fontWeight:800,color:"#f1f5f9",fontFamily:"'Outfit',sans-serif",marginBottom:20,animation:"analyzeLineIn 0.4s ease 0.2s both"}}>{profileName}</div>
+          <div style={{fontSize:10,fontWeight:700,color:"#C4973A",letterSpacing:"0.1em",textTransform:"uppercase",fontFamily:"'Outfit',sans-serif",marginBottom:4,animation:"analyzeLineIn 0.4s ease both"}}>{profileName}</div>
 
           <div style={{maxWidth:480,width:"100%"}}>
-            {lines.slice(1).map((line,i)=>{
-              const isLast = i===lines.length-2;
-              const delay = (i+1) * 700;
+            {lines.map((line,i)=>{
+              const isLast = i===lines.length-1;
+              const delay = (i+1) * 1200;
               return <div key={i} style={{
-                fontSize: isLast ? 14 : 12,
-                fontWeight: isLast ? 700 : 500,
-                color: isLast ? "#f97316" : "#64748b",
-                fontFamily: isLast ? "'Outfit',sans-serif" : "'Inter',sans-serif",
-                marginBottom: 8,
+                fontSize: isLast ? 15 : 13,
+                fontWeight: isLast ? 700 : 400,
+                color: isLast ? "#F5EDE0" : "#8B9AAF",
+                fontFamily: isLast ? "'Cormorant Garamond',serif" : "'Inter',sans-serif",
+                fontStyle: isLast ? "italic" : "normal",
+                marginBottom: isLast ? 0 : 12,
                 textAlign: "center",
-                animation: `analyzeLineIn 0.4s ease ${delay}ms both`,
-                lineHeight: 1.6,
-                padding: isLast ? "8px 0 0" : 0,
-                borderTop: isLast ? "1px solid rgba(249,115,22,0.15)" : "none",
+                animation: `analyzeLineIn 0.6s ease ${delay}ms both`,
+                lineHeight: 1.7,
+                padding: isLast ? "14px 0 0" : 0,
+                borderTop: isLast ? "1px solid rgba(196,151,58,0.15)" : "none",
               }}>{line}</div>;
             })}
 
-            {/* Spinner while lines appear */}
-            <div style={{display:"flex",justifyContent:"center",marginTop:16,animation:`analyzeLineIn 0.4s ease ${(lines.length-2)*700}ms both`}}>
-              <div style={{width:24,height:24,border:"2.5px solid rgba(249,115,22,0.15)",borderTopColor:"#f97316",borderRadius:"50%",animation:"analyzeSpinner 0.7s linear infinite"}}/>
-            </div>
-
             {/* CTA button */}
-            <div style={{animation:`analyzeLineIn 0.5s ease ${lines.length*700+200}ms both`,textAlign:"center",marginTop:20}}>
+            <div style={{animation:`analyzeLineIn 0.5s ease ${(lines.length+1)*1200+400}ms both`,textAlign:"center",marginTop:24}}>
               <button onClick={()=>setScreen("reveal")} className="pa-cta" style={{
                 padding:"14px 36px",borderRadius:14,fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'Outfit',sans-serif",
-                background:"linear-gradient(135deg,rgba(249,115,22,0.3),rgba(239,68,68,0.2))",
-                border:"1.5px solid rgba(249,115,22,0.5)",color:"#f97316",
-                boxShadow:"0 4px 20px rgba(249,115,22,0.25)",
+                background:"linear-gradient(135deg,rgba(196,151,58,0.2),rgba(196,151,58,0.08))",
+                border:"1.5px solid rgba(196,151,58,0.35)",color:"#C4973A",
+                boxShadow:"0 4px 20px rgba(196,151,58,0.15)",
               }}>
                 Découvrir mon Top 3 →
               </button>
@@ -8160,15 +8269,9 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
         const rankBgs = ["rgba(196,151,58,","rgba(148,163,184,","rgba(205,127,50,"];
         const nameParts = (r) => { const p = r.name.split(" "); if(p.length<=2) return [r.brand, p.slice(1).join(" ")||p[0]]; return [p.slice(0,Math.ceil(p.length/2)).join(" "), p.slice(Math.ceil(p.length/2)).join(" ")]; };
 
-        const advanceReveal = () => {
-          if(revealPhase < 4) setRevealPhase(p=>p+1);
-          else { setDashFromReveal(true); setScreen("dashboard"); }
-        };
-
         return (
-        <div onClick={advanceReveal} style={{position:"fixed",inset:0,background:"#0A0806",zIndex:1000,overflow:"hidden",cursor:"pointer",userSelect:"none"}}>
+        <div style={{position:"fixed",inset:0,background:"#0A0806",zIndex:1000,overflow:"hidden",userSelect:"none"}}>
           <style>{`
-            @keyframes rvGlowCore{0%,100%{opacity:.2;transform:translate(-50%,-50%) scale(1)}50%{opacity:.45;transform:translate(-50%,-50%) scale(1.2)}}
             @keyframes rvSilhouetteIn{0%{opacity:0;transform:scale(1.3);filter:blur(40px) brightness(0)}40%{opacity:.6;filter:blur(20px) brightness(.5)}100%{opacity:1;transform:scale(1);filter:blur(0) brightness(1)}}
             @keyframes rvLightSweep{0%{opacity:0;transform:translateX(-120%) skewX(-15deg)}50%{opacity:.7}100%{opacity:0;transform:translateX(120%) skewX(-15deg)}}
             @keyframes rvTitleCrash{0%{opacity:0;transform:translateY(60px) scale(1.3);filter:blur(12px)}60%{filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -8178,29 +8281,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
             @keyframes rvRunwayIn{0%{opacity:0;transform:translateY(60px) scale(.95);filter:blur(8px)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
             @keyframes rvFadeUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
           `}</style>
-
-          {/* Skip button */}
-          <button onClick={(e)=>{e.stopPropagation();setDashFromReveal(true);setScreen("dashboard");}} style={{
-            position:"absolute",top:16,right:16,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
-            borderRadius:20,padding:"6px 14px",color:"rgba(255,255,255,0.25)",fontSize:10,fontWeight:600,cursor:"pointer",
-            fontFamily:"'Outfit'",letterSpacing:"0.05em",zIndex:10,
-          }}>PASSER ›</button>
-
-          {/* Phase indicator */}
-          <div style={{position:"absolute",top:18,left:20,font:"300 10px 'Outfit'",color:"rgba(255,255,255,0.12)",letterSpacing:"0.08em",zIndex:10}}>
-            {revealPhase} / 4
-          </div>
-
-          {/* ═══ PHASE 1 — TENSION ═══ */}
-          {revealPhase===1&&<div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.4s ease"}}>
-            <div style={{position:"absolute",top:"50%",left:"50%",width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle,rgba(196,151,58,.3) 0%,transparent 70%)",animation:"rvGlowCore 2s ease infinite",pointerEvents:"none"}}/>
-            <div style={{textAlign:"center",position:"relative"}}>
-              <div style={{font:"300 12px 'Outfit'",color:"rgba(196,151,58,.5)",letterSpacing:"0.3em"}}>ANALYSE EN COURS</div>
-              <div style={{display:"flex",gap:6,justifyContent:"center",marginTop:12}}>
-                {[0,.25,.5].map(d=><div key={d} style={{width:3,height:3,borderRadius:"50%",background:"#C4973A",animation:`rvGlowCore 1s ease ${d}s infinite`}}/>)}
-              </div>
-            </div>
-          </div>}
 
           {/* ═══ PHASE 2 — RÉVÉLATION N°1 ═══ */}
           {revealPhase===2&&<div style={{position:"absolute",inset:0,animation:"fadeIn 0.5s ease"}}>
@@ -8232,7 +8312,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 <span style={{font:"800 13px 'Outfit'",color:isPrio(a)?"#F5EDE0":"rgba(245,237,224,.5)"}}>{sc1[a]}</span>
               </div>)}
             </div>
-            <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",font:"300 11px 'Outfit'",color:"rgba(255,255,255,.15)",letterSpacing:"0.08em"}}>tap pour la suite</div>
           </div>}
 
           {/* ═══ PHASE 3 — DÉFILÉ N°2 & N°3 ═══ */}
@@ -8298,7 +8377,6 @@ Return JSON array: [{"name":"exact name","forYou":"recommended|partial|no","verd
                 </React.Fragment>)}
               </div>
             </div>}
-            <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",font:"300 11px 'Outfit'",color:"rgba(255,255,255,.15)",letterSpacing:"0.08em"}}>tap pour la synthèse</div>
           </div>}
 
           {/* ═══ PHASE 4 — PODIUM SYNTHÈSE ═══ */}
